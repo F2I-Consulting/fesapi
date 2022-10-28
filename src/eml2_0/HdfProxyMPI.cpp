@@ -18,12 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "HdfProxyMPI.h"
 
-#include <hdf5.h>
 
 using namespace std;
 using namespace EML2_0_NS;
 
-#ifdef WITH_PARALLEL
+#ifdef H5_HAVE_PARALLEL
 void HdfProxyMPI::open()
 {
 // #if FESAPI_USE_MPI

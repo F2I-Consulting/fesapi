@@ -20,13 +20,11 @@ under the License.
 
 #include "HdfProxyFactory.h"
 
-#ifdef WITH_PARALLEL
 #include "../eml2_0/HdfProxyMPI.h"
-#endif
 
 namespace COMMON_NS
 {
-#ifdef WITH_PARALLEL
+#ifdef H5_HAVE_PARALLEL
 	/**
 	 * @brief	A proxy factory for an HDF5 file located on an Amazon S3 cloud. Here, HDF5 file
 	 * 			access is read only.

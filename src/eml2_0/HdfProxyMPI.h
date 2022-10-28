@@ -18,15 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#ifdef WITH_PARALLEL
-#include <mpi.h>
-#endif
+
+#include <H5pubconf.h>
+#include <hdf5.h>
 
 #include "HdfProxy.h"
 
 namespace EML2_0_NS
 {
-#ifdef WITH_PARALLEL
+#ifdef H5_HAVE_PARALLEL
     /** This class allows to open an HDF5 file using MPI for reading / writing with multiple processes */
     class HdfProxyMPI final : public EML2_0_NS::HdfProxy
     {

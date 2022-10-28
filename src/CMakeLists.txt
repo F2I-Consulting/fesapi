@@ -60,10 +60,6 @@ if (WIN32)
 	endif ()
 endif (WIN32)
 
-if (FESAPI_HAVE_PARALLEL)
-	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DWITH_PARALLEL=1")
-endif(FESAPI_HAVE_PARALLEL)
-
 target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_DEFINITIONS})
 
 # Linker instructions
