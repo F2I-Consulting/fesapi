@@ -337,6 +337,50 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", int64_t nullValue = (std::numeric_limits<int64_t>::max)());
 
 		/**
+		 * Check if this property has all its values set to a constant ones.
+		 * This method does not check if all given values are the same constant ones.
+		 * It only checks if the property has been written using the optimized constant array.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex	The index of the patch we want to check the values from.
+		 *
+		 * @returns	True if the property has been written using the optimized constant array.
+		 */
+		DLL_IMPORT_OR_EXPORT bool hasConstantValues(uint64_t patchIndex) const;
+
+		/**
+		 * Get the constant value of all values of this property as an integer one.
+		 * This method does not check if all given values are the same constant ones.
+		 * It only checks if the property has been written using the optimized constant array.
+		 *
+		 * @exception	std::logic_error 		If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range		If @p patchIndex is strictly greater than patch count.
+		 * @exception	std::invalid_argument	If the property does not have any integer constant value.
+		 *
+		 * @param 	   	patchIndex	The index of the patch we want to get the constant value from.
+		 *
+		 * @returns	The constant value of all values of this property as an integer one.
+		 */
+		DLL_IMPORT_OR_EXPORT int64_t getInt64ConstantValuesOfPatch(uint64_t patchIndex) const;
+
+		/**
+		 * Get the constant value of all values of this property as a double one.
+		 * This method does not check if all given values are the same constant ones.
+		 * It only checks if the property has been written using the optimized constant array.
+		 *
+		 * @exception	std::logic_error 		If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range		If @p patchIndex is strictly greater than patch count.
+		 * @exception	std::invalid_argument	If the property does not have any double constant value.
+		 *
+		 * @param 	   	patchIndex	The index of the patch we want to get the constant value from.
+		 *
+		 * @returns	The constant value of all values of this property as a double one.
+		 */
+		DLL_IMPORT_OR_EXPORT double getDoubleConstantValuesOfPatch(uint64_t patchIndex) const;
+
+		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be long ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
