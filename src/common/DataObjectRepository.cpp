@@ -751,7 +751,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		if (gsoapContext->error != SOAP_OK) {
 			ostringstream oss;
 			soap_stream_fault(gsoapContext, oss);
-			addWarning(oss.str());
+			size_t formatPos = xml.find("Format>");
+			if (formatPos != std::string::npos) {
+				addWarning(oss.str() + "\n" + xml.substr(0, formatPos));
+			}
+			else {
+				addWarning(oss.str());
+			}
 			delete wrapper;
 		}
 		else {
