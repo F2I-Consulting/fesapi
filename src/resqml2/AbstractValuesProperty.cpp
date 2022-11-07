@@ -751,6 +751,75 @@ void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t * values
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
+bool AbstractValuesProperty::hasConstantValues(uint64_t patchIndex) const {
+	cannotBePartial();
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		auto const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		return patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray ||
+			patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray;
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto const* patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty const*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		return patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray ||
+			patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray;
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
+}
+
+int64_t AbstractValuesProperty::getInt64ConstantValuesOfPatch(uint64_t patchIndex) const {
+	if (!hasConstantValues(patchIndex)) {
+		throw std::invalid_argument("The property " + getUuid() + " has not got constant values");
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		auto const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		if (patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
+			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(patch->Values)->Value;
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto const* patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty const*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
+			return static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(patch)->Value;
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
+
+	throw std::invalid_argument("The property " + getUuid() + " has constant values which are not integer ones.");
+}
+
+double AbstractValuesProperty::getDoubleConstantValuesOfPatch(uint64_t patchIndex) const {
+	if (!hasConstantValues(patchIndex)) {
+		throw std::invalid_argument("The property " + getUuid() + " has not got constant values");
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		auto const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		if (patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray) {
+			return static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray const*>(patch->Values)->Value;
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto const* patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty const*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray) {
+			return static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray const*>(patch)->Value;
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
+
+	throw std::invalid_argument("The property " + getUuid() + " has constant values which are not floating point ones.");
+}
+
 int64_t AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const
 {
 	cannotBePartial();

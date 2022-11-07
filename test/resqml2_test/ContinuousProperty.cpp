@@ -190,6 +190,7 @@ void ContinuousProperty::readRepo() {
 	RESQML2_NS::ContinuousProperty* forcingMinMaxDblProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>("ad589326-dfc7-4af2-a6ed-08c81657b72b");
 	REQUIRE(forcingMinMaxDblProperty->getMinimumValue() == -5.5);
 	REQUIRE(forcingMinMaxDblProperty->getMaximumValue() == 2.0);
+	REQUIRE(!forcingMinMaxDblProperty->hasConstantValues(0));
 
 	RESQML2_NS::ContinuousProperty* constantFloatingPointProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>("3ce662a6-c94b-4d19-b9df-b241693dba41");
 	REQUIRE(constantFloatingPointProperty->getValuesCountOfPatch(0) == 3);
@@ -198,5 +199,8 @@ void ContinuousProperty::readRepo() {
 	REQUIRE(constantFloatingPointValues[0] == 3.33);
 	REQUIRE(constantFloatingPointValues[1] == 3.33);
 	REQUIRE(constantFloatingPointValues[2] == 3.33);
+	REQUIRE(constantFloatingPointProperty->hasConstantValues(0));
+	REQUIRE_THROWS(constantFloatingPointProperty->getInt64ConstantValuesOfPatch(0));
+	REQUIRE(constantFloatingPointProperty->getDoubleConstantValuesOfPatch(0) == 3.33);
 
 }
