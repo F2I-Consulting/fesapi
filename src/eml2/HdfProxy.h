@@ -50,7 +50,7 @@ namespace EML2_NS
 
 		DLL_IMPORT_OR_EXPORT bool isOpened() const final { return hdfFile != -1; }
 
-		void close() final;
+		void close() /*final*/;
 
 		COMMON_NS::AbstractObject::numericalDatatypeEnum getNumericalDatatype(const std::string& groupName) final;
 
@@ -98,7 +98,7 @@ namespace EML2_NS
 			const unsigned long long* numValuesInEachDimension,
 			const unsigned long long* offsetValuesInEachDimension,
 			unsigned int numDimensions
-		) final;
+		) /*final*/;
 
 		void writeGroupAttributes(const std::string& groupName,
 			const std::vector<std::string>& attributeNames,

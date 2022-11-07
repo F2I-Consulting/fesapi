@@ -31,11 +31,13 @@ namespace EML2_0_NS
     class HdfProxyMPI final : public EML2_0_NS::HdfProxy
     {
         /** Whether to open the same file in parallel, or open a file per process */
+        // bool mpio_file_parallel;
 
         /** An MPI communicator where each rank in the communicator will be accessing the target file. */
         MPI_Comm mpi_comm;
 
-    // hsize_t rank;
+        /** The hdf file access properties list id */
+        hid_t fapl_id;
 
     public:
 
@@ -65,7 +67,10 @@ namespace EML2_0_NS
 		~HdfProxyMPI() = default;
 
         /** Open the file for reading. */
-		void open();
+		void open() override;
+
+        /** Close the file */
+        void close() override;
     };
 #endif
 }

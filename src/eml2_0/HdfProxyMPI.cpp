@@ -23,15 +23,15 @@ using namespace std;
 using namespace EML2_0_NS;
 
 #ifdef H5_HAVE_PARALLEL
+
 void HdfProxyMPI::open()
 {
-// #if FESAPI_USE_MPI
 	if (hdfFile != -1) {
 		close();
 	}
 
 	/* create and set fapl entry */
-	hid_t fapl_id = H5Pcreate(H5P_FILE_ACCESS);
+	fapl_id = H5Pcreate(H5P_FILE_ACCESS);
 	if (fapl_id < 0) {
 		throw invalid_argument("Cannot create the file property.");
 	}
@@ -43,10 +43,12 @@ void HdfProxyMPI::open()
 	if (hdfFile < 0) {
 		throw invalid_argument("Can not open HDF5 file (in read only mode on AWS S3) on region \"" + packageDirectoryAbsolutePath + "\" and URL \"" + relativeFilePath + "\"");
 	}
+}
 
-// #else
-	// throw logic_error("Please enable MPI support using CMAKE FESAPI_USE_MPI variable if you want to use it.");
-// #endif
+void HdfProxyMPI::close()
+{
+	H5Pclose(fapl_id);
+	EML2_0_NS::HdfProxy::close();
 }
 
 #endif
