@@ -79,7 +79,7 @@ namespace Example
             discretePropertyCompute.pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
 
             offsetInSlowestDim = 0;
-            LongArray kLayerlongValues = new LongArray(6);
+            Int64Array kLayerlongValues = new Int64Array(6);
             kLayerlongValues.setitem(0, -10);
             kLayerlongValues.setitem(1, 1);
             kLayerlongValues.setitem(2, 2);

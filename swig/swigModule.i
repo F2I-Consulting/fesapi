@@ -116,28 +116,28 @@ typedef unsigned long long int	uint64_t;
 
 %include "carrays_indexing64bits.i"
 #ifdef SWIGJAVA // Use functions instead of classes in java in order to avoid premature garbage collection
-	%array_functions(unsigned long long, ULongArray);
-	%array_functions(unsigned int, UIntArray);
-	%array_functions(int, IntArray);
-	%array_functions(long long, LongArray);
+	%array_functions(int64_t, Int64Array);
+	%array_functions(uint64_t, UInt64Array);
+	%array_functions(int32_t, Int32Array);
+	%array_functions(uint32_t, UInt32Array);
+	%array_functions(int16_t, Int16Array);
+	%array_functions(uint16_t, UInt16Array);
+	%array_functions(int8_t, Int8Array);
+	%array_functions(uint8_t, UInt8Array);
 	%array_functions(float, FloatArray);
 	%array_functions(double, DoubleArray);
-	%array_functions(short, ShortArray);
-	%array_functions(unsigned short, UShortArray);
-	%array_functions(char, CharArray);
-	%array_functions(unsigned char, UCharArray);
 	%array_functions(bool, BoolArray);
 #else // Use GC.KeepAlive on these arrays to ensure no premature garbage collection in C#
-	%array_class(unsigned long long, ULongArray);
-	%array_class(unsigned int, UIntArray);
-	%array_class(int, IntArray);
-	%array_class(long long, LongArray);
+	%array_class(int64_t, Int64Array);
+	%array_class(uint64_t, UInt64Array);
+	%array_class(int32_t, Int32Array);
+	%array_class(uint32_t, UInt32Array);
+	%array_class(int16_t, Int16Array);
+	%array_class(uint16_t, UInt16Array);
+	%array_class(int8_t, Int8Array);
+	%array_class(uint8_t, UInt8Array);
 	%array_class(float, FloatArray);
 	%array_class(double, DoubleArray);
-	%array_class(short, ShortArray);
-	%array_class(unsigned short, UShortArray);
-	%array_class(char, CharArray);
-	%array_class(unsigned char, UCharArray);
 	%array_class(bool, BoolArray);
 #endif
 
