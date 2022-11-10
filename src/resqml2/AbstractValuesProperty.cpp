@@ -854,6 +854,7 @@ int64_t AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, in
 
 int64_t AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) const
 {
+	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
 	}
@@ -863,6 +864,17 @@ int64_t AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) con
 		if (patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(patch->Values)->NullValue;
 		}
+		else if (patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
+			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(patch->Values)->Value != (std::numeric_limits<int64_t>::max)()
+				? (std::numeric_limits<int64_t>::max)()
+				: (std::numeric_limits<int64_t>::min)();
+		}
+		else if (patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray) {
+			return (std::numeric_limits<int64_t>::max)();
+		}
+		else if (patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray) {
+			return (std::numeric_limits<int64_t>::max)();
+		}
 
 		throw invalid_argument("The patch does not contain integer values.");
 	}
@@ -870,6 +882,17 @@ int64_t AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) con
 		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
 		if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 			return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(patch)->NullValue;
+		}
+		else if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
+			return static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(patch)->Value != (std::numeric_limits<int64_t>::max)()
+				? (std::numeric_limits<int64_t>::max)()
+				: (std::numeric_limits<int64_t>::min)();
+		}
+		else if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray) {
+			return (std::numeric_limits<int64_t>::max)();
+		}
+		else if (patch->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray) {
+			return (std::numeric_limits<int64_t>::max)();
 		}
 
 		throw invalid_argument("The patch does not contain integer values.");
