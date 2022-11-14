@@ -123,7 +123,7 @@ check_cxx_source_compiles(
 if (NOT CAN_USE_STD_REGEX)
 	find_package(Boost 1.44.0 REQUIRED regex) # 1.44 because we want boost::uuids::to_string method
 else ()
-	find_package(Boost 1.44.0) # 1.44 because we want boost::uuids::to_string method
+	find_package(Boost 1.44.0 REQUIRED) # 1.44 because we want boost::uuids::to_string method
 endif()
 
 # ============================================================================
