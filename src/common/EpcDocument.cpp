@@ -242,11 +242,9 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 		result += warning + '\n';
 	}
 
-	// Read all RESQML objects
-	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
-	for (epc::FileContentType::ContentTypeMap::const_iterator it=contentTypes.begin(); it != contentTypes.end(); ++it) {
-		std::string contentType = it->second.getContentTypeString();
+	for (auto it : package->getFileContentType().getAllContentType()) {
+		std::string contentType = it.second.getContentTypeString();
 		if (contentType.find("resqml", 14) != std::string::npos ||
 			contentType.find("eml", 14) != std::string::npos ||
 			contentType.find("witsml", 14) != std::string::npos ||
@@ -259,13 +257,13 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				contentType == "application/x-eml+xml;version=2.3;type=EpcExternalPartReference") {
 				// Look for the relative path of the HDF file
 				string relFilePath = "";
-				const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
+				const size_t slashPos = it.second.getExtensionOrPartName().substr(1).find_last_of("/\\");
 				if (slashPos != string::npos) {
-					relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
+					relFilePath = it.second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
 				}
-				relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
+				relFilePath += "_rels" + it.second.getExtensionOrPartName().substr(it.second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
 				if (!package->fileExists(relFilePath)) {
-					result += "The EpcExternalPartReference (aka HDF proxy) " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
+					result += "The EpcExternalPartReference (aka HDF proxy) " + it.second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
 					continue;
 				}
 				epc::FileRelationship relFile;
@@ -279,7 +277,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 						if (target.find("http://") == 0 || target.find("https://") == 0) {
 							repo.setHdfProxyFactory(new HdfProxyROS3Factory());
 						}
-						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType, filePath);
+						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 						break;
 					}
 				}
@@ -291,11 +289,11 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 					repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
 				}
 				else {
-					result += "The EpcExternalPartReference (aka HDF proxy) " + it->second.getExtensionOrPartName() + " is either not XML valid or it does not contain any EPC external relationship entry towards an HDF5 file.\n";
+					result += "The EpcExternalPartReference (aka HDF proxy) " + it.second.getExtensionOrPartName() + " is either not XML valid or it does not contain any EPC external relationship entry towards an HDF5 file.\n";
 				}
 			}
 			else {
-				repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType, filePath);
+				repo.addOrReplaceGsoapProxy(package->extractFile(it.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 			}
 		}
 	}
@@ -332,12 +330,10 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 		result += warning + '\n';
 	}
 
-	// Read all RESQML objects
-	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
-	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it) {
-		if (!it->second.isAssociatedToAnExtension) {
-			std::string contentType = it->second.getContentTypeString();
+	for (auto it : package->getFileContentType().getAllContentType()) {
+		if (!it.second.isAssociatedToAnExtension) {
+			std::string contentType = it.second.getContentTypeString();
 			if (contentType.find("resqml", 14) != std::string::npos ||
 				contentType.find("eml", 14) != std::string::npos ||
 				contentType.find("witsml", 14) != std::string::npos ||
@@ -350,13 +346,13 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 				if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
 					// Look for the relative path of the HDF file
 					string relFilePath = "";
-					const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
+					const size_t slashPos = it.second.getExtensionOrPartName().substr(1).find_last_of("/\\");
 					if (slashPos != string::npos) {
-						relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
+						relFilePath = it.second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
 					}
-					relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
+					relFilePath += "_rels" + it.second.getExtensionOrPartName().substr(it.second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
 					if (!package->fileExists(relFilePath)) {
-						result += "The HDF proxy " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
+						result += "The HDF proxy " + it.second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
 						continue;
 					}
 					epc::FileRelationship relFile;
@@ -372,7 +368,7 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 							else {
 								repo.setHdfProxyFactory(new HdfProxyFactory());
 							}
-							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType, filePath);
+							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 							static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRelativePath(target);
 							break;
 						}
@@ -384,7 +380,7 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 					repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
 				}
 				else {
-					repo.createPartial(extractUuidFromFileName(it->first), "Partial title", contentType);
+					repo.createPartial(extractUuidFromFileName(it.first), "Partial title", contentType);
 				}
 			}
 		}
@@ -397,23 +393,20 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 
 void EpcDocument::deserializeRelFiles(DataObjectRepository & repo)
 {
-	// Read all RESQML objects
-	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
-	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it)
-	{
-		std::string contentType = it->second.getContentTypeString();
+	for (auto it : package->getFileContentType().getAllContentType()) {
+		std::string contentType = it.second.getContentTypeString();
 		if (contentType.find("resqml", 14) != std::string::npos ||
 			contentType.find("eml", 14) != std::string::npos ||
 			contentType.find("witsml", 14) != std::string::npos)
 		{
 			// Look for the relative path of the file
 			string relFilePath = "";
-			const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
+			const size_t slashPos = it.second.getExtensionOrPartName().substr(1).find_last_of("/\\");
 			if (slashPos != string::npos) {
-				relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
+				relFilePath = it.second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
 			}
-			relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
+			relFilePath += "_rels" + it.second.getExtensionOrPartName().substr(it.second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
 			if (package->fileExists(relFilePath)) {
 				// Read Relationshsips
 				epc::FileRelationship relFile;
@@ -422,7 +415,7 @@ void EpcDocument::deserializeRelFiles(DataObjectRepository & repo)
 				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
 					const epc::Relationship& rel = allRels[relIndex];
 					if (rel.getType() == "http://schemas.energistics.org/package/2012/relationships/destinationObject") {
-						COMMON_NS::AbstractObject* source = repo.getDataObjectByUuid(extractUuidFromFileName(it->first));
+						COMMON_NS::AbstractObject* source = repo.getDataObjectByUuid(extractUuidFromFileName(it.first));
 						COMMON_NS::AbstractObject* destination = repo.getDataObjectByUuid(extractUuidFromFileName(rel.getTarget()));
 						repo.addRelationship(source, destination);
 					}
@@ -478,13 +471,11 @@ std::string EpcDocument::resolvePartial(AbstractObject const * partialObj) const
 		package->openForReading(filePath);
 	}
 
-	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
-	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it)
-	{
-		if (it->first.find(partialObj->getUuid()) != std::string::npos)
+	for (auto it : package->getFileContentType().getAllContentType()) {
+		if (it.first.find(partialObj->getUuid()) != std::string::npos)
 		{
-			return package->extractFile(it->second.getExtensionOrPartName().substr(1));
+			return package->extractFile(it.second.getExtensionOrPartName().substr(1));
 		}
 	}
 
