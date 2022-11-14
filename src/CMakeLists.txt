@@ -61,7 +61,6 @@ if (WIN32)
 endif (WIN32)
 
 target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_DEFINITIONS})
-target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE BOOST_ALL_NO_LIB)
 
 # Linker instructions
 if(WITH_LOCAL_HDF5)
@@ -80,8 +79,7 @@ if (WIN32)
 		set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 	endif ()
 
-	# On windows, boost uuid depends on bcrypt library.
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE bcrypt.lib)
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Boost::boost)
 
 	if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${MINIZIP_LIBRARY_RELEASE} debug ${MINIZIP_LIBRARY_DEBUG})
@@ -143,7 +141,9 @@ ELSEIF (UNIX)
 
 	# We need to use Boost regex instead of std regex for gcc < 4.9
 	if (NOT CAN_USE_STD_REGEX)
-        target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ${Boost_REGEX_LIBRARY})
+		target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE Boost::regex)
+	else  ()
+		target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE Boost::boost)
 	endif()
 endif (WIN32)
 
@@ -275,7 +275,7 @@ endif (WITH_WITSML2_1)
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS} ${MINIZIP_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS} ${MINIZIP_INCLUDE_DIR})
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:include>
