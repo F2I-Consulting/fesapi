@@ -105,6 +105,9 @@ Package::~Package()
 
 void Package::openForWriting(const std::string & pkgPathName, int append, bool useZip64)
 {
+	d_ptr->allFileParts.clear();
+	d_ptr->fileContentType.clear();
+
 	d_ptr->pathName.assign(pkgPathName);
 
 	// Clean the potential ending slashes
