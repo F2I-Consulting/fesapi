@@ -1459,7 +1459,7 @@ import java.lang.AutoCloseable;
 		 *
 		 * @returns	The count of extended core properties in this EPC document
 		 */
-		unsigned int getExtendedCorePropertyCount() const;
+		uint64_t getExtendedCorePropertyCount() const;
 		
 		/**
 		 * Gets an extended core property value according to its key.

@@ -55,7 +55,13 @@ namespace EML2_0_NS
 		 * 											is relative to the location of the package.
 		 * @param 		  	hdfPermissionAccess   	(Optional) The hdf permission access.
 		 */
-		DLL_IMPORT_OR_EXPORT HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
+		DLL_IMPORT_OR_EXPORT HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+			const std::string & packageDirAbsolutePath, const std::string & externalFilePath,
+			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) :
+			EML2_NS::HdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
+		{
+			initGsoapProxy(repo, guid, title, 20);
+		}
 
 		/**
 		 * Hdf proxy
@@ -73,7 +79,7 @@ namespace EML2_0_NS
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "eml20";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

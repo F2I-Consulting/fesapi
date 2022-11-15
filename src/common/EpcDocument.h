@@ -130,7 +130,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The count of extended core properties in this EPC document
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getExtendedCorePropertyCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getExtendedCorePropertyCount() const;
 
 		/**
 		 * Gets an extended core property value according to its key.
