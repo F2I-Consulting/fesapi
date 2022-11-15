@@ -172,7 +172,7 @@ void HdfProxy::open()
 
 void HdfProxy::close()
 {
-	for (auto it : openedGroups) {
+	for (const auto& it : openedGroups) {
 		if (H5Gclose(it.second) < 0) {
 			throw invalid_argument("The HDF5 group " + it.first + " could not have been closed.");
 		}
@@ -852,7 +852,7 @@ void HdfProxy::readArrayNdOfUCharValues(const std::string & datasetName, unsigne
 
 hid_t HdfProxy::openOrCreateGroup(const string & groupName)
 {
-	auto alreadyOpened = openedGroups.find(groupName);
+	std::unordered_map< std::string, hdf5_hid_t >::const_iterator alreadyOpened = openedGroups.find(groupName);
 	if (alreadyOpened != openedGroups.end()) {
 		return alreadyOpened->second;
 	}
