@@ -18,59 +18,51 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-
-#include <H5pubconf.h>
-#include <hdf5.h>
+#include <mpi.h>
 
 #include "HdfProxy.h"
 
 namespace EML2_0_NS
 {
-#ifdef H5_HAVE_PARALLEL
-    /** This class allows to open an HDF5 file using MPI for reading / writing with multiple processes */
+    /** This class allows to open an HDF5 file using Parallel HDF5 (MPI) for writing with multiple processes */
     class HdfProxyMPI final : public EML2_0_NS::HdfProxy
     {
-        /** Whether to open the same file in parallel, or open a file per process */
-        // bool mpio_file_parallel;
-
-        /** An MPI communicator where each rank in the communicator will be accessing the target file. */
-        MPI_Comm mpi_comm;
-
-        /** The hdf file access properties list id */
-        hid_t fapl_id;
-
     public:
 
-        /**
-		 * @brief	Only to be used in partial transfer context
+       /**
+		 * Creates an instance of this class in a gsoap context for writing.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
-         */
-        HdfProxyMPI(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, MPI_Comm comm):
-            EML2_0_NS::HdfProxy(partialObject),
-            mpi_comm(comm)
-        {}
-
-		/**
-		 * @brief	Constructor
-		 *
-		 * @param [in]	fromGsoap 	If non-nullptr, from gsoap.
-		 * @param 	  	secretId  	(Optional) Identifier for the secret.
-		 * @param 	  	secretKey_	(Optional) The secret key.
+		 * @param [in,out]	repo				  	The repo where the underlying gsoap proxy is going to
+		 * 											be created.
+		 * @param 		  	guid				  	The guid of the underlying gsoap proxy to be created.
+		 * @param 		  	title				  	The title of the underlying gsoap proxy to be created.
+		 * @param			packageDirAbsolutePath	The directory where the EPC
+		 * 											document is stored. Must end with a slash or back-
+		 * 											slash.
+		 * @param			externalFilePath		The relative file path of the associated HDF file. It
+		 * 											is relative to the location of the package.
+		 * @param 		  	hdfPermissionAccess   	(Optional) The hdf permission access.
 		 */
-		HdfProxyMPI(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, MPI_Comm comm) :
-			EML2_0_NS::HdfProxy(fromGsoap),
-            mpi_comm(comm)
-		{}
+		HdfProxyMPI(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+			const std::string & packageDirAbsolutePath, const std::string & externalFilePath,
+			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) :
+			EML2_0_NS::HdfProxy(repo, guid, title,
+                                packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
+            {}
 
 		/** Destructor */
 		~HdfProxyMPI() = default;
 
         /** Open the file for reading. */
-		void open() override;
+		void open() final;
 
-        /** Close the file */
-        void close() override;
+		/**
+		 * Set the MPI communicator to use
+		*/
+		void setMPICommunicator(MPI_Comm communicator) { mpi_comm = communicator; }
+		
+	private:
+        /** An MPI communicator where each rank in the communicator will be accessing the target file. */
+        MPI_Comm mpi_comm = MPI_COMM_WORLD;
     };
-#endif
 }

@@ -50,7 +50,7 @@ namespace EML2_NS
 
 		DLL_IMPORT_OR_EXPORT bool isOpened() const final { return hdfFile != -1; }
 
-		void close() /*final*/;
+		void close() final;
 
 		COMMON_NS::AbstractObject::numericalDatatypeEnum getNumericalDatatype(const std::string& groupName) final;
 

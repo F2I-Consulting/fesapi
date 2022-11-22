@@ -1,0 +1,24 @@
+set(FESAPI_WITSML_2_1__SOURCES 	${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/AbstractObject.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/ErrorTerm.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/ErrorTermDictionary.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/Log.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/ToolErrorModel.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/ToolErrorModelDictionary.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/Trajectory.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/WeightingFunction.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/WeightingFunctionDictionary.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/Well.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/Wellbore.cpp
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/WellboreMarkerSet.cpp )
+set(FESAPI_WITSML_2_1__HEADERS 	${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/AbstractObject.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/ErrorTerm.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/ErrorTermDictionary.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/Log.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/ToolErrorModel.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/ToolErrorModelDictionary.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/Trajectory.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/WeightingFunction.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/WeightingFunctionDictionary.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/Well.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/Wellbore.h
+								${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/WellboreMarkerSet.h )

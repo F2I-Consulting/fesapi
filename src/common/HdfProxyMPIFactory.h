@@ -20,14 +20,10 @@ under the License.
 
 #include "HdfProxyFactory.h"
 
-#include "../eml2_0/HdfProxyMPI.h"
-
 namespace COMMON_NS
 {
-#ifdef H5_HAVE_PARALLEL
 	/**
-	 * @brief	A proxy factory for an HDF5 file located on an Amazon S3 cloud. Here, HDF5 file
-	 * 			access is read only.
+	 * @brief	A proxy factory for an HDF5 file accessed through HDF5 parallel library (OpenMPI).
 	 */
 	class HdfProxyMPIFactory : public HdfProxyFactory
 	{
@@ -38,30 +34,28 @@ namespace COMMON_NS
 
 		/** Destructor */
 		~HdfProxyMPIFactory() = default;
-
+		
 		/**
-		 * Creates an instance of a proxy for an HDF5 file with MPI access. Only to be
-		 * used in partial transfer context
+		 * @brief	Creates an instance of HDF5 file proxy for serialization purpose.
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
+		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
 		 *
-		 * @returns	A pointer to an instantiated proxy for an HDF5 file with MPI access.
+		 * @param [in]	repo				  	A non-null data object repository.
+		 * @param 	  	guid				  	The guid to set to the HDF5 file proxy. If empty then a
+		 * 										new guid will be generated.
+		 * @param 	  	title				  	The title to set to the HDF5 file proxy. If empty then
+		 * 										\"unknown\" title will be set.
+		 * @param 	  	packageDirAbsolutePath	Path of the directory containing the EPC file.
+		 * @param 	  	externalFilePath	  	Path of the HDF5 file relative to the directory where the
+		 * 										EPC document is stored.
+		 * @param 	  	hdfPermissionAccess   	(Optional) The HDF5 file permission access. It is read
+		 * 										only by default.
+		 *
+		 * @returns	A pointer to an instantiated HDF5 file proxy.
 		 */
-		virtual EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, MPI_Comm comm) {
-			return new EML2_0_NS::HdfProxyMPI(partialObject, comm);
-		}
-
-		/**
-		 * Creates an instance of a proxy for an HDF5 file file with MPI access by wrapping a
-		 * gSOAP instance
-		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
-		 *
-		 * @returns	A pointer to an instantiated proxy for an HDF5 file with MPI access.
-		 */
-		virtual EML2_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, MPI_Comm comm) {
-			return new EML2_0_NS::HdfProxyMPI(fromGsoap, comm);
-		}
+		EML2_NS::AbstractHdfProxy* make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+			const std::string & packageDirAbsolutePath, const std::string & externalFilePath,
+			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) override;
 	};
-#endif
 }
