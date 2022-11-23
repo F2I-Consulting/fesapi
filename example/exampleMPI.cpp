@@ -57,14 +57,11 @@ int main() {
 	RESQML2_NS::ContinuousProperty* prop = repo.createContinuousProperty(unstructuredGrid_4cells, "", "parallel property", 1, gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
-	long long unsigned int dim = world_size;
-	prop->pushBackFloatHdf5ArrayOfValues(&dim, 1);
+	prop->pushBackHdf5Array1dOfValues(COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, world_size);
 
-	unsigned long long one = 1;
-	unsigned long long offset = world_rank;
-	float value = world_rank;
-	std::cout << "Rank " << world_rank << " writes its rank into HDF5 property 1D dataset at offset " << offset << std::endl;
-	prop->setValuesOfFloatHdf5ArrayOfValues(&value, &one, &offset, 1);
+	double value = world_rank;
+	std::cout << "Rank " << world_rank << " writes its rank into HDF5 property 1D dataset at offset " << world_rank << std::endl;
+	prop->setValuesOfDoubleHdf5Array1dOfValues(&value, 1, world_rank);
 
 	if (world_rank == 0) {
 		std::cout << "Rank 0 only : Start serialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << std::endl;

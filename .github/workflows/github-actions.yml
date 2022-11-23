@@ -155,16 +155,14 @@ jobs:
         uses: mpi4py/setup-mpi@v1
       - name: CMake build and install
         run: |
-          cd ..
+          cd ${{ runner.temp }}
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_C_COMPILER=mpicc -DMINIZIP_INCLUDE_DIR=/usr/include/minizip -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 -DHDF5_PREFER_PARALLEL:BOOL=TRUE -DWITH_EXAMPLE:BOOL=TRUE ${{ github.workspace }}
           cmake --build . -j2
           cmake --install .
       - name: Run example
-        run: |
-          cd install
-          mpiexec -n 2 example
+        run: mpiexec -n 2 ${{ runner.temp }}/build/install/example
   webassembly:
     runs-on: ubuntu-20.04    
     steps:
