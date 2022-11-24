@@ -3266,6 +3266,49 @@ namespace RESQML2_NS
 			uint64_t * elementIndices0, uint64_t * elementIndices1,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
+		/**
+		 * Pushes back a new patch (without pairwise elements) in this sub-representation.
+		 * The pushed patch is uninitialized and values must be set to this new patch afterwards.
+		 *
+		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
+		 * 										sub-representation patch.
+		 * @param [in]	elementIndices			The indices of the elements in the supporting
+		 * 										representation.
+		 * @param [in]	proxy					The HDF proxy where the numerical values (indices)
+		 * 										are stored.
+		 */
+		void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Set the element indices of an already created SubRepresentationPatch 
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param [in]	  	elementIndices		  	All the element indices to set in the already created SubRepresentationPatch.
+		 * @param 		  	elementCount			The number of elements to write.
+		 * @param 		  	offset	  				The offset value.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the element
+		 * 											indices. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default value), a default HDF proxy must be defined
+		 * 											into the data object repository.
+		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
+		 * 											write the element indices. If not provided, its
+		 * 											default value is by convention set to unsigned int
+		 * 											maximum value and the element indices will be written
+		 * 											in the last subrepresentation patch (the one with the
+		 * 											greatest index).
+		 */	
+		void setElementIndices(uint64_t* elementIndices, 
+			uint64_t elementCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+
 		bool areElementIndicesPairwise(unsigned int patchIndex) const;
 		bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
 

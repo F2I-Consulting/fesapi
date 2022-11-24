@@ -274,7 +274,51 @@ namespace RESQML2_NS
 		 * 										corresponding to the element indices. The count must be
 		 * 										elementCount.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, short* supportingRepIndices = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, short* supportingRepIndices = nullptr);
+
+		/**
+		 * Pushes back a new patch (without pairwise elements) in this sub-representation.
+		 * The pushed patch is uninitialized and values must be set to this new patch afterwards.
+		 *
+		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
+		 * 										sub-representation patch.
+		 * @param [in]	elementIndices			The indices of the elements in the supporting
+		 * 										representation.
+		 * @param [in]	proxy					The HDF proxy where the numerical values (indices)
+		 * 										are stored.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Set the element indices of an already created SubRepresentationPatch 
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param [in]	  	elementIndices		  	All the element indices to set in the already created SubRepresentationPatch.
+		 * @param 		  	elementCount			The number of elements to write.
+		 * @param 		  	offset	  				The offset value.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the element
+		 * 											indices. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default value), a default HDF proxy must be defined
+		 * 											into the data object repository.
+		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
+		 * 											write the element indices. If not provided, its
+		 * 											default value is by convention set to unsigned int
+		 * 											maximum value and the element indices will be written
+		 * 											in the last subrepresentation patch (the one with the
+		 * 											greatest index).
+		 */	
+		DLL_IMPORT_OR_EXPORT void setElementIndices(uint64_t* elementIndices, 
+			uint64_t elementCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
 		
 		/**
 		 * Pushes back a new patch in this sub-representation which is constituted by means of pairwise
@@ -387,7 +431,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingRepresentationDor(uint64_t index) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "SubRepresentation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
