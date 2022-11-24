@@ -25,9 +25,23 @@ under the License.
 namespace EML2_0_NS
 {
     /** This class allows to open an HDF5 file using Parallel HDF5 (MPI) for writing with multiple processes */
-    class HdfProxyMPI final : public EML2_0_NS::HdfProxy
+    class HdfProxyMPI final : public EML2_NS::HdfProxy
     {
     public:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 */
+		DLL_IMPORT_OR_EXPORT HdfProxyMPI(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::HdfProxy(partialObject) {}
+
+		/**
+		 * @brief	Constructor
+		 *
+		 * @param 	dor	The dor.
+		 */
+		DLL_IMPORT_OR_EXPORT HdfProxyMPI(const COMMON_NS::DataObjectReference& dor) : EML2_NS::HdfProxy(dor) {}
 
        /**
 		 * Creates an instance of this class in a gsoap context for writing.
@@ -46,9 +60,20 @@ namespace EML2_0_NS
 		HdfProxyMPI(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			const std::string & packageDirAbsolutePath, const std::string & externalFilePath,
 			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) :
-			EML2_0_NS::HdfProxy(repo, guid, title,
-                                packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
-            {}
+			EML2_NS::HdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
+		{
+			initGsoapProxy(repo, guid, title, 20);
+		}
+
+		/**
+		 * Hdf proxy
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 *
+		 * 
+		 */
+		DLL_IMPORT_OR_EXPORT HdfProxyMPI(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			EML2_NS::HdfProxy(fromGsoap) {}
 
 		/** Destructor */
 		~HdfProxyMPI() = default;
@@ -60,6 +85,16 @@ namespace EML2_0_NS
 		 * Set the MPI communicator to use
 		*/
 		void setMPICommunicator(MPI_Comm communicator) { mpi_comm = communicator; }
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "eml20";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 		
 	private:
         /** An MPI communicator where each rank in the communicator will be accessing the target file. */

@@ -27,18 +27,15 @@ under the License.
 // filepath is defined in a macro to better check memory leak
 #define filePath "../../testingPackageCpp_MPI.epc"
 
-int main() {
-    // Initialize the MPI environment
-    MPI_Init(NULL, NULL);
-
-    // Get the number of processes
+void serialize(const std::string filename) {
+	// Get the number of processes
     int world_size;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
     // Get the rank of the process
     int world_rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
-
+	
 /*
     // Get the name of the processor
     char processor_name[MPI_MAX_PROCESSOR_NAME];
@@ -54,7 +51,9 @@ int main() {
 	repo.setDefaultHdfProxy(hdfProxy);
 
 	auto* unstructuredGrid_4cells = repo.createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>("", "Testing Unstructured grid");
-	RESQML2_NS::ContinuousProperty* prop = repo.createContinuousProperty(unstructuredGrid_4cells, "", "parallel property", 1, gsoap_eml2_3::resqml22__IndexableElement::cells,
+	// It is important to explictely give an UUID to the property in order all ranks write into the same HDF dataset.
+	// If it is a random, each rank woulw write in a different HDF dataset.
+	RESQML2_NS::ContinuousProperty* prop = repo.createContinuousProperty(unstructuredGrid_4cells, "9cd64cd9-9ecc-4da1-a3f3-ee77335d98c8", "parallel property", 1, gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 	prop->pushBackHdf5Array1dOfValues(COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, world_size);
@@ -67,9 +66,41 @@ int main() {
 		std::cout << "Rank 0 only : Start serialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << std::endl;
 		pck.serializeFrom(repo);
 	}
+}
 
-	// It is imortant to close the HDF proxy before to call MPI_Finalize
-	hdfProxy->close();
+void deserialize(const std::string filename) {
+    // Get the rank of the process
+    int world_rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+
+	if (world_rank == 0) {
+		COMMON_NS::EpcDocument pck(filePath);
+		COMMON_NS::DataObjectRepository repo;
+		const std::string resqmlResult = pck.deserializeInto(repo);
+		if (!resqmlResult.empty()) {
+			std::cerr << resqmlResult << std::endl;
+			repo.clearWarnings();
+		}
+		pck.close();
+
+		auto* unstructuredGrid_4cells = repo.getUnstructuredGridRepresentation(0);
+		RESQML2_NS::ContinuousProperty* prop = dynamic_cast<RESQML2_NS::ContinuousProperty*>(unstructuredGrid_4cells->getValuesProperty(0));
+
+		std::array<double, 4> values;
+		prop->getDoubleValuesOfPatch(0, values.data());
+		std::cout << "Read all values in rank " << world_rank << " from the property : " << std::endl;
+		for (auto val : values) {
+			std::cout << val << std::endl;
+		}
+	}
+}
+
+int main() {
+    // Initialize the MPI environment
+    MPI_Init(NULL, NULL);
+
+	serialize(filePath);
+	deserialize(filePath);
 
     // Finalize the MPI environment.
     MPI_Finalize();
