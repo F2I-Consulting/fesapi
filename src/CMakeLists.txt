@@ -63,7 +63,7 @@ endif (WIN32)
 target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_DEFINITIONS})
 
 # Linker instructions
-if(WITH_LOCAL_HDF5)
+if (WITH_LOCAL_HDF5 OR CMAKE_VERSION VERSION_LESS "3.19")
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_LIBRARIES})
 else()
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE hdf5::hdf5)

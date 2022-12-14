@@ -18,21 +18,26 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreFeature.h"
 
-#include <stdexcept>
-
-#include "../witsml2_0/Wellbore.h"
+#include "../witsml2/Wellbore.h"
 
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* WellboreFeature::XML_TAG = "WellboreFeature";
-
 WITSML2_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
 {
-	const auto& witsmlWellbores = getRepository()->getTargetObjects<WITSML2_NS::Wellbore>(this);
-	switch (witsmlWellbores.size()) {
-	case 0: return nullptr;
-	case 1: return witsmlWellbores[0];
-	default: throw std::logic_error("There are too much associated WITSML wellbores.");
+	return repository->getDataObjectByUuid<WITSML2_NS::Wellbore>(getWitsmlWellboreDor().getUuid());
+}
+
+void WellboreFeature::loadTargetRelationships()
+{
+	COMMON_NS::DataObjectReference dor = getWitsmlWellboreDor();
+	WITSML2_NS::Wellbore* witsmlWellbore = getRepository()->getDataObjectByUuid<WITSML2_NS::Wellbore>(dor.getUuid());
+	if (witsmlWellbore == nullptr) { // partial transfer
+		getRepository()->createPartial(dor);
+		witsmlWellbore = getRepository()->getDataObjectByUuid<WITSML2_NS::Wellbore>(dor.getUuid());
 	}
+	if (witsmlWellbore == nullptr) {
+		throw invalid_argument("The DOR looks invalid.");
+	}
+	repository->addRelationship(this, witsmlWellbore);
 }

@@ -28,7 +28,7 @@ namespace WITSML2_NS
 namespace RESQML2_NS
 {
 	/**
-	 * @brief	May refer to one of these: wellore, borehole or sidetrack.
+	 * @brief	May refer to one of these: wellbore, borehole or sidetrack.
 	 * 			
 	 * 			Wellbore: a unique, oriented path from the bottom of a drilled borehole to the
 	 * 			surface of the earth. The path must not overlap or cross itself.
@@ -75,6 +75,14 @@ namespace RESQML2_NS
 		virtual ~WellboreFeature() = default;
 
 		/**
+		 * Gets the associated WITSML wellbore data object reference.
+		 *
+		 * @returns	Empty data object reference if no WITSML wellbore is associated to this interpretation.
+		 * 			Otherwise return the data objet reference of the associated WITSML wellbore.
+		 */
+		virtual COMMON_NS::DataObjectReference getWitsmlWellboreDor() const = 0;
+
+		/**
 		 * Gets the WITSML wellbore associated to this wellbore feature.
 		 *
 		 * @exception	std::logic_error	If more than one WITSML wellbore is associated to this
@@ -94,10 +102,13 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setWitsmlWellbore(WITSML2_NS::Wellbore * wellbore) = 0;
 
+		/** Loads target relationships */
+		void loadTargetRelationships() final;
+
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "WellboreFeature";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 	};

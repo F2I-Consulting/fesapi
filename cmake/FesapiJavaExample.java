@@ -151,6 +151,7 @@ public class FesapiJavaExample {
 		
 		// Features
 		WellboreFeature wellbore1 = repo.createWellboreFeature("22d5b48f-f789-46e7-a454-6d8bd05afd0b", "Wellbore1");
+		wellbore1.setWitsmlWellbore(witsmlWellbore);
 		
 		// Interpretations
 		WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
@@ -869,7 +870,8 @@ ${COMMENT_END}
 			for (int wbfIndex = 0; wbfIndex < wellboreTraj.getWellboreFrameRepresentationCount(); wbfIndex++) {
 				WellboreFrameRepresentation wbf = wellboreTraj.getWellboreFrameRepresentation(wbfIndex);
 				
-				System.out.println("WellboreFrameRepresentation title : " + wbf.getTitle());
+				WellboreFeature wf = (WellboreFeature) wbf.getInterpretation().getInterpretedFeature();
+				System.out.println("WellboreFrameRepresentation title : \"" + wbf.getTitle() + "\" of well \"" + wf.getWitsmlWellbore().getWell().getTitle() + "\"");
 				System.out.println("WellboreFrameRepresentation uuid : " + wbf.getUuid());
 				
 				System.out.println("Value Count : " + wbf.getMdValuesCount());

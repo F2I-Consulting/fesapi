@@ -18,14 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 
-#include <stdexcept>
-
 #include "catch.hpp"
 #include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/LocalTime3dCrs.h"
 #include "resqml2/MdDatum.h"
-#include "resqml2_0_1/WellboreInterpretation.h"
+#include "resqml2/WellboreFeature.h"
+#include "resqml2/WellboreInterpretation.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
+
+#include "witsml2/Well.h"
+#include "witsml2/Wellbore.h"
+
 using namespace std;
 using namespace resqml2_test;
 using namespace COMMON_NS;
@@ -45,7 +48,12 @@ WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(const
 }
 
 void WellboreTrajectoryRepresentationTest::initRepo() {
-	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
+	WITSML2_NS::Well* well = repo->createWell("1f885c7b-5262-41ef-bd1c-e06f40c08387", "");
+	WITSML2_NS::Wellbore* wellbore = repo->createWellbore(well, "", "");
+	
+	WellboreFeature* feature = repo->createWellboreFeature("", "");
+	feature->setWitsmlWellbore(wellbore);
+	WellboreInterpretation* interp = repo->createWellboreInterpretation(feature, "", "", true);
 	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
 
 	// creating the WellboreTrajectoryRepresentation in m and ft and depth
@@ -79,12 +87,12 @@ void WellboreTrajectoryRepresentationTest::initRepo() {
 	double inclinations2[4] = { 0, pi / 2, pi / 2, 3 * pi / 4 };
 	double azimuths2[4] = { 0, -pi / 2, 0, pi / 2 };
 	rep4->setGeometry(controlPoints, inclinations2, azimuths2, trajectoryMds, 4, 0, repo->getHdfProxySet()[0]);
-
 }
 
 void WellboreTrajectoryRepresentationTest::readRepo() {
 	// getting the WellboreTrajectoryRepresentation
 	WellboreTrajectoryRepresentation* traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(defaultUuid);
+	REQUIRE(dynamic_cast<WellboreFeature*>(traj->getInterpretation()->getInterpretedFeature())->getWitsmlWellbore()->getWell()->getUuid() == "1f885c7b-5262-41ef-bd1c-e06f40c08387");
 
 	REQUIRE(traj->getXyzPointCountOfAllPatches() == 4);
 	REQUIRE(traj->getGeometryKind() == 0);
