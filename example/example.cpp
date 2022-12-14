@@ -268,9 +268,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 
 	// Features
 	wellbore1 = pck->createWellboreFeature("22d5b48f-f789-46e7-a454-6d8bd05afd0b", "Wellbore1");
-	if (dynamic_cast<WITSML2_0_NS::Wellbore*>(witsmlWellbore) != nullptr) {
-		wellbore1->setWitsmlWellbore(static_cast<WITSML2_0_NS::Wellbore*>(witsmlWellbore));
-	}
+	wellbore1->setWitsmlWellbore(witsmlWellbore);
 
 	// Interpretations
 	wellbore1Interp1 = pck->createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
@@ -1040,6 +1038,14 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	discreteProp432->pushBackLongHdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
 
 	/**************
+	 Continuous Properties
+	***************/
+	RESQML2_NS::ContinuousProperty* continuousPropOnIjkgridParametric = pck->createContinuousProperty(ijkgridParametric, "a31d7376-1a2a-47f3-9586-dd74ac13d820", "Continuous prop with nan", 1,
+		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+	double continuousPropValuesOnIjkgridParametric[4] = { -1.1, 0.0, std::numeric_limits<double>::quiet_NaN(), 2.2 };
+	continuousPropOnIjkgridParametric->pushBackDoubleHdf5Array3dOfValues(continuousPropValuesOnIjkgridParametric, 2, 1, 2);
+
+	/**************
 	 Time Series
 	***************/
 	EML2_NS::TimeSeries * timeSeries = pck->createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series");
@@ -1180,8 +1186,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	uint64_t faceIndicesPerCell[9] = { 0, 1, 2, 3, // tetra
 		0, 4, 5, 6, 7 }; //wedge
 	uint64_t faceIndicesCumulativeCountPerCell[2] = { 4, 9 };
-	// Exporting the right handness of each face of each cell is mandatory. However, it is often ignored by the readers. Dummy values
-	unsigned char faceRightHandness[9] = { 0, 0, 1, 1, 1, 0, 1, 0, 0 };
+	// Exporting the right handness of each face of each cell is mandatory.
+	unsigned char faceRightHandness[9] = { 1, 0, 0, 1, 0, 0, 0, 1, 1 };
 
 	unstructuredGrid->setGeometry(faceRightHandness, unstructuredGridPoints, 7, nullptr, faceIndicesPerCell, faceIndicesCumulativeCountPerCell, 8, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace,
 		gsoap_resqml2_0_1::resqml20__CellShape::prism);
@@ -2467,6 +2473,7 @@ bool serialize(const string & filePath)
 
 	// Comment or uncomment below domains/lines you want wether to test or not
 	serializeWells(&repo, hdfProxy);
+	/*
 	serializePerforations(&repo);
 	serializeBoundaries(&repo, hdfProxy);
 	serializeGeobody(&repo, hdfProxy);
@@ -2485,7 +2492,7 @@ bool serialize(const string & filePath)
 #endif
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
-
+	*/
 	hdfProxy->close();
 
 	cout << "Start serialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;

@@ -1,10 +1,10 @@
 name: github-actions
 on: [push, pull_request]
 jobs:
-  windows-2019:
+  windows-2019-cs:
     runs-on: windows-2019
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: HDF5 install
         run: |
           Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/bin/hdf5-1.12.0-Std-win10_64-vs16.zip -OutFile ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16.zip
@@ -72,7 +72,7 @@ jobs:
       CC: ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: apt-get install
         run: |
           sudo apt-get install gcc-multilib ${{ matrix.xcc_pkg }} 
@@ -84,6 +84,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y libminizip-dev libboost-all-dev
+# Build HDF5 instead of downloading the package because the package is not built with -fPIC causing relocation issue.
       - name: HDF5 build and install
         run: |
           cd ${{ runner.temp }}
@@ -112,11 +113,12 @@ jobs:
   ubuntu-20-python3:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: APT install
         run: |
           sudo apt update
           sudo apt install -y libminizip-dev libboost-all-dev
+# Build HDF5 instead of downloading the package because the package is not built with -fPIC causing relocation issue.
       - name: HDF5 build and install
         run: |
           cd ${{ runner.temp }}
@@ -142,11 +144,33 @@ jobs:
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${{ github.workspace }}/../build/install/lib
           pip3 install ${{ github.workspace }}/python/dist/*.whl
           python3 ${{ github.workspace }}/python/example/example.py
+  ubuntu-20-valgrind-unitTest:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: APT install
+        run: |
+          sudo apt update
+          sudo apt install -y libhdf5-dev libminizip-dev libboost-all-dev valgrind
+      - name: CMake build and install
+        run: |
+          cd ..
+          mkdir build
+          cd build
+          cmake -DMINIZIP_INCLUDE_DIR=/usr/include/minizip -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_TEST=TRUE ${{ github.workspace }}
+          cmake --build . -j2
+          cmake --install .
+      - name: Run Valgrind on example
+        run: |
+          valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ${{ github.workspace }}/../build/example/example
+      - name: Run Unit tests
+        run: |
+          ${{ github.workspace }}/../build/test/unitTest
   webassembly:
     runs-on: ubuntu-20.04    
     steps:
       - uses: mymindstorm/setup-emsdk@v11
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Verify
         run: emcc -v
       - name: "Set environmental variables"
