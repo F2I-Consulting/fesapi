@@ -25,7 +25,12 @@ under the License.
 
 #include "../common/DataFeeder.h"
 
-#include "../common/HdfProxyFactory.h"
+#include "hdf5.h" // We must do this include to ckeck H5_HAVE_PARALLEL
+#ifdef H5_HAVE_PARALLEL
+	#include "../common/HdfProxyMPIFactory.h"
+#else
+	#include "../common/HdfProxyFactory.h"
+#endif
 
 #include "../eml2_1/PropertyKind.h"
 
@@ -324,7 +329,11 @@ DataObjectRepository::DataObjectRepository() :
 	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
 	warnings(),
 	propertyKindMapper(), defaultHdfProxy(nullptr), defaultCrs(nullptr),
+#ifdef H5_HAVE_PARALLEL
+	hdfProxyFactory(new COMMON_NS::HdfProxyMPIFactory()),
+#else
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
+#endif
 	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
 	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_1),
 	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),
@@ -337,7 +346,11 @@ DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappi
 	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
 	warnings(),
 	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr),
+#ifdef H5_HAVE_PARALLEL
+	hdfProxyFactory(new COMMON_NS::HdfProxyMPIFactory()),
+#else
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
+#endif
 	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
 	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_1),
 	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),

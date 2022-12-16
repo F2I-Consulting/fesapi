@@ -24,7 +24,7 @@ namespace Example
                 resqml22__IndexableElement.cells,
                 resqml20__ResqmlUom.m,
                 propertyKind);
-            propertyCompute.pushBackFloatHdf5Array3dOfValues(2, 3, 4);
+            propertyCompute.pushBackHdf5Array3dOfValues(AbstractObject.numericalDatatypeEnum.FLOAT, 2, 3, 4);
 
             ulong valueCountInFastestDim = 2;
             ulong valueCountInMiddleDim = 3;
@@ -76,7 +76,7 @@ namespace Example
                 1,
                 resqml22__IndexableElement.cells,
                 resqml20__ResqmlPropertyKind.index);
-            discretePropertyCompute.pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
+            discretePropertyCompute.pushBackHdf5Array3dOfValues(AbstractObject.numericalDatatypeEnum.INT64, 2, 3, 4, 9999);
 
             offsetInSlowestDim = 0;
             Int64Array kLayerlongValues = new Int64Array(6);
@@ -86,7 +86,7 @@ namespace Example
             kLayerlongValues.setitem(3, 3);
             kLayerlongValues.setitem(4, 4);
             kLayerlongValues.setitem(5, 5);
-            discretePropertyCompute.setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+            discretePropertyCompute.setValuesOfInt64Hdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
                 offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
             kLayerlongValues.setitem(0, 10);
             kLayerlongValues.setitem(1, 11);
@@ -95,7 +95,7 @@ namespace Example
             kLayerlongValues.setitem(4, 14);
             kLayerlongValues.setitem(5, 15);
             ++offsetInSlowestDim;
-            discretePropertyCompute.setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+            discretePropertyCompute.setValuesOfInt64Hdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
                 offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
             kLayerlongValues.setitem(0, 20);
             kLayerlongValues.setitem(1, 21);
@@ -104,7 +104,7 @@ namespace Example
             kLayerlongValues.setitem(4, 24);
             kLayerlongValues.setitem(5, 25);
             ++offsetInSlowestDim;
-            discretePropertyCompute.setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+            discretePropertyCompute.setValuesOfInt64Hdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
                 offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
             kLayerlongValues.setitem(0, 30);
             kLayerlongValues.setitem(1, 31);
@@ -113,7 +113,7 @@ namespace Example
             kLayerlongValues.setitem(4, 34);
             kLayerlongValues.setitem(5, 35);
             ++offsetInSlowestDim;
-            discretePropertyCompute.setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+            discretePropertyCompute.setValuesOfInt64Hdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
                 offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
             GC.KeepAlive(kLayerlongValues);
         }

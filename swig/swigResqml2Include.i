@@ -3266,6 +3266,49 @@ namespace RESQML2_NS
 			uint64_t * elementIndices0, uint64_t * elementIndices1,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
+		/**
+		 * Pushes back a new patch (without pairwise elements) in this sub-representation.
+		 * The pushed patch is uninitialized and values must be set to this new patch afterwards.
+		 *
+		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
+		 * 										sub-representation patch.
+		 * @param [in]	elementIndices			The indices of the elements in the supporting
+		 * 										representation.
+		 * @param [in]	proxy					The HDF proxy where the numerical values (indices)
+		 * 										are stored.
+		 */
+		void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Set the element indices of an already created SubRepresentationPatch 
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param [in]	  	elementIndices		  	All the element indices to set in the already created SubRepresentationPatch.
+		 * @param 		  	elementCount			The number of elements to write.
+		 * @param 		  	offset	  				The offset value.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the element
+		 * 											indices. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default value), a default HDF proxy must be defined
+		 * 											into the data object repository.
+		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
+		 * 											write the element indices. If not provided, its
+		 * 											default value is by convention set to unsigned int
+		 * 											maximum value and the element indices will be written
+		 * 											in the last subrepresentation patch (the one with the
+		 * 											greatest index).
+		 */	
+		void setElementIndices(uint64_t* elementIndices, 
+			uint64_t elementCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+
 		bool areElementIndicesPairwise(unsigned int patchIndex) const;
 		bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
 
@@ -4531,19 +4574,6 @@ namespace RESQML2_NS
 		 */
 		gsoap_eml2_3::resqml22__IndexableElement getAttachmentKind() const;
 		
-		
-		/**
-		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
-		 * this property.
-		 *
-		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	patchIndex	The index of the patch we want to count the values from.
-		 *
-		 * @returns	The count of values of the @p patchIndex patch.
-		 */
-		uint64_t getValuesCountOfPatch(unsigned int patchIndex) const;
-		
 		std::vector<RESQML2_NS::PropertySet *> getPropertySets() const;
 		unsigned int getPropertySetCount() const;
 		RESQML2_NS::PropertySet * getPropertySet(unsigned int index) const;
@@ -4978,64 +5008,266 @@ namespace RESQML2_NS
 		 */
 		uint8_t getUInt8ValuesOfPatch(unsigned int patchIndex, uint8_t* values) const;
 
-		//***********************************/
-		//*** INTEGER For hyperslabbing *****/
-		//***********************************/
-
+		//***********************************
+		//*** For hyperslabbing *****
+		//***********************************
+		
 		/**
-		 * Creates an nd array of explicit long 64 bits values into the property values. No values are
-		 * written to this array yet then the HDF5 array contains uninitialized values.
+		 * Create an nd array of values to the property values. No values are written to
+		 * this array yet then the HDF5 array contains uninitialized values.
 		 *
-		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
 		 *
-		 * @param [in]	  	numValues		  	The number of property values ordered by dimension of the
-		 * 										array to write. It is ordered from slowest dimension to
+		 * @param 			datatype			The datatype of the values 
+		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
+		 * 										array to write.  It is ordered from slowest dimension to
 		 * 										fastest dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param 		  	nullValue		  	(Optional) The null value. Default value is long 64 bits
-		 * 										maximum value.
+		 * @param 			nullvalue			The integer null value in case we create an integer array.
+		 * 										It is ignored if the @p datatype is a floating point one.
 		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method. If @c nullptr (default value),
-		 * 										a default HDF proxy must be defined into the data object
+		 * 										be closed in this method. If @c nullptr (default), a
+		 * 										default HDF proxy must be defined into the data object
 		 * 										repository.
 		 */
-		void pushBackLongHdf5ArrayOfValues(
-			unsigned long long* numValues,
+		void pushBackHdf5ArrayOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
+			unsigned long long const * numValues,
 			unsigned int numArrayDimensions,
 			int64_t nullValue = std::numeric_limits<int64_t>::max(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
-		 * Creates a 3d array of explicit long 64 values into the property values. No values are written
-		 * to this array yet then the HDF5 array contains uninitialized values.
+		 * Creates a 1d array of explicit double values to the property values. No values are written to
+		 * this array yet then the HDF5 array contains uninitialized values.
 		 *
-		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
 		 *
-		 * @param 		  	valueCountInFastestDim	The number of values in the fastest dimension (mainly
-		 * 											I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values in the middle dimension (mainly
-		 * 											J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values in the slowest dimension (mainly
-		 * 											K dimension).
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
-		 * 											bits maximum value.
+		 * @param 		  	valueCount			The number of values to write).
+		 * @param 			nullvalue			The integer null value in case we create an integer array.
+		 * 										It is ignored if the @p datatype is a floating point one.
+		 * @param [in,out]	proxy				(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and
+		 * 										won't be closed in this method. If @c nullptr
+		 * 										(default), a default HDF proxy must be defined into
+		 * 										the data object repository.
+		 */
+		void pushBackHdf5Array1dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
+			uint64_t valueCount,
+			int64_t nullValue = std::numeric_limits<int64_t>::max(),
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Creates a 2d array of explicit double values to the property values. No values are written to
+		 * this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param 			nullvalue			The integer null value in case we create an integer array.
+		 * 										It is ignored if the @p datatype is a floating point one.
+		 * @param [in,out]	proxy					(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @c nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 */
+		void pushBackHdf5Array2dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			int64_t nullValue = std::numeric_limits<int64_t>::max(),
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Creates a 3d array of explicit float values to the property values. No values are written to
+		 * this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 			datatype				The datatype of the values 
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param 			nullvalue			The integer null value in case we create an integer array.
+		 * 										It is ignored if the @p datatype is a floating point one.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method. If @p nullptr
-		 * 											(default value), a default HDF proxy must be defined
-		 * 											into the data object repository.
+		 * 											won't be closed in this method. If @c nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
 		 */
-		void pushBackLongHdf5Array3dOfValues(
+		void pushBackHdf5Array3dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
 			uint64_t valueCountInSlowestDim,
 			int64_t nullValue = std::numeric_limits<int64_t>::max(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		
+		/**
+		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
+		 * methods only pushes back values into an existing array, it is to be used along with
+		 * pushBackLongHdf5ArrayOfValues().
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is null and no default HDF proxy is defined
+		 * 										into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param [in]	  	values			  	All the property values to set ordered according to the
+		 * 										topology of the representation it is based on.
+		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
+		 * 										array to write. It is ordered from slowest dimension to
+		 * 										fastest dimension.
+		 * @param 		  	offsetValues	  	The offset values ordered by dimension of the array to
+		 * 										write. It is ordered from slowest dimension to fastest
+		 * 										dimension.
+		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
+		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and won't
+		 * 										be closed in this method. If null (default value), a
+		 * 										default HDF proxy must be defined into the data object
+		 * 										repository.
+		 * @param 		  	patchIndex		  	(Optional) Zero-based index of the patch where to write
+		 * 										the property values. If not provided, its default value
+		 * 										is by convention set to unsigned int maximum value and
+		 * 										the property values will be written in the last property
+		 * 										values patch (the one with the greatest index).
+		 */
+		void setValuesOfInt64Hdf5ArrayOfValues(
+			int64_t const* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfUInt64Hdf5ArrayOfValues(
+			uint64_t const* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfInt32Hdf5ArrayOfValues(
+			int32_t const* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfUInt32Hdf5ArrayOfValues(
+			uint32_t const* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfInt16Hdf5ArrayOfValues(
+			int16_t const* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfUInt16Hdf5ArrayOfValues(
+			uint16_t const* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfInt8Hdf5ArrayOfValues(
+			int8_t const* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfUInt8Hdf5ArrayOfValues(
+			uint8_t const* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfDoubleHdf5ArrayOfValues(
+			double const* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfFloatHdf5ArrayOfValues(
+			float const* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+
+		/**
+		 * Adds a 1d array of explicit long 64 bits values into the property values. Since this methods
+		 * only pushes back values into an existing array, it is to be used along with
+		 * pushBackLongHdf5Array3dOfValues().
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param [in]	  	values				  	All the property values to set ordered according to
+		 * 											the topology of the representation it is based on.
+		 * @param 		  	valueCount				The number of values to write.
+		 * @param 		  	offset	  				The offset value.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default value), a default HDF proxy must be defined
+		 * 											into the data object repository.
+		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
+		 * 											write the property values. If not provided, its
+		 * 											default value is by convention set to unsigned int
+		 * 											maximum value and the property values will be written
+		 * 											in the last property values patch (the one with the
+		 * 											greatest index).
+		 */
+		void setValuesOfInt64Hdf5Array1dOfValues(
+			int64_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfInt32Hdf5Array1dOfValues(
+			int32_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfDoubleHdf5Array1dOfValues(
+			double const * values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfFloatHdf5Array1dOfValues(
+			float const * values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 
 		/**
 		 * Adds a 3d array of explicit long 64 bits values into the property values. Since this methods
@@ -5073,8 +5305,38 @@ namespace RESQML2_NS
 		 * 											in the last property values patch (the one with the
 		 * 											greatest index).
 		 */
-		void setValuesOfLongHdf5Array3dOfValues(
-			int64_t* values,
+		void setValuesOfInt64Hdf5Array3dOfValues(
+			int64_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfInt32Hdf5Array3dOfValues(
+			int32_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfDoubleHdf5Array3dOfValues(
+			double const * values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfFloatHdf5Array3dOfValues(
+			float const * values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
 			uint64_t valueCountInSlowestDim,
@@ -5084,44 +5346,9 @@ namespace RESQML2_NS
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 
-		/**
-		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
-		 * methods only pushes back values into an existing array, it is to be used along with
-		 * pushBackLongHdf5ArrayOfValues().
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is null and no default HDF proxy is defined
-		 * 										into the data object repository.
-		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
-		 * 										different from unsigned int maximum value.
-		 *
-		 * @param [in]	  	values			  	All the property values to set ordered according to the
-		 * 										topology of the representation it is based on.
-		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
-		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
-		 * 										array to write. It is ordered from slowest dimension to
-		 * 										fastest dimension.
-		 * @param 		  	offsetValues	  	The offset values ordered by dimension of the array to
-		 * 										write. It is ordered from slowest dimension to fastest
-		 * 										dimension.
-		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
-		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method. If null (default value), a
-		 * 										default HDF proxy must be defined into the data object
-		 * 										repository.
-		 * @param 		  	patchIndex		  	(Optional) Zero-based index of the patch where to write
-		 * 										the property values. If not provided, its default value
-		 * 										is by convention set to unsigned int maximum value and
-		 * 										the property values will be written in the last property
-		 * 										values patch (the one with the greatest index).
-		 */
-		void setValuesOfLongHdf5ArrayOfValues(
-			int64_t* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
-			unsigned int numArrayDimensions,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		//***********************************/
+		//*** INTEGER For hyperslabbing *****/
+		//***********************************/
 
 		/**
 		 * Gets some of the values of a given patch of this instance. Values are supposed to be long 64
@@ -5406,142 +5633,6 @@ namespace RESQML2_NS
 		//******************************************/
 		//*** For FLOATING POINT hyperslabbing *****/
 		//******************************************/
-
-		/**
-		 * Create an nd array of explicit float values to the property values. No values are written to
-		 * this array yet then the HDF5 array contains uninitialized values.
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 *
-		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
-		 * 										array to write.  It is ordered from slowest dimension to
-		 * 										fastest dimension.
-		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
-		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method. If @c nullptr (default), a
-		 * 										default HDF proxy must be defined into the data object
-		 * 										repository.
-		 */
-		void pushBackFloatHdf5ArrayOfValues(
-			unsigned long long const * numValues,
-			unsigned int numArrayDimensions,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr
-		);
-
-		/**
-		 * Creates a 3d array of explicit float values to the property values. No values are written to
-		 * this array yet then the HDF5 array contains uninitialized values.
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 *
-		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
-		 * 											dimension (mainly I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
-		 * 											dimension (mainly K dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method. If @c nullptr
-		 * 											(default), a default HDF proxy must be defined into
-		 * 											the data object repository.
-		 */
-		void pushBackFloatHdf5Array3dOfValues(
-			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
-			uint64_t valueCountInSlowestDim,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr
-		);
-
-		/**
-		 * Sets some values of an existing 3d array of explicit float values of a particular patch. This
-		 * method makes use of HDF5 hyperslabbing. Since this methods only pushes back values into an
-		 * existing array, it is to be used along with pushBackFloatHdf5Array3dOfValues().
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
-		 * 										different from unsigned int maximum value.
-		 *
-		 * @param 		  	values				  	All the property values to set ordered according to
-		 * 											the topology of the representation it is based on.
-		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
-		 * 											dimension (mainly I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
-		 * 											dimension (mainly K dimension).
-		 * @param 		  	offsetInFastestDim	  	The offset value for writing in the fastest dimension
-		 * 											(mainly I dimension).
-		 * @param 		  	offsetInMiddleDim	  	The offset value for writing in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
-		 * 											(mainly K dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method. If @p nullptr
-		 * 											(default), a default HDF proxy must be defined into
-		 * 											the data object repository.
-		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
-		 * 											write the property values. If not provided, its
-		 * 											default value is by convention set to unsigned int
-		 * 											maximum value and the property values will be written
-		 * 											in the last property values patch (the one with the
-		 * 											greatest index).
-		 */
-		void setValuesOfFloatHdf5Array3dOfValues(
-			float const * values,
-			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
-			uint64_t valueCountInSlowestDim,
-			uint64_t offsetInFastestDim,
-			uint64_t offsetInMiddleDim,
-			uint64_t offsetInSlowestDim,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
-		);
-
-		/**
-		 * Set some values of an existing 3d array of explicit float values of a particular patch.  This
-		 * method makes use of HDF5 hyperslabbing. This method is to be used along with one of the
-		 * pushBackFloatHdf5ArrayOfValues() methods which do not write any value.
-		 *
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
-		 * 										different from unsigned int maximum value.
-		 *
-		 * @param 		  	values			  	All the property values to set ordered according to the
-		 * 										topology of the representation it is based on.
-		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
-		 * 										array to write. It is ordered from slowest dimension to
-		 * 										fastest dimension.
-		 * @param 		  	offsetValues	  	The offset values ordered by dimension of the array to
-		 * 										write. It is ordered from slowest dimension to fastest
-		 * 										dimension.
-		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
-		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method. If @p nullptr (default), a
-		 * 										default HDF proxy must be defined into the data object
-		 * 										repository.
-		 * @param 		  	patchIndex		  	(Optional) Zero-based index of the patch where to write
-		 * 										the property values. If not provided, its default value
-		 * 										is by convention set to unsigned int maximum value and
-		 * 										the property values will be written in the last property
-		 * 										values patch (the one with the greatest index).
-		 */
-		void setValuesOfFloatHdf5ArrayOfValues(
-			float const * values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
-			unsigned int numArrayDimensions,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
-		);
 
 		/**
 		 * Get some of the values of a particular patch of the instance as float ones. This method makes
@@ -5837,9 +5928,9 @@ namespace RESQML2_NS
 		 */
 		void setMaximumValue(double value, unsigned int index = 0) const;
 
-		//***************************/
-		//*** For hyperslabbing *****/
-		//***************************/
+		//******************************************/
+		//*** For FLOATING POINT hyperslabbing *****/
+		//******************************************/
 
 		/**
 		 * Create an nd array of explicit float values to the property values. No values are written to
@@ -5864,12 +5955,75 @@ namespace RESQML2_NS
 		 * 										default HDF proxy must be defined into the data object
 		 * 										repository.
 		 */
-		void pushBackFloatHdf5ArrayOfValues(
+		void pushBackHdf5ArrayOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			unsigned long long const * numValues,
 			unsigned int numArrayDimensions,
-			float * minimumValue, float * maximumValue,
+			double * minimumValue, double * maximumValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
 		);
+		using AbstractValuesProperty::pushBackHdf5ArrayOfValues;
+
+		/**
+		 * Creates a 1d array of explicit double values to the property values. No values are written to
+		 * this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 			datatype			The datatype of the values 
+		 * @param 		  	valueCount			The number of values to write).
+		 * @param 		  	minimumValue		The minimum value of the values to add. If
+		 * 										@c NaN is provided (default) then neither minimum nor
+		 * 										maximum value will be set.
+		 * @param 		  	maximumValue		The maximum value of the values to add. If
+		 * 										@c NaN is provided (default) then neither maximum nor
+		 * 										minimum value will be set.
+		 * @param [in,out]	proxy				(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and
+		 * 										won't be closed in this method. If @c nullptr
+		 * 										(default), a default HDF proxy must be defined into
+		 * 										the data object repository.
+		 */
+		void pushBackHdf5Array1dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
+			uint64_t valueCount,
+			double minimumValue, double maximumValue,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr
+		);
+		using AbstractValuesProperty::pushBackHdf5Array1dOfValues;
+
+		/**
+		 * Creates a 2d array of explicit double values to the property values. No values are written to
+		 * this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param 		  	minimumValue		  	The minimum value of the values to add. If
+		 * 											@c NaN is provided (default) then neither minimum nor
+		 * 											maximum value will be set.
+		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
+		 * 											@c NaN is provided (default) then neither maximum nor
+		 * 											minimum value will be set.
+		 * @param [in,out]	proxy					(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @c nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 */
+		void pushBackHdf5Array2dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			double minimumValue, double maximumValue,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr
+		);
+		using AbstractValuesProperty::pushBackHdf5Array2dOfValues;
 
 		/**
 		 * Creates a 3d array of explicit float values to the property values. No values are written to
@@ -5896,13 +6050,15 @@ namespace RESQML2_NS
 		 * 											(default), a default HDF proxy must be defined into
 		 * 											the data object repository.
 		 */
-		void pushBackFloatHdf5Array3dOfValues(
+		void pushBackHdf5Array3dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
 			uint64_t valueCountInSlowestDim,
-			float minimumValue, float maximumValue,
+			double minimumValue, double maximumValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
 		);
+		using AbstractValuesProperty::pushBackHdf5Array3dOfValues;
 
 		/**
 		 * Sets some values of an existing 3d array of explicit float values of a particular patch. This
@@ -5953,8 +6109,18 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
-		);
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfDoubleHdf5Array3dOfValues(
+			double const * values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			bool computeMinMax,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 
 		/**
 		 * Set some values of an existing 3d array of explicit float values of a particular patch.  This
@@ -5996,8 +6162,15 @@ namespace RESQML2_NS
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
-		);
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfDoubleHdf5ArrayOfValues(
+			double const * values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			bool computeMinMax,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 	};
 	
 #ifdef SWIGPYTHON
@@ -6029,22 +6202,138 @@ namespace RESQML2_NS
 		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
 		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 		
-		void pushBackLongHdf5ArrayOfValues(
+		/**
+		 * Creates an nd array of explicit long 64 bits values into the property values. No values are
+		 * written to this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 			datatype			The datatype of the values 
+		 * @param [in]	  	numValues		  	The number of property values ordered by dimension of the
+		 * 										array to write. It is ordered from slowest dimension to
+		 * 										fastest dimension.
+		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
+		 * @param [in]	  	minimumValue	  	If non-nullptr, a pointer to the minimum values. If non-
+		 * 										nullptr, the count of minimum values is this property
+		 * 										count.
+		 * @param [in]	  	maximumValue	  	If non-nullptr, a pointer to the maximum values. If non-
+		 * 										nullptr, the count of maximum values is this property
+		 * 										count.
+		 * @param 		  	nullValue		  	(Optional) The null value. Default value is long 64 bits
+		 * 										maximum value.
+		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and won't
+		 * 										be closed in this method. If @c nullptr (default), a
+		 * 										default HDF proxy must be defined into the data object
+		 * 										repository.
+		 */
+		void pushBackHdf5ArrayOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			unsigned long long* numValues,
 			unsigned int numArrayDimensions,
 			int64_t* minimumValue, int64_t* maximumValue,
 			int64_t nullValue = std::numeric_limits<int64_t>::max(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		using AbstractValuesProperty::pushBackHdf5ArrayOfValues;
 
-		void pushBackLongHdf5Array3dOfValues(
+		/**
+		 * Creates a 1d array of values into the property values. No values are written
+		 * to this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 			datatype			The datatype of the values 
+		 * @param 		  	valueCount			The count of values.
+		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
+		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * 											bits maximum value.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 */
+		void pushBackHdf5Array1dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
+			uint64_t valueCount,
+			int64_t minimumValue, int64_t maximumValue,
+			int64_t nullValue = std::numeric_limits<int64_t>::max(),
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		using AbstractValuesProperty::pushBackHdf5Array1dOfValues;
+
+		/**
+		 * Creates a 2d array of explicit long 64 values into the property values. No values are written
+		 * to this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 			datatype			The datatype of the values 
+		 * @param 		  	valueCountInFastestDim	The number of values in the fastest dimension (mainly
+		 * 											I dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values in the slowest dimension (mainly
+		 * 											K dimension).
+		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
+		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * 											bits maximum value.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 */
+		void pushBackHdf5Array2dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			int64_t minimumValue, int64_t maximumValue,
+			int64_t nullValue = std::numeric_limits<int64_t>::max(),
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		using AbstractValuesProperty::pushBackHdf5Array2dOfValues;
+
+		/**
+		 * Creates a 3d array of explicit long 64 values into the property values. No values are written
+		 * to this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 			datatype			The datatype of the values 
+		 * @param 		  	valueCountInFastestDim	The number of values in the fastest dimension (mainly
+		 * 											I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values in the middle dimension (mainly
+		 * 											J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values in the slowest dimension (mainly
+		 * 											K dimension).
+		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
+		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * 											bits maximum value.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 */
+		void pushBackHdf5Array3dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
 			uint64_t valueCountInSlowestDim,
 			int64_t minimumValue, int64_t maximumValue,
 			int64_t nullValue = std::numeric_limits<int64_t>::max(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		using AbstractValuesProperty::pushBackHdf5Array3dOfValues;
 
-		void setValuesOfLongHdf5Array3dOfValues(
+		void setValuesOfInt64Hdf5Array3dOfValues(
 			int64_t* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -6055,8 +6344,20 @@ namespace RESQML2_NS
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfInt32Hdf5Array3dOfValues(
+			int32_t* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			bool computeMinMax,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		using AbstractValuesProperty::setValuesOfInt32Hdf5Array3dOfValues;
 
-		void setValuesOfLongHdf5ArrayOfValues(
+		void setValuesOfInt64Hdf5ArrayOfValues(
 			int64_t* values,
 			unsigned long long const * numValues,
 			unsigned long long const * offsetValues,
@@ -6064,6 +6365,15 @@ namespace RESQML2_NS
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfInt32Hdf5ArrayOfValues(
+			int32_t* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			bool computeMinMax,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		using AbstractValuesProperty::setValuesOfInt32Hdf5ArrayOfValues;
 		
 		/**
 		 * @brief	Checks if a non vector property or a given value of a vector property has got a

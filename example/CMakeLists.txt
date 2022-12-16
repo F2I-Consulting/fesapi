@@ -20,14 +20,19 @@ set(CMAKE_INSTALL_RPATH "\$ORIGIN/${CMAKE_INSTALL_LIBDIR}")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 add_executable (example)
-if (WITH_EXPERIMENTAL)
-	target_compile_definitions(example PRIVATE "-DWITH_EXPERIMENTAL")
-endif(WITH_EXPERIMENTAL)
-target_sources(example PRIVATE 
-	${CMAKE_CURRENT_SOURCE_DIR}/example.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyFactoryExample.h
-	${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.h
-	${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.cpp)
+if (HDF5_PREFER_PARALLEL)
+	target_sources(example PRIVATE 
+		${CMAKE_CURRENT_SOURCE_DIR}/exampleMPI.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyFactoryExample.h
+		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.h
+		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.cpp)
+else (HDF5_PREFER_PARALLEL)
+	target_sources(example PRIVATE 
+		${CMAKE_CURRENT_SOURCE_DIR}/example.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyFactoryExample.h
+		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.h
+		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.cpp)
+endif (HDF5_PREFER_PARALLEL)
 
 target_include_directories (example PRIVATE ${FESAPI_ROOT_DIR}/src/)
 

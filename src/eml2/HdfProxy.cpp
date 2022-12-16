@@ -114,8 +114,9 @@ void HdfProxy::open()
 		close();
 	}
 
-	const std::string fullName = (packageDirectoryAbsolutePath.empty() || packageDirectoryAbsolutePath.back() == '/' || packageDirectoryAbsolutePath.back() == '\\' ? packageDirectoryAbsolutePath : packageDirectoryAbsolutePath + '/')
-		+ relativeFilePath;
+	const std::string fullName = (packageDirectoryAbsolutePath.empty() || packageDirectoryAbsolutePath.back() == '/' || packageDirectoryAbsolutePath.back() == '\\' 
+		? packageDirectoryAbsolutePath
+		: packageDirectoryAbsolutePath + '/') + relativeFilePath;
 	if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY || openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE) {
 		if (H5Fis_hdf5(fullName.c_str()) > 0) {
 			hdfFile = H5Fopen(fullName.c_str(),
@@ -624,8 +625,8 @@ void HdfProxy::createArrayNd(
 	const std::string& datasetName,
 	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 	const unsigned long long* numValuesInEachDimension,
-	unsigned int numDimensions
-) {
+	unsigned int numDimensions)
+{
 	if (!isOpened()) {
 		open();
 	}
@@ -670,8 +671,12 @@ void HdfProxy::createArrayNd(
 		}
 	}
 
-	H5Sclose(space);
-	H5Dclose(dataset);
+	if (H5Sclose(space) < 0) {
+		throw invalid_argument("Cannot close the dataspace for " + datasetName);
+	}
+	if (H5Dclose(dataset) < 0) {
+		throw invalid_argument("Cannot close the dataset " + datasetName);
+	}
 }
 
 void HdfProxy::writeArrayNdSlab(
@@ -695,7 +700,7 @@ void HdfProxy::writeArrayNdSlab(
 	
 	hid_t filespace = H5Dget_space(dataset);
 	if (filespace < 0) {
-		throw invalid_argument("The resqml dataspace of " + datasetName + " could not be opened.");
+		throw invalid_argument("The RESQML dataspace of " + datasetName + " could not be opened.");
 	}
 	herr_t errorCode = H5Sselect_hyperslab(filespace, H5S_SELECT_SET, offsetInEachDimension, nullptr, numValuesInEachDimension, nullptr);
 	if (errorCode < 0) {

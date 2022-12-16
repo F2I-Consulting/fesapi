@@ -58,7 +58,7 @@ void PropertyBySlab::initRepo() {
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
-	propertyCompute->pushBackFloatHdf5Array3dOfValues(2, 3, 4);
+	propertyCompute->pushBackHdf5Array3dOfValues(COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT, 2, 3, 4);
 
 	uint64_t valueCountInFastestDim = 2;
 	uint64_t valueCountInMiddleDim = 3;
@@ -90,7 +90,7 @@ void PropertyBySlab::initRepo() {
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	// Set the min and max and create an empty dataset
-	propertyNoCompute->pushBackFloatHdf5Array3dOfValues(2, 3, 4, -500.0f, 0.1f, nullptr);
+	propertyNoCompute->pushBackHdf5Array3dOfValues(COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT, 2, 3, 4, -500.0f, 0.1f, nullptr);
 
 	offsetInSlowestDim = 0;
 	propertyNoCompute->setValuesOfFloatHdf5Array3dOfValues(k0LayerValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
@@ -108,7 +108,7 @@ void PropertyBySlab::initRepo() {
 	REQUIRE(propertyNoCompute->getMinimumValue() == -500.0f);
 	REQUIRE(propertyNoCompute->getMaximumValue() == .1f);
 
-	propertyNoCompute->pushBackFloatHdf5Array3dOfValues(2, 3, 4, -300.0f, 100.0f, nullptr);
+	propertyNoCompute->pushBackHdf5Array3dOfValues(COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT, 2, 3, 4, -300.0f, 100.0f, nullptr);
 	REQUIRE(propertyNoCompute->getMinimumValue() == -500.0f);
 	REQUIRE(propertyNoCompute->getMaximumValue() == 100.0f);
 
@@ -119,13 +119,13 @@ void PropertyBySlab::initRepo() {
 		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		discPropertyKind);
-	discretePropertyCompute->pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
+	discretePropertyCompute->pushBackHdf5Array3dOfValues(COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, 2, 3, 4, 9999);
 	REQUIRE_THROWS(discretePropertyCompute->getMinimumValue() == -10);
 	REQUIRE_THROWS(discretePropertyCompute->getMaximumValue() == 35);
 
 	offsetInSlowestDim = 0;
 	std::array<int64_t, 6> kLayerlongValues = { -10, 1, 2, 3, 4, 5 };
-	discretePropertyCompute->setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+	discretePropertyCompute->setValuesOfInt64Hdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
 		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
 	kLayerlongValues[0] = 10;
 	kLayerlongValues[1] = 11;
@@ -134,7 +134,7 @@ void PropertyBySlab::initRepo() {
 	kLayerlongValues[4] = 14;
 	kLayerlongValues[5] = 15;
 	++offsetInSlowestDim;
-	discretePropertyCompute->setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+	discretePropertyCompute->setValuesOfInt64Hdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
 		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
 	kLayerlongValues[0] = 20;
 	kLayerlongValues[1] = 21;
@@ -143,7 +143,7 @@ void PropertyBySlab::initRepo() {
 	kLayerlongValues[4] = 24;
 	kLayerlongValues[5] = 25;
 	++offsetInSlowestDim;
-	discretePropertyCompute->setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+	discretePropertyCompute->setValuesOfInt64Hdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
 		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
 	kLayerlongValues[0] = 30;
 	kLayerlongValues[1] = 31;
@@ -152,7 +152,7 @@ void PropertyBySlab::initRepo() {
 	kLayerlongValues[4] = 34;
 	kLayerlongValues[5] = 35;
 	++offsetInSlowestDim;
-	discretePropertyCompute->setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+	discretePropertyCompute->setValuesOfInt64Hdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
 		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, true);
 
 	// creating the discrete Property without computing min max
@@ -161,15 +161,15 @@ void PropertyBySlab::initRepo() {
 		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		propertyKind);
-	discretePropertyNoCompute->pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
+	discretePropertyNoCompute->pushBackHdf5Array3dOfValues(COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, 2, 3, 4, 9999);
 	offsetInSlowestDim = 0;
-	discretePropertyNoCompute->setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+	discretePropertyNoCompute->setValuesOfInt64Hdf5Array3dOfValues(kLayerlongValues.data(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
 		offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim, false);
 	REQUIRE_THROWS(discretePropertyNoCompute->getMinimumValue() == -10);
 	REQUIRE_THROWS(discretePropertyNoCompute->getMaximumValue() == 35);
 
 
-	discretePropertyNoCompute->pushBackLongHdf5Array3dOfValues(2, 3, 4, -25, 102, 9999);
+	discretePropertyNoCompute->pushBackHdf5Array3dOfValues(COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, 2, 3, 4, -25, 102, 9999);
 	REQUIRE(discretePropertyNoCompute->getMinimumValue() == -25);
 	REQUIRE(discretePropertyNoCompute->getMaximumValue() == 102);
 }

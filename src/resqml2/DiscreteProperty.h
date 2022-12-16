@@ -346,6 +346,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
 		 *
+		 * @param 			datatype			The datatype of the values 
 		 * @param [in]	  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write. It is ordered from slowest dimension to
 		 * 										fastest dimension.
@@ -364,13 +365,74 @@ namespace RESQML2_NS
 		 * 										default HDF proxy must be defined into the data object
 		 * 										repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5ArrayOfValues(
+		DLL_IMPORT_OR_EXPORT void pushBackHdf5ArrayOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			unsigned long long* numValues,
 			unsigned int numArrayDimensions,
 			int64_t* minimumValue, int64_t* maximumValue,
 			int64_t nullValue = (std::numeric_limits<int64_t>::max)(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
-		using AbstractValuesProperty::pushBackLongHdf5ArrayOfValues;
+		using AbstractValuesProperty::pushBackHdf5ArrayOfValues;
+
+		/**
+		 * Creates a 1d array of values into the property values. No values are written
+		 * to this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 			datatype			The datatype of the values 
+		 * @param 		  	valueCount			The count of values.
+		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
+		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * 											bits maximum value.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackHdf5Array1dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
+			uint64_t valueCount,
+			int64_t minimumValue, int64_t maximumValue,
+			int64_t nullValue = (std::numeric_limits<int64_t>::max)(),
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		using AbstractValuesProperty::pushBackHdf5Array1dOfValues;
+
+		/**
+		 * Creates a 2d array of explicit long 64 values into the property values. No values are written
+		 * to this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 			datatype			The datatype of the values 
+		 * @param 		  	valueCountInFastestDim	The number of values in the fastest dimension (mainly
+		 * 											I dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values in the slowest dimension (mainly
+		 * 											K dimension).
+		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
+		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * 											bits maximum value.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackHdf5Array2dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			int64_t minimumValue, int64_t maximumValue,
+			int64_t nullValue = (std::numeric_limits<int64_t>::max)(),
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		using AbstractValuesProperty::pushBackHdf5Array2dOfValues;
 
 		/**
 		 * Creates a 3d array of explicit long 64 values into the property values. No values are written
@@ -380,6 +442,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
 		 *
+		 * @param 			datatype			The datatype of the values 
 		 * @param 		  	valueCountInFastestDim	The number of values in the fastest dimension (mainly
 		 * 											I dimension).
 		 * @param 		  	valueCountInMiddleDim 	The number of values in the middle dimension (mainly
@@ -396,13 +459,15 @@ namespace RESQML2_NS
 		 * 											(default), a default HDF proxy must be defined into
 		 * 											the data object repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array3dOfValues(
+		DLL_IMPORT_OR_EXPORT void pushBackHdf5Array3dOfValues(
+			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
 			uint64_t valueCountInSlowestDim,
 			int64_t minimumValue, int64_t maximumValue,
 			int64_t nullValue = (std::numeric_limits<int64_t>::max)(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		using AbstractValuesProperty::pushBackHdf5Array3dOfValues;
 
 		/**
 		 * Adds a 3d array of explicit long 64 bits values into the property values. Since this methods
@@ -442,7 +507,7 @@ namespace RESQML2_NS
 		 * 											in the last property values patch (the one with the
 		 * 											greatest index).
 		 */
-		DLL_IMPORT_OR_EXPORT void setValuesOfLongHdf5Array3dOfValues(
+		DLL_IMPORT_OR_EXPORT void setValuesOfInt64Hdf5Array3dOfValues(
 			int64_t* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -453,7 +518,19 @@ namespace RESQML2_NS
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
-		using AbstractValuesProperty::setValuesOfLongHdf5Array3dOfValues;
+		using AbstractValuesProperty::setValuesOfInt64Hdf5Array3dOfValues;
+		DLL_IMPORT_OR_EXPORT void setValuesOfInt32Hdf5Array3dOfValues(
+			int32_t* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			bool computeMinMax,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+		using AbstractValuesProperty::setValuesOfInt32Hdf5Array3dOfValues;
 
 		/**
 		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
@@ -486,7 +563,7 @@ namespace RESQML2_NS
 		 * 										the property values will be written in the last property
 		 * 										values patch (the one with the greatest index).
 		 */
-		DLL_IMPORT_OR_EXPORT void setValuesOfLongHdf5ArrayOfValues(
+		DLL_IMPORT_OR_EXPORT void setValuesOfInt64Hdf5ArrayOfValues(
 			int64_t* values,
 			unsigned long long const * numValues,
 			unsigned long long const * offsetValues,
@@ -494,6 +571,16 @@ namespace RESQML2_NS
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+		using AbstractValuesProperty::setValuesOfInt64Hdf5ArrayOfValues;
+		DLL_IMPORT_OR_EXPORT void setValuesOfInt32Hdf5ArrayOfValues(
+			int32_t* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			bool computeMinMax,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+		using AbstractValuesProperty::setValuesOfInt32Hdf5ArrayOfValues;
 
 		/**
 		 * @brief	Gets the null value in this discrete property.
