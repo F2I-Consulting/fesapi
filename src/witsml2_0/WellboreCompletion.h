@@ -31,8 +31,6 @@ namespace WITSML2_0_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::WellboreObject(partialObject) {}
 
@@ -89,7 +87,7 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT void setWellCompletion(class WellCompletion* wellCompletion);
 
 		/**
-		 * Pushes a back perforation
+		 * Pushes back perforation
 		 *
 		 * @param 	datum 	The datum.
 		 * @param 	MdUnit	The md unit.
@@ -104,18 +102,37 @@ namespace WITSML2_0_NS
 			const std::string & guid = "");
 
 		/**
+		 * Pushes back perforation extra metadata
+		 *
+		 * @param 	index	Zero-based index of the perforation in the wellbore completion.
+		 * @param 	key  	The key of the metadata.
+		 * @param 	value	The value of the metadata.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackPerforationExtraMetadata(unsigned int index,
+			const std::string & key, const std::string & value);
+
+		/**
+		 * Gets an extra metadata of a particular perforation according to its key
+		 *
+		 * @param 	key	The key of an extra metadata.
+		 *
+		 * @returns	The vector of all metadata values sharing this @p key (empty vector if there is no such value) in the perforation at @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getPerforationExtraMetadata(unsigned int index, const std::string & key) const;
+
+		/**
 		 * Pushes a back perforation history
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param 	index	Zero-based index of the perforation.
 		 * @param 	guid 	(Optional) Unique identifier.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(unsigned int index,
 			const std::string & guid = "");
 
 		/**
-		 * Pushes a back perforation history
+		 * Pushes back perforation history
 		 *
-		 * @param 	index			 	Zero-based index of the.
+		 * @param 	index			 	Zero-based index of the perforation.
 		 * @param 	perforationStatus	The perforation status.
 		 * @param 	startDate		 	The start date.
 		 * @param 	guid			 	(Optional) Unique identifier.
@@ -135,7 +152,7 @@ namespace WITSML2_0_NS
 		/**
 		 * Gets perforation UID
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param 	index	Zero-based index of the perforation.
 		 *
 		 * @returns	The perforation UID.
 		 */
@@ -512,7 +529,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The XML tag.
 		 */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "WellboreCompletion";
 
 		/**
 		 * Get the standard XML tag without XML namespace for serializing this data object.

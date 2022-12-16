@@ -133,12 +133,46 @@ namespace WITSML2_0_NS
 		WellCompletion* getWellCompletion() const;
 		void setWellCompletion(WellCompletion* wellCompletion);
 
+		/**
+		 * Pushes back perforation
+		 *
+		 * @param 	datum 	The datum.
+		 * @param 	MdUnit	The md unit.
+		 * @param 	TopMd 	The top md.
+		 * @param 	BaseMd	The base md.
+		 * @param 	guid  	(Optional) Unique identifier.
+		 */
 		void pushBackPerforation(const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double TopMd,
 			double BaseMd, 
 			const std::string & guid = "");
 
+		/**
+		 * Pushes back perforation extra metadata
+		 *
+		 * @param 	index	Zero-based index of the perforation in the wellbore completion.
+		 * @param 	key  	The key of the metadata.
+		 * @param 	value	The value of the metadata.
+		 */
+		void pushBackPerforationExtraMetadata(unsigned int index,
+			const std::string & key, const std::string & value);
+
+		/**
+		 * Gets an extra metadata of a particular perforation according to its key
+		 *
+		 * @param 	key	The key of an extra metadata.
+		 *
+		 * @returns	The vector of all metadata values sharing this @p key (empty vector if there is no such value) in the perforation at @p index.
+		 */
+		std::vector<std::string> getPerforationExtraMetadata(unsigned int index, const std::string & key) const;
+
+		/**
+		 * Pushes a back perforation history
+		 *
+		 * @param 	index	Zero-based index of the perforation.
+		 * @param 	guid 	(Optional) Unique identifier.
+		 */
 		void pushBackPerforationHistory(unsigned int index,
 			const std::string & guid = "");
 			
