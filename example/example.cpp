@@ -342,6 +342,9 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970, 1980, "myId");
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1990, 2000);
+
+	wellboreCompletion->pushBackPerforationExtraMetadata(0, "Testing Key", "Testing Value");
+
 	wellboreCompletion->pushBackPerforationHistory(0);
 	wellboreCompletion->setPerforationHistoryStatus(0, 0, gsoap_eml2_1::witsml20__PerforationStatus::open);
 	wellboreCompletion->setPerforationHistoryTopMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970);
@@ -2473,7 +2476,6 @@ bool serialize(const string & filePath)
 
 	// Comment or uncomment below domains/lines you want wether to test or not
 	serializeWells(&repo, hdfProxy);
-	/*
 	serializePerforations(&repo);
 	serializeBoundaries(&repo, hdfProxy);
 	serializeGeobody(&repo, hdfProxy);
@@ -2492,7 +2494,7 @@ bool serialize(const string & filePath)
 #endif
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
-	*/
+
 	hdfProxy->close();
 
 	cout << "Start serialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;
@@ -4598,6 +4600,10 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
 	{
 		cout << std::endl << "perforation " << perforationIndex << " with uid \"" << wellboreCompletion->getPerforationUid(perforationIndex) << "\":" << std::endl;
+		for (const auto& extraMetadata : wellboreCompletion->getPerforationExtraMetadata(0, "Testing Key")) {
+			cout << "Testing Key extra Metadata Value: " << extraMetadata << std::endl;
+		}
+
 		if (wellboreCompletion->hasPerforationMdDatum(perforationIndex))
 		{
 			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationIndex) << std::endl;

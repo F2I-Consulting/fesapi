@@ -340,10 +340,49 @@ namespace COMMON_NS
 		std::string getAliasAuthorityAtIndex(unsigned int index) const;
 		std::string getAliasTitleAtIndex(unsigned int index) const;
 		
+		/**
+		 * Pushes back an extra metadata (not a standard one) onto this instance
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0, EML2.1 or EML2.2 one.
+		 *
+		 * @param 	key  	The key of the metadata.
+		 * @param 	value	The value of the metadata.
+		 */
 		void pushBackExtraMetadata(const std::string & key, const std::string & value);
-		
-		unsigned int getExtraMetadataCount() const;
+
+		/**
+		 * Gets an extra metadata of this instance according to its key
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @param 	key	The key of an extra metadata.
+		 *
+		 * @returns	The vector of all metadata values sharing this @p key (empty vector if there is no such value).
+		 */
+		std::vector<std::string> getExtraMetadata(const std::string & key) const;
+
+		/**
+		 * Get the key of a key value pair at a particular index in the extra metadata set of this
+		 * instance
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
+		 *
+		 * @param 	index	Zero-based index of the asked key.
+		 *
+		 * @returns	The extra metadata key at @p index.
+		 */
 		std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
+
+		/**
+		 * Get the value of a key value pair at a particular index in the extra metadata set of this
+		 * instance
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
+		 *
+		 * @param 	index	Zero-based index of the asked value.
+		 *
+		 * @returns	The extra metadata value at @p index.
+		 */
 		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
 		/**

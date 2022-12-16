@@ -21,13 +21,9 @@ under the License.
 #include "WellCompletion.h"
 #include "../tools/TimeTools.h"
 
-#include <sstream>
-
 using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
-
-const char* WellboreCompletion::XML_TAG = "WellboreCompletion";
 
 WellboreCompletion::WellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 	class WellCompletion* wellCompletion,
@@ -97,8 +93,7 @@ void WellboreCompletion::pushBackPerforation(const string & datum,
 	eml21__LengthUom MdUnit,
 	double TopMd,
 	double BaseMd,
-	const string & guid
-)
+	const string & guid)
 {
 	witsml20__WellboreCompletion* wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
 
@@ -108,14 +103,9 @@ void WellboreCompletion::pushBackPerforation(const string & datum,
 
 	witsml20__PerforationSetInterval* perforationSetInterval = soap_new_witsml20__PerforationSetInterval(gsoapProxy2_1->soap);
 
-	if (guid.size() == 0) {
-		ostringstream oss;
-		oss << wellboreCompletion->ContactIntervalSet->PerforationSetInterval.size();
-		perforationSetInterval->uid = oss.str();
-	}
-	else {
-		perforationSetInterval->uid = guid;
-	}
+	perforationSetInterval->uid = guid.empty()
+		? std::to_string(wellboreCompletion->ContactIntervalSet->PerforationSetInterval.size())
+		: guid;
 
 	perforationSetInterval->PerforationSetMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
 	perforationSetInterval->PerforationSetMdInterval->datum = datum;
@@ -129,21 +119,41 @@ void WellboreCompletion::pushBackPerforation(const string & datum,
 	wellboreCompletion->ContactIntervalSet->PerforationSetInterval.push_back(perforationSetInterval);
 }
 
+void WellboreCompletion::pushBackPerforationExtraMetadata(unsigned int index,
+	const std::string & key, const std::string & value)
+{
+	witsml20__PerforationSetInterval * perforationSetInterval = getPerforation(index);
+
+	gsoap_eml2_1::eml21__ExtensionNameValue* stringPair = gsoap_eml2_1::soap_new_eml21__ExtensionNameValue(gsoapProxy2_1->soap);
+	stringPair->Name = key;
+	stringPair->Value = gsoap_eml2_1::soap_new_eml21__StringMeasure(gsoapProxy2_1->soap);
+	stringPair->Value->__item = value;
+	perforationSetInterval->ExtensionNameValue.push_back(stringPair);
+}
+
+std::vector<std::string> WellboreCompletion::getPerforationExtraMetadata(unsigned int index, const std::string & key) const
+{
+	vector<string> result;
+
+	witsml20__PerforationSetInterval * perforationSetInterval = getPerforation(index);
+	for (auto const* pair :perforationSetInterval->ExtensionNameValue) {
+		if (pair->Name == key) {
+			result.push_back(pair->Value->__item);
+		}
+	}
+
+	return result;
+}
+
 void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
 	const std::string & guid)
 {
 	witsml20__PerforationSetInterval * perforationSetInterval = getPerforation(index);
 
 	witsml20__PerforationStatusHistory* perforationStatusHistory = soap_new_witsml20__PerforationStatusHistory(gsoapProxy2_1->soap);
-
-	if (guid.size() == 0) {
-		ostringstream oss;
-		oss << perforationSetInterval->PerforationStatusHistory.size();
-		perforationStatusHistory->uid = oss.str();
-	}
-	else {
-		perforationStatusHistory->uid = guid;
-	}
+	perforationStatusHistory->uid = guid.empty()
+		? std::to_string(perforationSetInterval->PerforationStatusHistory.size())
+		: guid;
 
 	perforationSetInterval->PerforationStatusHistory.push_back(perforationStatusHistory);
 }
@@ -156,15 +166,9 @@ void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
 	witsml20__PerforationSetInterval * perforationSetInterval = getPerforation(index);
 
 	witsml20__PerforationStatusHistory* perforationStatusHistory = soap_new_witsml20__PerforationStatusHistory(gsoapProxy2_1->soap);
-
-	if (guid.size() == 0) {
-		ostringstream oss;
-		oss << perforationSetInterval->PerforationStatusHistory.size();
-		perforationStatusHistory->uid = oss.str();
-	}
-	else {
-		perforationStatusHistory->uid = guid;
-	}
+	perforationStatusHistory->uid = guid.empty()
+		? std::to_string(perforationSetInterval->PerforationStatusHistory.size())
+		: guid;
 
 	perforationStatusHistory->PerforationStatus = soap_new_witsml20__PerforationStatus(gsoapProxy2_1->soap);
 	*perforationStatusHistory->PerforationStatus = perforationStatus;
@@ -549,7 +553,7 @@ gsoap_eml2_1::witsml20__PerforationSetInterval* WellboreCompletion::getPerforati
 	}
 
 	if (index >= wellboreCompletion->ContactIntervalSet->PerforationSetInterval.size()) {
-		throw invalid_argument("Perforation index out of range.");
+		throw out_of_range("Perforation index out of range.");
 	}
 
 	return wellboreCompletion->ContactIntervalSet->PerforationSetInterval[index];
