@@ -54,7 +54,20 @@ IF(WITH_LOCAL_HDF5)
 	ENDIF ()
 	set(HDF5_VERSION "99.99")
 ELSE()
-	FIND_PACKAGE (HDF5 1.8.18 REQUIRED COMPONENTS C)
+	find_package(HDF5 1.8.18 REQUIRED COMPONENTS C)
+	IF(HDF5_PREFER_PARALLEL)
+		if(NOT HDF5_IS_PARALLEL)
+			message(FATAL_ERROR
+				"Parallel HDF5 required but only serial version found!"
+			)
+		ENDIF()
+	ELSE()
+		IF(HDF5_IS_PARALLEL)
+			message(FATAL_ERROR
+				"Serial HDF5 required but only parallel version found!"
+			)
+		ENDIF()
+	ENDIF()
 ENDIF()
 
 # Zlib

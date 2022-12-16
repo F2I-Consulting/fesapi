@@ -144,6 +144,27 @@ jobs:
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${{ github.workspace }}/../build/install/lib
           pip3 install ${{ github.workspace }}/python/dist/*.whl
           python3 ${{ github.workspace }}/python/example/example.py
+  ubuntu-20-mpi:
+    runs-on: ubuntu-20.04    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: APT install
+        run: |
+          sudo apt update
+          sudo apt install -y libhdf5-mpi-dev libminizip-dev libboost-all-dev
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+      - name: CMake build and install
+        run: |
+          cd ${{ runner.temp }}
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_C_COMPILER=mpicc -DMINIZIP_INCLUDE_DIR=/usr/include/minizip -DMINIZIP_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libminizip.so.1.0.0 -DHDF5_PREFER_PARALLEL:BOOL=TRUE -DWITH_EXAMPLE:BOOL=TRUE ${{ github.workspace }}
+          cmake --build . -j2
+          cmake --install .
+      - name: Run example
+        run: mpiexec -n 2 ${{ runner.temp }}/build/install/example
   ubuntu-20-valgrind-unitTest:
     runs-on: ubuntu-20.04
     steps:
