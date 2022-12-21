@@ -152,8 +152,7 @@ namespace RESQML2_NS
 		/** Destructor. */
 		DLL_IMPORT_OR_EXPORT virtual ~AbstractIjkGridRepresentation()
 		{
-			if (blockInformation != nullptr)
-				delete blockInformation;
+			unloadSplitInformation();
 		}
 
 		/**
@@ -806,16 +805,16 @@ namespace RESQML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false) {}
 
 		/**
 		 * Constructor
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true) {}
+		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false) {}
+		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true) {}
 
 		gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* getSpecializedGsoapProxy2_0_1() const;
 		gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_0_1() const;
@@ -851,13 +850,13 @@ namespace RESQML2_NS
 		* -	There is a minimum of 1 column per split coordinate line.
 		* - There is a maximum of 3 columns per split coordinate line.
 		*/
-		std::vector< std::pair< unsigned int, std::vector<unsigned int> > >* splitInformation;
+		std::unique_ptr < std::vector< std::pair< unsigned int, std::vector<unsigned int> > > [] > splitInformation;
 
 		/**
 		* For each kCellIndex, indicate what is the corresponding K Cell index if K gap layer would be normal K layer.
 		* A kCellIndexWithGapLayer equal to nullptr means that it has not been initialized. An initialized kCellIndexWithGapLayer has always a size of getKCellCount().
 		*/
-		unsigned int* kCellIndexWithGapLayer;
+		std::unique_ptr<uint32_t[]> kCellIndexWithGapLayer;
 
 		/** Information about the block. */
 		class BlockInformation
@@ -888,7 +887,7 @@ namespace RESQML2_NS
 		};
 
 		/** Information describing the block */
-		BlockInformation* blockInformation;
+		std::unique_ptr <BlockInformation> blockInformation;
 
 	private:
 

@@ -34,7 +34,7 @@ const char* AbstractIjkGridRepresentation::XML_TAG = "IjkGridRepresentation";
 const char* AbstractIjkGridRepresentation::XML_TAG_TRUNCATED = "TruncatedIjkGridRepresentation";
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :
-	AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr)
+	AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars)
 {
 }
 
@@ -175,7 +175,7 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy) :
-	RESQML2_NS::AbstractColumnLayerGridRepresentation(false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr)
+	RESQML2_NS::AbstractColumnLayerGridRepresentation(false)
 {
 	init(repo, guid, title, iCount, jCount, kCount, kGaps, proxy);
 }
@@ -183,7 +183,7 @@ AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(COMMON_NS::DataObje
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps, EML2_NS::AbstractHdfProxy* proxy) :
-	RESQML2_NS::AbstractColumnLayerGridRepresentation(false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr)
+	RESQML2_NS::AbstractColumnLayerGridRepresentation(false)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the IJK grid cannot be null.");
@@ -498,9 +498,9 @@ unsigned long AbstractIjkGridRepresentation::getSplitCoordinateLineCount() const
 
 unsigned long AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() const
 {
-	if (splitInformation == nullptr)
+	if (!splitInformation)
 		throw invalid_argument("The split information must have been loaded first.");
-	if (blockInformation == nullptr) {
+	if (!blockInformation) {
 		throw invalid_argument("The block information must have been loaded first.");
 	}
 
@@ -835,8 +835,7 @@ unsigned int AbstractIjkGridRepresentation::getGlobalIndexCellFromIjkIndex(unsig
 
 void AbstractIjkGridRepresentation::loadSplitInformation()
 {
-	unloadSplitInformation();
-	splitInformation = new std::vector< std::pair< unsigned int, std::vector<unsigned int> > >[getPillarCount()];
+	splitInformation.reset(new std::vector< std::pair< unsigned int, std::vector<unsigned int> > >[getPillarCount()]);
 
 	const auto splitCoordinateLineCount = getSplitCoordinateLineCount();
 	if (splitCoordinateLineCount > 0) {
@@ -870,7 +869,7 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 	}
 
 	auto kCount = getKCellCount();
-	kCellIndexWithGapLayer = new unsigned int[kCount];
+	kCellIndexWithGapLayer.reset(new unsigned int[kCount]);
 	for (unsigned int k = 0; k < kCount; ++k) {
 		kCellIndexWithGapLayer[k] = k;
 	}
@@ -891,7 +890,7 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 
 void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterfaceStart, unsigned int iInterfaceEnd, unsigned int jInterfaceStart, unsigned int jInterfaceEnd, unsigned int kInterfaceStart, unsigned int kInterfaceEnd)
 {
-	if (splitInformation == nullptr || kCellIndexWithGapLayer == nullptr) {
+	if (!splitInformation || !kCellIndexWithGapLayer) {
 		throw invalid_argument("The split information must have been loaded first.");
 	}
 	if (iInterfaceEnd > getICellCount()) {
@@ -915,11 +914,7 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 		throw range_error("kInterfaceStart > kInterfaceEnd");
 	}
 
-	if (blockInformation != nullptr) {
-		delete blockInformation;
-	}
-
-	blockInformation = new BlockInformation();
+	blockInformation.reset(new BlockInformation());
 
 	blockInformation->iInterfaceStart = iInterfaceStart;
 	blockInformation->iInterfaceEnd = iInterfaceEnd;
@@ -965,14 +960,8 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 
 void AbstractIjkGridRepresentation::unloadSplitInformation()
 {
-	if (splitInformation != nullptr) {
-		delete [] splitInformation;
-		splitInformation = nullptr;
-	}
-	if (kCellIndexWithGapLayer != nullptr) {
-		delete [] kCellIndexWithGapLayer;
-		kCellIndexWithGapLayer = nullptr;
-	}
+	splitInformation.reset();
+	kCellIndexWithGapLayer.reset();
 }
 
 uint64_t AbstractIjkGridRepresentation::getKGapsCount() const
@@ -1082,7 +1071,7 @@ unsigned int AbstractIjkGridRepresentation::getFaceCount() const
 
 bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(unsigned int iColumn, unsigned int jColumn, unsigned int edge) const
 {
-	if (splitInformation == nullptr)
+	if (!splitInformation)
 		throw invalid_argument("The split information must have been loaded first.");
 	if (iColumn > getICellCount())
 		throw out_of_range("I column is out of range.");
@@ -1188,7 +1177,7 @@ bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(unsigned int iColumn, u
 
 uint64_t AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const
 {
-	if (splitInformation == nullptr || kCellIndexWithGapLayer == nullptr) {
+	if (!splitInformation || !kCellIndexWithGapLayer) {
 		throw invalid_argument("The split information must have been loaded first.");
 	}
 
@@ -1238,10 +1227,10 @@ uint64_t AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned 
 void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner,
 	const double* xyzPoints, double & x, double & y, double & z) const
 {
-	if (splitInformation == nullptr) {
+	if (!splitInformation) {
 		throw invalid_argument("The split information must have been loaded first.");
 	}
-	if (blockInformation == nullptr) {
+	if (!blockInformation) {
 		throw invalid_argument("The block information must have been loaded first.");
 	}
 	if (iCell > getICellCount()) {
@@ -1302,7 +1291,7 @@ uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfKInterface() const
 
 uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfBlock() const
 {
-	if (blockInformation == nullptr) {
+	if (!blockInformation) {
 		throw invalid_argument("The block information must have been loaded first.");
 	}
 
