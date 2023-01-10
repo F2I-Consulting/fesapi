@@ -41,7 +41,7 @@ namespace epc
 		 *
 		 * @param 	outputPartPath	The path of the part within the package.
 		 */
-		FilePart(std::string outputPartPath);
+		explicit FilePart(std::string outputPartPath);
 		
 		/** @brief	Destructor */
 		~FilePart() = default;

@@ -51,7 +51,7 @@ namespace EML2_NS
 		 * @returns	The data object reference of the object which receives some graphical information at
 		 * 			@p index.
 		 */
-		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(uint64_t index) const;
+		COMMON_NS::DataObjectReference getTargetObjectDor(uint64_t index) const;
 
 		/**
 		 * Gets the UUID of the object which receives some graphical information at a particular index

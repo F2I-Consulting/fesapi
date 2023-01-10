@@ -73,7 +73,7 @@ namespace EML2_3_NS
 		 * @param 	value	The value.
 		 * @param 	uom  	(Optional) The uom.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
 			double value, gsoap_resqml2_0_1::resqml20__ResqmlUom uom = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc);
 
 		/**
@@ -83,7 +83,7 @@ namespace EML2_3_NS
 		 * @param 	title	The title.
 		 * @param 	value	The value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
 			const std::string & value);
 
 		/**
@@ -93,7 +93,7 @@ namespace EML2_3_NS
 		 * @param 	title	The title.
 		 * @param 	value	The value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
 			int64_t value);
 
 		/**
@@ -103,7 +103,7 @@ namespace EML2_3_NS
 		 * @param 		  	title			The title.
 		 * @param [in,out]	resqmlObject	If non-null, the resqml object.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
 			AbstractObject* resqmlObject);
 
 		/**

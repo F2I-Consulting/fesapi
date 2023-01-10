@@ -448,8 +448,9 @@ std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getTargetObjects(C
 	else {
 		result = getTargetObjects(dataObj);
 		if (depth > 1) {
-			for (auto target : result) {
-				const std::vector< COMMON_NS::AbstractObject*>& nextTargets = getTargetObjects(target, depth - 1);
+			const size_t size = result.size();
+			for (size_t i = 0; i < size; ++i) { // We cannot use iterators if we insert inside a loop. Thus, no use of for range-based loop.
+				const std::vector< COMMON_NS::AbstractObject*>& nextTargets = getTargetObjects(result[i], depth - 1);
 				result.insert(result.end(), nextTargets.begin(), nextTargets.end());
 			}
 		}
@@ -479,8 +480,9 @@ std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getSourceObjects(C
 	else {
 		result = getSourceObjects(dataObj);
 		if (depth > 1) {
-			for (auto source : result) {
-				const std::vector< COMMON_NS::AbstractObject*>& nextSources = getSourceObjects(source, depth - 1);
+			const size_t size = result.size();
+			for (size_t i = 0; i < size; ++i) { // We cannot use iterators if we insert inside a loop. Thus, no use of for range-based loop.
+				const std::vector< COMMON_NS::AbstractObject*>& nextSources = getSourceObjects(result[i], depth - 1);
 				result.insert(result.end(), nextSources.begin(), nextSources.end());
 			}
 		}
@@ -558,12 +560,8 @@ bool DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy)
 
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjects[proxy->getUuid()].push_back(proxy);
-		if (forwardRels.count(proxy) == 0) {
-			forwardRels[proxy] = std::vector<COMMON_NS::AbstractObject *>();
-		}
-		if (backwardRels.count(proxy) == 0) {
-			backwardRels[proxy] = std::vector<COMMON_NS::AbstractObject *>();
-		}
+		forwardRels.emplace(proxy, std::vector<common::AbstractObject*>());
+		backwardRels.emplace(proxy, std::vector<common::AbstractObject*>());
 
 		auto now = std::chrono::system_clock::now();
 		journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CREATED));
