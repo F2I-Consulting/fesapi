@@ -914,14 +914,7 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 		throw range_error("kInterfaceStart > kInterfaceEnd");
 	}
 
-	blockInformation.reset(new BlockInformation());
-
-	blockInformation->iInterfaceStart = iInterfaceStart;
-	blockInformation->iInterfaceEnd = iInterfaceEnd;
-	blockInformation->jInterfaceStart = jInterfaceStart;
-	blockInformation->jInterfaceEnd = jInterfaceEnd;
-	blockInformation->kInterfaceStart = kInterfaceStart;
-	blockInformation->kInterfaceEnd = kInterfaceEnd;
+	blockInformation.reset(new BlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd));
 
 	// setting mapping between global and local (to the block) split coordinate lines index
 	for (unsigned int jPillarIndex = jInterfaceStart; jPillarIndex <= jInterfaceEnd; ++jPillarIndex) {

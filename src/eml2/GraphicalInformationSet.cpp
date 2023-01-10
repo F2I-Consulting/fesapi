@@ -52,7 +52,7 @@ unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
 	return static_cast<unsigned int>(count);
 }
 
-eml23__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(uint64_t index) const
+COMMON_NS::DataObjectReference GraphicalInformationSet::getTargetObjectDor(uint64_t index) const
 {
 	_eml23__GraphicalInformationSet const * gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 
@@ -65,7 +65,7 @@ eml23__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(uint64_t
 
 string GraphicalInformationSet::getTargetObjectUuid(uint64_t index) const
 {
-	return getTargetObjectDor(index)->Uuid;
+	return getTargetObjectDor(index).getUuid();
 }
 
 AbstractObject* GraphicalInformationSet::getTargetObject(uint64_t index) const

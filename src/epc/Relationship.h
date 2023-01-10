@@ -50,7 +50,7 @@ namespace epc
 		 *
 		 * @param 	internalTarget	(Optional) True to internal target.
 		 */
-		Relationship(const bool & internalTarget = true);
+		explicit Relationship(const bool & internalTarget = true);
 
 		/**
 		 * Constructor

@@ -43,14 +43,15 @@ namespace epc
 		 *
 		 * @param 	frRelationship	The fr relationship.
 		 */
-		FileRelationship(const Relationship & frRelationship);
+		explicit FileRelationship(const Relationship & frRelationship);
 
 		/**
 		 * Constructor
 		 *
 		 * @param 	frRelationship	The fr relationship.
 		 */
-		FileRelationship(const std::vector<Relationship> & frRelationship);
+		explicit FileRelationship(const std::vector<Relationship> & frRelationship);
+
 		/** Destructor */
 		~FileRelationship() = default;
 

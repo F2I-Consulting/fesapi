@@ -176,7 +176,7 @@ namespace COMMON_NS
 		 * @param 	propertyKindMappingFilesDirectory	Pathname of the property kind mapping files
 		 * 												directory.
 		 */
-		DLL_IMPORT_OR_EXPORT DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
+		DLL_IMPORT_OR_EXPORT explicit DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
 
 		/** Destructor */
 		DLL_IMPORT_OR_EXPORT virtual ~DataObjectRepository();
