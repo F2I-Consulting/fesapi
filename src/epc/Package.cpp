@@ -147,14 +147,26 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 
 	// Cache all file locations
 	if (unzGoToFirstFile(d_ptr->unzipped) != UNZ_OK) {
-		result.push_back("Cannot go to the first file of the EPC");
-		return result;
+		throw std::invalid_argument("Cannot go to the first file of " + pkgPathName);
 	}
 	do {
-		char partName[1024];
-		unzGetCurrentFileInfo64(d_ptr->unzipped, nullptr, partName, 1024, nullptr, 0, nullptr, 0);
+		unz_file_info64 fileInfo;
+		int err = unzGetCurrentFileInfo64(d_ptr->unzipped, &fileInfo, nullptr, 0, nullptr, 0, nullptr, 0);
+		if (UNZ_OK != err || fileInfo.size_filename == 0) {
+			throw std::invalid_argument("Cannot get file information of current file in " + pkgPathName);
+		}
+
+		std::string partName;
+		partName.resize(fileInfo.size_filename);
+		err = unzGetCurrentFileInfo64(d_ptr->unzipped, nullptr, &partName[0], fileInfo.size_filename, nullptr, 0, nullptr, 0);
+		if (UNZ_OK != err) {
+			throw std::invalid_argument("Cannot get filename of current file in " + pkgPathName);
+		}
 		unz64_file_pos filePos;
-		unzGetFilePos64(d_ptr->unzipped, &filePos);
+		err = unzGetFilePos64(d_ptr->unzipped, &filePos);
+		if (UNZ_OK != err) {
+			throw std::invalid_argument("Cannot get file position in EPC of file " + partName);
+		}
 		d_ptr->name2file[partName] = filePos;
 	} while (unzGoToNextFile(d_ptr->unzipped) != UNZ_END_OF_LIST_OF_FILE);
 
