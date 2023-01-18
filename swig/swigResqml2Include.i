@@ -5270,6 +5270,71 @@ namespace RESQML2_NS
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 
 		/**
+		 * Adds a 2d array of explicit values into the property values. Since this methods
+		 * only pushes back values into an existing array, it is to be used along with
+		 * pushBackLongHdf5Array2dOfValues().
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param [in]	  	values				  	All the property values to set ordered according to
+		 * 											the topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly J dimension).
+		 * @param 		  	offsetInFastestDim	  	The offset value for writing in the fastest dimension
+		 * 											(mainly I dimension).
+		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
+		 * 											(mainly J dimension).		 
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default value), a default HDF proxy must be defined
+		 * 											into the data object repository.
+		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
+		 * 											write the property values. If not provided, its
+		 * 											default value is by convention set to unsigned int
+		 * 											maximum value and the property values will be written
+		 * 											in the last property values patch (the one with the
+		 * 											greatest index).
+		 */
+		void setValuesOfInt64Hdf5Array2dOfValues(
+			int64_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());		
+		void setValuesOfInt32Hdf5Array2dOfValues(
+			int32_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfDoubleHdf5Array2dOfValues(
+			double const * values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+		void setValuesOfFloatHdf5Array2dOfValues(
+			float const * values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+
+		/**
 		 * Adds a 3d array of explicit long 64 bits values into the property values. Since this methods
 		 * only pushes back values into an existing array, it is to be used along with
 		 * pushBackLongHdf5Array3dOfValues().

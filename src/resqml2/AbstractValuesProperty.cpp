@@ -1172,6 +1172,90 @@ void AbstractValuesProperty::setValuesOfFloatHdf5Array1dOfValues(
 	);
 }
 
+void AbstractValuesProperty::setValuesOfInt64Hdf5Array2dOfValues(
+	int64_t const* values,
+	uint64_t valueCountInFastestDim,
+	uint64_t valueCountInSlowestDim,
+	uint64_t offsetInFastestDim,
+	uint64_t offsetInSlowestDim,
+	EML2_NS::AbstractHdfProxy* proxy,
+	unsigned int patchIndex)
+{
+	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	hsize_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+	setValuesOfInt64Hdf5ArrayOfValues(
+		values,
+		valueCountPerDimension,
+		offsetPerDimension,
+		2,
+		proxy,
+		patchIndex
+	);
+}
+
+void AbstractValuesProperty::setValuesOfInt32Hdf5Array2dOfValues(
+	int32_t const* values,
+	uint64_t valueCountInFastestDim,
+	uint64_t valueCountInSlowestDim,
+	uint64_t offsetInFastestDim,
+	uint64_t offsetInSlowestDim,
+	EML2_NS::AbstractHdfProxy* proxy,
+	unsigned int patchIndex)
+{
+	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	hsize_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+	setValuesOfInt32Hdf5ArrayOfValues(
+		values,
+		valueCountPerDimension,
+		offsetPerDimension,
+		2,
+		proxy,
+		patchIndex
+	);
+}
+
+void AbstractValuesProperty::setValuesOfDoubleHdf5Array2dOfValues(
+	double const * values,
+	uint64_t valueCountInFastestDim,
+	uint64_t valueCountInSlowestDim,
+	uint64_t offsetInFastestDim,
+	uint64_t offsetInSlowestDim,
+	EML2_NS::AbstractHdfProxy* proxy,
+	unsigned int patchIndex)
+{
+	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	hsize_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+	setValuesOfDoubleHdf5ArrayOfValues(
+		values,
+		valueCountPerDimension,
+		offsetPerDimension,
+		2,
+		proxy,
+		patchIndex
+	);
+}
+
+void AbstractValuesProperty::setValuesOfFloatHdf5Array2dOfValues(
+	float const * values,
+	uint64_t valueCountInFastestDim,
+	uint64_t valueCountInSlowestDim,
+	uint64_t offsetInFastestDim,
+	uint64_t offsetInSlowestDim,
+	EML2_NS::AbstractHdfProxy* proxy,
+	unsigned int patchIndex)
+{
+	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	hsize_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+	setValuesOfFloatHdf5ArrayOfValues(
+		values,
+		valueCountPerDimension,
+		offsetPerDimension,
+		2,
+		proxy,
+		patchIndex
+	);
+}
+
 void AbstractValuesProperty::setValuesOfInt64Hdf5Array3dOfValues(
 	int64_t const* values,
 	uint64_t valueCountInFastestDim,
