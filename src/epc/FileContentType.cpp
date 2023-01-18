@@ -65,7 +65,7 @@ void FileContentType::readFromString(const string & textInput)
 		if (attStart != string::npos && attStart < end)
 		{
 			attStart += 11;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos)
 				extension = textInput.substr(attStart, attEnd - attStart);
 		}
@@ -76,7 +76,7 @@ void FileContentType::readFromString(const string & textInput)
 		if (attStart != string::npos && attStart < end)
 		{
 			attStart += 13;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos)
 				contentType = textInput.substr(attStart, attEnd - attStart);
 		}
@@ -100,7 +100,7 @@ void FileContentType::readFromString(const string & textInput)
 		size_t attStart = textInput.find("PartName=\"", pos);
 		if (attStart != string::npos && attStart < end) {
 			attStart += 10;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos) {
 				partName = textInput.substr(attStart, attEnd - attStart);
 			}
@@ -111,7 +111,7 @@ void FileContentType::readFromString(const string & textInput)
 		attStart = textInput.find("ContentType=\"", pos);
 		if (attStart != string::npos && attStart < end) {
 			attStart += 13;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos) {
 				contentType = textInput.substr(attStart, attEnd - attStart);
 			}
