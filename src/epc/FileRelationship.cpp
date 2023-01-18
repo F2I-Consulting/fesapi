@@ -88,7 +88,7 @@ void FileRelationship::readFromString(const string & textInput)
 		if (attStart != string::npos && attStart < end)
 		{
 			attStart += 4;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos)
 				id = textInput.substr(attStart, attEnd - attStart);
 		}
@@ -99,7 +99,7 @@ void FileRelationship::readFromString(const string & textInput)
 		if (attStart != string::npos && attStart < end)
 		{
 			attStart += 6;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos)
 				type = textInput.substr(attStart, attEnd - attStart);
 		}
@@ -110,7 +110,7 @@ void FileRelationship::readFromString(const string & textInput)
 		if (attStart != string::npos && attStart < end)
 		{
 			attStart += 8;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos)
 				target = textInput.substr(attStart, attEnd - attStart);
 		}
@@ -121,7 +121,7 @@ void FileRelationship::readFromString(const string & textInput)
 		if (attStart != string::npos && attStart < end)
 		{
 			attStart += 12;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos)
 			{
 				string readString = textInput.substr(attStart, attEnd - attStart);

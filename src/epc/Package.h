@@ -59,6 +59,8 @@ namespace epc
 	public:
 		/** Create a Package with pathname. */
 		Package();
+		Package(const Package&) = delete;
+
 
 		/**
 		 * Create a Package with CoreProperties file, ContentType file, Relationship file, vector of
@@ -71,6 +73,8 @@ namespace epc
 		 * @param 	pkgPathName	Full pathname of the package file.
 		 */
 		Package(const FileCoreProperties & pkgFileCP, const FileContentType & pkgFileCT, const FileRelationship & pkgFileRS, const PartMap & pkgFileP, const std::string & pkgPathName);
+
+		Package& operator=(const Package&) = delete;
 
 		/** Destructor : free memory allocated for the parts */
 		~Package();

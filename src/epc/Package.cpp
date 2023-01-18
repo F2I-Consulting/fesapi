@@ -39,7 +39,7 @@ under the License.
 
 #include "FilePart.h"
 
-#define CASESENSITIVITY (0)
+static constexpr int CASESENSITIVITY = 0;
 
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in *.cpp file!!!
 using namespace epc; // in order not to prefix by "epc::" for each class in the "epc" namespace. Never use "using namespace" in *.h file but only in *.cpp file!!!
@@ -201,10 +201,10 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 			std::string line;
 			while (std::getline(iss, line)) {
 				if (line[0] == '\t') { // To find a better condition
-					size_t start = line.find("<");
-					size_t end = line.find(">");
+					size_t start = line.find('<');
+					size_t end = line.find('>');
 					if (start != string::npos && end != string::npos) {
-						size_t end2 = line.find("<", end + 1);
+						size_t end2 = line.find('<', end + 1);
 						if (end2 != string::npos) {
 							d_ptr->extendedCoreProperties[line.substr(start + 1, end - start - 1)] = line.substr(end + 1, end2 - end - 1);
 						}
@@ -486,50 +486,34 @@ void Package::writePackage()
 
 string do_extract_currentfile(unzFile uf)
 {
-    int err=UNZ_OK;
-    void* buf;
-    const unsigned size_buf = 8192;
+	std::string data;
 
-    buf = (void*)malloc(size_buf);
-    if (buf == nullptr)  {
-    	ostringstream oss;
-    	oss << "Error allocating " <<  size_buf << " bytes.";
-		throw invalid_argument(oss.str());
-    }
-
-    err = unzOpenCurrentFile(uf);
-    if (err != UNZ_OK)
-    {
-		free(buf);
+	int err = unzOpenCurrentFile(uf);
+    if (err != UNZ_OK) {
 		throw invalid_argument("Error with zipfile in unzOpenCurrentFile. Code = " + std::to_string(err));
     }
 
-	ostringstream oss;
-    do {
-        err = unzReadCurrentFile(uf,buf,size_buf);
-        if (err < 0)  {
-			free(buf);
+	// Get current file info
+	unz_file_info64 file_info;
+	err = unzGetCurrentFileInfo64(uf, &file_info, nullptr, 0, nullptr, 0, nullptr, 0);
+	if (err == UNZ_OK) {
+		// Extract file
+		data.resize(file_info.uncompressed_size);
+		err = unzReadCurrentFile(uf, &data[0], static_cast<unsigned int>(data.size()));
+		if (err < 0) {
 			throw invalid_argument("Error with zipfile in unzReadCurrentFile. Code = " + std::to_string(err));
-        }
-		if (err > 0) {
-			oss.write((char*)buf, err);
 		}
-    }
-    while (err > 0);
-
-    if (err == UNZ_OK) {
-        err = unzCloseCurrentFile (uf);
-        if (err != UNZ_OK)  {
-			free(buf);
-			throw invalid_argument("Error with zipfile in unzCloseCurrentFile. Code = " + std::to_string(err));
-        }
-    }
+	}
 	else {
-		unzCloseCurrentFile(uf); /* don't lose the error */
+		throw invalid_argument("Failed to get current file information from ZIP. Code = " + std::to_string(err));
 	}
 
-    free(buf);
-    return oss.str();
+	err = unzCloseCurrentFile(uf);
+	if (err != UNZ_OK) {
+		throw invalid_argument("Error with zipfile in unzCloseCurrentFile. Code = " + std::to_string(err));
+	}
+
+    return data;
 }
 
 bool Package::fileExists(const string & filename) const
