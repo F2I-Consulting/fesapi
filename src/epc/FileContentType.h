@@ -42,7 +42,7 @@ namespace epc
 		 *
 		 * @returns	The content type.
 		 */
-		const ContentType& getContentType(const std::string& extensionOrPartName) const;
+		ContentType getContentType(const std::string& extensionOrPartName) const;
 
 		/**
 		 * Gets all content type

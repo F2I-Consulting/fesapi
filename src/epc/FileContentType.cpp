@@ -23,7 +23,7 @@ under the License.
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 using namespace epc; // in order not to prefix by "epc::" for each class in the "epc" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 
-const ContentType& FileContentType::getContentType(const std::string& extensionOrPartName) const
+ContentType FileContentType::getContentType(const std::string& extensionOrPartName) const
 {
     auto it = contentTypeMap.find("/" + extensionOrPartName);
     return it == contentTypeMap.end() ? ContentType() : it->second;
