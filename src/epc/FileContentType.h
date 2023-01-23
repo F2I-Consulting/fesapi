@@ -29,9 +29,6 @@ namespace epc
 	class FileContentType
 	{
     public:
-		/** Defines an alias representing the content type map */
-		typedef std::unordered_map<std::string, ContentType> ContentTypeMap;
-
 		/** CONSTRUCTORS */
 		FileContentType() = default;
 
@@ -52,7 +49,7 @@ namespace epc
 		 *
 		 * @returns	all content type.
 		 */
-		const ContentTypeMap& getAllContentType() const;
+		const std::unordered_map<std::string, ContentType>& getAllContentType() const { return contentTypeMap; }
 
 		/**
 		 * Convert this object into a string representation
@@ -66,22 +63,27 @@ namespace epc
 		 *
 		 * @param 	contentType	Type of the content.
 		 */
-		void addContentType(const ContentType & contentType);
+		void addContentType(const ContentType& contentType) {
+			if (contentTypeMap.find(contentType.getExtensionOrPartName()) == contentTypeMap.end()) {
+				contentTypeMap[contentType.getExtensionOrPartName()] = contentType;
+			}
+		}
 
 		/**
 		 * Read a content type part from a string.
 		 *
 		 * @param 	textInput	The text input.
 		 */
-		void readFromString(const std::string & textInput);
+		void readFromString(const std::string& textInput);
+
+		/**
+		 * Clear all the content types.
+		 */
+		void clear() { contentTypeMap.clear(); }
 
 	private:
-		/** The header */
-		static const char* header;
 		/** The content type map */
-		ContentTypeMap contentTypeMap;
-		/** The footer */
-		static const char* footer;
+		std::unordered_map<std::string, ContentType> contentTypeMap;
 	};
 }
 

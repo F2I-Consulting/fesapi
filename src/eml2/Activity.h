@@ -71,7 +71,7 @@ namespace EML2_NS
 		 * @param 	title	The title of the parameter to push back.
 		 * @param 	value	The value of the parameter to push back.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string& title,
 			const std::string & value) = 0;
 
 		/**
@@ -88,7 +88,7 @@ namespace EML2_NS
 		 * @param 	title	The title of the parameter to push back.
 		 * @param 	value	The value of the parameter to push back.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string& title,
 			int64_t value) = 0;
 
 		/**
@@ -107,7 +107,7 @@ namespace EML2_NS
 		 * @param 	  	title			The title of the parameter to push back.
 		 * @param [in]	resqmlObject	The RESQML object, value of the parameter to push back.
 		 */
-		virtual void pushBackParameter(const std::string title,
+		virtual void pushBackParameter(const std::string& title,
 			AbstractObject* resqmlObject) = 0;
 
 		/**

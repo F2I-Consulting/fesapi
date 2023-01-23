@@ -147,13 +147,12 @@ namespace RESQML2_NS
 		 * @param [in]	partialObject			If non-nullptr, the partial object.
 		 * @param 	  	withTruncatedPillars	(Optional) True to with truncated pillars.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars = false);
+		DLL_IMPORT_OR_EXPORT explicit AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars = false);
 
 		/** Destructor. */
 		DLL_IMPORT_OR_EXPORT virtual ~AbstractIjkGridRepresentation()
 		{
-			if (blockInformation != nullptr)
-				delete blockInformation;
+			unloadSplitInformation();
 		}
 
 		/**
@@ -804,16 +803,16 @@ namespace RESQML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
+		explicit AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false) {}
 
 		/**
 		 * Constructor
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), kCellIndexWithGapLayer(nullptr), blockInformation(nullptr) {}
+		explicit AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true) {}
+		explicit AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false) {}
+		explicit AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true) {}
 
 		gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* getSpecializedGsoapProxy2_0_1() const;
 		gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_0_1() const;
@@ -849,13 +848,13 @@ namespace RESQML2_NS
 		* -	There is a minimum of 1 column per split coordinate line.
 		* - There is a maximum of 3 columns per split coordinate line.
 		*/
-		std::vector< std::pair< unsigned int, std::vector<unsigned int> > >* splitInformation;
+		std::unique_ptr < std::vector< std::pair< unsigned int, std::vector<unsigned int> > > [] > splitInformation;
 
 		/**
 		* For each kCellIndex, indicate what is the corresponding K Cell index if K gap layer would be normal K layer.
 		* A kCellIndexWithGapLayer equal to nullptr means that it has not been initialized. An initialized kCellIndexWithGapLayer has always a size of getKCellCount().
 		*/
-		unsigned int* kCellIndexWithGapLayer;
+		std::unique_ptr<uint32_t[]> kCellIndexWithGapLayer;
 
 		/** Information about the block. */
 		class BlockInformation
@@ -878,15 +877,15 @@ namespace RESQML2_NS
 			/** Map split coordinate lines index with local index (according to a block) */
 			std::map<unsigned int, unsigned int> globalToLocalSplitCoordinateLinesIndex;
 
-			/** Default constructor */
-			BlockInformation() = default;
+			BlockInformation(unsigned int iNodeStart, unsigned int iNodeEnd, unsigned int jNodeStart, unsigned int jNodeEnd, unsigned int kNodeStart, unsigned int kNodeEnd) :
+				iInterfaceStart(iNodeStart), iInterfaceEnd(iNodeEnd), jInterfaceStart(jNodeStart), jInterfaceEnd(jNodeEnd), kInterfaceStart(kNodeStart), kInterfaceEnd(kNodeEnd) {}
 
 			/** Destructor */
 			~BlockInformation() = default;
 		};
 
 		/** Information describing the block */
-		BlockInformation* blockInformation;
+		std::unique_ptr <BlockInformation> blockInformation;
 
 	private:
 

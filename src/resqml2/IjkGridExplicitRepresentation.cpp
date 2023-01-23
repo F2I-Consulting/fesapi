@@ -107,7 +107,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequence(unsigned in
 
 void IjkGridExplicitRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 {
-	if (blockInformation == nullptr) {
+	if (!blockInformation) {
 		throw logic_error("The block information must have been loaded first.");
 	}
 

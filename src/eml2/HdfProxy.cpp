@@ -172,7 +172,7 @@ void HdfProxy::open()
 
 void HdfProxy::close()
 {
-	for (auto it : openedGroups) {
+	for (const auto& it : openedGroups) {
 		if (H5Gclose(it.second) < 0) {
 			throw invalid_argument("The HDF5 group " + it.first + " could not have been closed.");
 		}
@@ -624,8 +624,8 @@ void HdfProxy::createArrayNd(
 	const std::string& datasetName,
 	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 	const unsigned long long* numValuesInEachDimension,
-	unsigned int numDimensions
-) {
+	unsigned int numDimensions)
+{
 	if (!isOpened()) {
 		open();
 	}
@@ -670,8 +670,12 @@ void HdfProxy::createArrayNd(
 		}
 	}
 
-	H5Sclose(space);
-	H5Dclose(dataset);
+	if (H5Sclose(space) < 0) {
+		throw invalid_argument("Cannot close the dataspace for " + datasetName);
+	}
+	if (H5Dclose(dataset) < 0) {
+		throw invalid_argument("Cannot close the dataset " + datasetName);
+	}
 }
 
 void HdfProxy::writeArrayNdSlab(
@@ -695,7 +699,7 @@ void HdfProxy::writeArrayNdSlab(
 	
 	hid_t filespace = H5Dget_space(dataset);
 	if (filespace < 0) {
-		throw invalid_argument("The resqml dataspace of " + datasetName + " could not be opened.");
+		throw invalid_argument("The RESQML dataspace of " + datasetName + " could not be opened.");
 	}
 	herr_t errorCode = H5Sselect_hyperslab(filespace, H5S_SELECT_SET, offsetInEachDimension, nullptr, numValuesInEachDimension, nullptr);
 	if (errorCode < 0) {
@@ -852,7 +856,7 @@ void HdfProxy::readArrayNdOfUInt8Values(const std::string & datasetName, uint8_t
 
 hid_t HdfProxy::openOrCreateGroup(const string & groupName)
 {
-	auto alreadyOpened = openedGroups.find(groupName);
+	std::unordered_map< std::string, hdf5_hid_t >::const_iterator alreadyOpened = openedGroups.find(groupName);
 	if (alreadyOpened != openedGroups.end()) {
 		return alreadyOpened->second;
 	}

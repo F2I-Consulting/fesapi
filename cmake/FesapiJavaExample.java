@@ -153,6 +153,7 @@ public class FesapiJavaExample {
 		
 		// Features
 		WellboreFeature wellbore1 = repo.createWellboreFeature("22d5b48f-f789-46e7-a454-6d8bd05afd0b", "Wellbore1");
+		wellbore1.setWitsmlWellbore(witsmlWellbore);
 		
 		// Interpretations
 		WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
@@ -376,7 +377,7 @@ ${COMMENT_END}
 				"Horizon1 Interp1 TriRep");
 		// Patch 0
 		SWIGTYPE_p_double explicitPointsHor1Patch0 = fesapi.new_DoubleArray(15);
-		SWIGTYPE_p_unsigned_int triangleNodeIndexHorPatch0 = fesapi.new_UIntArray(9);
+		SWIGTYPE_p_unsigned_int triangleNodeIndexHorPatch0 = fesapi.new_UInt32Array(9);
 		try {
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 0, 0);
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 1, 100);
@@ -394,25 +395,25 @@ ${COMMENT_END}
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 13, 140);
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 14, 0);
 
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 0, 0);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 1, 1);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 2, 3);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 3, 1);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 4, 4);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 5, 3);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 6, 1);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 7, 2);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 8, 4);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 0, 0);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 1, 1);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 2, 3);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 3, 1);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 4, 4);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 5, 3);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 6, 1);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 7, 2);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 8, 4);
 
 			h1i1triRep.pushBackTrianglePatch(5, explicitPointsHor1Patch0, 3, triangleNodeIndexHorPatch0, hdfProxy);
 		}
 		finally {
 			fesapi.delete_DoubleArray(explicitPointsHor1Patch0);
-			fesapi.delete_UIntArray(triangleNodeIndexHorPatch0);
+			fesapi.delete_UInt32Array(triangleNodeIndexHorPatch0);
 		}
 		// Patch 1
 		SWIGTYPE_p_double explicitPointsHor1Patch1 = fesapi.new_DoubleArray(15);
-		SWIGTYPE_p_unsigned_int triangleNodeIndexHorPatch1 = fesapi.new_UIntArray(9);
+		SWIGTYPE_p_unsigned_int triangleNodeIndexHorPatch1 = fesapi.new_UInt32Array(9);
 		try {
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 0, 300);
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 1, 0);
@@ -430,21 +431,21 @@ ${COMMENT_END}
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 13, 200);
 			fesapi.DoubleArray_setitem(explicitPointsHor1Patch0, 14, 350);
 
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 0, 5);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 1, 6);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 2, 8);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 3, 6);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 4, 9);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 5, 8);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 6, 6);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 7, 7);
-			fesapi.UIntArray_setitem(triangleNodeIndexHorPatch0, 8, 9);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 0, 5);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 1, 6);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 2, 8);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 3, 6);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 4, 9);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 5, 8);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 6, 6);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 7, 7);
+			fesapi.UInt32Array_setitem(triangleNodeIndexHorPatch0, 8, 9);
 
 			h1i1triRep.pushBackTrianglePatch(5, explicitPointsHor1Patch1, 3, triangleNodeIndexHorPatch1, hdfProxy);
 		}
 		finally {
 			fesapi.delete_DoubleArray(explicitPointsHor1Patch1);
-			fesapi.delete_UIntArray(triangleNodeIndexHorPatch1);
+			fesapi.delete_UInt32Array(triangleNodeIndexHorPatch1);
 		}
 
 		//
@@ -488,27 +489,27 @@ ${COMMENT_END}
 		DiscreteProperty discreteProp1 = repo.createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex",
 				eml23__IndexableElement.cells, cellIndexPropKind);
 
-		SWIGTYPE_p_unsigned_short propValues = fesapi.new_UShortArray(2);
+		SWIGTYPE_p_unsigned_short propValues = fesapi.new_UInt16Array(2);
 		try {
-			fesapi.UShortArray_setitem(propValues, 0, 0);
-			fesapi.UShortArray_setitem(propValues, 1, 1);
+			fesapi.UInt16Array_setitem(propValues, 0, 0);
+			fesapi.UInt16Array_setitem(propValues, 1, 1);
 			discreteProp1.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
-			fesapi.delete_UShortArray(propValues);
+			fesapi.delete_UInt16Array(propValues);
 		}
 		
 		DiscreteProperty discreteProp2 = repo.createDiscreteProperty(ijkgrid, "", "Two faulted sugar cubes other cellIndex",
 				eml23__IndexableElement.cells, cellIndexPropKind);
 
-		propValues = fesapi.new_UShortArray(2);
+		propValues = fesapi.new_UInt16Array(2);
 		try {
-			fesapi.UShortArray_setitem(propValues, 0, 10);
-			fesapi.UShortArray_setitem(propValues, 1, 11);
+			fesapi.UInt16Array_setitem(propValues, 0, 10);
+			fesapi.UInt16Array_setitem(propValues, 1, 11);
 			discreteProp2.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
-			fesapi.delete_UShortArray(propValues);
+			fesapi.delete_UInt16Array(propValues);
 		}
 		
 		Resqml20_PropertySet propSet = repo.createPropertySet("", "Testing property set", false, true, resqml20__TimeSetKind.not_x0020a_x0020time_x0020set);
@@ -533,27 +534,27 @@ ${COMMENT_START}
 
 		// associating a discrete color map to dicreteProp1
 		DiscreteColorMap discrColMap = repo.createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map");
-		SWIGTYPE_p_unsigned_int discrColMapRgbColors = fesapi.new_UIntArray(18);
+		SWIGTYPE_p_unsigned_int discrColMapRgbColors = fesapi.new_UInt32Array(18);
 		SWIGTYPE_p_double discrColMapAlphas = fesapi.new_DoubleArray(6);
 		try {
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 0, 255);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 1, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 2, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 3, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 4, 255);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 5, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 6, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 7, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 8, 255);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 9, 169);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 10, 84);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 11, 27);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 12, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 13, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 14, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 15, 255);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 16, 255);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 17, 255);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 0, 255);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 1, 0);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 2, 0);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 3, 0);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 4, 255);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 5, 0);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 6, 0);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 7, 0);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 8, 255);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 9, 169);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 10, 84);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 11, 27);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 12, 0);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 13, 0);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 14, 0);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 15, 255);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 16, 255);
+			fesapi.UInt32Array_setitem(discrColMapRgbColors, 17, 255);
 
 			fesapi.DoubleArray_setitem(discrColMapAlphas, 0, 1.);
 			fesapi.DoubleArray_setitem(discrColMapAlphas, 1, 1.);
@@ -573,20 +574,20 @@ ${COMMENT_START}
 			discrColMap.setRgbColors(6, discrColMapRgbColors, discrColMapAlphas, discrColMapTitles);
 		}
 		finally {
-			fesapi.delete_UIntArray(discrColMapRgbColors);
+			fesapi.delete_UInt32Array(discrColMapRgbColors);
 			fesapi.delete_DoubleArray(discrColMapAlphas);
 		}
 
 		DiscreteProperty discreteProp2 = repo.createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex",
 				eml23__IndexableElement.cells, cellIndexPropKind);
-		SWIGTYPE_p_unsigned_short propValues = fesapi.new_UShortArray(2);
+		SWIGTYPE_p_unsigned_short propValues = fesapi.new_UInt16Array(2);
 		try {
-			fesapi.UShortArray_setitem(propValues, 0, 10);
-			fesapi.UShortArray_setitem(propValues, 1, 11);
+			fesapi.UInt16Array_setitem(propValues, 0, 10);
+			fesapi.UInt16Array_setitem(propValues, 1, 11);
 			discreteProp2.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
-			fesapi.delete_UShortArray(propValues);
+			fesapi.delete_UInt16Array(propValues);
 		}
 	
 		graphicalInformationSet.setDiscreteColorMap(discreteProp2, discrColMap);
@@ -623,15 +624,15 @@ ${COMMENT_START}
 		contColMapContProp.pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 		ContinuousColorMap contColMap = repo.createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", resqml22__InterpolationDomain.rgb, resqml22__InterpolationMethod.linear);
-		SWIGTYPE_p_unsigned_int contColMapRgbColors = fesapi.new_UIntArray(6);
+		SWIGTYPE_p_unsigned_int contColMapRgbColors = fesapi.new_UInt32Array(6);
 		SWIGTYPE_p_double contColMapAlphas = fesapi.new_DoubleArray(2);
 		try {
-			fesapi.UIntArray_setitem(contColMapRgbColors, 0, 0);
-			fesapi.UIntArray_setitem(contColMapRgbColors, 1, 255);
-			fesapi.UIntArray_setitem(contColMapRgbColors, 2, 0);
-			fesapi.UIntArray_setitem(contColMapRgbColors, 3, 255);
-			fesapi.UIntArray_setitem(contColMapRgbColors, 4, 0);
-			fesapi.UIntArray_setitem(contColMapRgbColors, 5, 0);
+			fesapi.UInt32Array_setitem(contColMapRgbColors, 0, 0);
+			fesapi.UInt32Array_setitem(contColMapRgbColors, 1, 255);
+			fesapi.UInt32Array_setitem(contColMapRgbColors, 2, 0);
+			fesapi.UInt32Array_setitem(contColMapRgbColors, 3, 255);
+			fesapi.UInt32Array_setitem(contColMapRgbColors, 4, 0);
+			fesapi.UInt32Array_setitem(contColMapRgbColors, 5, 0);
 
 			fesapi.DoubleArray_setitem(contColMapAlphas, 0, 1.);
 			fesapi.DoubleArray_setitem(contColMapAlphas, 1, 1.);
@@ -643,7 +644,7 @@ ${COMMENT_START}
 			contColMap.setRgbColors(2, contColMapRgbColors, contColMapAlphas, contColMapColTitles);
 		}
 		finally {
-			fesapi.delete_UIntArray(contColMapRgbColors);
+			fesapi.delete_UInt32Array(contColMapRgbColors);
 			fesapi.delete_DoubleArray(contColMapAlphas);
 		}
 
@@ -767,12 +768,12 @@ ${COMMENT_START}
 					if (graphicalInformationSet.hasDiscreteColorMap(targetObject)) {
 						DiscreteColorMap discreteColorMap = graphicalInformationSet.getDiscreteColorMap(targetObject);
 						System.out.println("discrete color map title: " + discreteColorMap.getTitle());
-						SWIGTYPE_p_unsigned_int r = fesapi.new_UIntArray(1);
-						SWIGTYPE_p_unsigned_int g = fesapi.new_UIntArray(1);
-						SWIGTYPE_p_unsigned_int b = fesapi.new_UIntArray(1);
+						SWIGTYPE_p_unsigned_int r = fesapi.new_UInt32Array(1);
+						SWIGTYPE_p_unsigned_int g = fesapi.new_UInt32Array(1);
+						SWIGTYPE_p_unsigned_int b = fesapi.new_UInt32Array(1);
 						for (int colorIndex = 0; colorIndex < discreteColorMap.getColorCount(); ++colorIndex) {
 							discreteColorMap.getRgbColor(colorIndex, r, g, b);
-							System.out.print(colorIndex  + ": (" + fesapi.UIntArray_getitem(r, 0) + ", " + fesapi.UIntArray_getitem(g, 0) + ", " + fesapi.UIntArray_getitem(b, 0) + ", ");
+							System.out.print(colorIndex  + ": (" + fesapi.UInt32Array_getitem(r, 0) + ", " + fesapi.UInt32Array_getitem(g, 0) + ", " + fesapi.UInt32Array_getitem(b, 0) + ", ");
 							System.out.print(discreteColorMap.getAlpha(colorIndex));
 							if (discreteColorMap.hasColorTitle(colorIndex)) {
 								System.out.print(", " + discreteColorMap.getColorTitle(colorIndex));
@@ -874,7 +875,8 @@ ${COMMENT_END}
 			for (int wbfIndex = 0; wbfIndex < wellboreTraj.getWellboreFrameRepresentationCount(); wbfIndex++) {
 				WellboreFrameRepresentation wbf = wellboreTraj.getWellboreFrameRepresentation(wbfIndex);
 				
-				System.out.println("WellboreFrameRepresentation title : " + wbf.getTitle());
+				WellboreFeature wf = (WellboreFeature) wbf.getInterpretation().getInterpretedFeature();
+				System.out.println("WellboreFrameRepresentation title : \"" + wbf.getTitle() + "\" of well \"" + wf.getWitsmlWellbore().getWell().getTitle() + "\"");
 				System.out.println("WellboreFrameRepresentation uuid : " + wbf.getUuid());
 				
 				System.out.println("Value Count : " + wbf.getMdValuesCount());

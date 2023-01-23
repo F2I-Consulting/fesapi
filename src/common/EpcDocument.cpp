@@ -358,6 +358,9 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 							break;
 						}
 					}
+					if (wrapper == nullptr) {
+						throw std::invalid_argument("The EpcExternalPartReference (aka HDF proxy) has not got any standard relationship towards an HDF5 file.");
+					}
 
 					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
 					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
@@ -454,7 +457,6 @@ std::string EpcDocument::resolvePartial(AbstractObject const * partialObj) const
 		package->openForReading(filePath);
 	}
 
-	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
 	for (auto const& fileContentTypePair : package->getFileContentType().getAllContentType()) {
 		if (fileContentTypePair.first.find(partialObj->getUuid()) != std::string::npos) {

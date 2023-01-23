@@ -27,8 +27,6 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
-const char* WellboreFeature::XML_NS = "resqml22";
-
 WellboreFeature::WellboreFeature(COMMON_NS::DataObjectRepository* repo, const string& guid, const std::string& title)
 {
 	if (repo == nullptr) {
@@ -41,6 +39,13 @@ WellboreFeature::WellboreFeature(COMMON_NS::DataObjectRepository* repo, const st
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
+}
+
+COMMON_NS::DataObjectReference WellboreFeature::getWitsmlWellboreDor() const
+{
+	return static_cast<resqml22__WellboreFeature*>(gsoapProxy2_3)->WitsmlWellbore != nullptr
+		? COMMON_NS::DataObjectReference(static_cast<resqml22__WellboreFeature*>(gsoapProxy2_3)->WitsmlWellbore->WitsmlWellbore)
+		: COMMON_NS::DataObjectReference();
 }
 
 void WellboreFeature::setWitsmlWellbore(WITSML2_NS::Wellbore * wellbore)

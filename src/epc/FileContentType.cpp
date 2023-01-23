@@ -19,50 +19,32 @@ under the License.
 #include "FileContentType.h"
 
 #include <sstream>
-#include <stdexcept>
 
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 using namespace epc; // in order not to prefix by "epc::" for each class in the "epc" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 
-const char* FileContentType::header = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\">";
-const char* FileContentType::footer = "</Types>";
-
 ContentType FileContentType::getContentType(const std::string& extensionOrPartName) const
 {
-    ContentTypeMap::const_iterator it = contentTypeMap.find("/"+ extensionOrPartName);
-    if(it==contentTypeMap.end()){
-        return ContentType();
-    }
-    return it->second;
-}
-
-const FileContentType::ContentTypeMap& FileContentType::getAllContentType() const
-{
-	return contentTypeMap;
+    auto it = contentTypeMap.find("/" + extensionOrPartName);
+    return it == contentTypeMap.end() ? ContentType() : it->second;
 }
 
 std::string FileContentType::toString() const
 {
 	// HEADER
 	ostringstream oss;
-	oss << header << endl;
+	oss << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" << std::endl;
+	oss << "<Types xmlns = \"http://schemas.openxmlformats.org/package/2006/content-types\">" << endl;
 	
 	// CONTENT
-	for(ContentTypeMap::const_iterator i=contentTypeMap.begin(); i!=contentTypeMap.end(); ++i) {
-		oss << "\t" << i->second.toString() << endl;
+	for (const auto& contentType : contentTypeMap) {
+		oss << "\t" << contentType.second.toString() << endl;
 	}
 
 	// FOOTER
-	oss << footer << endl;
+	oss << "</Types>" << endl;
 
 	return oss.str();
-}
-
-void FileContentType::addContentType(const ContentType & contentType)
-{
-	if (contentTypeMap.find(contentType.getExtensionOrPartName()) == contentTypeMap.end()) {
-		contentTypeMap[contentType.getExtensionOrPartName()] = contentType;
-	}
 }
 
 void FileContentType::readFromString(const string & textInput)
@@ -83,7 +65,7 @@ void FileContentType::readFromString(const string & textInput)
 		if (attStart != string::npos && attStart < end)
 		{
 			attStart += 11;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos)
 				extension = textInput.substr(attStart, attEnd - attStart);
 		}
@@ -94,7 +76,7 @@ void FileContentType::readFromString(const string & textInput)
 		if (attStart != string::npos && attStart < end)
 		{
 			attStart += 13;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos)
 				contentType = textInput.substr(attStart, attEnd - attStart);
 		}
@@ -118,7 +100,7 @@ void FileContentType::readFromString(const string & textInput)
 		size_t attStart = textInput.find("PartName=\"", pos);
 		if (attStart != string::npos && attStart < end) {
 			attStart += 10;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos) {
 				partName = textInput.substr(attStart, attEnd - attStart);
 			}
@@ -129,7 +111,7 @@ void FileContentType::readFromString(const string & textInput)
 		attStart = textInput.find("ContentType=\"", pos);
 		if (attStart != string::npos && attStart < end) {
 			attStart += 13;
-			size_t attEnd = textInput.find("\"", attStart);
+			const size_t attEnd = textInput.find('\"', attStart);
 			if (attStart != string::npos && attEnd != string::npos) {
 				contentType = textInput.substr(attStart, attEnd - attStart);
 			}

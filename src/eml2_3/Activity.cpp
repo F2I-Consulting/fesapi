@@ -42,7 +42,7 @@ Activity::Activity(EML2_NS::ActivityTemplate* activityTemplate, const string & g
 	setActivityTemplate(activityTemplate);
 }
 
-void Activity::pushBackParameter(const std::string title, double value, gsoap_resqml2_0_1::resqml20__ResqmlUom uom)
+void Activity::pushBackParameter(const std::string& title, double value, gsoap_resqml2_0_1::resqml20__ResqmlUom uom)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
@@ -69,7 +69,7 @@ void Activity::pushBackParameter(const std::string title, double value, gsoap_re
 	activity->Parameter.push_back(fpqp);
 }
 
-void Activity::pushBackParameter(const std::string title, const std::string & value)
+void Activity::pushBackParameter(const std::string& title, const std::string & value)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
@@ -95,7 +95,7 @@ void Activity::pushBackParameter(const std::string title, const std::string & va
 	activity->Parameter.push_back(sp);
 }
 
-void Activity::pushBackParameter(const std::string title, int64_t value)
+void Activity::pushBackParameter(const std::string& title, int64_t value)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
@@ -121,7 +121,7 @@ void Activity::pushBackParameter(const std::string title, int64_t value)
 	activity->Parameter.push_back(iqp);
 }
 
-void Activity::pushBackParameter(const std::string title, AbstractObject* resqmlObject)
+void Activity::pushBackParameter(const std::string& title, AbstractObject* resqmlObject)
 {
 	if (resqmlObject == nullptr) {
 		throw invalid_argument("The RESQML object must be non null.");

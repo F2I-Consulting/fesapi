@@ -20,8 +20,6 @@ under the License.
 
 #include <numeric>
 
-#include <hdf5.h>
-
 using namespace EML2_NS;
 
 void AbstractHdfProxy::initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, unsigned int emlVersion)
@@ -47,8 +45,8 @@ void AbstractHdfProxy::initGsoapProxy(COMMON_NS::DataObjectRepository * repo, co
 	repo->addDataObject(this);
 }
 
-hssize_t AbstractHdfProxy::getElementCount(const std::string & datasetName)
+uint64_t AbstractHdfProxy::getElementCount(const std::string & datasetName)
 {
 	auto elementCountPerDim = getElementCountPerDimension(datasetName);
-	return std::accumulate(elementCountPerDim.begin(), elementCountPerDim.end(), 1, std::multiplies<double>());
+	return std::accumulate(elementCountPerDim.begin(), elementCountPerDim.end(), 1, std::multiplies<uint64_t>());
 }

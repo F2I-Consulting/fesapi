@@ -25,7 +25,12 @@ under the License.
 
 #include "../common/DataFeeder.h"
 
-#include "../common/HdfProxyFactory.h"
+#include "hdf5.h" // We must do this include to ckeck H5_HAVE_PARALLEL
+#ifdef H5_HAVE_PARALLEL
+	#include "../common/HdfProxyMPIFactory.h"
+#else
+	#include "../common/HdfProxyFactory.h"
+#endif
 
 #include "../eml2_1/PropertyKind.h"
 
@@ -322,7 +327,11 @@ DataObjectRepository::DataObjectRepository() :
 	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
 	warnings(),
 	propertyKindMapper(), defaultHdfProxy(nullptr), defaultCrs(nullptr),
+#ifdef H5_HAVE_PARALLEL
+	hdfProxyFactory(new COMMON_NS::HdfProxyMPIFactory()),
+#else
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
+#endif
 	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
 	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_1),
 	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),
@@ -335,7 +344,11 @@ DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappi
 	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
 	warnings(),
 	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr),
+#ifdef H5_HAVE_PARALLEL
+	hdfProxyFactory(new COMMON_NS::HdfProxyMPIFactory()),
+#else
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
+#endif
 	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
 	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_1),
 	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),
@@ -433,8 +446,9 @@ std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getTargetObjects(C
 	else {
 		result = getTargetObjects(dataObj);
 		if (depth > 1) {
-			for (auto target : result) {
-				const std::vector< COMMON_NS::AbstractObject*>& nextTargets = getTargetObjects(target, depth - 1);
+			const size_t size = result.size();
+			for (size_t i = 0; i < size; ++i) { // We cannot use iterators if we insert inside a loop. Thus, no use of for range-based loop.
+				const std::vector< COMMON_NS::AbstractObject*>& nextTargets = getTargetObjects(result[i], depth - 1);
 				result.insert(result.end(), nextTargets.begin(), nextTargets.end());
 			}
 		}
@@ -464,8 +478,9 @@ std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getSourceObjects(C
 	else {
 		result = getSourceObjects(dataObj);
 		if (depth > 1) {
-			for (auto source : result) {
-				const std::vector< COMMON_NS::AbstractObject*>& nextSources = getSourceObjects(source, depth - 1);
+			const size_t size = result.size();
+			for (size_t i = 0; i < size; ++i) { // We cannot use iterators if we insert inside a loop. Thus, no use of for range-based loop.
+				const std::vector< COMMON_NS::AbstractObject*>& nextSources = getSourceObjects(result[i], depth - 1);
 				result.insert(result.end(), nextSources.begin(), nextSources.end());
 			}
 		}
@@ -543,12 +558,8 @@ bool DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy)
 
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjects[proxy->getUuid()].push_back(proxy);
-		if (forwardRels.count(proxy) == 0) {
-			forwardRels[proxy] = std::vector<COMMON_NS::AbstractObject *>();
-		}
-		if (backwardRels.count(proxy) == 0) {
-			backwardRels[proxy] = std::vector<COMMON_NS::AbstractObject *>();
-		}
+		forwardRels.emplace(proxy, std::vector<common::AbstractObject*>());
+		backwardRels.emplace(proxy, std::vector<common::AbstractObject*>());
 
 		auto now = std::chrono::system_clock::now();
 		journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CREATED));

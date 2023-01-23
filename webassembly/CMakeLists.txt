@@ -35,8 +35,11 @@ set(EMCC_ARGS
   -s EXPORT_ES6=1 # AFAIK, this enables MODULARIZE implicitly
   # The code is emited wrapped in a function that returns a promise.
   -s MODULARIZE=1
-  # use the older form of the import.meta.url line of code for systems that don’t recognize that code
-  -s USE_ES6_IMPORT_META=0
+  # Use the ES6 Module relative import feature 'import.meta.url'
+  # to auto-detect WASM Module path.
+  # It might not be supported on old browsers / toolchains. This setting
+  # may not be disabled when Node.js is targeted (-sENVIRONMENT=*node*).
+  #-s USE_ES6_IMPORT_META=0
   # Global variable to export the module as for environments without a standardized module loading system
   -s EXPORT_NAME="FesapiModule"
   

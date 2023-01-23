@@ -31,8 +31,8 @@ FilePart::FilePart(string outputPartPath) : fileRelationship()
 {
 	// Clean the potential ending slashes of outputPartPath
 	while (!outputPartPath.empty() && 
-		(outputPartPath[outputPartPath.size() - 1] == '/' || outputPartPath[outputPartPath.size() - 1] == '\\')) {
-		outputPartPath = outputPartPath.substr(0, outputPartPath.size() - 1);
+		(outputPartPath.back() == '/' || outputPartPath.back() == '\\')) {
+		outputPartPath.pop_back();
 	}
 	if (outputPartPath.empty()) {
 		throw invalid_argument("The file \"" + outputPartPath + "\" has got an illegal syntax for being added in the EPC file.");

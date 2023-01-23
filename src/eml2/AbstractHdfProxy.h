@@ -171,10 +171,9 @@ namespace EML2_NS
 		 * @param 	datasetName	The absolute name (not relative to a group) of the dataset we want to get
 		 * 						the number of elements.
 		 *
-		 * @returns	The number of elements of the dataset if successful, otherwise returns a negative
-		 * 			value.
+		 * @returns	The number of elements of the dataset
 		 */
-		DLL_IMPORT_OR_EXPORT signed long long getElementCount(const std::string & datasetName);
+		DLL_IMPORT_OR_EXPORT uint64_t getElementCount(const std::string & datasetName);
 
 		/**
 		 * Sets the new compression level which will be used for all data to be written

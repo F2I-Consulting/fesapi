@@ -57,7 +57,7 @@ namespace epc
 		 *
 		 * @param 	pType	The type.
 		 */
-		CoreProperty(TypeProperty pType);
+		explicit CoreProperty(TypeProperty pType);
 
 		/**
 		 * Constructor

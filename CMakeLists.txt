@@ -54,7 +54,20 @@ IF(WITH_LOCAL_HDF5)
 	ENDIF ()
 	set(HDF5_VERSION "99.99")
 ELSE()
-	FIND_PACKAGE (HDF5 1.8.18 REQUIRED COMPONENTS C)
+	find_package(HDF5 1.8.18 REQUIRED COMPONENTS C)
+	IF(HDF5_PREFER_PARALLEL)
+		if(NOT HDF5_IS_PARALLEL)
+			message(FATAL_ERROR
+				"Parallel HDF5 required but only serial version found!"
+			)
+		ENDIF()
+	ELSE()
+		IF(HDF5_IS_PARALLEL)
+			message(FATAL_ERROR
+				"Serial HDF5 required but only parallel version found!"
+			)
+		ENDIF()
+	ENDIF()
 ENDIF()
 
 # Zlib
@@ -123,7 +136,7 @@ check_cxx_source_compiles(
 if (NOT CAN_USE_STD_REGEX)
 	find_package(Boost 1.44.0 REQUIRED regex) # 1.44 because we want boost::uuids::to_string method
 else ()
-	find_package(Boost 1.44.0) # 1.44 because we want boost::uuids::to_string method
+	find_package(Boost 1.44.0 REQUIRED) # 1.44 because we want boost::uuids::to_string method
 endif()
 
 # ============================================================================

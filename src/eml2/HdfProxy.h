@@ -34,14 +34,14 @@ namespace EML2_NS
 		 *
 		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
-		HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractHdfProxy(partialObject), hdfFile(-1), compressionLevel(0) {}
+		HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractHdfProxy(partialObject) {}
 
 		/**
 		 * @brief	Constructor
 		 *
 		 * @param 	dor	The dor.
 		 */
-		HdfProxy(const COMMON_NS::DataObjectReference& dor) : AbstractHdfProxy(dor), hdfFile(-1), compressionLevel(0) {}
+		HdfProxy(const COMMON_NS::DataObjectReference& dor) : AbstractHdfProxy(dor) {}
 
 		/** Destructor. Closes the hdf file. */
 		virtual ~HdfProxy() { close(); }
@@ -98,7 +98,7 @@ namespace EML2_NS
 			const unsigned long long* numValuesInEachDimension,
 			const unsigned long long* offsetValuesInEachDimension,
 			unsigned int numDimensions
-		) final;
+		) /*final*/;
 
 		void writeGroupAttributes(const std::string& groupName,
 			const std::vector<std::string>& attributeNames,
@@ -234,7 +234,7 @@ namespace EML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
-			AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0), openedGroups() {}
+			AbstractHdfProxy(fromGsoap) {}
 
 		/**
 		 * Constructor
@@ -242,7 +242,7 @@ namespace EML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		HdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
-			AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0), openedGroups() {}
+			AbstractHdfProxy(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -363,13 +363,13 @@ namespace EML2_NS
 		 */
 		hdf5_hid_t openOrCreateGroup(const std::string& groupName);
 
-		/** The hdf file */
-		hdf5_hid_t hdfFile;
+		/** The hdf file identifier */
+		hdf5_hid_t hdfFile = -1;
 
-		/** The compression level */
-		unsigned int compressionLevel;
+		/** The compression level used for writing data */
+		unsigned int compressionLevel = 0;
 
-		/** Groups the opened belongs to */
+		/** Groups which are currently opened where key is their path and value is their identifier */
 		std::unordered_map< std::string, hdf5_hid_t > openedGroups;
 
 	private:

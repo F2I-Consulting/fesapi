@@ -105,6 +105,7 @@ void DiscreteProperty::readRepo() {
 	REQUIRE(intDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32);
 	RESQML2_NS::DiscreteProperty* longDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultLongPropUuid);
 	REQUIRE(longDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
+	REQUIRE(!longDiscreteProperty->hasConstantValues(0));
 
 	RESQML2_NS::DiscreteProperty* constantDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>("d6896172-795c-46be-bdd1-f9f9ed42f1f0");
 	REQUIRE(constantDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
@@ -114,4 +115,7 @@ void DiscreteProperty::readRepo() {
 	REQUIRE(constantDiscreteValues[0] == 10);
 	REQUIRE(constantDiscreteValues[1] == 10);
 	REQUIRE(constantDiscreteValues[2] == 10);
+	REQUIRE(constantDiscreteProperty->hasConstantValues(0));
+	REQUIRE(constantDiscreteProperty->getInt64ConstantValuesOfPatch(0) == 10);
+	REQUIRE_THROWS(constantDiscreteProperty->getDoubleConstantValuesOfPatch(0));
 }

@@ -16,12 +16,24 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "HdfProxy.h"
+#include "HdfProxyMPIFactory.h"
 
-using namespace EML2_0_NS;
+#include "../eml2_0/HdfProxyMPI.h"
 
-HdfProxy::HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess) :
-	EML2_NS::HdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
+using namespace COMMON_NS;
+
+EML2_NS::AbstractHdfProxy* HdfProxyMPIFactory::make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+	const std::string & packageDirAbsolutePath, const std::string & externalFilePath,
+	COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess)
 {
-	initGsoapProxy(repo, guid, title, 20);
+	if (repo == nullptr) {
+		throw std::invalid_argument("The repository cannot be nullptr.");
+	}
+
+	switch (repo->getDefaultEmlVersion()) {
+	case COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0:
+		return new EML2_0_NS::HdfProxyMPI(repo, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
+	default:
+		throw std::invalid_argument("Unrecognized Energistics standard.");
+	}
 }

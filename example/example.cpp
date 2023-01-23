@@ -155,7 +155,8 @@ RESQML2_NS::WellboreFeature* wellbore1 = nullptr;
 RESQML2_NS::WellboreInterpretation* wellbore1Interp1 = nullptr;
 RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 RESQML2_NS::SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
-RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = nullptr;
+RESQML2_NS::IjkGridExplicitRepresentation* twoCellsIjkGrid = nullptr;
+EML2_NS::PropertyKind* propType1 = nullptr;
 RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
 RESQML2_NS::ContinuousProperty* contColMapContProp = nullptr;
 RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = nullptr;
@@ -268,9 +269,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 
 	// Features
 	wellbore1 = pck->createWellboreFeature("22d5b48f-f789-46e7-a454-6d8bd05afd0b", "Wellbore1");
-	if (dynamic_cast<WITSML2_0_NS::Wellbore*>(witsmlWellbore) != nullptr) {
-		wellbore1->setWitsmlWellbore(static_cast<WITSML2_0_NS::Wellbore*>(witsmlWellbore));
-	}
+	wellbore1->setWitsmlWellbore(witsmlWellbore);
 
 	// Interpretations
 	wellbore1Interp1 = pck->createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
@@ -344,6 +343,9 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970, 1980, "myId");
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1990, 2000);
+
+	wellboreCompletion->pushBackPerforationExtraMetadata(0, "Testing Key", "Testing Value");
+
 	wellboreCompletion->pushBackPerforationHistory(0);
 	wellboreCompletion->setPerforationHistoryStatus(0, 0, gsoap_eml2_1::witsml20__PerforationStatus::open);
 	wellboreCompletion->setPerforationHistoryTopMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970);
@@ -780,13 +782,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		singleCellParameters, singleCellControlPoints, NULL, 1, singleCellPillarKind, hdfProxy);
 
 	// TWO SUGARS EXPLICIT
-	ijkgrid = pck->createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
+	twoCellsIjkGrid = pck->createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
 	double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
 		0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
 	unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
 	unsigned int splitCoordinateLineColumnCumulativeCount[2] = { 1, 2 };
 	unsigned int splitCoordinateLineColumns[2] = { 1, 1 };
-	ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape::vertical, gsoap_resqml2_0_1::resqml20__KDirection::down, false, nodes, hdfProxy,
+	twoCellsIjkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape::vertical, gsoap_resqml2_0_1::resqml20__KDirection::down, false, nodes, hdfProxy,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 	
 	// FOUR SUGARS PARAMETRIC
@@ -929,7 +931,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	{
 		RESQML2_NS::SubRepresentation* faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid", gsoap_eml2_3::eml23__IndexableElement::pillars);
 		int64_t faultPillar[2] = { 1, 4 };
-		faultSubRep->pushBackSubRepresentationPatch(2, faultPillar, ijkgrid, hdfProxy);
+		faultSubRep->pushBackSubRepresentationPatch(2, faultPillar, twoCellsIjkGrid, hdfProxy);
 	}
 
 	RESQML2_NS::SubRepresentation* actnum = pck->createSubRepresentation("323001d0-468c-41d7-abec-7d12c3c9428b", "ACTNUM", gsoap_eml2_3::eml23__IndexableElement::cells);
@@ -939,11 +941,28 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	};
 	actnum->pushBackSubRepresentationPatch(21, actnumValues, ijkgrid432, hdfProxy);
 
+	// Double grid subrep
+	RESQML2_NS::SubRepresentation * doubleGridSubrep = pck->createSubRepresentation("f6d23b9c-e45d-4638-9601-ae3b682129a0", "TEST MULTI GRIDS SUBREP", gsoap_eml2_3::eml23__IndexableElement::cells));
+	doubleGridSubrep->pushBackSupportingRepresentation(ijkgrid432);
+	doubleGridSubrep->pushBackSupportingRepresentation(twoCellsIjkGrid);
+	uint64_t doubleGridSubrepValues[23] = {
+		1, 4,
+		1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
+	};
+	short doubleGridSubrepSupportingRepIndices[23] = {
+		0, 0,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+	};
+
+	doubleGridSubrep->pushBackSubRepresentationPatch(23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
+
 	/**************
 	 Grid Connection
 	***************/
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet = pck->createGridConnectionSetRepresentation("03bb6fc0-fa3e-11e5-8c09-0002a5d5c51b", "GridConnectionSetRepresentation");
-	gridConnSet->pushBackSupportingGridRepresentation(ijkgrid);
+	gridConnSet->pushBackSupportingGridRepresentation(twoCellsIjkGrid);
 	int64_t cellConn[6] = { 0, 9999, 0, 1, 9999, 1 };
 	gridConnSet->setCellIndexPairs(3, cellConn, 9999, hdfProxy);
 	int localFacePerCellIndexPairs[6] = { 3, -1, 3, 5, -1, 5 };
@@ -993,11 +1012,11 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	}
 #endif
-	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex",
+	discreteProp1 = pck->createDiscreteProperty(twoCellsIjkGrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex",
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
-	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex",
+	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(twoCellsIjkGrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex",
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	int64_t prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
@@ -1025,6 +1044,14 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	discreteProp432->pushBackLongHdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
 
 	/**************
+	 Continuous Properties
+	***************/
+	RESQML2_NS::ContinuousProperty* continuousPropOnIjkgridParametric = pck->createContinuousProperty(ijkgridParametric, "a31d7376-1a2a-47f3-9586-dd74ac13d820", "Continuous prop with nan", 1,
+		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+	double continuousPropValuesOnIjkgridParametric[4] = { -1.1, 0.0, std::numeric_limits<double>::quiet_NaN(), 2.2 };
+	continuousPropOnIjkgridParametric->pushBackDoubleHdf5Array3dOfValues(continuousPropValuesOnIjkgridParametric, 2, 1, 2);
+
+	/**************
 	 Time Series
 	***************/
 	EML2_NS::TimeSeries * timeSeries = pck->createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series");
@@ -1041,23 +1068,23 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		// RESQML2.0 forces to export values at each timestamp of the a whole time series in a single property
+		// RESQML2.0 forces to export values at each timestamp of the whole time series in a single property
 
-		RESQML2_NS::ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
+		RESQML2_NS::ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(twoCellsIjkGrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		continuousPropTime0->setTimeSeries(timeSeries);
 		continuousPropTime0->setSingleTimestamp(timeSeries->getTimestamp(0));
 		double valuesTime0[2] = { 0, 1 };
 		continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
 
-		RESQML2_NS::ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property",
+		RESQML2_NS::ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(twoCellsIjkGrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property",
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		continuousPropTime1->setTimeSeries(timeSeries);
 		continuousPropTime1->setSingleTimestamp(1409753895);
 		double valuesTime1[2] = { 2, 3 };
 		continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
 
-		RESQML2_NS::ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property",
+		RESQML2_NS::ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(twoCellsIjkGrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property",
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		continuousPropTime2->setTimeSeries(timeSeries);
 		continuousPropTime2->setSingleTimestamp(1441289895);
@@ -1069,7 +1096,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		// RESQML2.2 encourages to export values for the whole time series in a single property
 
 		pwls3Length = pck->createPartial<EML2_3_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
-		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
+		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(twoCellsIjkGrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 
 		dynamicContinuousProp->setTimeSeries(timeSeries);
@@ -1087,7 +1114,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	EML2_NS::ColumnBasedTable* stringTableLookup = pck->createFaciesTable("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
 	stringTableLookup->setInt64Values(0, { 0, 1 });
 	stringTableLookup->setStringValues(1, { "Cell index 0", "Cell index 1" });
-	RESQML2_NS::DiscreteProperty* categoricalProp = pck->createCategoricalProperty(ijkgrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)",
+	RESQML2_NS::DiscreteProperty* categoricalProp = pck->createCategoricalProperty(twoCellsIjkGrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)",
 		gsoap_eml2_3::eml23__IndexableElement::cells, stringTableLookup, propType1);
 	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 	
@@ -1095,7 +1122,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	 Points Properties
 	***************/
 
-	RESQML2_NS::PointsProperty* pointsProp = pck->createPointsProperty(ijkgrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center",
+	RESQML2_NS::PointsProperty* pointsProp = pck->createPointsProperty(twoCellsIjkGrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center",
 		gsoap_eml2_3::eml23__IndexableElement::cells, local3dCrs, propType1);
 	double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
 	pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
@@ -1109,14 +1136,14 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		0, 2, 1,
 		0, 1, 1,
 		0, 3, 1,
-		ijkgrid);
+		twoCellsIjkGrid);
 
 	//**************
 	// Stratigraphy
 	//**************
 	if (stratiColumnRank0 != nullptr) {
 		int64_t stratiUnitIndice = 0;
-		ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
+		twoCellsIjkGrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
 	}
 
 	// Partial transfer
@@ -1159,8 +1186,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	uint64_t faceIndicesPerCell[9] = { 0, 1, 2, 3, // tetra
 		0, 4, 5, 6, 7 }; //wedge
 	uint64_t faceIndicesCumulativeCountPerCell[2] = { 4, 9 };
-	// Exporting the right handness of each face of each cell is mandatory. However, it is often ignored by the readers. Dummy values
-	unsigned char faceRightHandness[9] = { 0, 0, 1, 1, 1, 0, 1, 0, 0 };
+	// Exporting the right handness of each face of each cell is mandatory.
+	unsigned char faceRightHandness[9] = { 1, 0, 0, 1, 0, 0, 0, 1, 1 };
 
 	unstructuredGrid->setGeometry(faceRightHandness, unstructuredGridPoints, 7, nullptr, faceIndicesPerCell, faceIndicesCumulativeCountPerCell, 8, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace,
 		gsoap_resqml2_0_1::resqml20__CellShape::prism);
@@ -4542,6 +4569,10 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
 	{
 		cout << std::endl << "perforation " << perforationIndex << " with uid \"" << wellboreCompletion->getPerforationUid(perforationIndex) << "\":" << std::endl;
+		for (const auto& extraMetadata : wellboreCompletion->getPerforationExtraMetadata(0, "Testing Key")) {
+			cout << "Testing Key extra Metadata Value: " << extraMetadata << std::endl;
+		}
+
 		if (wellboreCompletion->hasPerforationMdDatum(perforationIndex))
 		{
 			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationIndex) << std::endl;
@@ -5547,12 +5578,44 @@ void deserialize(const string & inputFile)
 	}
 }
 
+void appendAContinuousProp(const string& filePath)
+{
+	COMMON_NS::EpcDocument pck(filePath);
+	COMMON_NS::DataObjectRepository repo;
+	const string resqmlResult = pck.deserializeInto(repo, COMMON_NS::DataObjectRepository::openingMode::READ_WRITE);	
+
+	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("df2103a0-fa3d-11e5-b8d4-0002a5d5c51b");
+	if (twoCellsIjkGrid == nullptr) {
+		ijkGrid = repo.createPartialIjkGridRepresentation("df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Partial grid");
+	}
+
+	RESQML2_NS::ContinuousProperty* continuousProp = nullptr;
+	if (repo.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		continuousProp = repo.createContinuousProperty(ijkGrid, "5afcdf0a-221c-4a63-9d64-895add76fa7d", "Appended Property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		
+	}
+#if WITH_RESQML2_2
+	else {
+		EML2_NS::PropertyKind* standardLengthPropKind = repo.getDataObjectByUuid<EML2_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d");
+		continuousProp = repo.createContinuousProperty(ijkGrid, "5afcdf0a-221c-4a63-9d64-895add76fa7d", "Appended Property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
+	}	
+#endif
+
+	double values[2] = { 0, 1 };
+	continuousProp->pushBackDoubleHdf5Array3dOfValues(values, 2, 1, 1);
+
+	pck.serializeFrom(repo);
+}
+
 // filepath is defined in a macro to better check memory leak
 #define filePath "../../testingPackageCpp.epc"
 int main()
 {
 	//try {
 		if (serialize(filePath)) {
+			appendAContinuousProp(filePath);
 			deserialize(filePath);
 		}
 	/*}
