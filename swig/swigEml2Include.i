@@ -953,11 +953,6 @@ namespace EML2_NS
 		 * @param 	value	The value of the parameter to push back.
 		 */
 		void pushBackParameter(const std::string title, const std::string & value);
-		void pushBackParameter(const std::string& title, int64_t value);
-		void pushBackParameter(const std::string& title, COMMON_NS::AbstractObject* resqmlObject);
-		
-		unsigned int getParameterCount() const;
-		unsigned int getParameterCount(const std::string& paramTitle) const;
 
 		/**
 		 * Pushes back an integer parameter in this instance. This parameter must exist in the associated
@@ -973,24 +968,53 @@ namespace EML2_NS
 		 * @param 	title	The title of the parameter to push back.
 		 * @param 	value	The value of the parameter to push back.
 		 */
-		void pushBackParameter(const std::string title,
-			int64_t value);
+		void pushBackParameter(const std::string& title, int64_t value);
 
-		bool isAFloatingPointQuantityParameter(const std::string& paramTitle) const;
-		bool isAFloatingPointQuantityParameter(unsigned int index) const;
-		double getFloatingPointQuantityParameterValue(unsigned int index) const;
+		/**
+		 * Pushes back a RESQML object parameter in this instance. This parameter must exist in the
+		 * associated activity template.
+		 *
+		 * @exception	std::invalid_argument	If @p resqmlObject is null.
+		 * 										* @exception	std::invalid_argument	If the parameter @p
+		 * 										title does not exist in the
+		 * 											associated activity template.
+		 * @exception	std::invalid_argument	If the maximum number of occurrences has already been
+		 * 										reached for parameter @p title.
+		 * @exception	std::invalid_argument	If The parameter template @p title does not allow a a
+		 * 										data object datatype.
+		 *
+		 * @param 	  	title			The title of the parameter to push back.
+		 * @param [in]	resqmlObject	The RESQML object, value of the parameter to push back.
+		 */
+		void pushBackParameter(const std::string& title, COMMON_NS::AbstractObject* resqmlObject);
+		
 
-		bool isAnIntegerQuantityParameter(const std::string& paramTitle) const;
-		bool isAnIntegerQuantityParameter(unsigned int index) const;
-		int64_t getIntegerQuantityParameterValue(unsigned int index) const;
+		/**
+		 * Get the count of all the parameters
+		 *
+		 * @returns	The parameter count.
+		 */
+		uint64_t getParameterCount() const;
 
-		bool isAStringParameter(const std::string& paramTitle) const;
-		bool isAStringParameter(unsigned int index) const;
-		const std::string & getStringParameterValue(unsigned int index) const;
+		/**
+		 * Gets the count of all the parameters which have the same title.
+		 *
+		 * @param 	paramTitle	The title of the parameters we look for.
+		 *
+		 * @returns	The parameter count.
+		 */
+		uint64_t getParameterCount(const std::string& paramTitle) const;
 
-		bool isAResqmlObjectParameter(const std::string& paramTitle) const;
-		bool isAResqmlObjectParameter(unsigned int index) const;
-		COMMON_NS::AbstractObject* getResqmlObjectParameterValue(unsigned int index) const;
+		/**
+		 * Gets the title of a given parameter
+		 *
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter for which we look for the title.
+		 *
+		 * @returns	The parameter title.
+		 */
+		std::string getParameterTitle(uint64_t index) const;
 
 		/**
 		 * Gets the indices of all the parameters sharing a given title.

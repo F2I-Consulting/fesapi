@@ -98,7 +98,7 @@ namespace EML2_NS
 			const unsigned long long* numValuesInEachDimension,
 			const unsigned long long* offsetValuesInEachDimension,
 			unsigned int numDimensions
-		) /*final*/;
+		) final;
 
 		void writeGroupAttributes(const std::string& groupName,
 			const std::vector<std::string>& attributeNames,

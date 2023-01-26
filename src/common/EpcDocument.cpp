@@ -274,7 +274,6 @@ std::string EpcDocument::deserializeInto(DataObjectRepository& repo, DataObjectR
 					static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRelativePath(target);
 					static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
 					static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
-					repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
 				}
 				else {
 					result += "The EpcExternalPartReference (aka HDF proxy) " + contentTypeEntry.second.getExtensionOrPartName() + " is either not XML valid or it does not contain any EPC external relationship entry towards an HDF5 file.\n";
@@ -297,6 +296,12 @@ std::string EpcDocument::deserializeInto(DataObjectRepository& repo, DataObjectR
 
 	for (const auto& warning : repo.getWarnings()) {
 		result += warning + '\n';
+	}
+
+	if (repo.getHdfProxyCount() == 1) {
+		auto* defaultHdfProxy = repo.getHdfProxy(0);
+		repo.setDefaultHdfProxy(defaultHdfProxy);
+		defaultHdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not and obj_EpcExternalPartReference
 	}
 
 	return result;
@@ -364,8 +369,6 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 
 					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
 					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
-
-					repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
 				}
 				else {
 					repo.createPartial(extractUuidFromFileName(contentTypeEntry.first), "Partial title", contentType);
@@ -375,6 +378,12 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 	}
 
 	deserializeRelFiles(repo);
+
+	if (repo.getHdfProxyCount() == 1) {
+		auto* defaultHdfProxy = repo.getHdfProxy(0);
+		repo.setDefaultHdfProxy(defaultHdfProxy);
+		defaultHdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not and obj_EpcExternalPartReference
+	}
 
 	return result;
 }

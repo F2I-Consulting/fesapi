@@ -98,18 +98,6 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	getRepository()->addRelationship(this, strLookup);
 }
 
-int64_t CategoricalProperty::getNullValue(uint64_t patchIndex) const
-{
-	gsoap_resqml2_0_1::_resqml20__CategoricalProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__CategoricalProperty*>(gsoapProxy2_0_1);
-
-	auto abstractIntArray = prop->PatchOfValues[patchIndex == (numeric_limits<uint64_t>::max)() ? prop->PatchOfValues.size() - 1 : patchIndex]->Values;
-	if (abstractIntArray->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		return (std::numeric_limits<int64_t>::max)();
-	}
-
-	return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(abstractIntArray)->NullValue;
-}
-
 COMMON_NS::DataObjectReference CategoricalProperty::getLookupDor() const
 {
 	return COMMON_NS::DataObjectReference(static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup);

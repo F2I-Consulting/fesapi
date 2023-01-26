@@ -172,35 +172,15 @@ namespace RESQML2_NS
 			unsigned int elementCountInFastestDimension, RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid) = 0;
 
 		/**
-		 * Pushes back a new patch in this sub-representation.
-		 *
-		 * @param 	  	elementCount			The count of elements which constitutes the sub-
-		 * 										representation patch.
-		 * @param [in]	elementIndices			The indices of the elements in the supporting
-		 * 										representation.
-		 * @param [in]	supportingRep			The supporting representation
-		 * 										corresponding to the element indices.
-		 * @param [in]	proxy					(Optional) The HDF proxy where the numerical values (indices)
-		 * 										are stored.
-		 * @param [in]	supportingRepIndices	(Optional) The indices of the supporting representation
-		 * 										corresponding to the element indices. The count must be
-		 * 										elementCount.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, short* supportingRepIndices = nullptr);
-
-		/**
 		 * Pushes back a new patch (without pairwise elements) in this sub-representation.
 		 * The pushed patch is uninitialized and values must be set to this new patch afterwards.
 		 *
-		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
-		 * 										sub-representation patch.
-		 * @param [in]	elementIndices			The indices of the elements in the supporting
-		 * 										representation.
+		 * @param 	  	elementCount			The count of elements which will be later set in this patch.
+		 * @param [in]	supportingRep			The supporting representation of this patch.
 		 * @param [in]	proxy					The HDF proxy where the numerical values (indices)
-		 * 										are stored.
+		 * 										are stored. A nullptr value means to use default HDF proxy.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount,
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(uint64_t elementCount, RESQML2_NS::AbstractRepresentation* supportingRep,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -226,11 +206,11 @@ namespace RESQML2_NS
 		 * 											in the last subrepresentation patch (the one with the
 		 * 											greatest index).
 		 */	
-		DLL_IMPORT_OR_EXPORT void setElementIndices(uint64_t* elementIndices, 
+		DLL_IMPORT_OR_EXPORT void setElementIndices(uint64_t const* elementIndices, 
 			uint64_t elementCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)());
 		
 		/**
 		 * Pushes back a new patch in this sub-representation which is constituted by means of pairwise

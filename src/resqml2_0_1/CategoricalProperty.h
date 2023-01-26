@@ -121,8 +121,6 @@ namespace RESQML2_0_1_NS
 		*/
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getNullValue(uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) const final;
-
 		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(uint64_t = 0) const final { return false; }
 
 		DLL_IMPORT_OR_EXPORT int64_t getMinimumValue(uint64_t = 0) const final { throw std::logic_error("A RESQML2.0.1 cannot have a minimum value."); }

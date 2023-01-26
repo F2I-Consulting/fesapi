@@ -64,12 +64,12 @@ COMMON_NS::DataObjectReference AbstractRepresentation::getHdfProxyDorFromPointGe
 		case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dZValueArray: {
 			auto const tmp = static_cast<gsoap_eml2_3::resqml22__Point3dZValueArray *>(patch->Points);
 			if (tmp->ZValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
-				return getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray *>(tmp->ZValues)->Values->ExternalDataArrayPart[0]);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray *>(tmp->ZValues)->Values->ExternalDataArrayPart[0]));
 			}
 			break;
 		}
 		case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray:
-			return getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray *>(patch->Points)->Coordinates->ExternalDataArrayPart[0]);
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray *>(patch->Points)->Coordinates->ExternalDataArrayPart[0]));
 		}
 	}
 

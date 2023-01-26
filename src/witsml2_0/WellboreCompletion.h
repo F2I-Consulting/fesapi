@@ -108,7 +108,7 @@ namespace WITSML2_0_NS
 		 * @param 	key  	The key of the metadata.
 		 * @param 	value	The value of the metadata.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackPerforationExtraMetadata(unsigned int index,
+		DLL_IMPORT_OR_EXPORT void pushBackPerforationExtraMetadata(uint64_t index,
 			const std::string & key, const std::string & value);
 
 		/**
@@ -118,7 +118,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	The vector of all metadata values sharing this @p key (empty vector if there is no such value) in the perforation at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getPerforationExtraMetadata(unsigned int index, const std::string & key) const;
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getPerforationExtraMetadata(uint64_t index, const std::string & key) const;
 
 		/**
 		 * Pushes a back perforation history

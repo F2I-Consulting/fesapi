@@ -23,6 +23,7 @@ Product and source code licensed by Genivia Inc., contact@genivia.com
 #elif defined(_MSC_VER)
 #pragma warning(disable : 4706) /* assignment within conditional expression */
 #pragma warning(disable : 4458) /* eclaration hides class member */
+#pragma warning(disable : 4065) /* switch statement contains 'default' but no 'case' labels */
 #endif
 
 namespace gsoap_witsml1_4 {

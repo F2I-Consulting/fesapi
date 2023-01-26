@@ -18,10 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#if defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic push 
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#endif
 #include "../proxies/gsoap_resqml2_0_1H.h"
 #include "../proxies/gsoap_eml2_1H.h"
 #include "../proxies/gsoap_eml2_2H.h"
 #include "../proxies/gsoap_eml2_3H.h"
+#if defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic pop
+#endif
 
 #include "../nsDefinitions.h"
 

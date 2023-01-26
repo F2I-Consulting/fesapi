@@ -83,8 +83,8 @@ namespace EML2_3_NS
 		 * @param 	title	The title.
 		 * @param 	value	The value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
-			const std::string & value) final;
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
+			const std::string& value) final;
 
 		/**
 		 * Push back an integer parameter in the instance. This parameter must exist in the associated
@@ -93,7 +93,7 @@ namespace EML2_3_NS
 		 * @param 	title	The title.
 		 * @param 	value	The value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
 			int64_t value) final;
 
 		/**
@@ -103,7 +103,7 @@ namespace EML2_3_NS
 		 * @param 		  	title			The title.
 		 * @param [in,out]	resqmlObject	If non-null, the resqml object.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
 			AbstractObject* resqmlObject) final;
 
 		/**

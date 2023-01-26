@@ -25,35 +25,7 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t * elementIndices, EML2_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
-{
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-
-	std::string supportingRepDataset = "";
-	ostringstream ossForHdfSupRep;
-	if (supportingRepIndices != nullptr) {
-		ossForHdfSupRep << "subrepresentation_supportingRepresentationIndices_patch" << getPatchCount();
-		supportingRepDataset = getHdfGroup() + "/" + ossForHdfSupRep.str();
-	}
-	const std::string subRepDatasetName = "subrepresentation_elementIndices0_patch" + std::to_string(getPatchCount());
-
-	// Arbitrarily set null value to -1 since it has no interest to write element index null value in this method
-	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/" + subRepDatasetName, -1, proxy, supportingRepDataset);
-
-	// ************ HDF ************		
-	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), subRepDatasetName, elementIndices, &numValues, 1);
-	if (supportingRepIndices != nullptr) {
-		proxy->writeArrayNd(getHdfGroup(), ossForHdfSupRep.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, supportingRepIndices, &numValues, 1);
-	}
-}
-
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount,
+void SubRepresentation::pushBackSubRepresentationPatch(uint64_t elementCount, RESQML2_NS::AbstractRepresentation* supportingRep,
 	EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
@@ -71,14 +43,14 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64,
 		&numValues, 1);
 
-	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/" + datasetName, -1, proxy, "");
+	pushBackRefToExistingDataset(elementCount, getHdfGroup() + "/" + datasetName, -1, supportingRep, proxy);
 }
 
-void SubRepresentation::setElementIndices(uint64_t* elementIndices, 
+void SubRepresentation::setElementIndices(uint64_t const* elementIndices, 
 	uint64_t elementCount,
 	uint64_t offset,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
 	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<unsigned int>::max)()) {
 		throw out_of_range("The subrepresentation patch is out of range");
@@ -92,20 +64,11 @@ void SubRepresentation::setElementIndices(uint64_t* elementIndices,
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	ostringstream oss;
-	oss << "subrepresentation_elementIndices0_patch";
-	if (patchIndex == (numeric_limits<unsigned int>::max)()) {
-		oss << getPatchCount() - 1;
-	}
-	else {
-		oss << patchIndex;
-	}
-
 	// HDF
 	hsize_t numValues = elementCount;
 	hsize_t offsetValues = offset;
 	proxy->writeArrayNdSlab(getHdfGroup(),
-		oss.str(),
+		"subrepresentation_elementIndices0_patch" + std::to_string(patchIndex == (numeric_limits<uint64_t>::max)() ? getPatchCount() - 1 : patchIndex),
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64,
 		elementIndices,
 		&numValues,
@@ -113,19 +76,7 @@ void SubRepresentation::setElementIndices(uint64_t* elementIndices,
 		1);
 }
 
-void SubRepresentation::loadTargetRelationships()
-{
-	AbstractRepresentation::loadTargetRelationships();
-
-	// Supporting representation
-	const uint64_t supRepCount = getSupportingRepresentationCount();
-	for (uint64_t supRepIndex = 0; supRepIndex < supRepCount; ++supRepIndex) {
-		COMMON_NS::DataObjectReference dor = getSupportingRepresentationDor(supRepIndex);
-		convertDorIntoRel<RESQML2_NS::AbstractRepresentation>(dor);
-	}
-}
-
-uint64_t SubRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t SubRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");

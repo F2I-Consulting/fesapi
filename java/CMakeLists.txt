@@ -64,7 +64,7 @@ if (WITH_RESQML2_2)
 endif (WITH_RESQML2_2)
 if (UNIX)
 	string(APPEND SWIG_DEFINITIONS " -DSWIGWORDSIZE64")
-endif (WIN32)
+endif (UNIX)
 
 # SWIG execution
 if (WIN32)

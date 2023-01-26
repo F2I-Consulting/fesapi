@@ -6,9 +6,7 @@ regarding copyright ownership.  The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
 "License"; you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
-
   http://www.apache.org/licenses/LICENSE-2.0
-
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
 "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -88,7 +86,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		DiscreteProperty(gsoap_resqml2_0_1::_resqml20__DiscreteProperty* fromGsoap): RESQML2_NS::DiscreteProperty(fromGsoap) {}
+		DiscreteProperty(gsoap_resqml2_0_1::_resqml20__DiscreteProperty* fromGsoap) : RESQML2_NS::DiscreteProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~DiscreteProperty() = default;
@@ -98,8 +96,6 @@ namespace RESQML2_0_1_NS
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final;
 
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
-
-		DLL_IMPORT_OR_EXPORT int64_t getNullValue(uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) const final;
 
 		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(uint64_t index = 0) const final;
 
@@ -131,7 +127,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final{ return XML_NS; }
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "DiscreteProperty";

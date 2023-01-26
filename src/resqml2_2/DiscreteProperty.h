@@ -97,8 +97,6 @@ namespace RESQML2_2_NS
 			return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__DiscreteProperty*>(gsoapProxy2_3)->CategoryLookup);
 		}
 
-		DLL_IMPORT_OR_EXPORT int64_t getNullValue(uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) const final;
-
 		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(uint64_t index = 0) const final;
 
 		DLL_IMPORT_OR_EXPORT int64_t getMinimumValue(uint64_t index = 0) const final;

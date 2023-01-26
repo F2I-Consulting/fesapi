@@ -119,10 +119,10 @@ void ContinuousProperty::setValuesOfFloatHdf5Array3dOfValues(
 	uint64_t offsetInSlowestDim,
 	bool computeMinMax,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
-	const hsize_t offsetPerDimension[3] = {offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim};
+	const uint64_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
+	const uint64_t offsetPerDimension[3] = {offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim};
 	setValuesOfFloatHdf5ArrayOfValues(
 		values, 
 		valueCountPerDimension, 
@@ -146,8 +146,8 @@ void ContinuousProperty::setValuesOfDoubleHdf5Array3dOfValues(
 	EML2_NS::AbstractHdfProxy* proxy,
 	uint64_t patchIndex)
 {
-	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
-	const hsize_t offsetPerDimension[3] = {offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim};
+	const uint64_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
+	const uint64_t offsetPerDimension[3] = {offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim};
 	setValuesOfDoubleHdf5ArrayOfValues(
 		values, 
 		valueCountPerDimension, 
@@ -173,7 +173,7 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, ui
 
 void ContinuousProperty::pushBackHdf5ArrayOfValues(
 	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-	unsigned long long const * numValues,
+	uint64_t const * numValues,
 	unsigned int numArrayDimensions,
 	double * minimumValue, double * maximumValue,
 	EML2_NS::AbstractHdfProxy* proxy)
@@ -195,12 +195,11 @@ void ContinuousProperty::pushBackHdf5Array1dOfValues(
 	double minimumValue, double maximumValue,
 	EML2_NS::AbstractHdfProxy* proxy)
 {
-	const hsize_t valueCountPerDimension = valueCount;
 	if (minimumValue == minimumValue && maximumValue == maximumValue) {
-		pushBackHdf5ArrayOfValues(datatype, &valueCountPerDimension, 1, &minimumValue, &maximumValue, proxy);
+		pushBackHdf5ArrayOfValues(datatype, &valueCount, 1, &minimumValue, &maximumValue, proxy);
 	}
 	else {
-		pushBackHdf5ArrayOfValues(datatype, &valueCountPerDimension, 1, nullptr, nullptr, proxy);
+		pushBackHdf5ArrayOfValues(datatype, &valueCount, 1, nullptr, nullptr, proxy);
 	}
 }
 
@@ -211,7 +210,7 @@ void ContinuousProperty::pushBackHdf5Array2dOfValues(
 	double minimumValue, double maximumValue,
 	EML2_NS::AbstractHdfProxy* proxy)
 {
-	const hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
+	const uint64_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
 	if (minimumValue == minimumValue && maximumValue == maximumValue) {
 		pushBackHdf5ArrayOfValues(datatype, valueCountPerDimension, 2, &minimumValue, &maximumValue, proxy);
 	}
@@ -228,7 +227,7 @@ void ContinuousProperty::pushBackHdf5Array3dOfValues(
 	double minimumValue, double maximumValue,
 	EML2_NS::AbstractHdfProxy* proxy)
 {
-	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
+	const uint64_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
 	if (minimumValue == minimumValue && maximumValue == maximumValue) {
 		pushBackHdf5ArrayOfValues(datatype, valueCountPerDimension, 3, &minimumValue, &maximumValue, proxy);
 	}
@@ -252,11 +251,11 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 }
 
 void ContinuousProperty::setValuesOfDoubleHdf5ArrayOfValues(
-	double const * values, unsigned long long const * numValuesInEachDimension,
-	unsigned long long const * offsetInEachDimension, unsigned int numArrayDimensions,
+	double const * values, uint64_t const * numValuesInEachDimension,
+	uint64_t const * offsetInEachDimension, unsigned int numArrayDimensions,
 	bool computeMinMax,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
 	AbstractValuesProperty::setValuesOfDoubleHdf5ArrayOfValues(values, numValuesInEachDimension, offsetInEachDimension, numArrayDimensions, proxy, patchIndex);
 

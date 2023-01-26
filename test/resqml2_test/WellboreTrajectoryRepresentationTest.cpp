@@ -18,16 +18,16 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 
-#include "catch.hpp"
-#include "resqml2/LocalDepth3dCrs.h"
-#include "resqml2/LocalTime3dCrs.h"
-#include "resqml2/MdDatum.h"
+#include "eml2/AbstractLocal3dCrs.h"
+#include "eml2/ReferencePointInALocalEngineeringCompoundCrs.h"
+
 #include "resqml2/WellboreFeature.h"
-#include "resqml2/WellboreInterpretation.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
 
 #include "witsml2/Well.h"
 #include "witsml2/Wellbore.h"
+
+#include "resqml2_0_1/WellboreInterpretation.h"
 
 using namespace std;
 using namespace resqml2_test;
@@ -48,7 +48,12 @@ WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(const
 }
 
 void WellboreTrajectoryRepresentationTest::initRepo() {
-	WellboreInterpretation* interp = repo->createPartial<RESQML2_0_1_NS::WellboreInterpretation>("", "");
+	WITSML2_NS::Well* well = repo->createWell("1f885c7b-5262-41ef-bd1c-e06f40c08387", "");
+	WITSML2_NS::Wellbore* wellbore = repo->createWellbore(well, "", "");
+
+	WellboreFeature* feature = repo->createWellboreFeature("", "");
+	feature->setWitsmlWellbore(wellbore);
+	WellboreInterpretation* interp = repo->createWellboreInterpretation(feature, "", "", true);
 	auto* mdDatum = repo->createReferencePointInALocalEngineeringCompoundCrs("", "", nullptr, gsoap_eml2_3::eml23__ReferencePointKind::mean_x0020sea_x0020level, 275, 75, 0);
 
 	// creating the WellboreTrajectoryRepresentation in m and ft and depth

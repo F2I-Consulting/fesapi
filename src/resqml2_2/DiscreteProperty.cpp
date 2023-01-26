@@ -101,18 +101,6 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 	getRepository()->addRelationship(this, strLookup);
 }
 
-int64_t DiscreteProperty::getNullValue(uint64_t patchIndex) const
-{
-	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
-
-	auto abstractIntArray = prop->ValuesForPatch[patchIndex == (numeric_limits<uint64_t>::max)() ? prop->ValuesForPatch.size() - 1 : patchIndex];
-	if (abstractIntArray->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		return (std::numeric_limits<int64_t>::max)();
-	}
-
-	return static_cast<eml23__IntegerExternalArray*>(abstractIntArray)->NullValue;
-}
-
 bool DiscreteProperty::hasMinimumValue(uint64_t index) const
 {
 	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);

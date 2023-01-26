@@ -3249,14 +3249,12 @@ namespace RESQML2_NS
 		 * Pushes back a new patch (without pairwise elements) in this sub-representation.
 		 * The pushed patch is uninitialized and values must be set to this new patch afterwards.
 		 *
-		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
-		 * 										sub-representation patch.
-		 * @param [in]	elementIndices			The indices of the elements in the supporting
-		 * 										representation.
+		 * @param 	  	elementCount			The count of elements which will be later set in this patch.
+		 * @param [in]	supportingRep			The supporting representation of this patch.
 		 * @param [in]	proxy					The HDF proxy where the numerical values (indices)
-		 * 										are stored.
+		 * 										are stored. A nullptr value means to use default HDF proxy.
 		 */
-		void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount,
+		void pushBackSubRepresentationPatch(uint64_t elementCount, RESQML2_NS::AbstractRepresentation* supportingRep,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -3282,7 +3280,7 @@ namespace RESQML2_NS
 		 * 											in the last subrepresentation patch (the one with the
 		 * 											greatest index).
 		 */	
-		void setElementIndices(uint64_t* elementIndices, 
+		void setElementIndices(uint64_t const* elementIndices, 
 			uint64_t elementCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
@@ -5197,7 +5195,7 @@ namespace RESQML2_NS
 		 */
 		void pushBackHdf5ArrayOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			unsigned long long const * numValues,
+			uint64_t const * numValues,
 			unsigned int numArrayDimensions,
 			int64_t nullValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
@@ -5309,71 +5307,71 @@ namespace RESQML2_NS
 		 */
 		void setValuesOfInt64Hdf5ArrayOfValues(
 			int64_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 		void setValuesOfUInt64Hdf5ArrayOfValues(
 			uint64_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 		void setValuesOfInt32Hdf5ArrayOfValues(
 			int32_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 		void setValuesOfUInt32Hdf5ArrayOfValues(
 			uint32_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 		void setValuesOfInt16Hdf5ArrayOfValues(
 			int16_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 		void setValuesOfUInt16Hdf5ArrayOfValues(
 			uint16_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 		void setValuesOfInt8Hdf5ArrayOfValues(
 			int8_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 		void setValuesOfUInt8Hdf5ArrayOfValues(
 			uint8_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 		void setValuesOfDoubleHdf5ArrayOfValues(
 			double const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 		void setValuesOfFloatHdf5ArrayOfValues(
 			float const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t patchIndex);
@@ -5597,8 +5595,8 @@ namespace RESQML2_NS
 		void getLongValuesOfPatch(
 			unsigned int patchIndex,
 			int64_t* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -5660,8 +5658,8 @@ namespace RESQML2_NS
 		int32_t getIntValuesOfPatch(
 			uint64_t patchIndex,
 			int32_t* values,
-			uint64_t* numValuesInEachDimension,
-			uint64_t* offsetInEachDimension,
+			uint64_t const* numValuesInEachDimension,
+			uint64_t const* offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -6005,7 +6003,7 @@ namespace RESQML2_NS
 		
 		void pushBackHdf5ArrayOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			unsigned long long const * numValues,
+			uint64_t const * numValues,
 			unsigned int numArrayDimensions,
 			double * minimumValue, double * maximumValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
@@ -6202,8 +6200,8 @@ namespace RESQML2_NS
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
 		void setValuesOfDoubleHdf5ArrayOfValues(
 			double const * values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
@@ -6216,202 +6214,6 @@ namespace RESQML2_NS
 	class DiscreteProperty : public AbstractValuesProperty
 	{
 	public:
-		void pushBackLongHdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
-
-		void pushBackLongHdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
-		void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
-
-		void pushBackLongHdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
-		void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
-
-		void pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
-		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
-		
-		/**
-		 * Creates an nd array of explicit long 64 bits values into the property values. No values are
-		 * written to this array yet then the HDF5 array contains uninitialized values.
-		 *
-		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 *
-		 * @param 			datatype			The datatype of the values 
-		 * @param [in]	  	numValues		  	The number of property values ordered by dimension of the
-		 * 										array to write. It is ordered from slowest dimension to
-		 * 										fastest dimension.
-		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in]	  	minimumValue	  	If non-nullptr, a pointer to the minimum values. If non-
-		 * 										nullptr, the count of minimum values is this property
-		 * 										count.
-		 * @param [in]	  	maximumValue	  	If non-nullptr, a pointer to the maximum values. If non-
-		 * 										nullptr, the count of maximum values is this property
-		 * 										count.
-		 * @param 		  	nullValue		  	(Optional) The null value. Default value is long 64 bits
-		 * 										maximum value.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
-		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method. If @c nullptr (default), a
-		 * 										default HDF proxy must be defined into the data object
-		 * 										repository.
-		 */
-		void pushBackHdf5ArrayOfValues(
-			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			unsigned long long* numValues,
-			unsigned int numArrayDimensions,
-			int64_t* minimumValue, int64_t* maximumValue,
-			int64_t nullValue = std::numeric_limits<int64_t>::max(),
-			EML2_NS::AbstractHdfProxy* proxy = nullptr);
-		using AbstractValuesProperty::pushBackHdf5ArrayOfValues;
-
-		/**
-		 * Creates a 1d array of values into the property values. No values are written
-		 * to this array yet then the HDF5 array contains uninitialized values.
-		 *
-		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 *
-		 * @param 			datatype			The datatype of the values 
-		 * @param 		  	valueCount			The count of values.
-		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
-		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
-		 * 											bits maximum value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method. If @p nullptr
-		 * 											(default), a default HDF proxy must be defined into
-		 * 											the data object repository.
-		 */
-		void pushBackHdf5Array1dOfValues(
-			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			uint64_t valueCount,
-			int64_t minimumValue, int64_t maximumValue,
-			int64_t nullValue = std::numeric_limits<int64_t>::max(),
-			EML2_NS::AbstractHdfProxy* proxy = nullptr);
-		using AbstractValuesProperty::pushBackHdf5Array1dOfValues;
-
-		/**
-		 * Creates a 2d array of explicit long 64 values into the property values. No values are written
-		 * to this array yet then the HDF5 array contains uninitialized values.
-		 *
-		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 *
-		 * @param 			datatype			The datatype of the values 
-		 * @param 		  	valueCountInFastestDim	The number of values in the fastest dimension (mainly
-		 * 											I dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values in the slowest dimension (mainly
-		 * 											K dimension).
-		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
-		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
-		 * 											bits maximum value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method. If @p nullptr
-		 * 											(default), a default HDF proxy must be defined into
-		 * 											the data object repository.
-		 */
-		void pushBackHdf5Array2dOfValues(
-			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInSlowestDim,
-			int64_t minimumValue, int64_t maximumValue,
-			int64_t nullValue = std::numeric_limits<int64_t>::max(),
-			EML2_NS::AbstractHdfProxy* proxy = nullptr);
-		using AbstractValuesProperty::pushBackHdf5Array2dOfValues;
-
-		/**
-		 * Creates a 3d array of explicit long 64 values into the property values. No values are written
-		 * to this array yet then the HDF5 array contains uninitialized values.
-		 *
-		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
-		 * 										defined into the data object repository.
-		 *
-		 * @param 			datatype			The datatype of the values 
-		 * @param 		  	valueCountInFastestDim	The number of values in the fastest dimension (mainly
-		 * 											I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values in the middle dimension (mainly
-		 * 											J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values in the slowest dimension (mainly
-		 * 											K dimension).
-		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
-		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
-		 * 											bits maximum value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method. If @p nullptr
-		 * 											(default), a default HDF proxy must be defined into
-		 * 											the data object repository.
-		 */
-		void pushBackHdf5Array3dOfValues(
-			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
-			uint64_t valueCountInSlowestDim,
-			int64_t minimumValue, int64_t maximumValue,
-			int64_t nullValue = std::numeric_limits<int64_t>::max(),
-			EML2_NS::AbstractHdfProxy* proxy = nullptr);
-		using AbstractValuesProperty::pushBackHdf5Array3dOfValues;
-
-		void setValuesOfInt64Hdf5Array3dOfValues(
-			int64_t* values,
-			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
-			uint64_t valueCountInSlowestDim,
-			uint64_t offsetInFastestDim,
-			uint64_t offsetInMiddleDim,
-			uint64_t offsetInSlowestDim,
-			bool computeMinMax,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
-		void setValuesOfInt32Hdf5Array3dOfValues(
-			int32_t* values,
-			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
-			uint64_t valueCountInSlowestDim,
-			uint64_t offsetInFastestDim,
-			uint64_t offsetInMiddleDim,
-			uint64_t offsetInSlowestDim,
-			bool computeMinMax,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
-		using AbstractValuesProperty::setValuesOfInt32Hdf5Array3dOfValues;
-
-		void setValuesOfInt64Hdf5ArrayOfValues(
-			int64_t* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
-			unsigned int numArrayDimensions,
-			bool computeMinMax,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
-		void setValuesOfInt32Hdf5ArrayOfValues(
-			int32_t* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
-			unsigned int numArrayDimensions,
-			bool computeMinMax,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
-		using AbstractValuesProperty::setValuesOfInt32Hdf5ArrayOfValues;
-		
 		/**
 		 * @brief	Checks if a non vector property or a given value of a vector property has got a
 		 * 			minimum value already computed (or set).

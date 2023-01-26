@@ -459,7 +459,7 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()
 		);
 		using AbstractValuesProperty::setValuesOfDoubleHdf5Array3dOfValues;
 
@@ -509,12 +509,12 @@ namespace RESQML2_NS
 		
 		DLL_IMPORT_OR_EXPORT void setValuesOfDoubleHdf5ArrayOfValues(
 			double const * values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()
 		);
 		using AbstractValuesProperty::setValuesOfDoubleHdf5ArrayOfValues;
 

@@ -156,7 +156,6 @@ RESQML2_NS::WellboreInterpretation* wellbore1Interp1 = nullptr;
 RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 RESQML2_NS::SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 RESQML2_NS::IjkGridExplicitRepresentation* twoCellsIjkGrid = nullptr;
-EML2_NS::PropertyKind* propType1 = nullptr;
 RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
 RESQML2_NS::ContinuousProperty* contColMapContProp = nullptr;
 RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = nullptr;
@@ -413,7 +412,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 
 	// creating a new discrete property of type propType1 without associating it to a discrete color map.
 	// Thus, its associated discrete color map remains the one associated to propType1
-	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex",
+	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(twoCellsIjkGrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex",
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	unsigned short prop2Values[2] = { 0, 1 };
 	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
@@ -941,23 +940,6 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	};
 	actnum->pushBackSubRepresentationPatch(21, actnumValues, ijkgrid432, hdfProxy);
 
-	// Double grid subrep
-	RESQML2_NS::SubRepresentation * doubleGridSubrep = pck->createSubRepresentation("f6d23b9c-e45d-4638-9601-ae3b682129a0", "TEST MULTI GRIDS SUBREP", gsoap_eml2_3::eml23__IndexableElement::cells));
-	doubleGridSubrep->pushBackSupportingRepresentation(ijkgrid432);
-	doubleGridSubrep->pushBackSupportingRepresentation(twoCellsIjkGrid);
-	uint64_t doubleGridSubrepValues[23] = {
-		1, 4,
-		1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
-	};
-	short doubleGridSubrepSupportingRepIndices[23] = {
-		0, 0,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-	};
-
-	doubleGridSubrep->pushBackSubRepresentationPatch(23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
-
 	/**************
 	 Grid Connection
 	***************/
@@ -1046,10 +1028,12 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	/**************
 	 Continuous Properties
 	***************/
-	RESQML2_NS::ContinuousProperty* continuousPropOnIjkgridParametric = pck->createContinuousProperty(ijkgridParametric, "a31d7376-1a2a-47f3-9586-dd74ac13d820", "Continuous prop with nan", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-	double continuousPropValuesOnIjkgridParametric[4] = { -1.1, 0.0, std::numeric_limits<double>::quiet_NaN(), 2.2 };
-	continuousPropOnIjkgridParametric->pushBackDoubleHdf5Array3dOfValues(continuousPropValuesOnIjkgridParametric, 2, 1, 2);
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		RESQML2_NS::ContinuousProperty* continuousPropOnIjkgridParametric = pck->createContinuousProperty(ijkgridParametric, "a31d7376-1a2a-47f3-9586-dd74ac13d820", "Continuous prop with nan",
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		double continuousPropValuesOnIjkgridParametric[4] = { -1.1, 0.0, std::numeric_limits<double>::quiet_NaN(), 2.2 };
+		continuousPropOnIjkgridParametric->pushBackDoubleHdf5Array3dOfValues(continuousPropValuesOnIjkgridParametric, 2, 1, 2);
+	}
 
 	/**************
 	 Time Series
@@ -4706,7 +4690,7 @@ void deserializeGridConnectionSetRepresentation(RESQML2_NS::AbstractIjkGridRepre
 	if (gridConnectionSetCount > 0) {
 		RESQML2_NS::GridConnectionSetRepresentation const * gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
 		showAllMetadata(gridConnectionSet);
-		unsigned int faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
+		uint64_t faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
 		std::cout << "Interpretation Count of this grid connection set is : " << faultInterpOfGridConnCount << " and its cell index pair count is " << gridConnectionSet->getCellIndexPairCount() << endl;
 
 		std::unique_ptr<int[]> localFacePerCellIndexPairs;
@@ -5582,7 +5566,11 @@ void appendAContinuousProp(const string& filePath)
 {
 	COMMON_NS::EpcDocument pck(filePath);
 	COMMON_NS::DataObjectRepository repo;
-	const string resqmlResult = pck.deserializeInto(repo, COMMON_NS::DataObjectRepository::openingMode::READ_WRITE);	
+#if WITH_RESQML2_2
+	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2);
+	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3);
+#endif
+	const string resqmlResult = pck.deserializeInto(repo, COMMON_NS::DataObjectRepository::openingMode::READ_WRITE);
 
 	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("df2103a0-fa3d-11e5-b8d4-0002a5d5c51b");
 	if (twoCellsIjkGrid == nullptr) {
@@ -5591,16 +5579,16 @@ void appendAContinuousProp(const string& filePath)
 
 	RESQML2_NS::ContinuousProperty* continuousProp = nullptr;
 	if (repo.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		continuousProp = repo.createContinuousProperty(ijkGrid, "5afcdf0a-221c-4a63-9d64-895add76fa7d", "Appended Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		continuousProp = repo.createContinuousProperty(ijkGrid, "5afcdf0a-221c-4a63-9d64-895add76fa7d", "Appended Property",
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		
 	}
 #if WITH_RESQML2_2
 	else {
 		EML2_NS::PropertyKind* standardLengthPropKind = repo.getDataObjectByUuid<EML2_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d");
-		continuousProp = repo.createContinuousProperty(ijkGrid, "5afcdf0a-221c-4a63-9d64-895add76fa7d", "Appended Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
-	}	
+		continuousProp = repo.createContinuousProperty(ijkGrid, "5afcdf0a-221c-4a63-9d64-895add76fa7d", "Appended Property",
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
+	}
 #endif
 
 	double values[2] = { 0, 1 };

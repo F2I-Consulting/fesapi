@@ -24,14 +24,12 @@ if (HDF5_PREFER_PARALLEL)
 	target_sources(example PRIVATE 
 		${CMAKE_CURRENT_SOURCE_DIR}/exampleMPI.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyFactoryExample.h
-		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.h
-		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.cpp)
+		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.h)
 else (HDF5_PREFER_PARALLEL)
 	target_sources(example PRIVATE 
 		${CMAKE_CURRENT_SOURCE_DIR}/example.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyFactoryExample.h
-		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.h
-		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.cpp)
+		${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.h)
 endif (HDF5_PREFER_PARALLEL)
 
 target_include_directories (example PRIVATE ${FESAPI_ROOT_DIR}/src/)
