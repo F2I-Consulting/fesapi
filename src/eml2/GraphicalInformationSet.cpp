@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GraphicalInformationSet.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "../eml2/PropertyKind.h"
 
 #include "../resqml2/AbstractFeature.h"
@@ -36,8 +33,6 @@ using namespace EML2_NS;
 using namespace gsoap_eml2_3;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
-
-const char* GraphicalInformationSet::XML_TAG = "GraphicalInformationSet";
 
 unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
 {

@@ -28,6 +28,16 @@ under the License.
 using namespace RESQML2_NS;
 using namespace std;
 
+namespace {
+	vector<hsize_t> copyToHdf5Datatype(uint64_t const* values, size_t nbValues) {
+		vector<hsize_t> result;
+		for (size_t i = 0; i < nbValues; ++i) {
+			result.push_back(values[i]);
+		}
+		return result;
+	}
+}
+
 uint64_t AbstractValuesProperty::getPatchCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -36,7 +46,7 @@ uint64_t AbstractValuesProperty::getPatchCount() const
 	else if (gsoapProxy2_3 != nullptr) {
 		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch.size();
 	}
-	
+
 	throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
 }
 
@@ -86,7 +96,7 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractValuesProperty::getValu
 	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
-uint64_t AbstractValuesProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, unsigned int patchIndex) const
+uint64_t AbstractValuesProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const
 {
 	cannotBePartial();
 
@@ -150,7 +160,7 @@ uint64_t AbstractValuesProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIn
 	throw out_of_range("The dim index to get the count is out of range.");
 }
 
-uint64_t AbstractValuesProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
+uint64_t AbstractValuesProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
 {
 	cannotBePartial();
 
@@ -264,7 +274,7 @@ EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t p
 	}
 }
 
-COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");
@@ -292,6 +302,7 @@ COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(unsigned i
 		if (dynamic_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch) != nullptr) {
 			return static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalFileProxy[0]->EpcExternalPartReference;
 		}
+
 		int valuesType = patch->soap_type();
 		if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 			return static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalFileProxy[0]->EpcExternalPartReference;
@@ -332,7 +343,7 @@ void AbstractValuesProperty::pushBackFacet(gsoap_eml2_3::eml23__FacetKind facet,
 	}
 }
 
-unsigned int AbstractValuesProperty::getFacetCount() const
+uint64_t AbstractValuesProperty::getFacetCount() const
 {
 	size_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -345,42 +356,30 @@ unsigned int AbstractValuesProperty::getFacetCount() const
 		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
 	}
 
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much facets");
-	}
-
-	return static_cast<unsigned int>(result);
+	return result;
 }
 
-gsoap_eml2_3::eml23__FacetKind AbstractValuesProperty::getFacetKind(unsigned int index) const
+gsoap_eml2_3::eml23__FacetKind AbstractValuesProperty::getFacetKind(uint64_t index) const
 {
-	if (index >= getFacetCount()) {
-		throw out_of_range("The facet index is out of range");
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		auto facetKind = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet[index];
+		auto facetKind = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.at(index);
 		return facetKind->Facet == gsoap_resqml2_0_1::resqml20__Facet::conditions ? gsoap_eml2_3::eml23__FacetKind::conditions : static_cast<gsoap_eml2_3::eml23__FacetKind>(static_cast<int>(facetKind->Facet) + 1);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet[index]->Kind;
+		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.at(index)->Kind;
 	}
 	else {
 		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
 	}
 }
 
-std::string AbstractValuesProperty::getFacetValue(unsigned int index) const
+std::string AbstractValuesProperty::getFacetValue(uint64_t index) const
 {
-	if (index >= getFacetCount()){
-		throw out_of_range("The facet index is out of range");
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet[index]->Value;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.at(index)->Value;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet[index]->Facet;
+		return static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->Facet.at(index)->Facet;
 	}
 	else {
 		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
@@ -425,97 +424,93 @@ void AbstractValuesProperty::pushBackIntegerConstantArrayOfValues(int64_t value,
 void AbstractValuesProperty::pushBackLongHdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	int64_t nullValue)
 {
-	hsize_t valueCountPerDimension = valueCount;
-	pushBackLongHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue);
+	pushBackLongHdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackIntHdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	int nullValue)
 {
-	hsize_t valueCountPerDimension = valueCount;
-	pushBackIntHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue);
+	pushBackIntHdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	short nullValue)
 {
-	hsize_t valueCountPerDimension = valueCount;
-	pushBackShortHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue);
+	pushBackShortHdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	int8_t nullValue)
 {
-	hsize_t valueCountPerDimension = valueCount;
-	pushBackInt8Hdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, nullValue);
+	pushBackInt8Hdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackLongHdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	int64_t nullValue)
 {
-	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackIntHdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	int nullValue)
 {
-	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackShortHdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	short nullValue)
 {
-	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
 {
-	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	int8_t nullValue)
 {
-	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackInt8Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackLongHdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	int64_t nullValue)
 {
-	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackIntHdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	int nullValue)
 {
-	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackShortHdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	short nullValue)
 {
-	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	unsigned short nullValue)
 {
-	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	int8_t nullValue)
 {
-	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackInt8Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
@@ -527,6 +522,13 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	if (datasetName.empty()) {
+		throw std::invalid_argument("The property dataset name cannot be empty.");
+	}
+	if (gsoapProxy2_0_1 != nullptr && hdfProxy->getXmlNamespace() == "eml23") {
+		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 property to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
+	}
+
 	getRepository()->addRelationship(this, hdfProxy);
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
@@ -540,15 +542,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 		xmlValues->NullValue = nullValue;
 		xmlValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlValues->Values->HdfProxy = hdfProxy->newResqmlReference();
-
-		if (datasetName.empty()) {
-			ostringstream ossForHdf;
-			ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-			xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
-		}
-		else {
-			xmlValues->Values->PathInHdfFile = datasetName;
-		}
+		xmlValues->Values->PathInHdfFile = datasetName;
 
 		patch->Values = xmlValues;
 
@@ -595,6 +589,13 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
+	if (datasetName.empty()) {
+		throw std::invalid_argument("The property dataset name cannot be empty.");
+	}
+	if (gsoapProxy2_0_1 != nullptr && proxy->getXmlNamespace() == "eml23") {
+		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 property to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
+	}
+
 	getRepository()->addRelationship(this, proxy);
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
@@ -607,15 +608,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 		gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* xmlValues = gsoap_resqml2_0_1::soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 		xmlValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlValues->Values->HdfProxy = proxy->newResqmlReference();
-
-		if (datasetName.empty()) {
-			ostringstream ossForHdf;
-			ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-			xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
-		}
-		else {
-			xmlValues->Values->PathInHdfFile = datasetName;
-		}
+		xmlValues->Values->PathInHdfFile = datasetName;
 
 		patch->Values = xmlValues;
 
@@ -651,7 +644,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 	throw logic_error("Unrecognized RESQML version");
 }
 
-void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy, int64_t nullValue)
+void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy, int64_t nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -661,17 +654,20 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(const int64_t * value
 	}
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
+	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
+	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
 
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		values,
-		numValues, numDimensionsInArray);
+		tmp.data(), numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
+void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -681,17 +677,20 @@ void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, un
 	}
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
+	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
+	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
 
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		values,
-		numValues, numDimensionsInArray);
+		tmp.data(), numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
+void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -701,17 +700,20 @@ void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values
 	}
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
+	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
+	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
 
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16,
 		values,
-		numValues, numDimensionsInArray);
+		tmp.data(), numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
+void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -721,17 +723,20 @@ void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned shor
 	}
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
+
+	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
+	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
 
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		values,
-		numValues, numDimensionsInArray);
+		tmp.data(), numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue)
+void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -742,11 +747,14 @@ void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t * values
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
+	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
+	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
+
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 		values,
-		numValues, numDimensionsInArray);
+		tmp.data(), numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -820,7 +828,7 @@ double AbstractValuesProperty::getDoubleConstantValuesOfPatch(uint64_t patchInde
 	throw std::invalid_argument("The property " + getUuid() + " has constant values which are not floating point ones.");
 }
 
-int64_t AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const
+int64_t AbstractValuesProperty::getLongValuesOfPatch(uint64_t patchIndex, int64_t * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -852,7 +860,7 @@ int64_t AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, in
 	}
 }
 
-int64_t AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) const
+int64_t AbstractValuesProperty::getNullValueOfPatch(uint64_t patchIndex) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -902,7 +910,7 @@ int64_t AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) con
 	}
 }
 
-int AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int * values) const
+int32_t AbstractValuesProperty::getIntValuesOfPatch(uint64_t patchIndex, int32_t * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -934,7 +942,7 @@ int AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int * v
 	}
 }
 
-unsigned int AbstractValuesProperty::getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const
+uint32_t AbstractValuesProperty::getUIntValuesOfPatch(uint64_t patchIndex, uint32_t * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -966,7 +974,7 @@ unsigned int AbstractValuesProperty::getUIntValuesOfPatch(unsigned int patchInde
 	}
 }
 
-short AbstractValuesProperty::getShortValuesOfPatch(unsigned int patchIndex, short * values) const
+int16_t AbstractValuesProperty::getShortValuesOfPatch(uint64_t patchIndex, int16_t * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -998,7 +1006,7 @@ short AbstractValuesProperty::getShortValuesOfPatch(unsigned int patchIndex, sho
 	}
 }
 
-unsigned short AbstractValuesProperty::getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const
+uint16_t AbstractValuesProperty::getUShortValuesOfPatch(uint64_t patchIndex, uint16_t * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -1030,7 +1038,7 @@ unsigned short AbstractValuesProperty::getUShortValuesOfPatch(unsigned int patch
 	}
 }
 
-int8_t AbstractValuesProperty::getInt8ValuesOfPatch(unsigned int patchIndex, int8_t* values) const
+int8_t AbstractValuesProperty::getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const
 {
 	if (isPartial()) {
 		throw logic_error("You cannot read values from a partial property.");
@@ -1064,7 +1072,7 @@ int8_t AbstractValuesProperty::getInt8ValuesOfPatch(unsigned int patchIndex, int
 	}
 }
 
-uint8_t AbstractValuesProperty::getUInt8ValuesOfPatch(unsigned int patchIndex, uint8_t* values) const
+uint8_t AbstractValuesProperty::getUInt8ValuesOfPatch(uint64_t patchIndex, uint8_t* values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -1101,14 +1109,12 @@ void AbstractValuesProperty::setValuesOfInt64Hdf5Array1dOfValues(
 	uint64_t valueCount,
 	uint64_t offset,
 	EML2_NS::AbstractHdfProxy * proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	hsize_t valueCountPerDimension = valueCount;
-	hsize_t offsetPerDimension = offset;
 	setValuesOfInt64Hdf5ArrayOfValues(
 		values,
-		&valueCountPerDimension,
-		&offsetPerDimension,
+		&valueCount,
+		&offset,
 		1,
 		proxy,
 		patchIndex
@@ -1120,14 +1126,12 @@ void AbstractValuesProperty::setValuesOfInt32Hdf5Array1dOfValues(
 	uint64_t valueCount,
 	uint64_t offset,
 	EML2_NS::AbstractHdfProxy * proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	hsize_t valueCountPerDimension = valueCount;
-	hsize_t offsetPerDimension = offset;
 	setValuesOfInt32Hdf5ArrayOfValues(
 		values,
-		&valueCountPerDimension,
-		&offsetPerDimension,
+		&valueCount,
+		&offset,
 		1,
 		proxy,
 		patchIndex
@@ -1139,14 +1143,12 @@ void AbstractValuesProperty::setValuesOfDoubleHdf5Array1dOfValues(
 	uint64_t valueCount,
 	uint64_t offset,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	hsize_t valueCountPerDimension = valueCount;
-	hsize_t offsetPerDimension = offset;
 	setValuesOfDoubleHdf5ArrayOfValues(
 		values,
-		&valueCountPerDimension,
-		&offsetPerDimension,
+		&valueCount,
+		&offset,
 		1,
 		proxy,
 		patchIndex
@@ -1158,14 +1160,12 @@ void AbstractValuesProperty::setValuesOfFloatHdf5Array1dOfValues(
 	uint64_t valueCount,
 	uint64_t offset,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	hsize_t valueCountPerDimension = valueCount;
-	hsize_t offsetPerDimension = offset;
 	setValuesOfFloatHdf5ArrayOfValues(
 		values,
-		&valueCountPerDimension,
-		&offsetPerDimension,
+		&valueCount,
+		&offset,
 		1,
 		proxy,
 		patchIndex
@@ -1179,10 +1179,10 @@ void AbstractValuesProperty::setValuesOfInt64Hdf5Array2dOfValues(
 	uint64_t offsetInFastestDim,
 	uint64_t offsetInSlowestDim,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	hsize_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+	const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
 	setValuesOfInt64Hdf5ArrayOfValues(
 		values,
 		valueCountPerDimension,
@@ -1200,10 +1200,10 @@ void AbstractValuesProperty::setValuesOfInt32Hdf5Array2dOfValues(
 	uint64_t offsetInFastestDim,
 	uint64_t offsetInSlowestDim,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	hsize_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+	const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
 	setValuesOfInt32Hdf5ArrayOfValues(
 		values,
 		valueCountPerDimension,
@@ -1221,10 +1221,10 @@ void AbstractValuesProperty::setValuesOfDoubleHdf5Array2dOfValues(
 	uint64_t offsetInFastestDim,
 	uint64_t offsetInSlowestDim,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	hsize_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+	const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
 	setValuesOfDoubleHdf5ArrayOfValues(
 		values,
 		valueCountPerDimension,
@@ -1242,10 +1242,10 @@ void AbstractValuesProperty::setValuesOfFloatHdf5Array2dOfValues(
 	uint64_t offsetInFastestDim,
 	uint64_t offsetInSlowestDim,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	hsize_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+	const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
 	setValuesOfFloatHdf5ArrayOfValues(
 		values,
 		valueCountPerDimension,
@@ -1265,10 +1265,10 @@ void AbstractValuesProperty::setValuesOfInt64Hdf5Array3dOfValues(
 	uint64_t offsetInMiddleDim,
 	uint64_t offsetInSlowestDim,
 	EML2_NS::AbstractHdfProxy * proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	hsize_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+	const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
 	setValuesOfInt64Hdf5ArrayOfValues(
 		values,
 		valueCountPerDimension,
@@ -1288,10 +1288,10 @@ void AbstractValuesProperty::setValuesOfInt32Hdf5Array3dOfValues(
 	uint64_t offsetInMiddleDim,
 	uint64_t offsetInSlowestDim,
 	EML2_NS::AbstractHdfProxy * proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	hsize_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+	const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
 	setValuesOfInt32Hdf5ArrayOfValues(
 		values,
 		valueCountPerDimension,
@@ -1311,10 +1311,10 @@ void AbstractValuesProperty::setValuesOfDoubleHdf5Array3dOfValues(
 	uint64_t offsetInMiddleDim,
 	uint64_t offsetInSlowestDim,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	const hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	const hsize_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+	const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
 	setValuesOfDoubleHdf5ArrayOfValues(
 		values,
 		valueCountPerDimension,
@@ -1334,10 +1334,10 @@ void AbstractValuesProperty::setValuesOfFloatHdf5Array3dOfValues(
 	uint64_t offsetInMiddleDim,
 	uint64_t offsetInSlowestDim,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	const hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	const hsize_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+	const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
 	setValuesOfFloatHdf5ArrayOfValues(
 		values,
 		valueCountPerDimension,
@@ -1351,13 +1351,13 @@ void AbstractValuesProperty::setValuesOfFloatHdf5Array3dOfValues(
 void AbstractValuesProperty::setValuesOfHdf5ArrayOfValues(
 	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 	void const* values,
-	unsigned long long const * numValues,
-	unsigned long long const * offsetValues,
+	uint64_t const * numValues,
+	uint64_t const * offsetValues,
 	unsigned int numArrayDimensions,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
-	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<unsigned int>::max)()) {
+	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<uint64_t>::max)()) {
 		throw out_of_range("The values property patch is out of range");
 	}
 
@@ -1369,30 +1369,25 @@ void AbstractValuesProperty::setValuesOfHdf5ArrayOfValues(
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	ostringstream oss;
-	oss << "values_patch";
-	if (patchIndex == (numeric_limits<unsigned int>::max)()) {
-		oss << getPatchCount() - 1;
-	}
-	else {
-		oss << patchIndex;
-	}
+	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
+	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numArrayDimensions);
+	vector<hsize_t> tmp2 = copyToHdf5Datatype(offsetValues, numArrayDimensions);
 
 	// HDF
 	proxy->writeArrayNdSlab(getHdfGroup(),
-		oss.str(),
+		"values_patch" + std::to_string(patchIndex == (numeric_limits<uint64_t>::max)() ? getPatchCount() - 1 : patchIndex),
 		datatype,
 		values,
-		numValues,
-		offsetValues,
+		tmp.data(),
+		tmp2.data(),
 		numArrayDimensions);
 }
 
 void AbstractValuesProperty::getLongValuesOfPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	int64_t* values,
-	hsize_t const * numValuesInEachDimension,
-	hsize_t const * offsetInEachDimension,
+	uint64_t const * numValuesInEachDimension,
+	uint64_t const * offsetInEachDimension,
 	unsigned int numArrayDimensions) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
@@ -1402,13 +1397,13 @@ void AbstractValuesProperty::getLongValuesOfPatch(
 	hdfProxy->readArrayNdOfInt64Values(
 		dsPath,
 		values,
-		numValuesInEachDimension,
-		offsetInEachDimension,
+		copyToHdf5Datatype(numValuesInEachDimension, numArrayDimensions).data(),
+		copyToHdf5Datatype(offsetInEachDimension, numArrayDimensions).data(),
 		numArrayDimensions);
 }
 
 void AbstractValuesProperty::getLongValuesOf3dPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	int64_t* values,
 	uint64_t valueCountInFastestDim,
 	uint64_t valueCountInMiddleDim,
@@ -1417,8 +1412,8 @@ void AbstractValuesProperty::getLongValuesOf3dPatch(
 	uint64_t offsetInMiddleDim,
 	uint64_t offsetInSlowestDim) const
 {
-	const hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	const hsize_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+	const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
 
 	getLongValuesOfPatch(
 		patchIndex,
@@ -1429,11 +1424,11 @@ void AbstractValuesProperty::getLongValuesOf3dPatch(
 	);
 }
 
-int AbstractValuesProperty::getIntValuesOfPatch(
-	unsigned int patchIndex,
-	int* values,
-	unsigned long long* numValuesInEachDimension,
-	unsigned long long* offsetInEachDimension,
+int32_t AbstractValuesProperty::getIntValuesOfPatch(
+	uint64_t patchIndex,
+	int32_t* values,
+	const uint64_t* numValuesInEachDimension,
+	const uint64_t* offsetInEachDimension,
 	unsigned int numArrayDimensions) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
@@ -1443,16 +1438,20 @@ int AbstractValuesProperty::getIntValuesOfPatch(
 	hdfProxy->readArrayNdOfIntValues(
 		dsPath,
 		values,
-		numValuesInEachDimension,
-		offsetInEachDimension,
+		copyToHdf5Datatype(numValuesInEachDimension, numArrayDimensions).data(),
+		copyToHdf5Datatype(offsetInEachDimension, numArrayDimensions).data(),
 		numArrayDimensions);
 
-	return nullValue;
+	if (nullValue < (std::numeric_limits<int32_t>::lowest)() || nullValue >(std::numeric_limits<int32_t>::max)()) {
+		throw range_error("The null value is not in the int32_t range");
+	}
+
+	return static_cast<int32_t>(nullValue);
 }
 
 void AbstractValuesProperty::getIntValuesOf3dPatch(
-	unsigned int patchIndex,
-	int* values,
+	uint64_t patchIndex,
+	int32_t* values,
 	unsigned int valueCountInFastestDim,
 	unsigned int valueCountInMiddleDim,
 	unsigned int valueCountInSlowestDim,
@@ -1460,8 +1459,8 @@ void AbstractValuesProperty::getIntValuesOf3dPatch(
 	unsigned int offsetInMiddleDim,
 	unsigned int offsetInSlowestDim) const
 {
-	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	hsize_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
 
 	getIntValuesOfPatch(
 		patchIndex,
@@ -1513,23 +1512,22 @@ void AbstractValuesProperty::pushBackFloatingPointConstantArrayOfValues(double v
 
 void AbstractValuesProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t valueCountPerDimension = valueCount;
-	pushBackDoubleHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy);
+	pushBackDoubleHdf5ArrayOfValues(values, &valueCount, 1, proxy);
 }
 
 void AbstractValuesProperty::pushBackDoubleHdf5Array2dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy);
 }
 
 void AbstractValuesProperty::pushBackDoubleHdf5Array3dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy);
 }
 
-void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
+void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -1544,30 +1542,29 @@ void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * valu
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
 		values,
-		numValues, numArrayDimensions);
+		copyToHdf5Datatype(numValues, numArrayDimensions).data(), numArrayDimensions);
 
 	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t valueCountPerDimension = valueCount;
-	pushBackFloatHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy);
+	pushBackFloatHdf5ArrayOfValues(values, &valueCount, 1, proxy);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5Array2dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5Array3dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy);
 }
 
-void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
+void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -1582,14 +1579,15 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT,
 		values,
-		numValues, numArrayDimensions);
+		copyToHdf5Datatype(numValues, numArrayDimensions).data(),
+		numArrayDimensions);
 
 	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
 }
 
 void AbstractValuesProperty::pushBackHdf5ArrayOfValues(
 	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-	unsigned long long const * numValues,
+	uint64_t const * numValues,
 	unsigned int numArrayDimensions,
 	int64_t nullValue,
 	EML2_NS::AbstractHdfProxy* proxy)
@@ -1606,7 +1604,7 @@ void AbstractValuesProperty::pushBackHdf5ArrayOfValues(
 	proxy->createArrayNd(getHdfGroup(),
 		datasetName,
 		datatype,
-		numValues, numArrayDimensions);
+		copyToHdf5Datatype(numValues, numArrayDimensions).data(), numArrayDimensions);
 
 	if (datatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE || datatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT) {
 		pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
@@ -1625,8 +1623,7 @@ void AbstractValuesProperty::pushBackHdf5Array1dOfValues(
 	int64_t nullValue,
 	EML2_NS::AbstractHdfProxy* proxy)
 {
-	const hsize_t valueCountPerDimension = valueCount;
-	pushBackHdf5ArrayOfValues(datatype, &valueCountPerDimension, 1, nullValue, proxy);
+	pushBackHdf5ArrayOfValues(datatype, &valueCount, 1, nullValue, proxy);
 }
 
 void AbstractValuesProperty::pushBackHdf5Array2dOfValues(
@@ -1636,7 +1633,7 @@ void AbstractValuesProperty::pushBackHdf5Array2dOfValues(
 	int64_t nullValue,
 	EML2_NS::AbstractHdfProxy* proxy)
 {
-	const hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+	const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackHdf5ArrayOfValues(datatype, valueCountPerDimension, 2, nullValue, proxy);
 }
 
@@ -1648,11 +1645,11 @@ void AbstractValuesProperty::pushBackHdf5Array3dOfValues(
 	int64_t nullValue,
 	EML2_NS::AbstractHdfProxy* proxy)
 {
-	const hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackHdf5ArrayOfValues(datatype, valueCountPerDimension, 3, nullValue, proxy);
 }
 
-void AbstractValuesProperty::getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const
+void AbstractValuesProperty::getDoubleValuesOfPatch(uint64_t patchIndex, double * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -1686,7 +1683,7 @@ void AbstractValuesProperty::getDoubleValuesOfPatch(unsigned int patchIndex, dou
 	}
 }
 
-void AbstractValuesProperty::getFloatValuesOfPatch(unsigned int patchIndex, float * values) const
+void AbstractValuesProperty::getFloatValuesOfPatch(uint64_t patchIndex, float * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -1721,10 +1718,10 @@ void AbstractValuesProperty::getFloatValuesOfPatch(unsigned int patchIndex, floa
 }
 
 void AbstractValuesProperty::getFloatValuesOfPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	float* values,
-	unsigned long long const * numValuesInEachDimension,
-	unsigned long long const * offsetInEachDimension,
+	uint64_t const * numValuesInEachDimension,
+	uint64_t const * offsetInEachDimension,
 	unsigned int numArrayDimensions) const
 {
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
@@ -1734,13 +1731,13 @@ void AbstractValuesProperty::getFloatValuesOfPatch(
 	hdfProxy->readArrayNdOfFloatValues(
 		datasetPath,
 		values,
-		numValuesInEachDimension,
-		offsetInEachDimension,
+		copyToHdf5Datatype(numValuesInEachDimension, numArrayDimensions).data(),
+		copyToHdf5Datatype(offsetInEachDimension, numArrayDimensions).data(),
 		numArrayDimensions);
 }
 
 void AbstractValuesProperty::getFloatValuesOf3dPatch(
-	unsigned int patchIndex,
+	uint64_t patchIndex,
 	float* values,
 	uint64_t valueCountInFastestDim,
 	uint64_t valueCountInMiddleDim,
@@ -1749,8 +1746,8 @@ void AbstractValuesProperty::getFloatValuesOf3dPatch(
 	uint64_t offsetInMiddleDim,
 	uint64_t offsetInSlowestDim) const
 {
-	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	hsize_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+	uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
 
 	getFloatValuesOfPatch(
 		patchIndex,

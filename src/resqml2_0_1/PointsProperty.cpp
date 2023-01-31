@@ -98,7 +98,7 @@ EML2_NS::AbstractHdfProxy * PointsProperty::getDatasetOfPatch(uint64_t patchInde
 	}
 }
 
-COMMON_NS::DataObjectReference PointsProperty::getHdfProxyDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference PointsProperty::getHdfProxyDor(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The values property patch is out of range");

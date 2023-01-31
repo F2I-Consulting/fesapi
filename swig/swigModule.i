@@ -41,7 +41,7 @@ typedef long long int		int64_t;
 typedef unsigned char		uint8_t;
 typedef unsigned short int	uint16_t;
 typedef unsigned int		uint32_t;
-#ifndef SWIGJAVA	
+#ifndef SWIGJAVA
 #if defined(SWIGWORDSIZE64)
 typedef unsigned long int	uint64_t;
 #else
@@ -479,14 +479,14 @@ import com.f2i_consulting.fesapi.*;
 	class DataObjectRepository
 	{
 	public:
-	
+
 		enum class openingMode : std::int8_t {
 			READ_ONLY = 0,
 			READ_WRITE = 1,
 			READ_WRITE_DO_NOT_CREATE = 2,
 			OVERWRITE = 3
 		};
-		
+
 		enum class EnergisticsStandard : std::int8_t {
 			RESQML2_0_1 = 0,
 			EML2_0 = 1,
@@ -499,16 +499,16 @@ import com.f2i_consulting.fesapi.*;
 		};
 		
 		DataObjectRepository();
-		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);	
-		
+		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
+
 		void setDefaultStandard(EnergisticsStandard version);
 		EnergisticsStandard getDefaultEmlVersion() const;
 		EnergisticsStandard getDefaultProdmlVersion() const;
 		EnergisticsStandard getDefaultResqmlVersion() const;
 		EnergisticsStandard getDefaultWitsmlVersion() const;
-		
+
 		void clear();
-		
+
 		RESQML2_NS::AbstractLocal3dCrs* getDefaultCrs() const;
 		void setDefaultCrs(RESQML2_NS::AbstractLocal3dCrs* crs);
 		

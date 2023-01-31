@@ -18,13 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ActivityTemplate.h"
 
-#include <stdexcept>
-
 using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
-
-const char* ActivityTemplate::XML_NS = "eml23";
 
 ActivityTemplate::ActivityTemplate(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
 {

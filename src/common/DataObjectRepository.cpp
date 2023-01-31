@@ -20,8 +20,8 @@ under the License.
 
 #include <algorithm>
 #include <array>
-#include <functional>
 #include <ctime>
+#include <functional>
 
 #include "../common/DataFeeder.h"
 

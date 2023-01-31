@@ -21,13 +21,10 @@ under the License.
 #include "../eml2/ActivityTemplate.h"
 
 #include <algorithm>
-#include <stdexcept>
 
 using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
-
-const char* Activity::XML_NS = "eml23";
 
 Activity::Activity(EML2_NS::ActivityTemplate* activityTemplate, const string & guid, const string & title)
 {

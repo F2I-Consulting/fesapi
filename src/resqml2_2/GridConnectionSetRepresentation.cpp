@@ -462,7 +462,7 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(uint64_
 	cumulativeLength->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/InterpretationIndices/" + CUMULATIVE_LENGTH_DS_NAME;
+	dsPart->PathInExternalFile = getHdfGroup() + "/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME;
 	dsPart->Count = cellIndexPairCount;
 	cumulativeLength->Values->ExternalFileProxy.push_back(dsPart);
 	// Elements
@@ -472,7 +472,7 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(uint64_
 	elements->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/InterpretationIndices/" + ELEMENTS_DS_NAME;
+	dsPart->PathInExternalFile = getHdfGroup() + "/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME;
 	dsPart->Count = cumulativeInterpCount[cellIndexPairCount - 1];
 	elements->Values->ExternalFileProxy.push_back(dsPart);
 

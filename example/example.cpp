@@ -111,6 +111,8 @@ under the License.
 #include "eml2/PropertyKind.h"
 #include "eml2/TimeSeries.h"
 
+#include "eml2_3/PropertyKind.h"
+
 #include "witsml2_0/Well.h"
 #include "witsml2_0/Wellbore.h"
 #include "witsml2_0/Trajectory.h"
@@ -130,6 +132,9 @@ under the License.
 #include "HdfProxyFactoryExample.h"
 
 using namespace std;
+
+EML2_NS::PropertyKind* propType1 = nullptr;
+EML2_NS::PropertyKind* pwls3Length = nullptr;
 
 RESQML2_NS::BoundaryFeature* horizon1 = nullptr;
 RESQML2_NS::BoundaryFeature* horizon2 = nullptr;
@@ -155,7 +160,6 @@ RESQML2_NS::WellboreInterpretation* wellbore1Interp1 = nullptr;
 RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 RESQML2_NS::SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 RESQML2_NS::IjkGridExplicitRepresentation* twoCellsIjkGrid = nullptr;
-EML2_NS::PropertyKind* propType1 = nullptr;
 RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
 RESQML2_NS::ContinuousProperty* contColMapContProp = nullptr;
 RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = nullptr;
@@ -827,7 +831,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	ijkgridParametricNotSameLineKindCopy->setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(gsoap_resqml2_0_1::resqml20__PillarShape::straight, gsoap_resqml2_0_1::resqml20__KDirection::down, false,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", hdfDatasetPrefix + "/controlPointParameters", 3, hdfDatasetPrefix + "/LineKindIndices", hdfDatasetPrefix + "/PillarGeometryIsDefined", hdfProxy,
 		2, hdfDatasetPrefix + "/PillarIndices",
-		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME);
+		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME);
 
 	// 4*3*2 explicit grid Left Handed
 	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432 = pck->createIjkGridExplicitRepresentation("e96c2bde-e3ae-4d51-b078-a8e57fb1e667", "Four by Three by Two Left Handed", 4, 3, 2);
@@ -1043,10 +1047,12 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	/**************
 	 Continuous Properties
 	***************/
-	RESQML2_NS::ContinuousProperty* continuousPropOnIjkgridParametric = pck->createContinuousProperty(ijkgridParametric, "a31d7376-1a2a-47f3-9586-dd74ac13d820", "Continuous prop with nan", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-	double continuousPropValuesOnIjkgridParametric[4] = { -1.1, 0.0, std::numeric_limits<double>::quiet_NaN(), 2.2 };
-	continuousPropOnIjkgridParametric->pushBackDoubleHdf5Array3dOfValues(continuousPropValuesOnIjkgridParametric, 2, 1, 2);
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		RESQML2_NS::ContinuousProperty* continuousPropOnIjkgridParametric = pck->createContinuousProperty(ijkgridParametric, "a31d7376-1a2a-47f3-9586-dd74ac13d820", "Continuous prop with nan", 1,
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		double continuousPropValuesOnIjkgridParametric[4] = { -1.1, 0.0, std::numeric_limits<double>::quiet_NaN(), 2.2 };
+		continuousPropOnIjkgridParametric->pushBackDoubleHdf5Array3dOfValues(continuousPropValuesOnIjkgridParametric, 2, 1, 2);
+	}
 
 	/**************
 	 Time Series
@@ -1090,14 +1096,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	}
 #if WITH_RESQML2_2
 	else {
-		EML2_NS::PropertyKind * standardLengthPropKind = pck->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
-
+		pwls3Length = pck->createPartial<EML2_3_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
 		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(twoCellsIjkGrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 
 		dynamicContinuousProp->setTimeSeries(timeSeries);
 		double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
-		unsigned long long dimensions[4] = { 2, 1, 1, 3 };
+		uint64_t dimensions[4] = { 2, 1, 1, 3 };
 		dynamicContinuousProp->pushBackDoubleHdf5ArrayOfValues(
 			valuesTime, dimensions, 4, hdfProxy);
 	}
@@ -1113,21 +1118,6 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	RESQML2_NS::CategoricalProperty* categoricalProp = pck->createCategoricalProperty(twoCellsIjkGrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells, stringTableLookup, propType1);
 	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
-
-	// Relative permeability
-	RESQML2_NS::ContinuousProperty* waterSat = pck->createContinuousProperty(twoCellsIjkGrid, "cbbc24b1-9a4b-4088-9d0e-e254088d3840", "Water saturation", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::_x0025, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::saturation);
-	double waterSatValues[2] = { 0.35, 0.85 };
-	waterSat->pushBackDoubleHdf5Array3dOfValues(waterSatValues, 2, 1, 1, hdfProxy);
-
-	RESQML2_NS::DoubleTableLookup* waterRelPermTable = pck->createDoubleTableLookup("c51039fb-3178-41d3-86d7-5e5a74c5a46b", "My String Table Lookup");
-	waterRelPermTable->addValue(.0, .0);
-	waterRelPermTable->addValue(0.22, 0.005);
-	waterRelPermTable->addValue(0.75, 0.46);
-	waterRelPermTable->addValue(1.0, 1.0);
-	RESQML2_NS::CategoricalProperty* waterRelPerm = pck->createCategoricalProperty(twoCellsIjkGrid, "dd4eae66-fe52-4086-a023-5b2c423543d5", "Water Relative Permeability", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, waterRelPermTable, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::relative_x0020permeability);
-	waterRelPerm->pushBackRefToExistingFloatingPointDataset(nullptr, "/resqml20/cbbc24b1-9a4b-4088-9d0e-e254088d3840/values_patch0");
 
 	/**************
 	 Points Properties
@@ -1157,8 +1147,15 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 	// Partial transfer
 	RESQML2_NS::UnstructuredGridRepresentation* partialGrid = pck->createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>("5cc3ee47-4bd5-4d82-ae3e-ed64e6d8d1eb", "Partial Grid");
-	RESQML2_NS::ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+	RESQML2_NS::ContinuousProperty* continuousProp1 = nullptr;
+	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
+		continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "A length property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+	}
+	else {
+		continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "A length property", 1,
+			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
+	}
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
 
@@ -2565,19 +2562,19 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				std::cout << "\t\tProperty kind parent is an Energistics one" << std::endl;
 				std::cout << "\t\tProperty kind parent is : " << pk->getParentAsString() << std::endl;
 			}
-			else {
+			else if (!pk->isPartial()) {
 				std::cout << "\t\tProperty kind parent is not an Energistics one" << std::endl;
 				std::cout << "\t\tProperty kind parent is : " << pk->getParentPropertyKind()->getTitle() << std::endl;
 			}
 		}
 
 		// Dimension
-		unsigned int dimCount = prop->getDimensionsCountOfPatch(0);
+		uint64_t dimCount = prop->getDimensionsCountOfPatch(0);
 		std::cout << "\tDimension count is : " << dimCount << std::endl;
-		for (unsigned int dimIndex = 0; dimIndex < dimCount; ++dimIndex) {
+		for (uint64_t dimIndex = 0; dimIndex < dimCount; ++dimIndex) {
 			std::cout << "\tValues count in dimension " << dimIndex << " is : " << prop->getValuesCountOfDimensionOfPatch(dimIndex, 0) << std::endl;
 		}
-		unsigned int valueCount = prop->getValuesCountOfPatch(0);
+		uint64_t valueCount = prop->getValuesCountOfPatch(0);
 		std::cout << "\tValues count in all dimensions is : " << valueCount << std::endl;
 
 		// Datatype
@@ -2799,8 +2796,8 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::DataObjectRepository & p
 		showAllMetadata(ssf);
 
 		std::cout << "\tCONTAINED REPRESENTATIONS" << std::endl;
-		const unsigned int repCount = ssf->getRepresentationCount();
-		for (unsigned int repIdx = 0; repIdx < repCount; ++repIdx) {
+		const uint64_t repCount = ssf->getRepresentationCount();
+		for (uint64_t repIdx = 0; repIdx < repCount; ++repIdx) {
 			showAllMetadata(ssf->getRepresentation(repIdx));
 		}
 
@@ -2880,12 +2877,12 @@ void deserializeSealedVolumeFramework(const COMMON_NS::DataObjectRepository & pc
 		showAllMetadata(svf->getSealedStructuralFramework());
 
 		std::cout << "\t\tCONTAINED REGIONS" << std::endl;
-		const unsigned int regionCount = svf->getRegionCount();
-		for (unsigned int regionIdx = 0; regionIdx < regionCount; ++regionIdx) {
+		const uint64_t regionCount = svf->getRegionCount();
+		for (uint64_t regionIdx = 0; regionIdx < regionCount; ++regionIdx) {
 			showAllMetadata(svf->getStratiUnitInterp(regionIdx));
 
-			const unsigned int faceCount = svf->getFaceCountOfExternalShell(regionIdx);
-			for (unsigned int faceIdx = 0; faceIdx < faceCount; ++faceIdx) {
+			const uint64_t faceCount = svf->getFaceCountOfExternalShell(regionIdx);
+			for (uint64_t faceIdx = 0; faceIdx < faceCount; ++faceIdx) {
 				std::cout << "\t\tFace index " << faceIdx << " is the patch " << svf->getRepPatchIndexOfExternalShellFace(regionIdx, faceIdx) << " with side " << svf->getSideFlagOfExternalShellFace(regionIdx, faceIdx) << " of surface representation" << std::endl;
 				showAllMetadata(svf->getRepOfExternalShellFace(regionIdx, faceIdx));
 			}
@@ -4406,16 +4403,10 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 	std::cout << endl << "BEGIN: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl << std::endl;
 	std::cout.precision(17);
 
-	int* values = new int[prop->getValuesCountOfPatch(0)];
+	std::unique_ptr<int32_t[]> values(new int32_t[prop->getValuesCountOfPatch(0)]);
 
-	unsigned long long* numValuesInEachDimension = new unsigned long long[3];
-	numValuesInEachDimension[0] = ijkGrid->getKCellCount();
-	numValuesInEachDimension[1] = ijkGrid->getJCellCount();
-	numValuesInEachDimension[2] = ijkGrid->getICellCount();
-	unsigned long long* offsetInEachDimension = new unsigned long long[3];
-	offsetInEachDimension[0] = 0;
-	offsetInEachDimension[1] = 0;
-	offsetInEachDimension[2] = 0;
+	uint64_t numValuesInEachDimension[3] = { ijkGrid->getKCellCount(), ijkGrid->getJCellCount(), ijkGrid->getICellCount() };
+	uint64_t offsetInEachDimension[3] = { 0, 0, 0 };
 
 	time_t timeStart, timeEnd;
 	clock_t nonHyperslabClockDuration = 0;
@@ -4432,8 +4423,9 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 		// non hyperslabbing
 		clockStart = clock();
 		time(&timeStart);
-		for (unsigned int n = 0; n < nbIter; ++n)
-			prop->getIntValuesOfPatch(0, values);
+		for (unsigned int n = 0; n < nbIter; ++n) {
+			prop->getIntValuesOfPatch(0, values.get());
+		}
 		clockEnd = clock();
 		time(&timeEnd);
 		nonHyperslabClockDuration = clockEnd - clockStart;
@@ -4442,16 +4434,14 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 		// hyperslabbing
 		clockStart = clock();
 		time(&timeStart);
-		for (unsigned int n = 0; n < nbIter; ++n)
-			prop->getIntValuesOfPatch(0, values, numValuesInEachDimension, offsetInEachDimension, 3);
+		for (unsigned int n = 0; n < nbIter; ++n) {
+			prop->getIntValuesOfPatch(0, values.get(), numValuesInEachDimension, offsetInEachDimension, 3);
+		}
 		clockEnd = clock();
 		time(&timeEnd);
 		hyperslabClockDuration = clockEnd - clockStart;
 		hyperslabTimeDuration = difftime(timeEnd, timeStart);
 	}
-
-	delete[] numValuesInEachDimension;
-	delete[] offsetInEachDimension;
 
 	nonHyperslabClockDuration /= smoothingConstant;
 	nonHyperslabTImeDuration /= smoothingConstant;
@@ -4467,8 +4457,6 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 	std::cout << "Hyperslab:     property " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << hyperslabTimeDuration << " seconds" << std::endl;
 	result = (hyperslabTimeDuration * 100) / nonHyperslabTImeDuration;
 	std::cout << "hyperslab version took " << result << " % of non hyperslab version" << std::endl;
-
-	delete[] values;
 
 	std::cout << endl << "END: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl;
 }
@@ -4503,7 +4491,7 @@ void deserializeLog(COMMON_NS::DataObjectRepository & repo)
 					if (channelSet->hasLoggingCompanyCode()) { cout << "LoggingCompanyCode: " << channelSet->getLoggingCompanyCode() << std::endl; }
 					if (channelSet->hasDataAsFileUri()) { cout << "Data As File Uri: " << channelSet->getDataAsFileUri() << std::endl; }
 					if (channelSet->hasDataAsJsonArray()) { cout << "Data As Json Array: " << channelSet->getDataAsJsonArray() << std::endl; }
-					for (size_t channelIndexIdx = 0; channelIndexIdx < channelSet->getChannelIndexCount(); ++channelIndexIdx) {
+					for (uint32_t channelIndexIdx = 0; channelIndexIdx < channelSet->getChannelIndexCount(); ++channelIndexIdx) {
 						cout << "IndexType: " << static_cast<int>(channelSet->getChannelIndexType(channelIndexIdx)) << std::endl;
 						cout << "Uom: " << channelSet->getChannelIndexUom(channelIndexIdx) << std::endl;
 						cout << "IsIncreasing: " << channelSet->getChannelIndexIsIncreasing(channelIndexIdx) << std::endl;
@@ -4519,7 +4507,7 @@ void deserializeLog(COMMON_NS::DataObjectRepository & repo)
 						if (channel->hasPassNumber()) { cout << "PassNumber: " << channel->getPassNumber() << std::endl; }
 						if (channel->hasLoggingCompanyName()) { cout << "LoggingCompanyName: " << channel->getLoggingCompanyName() << std::endl; }
 						if (channel->hasLoggingCompanyCode()) { cout << "LoggingCompanyCode: " << channel->getLoggingCompanyCode() << std::endl; }
-						for (size_t channelIndexIdx = 0; channelIndexIdx < channel->getChannelIndexCount(); ++channelIndexIdx) {
+						for (uint32_t channelIndexIdx = 0; channelIndexIdx < channel->getChannelIndexCount(); ++channelIndexIdx) {
 							cout << "IndexType: " << static_cast<int>(channel->getChannelIndexType(channelIndexIdx)) << std::endl;
 							cout << "Uom: " << channel->getChannelIndexUom(channelIndexIdx) << std::endl;
 							cout << "IsIncreasing: " << channel->getChannelIndexIsIncreasing(channelIndexIdx) << std::endl;
@@ -4551,7 +4539,7 @@ void deserializeWbGeometry(COMMON_NS::DataObjectRepository & repo)
 				if (wbGeom->hasDepthWaterMean()) { cout << "DepthWaterMean: " << wbGeom->getDepthWaterMeanValue() << " " << static_cast<int>(wbGeom->getDepthWaterMeanUom()) << std::endl; }
 				if (wbGeom->hasGapAir()) { cout << "GapAir: " << wbGeom->getGapAirValue() << " " << static_cast<int>(wbGeom->getGapAirUom()) << std::endl; }
 				if (wbGeom->hasMdBase()) { cout << "MdBase: " << wbGeom->getMdBaseValue() << " " << static_cast<int>(wbGeom->getMdBaseUom()) << " datum=" << wbGeom->getMdBaseDatum() << std::endl; }
-				for (size_t sectionIdx = 0; sectionIdx < wbGeom->getSectionCount(); ++sectionIdx) {
+				for (uint32_t sectionIdx = 0; sectionIdx < wbGeom->getSectionCount(); ++sectionIdx) {
 					std::cout << "Section " << sectionIdx << endl;
 					if (wbGeom->hasWellboreGeometrySectionCurveConductor(sectionIdx)) { cout << "CurveConductor: " << wbGeom->getWellboreGeometrySectionCurveConductor(sectionIdx) << std::endl; }
 					if (wbGeom->hasWellboreGeometrySectionDiaDrift(sectionIdx)) { cout << "DiaDrift: " << wbGeom->getWellboreGeometrySectionDiaDriftValue(sectionIdx) << " " << static_cast<int>(wbGeom->getWellboreGeometrySectionDiaDriftUom(sectionIdx)) << std::endl; }
@@ -4734,7 +4722,7 @@ void deserializeGridConnectionSetRepresentation(RESQML2_NS::AbstractIjkGridRepre
 	if (gridConnectionSetCount > 0) {
 		RESQML2_NS::GridConnectionSetRepresentation const * gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
 		showAllMetadata(gridConnectionSet);
-		unsigned int faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
+		uint64_t faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
 		std::cout << "Interpretation Count of this grid connection set is : " << faultInterpOfGridConnCount << " and its cell index pair count is " << gridConnectionSet->getCellIndexPairCount() << endl;
 
 		std::unique_ptr<int[]> localFacePerCellIndexPairs;
@@ -4836,8 +4824,8 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 						}
 					}
 
-					unsigned int patchCount = ijkGrid->getPatchCount();
-					for (unsigned int currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
+					uint64_t patchCount = ijkGrid->getPatchCount();
+					for (uint64_t currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
 						uint64_t nbVertex = ijkGrid->getXyzPointCountOfPatch(currentPatch);
 
 						std::unique_ptr<double[]> xyzPts(new double[nbVertex * 3]);
@@ -5219,7 +5207,7 @@ void deserialize(const string & inputFile)
 		showAllMetadata(faultTriRep);
 
 		uint64_t pointCount = faultTriRep->getXyzPointCountOfAllPatches();
-		unsigned int triangleCount = faultTriRep->getTriangleCountOfAllPatches();
+		uint64_t triangleCount = faultTriRep->getTriangleCountOfAllPatches();
 		cout << "point Count " << pointCount << endl;
 		cout << "triangle Count " << triangleCount << endl;
 
@@ -5298,7 +5286,7 @@ void deserialize(const string & inputFile)
 		showAllMetadata(horizonTriRep);
 
 		const uint64_t pointCount = horizonTriRep->getXyzPointCountOfAllPatches();
-		unsigned int triangleCount = horizonTriRep->getTriangleCountOfAllPatches();
+		const uint64_t triangleCount = horizonTriRep->getTriangleCountOfAllPatches();
 		cout << "point Count " << pointCount << endl;
 		cout << "triangle Count " << triangleCount << endl;
 
@@ -5314,8 +5302,8 @@ void deserialize(const string & inputFile)
 			std::cout << "\t--------------------------------------------------" << std::endl;
 		}
 
-		const unsigned int patchCount = horizonTriRep->getPatchCount();
-		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
+		const uint64_t patchCount = horizonTriRep->getPatchCount();
+		for (uint64_t patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonTriRep->getSeismicSupportOfPatch(patchIndex);
 			if (seismicSupport != nullptr) {
 				const uint64_t pointCountForPatch = horizonTriRep->getXyzPointCountOfPatch(patchIndex);
@@ -5352,8 +5340,8 @@ void deserialize(const string & inputFile)
 	{
 		showAllMetadata(horizonSinglePolylineRep);
 
-		const unsigned int patchCount = horizonSinglePolylineRep->getPatchCount();
-		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
+		const uint64_t patchCount = horizonSinglePolylineRep->getPatchCount();
+		for (uint64_t patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonSinglePolylineRep->getSeismicSupportOfPatch(patchIndex);
 			if (seismicSupport != nullptr) {
 				cout << "Seismic support of patch " << patchIndex << " is : " << seismicSupport->getTitle() << endl;
@@ -5611,6 +5599,10 @@ void appendAContinuousProp(const string& filePath)
 {
 	COMMON_NS::EpcDocument pck(filePath);
 	COMMON_NS::DataObjectRepository repo;
+#if WITH_RESQML2_2
+	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2);
+	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3);
+#endif
 	const string resqmlResult = pck.deserializeInto(repo, COMMON_NS::DataObjectRepository::openingMode::READ_WRITE);	
 
 	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("df2103a0-fa3d-11e5-b8d4-0002a5d5c51b");

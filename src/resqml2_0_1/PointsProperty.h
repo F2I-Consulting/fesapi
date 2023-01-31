@@ -168,7 +168,7 @@ namespace RESQML2_0_1_NS
 		 * 			Otherwise returns the data object reference of the associated representation. Null
 		 * 			should not occured since each property must be associated to a representation.
 		 */
-		COMMON_NS::DataObjectReference getHdfProxyDor(unsigned int patchIndex) const final;
+		COMMON_NS::DataObjectReference getHdfProxyDor(uint64_t patchIndex) const final;
 
 	private:
 		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const final;

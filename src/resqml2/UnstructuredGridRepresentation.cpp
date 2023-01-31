@@ -107,11 +107,6 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 		}
 	}
 
-	setGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points", pointCount, proxy,
-		getHdfGroup() + "/FacesPerCell/" + ELEMENTS_DS_NAME, getHdfGroup() + "/FacesPerCell/" + CUMULATIVE_LENGTH_DS_NAME,
-		faceCount, getHdfGroup() + "/NodesPerFace/" + ELEMENTS_DS_NAME, getHdfGroup() + "/NodesPerFace/" + CUMULATIVE_LENGTH_DS_NAME,
-		cellShape, localCrs);
-
 	const uint64_t cellCount = getCellCount();
 
 	// HDF Face Right handness
@@ -125,10 +120,13 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 	proxy->writeItemizedListOfList(getHdfGroup(), "NodesPerFace", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, nodeIndicesCumulativeCountPerFace, faceCount, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace[faceCount - 1]);
 
 	// HDF points
-	hsize_t numValues[2];
-	numValues[0] = pointCount;
-	numValues[1] = 3; // 3 for X, Y and Z
+	hsize_t numValues[2] = { pointCount, 3 };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 2);
+
+	setGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points", pointCount, proxy,
+		getHdfGroup() + "/FacesPerCell/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, getHdfGroup() + "/FacesPerCell/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME,
+		faceCount, getHdfGroup() + "/NodesPerFace/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, getHdfGroup() + "/NodesPerFace/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME,
+		cellShape, localCrs);
 }
 
 void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char * cellFaceIsRightHanded, double * points,

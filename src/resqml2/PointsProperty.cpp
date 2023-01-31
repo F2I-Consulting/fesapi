@@ -42,7 +42,7 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum PointsProperty::getValuesHdfDat
 	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
-uint64_t PointsProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, unsigned int patchIndex) const
+uint64_t PointsProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const
 {
 	if (isPartial()) {
 		throw logic_error("You cannot get values from a partial property.");
@@ -61,7 +61,7 @@ uint64_t PointsProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uns
 	throw out_of_range("The dim index to get the count is out of range.");
 }
 
-uint64_t PointsProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
+uint64_t PointsProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
 {
 	if (isPartial()) {
 		throw logic_error("You cannot get values from a partial property.");
@@ -128,23 +128,22 @@ void PointsProperty::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPo
 
 void PointsProperty::pushBackArray1dOfXyzPoints(const double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t pointCountPerDimension = pointCount;
-	pushBackArrayOfXyzPoints(points, &pointCountPerDimension, 1, proxy);
+	pushBackArrayOfXyzPoints(points, &pointCount, 1, proxy);
 }
 
 void PointsProperty::pushBackArray2dOfXyzPoints(const double * points, uint64_t pointCountInFastestDim, uint64_t pointCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t pointCountPerDimension[2] = { pointCountInSlowestDim, pointCountInFastestDim };
+	const uint64_t pointCountPerDimension[2] = { pointCountInSlowestDim, pointCountInFastestDim };
 	pushBackArrayOfXyzPoints(points, pointCountPerDimension, 2, proxy);
 }
 
 void PointsProperty::pushBackArray3dOfXyzPoints(const double * points, uint64_t pointCountInFastestDim, uint64_t pointCountInMiddleDim, uint64_t pointCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t pointCountPerDimension[3] = { pointCountInSlowestDim, pointCountInMiddleDim, pointCountInFastestDim };
+	const uint64_t pointCountPerDimension[3] = { pointCountInSlowestDim, pointCountInMiddleDim, pointCountInFastestDim };
 	pushBackArrayOfXyzPoints(points, pointCountPerDimension, 3, proxy);
 }
 
-void PointsProperty::pushBackArrayOfXyzPoints(double const * points, unsigned long long const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
+void PointsProperty::pushBackArrayOfXyzPoints(double const * points, uint64_t const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const string datasetName = "points_patch" + std::to_string(getPatchCount());
 

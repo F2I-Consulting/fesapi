@@ -367,7 +367,7 @@ bool AbstractProperty::isAssociatedToOneStandardEnergisticsPropertyKind() const
 		if (!propKind->isPartial()) {
 			return propKind->getOriginator() == "Energistics";
 		}
-		throw logic_error("The associated prop kind is partial.");
+		return false;
 	}
 
 	throw logic_error("Unrecognized RESQML version");

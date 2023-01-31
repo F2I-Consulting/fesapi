@@ -173,7 +173,7 @@ const std::string & AbstractLocal3dCrs::getProjectedCrsUnknownReason() const
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
-unsigned long long AbstractLocal3dCrs::getProjectedCrsEpsgCode() const
+uint64_t AbstractLocal3dCrs::getProjectedCrsEpsgCode() const
 {
 	if (isProjectedCrsDefinedWithEpsg() == false)
 		throw invalid_argument("The associated projected Crs is not an EPSG one.");
@@ -227,7 +227,7 @@ const std::string & AbstractLocal3dCrs::getVerticalCrsUnknownReason() const
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
 
-unsigned long long AbstractLocal3dCrs::getVerticalCrsEpsgCode() const
+uint64_t AbstractLocal3dCrs::getVerticalCrsEpsgCode() const
 {
 	if (isVerticalCrsDefinedWithEpsg() == false)
 		throw invalid_argument("The associated vertical Crs is not an EPSG one.");

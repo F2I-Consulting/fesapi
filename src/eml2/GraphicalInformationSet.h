@@ -573,7 +573,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
 
 		/** The standard XML tag without XML namespace for serializing this data object */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "GraphicalInformationSet";
 
 		/**
 		 * Get the standard XML tag without XML namespace for serializing this data object

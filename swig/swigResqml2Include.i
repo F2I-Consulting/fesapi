@@ -2229,12 +2229,12 @@ namespace RESQML2_NS
 		bool isProjectedCrsDefinedWithEpsg() const;
 		bool isProjectedCrsUnknown() const;
 		const std::string & getProjectedCrsUnknownReason() const;
-		unsigned long long getProjectedCrsEpsgCode() const;
+		uint64_t getProjectedCrsEpsgCode() const;
 		
 		bool isVerticalCrsDefinedWithEpsg() const;
 		bool isVerticalCrsUnknown() const;
 		const std::string & getVerticalCrsUnknownReason() const;
-		unsigned long long getVerticalCrsEpsgCode() const;
+		uint64_t getVerticalCrsEpsgCode() const;
 
 		gsoap_resqml2_0_1::eml20__LengthUom getProjectedCrsUnit() const;
 		std::string getProjectedCrsUnitAsString() const;
@@ -4798,35 +4798,35 @@ namespace RESQML2_NS
 		 * 											be defined in the repository.
 		 * @param 		  	nullValue				The null value.
 		 */
-		void pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		virtual void pushBackLongHdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds an nd array of explicit integer values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		virtual void pushBackIntHdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		virtual void pushBackShortHdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
-		 * Adds an nd array of explicit char values to the property values.
+		 * Adds an nd array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackLongHdf5ArrayOfValues
 		 */
-		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
+		virtual void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written
@@ -4905,7 +4905,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int64_t getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const;
+		int64_t getLongValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
 
 		/**
 		 * Gets the null value of a given patch of this instance. Values are supposed to be integer ones.
@@ -4919,7 +4919,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	the null value.
 		 */
-		int64_t getNullValueOfPatch(unsigned int patchIndex) const;
+		int64_t getNullValueOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be integer ones.
@@ -4933,7 +4933,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int getIntValuesOfPatch(unsigned int patchIndex, int * values) const;
+		int getIntValuesOfPatch(uint64_t patchIndex, int * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -4948,7 +4948,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		unsigned int getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const;
+		unsigned int getUIntValuesOfPatch(uint64_t patchIndex, unsigned int * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
@@ -4962,7 +4962,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		short getShortValuesOfPatch(unsigned int patchIndex, short * values) const;
+		short getShortValuesOfPatch(uint64_t patchIndex, short * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -4977,7 +4977,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		unsigned short getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const;
+		unsigned short getUShortValuesOfPatch(uint64_t patchIndex, unsigned short * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
@@ -4991,7 +4991,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int8_t getInt8ValuesOfPatch(unsigned int patchIndex, int8_t* values) const;
+		int8_t getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -5006,7 +5006,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		uint8_t getUInt8ValuesOfPatch(unsigned int patchIndex, uint8_t* values) const;
+		uint8_t getUInt8ValuesOfPatch(uint64_t patchIndex, uint8_t* values) const;
 
 		//***********************************
 		//*** For hyperslabbing *****
@@ -5034,7 +5034,7 @@ namespace RESQML2_NS
 		 */
 		void pushBackHdf5ArrayOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			unsigned long long const * numValues,
+			uint64_t const * numValues,
 			unsigned int numArrayDimensions,
 			int64_t nullValue = std::numeric_limits<int64_t>::max(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
@@ -5149,74 +5149,74 @@ namespace RESQML2_NS
 		 */
 		void setValuesOfInt64Hdf5ArrayOfValues(
 			int64_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfUInt64Hdf5ArrayOfValues(
 			uint64_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5ArrayOfValues(
 			int32_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfUInt32Hdf5ArrayOfValues(
 			uint32_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt16Hdf5ArrayOfValues(
 			int16_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfUInt16Hdf5ArrayOfValues(
 			uint16_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt8Hdf5ArrayOfValues(
 			int8_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfUInt8Hdf5ArrayOfValues(
 			uint8_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5ArrayOfValues(
 			double const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfFloatHdf5ArrayOfValues(
 			float const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		/**
 		 * Adds a 1d array of explicit long 64 bits values into the property values. Since this methods
@@ -5249,25 +5249,25 @@ namespace RESQML2_NS
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5Array1dOfValues(
 			int32_t const* values,
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5Array1dOfValues(
 			double const * values,
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfFloatHdf5Array1dOfValues(
 			float const * values,
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		/**
 		 * Adds a 2d array of explicit values into the property values. Since this methods
@@ -5308,7 +5308,7 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());		
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());		
 		void setValuesOfInt32Hdf5Array2dOfValues(
 			int32_t const* values,
 			uint64_t valueCountInFastestDim,
@@ -5316,7 +5316,7 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5Array2dOfValues(
 			double const * values,
 			uint64_t valueCountInFastestDim,
@@ -5324,7 +5324,7 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfFloatHdf5Array2dOfValues(
 			float const * values,
 			uint64_t valueCountInFastestDim,
@@ -5332,7 +5332,7 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		/**
 		 * Adds a 3d array of explicit long 64 bits values into the property values. Since this methods
@@ -5379,7 +5379,7 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5Array3dOfValues(
 			int32_t const* values,
 			uint64_t valueCountInFastestDim,
@@ -5389,7 +5389,7 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5Array3dOfValues(
 			double const * values,
 			uint64_t valueCountInFastestDim,
@@ -5399,7 +5399,7 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfFloatHdf5Array3dOfValues(
 			float const * values,
 			uint64_t valueCountInFastestDim,
@@ -5409,7 +5409,7 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		//***********************************/
 		//*** INTEGER For hyperslabbing *****/
@@ -5437,8 +5437,8 @@ namespace RESQML2_NS
 		void getLongValuesOfPatch(
 			unsigned int patchIndex,
 			int64_t* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -5500,8 +5500,8 @@ namespace RESQML2_NS
 		int getIntValuesOfPatch(
 			unsigned int patchIndex,
 			int* values,
-			unsigned long long* numValuesInEachDimension,
-			unsigned long long* offsetInEachDimension,
+			const uint64_t* numValuesInEachDimension,
+			const uint64_t* offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -5618,7 +5618,7 @@ namespace RESQML2_NS
 		 * 										then a default HDF proxy must be defined in the
 		 * 										repository.
 		 */
-		void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		void pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Adds a 1d array of explicit float values to the property values.
@@ -5649,7 +5649,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
-		void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		void pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
@@ -5720,8 +5720,8 @@ namespace RESQML2_NS
 		void getFloatValuesOfPatch(
 			unsigned int patchIndex,
 			float* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -5903,7 +5903,7 @@ namespace RESQML2_NS
 		 * 										value is 1 then both maximum and minimum values will be
 		 * 										computed from the values.
 		 */
-		void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions,
+		void pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions,
 			double * minimumValue, double * maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -5938,7 +5938,7 @@ namespace RESQML2_NS
 		 * 									
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
-		void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions,
+		void pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions,
 			float * minimumValue, float * maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -6022,7 +6022,7 @@ namespace RESQML2_NS
 		 */
 		void pushBackHdf5ArrayOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			unsigned long long const * numValues,
+			uint64_t const * numValues,
 			unsigned int numArrayDimensions,
 			double * minimumValue, double * maximumValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
@@ -6174,7 +6174,7 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5Array3dOfValues(
 			double const * values,
 			uint64_t valueCountInFastestDim,
@@ -6185,7 +6185,7 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		/**
 		 * Set some values of an existing 3d array of explicit float values of a particular patch.  This
@@ -6222,20 +6222,20 @@ namespace RESQML2_NS
 		 */
 		void setValuesOfFloatHdf5ArrayOfValues(
 			float const * values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5ArrayOfValues(
 			double const * values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 	};
 	
 #ifdef SWIGPYTHON
@@ -6261,11 +6261,11 @@ namespace RESQML2_NS
 		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
 		void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 
-		void pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
-		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
+		void pushBackLongHdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
+		void pushBackIntHdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		void pushBackShortHdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 		
 		/**
 		 * Creates an nd array of explicit long 64 bits values into the property values. No values are
@@ -6296,7 +6296,7 @@ namespace RESQML2_NS
 		 */
 		void pushBackHdf5ArrayOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			unsigned long long* numValues,
+			const uint64_t* numValues,
 			unsigned int numArrayDimensions,
 			int64_t* minimumValue, int64_t* maximumValue,
 			int64_t nullValue = std::numeric_limits<int64_t>::max(),
@@ -6408,7 +6408,7 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5Array3dOfValues(
 			int32_t* values,
 			uint64_t valueCountInFastestDim,
@@ -6419,25 +6419,25 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		using AbstractValuesProperty::setValuesOfInt32Hdf5Array3dOfValues;
 
 		void setValuesOfInt64Hdf5ArrayOfValues(
 			int64_t* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5ArrayOfValues(
 			int32_t* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		using AbstractValuesProperty::setValuesOfInt32Hdf5ArrayOfValues;
 		
 		/**
@@ -6722,7 +6722,7 @@ namespace RESQML2_NS
 		 * 											then a default HDF proxy must be defined in the
 		 * 											repository.
 		 */
-		void pushBackArrayOfXyzPoints(double const * xyzPoints, unsigned long long const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		void pushBackArrayOfXyzPoints(double const * xyzPoints, uint64_t const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF

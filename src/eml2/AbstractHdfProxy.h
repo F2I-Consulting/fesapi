@@ -21,11 +21,6 @@ under the License.
 #include "EpcExternalPartReference.h"
 #include "../common/HidtType.h"
 
-/** A macro that defines cumulative length ds name */
-#define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
-/** A macro that defines elements ds name */
-#define ELEMENTS_DS_NAME "elements"
-
 namespace EML2_NS
 {
 	/** @brief	An abstract proxy for reading and writing values into an HDF5 file.
@@ -40,7 +35,13 @@ namespace EML2_NS
 	*/
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
-	public:  
+	public:
+
+		/** Defines cumulative length ds name */
+		static constexpr char const* CUMULATIVE_LENGTH_DS_NAME = "cumulativeLength";
+		/** Defines elements ds name */
+		static constexpr char const* ELEMENTS_DS_NAME = "elements";
+
 		/** Destructor */
 		DLL_IMPORT_OR_EXPORT virtual ~AbstractHdfProxy() = default;
 
@@ -900,6 +901,8 @@ namespace EML2_NS
 		 * @param 			emlVersion	Desired eml Version such as 20 (for v2.0) or 23 (for v2.3) etc...
 		*/
 		DLL_IMPORT_OR_EXPORT void initGsoapProxy(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title, unsigned int emlVersion);
+
+		static constexpr char const* MIME_TYPE = "application/x-hdf5";
 
 	protected:
 
