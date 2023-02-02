@@ -159,7 +159,7 @@ void GridConnectionSetRepresentation::getInterpretationIndexCumulativeCount(uint
 		readArrayNdOfUInt64Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount);
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -176,7 +176,7 @@ void GridConnectionSetRepresentation::getInterpretationIndices(int64_t * interpr
 		}
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -192,7 +192,7 @@ int64_t GridConnectionSetRepresentation::getInterpretationIndexNullValue() const
 		}
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -375,19 +375,14 @@ COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretatio
 
 	if (rep->ConnectionInterpretations != nullptr) {
 		if (rep->ConnectionInterpretations->FeatureInterpretation.size() > interpretationIndex) {
-			if (rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]->ContentType.find("FaultInterpretation") != string::npos) {
-				return COMMON_NS::DataObjectReference(rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]);
-			}
-			else {
-				throw invalid_argument("The associated feature interpretation is not a fault one. Legal but not yet implemented.");
-			}
+			return COMMON_NS::DataObjectReference(rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]);
 		}
 		else {
-			throw out_of_range("The fault index is out of range in this grid connection context.");
+			throw out_of_range("The interpretation index is out of range in this grid connection context.");
 		}
 	}
 	else {
-		throw invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
