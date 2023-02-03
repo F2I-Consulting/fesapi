@@ -6547,17 +6547,88 @@ namespace RESQML2_NS
 	class StringTableLookup : public COMMON_NS::AbstractObject
 	{
 	public:
-		bool containsKey(long longValue);
-	
-		unsigned int getItemCount() const;
-		long getKeyAtIndex(unsigned int index) const;
-		std::string getStringValueAtIndex(unsigned int index) const;
-		std::string getStringValue(long longValue);
-		
-		void addValue(const std::string & strValue, long longValue);
-		void setValue(const std::string & strValue, long longValue);
-		
+		/**
+		 * Checks whether a key is contained within this string lookup.
+		 *
+		 * @param 	key	A key.
+		 *
+		 * @returns	True if @p longValue is a key of this string table lookup, false if not.
+		 */
+		bool containsKey(int64_t key);
+
+		/**
+		 * Gets the count of items in the string table lookup (in its map).
+		 *
+		 * @returns	The count of items.
+		 */
+		uint64_t getItemCount() const;
+
+		/**
+		 * Gets the key of a key/value pair at a particular index of this string table lookup (in its
+		 * map).
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getItemCount().
+		 *
+		 * @param 	index	Zero-based index of the key/value pair.
+		 *
+		 * @returns	The key of the key/value pair at position @p index.
+		 */
+		int64_t getKeyAtIndex(uint64_t index) const;
+
+		/**
+		 * Gets the string value of a key/value pair at a particular index of this string table lookup
+		 * (in its map).
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getItemCount().
+		 *
+		 * @param 	index	Zero-based index of the key/value pair.
+		 *
+		 * @returns	The string value of the key/value pair at position @p index.
+		 */
+		std::string getStringValueAtIndex(uint64_t index) const;
+
+		/**
+		 * Gets a string value from its associated key.
+		 *
+		 * @param 	key	A key.
+		 *
+		 * @returns	The string value corresponding to the key @p longValue if it exists, empty string if
+		 * 			not.
+		 */
+		std::string getStringValue(int64_t key);
+
+		/**
+		 * Adds a key/value pair to this string table lookup. No verification that the key (or string
+		 * value) already exists is done.
+		 *
+		 * @param 	strValue 	A string value.
+		 * @param 	longValue	A key.
+		 */
+		void addValue(const std::string & strValue, int64_t key);
+
+		/**
+		 * Modifies the string value associated to a key (long). If the key does not exist, nothing is
+		 * done.
+		 *
+		 * @param 	strValue 	The new string value.
+		 * @param 	longValue	A key.
+		 */
+		void setValue(const std::string & strValue, int64_t key);
+
+		/**
+		 * Gets the minimum key in this string table lookup. It reads it from file.
+		 *
+		 * @returns	The minimum key if some key/value pairs exists in this string table lookup, otherwise
+		 * 			the int64_t maximum value.
+		 */
 		int64_t getMinimumValue();
+
+		/**
+		 * Gets the maximum key in this string table lookup. It reads it from file.
+		 *
+		 * @returns	The maximum key if some key/value pairs exists in this string table lookup, otherwise
+		 * 			the int64_t minimum value.
+		 */
 		int64_t getMaximumValue();
 	};
 	
