@@ -39,7 +39,6 @@ set(FESAPI_RESQML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridNoGeometryRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridParametricRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/LocalDepth3dCrs.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/LocalTime3dCrs.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/MdDatum.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/NonSealedSurfaceFrameworkRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PlaneSetRepresentation.cpp

@@ -817,7 +817,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
 		/**
@@ -882,7 +882,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
 
 		/**
@@ -948,7 +948,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
@@ -1017,7 +1017,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
 
@@ -1685,7 +1685,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic column rank interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank);
 
 		/**
 		 * @brief	Creates a stratigraphic column rank interpretation ordered by apparent depth into
@@ -1704,7 +1704,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic column rank interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank);
 
 		/**
 		 * @brief	Creates a stratigraphic occurrence interpretation ordered by age into this repository

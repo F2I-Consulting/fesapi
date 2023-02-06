@@ -58,7 +58,7 @@ namespace Example
             throw new NotImplementedException();
         }
 
-        public override SWIGTYPE_p_std__vectorT_unsigned_long_long_t getElementCountPerDimension(string datasetName)
+        public override UInt32Vector getElementCountPerDimension(string datasetName)
         {
             throw new NotImplementedException();
         }
@@ -234,6 +234,11 @@ namespace Example
         }
 
         public override bool isCompressed(string datasetName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override UInt32Vector getElementCountPerChunkDimension(string datasetName)
         {
             throw new NotImplementedException();
         }

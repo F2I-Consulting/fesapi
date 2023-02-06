@@ -18,35 +18,30 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractColumnLayerGridRepresentation.h"
 
-#include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
+#include <H5public.h>
 
 #include "AbstractStratigraphicOrganizationInterpretation.h"
+
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_NS;
 using namespace std;
 
-unsigned int AbstractColumnLayerGridRepresentation::getKCellCount() const
+uint64_t AbstractColumnLayerGridRepresentation::getKCellCount() const
 {
 	if (isPartial()) {
 		throw logic_error("This method cannot be called on a partial object");
 	}
 
-	const uint64_t kCellCount = gsoapProxy2_0_1 != nullptr
+	return gsoapProxy2_0_1 != nullptr
 		? (isTruncated() ? static_cast<resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk : static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk)
 		: (isTruncated() ? static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->Nk : static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3)->Nk);
-		
-	if (kCellCount > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too much cells against K dimension");
-	}
-	return static_cast<unsigned int>(kCellCount);
 }
 
-void AbstractColumnLayerGridRepresentation::setKCellCount(unsigned int kCount)
+void AbstractColumnLayerGridRepresentation::setKCellCount(uint64_t kCount)
 {
 	if (isPartial()) {
 		throw logic_error("Partial object");
@@ -70,10 +65,10 @@ void AbstractColumnLayerGridRepresentation::setKCellCount(unsigned int kCount)
 	}
 }
 
-void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(int64_t * stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy)
+void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(int64_t const* stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
 	if (isTruncated()) {
-		throw invalid_argument("A truncated grid cannot be linked to a strati column in Resqml2");
+		throw invalid_argument("A truncated grid cannot be linked to a strati column in RESQML2");
 	}
 	if (hdfProxy == nullptr) {
 		hdfProxy = getRepository()->getDefaultHdfProxy();
@@ -81,7 +76,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	hsize_t dim = getKCellCount();
+	const uint64_t dim = getKCellCount();
 	hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, stratiUnitIndices, &dim, 1);
 
 	getRepository()->addRelationship(this, hdfProxy);
@@ -109,7 +104,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		gsoap_eml2_3::eml23__IntegerExternalArray* elementDataset = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
 		elementDataset->NullValue = nullValue;
 		elementDataset->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
+		auto* dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 		dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
 		dsPart->PathInExternalFile = getHdfGroup() + "/IntervalStratigraphicUnits";
 		elementDataset->Values->ExternalFileProxy.push_back(dsPart);
@@ -191,9 +186,9 @@ int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 		return readArrayNdOfInt64Values(rep->IntervalStratigraphicUnits->UnitIndices, stratiUnitIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto rep = static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3);
+		gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation const* rep = static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3);
 		if (rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray) {
-			gsoap_eml2_3::eml23__IntegerLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength);
+			gsoap_eml2_3::eml23__IntegerLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength);
 			if (latticeArray->StartValue == 1 && latticeArray->Offset.size() == 1 &&
 				latticeArray->Offset[0]->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray &&
 				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Value == 1 &&
@@ -233,12 +228,12 @@ void AbstractColumnLayerGridRepresentation::loadTargetRelationships()
 gsoap_resqml2_0_1::resqml20__PillarShape AbstractColumnLayerGridRepresentation::getMostComplexPillarGeometry() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
+		gsoap_resqml2_0_1::resqml20__PointGeometry const* geom = getPointGeometry2_0_1(0);
 		if (geom == nullptr) {
 			throw invalid_argument("This grid has no point geoemtry.");
 		}
 
-		gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry* specializedGeom = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry*>(geom);
+		gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry const* specializedGeom = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry const*>(geom);
 		if (geom == nullptr) {
 			throw invalid_argument("This grid has no AbstractColumnLayerGrid Geometry.");
 		}
@@ -246,12 +241,12 @@ gsoap_resqml2_0_1::resqml20__PillarShape AbstractColumnLayerGridRepresentation::
 		return specializedGeom->PillarShape;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::resqml22__PointGeometry* geom = getPointGeometry2_2(0);
+		gsoap_eml2_3::resqml22__PointGeometry const* geom = getPointGeometry2_2(0);
 		if (geom == nullptr) {
 			throw invalid_argument("This grid has no point geoemtry.");
 		}
 
-		gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry* specializedGeom = dynamic_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry*>(geom);
+		gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry const* specializedGeom = dynamic_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry const*>(geom);
 		if (geom == nullptr) {
 			throw invalid_argument("This grid has no AbstractColumnLayerGrid Geometry.");
 		}

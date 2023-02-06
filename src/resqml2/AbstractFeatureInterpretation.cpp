@@ -102,7 +102,7 @@ gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::initDomain(gs
 		if (rep->isPartial()) {
 			continue;
 		}
-		const unsigned int patchCount = rep->getPatchCount();
+		const uint64_t patchCount = rep->getPatchCount();
 		for (unsigned int patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
 			AbstractLocal3dCrs* local3dCrs = rep->getLocalCrs(patchIndex);
 			if (local3dCrs != nullptr) {
@@ -202,27 +202,6 @@ vector<AbstractRepresentation *> AbstractFeatureInterpretation::getRepresentatio
 	result.erase(std::remove_if(result.begin(), result.end(), DifferentInterp(this)), result.end());
 
 	return result;
-}
-
-unsigned int AbstractFeatureInterpretation::getRepresentationCount() const
-{
-	size_t result = getRepresentationSet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The representation count is superior to unsigned int max");
-	}
-
-	return static_cast<unsigned int>(result);
-}
-
-AbstractRepresentation * AbstractFeatureInterpretation::getRepresentation(unsigned int index) const
-{
-	const std::vector<AbstractRepresentation*>& representationSet = getRepresentationSet();
-
-	if (representationSet.size() > index)
-		return representationSet[index];
-	
-	throw out_of_range("The representation index you are requesting is out of range.");
 }
 
 std::vector<GridConnectionSetRepresentation *> AbstractFeatureInterpretation::getGridConnectionSetRepresentationSet() const

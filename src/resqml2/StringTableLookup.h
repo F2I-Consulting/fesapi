@@ -102,7 +102,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void addValue(const std::string & strValue, int64_t key) = 0;
 
 		/**
-		 * Modifies the string value associated to a key (long). If the key does not exist, nothing is
+		 * Modifies the string value associated to a key. If the key does not exist, nothing is
 		 * done.
 		 *
 		 * @param 	strValue 	The new string value.

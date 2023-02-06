@@ -107,7 +107,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getParameterCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getParameterCount() const = 0;
 
 		/**
 		 * Gets the title of a particular parameter.

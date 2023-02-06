@@ -22,8 +22,6 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../common/EnumStringMapper.h"
 #include "../eml2/AbstractHdfProxy.h"
 #include "../eml2/PropertyKind.h"

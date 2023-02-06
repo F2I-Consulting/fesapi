@@ -20,8 +20,6 @@ under the License.
 
 #include <limits>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;

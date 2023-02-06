@@ -21,8 +21,6 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../resqml2/AbstractGridRepresentation.h"
 #include "../resqml2/WellboreInterpretation.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
@@ -110,7 +108,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 	xmlGridIndices->Values->ExternalFileProxy.push_back(dsPart);
 	rep->IntervalGridCells->GridIndices = xmlGridIndices;
 	// HDF
-	hsize_t intervalCount = rep->NodeCount - 1;
+	uint64_t intervalCount = rep->NodeCount - 1;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,

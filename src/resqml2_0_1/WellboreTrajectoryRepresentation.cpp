@@ -102,7 +102,7 @@ void WellboreTrajectoryRepresentation::setMinimalGeometry(double startMd, double
 	rep->FinishMd = endMd;
 }
 
-void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (controlPoints == nullptr) {
 		throw invalid_argument("The control points are missing.");
@@ -145,13 +145,13 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 	paramLine->ControlPoints = xmlControlPoints;
 
 	// HDF control points
-	hsize_t dim[2] = { controlPointCount, 3 };
+	uint64_t dim[2] = { controlPointCount, 3 };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "controlPoints", controlPoints, dim, 2);
 
 	getRepository()->addRelationship(this, localCrs);
 }
 
-void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
+void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
 	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (controlPointParameters == nullptr) {
@@ -179,12 +179,11 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 	paramLine->ControlPointParameters = xmlControlPointParameters;
 
 	// HDF control point parameters
-	const hsize_t dimParamDataSet = controlPointCount;
-	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "controlPointParameters", controlPointParameters, &dimParamDataSet, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "controlPointParameters", controlPointParameters, &controlPointCount, 1);
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
-	double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
+	double const* tangentVectors, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
 	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (tangentVectors == nullptr) {
@@ -210,7 +209,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 	paramLine->TangentVectors = xmlTangentVectors;
 
 	// HDF tangent vectors
-	hsize_t dim[2] = { controlPointCount, 3 };
+	uint64_t dim[2] = { controlPointCount, 3 };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "tangentVectors", tangentVectors, dim, 2);
 }
 

@@ -679,7 +679,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	f1i1triRepSinglePatch = pck->createTriangulatedSetRepresentation(fault1Interp1,
 		"d8a03d57-8bf3-4f75-8645-ef2fbfa5d1e3",
 		"Fault1 Interp1 TriRep Single Patch");
-	//hsize_t dimExplicitPointsFault1 [1] = {6};
+	//uint64_t dimExplicitPointsFault1 [1] = {6};
 	double explicitPointsFault1[54] = { 150, 0, 200, 150, 100, 200, 150, 200, 200,
 		250, 0, 300, 250, 100, 300, 250, 200, 300,
 		300, 0, 350, 300, 100, 350, 300, 200, 350,
@@ -2414,7 +2414,7 @@ void deserializeActivity(COMMON_NS::AbstractObject const * resqmlObject)
 					}
 				}
 				else if (activity->isAnIntegerQuantityParameter(paramTitle)) {
-					vector<int64_t> vals = activity->getIntegerQuantityParameterValue(paramTitle);
+					vector<int32_t> vals = activity->getIntegerQuantityParameterValue(paramTitle);
 					for (size_t k = 0; k < vals.size(); ++k) {
 						cout << "Integer value : " << vals[k] << endl;
 					}
@@ -2610,9 +2610,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 						cout << "\tPress enter to continue..." << endl;
 						cin.get();
 					}
-					const unsigned int itemCount = stl->getItemCount();
+					const uint64_t itemCount = stl->getItemCount();
 					std::cout << "\tAssociated String Table lookup" << endl;
-					for (unsigned int itemIndex = 0; itemIndex < itemCount; ++itemIndex) {
+					for (uint64_t itemIndex = 0; itemIndex < itemCount; ++itemIndex) {
 						std::cout << stl->getKeyAtIndex(itemIndex) << "->" << stl->getStringValueAtIndex(itemIndex) << endl;
 					}
 				}
@@ -5390,7 +5390,7 @@ void deserialize(const string & inputFile)
 						if (prop->getXmlTag() == RESQML2_NS::CategoricalProperty::XML_TAG) {
 							RESQML2_NS::CategoricalProperty const * catVal = static_cast<RESQML2_NS::CategoricalProperty const *>(prop);
 							if (catVal->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64) {
-								std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
+								std::cout << "Hdf datatype is NATIVE INT 64" << std::endl;
 								std::unique_ptr<int64_t[]> tmp(new int64_t[wmf->getMdValuesCount()]);
 								catVal->getLongValuesOfPatch(0, tmp.get());
 								for (size_t ind = 0; ind < 2; ind++) {

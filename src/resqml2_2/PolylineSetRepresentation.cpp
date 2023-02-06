@@ -23,8 +23,6 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
@@ -78,7 +76,7 @@ PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeature
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int const* nodeCountPerPolyline, double const* nodes,
-				unsigned int polylineCount, bool allPolylinesClosedFlag,
+				uint64_t polylineCount, bool allPolylinesClosedFlag,
 				EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
@@ -110,11 +108,10 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlNodeCountPerPolyline->Values->ExternalFileProxy.push_back(dsPart);
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
-	hsize_t dim = polylineCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
-		&dim, 1);
+		&polylineCount, 1);
 
 	// closed polylines
 	eml23__BooleanConstantArray* xmlClosedPolylines = soap_new_eml23__BooleanConstantArray(gsoapProxy2_3->soap);
@@ -136,7 +133,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int const* nodeCountPerPolyline, double const* nodes,
-				unsigned int polylineCount, bool * polylineClosedFlags,
+				uint64_t polylineCount, bool * polylineClosedFlags,
 				EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
@@ -168,11 +165,10 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlNodeCountPerPolyline->Values->ExternalFileProxy.push_back(dsPart);
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
-	hsize_t dim = polylineCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
-		&dim, 1);
+		&polylineCount, 1);
 
 	// closed polylines
 	eml23__BooleanExternalArray* xmlClosedPolylines = soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
@@ -189,7 +185,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,
 		polylineClosedFlags,
-		&dim, 1);
+		&polylineCount, 1);
 
 	// XYZ points
 	uint64_t xyzPtDim = 0;

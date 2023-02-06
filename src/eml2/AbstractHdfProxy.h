@@ -132,10 +132,10 @@ namespace EML2_NS
 			const std::string & name,
 			COMMON_NS::AbstractObject::numericalDatatypeEnum cumulativeLengthDatatype,
 			const void * cumulativeLength,
-			unsigned long long cumulativeLengthSize,
+			uint64_t cumulativeLengthSize,
 			COMMON_NS::AbstractObject::numericalDatatypeEnum elementsDatatype,
 			const void * elements,
-			unsigned long long elementsSize) = 0;
+			uint64_t elementsSize) = 0;
 
 		/**
 		 * Gets the number of dimensions in an HDF5 dataset of the proxy.
@@ -150,9 +150,10 @@ namespace EML2_NS
 
 		/**
 		 * Get the number of elements in each dimension of an HDF5 dataset.
+		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
 		 * @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<uint32_t> getElementCountPerDimension(const std::string & datasetName) = 0;
 
 		/**
 		 * Gets the number of elements in an HDF5 dataset of the proxy. The number of elements is got
@@ -190,7 +191,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfFloatValues(const std::string & groupName,
 			const std::string & name,
 			const float * values,
-			const unsigned long long * numValuesInEachDimension,
+			const uint64_t * numValuesInEachDimension,
 			unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT, values, numValuesInEachDimension, numDimensions);
 		}
@@ -212,7 +213,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfDoubleValues(const std::string & groupName,
 		  const std::string & name,
 		  const double * values,
-		  const unsigned long long * numValuesInEachDimension,
+		  const uint64_t * numValuesInEachDimension,
 		  unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, values, numValuesInEachDimension, numDimensions);
 		}
@@ -234,7 +235,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfCharValues(const std::string & groupName,
 			const std::string & name,
 			const char * values,
-			const unsigned long long * numValuesInEachDimension,
+			const uint64_t * numValuesInEachDimension,
 			unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8, values, numValuesInEachDimension, numDimensions);
 		}
@@ -256,7 +257,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfIntValues(const std::string & groupName,
 		  const std::string & name,
 		  const int * values,
-		  const unsigned long long * numValuesInEachDimension,
+		  const uint64_t * numValuesInEachDimension,
 		  unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32, values, numValuesInEachDimension, numDimensions);
 		}
@@ -279,7 +280,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfInt64Values(const std::string & groupName,
 			const std::string & name,
 			const int64_t * values,
-			const unsigned long long * numValuesInEachDimension,
+			const uint64_t * numValuesInEachDimension,
 			unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, values, numValuesInEachDimension, numDimensions);
 		}
@@ -302,7 +303,7 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfUInt64Values(const std::string & groupName,
 			const std::string & name,
 			const uint64_t * values,
-			const unsigned long long * numValuesInEachDimension,
+			const uint64_t * numValuesInEachDimension,
 			unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, values, numValuesInEachDimension, numDimensions);
 		}
@@ -326,7 +327,7 @@ namespace EML2_NS
 		  const std::string & name,
 		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		  const void * values,
-		  const unsigned long long * numValuesInEachDimension,
+		  const uint64_t * numValuesInEachDimension,
 		  unsigned int numDimensions) = 0;
 
 		/**
@@ -347,7 +348,7 @@ namespace EML2_NS
 		  const std::string& groupName,
 		  const std::string& name,
 		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-		  const unsigned long long* numValuesInEachDimension,
+		  const uint64_t* numValuesInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
 
@@ -371,8 +372,8 @@ namespace EML2_NS
 		  const std::string& name,
 		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		  const void* values,
-		  const unsigned long long* numValuesInEachDimension,
-		  const unsigned long long* offsetValuesInEachDimension,
+		  const uint64_t* numValuesInEachDimension,
+		  const uint64_t* offsetValuesInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
 
@@ -574,8 +575,8 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfDoubleValues(
 		  const std::string & datasetName,
 		  double* values,
-		  unsigned long long const * numValuesInEachDimension,
-		  unsigned long long const * offsetInEachDimension,
+		  uint64_t const * numValuesInEachDimension,
+		  uint64_t const * offsetInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
 
@@ -605,10 +606,10 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfDoubleValues(
 			const std::string & datasetName, 
 			double* values,
-			unsigned long long const * blockCountPerDimension,
-			unsigned long long const * offsetInEachDimension,
-			unsigned long long const * strideInEachDimension,
-			unsigned long long const * blockSizeInEachDimension,
+			uint64_t const * blockCountPerDimension,
+			uint64_t const * offsetInEachDimension,
+			uint64_t const * strideInEachDimension,
+			uint64_t const * blockSizeInEachDimension,
 			unsigned int numDimensions) = 0;
 
 		/**
@@ -643,10 +644,10 @@ namespace EML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void selectArrayNdOfValues(
 			const std::string & datasetName,
-			unsigned long long const* blockCountPerDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned long long const* strideInEachDimension,
-			unsigned long long const* blockSizeInEachDimension,
+			uint64_t const* blockCountPerDimension,
+			uint64_t const* offsetInEachDimension,
+			uint64_t const* strideInEachDimension,
+			uint64_t const* blockSizeInEachDimension,
 			unsigned int numDimensions,
 			bool newSelection,
 			hdf5_hid_t & dataset,
@@ -668,7 +669,7 @@ namespace EML2_NS
 			hdf5_hid_t dataset,
 			hdf5_hid_t filespace,
 			void* values,
-			unsigned long long slabSize) = 0;
+			uint64_t slabSize) = 0;
 
 		/**
 		 * Reads an nd array of float values stored in a specific dataset
@@ -702,8 +703,8 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfFloatValues(
 		  const std::string & datasetName,
 		  float* values,
-		  unsigned long long const * numValuesInEachDimension,
-		  unsigned long long const * offsetInEachDimension,
+		  uint64_t const * numValuesInEachDimension,
+		  uint64_t const * offsetInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
 
@@ -739,8 +740,8 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfInt64Values(
 			const std::string & datasetName,
 			int64_t* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numDimensions) = 0;
 
 		/**
@@ -787,8 +788,8 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numDimensions
 		) = 0;
 
@@ -886,9 +887,10 @@ namespace EML2_NS
 		/**
 		 * Get the number of elements in each chunk dimension of an HDF5 dataset.
 		 * If the dataset is not compressed, then it returns an empty vector.
+		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
 		 * @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned long long> getElementCountPerChunkDimension(const std::string & datasetName) = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<uint32_t> getElementCountPerChunkDimension(const std::string & datasetName) = 0;
 
 		/**
 		 * Instantiate and initialize the gsoap proxy.

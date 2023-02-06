@@ -21,26 +21,12 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../tools/Statistics.h"
 
 using namespace std;
 using namespace RESQML2_NS;
-
-const char* DiscreteProperty::XML_TAG = "DiscreteProperty";
-
-namespace {
-	vector<hsize_t> copyToHdf5Datatype(uint64_t const* values, size_t nbValues) {
-		vector<hsize_t> result;
-		for (size_t i = 0; i < nbValues; ++i) {
-			result.push_back(values[i]);
-		}
-		return result;
-	}
-}
 
 void DiscreteProperty::pushBackLongHdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	int64_t nullValue, int64_t minimumValue, int64_t maximumValue)
@@ -202,14 +188,11 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(const int64_t * values, con
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
@@ -224,14 +207,11 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, const ui
 	}
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
@@ -246,14 +226,11 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, cons
 	}
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
@@ -268,14 +245,11 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * va
 	}
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }
@@ -291,14 +265,11 @@ void DiscreteProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t * values, cons
 	}
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue, minimumValue, maximumValue);
 }

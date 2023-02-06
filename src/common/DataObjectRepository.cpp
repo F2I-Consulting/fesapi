@@ -23,9 +23,9 @@ under the License.
 #include <ctime>
 #include <functional>
 
-#include "../common/DataFeeder.h"
+#include <hdf5.h> // We must do this include to ckeck H5_HAVE_PARALLEL
 
-#include "hdf5.h" // We must do this include to ckeck H5_HAVE_PARALLEL
+#include "../common/DataFeeder.h"
 #ifdef H5_HAVE_PARALLEL
 	#include "../common/HdfProxyMPIFactory.h"
 #else
@@ -1152,7 +1152,7 @@ EML2_NS::AbstractHdfProxy* DataObjectRepository::createHdfProxy(const std::strin
 RESQML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
 {
 	switch (defaultResqmlVersion) {
@@ -1196,7 +1196,7 @@ RESQML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const s
 RESQML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
 {
 	switch (defaultResqmlVersion) {
@@ -1240,7 +1240,7 @@ RESQML2_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const s
 RESQML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
 {
@@ -1290,7 +1290,7 @@ RESQML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std
 RESQML2_NS::LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
 {
@@ -1867,7 +1867,7 @@ RESQML2_NS::StratigraphicUnitInterpretation* DataObjectRepository::createStratig
 	}
 }
 
-RESQML2_NS::StratigraphicColumnRankInterpretation* DataObjectRepository::createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank)
+RESQML2_NS::StratigraphicColumnRankInterpretation* DataObjectRepository::createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank)
 {
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
@@ -1881,7 +1881,7 @@ RESQML2_NS::StratigraphicColumnRankInterpretation* DataObjectRepository::createS
 	}
 }
 
-RESQML2_NS::StratigraphicColumnRankInterpretation* DataObjectRepository::createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank)
+RESQML2_NS::StratigraphicColumnRankInterpretation* DataObjectRepository::createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank)
 {
 	switch (defaultResqmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:

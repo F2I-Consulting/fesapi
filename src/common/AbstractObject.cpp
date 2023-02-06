@@ -1538,7 +1538,7 @@ int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_resqml2_0_1::resqml20__Abst
 		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
 	}
 
-	return (std::numeric_limits<int16_t>::max)();
+	return (std::numeric_limits<int8_t>::max)();
 }
 
 int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int8_t* arrayOutput) const
@@ -1557,7 +1557,7 @@ int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractInte
 		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
 	}
 
-	return (std::numeric_limits<int16_t>::max)();
+	return (std::numeric_limits<int8_t>::max)();
 }
 
 int16_t AbstractObject::readArrayNdOfInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int16_t* arrayOutput) const

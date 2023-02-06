@@ -17,5 +17,3 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "HdfProxyExample.h"
-
-const char* HdfProxyExample::XML_NS = "eml20";

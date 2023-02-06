@@ -21,8 +21,6 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../resqml2/AbstractGridRepresentation.h"
 #include "../resqml2/WellboreInterpretation.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
@@ -80,7 +78,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 	}
 
 	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
-	ULONG64 cellCount = 0;
+	uint64_t cellCount = 0;
 	for (ULONG64 intervalIndex = 0; intervalIndex < rep->NodeCount - 1; ++intervalIndex) {
 		if (gridIndices[intervalIndex] != gridIndicesNullValue) {
 			++cellCount;
@@ -105,7 +103,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 	xmlGridIndices->Values->PathInHdfFile = getHdfGroup() + "/GridIndices";
 	rep->GridIndices = xmlGridIndices;
 	// HDF
-	hsize_t intervalCount = rep->NodeCount - 1;
+	uint64_t intervalCount = rep->NodeCount - 1;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
@@ -121,13 +119,12 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 	xmlCellIndices->Values->PathInHdfFile = getHdfGroup() + "/CellIndices";
 	rep->CellIndices = xmlCellIndices;
 	// HDF
-	hsize_t dimCellIndices = cellCount;
 	if (cellCount == intervalCount) {
 		hdfProxy->writeArrayNd(getHdfGroup(),
 			"CellIndices",
 			COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 			cellIndices,
-			&dimCellIndices, 1);
+			&cellCount, 1);
 	}
 	else {
 		std::unique_ptr<int64_t[]> nonNullCellIndices(new int64_t[cellCount]);
@@ -142,7 +139,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 			"CellIndices",
 			COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 			nonNullCellIndices.get(),
-			&dimCellIndices, 1);
+			&cellCount, 1);
 	}
 
 	// localFacePairPerCellIndices
@@ -154,7 +151,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 	xmlLocalFacePairPerCellIndices->Values->PathInHdfFile = getHdfGroup() + "/LocalFacePairPerCellIndices";
 	rep->LocalFacePairPerCellIndices = xmlLocalFacePairPerCellIndices;
 	// HDF
-	hsize_t dimLocalFacePerCellIndicesNullValue = cellCount * 2;
+	uint64_t dimLocalFacePerCellIndicesNullValue = cellCount * 2;
 	if (cellCount == intervalCount) {
 		hdfProxy->writeArrayNd(getHdfGroup(),
 			"LocalFacePairPerCellIndices",

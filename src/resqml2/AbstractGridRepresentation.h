@@ -31,9 +31,9 @@ namespace RESQML2_NS
 		* @param	 forceConstantCellCountPerInterval	If true, will assume that the child and parent cell count per interval are constant. Then it will use constant xml array instead of hdf5 array for storage.
 		*												The method will consequently only consider the first cell count per interval value in childCellCountPerInterval and parentCellCountPerInterval as the constant ones.
 		**/
-		gsoap_resqml2_0_1::resqml20__Regrid* createRegrid2_0_1(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
+		gsoap_resqml2_0_1::resqml20__Regrid* createRegrid2_0_1(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, uint64_t intervalCount, double * childCellWeights,
 			const std::string & dimension, EML2_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
-		gsoap_eml2_3::resqml22__Regrid* createRegrid2_2(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
+		gsoap_eml2_3::resqml22__Regrid* createRegrid2_2(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, uint64_t intervalCount, double * childCellWeights,
 			const std::string & dimension, EML2_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
 
 		/*
@@ -245,7 +245,7 @@ namespace RESQML2_NS
 		 * 												child cells on K dimension (sum of child cells
 		 * 												per interval). Default value is nullptr.
 		 */
-		DLL_IMPORT_OR_EXPORT void setParentWindow(unsigned int * columnIndices, unsigned int columnIndexCount,
+		DLL_IMPORT_OR_EXPORT void setParentWindow(unsigned int * columnIndices, uint64_t columnIndexCount,
 			unsigned int kLayerIndexRegridStart,
 			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  unsigned int intervalCount,
 			class AbstractColumnLayerGridRepresentation* parentGrid,

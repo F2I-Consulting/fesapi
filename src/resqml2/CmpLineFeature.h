@@ -30,7 +30,7 @@ namespace RESQML2_NS
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		virtual ~CmpLineFeature() = default;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTraceCount() const final;
 		
 		/**
 		 * Sets the ShotPointLine.

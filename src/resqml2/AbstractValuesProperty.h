@@ -128,7 +128,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackIntegerConstantArrayOfValues(int64_t value, uint64_t valueCount);
 
 		/**
-		 * @brief	Adds a 1d array of explicit long values to the property values.
+		 * @brief	Adds a 1d array of explicit int values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -167,7 +167,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array1dOfValues(const int8_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
-		 * @brief Adds a 2d array of explicit long values to the property values.
+		 * @brief Adds a 2d array of explicit int values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -216,7 +216,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
-		 * @brief Adds a 3d array of explicit long values to the property values.
+		 * @brief Adds a 3d array of explicit int values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -267,7 +267,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
-		 * @brief	Adds an nd array of explicit long values to the property values.
+		 * @brief	Adds an nd array of explicit int values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -380,7 +380,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT double getDoubleConstantValuesOfPatch(uint64_t patchIndex) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be long ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be int ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -608,7 +608,7 @@ namespace RESQML2_NS
 		);
 
 		/**
-		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
+		 * Adds an nd array of explicit int 64 bits values into to the property values. Since this
 		 * methods only pushes back values into an existing array, it is to be used along with
 		 * pushBackLongHdf5ArrayOfValues().
 		 *
@@ -749,7 +749,7 @@ namespace RESQML2_NS
 		}
 
 		/**
-		 * Adds a 1d array of explicit long 64 bits values into the property values. Since this methods
+		 * Adds a 1d array of explicit int 64 bits values into the property values. Since this methods
 		 * only pushes back values into an existing array, it is to be used along with
 		 * pushBackLongHdf5Array3dOfValues().
 		 *
@@ -865,7 +865,7 @@ namespace RESQML2_NS
 			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)());
 
 		/**
-		 * Adds a 3d array of explicit long 64 bits values into the property values. Since this methods
+		 * Adds a 3d array of explicit int 64 bits values into the property values. Since this methods
 		 * only pushes back values into an existing array, it is to be used along with
 		 * pushBackLongHdf5Array3dOfValues().
 		 *
@@ -946,7 +946,7 @@ namespace RESQML2_NS
 		//***********************************
 
 		/**
-		 * Gets some of the values of a given patch of this instance. Values are supposed to be long 64
+		 * Gets some of the values of a given patch of this instance. Values are supposed to be int 64
 		 * bits ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -973,7 +973,7 @@ namespace RESQML2_NS
 		) const;
 
 		/**
-		 * Gets some of the values of a given patch of this instance. Values are supposed to be long 64
+		 * Gets some of the values of a given patch of this instance. Values are supposed to be int 64
 		 * bits ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -1323,7 +1323,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	patchIndex	The corresponding patch index of the dataset to get.
 		 * @param [out]		nullValue 	If possible, this function will set this parameter to the RESQML
-		 * 								null value of the dataset. If not, it will return long.min.
+		 * 								null value of the dataset. If not, it will return int64_t.min.
 		 * @param [out]		nullValue 	this function will set this parameter to the RESQML
 		 * 								dataset path in the HDF file.
 		 *

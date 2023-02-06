@@ -117,7 +117,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @param 		  	patchIndex	The corresponding patch index of the dataset to get.
 		 * @param [out]		nullValue 	If possible, this function will set this parameter to the RESQML
-		 * 								null value of the dataset. If not, it will return long.min.
+		 * 								null value of the dataset. If not, it will return int64_t.min.
 		 * @param [out]		nullValue 	this function will set this parameter to the RESQML
 		 * 								dataset path in the HDF file.
 		 *

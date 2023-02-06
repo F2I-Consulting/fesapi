@@ -19,36 +19,14 @@ under the License.
 %module fesapi
 
 %{
-#include <stdint.h>		// Use the C99 official header
+#if defined(__clang__) || defined(_MSC_VER)
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
 %}
 
-%include <swigarch.i>
-
-/* Exact integral types.  */
-
-/* Signed.  */
-
-typedef signed char		int8_t;
-typedef short int		int16_t;
-typedef int			int32_t;
-#if defined(SWIGWORDSIZE64)
-typedef long int		int64_t;
-#else
-typedef long long int		int64_t;
-#endif
-
-/* Unsigned.  */
-typedef unsigned char		uint8_t;
-typedef unsigned short int	uint16_t;
-typedef unsigned int		uint32_t;
-#ifndef SWIGJAVA
-#if defined(SWIGWORDSIZE64)
-typedef unsigned long int	uint64_t;
-#else
-typedef unsigned long long int	uint64_t;
-#endif
-#endif
-
+%include "stdint.i"
 %include "std_string.i"
 
 %include "../src/nsDefinitions.h"
@@ -57,14 +35,20 @@ typedef unsigned long long int	uint64_t;
 // JAVA
 //************************/
 
-#ifdef SWIGJAVA		
+#ifdef SWIGJAVA
+	// https://stackoverflow.com/a/60208989
+	%define PRIMITIVE_TYPEMAP(NEW_TYPE, TYPE)
+	%clear NEW_TYPE;
+	%apply TYPE { NEW_TYPE };
+	%enddef // PRIMITIVE_TYPEMAP
+#if defined(SWIGWORDSIZE64)
+	PRIMITIVE_TYPEMAP(long int, long long);
+	PRIMITIVE_TYPEMAP(unsigned long int, long long);
+#endif
 	// We don't want to use BigInteger in java.
-	#if defined(SWIGWORDSIZE64)
-	typedef long int		uint64_t;
-	#else
-	typedef long long int		uint64_t;
-	#endif	
-	
+	PRIMITIVE_TYPEMAP(unsigned long long int, long long);
+#undef PRIMITIVE_TYPEMAP
+
 	/*
 	 When using multiple modules or the nspace feature it is common to invoke SWIG with a different -package command line option for each module.
 	 However, by default the generated code may not compile if generated classes in one package use generated classes in another package.
@@ -151,8 +135,10 @@ typedef unsigned long long int	uint64_t;
 %include "std_vector.i"
 
 %template(StringVector) std::vector< std::string >;
-%template(Int32Vector) std::vector< int >;
-%template(Int64Vector) std::vector< long long >;
+%template(Int32Vector) std::vector< int32_t >;
+%template(UInt32Vector) std::vector< uint32_t >;
+// Vector of int64 and uint64 are tough to port because of long vs long long platform
+// Indeed c++ long corresponds to int in java where c++ long long corresponds to long in java
 %template(FloatVector) std::vector< float >;
 %template(DoubleVector) std::vector< double >;
 %template(BoolVector) std::vector< bool >;
@@ -648,7 +634,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
 
@@ -662,7 +648,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
 
 
@@ -676,7 +662,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, const bool & isUpOriented);
 
@@ -692,7 +678,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
 
@@ -804,8 +790,8 @@ import com.f2i_consulting.fesapi.*;
 
 		RESQML2_NS::StratigraphicUnitInterpretation* createStratigraphicUnitInterpretation(RESQML2_NS::RockVolumeFeature * stratiUnitFeature, const std::string & guid, const std::string & title);
 		RESQML2_NS::StratigraphicColumn* createStratigraphicColumn(const std::string & guid, const std::string & title);
-		RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, unsigned long rank);
-		RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, unsigned long rank);
+		RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank);
+		RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank);
 		RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 		RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 

@@ -22,8 +22,6 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "AbstractIjkGridRepresentation.h"
@@ -152,7 +150,7 @@ AbstractGridRepresentation * AbstractGridRepresentation::getChildGrid(unsigned i
 	throw std::out_of_range("The child grid index is out of range.");
 }
 
-gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0_1(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
+gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0_1(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, uint64_t intervalCount, double * childCellWeights,
 	const std::string & dimension, EML2_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval)
 {
 	gsoap_resqml2_0_1::resqml20__Regrid* regrid = gsoap_resqml2_0_1::soap_new_resqml20__Regrid(gsoapProxy2_0_1->soap);
@@ -198,9 +196,8 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 		hdf5ParentCountPerInterval->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_" + dimension + "Regrid_ParentCountPerInterval";
 		
 		// HDF
-		hsize_t numValues = intervalCount;
-		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, childCellCountPerInterval, &numValues, 1);
-		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, parentCellCountPerInterval, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, childCellCountPerInterval, &intervalCount, 1);
+		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, parentCellCountPerInterval, &intervalCount, 1);
 	}
 	
 	if (childCellWeights != nullptr) {
@@ -219,7 +216,7 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 		hdf5ChildCellWeights->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_" + dimension + "Regrid_ChildCellWeights";
 		
 		// HDF
-		hsize_t numValues = *childCellCountPerInterval;
+		uint64_t numValues = *childCellCountPerInterval;
 		if (forceConstantCellCountPerInterval) {
 			numValues *= intervalCount - 1;
 		}
@@ -234,7 +231,7 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 	return regrid;
 }
 
-gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
+gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, uint64_t intervalCount, double * childCellWeights,
 	const std::string & dimension, EML2_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval)
 {
 	gsoap_eml2_3::resqml22__Regrid* regrid = gsoap_eml2_3::soap_new_resqml22__Regrid(gsoapProxy2_3->soap);
@@ -284,9 +281,8 @@ gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsi
 		hdf5ParentCountPerInterval->Values->ExternalFileProxy.push_back(dsPart);
 
 		// HDF
-		hsize_t numValues = intervalCount;
-		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, childCellCountPerInterval, &numValues, 1);
-		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, parentCellCountPerInterval, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, childCellCountPerInterval, &intervalCount, 1);
+		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, parentCellCountPerInterval, &intervalCount, 1);
 	}
 
 	if (childCellWeights != nullptr) {
@@ -307,8 +303,8 @@ gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsi
 		hdf5ChildCellWeights->Values->ExternalFileProxy.push_back(dsPart);
 
 		// HDF
-		hsize_t numValues = 0;
-		for (unsigned int i = 0; i < intervalCount; ++i) {
+		uint64_t numValues = 0;
+		for (uint64_t i = 0; i < intervalCount; ++i) {
 			numValues += childCellCountPerInterval[i];
 		}
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ChildCellWeights", childCellWeights, &numValues, 1);
@@ -348,8 +344,7 @@ void AbstractGridRepresentation::setParentWindow(uint64_t * cellIndices, uint64_
 			hdf5CellIndices->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_CellIndices";
 		
 			// HDF
-			hsize_t numValues = cellIndexCount;
-			proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
+			proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &cellIndexCount, 1);
 		}
 		else { // cellIndexCount == 1
 			gsoap_resqml2_0_1::resqml20__IntegerConstantArray* xmlCellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerConstantArray(rep->soap);
@@ -385,8 +380,7 @@ void AbstractGridRepresentation::setParentWindow(uint64_t * cellIndices, uint64_
 			hdf5CellIndices->Values->ExternalFileProxy.push_back(dsPart);
 
 			// HDF
-			hsize_t numValues = cellIndexCount;
-			proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
+			proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &cellIndexCount, 1);
 		}
 		else { // cellIndexCount == 1
 			auto xmlCellIndices = gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(rep->soap);
@@ -402,7 +396,7 @@ void AbstractGridRepresentation::setParentWindow(uint64_t * cellIndices, uint64_
 	repository->addRelationship(this, parentGrid);
 }
 
-void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, unsigned int columnIndexCount,
+void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, uint64_t columnIndexCount,
 	unsigned int kLayerIndexRegridStart,
 	unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount,
 	AbstractColumnLayerGridRepresentation* parentGrid,
@@ -441,8 +435,7 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 			hdf5ColumnIndices->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_ColumnIndices";
 
 			// HDF
-			hsize_t numValues = columnIndexCount;
-			proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, columnIndices, &numValues, 1);
+			proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, columnIndices, &columnIndexCount, 1);
 		}
 		else if (columnIndexCount == 1)
 		{
@@ -485,8 +478,7 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 			hdf5ColumnIndices->Values->ExternalFileProxy.push_back(dsPart);
 
 			// HDF
-			hsize_t numValues = columnIndexCount;
-			proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, columnIndices, &numValues, 1);
+			proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, columnIndices, &columnIndexCount, 1);
 		}
 		else if (columnIndexCount == 1)
 		{
@@ -627,8 +619,7 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 				static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(xmlCellIndices)->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_CellIndices";
 			
 				// HDF
-				hsize_t numValues = cellIndexCount;
-				proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
+				proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &cellIndexCount, 1);
 			}
 			else if (cellIndexCount == 1)
 			{
@@ -671,8 +662,7 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 				static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(xmlCellIndices)->Values->ExternalFileProxy.push_back(dsPart);
 
 				// HDF
-				hsize_t numValues = cellIndexCount;
-				proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &numValues, 1);
+				proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &cellIndexCount, 1);
 			}
 			else if (cellIndexCount == 1)
 			{
@@ -763,7 +753,7 @@ void AbstractGridRepresentation::setCellOverlap(uint64_t parentChildCellPairCoun
 				hdf5CellPairs->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_CellOverlap";
 		
 				// HDF
-				hsize_t numValues[] = {parentChildCellPairCount, 2};
+				uint64_t numValues[] = {parentChildCellPairCount, 2};
 				proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellOverlap", parentChildCellPair, numValues, 2);
 			}
 			else if (parentChildCellPairCount == 0)
@@ -786,8 +776,7 @@ void AbstractGridRepresentation::setCellOverlap(uint64_t parentChildCellPairCoun
 				hdf5OverlapVolume->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_OverlapVolume";
 		
 				// HDF
-				hsize_t numValues = parentChildCellPairCount;
-				proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "ParentWindow_OverlapVolume", overlapVolumes, &numValues, 1);
+				proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "ParentWindow_OverlapVolume", overlapVolumes, &parentChildCellPairCount, 1);
 			}
 		}
 		else {
@@ -817,7 +806,7 @@ void AbstractGridRepresentation::setCellOverlap(uint64_t parentChildCellPairCoun
 				hdf5CellPairs->Values->ExternalFileProxy.push_back(dsPart);
 
 				// HDF
-				hsize_t numValues[] = { parentChildCellPairCount, 2 };
+				uint64_t numValues[] = { parentChildCellPairCount, 2 };
 				proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellOverlap", parentChildCellPair, numValues, 2);
 			}
 			else if (parentChildCellPairCount == 0)
@@ -842,8 +831,7 @@ void AbstractGridRepresentation::setCellOverlap(uint64_t parentChildCellPairCoun
 				hdf5OverlapVolume->Values->ExternalFileProxy.push_back(dsPart);
 
 				// HDF
-				hsize_t numValues = parentChildCellPairCount;
-				proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "ParentWindow_OverlapVolume", overlapVolumes, &numValues, 1);
+				proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "ParentWindow_OverlapVolume", overlapVolumes, &parentChildCellPairCount, 1);
 			}
 		}
 		else {
@@ -1786,7 +1774,7 @@ void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganization
 		rep->CellStratigraphicUnits->UnitIndices = xmlDataset;
 
 		// ************ HDF *************
-		const hsize_t dim = getCellCount();
+		const uint64_t dim = getCellCount();
 		proxy->writeArrayNd(getHdfGroup(), "CellStratigraphicUnits", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, stratiUnitIndices, &dim, 1);
 	}
 	else {
@@ -1802,7 +1790,7 @@ void AbstractGridRepresentation::setCellAssociationWithRockFluidOrganizationInte
 	}
 
 	// ************ HDF *************
-	const hsize_t dim = getCellCount();
+	const uint64_t dim = getCellCount();
 	proxy->writeArrayNd(getHdfGroup(), "CellFluidPhaseUnits", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, rockFluidUnitIndices, &dim, 1);
 
 	if (gsoapProxy2_0_1 != nullptr) {

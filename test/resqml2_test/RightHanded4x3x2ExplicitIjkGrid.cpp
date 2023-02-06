@@ -34,7 +34,7 @@ using namespace RESQML2_NS;
 
 const char* RightHanded4x3x2ExplicitIjkGrid::defaultUuid = "f274d3d8-80ff-4860-90fb-609716303887";
 const char* RightHanded4x3x2ExplicitIjkGrid::defaultTitle = "Right Handed 4x3x2 Explicit Ijk Grid";
-const unsigned long long RightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 72;
+const uint64_t RightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 72;
 double RightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[216] = {
 	0, 150, 300, 150, 150, 300, 375, 150, 300, 550, 150, 350, 700, 150, 350, //IJ0K0
 	0, 100, 300, 150, 100, 300, 375, 100, 300, 550, 100, 350, 700, 100, 350, //IJ1K0

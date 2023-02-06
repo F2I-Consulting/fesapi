@@ -257,7 +257,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The face count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFaceCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getFaceCount() const;
 
 		/**
 		 * Gets the I index of a pillar from its global index in this grid. The global (or
@@ -463,7 +463,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The split coordinate lines count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned long getSplitCoordinateLineCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getSplitCoordinateLineCount() const;
 
 		/**
 		 * Gets the split coordinate lines count within the block. Block information must be loaded thanks
@@ -473,7 +473,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The split coordinate lines count within the block.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned long getBlockSplitCoordinateLineCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getBlockSplitCoordinateLineCount() const;
 
 		/**
 		 * Gets the split nodes count.

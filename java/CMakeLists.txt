@@ -32,10 +32,6 @@ file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/witsm
 
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/prodml2_1)
 
-if (WITH_ETP)
-	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/f2i_consulting/etp)
-endif ()
-
 # The name of the library is different on Windows because it includes the version
 if (WIN32)
 	if (SWIG_LINKED_TO_RELEASE)
@@ -61,35 +57,30 @@ else (WITH_RESQML2_2)
 endif(WITH_RESQML2_2)
 configure_file(${FESAPI_ROOT_DIR}/cmake/swigJavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigJavaInclude.i) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/FesapiJavaExample.java) # Overwrite if different
-if (WITH_ETP)
-	configure_file(${FESAPI_ROOT_DIR}/cmake/EtpClientExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/EtpClientExample.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/EtpServerExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/EtpServerExample.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnClientCoreHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnClientCoreHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnServerCoreHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnServerCoreHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnDiscoveryProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnDiscoveryProtocolHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnStoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyOwnStoreProtocolHandlers.java) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/MyServerInitializationParameters.java ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/example/MyServerInitializationParameters.java) # Overwrite if different
-endif ()
 
-set (SWIG_DEFINITIONS "")
+set (EXECUTE_COMMAND "${SWIG_EXECUTABLE}")
 if (WITH_RESQML2_2)
-	string(APPEND SWIG_DEFINITIONS "-DWITH_RESQML2_2")
+	list (APPEND EXECUTE_COMMAND -DWITH_RESQML2_2)
 endif (WITH_RESQML2_2)
-
-# SWIG execution
+if (UNIX)
+	list (APPEND EXECUTE_COMMAND -DSWIGWORDSIZE64)
+endif (UNIX)
+list (APPEND EXECUTE_COMMAND -v)
+list (APPEND EXECUTE_COMMAND -c++)
+list (APPEND EXECUTE_COMMAND -java)
+if ("${SWIG_VERSION}" VERSION_GREATER_EQUAL "4.0.0")
+	list (APPEND EXECUTE_COMMAND -doxygen)
+endif ()
+list (APPEND EXECUTE_COMMAND -package)
+list (APPEND EXECUTE_COMMAND com.f2i_consulting.fesapi)
+list (APPEND EXECUTE_COMMAND -o)
+list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/swig/swigGeneratedJavaWrapper.cpp)
+list (APPEND EXECUTE_COMMAND -outdir)
+list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/java/src/com/f2i_consulting/fesapi/)
+list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/swig/swigModule.i)
 if (WIN32)
-	if ("${SWIG_VERSION}" VERSION_GREATER_EQUAL "4.0.0")
-			set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -java -doxygen -package com.f2i_consulting.fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
-	else ()
-			set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -java -package com.f2i_consulting.fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
-	endif ()
 	execute_process(COMMAND powershell ${EXECUTE_COMMAND})
 elseif (UNIX)
-	if ("${SWIG_VERSION}" VERSION_GREATER_EQUAL "4.0.0")
-			set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -java -doxygen -package com.f2i_consulting.fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
-	else ()
-			set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} ${SWIG_DEFINITIONS} -v -c++ -java -package com.f2i_consulting.fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
-	endif ()
 	execute_process(COMMAND ${EXECUTE_COMMAND})
 endif (WIN32)
 message("SWIG Java files have been generated.")

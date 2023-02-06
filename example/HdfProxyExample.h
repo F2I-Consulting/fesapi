@@ -92,16 +92,16 @@ public:
 		const std::string & name,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum cumulativeLengthDatatype,
 		const void * cumulativeLength,
-		unsigned long long cumulativeLengthSize,
+		uint64_t cumulativeLengthSize,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum elementsDatatype,
 		const void * elements,
-		unsigned long long elementsSize) { throw std::logic_error("Not implemented yet"); }
+		uint64_t elementsSize) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Get the number of elements in each dimension in an HDF dataset of the proxy.
 	 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
 	 */
-	std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
+	std::vector<uint32_t> getElementCountPerDimension(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Set the new compression level which will be used for all data to be written
@@ -123,7 +123,7 @@ public:
 		const std::string & name,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		const void * values,
-		const unsigned long long * numValuesInEachDimension,
+		const uint64_t * numValuesInEachDimension,
 		unsigned int numDimensions) {
 		std::cout << "Call values writing from the HDF proxy example." << std::endl;
 	}
@@ -141,7 +141,7 @@ public:
 		const std::string& groupName,
 		const std::string& name,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-		const unsigned long long* numValuesInEachDimension,
+		const uint64_t* numValuesInEachDimension,
 		unsigned int numDimensions
 	) { throw std::logic_error("Not implemented yet"); }
 
@@ -159,8 +159,8 @@ public:
 		const std::string& name,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		const void* values,
-		const unsigned long long* numValuesInEachDimension,
-		const unsigned long long* offsetValuesInEachDimension,
+		const uint64_t* numValuesInEachDimension,
+		const uint64_t* offsetValuesInEachDimension,
 		unsigned int numDimensions
 	) { throw std::logic_error("Not implemented yet"); }
 
@@ -238,7 +238,7 @@ public:
 		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); }
 
 	/**
-	* Read a long which is stored as an HDF attribute in a file, group or dataset
+	* Read a int 64 bits which is stored as an HDF attribute in a file, group or dataset
 	* @param obj_name use '.' if the attribute to read is on the file otherwise the full path
 	*/
 	int64_t readLongAttribute(const std::string & obj_name,
@@ -262,8 +262,8 @@ public:
 	void readArrayNdOfDoubleValues(
 		const std::string & datasetName,
 		double* values,
-		unsigned long long const * numValuesInEachDimension,
-		unsigned long long const * offsetInEachDimension,
+		uint64_t const * numValuesInEachDimension,
+		uint64_t const * offsetInEachDimension,
 		unsigned int numDimensions
 	) { throw std::logic_error("Not implemented yet"); }
 
@@ -280,10 +280,10 @@ public:
 	void readArrayNdOfDoubleValues(
 		const std::string & datasetName,
 		double* values,
-		unsigned long long const * blockCountPerDimension,
-		unsigned long long const * offsetInEachDimension,
-		unsigned long long const * strideInEachDimension,
-		unsigned long long const * blockSizeInEachDimension,
+		uint64_t const * blockCountPerDimension,
+		uint64_t const * offsetInEachDimension,
+		uint64_t const * strideInEachDimension,
+		uint64_t const * blockSizeInEachDimension,
 		unsigned int numDimensions) { throw std::logic_error("Not implemented yet"); }
 
 	/**
@@ -301,10 +301,10 @@ public:
 	 */
 	void selectArrayNdOfValues(
 		const std::string & datasetName,
-		unsigned long long const* blockCountPerDimension,
-		unsigned long long const* offsetInEachDimension,
-		unsigned long long const* strideInEachDimension,
-		unsigned long long const* blockSizeInEachDimension,
+		uint64_t const* blockCountPerDimension,
+		uint64_t const* offsetInEachDimension,
+		uint64_t const* strideInEachDimension,
+		uint64_t const* blockSizeInEachDimension,
 		unsigned int numDimensions,
 		bool newSelection,
 		hdf5_hid_t & dataset,
@@ -321,7 +321,7 @@ public:
 		hdf5_hid_t dataset,
 		hdf5_hid_t filespace,
 		void* values,
-		unsigned long long slabSize) { throw std::logic_error("Not implemented yet"); }
+		uint64_t slabSize) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of float values stored in a specific dataset.
@@ -341,13 +341,13 @@ public:
 	void readArrayNdOfFloatValues(
 		const std::string & datasetName,
 		float* values,
-		unsigned long long const * numValuesInEachDimension,
-		unsigned long long const * offsetInEachDimension,
+		uint64_t const * numValuesInEachDimension,
+		uint64_t const * offsetInEachDimension,
 		unsigned int numDimensions
 	) { throw std::logic_error("Not implemented yet"); }
 
 	/**
-	 * Read an array Nd of long values stored in a specific dataset.
+	 * Read an array Nd of int 64 bits values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
@@ -356,7 +356,7 @@ public:
 	/**
 	 * Find the array associated with datasetName and read from it.
 	 * @param datasetName                    The name of the array (potentially with multi dimensions).
-	 * @param values                         1d array output of long values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
+	 * @param values                         1d array output of int 64 bits values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
 	 * @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 	 * @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 	 * @param numDimensions                  The number of the dimensions of the array to read.
@@ -364,12 +364,12 @@ public:
 	void readArrayNdOfInt64Values(
 		const std::string & datasetName,
 		int64_t* values,
-		unsigned long long const * numValuesInEachDimension,
-		unsigned long long const * offsetInEachDimension,
+		uint64_t const * numValuesInEachDimension,
+		uint64_t const * offsetInEachDimension,
 		unsigned int numDimensions) final { throw std::logic_error("Not implemented yet"); }
 
 	/**
-	 * Read an array Nd of unsigned long values stored in a specific dataset.
+	 * Read an array Nd of unsigned int 64 bits values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
@@ -393,8 +393,8 @@ public:
 	void readArrayNdOfIntValues(
 		const std::string & datasetName,
 		int* values,
-		unsigned long long const * numValuesInEachDimension,
-		unsigned long long const * offsetInEachDimension,
+		uint64_t const * numValuesInEachDimension,
+		uint64_t const * offsetInEachDimension,
 		unsigned int numDimensions
 	) { throw std::logic_error("Not implemented yet"); }
 
@@ -450,12 +450,12 @@ public:
 	* If the dataset is not compressed, then it returns an empty vector.
 	* @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
 	*/
-	std::vector<unsigned long long> getElementCountPerChunkDimension(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
+	std::vector<uint32_t> getElementCountPerChunkDimension(const std::string & datasetName) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* The standard XML namespace for serializing this data object.
 	*/
-	static const char* XML_NS;
+	static constexpr char const* XML_NS = "eml20";
 
 	/**
 	* Get the standard XML namespace for serializing this data object.

@@ -65,7 +65,7 @@ EML2_NS::AbstractHdfProxy * PointsProperty::getDatasetOfPatch(uint64_t patchInde
 		throw out_of_range("The values property patch is out of range");
 	}
 
-	nullValue = (numeric_limits<long>::min)();
+	nullValue = (numeric_limits<int64_t>::min)();
 	auto patch = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3)->PatchOfPoints[patchIndex]->Points;
 	int valuesType = patch->soap_type();
 	if (valuesType == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {

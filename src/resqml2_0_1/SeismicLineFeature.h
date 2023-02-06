@@ -70,16 +70,16 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The trace index increment.
 		 */
-		DLL_IMPORT_OR_EXPORT int getTraceIndexIncrement() const;
+		DLL_IMPORT_OR_EXPORT int64_t getTraceIndexIncrement() const;
 
 		/**
 		 * Get the first trace index.
 		 *
 		 * @returns	The first trace index.
 		 */
-		DLL_IMPORT_OR_EXPORT int getFirstTraceIndex() const;
+		DLL_IMPORT_OR_EXPORT int64_t getFirstTraceIndex() const;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTraceCount() const final;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

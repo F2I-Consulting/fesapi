@@ -22,8 +22,6 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../tools/TimeTools.h"
 
 #include "../common/EnumStringMapper.h"
@@ -560,7 +558,7 @@ void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & r
 		static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices = externalArray;
 
 		// HDF
-		hsize_t numValues = realizationIndices.size();
+		uint64_t numValues = realizationIndices.size();
 		hdfProxy->writeArrayNd(getHdfGroup(), "RealizationIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, realizationIndices.data(), &numValues, 1);
 	}
 	else {

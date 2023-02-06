@@ -38,7 +38,7 @@ namespace RESQML2_NS
 		virtual ~DiscreteProperty() = default;
 
 		/**
-		 * @brief Adds a 1d array of explicit long values to the property values.
+		 * @brief Adds a 1d array of explicit int 64 bits values to the property values.
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
@@ -82,7 +82,7 @@ namespace RESQML2_NS
 		using AbstractValuesProperty::pushBackInt8Hdf5Array1dOfValues;
 
 		/**
-		 * @brief Adds a 2d array of explicit long values to the property values.
+		 * @brief Adds a 2d array of explicit int 64 bits values to the property values.
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
@@ -142,7 +142,7 @@ namespace RESQML2_NS
 		using AbstractValuesProperty::pushBackInt8Hdf5Array2dOfValues;
 
 		/**
-		 * @brief Adds a 3d array of explicit long values to the property values.
+		 * @brief Adds a 3d array of explicit int 64 bits values to the property values.
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
@@ -204,7 +204,7 @@ namespace RESQML2_NS
 		using AbstractValuesProperty::pushBackInt8Hdf5Array3dOfValues;
 
 		/**
-		 * @brief Adds an nd array of explicit long values to the property values.
+		 * @brief Adds an nd array of explicit int 64 bits values to the property values.
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
@@ -251,7 +251,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue) final;
 
 		/**
-		 * @brief Adds an nd array of explicit long values to the property values.
+		 * @brief Adds an nd array of explicit int 64 bits values to the property values.
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
@@ -339,7 +339,7 @@ namespace RESQML2_NS
 		//***************************
 
 		/**
-		 * Creates an nd array of explicit long 64 bits values into the property values. No values are
+		 * Creates an nd array of explicit int 64 bits values into the property values. No values are
 		 * written to this array yet then the HDF5 array contains uninitialized values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -357,7 +357,7 @@ namespace RESQML2_NS
 		 * @param [in]	  	maximumValue	  	If non-nullptr, a pointer to the maximum values. If non-
 		 * 										nullptr, the count of maximum values is this property
 		 * 										count.
-		 * @param 		  	nullValue		  	(Optional) The null value. Default value is long 64 bits
+		 * @param 		  	nullValue		  	(Optional) The null value. Default value is int 64 bits
 		 * 										maximum value.
 		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
@@ -386,7 +386,7 @@ namespace RESQML2_NS
 		 * @param 		  	valueCount			The count of values.
 		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
@@ -403,7 +403,7 @@ namespace RESQML2_NS
 		using AbstractValuesProperty::pushBackHdf5Array1dOfValues;
 
 		/**
-		 * Creates a 2d array of explicit long 64 values into the property values. No values are written
+		 * Creates a 2d array of explicit int 64 values into the property values. No values are written
 		 * to this array yet then the HDF5 array contains uninitialized values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -417,7 +417,7 @@ namespace RESQML2_NS
 		 * 											K dimension).
 		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
@@ -435,7 +435,7 @@ namespace RESQML2_NS
 		using AbstractValuesProperty::pushBackHdf5Array2dOfValues;
 
 		/**
-		 * Creates a 3d array of explicit long 64 values into the property values. No values are written
+		 * Creates a 3d array of explicit int 64 values into the property values. No values are written
 		 * to this array yet then the HDF5 array contains uninitialized values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -451,7 +451,7 @@ namespace RESQML2_NS
 		 * 											K dimension).
 		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
@@ -470,7 +470,7 @@ namespace RESQML2_NS
 		using AbstractValuesProperty::pushBackHdf5Array3dOfValues;
 
 		/**
-		 * Adds a 3d array of explicit long 64 bits values into the property values. Since this methods
+		 * Adds a 3d array of explicit int 64 bits values into the property values. Since this methods
 		 * only pushes back values into an existing array, it is to be used along with
 		 * pushBackLongHdf5Array3dOfValues().
 		 *
@@ -533,7 +533,7 @@ namespace RESQML2_NS
 		using AbstractValuesProperty::setValuesOfInt32Hdf5Array3dOfValues;
 
 		/**
-		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
+		 * Adds an nd array of explicit int 64 bits values into to the property values. Since this
 		 * methods only pushes back values into an existing array, it is to be used along with
 		 * pushBackLongHdf5ArrayOfValues().
 		 *
@@ -673,7 +673,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void setMaximumValue(int64_t value, uint64_t index = 0) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "DiscreteProperty";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

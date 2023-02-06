@@ -111,7 +111,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getParameterCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterCount() const;
 
 		/**
 		 * Get the count of all the parameters which have got the same title.
@@ -120,7 +120,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getParameterCount(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterCount(const std::string & paramTitle) const;
 
 		/**
 		 * Gets parameter title
@@ -219,7 +219,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The integer quantity parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<int64_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT std::vector<int32_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const;
 
 		/**
 		 * Gets integer quantity parameter value

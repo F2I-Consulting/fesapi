@@ -22,8 +22,6 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../tools/Statistics.h"
 
 #include "../common/EnumStringMapper.h"

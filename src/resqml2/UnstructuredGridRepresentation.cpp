@@ -20,8 +20,6 @@ under the License.
 
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "AbstractLocal3dCrs.h"
@@ -110,7 +108,7 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 	const uint64_t cellCount = getCellCount();
 
 	// HDF Face Right handness
-	unsigned long long faceCountTmp = faceIndicesCumulativeCountPerCell[cellCount - 1]; // For GCC : uint64_t is not exactly an unsigned long long with GCC but an uint64_t {aka long unsigned int}
+	const uint64_t faceCountTmp = faceIndicesCumulativeCountPerCell[cellCount - 1];
 	proxy->writeArrayNd(getHdfGroup(), "CellFaceIsRightHanded", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, cellFaceIsRightHanded, &faceCountTmp, 1);
 
 	// HDF Face indices
@@ -120,7 +118,7 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 	proxy->writeItemizedListOfList(getHdfGroup(), "NodesPerFace", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, nodeIndicesCumulativeCountPerFace, faceCount, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace[faceCount - 1]);
 
 	// HDF points
-	hsize_t numValues[2] = { pointCount, 3 };
+	uint64_t numValues[2] = { pointCount, 3 };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 2);
 
 	setGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points", pointCount, proxy,
@@ -161,11 +159,11 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char 
 	const uint64_t cellCount = getCellCount();
 
 	// HDF Face Right handness
-	unsigned long long faceCountTmp = faceCountPerCell * cellCount; // For GCC : uint64_t is not exactly an unsigned long long with GCC but an uint64_t {aka long unsigned int}
+	const uint64_t faceCountTmp = faceCountPerCell * cellCount;
 	proxy->writeArrayNd(getHdfGroup(), "CellFaceIsRightHanded", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, cellFaceIsRightHanded, &faceCountTmp, 1);
 
 	// HDF Face indices
-	hsize_t numValues[2];
+	uint64_t numValues[2];
 	numValues[0] = cellCount;
 	numValues[1] = faceCountPerCell;
 	proxy->writeArrayNd(getHdfGroup(), "FacesPerCell", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, faceIndicesPerCell, numValues, 2);

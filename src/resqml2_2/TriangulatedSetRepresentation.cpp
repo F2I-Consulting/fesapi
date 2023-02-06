@@ -22,8 +22,6 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
@@ -128,7 +126,7 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdf.str();
 	hdfTriangles->Values->ExternalFileProxy.push_back(dsPart);
 	// ************ HDF *************
-	hsize_t dim[2] = {triangleCount, 3};
+	uint64_t dim[2] = {triangleCount, 3};
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		triangleNodeIndices,

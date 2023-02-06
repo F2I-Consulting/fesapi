@@ -97,7 +97,7 @@ bool ActivityTemplate::isAnExistingParameter(const std::string & paramTitle) con
 	return false;
 }
 
-unsigned int ActivityTemplate::getParameterCount() const
+uint64_t ActivityTemplate::getParameterCount() const
 {
 	return static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1)->Parameter.size();
 }

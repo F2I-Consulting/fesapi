@@ -101,8 +101,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	xmlMds->Values->ExternalFileProxy.push_back(dsPart);
 	rep->Mds = xmlMds;
 	// HDF mds
-	const hsize_t dim = stationCount;
-	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "mds", mds, &dim, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "mds", mds, &stationCount, 1);
 
 	rep->AngleUom = gsoap_resqml2_0_1::soap_eml20__PlaneAngleUom2s(gsoapProxy2_3->soap, angleUom);
 	// XML azimuths
@@ -114,7 +113,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	xmlAzims->Values->ExternalFileProxy.push_back(dsPart);
 	rep->Azimuths = xmlAzims;
 	// HDF azimuths
-	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "azimuths", azimuths, &dim, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "azimuths", azimuths, &stationCount, 1);
 	// XML inclinations
 	eml23__FloatingPointExternalArray* xmlIncls = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 	xmlIncls->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
@@ -124,7 +123,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	xmlIncls->Values->ExternalFileProxy.push_back(dsPart);
 	rep->Inclinations = xmlIncls;
 	// HDF inclinations
-	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inclinations", inclinations, &dim, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inclinations", inclinations, &stationCount, 1);
 }
 
 uint64_t DeviationSurveyRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const

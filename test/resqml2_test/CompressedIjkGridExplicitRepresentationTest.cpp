@@ -32,7 +32,7 @@ using namespace RESQML2_NS;
 
 const char* CompressedIjkGridExplicitRepresentationTest::defaultUuid = "f889e5d2-249e-4827-8532-ce60a1d05b99";
 const char* CompressedIjkGridExplicitRepresentationTest::defaultTitle = "Compressed Ijk Grid Representation";
-const unsigned long long CompressedIjkGridExplicitRepresentationTest::nodesCountIjkGridRepresentation = 16;
+const uint64_t CompressedIjkGridExplicitRepresentationTest::nodesCountIjkGridRepresentation = 16;
 double CompressedIjkGridExplicitRepresentationTest::nodesIjkGridRepresentation[] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350, 0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
 
 CompressedIjkGridExplicitRepresentationTest::CompressedIjkGridExplicitRepresentationTest(const string & repoPath)

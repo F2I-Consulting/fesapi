@@ -22,8 +22,6 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractGridRepresentation.h"
 #include "../eml2/AbstractHdfProxy.h"
@@ -220,14 +218,11 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 		{
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
-			const signed long long faultIndexCount = hdfProxy->getElementCount(dataset->PathInHdfFile);
-			if (faultIndexCount < 0) {
-				throw invalid_argument("The HDF5 library could not read the element count of this dataset.");
-			}
-			std::unique_ptr<int64_t[]> const faultIndices(new int64_t[static_cast<size_t>(faultIndexCount)]);
+			const uint64_t faultIndexCount = hdfProxy->getElementCount(dataset->PathInHdfFile);
+			std::unique_ptr<int64_t[]> const faultIndices(new int64_t[faultIndexCount]);
 
 			hdfProxy->readArrayNdOfInt64Values(dataset->PathInHdfFile, faultIndices.get());
-			for (size_t i = 0; i < static_cast<size_t>(faultIndexCount); ++i) {
+			for (size_t i = 0; i < faultIndexCount; ++i) {
 				if (faultIndices[i] == interpretationIndex) {
 					result++;
 				}
@@ -497,8 +492,7 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 	for (size_t i = 0; i < cellIndexPairCount; ++i) {
 		cumulative[i] = i + 1;
 	}
-	hsize_t numValueInEachDim = cellIndexPairCount;
-	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &numValueInEachDim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &cellIndexPairCount, 1);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)

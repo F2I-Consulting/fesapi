@@ -88,4 +88,3 @@ namespace timeTools
 		return result;
 	}
 }
-

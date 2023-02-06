@@ -20,8 +20,6 @@ under the License.
 
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 #include "MdDatum.h"
 #include "WellboreTrajectoryRepresentation.h"
@@ -89,7 +87,7 @@ void WellboreFrameRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, d
 	}
 }
 
-void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned int mdValueCount, EML2_NS::AbstractHdfProxy* proxy)
+void WellboreFrameRepresentation::setMdValues(double const * mdValues, uint64_t mdValueCount, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -136,12 +134,11 @@ void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned 
 	}
 
 	// HDF
-	hsize_t dim = mdValueCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		"mdValues",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
 		mdValues,
-		&dim, 1);
+		&mdValueCount, 1);
 }
 
 void WellboreFrameRepresentation::setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount)

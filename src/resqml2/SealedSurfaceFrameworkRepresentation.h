@@ -104,7 +104,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackContactPatch(
 			unsigned int contactIdx,
-			int const* nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
+			int const* nodeIndicesOnSupportingRepresentation, uint64_t nodeCount,
 			AbstractRepresentation * supportingRepresentation,
 			EML2_NS::AbstractHdfProxy * proxy) = 0;
 

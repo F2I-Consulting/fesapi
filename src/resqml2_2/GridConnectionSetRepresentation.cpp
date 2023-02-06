@@ -22,8 +22,6 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
@@ -120,7 +118,7 @@ void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(uint
 
 void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t cellIndexPairCount = getCellIndexPairCount();
+	const uint64_t cellIndexPairCount = getCellIndexPairCount();
 	if (cellIndexPairCount == 0) {
 		throw logic_error("You must set some cell connections before to set local face connections");
 	}
@@ -234,15 +232,15 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 		{
 			auto dsPart = static_cast<eml23__IntegerExternalArray*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values->ExternalFileProxy[0];
 			auto hdfProxy = getHdfProxyFromDataset(dsPart);
-			const signed long long faultIndexCount = getHdfProxyFromDataset(dsPart)->getElementCount(dsPart->PathInExternalFile);
+			const uint64_t faultIndexCount = getHdfProxyFromDataset(dsPart)->getElementCount(dsPart->PathInExternalFile);
 			if (faultIndexCount < 0) {
 				throw invalid_argument("The HDF5 library could not read the element count of this dataset.");
 			}
-			std::unique_ptr<int64_t[]> faultIndices(new int64_t[static_cast<size_t>(faultIndexCount)]);
+			std::unique_ptr<int64_t[]> faultIndices(new int64_t[faultIndexCount]);
 
 			hdfProxy->readArrayNdOfInt64Values(dsPart->PathInExternalFile, faultIndices.get());
-			for (size_t i = 0; i < static_cast<size_t>(faultIndexCount); ++i) {
-				if (faultIndices[i] == static_cast<unsigned int>(interpretationIndex)) {
+			for (size_t i = 0; i < faultIndexCount; ++i) {
+				if (faultIndices[i] == interpretationIndex) {
 					result++;
 				}
 			}
@@ -520,8 +518,7 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 	for (size_t i = 0; i < cellIndexPairCount; ++i) {
 		cumulative[i] = i + 1;
 	}
-	hsize_t numValueInEachDim = cellIndexPairCount;
-	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &numValueInEachDim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &cellIndexPairCount, 1);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)

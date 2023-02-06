@@ -21,22 +21,10 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace RESQML2_NS;
 using namespace std;
-
-namespace {
-	vector<hsize_t> copyToHdf5Datatype(uint64_t const* values, size_t nbValues) {
-		vector<hsize_t> result;
-		for (size_t i = 0; i < nbValues; ++i) {
-			result.push_back(values[i]);
-		}
-		return result;
-	}
-}
 
 uint64_t AbstractValuesProperty::getPatchCount() const
 {
@@ -151,7 +139,7 @@ uint64_t AbstractValuesProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIn
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	std::vector<hsize_t> dims = hdfProxy->getElementCountPerDimension(dsPath);
+	std::vector<uint32_t> dims = hdfProxy->getElementCountPerDimension(dsPath);
 
 	if (dimIndex < dims.size()) {
 		return dims[dimIndex];
@@ -221,7 +209,7 @@ EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t p
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
 
-		nullValue = (numeric_limits<long>::min)();
+		nullValue = (numeric_limits<int64_t>::min)();
 		int valuesType = patch->Values->soap_type();
 		if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 			dsPath = static_cast<gsoap_resqml2_0_1::resqml20__BooleanHdf5Array*>(patch->Values)->Values->PathInHdfFile;
@@ -245,7 +233,7 @@ EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t p
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		nullValue = (numeric_limits<long>::min)();
+		nullValue = (numeric_limits<int64_t>::min)();
 		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
 		if (dynamic_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch) != nullptr) {
 			dsPath = static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalFileProxy[0]->PathInExternalFile;
@@ -655,14 +643,11 @@ void AbstractValuesProperty::pushBackLongHdf5ArrayOfValues(const int64_t * value
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -678,14 +663,11 @@ void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, co
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -701,14 +683,11 @@ void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -724,14 +703,11 @@ void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned shor
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -747,14 +723,11 @@ void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t * values
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -1369,17 +1342,13 @@ void AbstractValuesProperty::setValuesOfHdf5ArrayOfValues(
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numArrayDimensions);
-	vector<hsize_t> tmp2 = copyToHdf5Datatype(offsetValues, numArrayDimensions);
-
 	// HDF
 	proxy->writeArrayNdSlab(getHdfGroup(),
 		"values_patch" + std::to_string(patchIndex == (numeric_limits<uint64_t>::max)() ? getPatchCount() - 1 : patchIndex),
 		datatype,
 		values,
-		tmp.data(),
-		tmp2.data(),
+		numValues,
+		offsetValues,
 		numArrayDimensions);
 }
 
@@ -1397,8 +1366,8 @@ void AbstractValuesProperty::getLongValuesOfPatch(
 	hdfProxy->readArrayNdOfInt64Values(
 		dsPath,
 		values,
-		copyToHdf5Datatype(numValuesInEachDimension, numArrayDimensions).data(),
-		copyToHdf5Datatype(offsetInEachDimension, numArrayDimensions).data(),
+		numValuesInEachDimension,
+		offsetInEachDimension,
 		numArrayDimensions);
 }
 
@@ -1438,8 +1407,8 @@ int32_t AbstractValuesProperty::getIntValuesOfPatch(
 	hdfProxy->readArrayNdOfIntValues(
 		dsPath,
 		values,
-		copyToHdf5Datatype(numValuesInEachDimension, numArrayDimensions).data(),
-		copyToHdf5Datatype(offsetInEachDimension, numArrayDimensions).data(),
+		numValuesInEachDimension,
+		offsetInEachDimension,
 		numArrayDimensions);
 
 	if (nullValue < (std::numeric_limits<int32_t>::lowest)() || nullValue >(std::numeric_limits<int32_t>::max)()) {
@@ -1542,7 +1511,7 @@ void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * valu
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
 		values,
-		copyToHdf5Datatype(numValues, numArrayDimensions).data(), numArrayDimensions);
+		numValues, numArrayDimensions);
 
 	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
 }
@@ -1579,7 +1548,7 @@ void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT,
 		values,
-		copyToHdf5Datatype(numValues, numArrayDimensions).data(),
+		numValues,
 		numArrayDimensions);
 
 	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
@@ -1604,7 +1573,7 @@ void AbstractValuesProperty::pushBackHdf5ArrayOfValues(
 	proxy->createArrayNd(getHdfGroup(),
 		datasetName,
 		datatype,
-		copyToHdf5Datatype(numValues, numArrayDimensions).data(), numArrayDimensions);
+		numValues, numArrayDimensions);
 
 	if (datatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE || datatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT) {
 		pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
@@ -1731,8 +1700,8 @@ void AbstractValuesProperty::getFloatValuesOfPatch(
 	hdfProxy->readArrayNdOfFloatValues(
 		datasetPath,
 		values,
-		copyToHdf5Datatype(numValuesInEachDimension, numArrayDimensions).data(),
-		copyToHdf5Datatype(offsetInEachDimension, numArrayDimensions).data(),
+		numValuesInEachDimension,
+		offsetInEachDimension,
 		numArrayDimensions);
 }
 

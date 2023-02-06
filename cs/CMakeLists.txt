@@ -22,18 +22,30 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example
 configure_file(${FESAPI_ROOT_DIR}/cmake/HdfProxyFactoryExample.cs ${FESAPI_ROOT_DIR}/cs/example/HdfProxyFactoryExample.cs) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/HdfProxyExample.cs ${FESAPI_ROOT_DIR}/cs/example/HdfProxyExample.cs) # Overwrite if different
 
-set (SWIG_DEFINITION "")
+set (EXECUTE_COMMAND "${SWIG_EXECUTABLE}")
 if (WITH_RESQML2_2)
-	string(APPEND SWIG_DEFINITION "-DWITH_RESQML2_2")
+	list (APPEND EXECUTE_COMMAND -DWITH_RESQML2_2)
 endif (WITH_RESQML2_2)
-
-# SWIG execution
-if (SWIG_LINKED_TO_RELEASE)
-	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITION} -v -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION}.dll -namespace F2iConsulting.Fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
-else (SWIG_LINKED_TO_RELEASE)
-	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} ${SWIG_DEFINITION} -v -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}.${Fesapi_VERSION}.dll -namespace F2iConsulting.Fesapi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
-endif (SWIG_LINKED_TO_RELEASE)
-execute_process(COMMAND powershell  ${EXECUTE_COMMAND})
+if (UNIX)
+	list (APPEND EXECUTE_COMMAND -DSWIGWORDSIZE64)
+endif (UNIX)
+list (APPEND EXECUTE_COMMAND -v)
+list (APPEND EXECUTE_COMMAND -c++)
+list (APPEND EXECUTE_COMMAND -csharp)
+list (APPEND EXECUTE_COMMAND -dllimport)
+list (APPEND EXECUTE_COMMAND ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION}.dll)
+list (APPEND EXECUTE_COMMAND -namespace)
+list (APPEND EXECUTE_COMMAND F2iConsulting.Fesapi)
+list (APPEND EXECUTE_COMMAND -o)
+list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/swig/swigGeneratedCsWrapper.cpp)
+list (APPEND EXECUTE_COMMAND -outdir)
+list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/cs/src)
+list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/swig/swigModule.i)
+if (WIN32)
+	execute_process(COMMAND powershell ${EXECUTE_COMMAND})
+elseif (UNIX)
+	execute_process(COMMAND ${EXECUTE_COMMAND})
+endif (WIN32)
 message("SWIG C# files have been generated.")
 
 #Add the swig cpp file to the FesapiCpp
