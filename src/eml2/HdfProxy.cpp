@@ -864,12 +864,12 @@ void HdfProxy::readArrayNdOfUShortValues(const std::string & datasetName, unsign
 	readArrayNdOfValues(datasetName, values, H5T_NATIVE_USHORT);
 }
 
-void HdfProxy::readArrayNdOfCharValues(const std::string & datasetName, char* values)
+void HdfProxy::readArrayNdOfInt8Values(const std::string & datasetName, int8_t* values)
 {
 	readArrayNdOfValues(datasetName, values, H5T_NATIVE_CHAR);
 }
 
-void HdfProxy::readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values)
+void HdfProxy::readArrayNdOfUInt8Values(const std::string & datasetName, uint8_t* values)
 {
 	readArrayNdOfValues(datasetName, values, H5T_NATIVE_UCHAR);
 }
@@ -1266,7 +1266,7 @@ double HdfProxy::readDoubleAttribute(const std::string & obj_name,
 	return result;
 }
 
-int64_t HdfProxy::readLongAttribute(const std::string & obj_name,
+int64_t HdfProxy::readInt64Attribute(const std::string & obj_name,
 	const std::string & attr_name) const
 {
 	if (!isOpened()) {

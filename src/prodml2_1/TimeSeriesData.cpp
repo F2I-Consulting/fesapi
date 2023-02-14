@@ -19,16 +19,12 @@ under the License.
 #include "TimeSeriesData.h"
 
 #include <stdexcept>
-#include <limits>
 
 #include "../tools/TimeTools.h"
 
 using namespace std;
 using namespace PRODML2_1_NS;
 using namespace gsoap_eml2_2;
-
-const char* TimeSeriesData::XML_TAG = "TimeSeriesData";
-const char* TimeSeriesData::XML_NS = "prodml21";
 
 TimeSeriesData::TimeSeriesData(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid,

@@ -2460,6 +2460,23 @@ namespace COMMON_NS
 			const uint64_t & cellCount);
 
 		/**
+		 * @brief	Creates an unstructured grid representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param 	guid	 	The guid to set to the unstructured grid representation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	title	 	The title to set to the unstructured grid representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param 	cellCount	Number of cells in the grid.
+		 *
+		 * @returns	A pointer to the new unstructured grid representation.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string& guid, const std::string& title, const uint64_t & cellCount);
+
+		/**
 		 * @brief	Creates a sub-representation into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.

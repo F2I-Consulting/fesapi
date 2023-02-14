@@ -28,12 +28,6 @@ using namespace COMMON_NS;
 using namespace resqml2_test;
 using namespace RESQML2_NS;
 
-const char* BlockedWellbore::defaultUuid = "442b1bed-c997-42ce-8b99-8e89a23edc0d";
-const char* BlockedWellbore::defaultTitle = "BlockedWellbore representation with null value";
-const char* BlockedWellbore::defaultUuidNoNullValue = "02318f5e-399e-43a0-9e7c-340b5954eaf2";
-const char* BlockedWellbore::defaultTitleNoNullValue = "BlockedWellbore representation without null value";
-const char* BlockedWellbore::defaultGridUuid = "0987a24d-24c0-49ea-bae3-f6c9d91a8d46";
-
 BlockedWellbore::BlockedWellbore(const string & epcDocPath)
 	: commontest::AbstractTest(epcDocPath) {
 }
@@ -50,9 +44,9 @@ void BlockedWellbore::initRepo()
 	double mdValues[6] = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.7 };
 	bwRep->setMdValues(mdValues, 6);
 
-	char gridIndices[5] = { 0, 0, 0, -1, 0 };
+	int8_t gridIndices[5] = { 0, 0, 0, -1, 0 };
 	int64_t cellIndices[5] = { 0, 10, 20, -1, 40 };
-	char localFacePairPerCellIndices[10] = { 0, 1, 1, 2, 2, 3, -1, -1, 5, 6};
+	int8_t localFacePairPerCellIndices[10] = { 0, 1, 1, 2, 2, 3, -1, -1, 5, 6};
 	bwRep->setIntervalGridCells(gridIndices, -1, cellIndices, localFacePairPerCellIndices, -1);
 
 	RESQML2_NS::BlockedWellboreRepresentation* bwRepNoNullValue = repo->createBlockedWellboreRepresentation(nullptr, defaultUuidNoNullValue, defaultTitleNoNullValue, partialTraj);
@@ -77,8 +71,8 @@ void BlockedWellbore::readRepo()
 	REQUIRE(bwRepNoNullValue->getCellCount() == 5);
 	
 	// Grid indices
-	char gridIndices[5];
-	char gridIndiceNullValue = bwRep->getGridIndices(gridIndices);
+	int8_t gridIndices[5];
+	int8_t gridIndiceNullValue = bwRep->getGridIndices(gridIndices);
 	REQUIRE(gridIndices[0] == 0);
 	REQUIRE(gridIndices[1] == 0);
 	REQUIRE(gridIndices[2] == 0);
@@ -109,8 +103,8 @@ void BlockedWellbore::readRepo()
 	REQUIRE(cellIndices[4] == 40);
 
 	// Local Face Pair Per Cell Indices
-	char localFacePairPerCellIndices[10];
-	char localFacePairPerCellIndicesNullValue = bwRep->getLocalFacePairPerCellIndices(localFacePairPerCellIndices);
+	int8_t localFacePairPerCellIndices[10];
+	int8_t localFacePairPerCellIndicesNullValue = bwRep->getLocalFacePairPerCellIndices(localFacePairPerCellIndices);
 	REQUIRE(localFacePairPerCellIndices[0] == 0);
 	REQUIRE(localFacePairPerCellIndices[1] == 1);
 	REQUIRE(localFacePairPerCellIndices[2] == 1);

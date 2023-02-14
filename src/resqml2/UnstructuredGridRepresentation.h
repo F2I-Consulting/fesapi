@@ -377,7 +377,7 @@ namespace RESQML2_NS
 		 * 										cell face. The size is the last value returned by
 		 * 										getCumulativeFaceCountPerCell().
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getCellFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const = 0;
 
 		/**
 		 * Sets the geometry using some existing HDF5 dataset.
@@ -512,7 +512,7 @@ namespace RESQML2_NS
 		 * 														(default), then the repository default
 		 * 														local CRS will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
+		DLL_IMPORT_OR_EXPORT void setGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, uint64_t * nodeIndicesPerFace, uint64_t * nodeIndicesCumulativeCountPerFace,
 			gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
@@ -596,7 +596,7 @@ namespace RESQML2_NS
 		 * @param [in]	  	localCrs			 	(Optional) The local CRS. If @c nullptr (default),
 		 * 												then the repository default local CRS will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
+		DLL_IMPORT_OR_EXPORT void setTetrahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
@@ -614,7 +614,7 @@ namespace RESQML2_NS
 		*
 		* @copydetails setTetrahedraOnlyGeometry
 		*/
-		DLL_IMPORT_OR_EXPORT void setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
+		DLL_IMPORT_OR_EXPORT void setHexahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
@@ -656,7 +656,7 @@ namespace RESQML2_NS
 		* @param nodeIndicesPerFace					Each item defines the index of the node of a face. There must be a count of nodeCountPerFace * faceCount.
 		* @param nodeCountPerFace					The constant node count per face.
 		*/
-		void setConstantCellShapeGeometry(unsigned char * cellFaceIsRightHanded, double * points,
+		void setConstantCellShapeGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t faceCountPerCell,
 			uint64_t * nodeIndicesPerFace, uint64_t nodeCountPerFace);

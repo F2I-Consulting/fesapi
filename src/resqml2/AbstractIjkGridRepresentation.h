@@ -552,7 +552,7 @@ namespace RESQML2_NS
 		 * 									values. If @c nullptr (default), then the default HDF proxy will be
 		 * 									used.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellGeometryIsDefinedFlags(unsigned char* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setCellGeometryIsDefinedFlags(uint8_t* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Set to "defined" the flags for each cell indicating if its geometry is defined or not
@@ -773,10 +773,10 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "IjkGridRepresentation";
 
 		/** The standard XML tag without XML namespace for serializing this data object if truncated. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG_TRUNCATED;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG_TRUNCATED = "TruncatedIjkGridRepresentation";
 
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final;
 

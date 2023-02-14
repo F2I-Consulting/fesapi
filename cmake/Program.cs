@@ -68,7 +68,7 @@ namespace Example
             ++offsetInSlowestDim;
             propertyCompute.setValuesOfFloatHdf5Array3dOfValues(kLayerValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
                 offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
-            GC.KeepAlive(kLayerValues);
+            kLayerValues.Dispose();
 
             // creating the discrete Property with computing min max
             DiscreteProperty discretePropertyCompute = repo.createDiscreteProperty(
@@ -115,7 +115,7 @@ namespace Example
             ++offsetInSlowestDim;
             discretePropertyCompute.setValuesOfInt64Hdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
                 offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
-            GC.KeepAlive(kLayerlongValues);
+            kLayerlongValues.Dispose();
         }
 		
         private static void serialize()
@@ -179,9 +179,9 @@ namespace Example
                 trajectoryMds.setitem(2, 500);
                 trajectoryMds.setitem(3, 1000);
                 w1i1TrajRep.setGeometry(controlPoints.cast(), trajectoryTangentVectors.cast(), trajectoryMds.cast(), 4, 0);
-                GC.KeepAlive(controlPoints);
-                GC.KeepAlive(trajectoryTangentVectors);
-                GC.KeepAlive(trajectoryMds);
+                controlPoints.Dispose();
+                trajectoryTangentVectors.Dispose();
+                trajectoryMds.Dispose();
 
                 // WellboreFeature frame
                 F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation w1i1FrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
@@ -206,7 +206,7 @@ ${COMMENT_START}
                     0,
                     localTime3dCrs);
                 w1i1SeismicFrameRep.setMdValues(logMds.cast(), 5);
-				GC.KeepAlive(logMds);
+				logMds.Dispose();
 				
                 DoubleArray logTimes = new DoubleArray(5);
                 logTimes.setitem(0, 0);
@@ -215,7 +215,7 @@ ${COMMENT_START}
                 logTimes.setitem(3, 25);
                 logTimes.setitem(4, 30);
                 w1i1SeismicFrameRep.setTimeValues(logTimes.cast(), 5);
-				GC.KeepAlive(logTimes);
+				logTimes.Dispose();
 
                 SeismicWellboreFrameRepresentation w1i1RegularSeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
                     wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
@@ -252,7 +252,7 @@ ${COMMENT_END}
                 dummyPoints.setitem(1, 2.0);
                 dummyPoints.setitem(2, 3.0);
                 repo.createPointSetRepresentation("", "").pushBackGeometryPatch(1, dummyPoints.cast());
-                GC.KeepAlive(dummyPoints);
+                dummyPoints.Dispose();
                 // **************************************
                 // **************************************
 

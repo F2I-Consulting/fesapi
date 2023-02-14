@@ -311,10 +311,9 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(unsigned int patchI
 		const uint64_t polylineCount = getPolylineCountOfPatch(patchIndex);
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
 
-		char* const tmp = new char[polylineCount];
-		getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-		const bool result = find(tmp, tmp + polylineCount, 0) == tmp + polylineCount;
-		delete [] tmp;
+		std::unique_ptr<int8_t[]> tmp(new int8_t[polylineCount]);
+		getHdfProxyFromDataset(dataset)->readArrayNdOfInt8Values(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp.get());
+		const bool result = find(tmp.get(), tmp.get() + polylineCount, 0) == tmp.get() + polylineCount;
 
 		return result;
 	}
@@ -350,8 +349,8 @@ bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(unsigned int pat
 		const uint64_t polylineCount = getPolylineCountOfPatch(patchIndex);
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
 
-		std::unique_ptr<char[]> tmp(new char[polylineCount]);
-		getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp.get());
+		std::unique_ptr<int8_t[]> tmp(new int8_t[polylineCount]);
+		getHdfProxyFromDataset(dataset)->readArrayNdOfInt8Values(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp.get());
 		return find_if(tmp.get(), tmp.get() + polylineCount, [](char i) {return i != 0; }) == tmp.get() + polylineCount;
 	}
 	else
@@ -380,8 +379,8 @@ void PolylineSetRepresentation::getClosedFlagPerPolylineOfPatch(unsigned int pat
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
 
-		std::unique_ptr<char[]> tmp(new char[polylineCount]);
-		getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp.get());
+		std::unique_ptr<int8_t[]> tmp(new int8_t[polylineCount]);
+		getHdfProxyFromDataset(dataset)->readArrayNdOfInt8Values(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp.get());
 		for (size_t i = 0; i < polylineCount; ++i) {
 			closedFlagPerPolyline[i] = tmp[i];
 		}

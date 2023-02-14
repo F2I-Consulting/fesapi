@@ -1024,7 +1024,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(twoCellsIjkGrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
 	int64_t prop2Values[2] = { 10, 11 };
-	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
+	discreteProp2->pushBackInt64Hdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
 	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_eml2_3::resqml22__TimeSetKind::not_x0020a_x0020time_x0020set);
 	propSet->pushBackProperty(discreteProp1);
@@ -1039,10 +1039,10 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 	RESQML2_NS::DiscreteProperty* discreteProp432 = pck->createDiscreteProperty(ijkgrid432, "f9447f76-34c5-4967-a3ee-4f400f96dba6", "4x3x2 grid cellIndex", 1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
-	LONG64 discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+	int64_t discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 	//hdfProxy->setMaxChunkSize(192/2); // Create two chunks
-	discreteProp432->pushBackLongHdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
+	discreteProp432->pushBackInt64Hdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
 
 	/**************
 	 Continuous Properties
@@ -2617,7 +2617,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 					}
 				}
 				std::unique_ptr<int64_t[]> values(new int64_t[valueCount]);
-				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getLongValuesOfPatch(0, values.get());
+				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getInt64ValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 			}
@@ -2673,7 +2673,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				cerr << "\tERROR !!!!! The discrete or comment property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				std::unique_ptr<int64_t[]> values(new int64_t[valueCount]);
-				dynamic_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getLongValuesOfPatch(0, values.get());
+				dynamic_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getInt64ValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 				cout << "\tPress enter to continue..." << endl;
@@ -5392,7 +5392,7 @@ void deserialize(const string & inputFile)
 							if (catVal->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64) {
 								std::cout << "Hdf datatype is NATIVE INT 64" << std::endl;
 								std::unique_ptr<int64_t[]> tmp(new int64_t[wmf->getMdValuesCount()]);
-								catVal->getLongValuesOfPatch(0, tmp.get());
+								catVal->getInt64ValuesOfPatch(0, tmp.get());
 								for (size_t ind = 0; ind < 2; ind++) {
 									std::cout << "Value " << ind << " : " << tmp[ind] << std::endl;
 								}

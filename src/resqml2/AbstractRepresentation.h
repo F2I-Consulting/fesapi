@@ -387,7 +387,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
 		
 		/** The standard XML tag without XML namespace for serializing this data object */
-		static const char* XML_TAG;
+		static constexpr char const* XML_TAG = "AbstractRepresentation";
 
 		virtual void loadTargetRelationships() override;
 

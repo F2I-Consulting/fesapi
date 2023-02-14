@@ -35,9 +35,6 @@ using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_test;
 
-const char* CategoricalProperty::defaultUuid = "5aa6a9d4-253e-43a8-bdf5-621e5df2d425";
-const char* CategoricalProperty::defaultTitle = "Testing Categorical Prop";
-
 static constexpr int64_t bigNumber = (std::numeric_limits<uint32_t>::max)() + static_cast<int64_t>(10);
 
 CategoricalProperty::CategoricalProperty(const string & repoPath)

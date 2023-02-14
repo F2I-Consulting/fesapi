@@ -141,10 +141,10 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsCoordinateLineNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
-			double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			uint64_t splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
-			unsigned int * splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int * splitCoordinateLineColumns = nullptr,
-			char * definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
+			double const* points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t splitCoordinateLineCount = 0, unsigned int const* pillarOfCoordinateLine = nullptr,
+			unsigned int const* splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int const* splitCoordinateLineColumns = nullptr,
+			int8_t const* definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
 		* @copybrief setGeometryAsCoordinateLineNodes

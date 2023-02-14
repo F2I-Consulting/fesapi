@@ -80,7 +80,7 @@ void UnstructuredGridRepresentation::getNodeCountPerFace(uint64_t * nodeCountPer
 	}
 }
 
-void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy * proxy,
+void UnstructuredGridRepresentation::setGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy * proxy,
 	uint64_t * faceIndicesPerCell, uint64_t * faceIndicesCumulativeCountPerCell,
 	uint64_t faceCount, uint64_t * nodeIndicesPerFace, uint64_t * nodeIndicesCumulativeCountPerFace,
 	gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs)
@@ -127,7 +127,7 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 		cellShape, localCrs);
 }
 
-void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char * cellFaceIsRightHanded, double * points,
+void UnstructuredGridRepresentation::setConstantCellShapeGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 	uint64_t pointCount, uint64_t faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
 	uint64_t * faceIndicesPerCell, uint64_t faceCountPerCell,
 	uint64_t * nodeIndicesPerFace, uint64_t nodeCountPerFace)
@@ -189,7 +189,7 @@ void UnstructuredGridRepresentation::setTetrahedraOnlyGeometryUsingExistingDatas
 		nodeIndicesPerFace, 3);
 }
 
-void UnstructuredGridRepresentation::setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points, uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy * proxy,
+void UnstructuredGridRepresentation::setTetrahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy * proxy,
 	uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setConstantCellShapeGeometry(cellFaceIsRightHanded, points,
@@ -208,7 +208,7 @@ void UnstructuredGridRepresentation::setHexahedraOnlyGeometryUsingExistingDatase
 		nodeIndicesPerFace, 4);
 }
 
-void UnstructuredGridRepresentation::setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points, uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy * proxy,
+void UnstructuredGridRepresentation::setHexahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy * proxy,
 	uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setConstantCellShapeGeometry(cellFaceIsRightHanded, points,

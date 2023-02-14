@@ -24,8 +24,8 @@ namespace resqml2_test {
 	class ContinuousProperty : public commontest::AbstractTest {
 	public:
 
-		static const char* defaultUuid;
-		static const char* defaultTitle;
+		static constexpr char const* defaultUuid = "13f40533-96fc-4f4a-940e-cac96228782a";
+		static constexpr char const* defaultTitle = "Testing continuous property";
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,

@@ -138,7 +138,7 @@ namespace Example
             throw new NotImplementedException();
         }
 
-        public override long readLongAttribute(string obj_name, string attr_name)
+        public override long readInt64Attribute(string obj_name, string attr_name)
         {
             throw new NotImplementedException();
         }
@@ -218,12 +218,12 @@ namespace Example
             throw new NotImplementedException();
         }
 
-        public override void readArrayNdOfCharValues(string datasetName, string values)
+        public override void readArrayNdOfInt8Values(string datasetName, SWIGTYPE_p_signed_char values)
         {
             throw new NotImplementedException();
         }
 
-        public override void readArrayNdOfUCharValues(string datasetName, SWIGTYPE_p_unsigned_char values)
+        public override void readArrayNdOfUInt8Values(string datasetName, SWIGTYPE_p_unsigned_char values)
         {
             throw new NotImplementedException();
         }

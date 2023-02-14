@@ -32,10 +32,6 @@ using namespace COMMON_NS;
 using namespace RESQML2_NS;
 using namespace EML2_NS;
 
-// Activity
-const char* ActivityCreationTest::defaultUuid = "705cd6f5-8ee8-427b-adde-04b0b6afcdf0";
-const char* ActivityCreationTest::defaultTitle = "Activity Creation";
-
 ActivityCreationTest::ActivityCreationTest(const string & repoPath)
 	: commontest::AbstractTest(repoPath) {
 }

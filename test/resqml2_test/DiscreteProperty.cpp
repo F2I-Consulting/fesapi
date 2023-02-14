@@ -30,12 +30,6 @@ using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_test;
 
-const char* DiscreteProperty::defaultCharPropUuid = "5aa6a9d4-253e-43a8-bdf5-621e5df2d425";
-const char* DiscreteProperty::defaultShortPropUuid = "61acbc7f-fb9b-4578-800e-f310e947b865";
-const char* DiscreteProperty::defaultUShortPropUuid = "0eae558f-e57b-47b1-9772-a336e99fd714";
-const char* DiscreteProperty::defaultIntPropUuid = "a0721fbe-fb09-4d0f-aab3-315eca8e416e";
-const char* DiscreteProperty::defaultLongPropUuid = "eda57b20-4639-4541-87b9-c2b44b46c336";
-
 DiscreteProperty::DiscreteProperty(const string & repoPath)
 	: commontest::AbstractTest(repoPath) {
 }
@@ -83,14 +77,14 @@ void DiscreteProperty::initRepo() {
 	int intValues[6] = { 0, 1, 2, 3, 4, 5 };
 	intDiscreteProperty->pushBackIntHdf5Array3dOfValues(intValues, 1, 2, 3, hdfProxy, -1);
 
-	// creating the long DiscreteProperty
-	RESQML2_NS::DiscreteProperty* longDiscreteProperty = repo->createDiscreteProperty(
-		ijkGrid, defaultLongPropUuid, "long prop",
+	// creating the Int64 DiscreteProperty
+	RESQML2_NS::DiscreteProperty* int64DiscreteProperty = repo->createDiscreteProperty(
+		ijkGrid, defaultInt64PropUuid, "Int64 prop",
 		1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells,
 		propertyKind);
-	int64_t longValues[6] = { 0, 1, 2, 3, 4, 5 };
-	longDiscreteProperty->pushBackLongHdf5Array3dOfValues(longValues, 1, 2, 3, hdfProxy, -1);
+	int64_t int64Values[6] = { 0, 1, 2, 3, 4, 5 };
+	int64DiscreteProperty->pushBackInt64Hdf5Array3dOfValues(int64Values, 1, 2, 3, hdfProxy, -1);
 
 	// creating Constant Integer prop
 	RESQML2_NS::DiscreteProperty* constantIntegerProperty = repo->createDiscreteProperty(
@@ -111,15 +105,15 @@ void DiscreteProperty::readRepo() {
 	REQUIRE(ushortDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16);
 	RESQML2_NS::DiscreteProperty* intDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultIntPropUuid);
 	REQUIRE(intDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32);
-	RESQML2_NS::DiscreteProperty* longDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultLongPropUuid);
-	REQUIRE(longDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
-	REQUIRE(!longDiscreteProperty->hasConstantValues(0));
+	RESQML2_NS::DiscreteProperty* int64DiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultInt64PropUuid);
+	REQUIRE(int64DiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
+	REQUIRE(!int64DiscreteProperty->hasConstantValues(0));
 
 	RESQML2_NS::DiscreteProperty* constantDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>("d6896172-795c-46be-bdd1-f9f9ed42f1f0");
 	REQUIRE(constantDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
 	REQUIRE(constantDiscreteProperty->getValuesCountOfPatch(0) == 3);
 	int64_t constantDiscreteValues[3];
-	constantDiscreteProperty->getLongValuesOfPatch(0, constantDiscreteValues);
+	constantDiscreteProperty->getInt64ValuesOfPatch(0, constantDiscreteValues);
 	REQUIRE(constantDiscreteValues[0] == 10);
 	REQUIRE(constantDiscreteValues[1] == 10);
 	REQUIRE(constantDiscreteValues[2] == 10);

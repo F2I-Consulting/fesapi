@@ -33,8 +33,6 @@ under the License.
 using namespace RESQML2_NS;
 using namespace std;
 
-const char* AbstractGridRepresentation::XML_TAG = "AbstractGridRepresentation";
-
 std::vector<RESQML2_NS::GridConnectionSetRepresentation *> AbstractGridRepresentation::getGridConnectionSetRepresentationSet() const
 {
 	return repository->getSourceObjects<RESQML2_NS::GridConnectionSetRepresentation>(this);
@@ -2360,7 +2358,7 @@ void AbstractGridRepresentation::getNonTruncatedFaceCountPerTruncatedCell(uint64
 	}
 }
 
-void AbstractGridRepresentation::getTruncatedFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const
+void AbstractGridRepresentation::getTruncatedFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const
 {
 	if (!isTruncated()) {
 		throw invalid_argument("The grid is not truncated");
@@ -2372,7 +2370,7 @@ void AbstractGridRepresentation::getTruncatedFaceIsRightHanded(unsigned char* ce
 		if (rep->TruncationCells->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__BooleanHdf5Array*>(rep->TruncationCells->TruncationCellFaceIsRightHanded)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUCharValues(dataset->PathInHdfFile, cellFaceIsRightHanded);
+			hdfProxy->readArrayNdOfUInt8Values(dataset->PathInHdfFile, cellFaceIsRightHanded);
 		}
 		else if (rep->TruncationCells->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
 			for (uint64_t i = 0; i < static_cast<gsoap_resqml2_0_1::resqml20__BooleanConstantArray*>(rep->TruncationCells->TruncationCellFaceIsRightHanded)->Count; ++i) {
@@ -2387,7 +2385,7 @@ void AbstractGridRepresentation::getTruncatedFaceIsRightHanded(unsigned char* ce
 
 		if (rep->TruncationCellPatch->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 			auto dsPart = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(rep->TruncationCellPatch->TruncationCellFaceIsRightHanded)->Values->ExternalFileProxy[0];
-			getHdfProxyFromDataset(dsPart)->readArrayNdOfUCharValues(dsPart->PathInExternalFile, cellFaceIsRightHanded);
+			getHdfProxyFromDataset(dsPart)->readArrayNdOfUInt8Values(dsPart->PathInExternalFile, cellFaceIsRightHanded);
 		}
 		else if (rep->TruncationCellPatch->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
 			for (uint64_t i = 0; i < static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(rep->TruncationCellPatch->TruncationCellFaceIsRightHanded)->Count; ++i) {

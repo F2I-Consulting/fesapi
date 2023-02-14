@@ -25,10 +25,11 @@ namespace resqml2_test {
 
 	class FaultInterpretationTest : public commontest::AbstractTest {
 	public:
-		static const char* faultUuid;
-		static const char* faultTitle;
-		static const char* defaultUuid;
-		static const char* defaultTitle;
+
+		static constexpr char const* faultUuid = "a2e84855-738e-462a-82c5-863abd058be1";
+		static constexpr char const* faultTitle = "Fault";
+		static constexpr char const* defaultUuid = "91f90343-2581-48c5-893f-667a2995088c";
+		static constexpr char const* defaultTitle = "FaultInterpretationTest";
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
@@ -42,4 +43,3 @@ namespace resqml2_test {
 		void readRepo();
 	};
 }
-

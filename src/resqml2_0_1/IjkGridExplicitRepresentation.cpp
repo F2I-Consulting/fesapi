@@ -188,10 +188,10 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 	resqml20__PillarShape mostComplexPillarGeometry,
 	resqml20__KDirection kDirectionKind,
 	bool isRightHanded,
-	double * points, EML2_NS::AbstractHdfProxy * proxy,
-	uint64_t splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns,
-	char * definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	double const* points, EML2_NS::AbstractHdfProxy * proxy,
+	uint64_t splitCoordinateLineCount, unsigned int const* pillarOfCoordinateLine,
+	unsigned int const* splitCoordinateLineColumnCumulativeCount, unsigned int const* splitCoordinateLineColumns,
+	int8_t const* definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (points == nullptr) {
 		throw invalid_argument("The points of the ijk grid cannot be null.");

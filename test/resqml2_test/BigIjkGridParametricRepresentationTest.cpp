@@ -31,13 +31,6 @@ using namespace COMMON_NS;
 using namespace resqml2_test;
 using namespace RESQML2_NS;
 
-const char* BigIjkGridParametricRepresentationTest::defaultUuid = "d94033f1-188b-465b-9594-c88403f7767e";
-const char* BigIjkGridParametricRepresentationTest::defaultTitle = "Ijk Grid Param Representation";
-const char* BigIjkGridParametricRepresentationTest::discretePropertyUuid = "e3a36173-1d46-4db3-87d0-84e51efce7ed";
-const char* BigIjkGridParametricRepresentationTest::discretePropertyTitle = "Parametric IJK Grid K Index";
-const char* BigIjkGridParametricRepresentationTest::continuousPropertyUuid = "78fa1c70-f0d6-4ce1-8cc6-401f812cd713";
-const char* BigIjkGridParametricRepresentationTest::continuousPropertyTitle = "Parametric IJK Grid Continuous Property";
-
 BigIjkGridParametricRepresentationTest::BigIjkGridParametricRepresentationTest(
 	const string & repoPath,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount,

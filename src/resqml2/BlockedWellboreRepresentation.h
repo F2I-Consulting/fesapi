@@ -80,8 +80,8 @@ namespace RESQML2_NS
 		 * 															values will be stored. If set to nullptr,
 		 *															the default HdfProxy will be used instead.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setIntervalGridCells(char const* gridIndices, char gridIndicesNullValue, int64_t const* cellIndices,
-			char const* localFacePairPerCellIndices, char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setIntervalGridCells(int8_t const* gridIndices, int8_t gridIndicesNullValue, int64_t const* cellIndices,
+			int8_t const* localFacePairPerCellIndices, int8_t localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy = nullptr) = 0;
 
 		/**
 		 * Gets the cell count, that is to say the number of non-null entries in the grid indices array.
@@ -107,7 +107,7 @@ namespace RESQML2_NS
 		 * @returns	The null value used in @p gridIndices in order to indicate that an interval does not
 		 * 			correspond to any intersected grid.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual char getGridIndices(char* gridIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int8_t getGridIndices(int8_t* gridIndices) const = 0;
 
 		/**
 		 * For each interval of the wellbore frame, gets the index of the cell it is associated to.
@@ -140,7 +140,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value used in @p localFacePairPerCellIndices in order to indicate that no face is intersected.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual char getLocalFacePairPerCellIndices(char* localFacePairPerCellIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int8_t getLocalFacePairPerCellIndices(int8_t* localFacePairPerCellIndices) const = 0;
 
 		/**
 		 * Pushes back a grid representation which is one of the support of this representation.
@@ -188,7 +188,7 @@ namespace RESQML2_NS
 		virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "BlockedWellboreRepresentation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 

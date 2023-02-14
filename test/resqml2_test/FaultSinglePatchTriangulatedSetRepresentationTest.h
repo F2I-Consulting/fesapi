@@ -23,8 +23,9 @@ under the License.
 namespace resqml2_test {
 	class FaultSinglePatchTriangulatedSetRepresentationTest : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
+
+		static constexpr char const* defaultUuid = "110124ae-ff4e-478c-90c1-30900e01485e";
+		static constexpr char const* defaultTitle = "FaultSinglePatchTriangulatedSetRepresentationTest";
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
@@ -38,5 +39,3 @@ namespace resqml2_test {
 		void readRepo();
 	};
 }
-
-

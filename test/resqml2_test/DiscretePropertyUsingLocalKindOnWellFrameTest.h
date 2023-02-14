@@ -24,8 +24,8 @@ namespace resqml2_test {
 	class DiscretePropertyUsingLocalKindOnWellFrameTest : public commontest::AbstractTest {
 	public:
 
-		static const char* defaultUuid;
-		static const char* defaultTitle;
+		static constexpr char const* defaultUuid = "5aa6a9d4-253e-43a8-bdf5-621e5df2d425";
+		static constexpr char const* defaultTitle = "Discrete Property Using Local Kind On Well Frame Test";
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,

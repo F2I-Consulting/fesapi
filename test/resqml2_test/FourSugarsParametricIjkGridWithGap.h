@@ -23,9 +23,13 @@ under the License.
 namespace resqml2_test {
 	class FourSugarsParametricIjkGridWithGap : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
-		static double parameters[];
+
+		static constexpr char const* defaultUuid = "ecd52ad4-ca18-49d4-8394-2e8b9796b9d5";
+		static constexpr char const* defaultTitle = "Four faulted sugar cubes parametric with k gap";
+		static constexpr double parameters[32] = { 300, 300, 350, 300, 300, 350, /* SPLIT*/ 350, 350,
+				400, 400, 450, 400, 400, 450, /* SPLIT*/ 450, 450,
+				425, 425, 475, 425, 425, 475, /* SPLIT*/ 475, 475,
+				500, 500, 550, 500, 500, 550, /* SPLIT*/ 550, 550 };
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,

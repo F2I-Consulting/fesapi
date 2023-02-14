@@ -1161,10 +1161,10 @@ namespace RESQML2_NS
 		 * 										means right handed. It must be preallocated with
 		 * 										getTruncatedFaceCount()
 		 */
-		DLL_IMPORT_OR_EXPORT void getTruncatedFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const;
+		DLL_IMPORT_OR_EXPORT void getTruncatedFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "AbstractGridRepresentation";
 
 		/** Loads target relationships */
 		void loadTargetRelationships() override;

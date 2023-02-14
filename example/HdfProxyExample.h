@@ -241,7 +241,7 @@ public:
 	* Read a int 64 bits which is stored as an HDF attribute in a file, group or dataset
 	* @param obj_name use '.' if the attribute to read is on the file otherwise the full path
 	*/
-	int64_t readLongAttribute(const std::string & obj_name,
+	int64_t readInt64Attribute(const std::string & obj_name,
 		const std::string & attr_name) const { throw std::logic_error("Not implemented yet"); }
 
 	/**
@@ -426,14 +426,14 @@ public:
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfCharValues(const std::string & datasetName, char* values) { throw std::logic_error("Not implemented yet"); }
+	void readArrayNdOfInt8Values(const std::string & datasetName, int8_t* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	 * Read an array Nd of unsigned char values stored in a specific dataset.
 	 * @param datasetName	The absolute dataset name where to read the values
 	 * @param values 		The values must be pre-allocated and won't be freed by this method.
 	 */
-	void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) { throw std::logic_error("Not implemented yet"); }
+	void readArrayNdOfUInt8Values(const std::string & datasetName, uint8_t* values) { throw std::logic_error("Not implemented yet"); }
 
 	/**
 	* Check wether an absolute path exists in the hdf file or not.

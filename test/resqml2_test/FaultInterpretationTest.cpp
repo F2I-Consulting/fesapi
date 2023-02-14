@@ -27,11 +27,6 @@ using namespace resqml2_test;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
 
-const char* FaultInterpretationTest::faultUuid = "a2e84855-738e-462a-82c5-863abd058be1";
-const char* FaultInterpretationTest::faultTitle = "Fault";
-const char* FaultInterpretationTest::defaultUuid = "91f90343-2581-48c5-893f-667a2995088c";
-const char* FaultInterpretationTest::defaultTitle = "FaultInterpretationTest";
-
 FaultInterpretationTest::FaultInterpretationTest(const string & repoPath)
 	: commontest::AbstractTest(repoPath)
 {

@@ -2465,6 +2465,18 @@ RESQML2_NS::UnstructuredGridRepresentation* DataObjectRepository::createUnstruct
 	}
 }
 
+RESQML2_NS::UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+	const std::string& guid, const std::string& title, const uint64_t & cellCount)
+{
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::UnstructuredGridRepresentation(interp, guid, title, cellCount);
+#ifdef WITH_RESQML2_2
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::UnstructuredGridRepresentation(interp, guid, title, cellCount);
+#endif
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
+}
+
 RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(const std::string & guid, const std::string & title)
 {
 	switch (defaultResqmlVersion) {

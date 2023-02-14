@@ -19,7 +19,6 @@ under the License.
 #pragma once
 
 #include "AbstractTest.h"
-#include <iostream>
 
 namespace COMMON_NS {
 	class DataObjectRepository;
@@ -28,8 +27,9 @@ namespace COMMON_NS {
 namespace resqml2_test {
 	class FaultMultiPatchTriangulatedSetRepresentationTest : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
+
+		static constexpr char const* defaultUuid = "4b8503e8-28e5-44c5-877d-b9eb3295b2b9";
+		static constexpr char const* defaultTitle = "FaultMultiPatchTriangulatedSetRepresentationTest";
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
@@ -43,5 +43,3 @@ namespace resqml2_test {
 		void readRepo();
 	};
 }
-
-
