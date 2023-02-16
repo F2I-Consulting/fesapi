@@ -634,6 +634,15 @@ namespace EML2_NS
 		uint64_t getTimestampIndex(time_t timestamp, LONG64 yearOffset = 0) const;
 
 		/**
+		 * Get the count of timestamps in this time series.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	The timestamp count.
+		 */
+		unsigned int getTimestampCount() const;
+
+		/**
 		 * Gets a timestamp at a particular index of this time series.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.

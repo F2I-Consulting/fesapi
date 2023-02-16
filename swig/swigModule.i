@@ -348,6 +348,15 @@ namespace COMMON_NS
 		std::vector<std::string> getExtraMetadata(const std::string & key) const;
 
 		/**
+		 * Get the count of extra metadata in this instance
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
+		 *
+		 * @returns	The extra metadata count of this instance.
+		 */
+		unsigned int getExtraMetadataCount() const;
+
+		/**
 		 * Get the key of a key value pair at a particular index in the extra metadata set of this
 		 * instance
 		 *
