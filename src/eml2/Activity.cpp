@@ -20,13 +20,10 @@ under the License.
 
 #include "ActivityTemplate.h"
 
-#include <stdexcept>
 #include <algorithm>
 
 using namespace std;
 using namespace EML2_NS;
-
-const char* Activity::XML_TAG = "Activity";
 
 std::vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectSet() const
 {

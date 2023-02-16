@@ -18,14 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ActivityTemplate.h"
 
-#include <stdexcept>
-
 #include "Activity.h"
 
-using namespace std;
 using namespace EML2_NS;
-
-const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
 std::vector<Activity *> ActivityTemplate::getActivityInstanceSet() const
 {

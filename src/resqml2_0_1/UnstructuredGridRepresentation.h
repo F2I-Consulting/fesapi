@@ -104,7 +104,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT uint64_t getNodeCount() const final;
 
-		DLL_IMPORT_OR_EXPORT void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const final;
+		DLL_IMPORT_OR_EXPORT void getCellFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const final;
 
 		DLL_IMPORT_OR_EXPORT void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,

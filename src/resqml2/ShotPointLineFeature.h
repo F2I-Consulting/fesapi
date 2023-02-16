@@ -30,10 +30,10 @@ namespace RESQML2_NS
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		virtual ~ShotPointLineFeature() = default;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTraceCount() const final;
 	
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "ShotPointLineFeature";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

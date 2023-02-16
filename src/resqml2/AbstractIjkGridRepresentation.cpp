@@ -21,17 +21,12 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 #include "AbstractFeatureInterpretation.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_NS;
-
-const char* AbstractIjkGridRepresentation::XML_TAG = "IjkGridRepresentation";
-const char* AbstractIjkGridRepresentation::XML_TAG_TRUNCATED = "TruncatedIjkGridRepresentation";
 
 AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :
 	AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars)
@@ -51,7 +46,7 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	hsize_t kGapCount = 0;
+	uint64_t kGapCount = 0;
 	if (kGaps != nullptr) {
 		for (size_t k = 0; k < kCount - 1; ++k) {
 			if (kGaps[k]) {
@@ -381,7 +376,7 @@ void AbstractIjkGridRepresentation::getPillarsOfSplitCoordinateLines(unsigned in
 
 void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned int * columnIndices, bool reverseIAxis, bool reverseJAxis) const
 {
-	hssize_t datasetValueCount = 0;
+	uint64_t datasetValueCount = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 		if (geom == nullptr || geom->SplitCoordinateLines == nullptr) {
@@ -419,16 +414,16 @@ void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned in
 
 	if (datasetValueCount > 0) {
 		if (reverseIAxis) {
-			for (unsigned int index = 0; index < datasetValueCount; ++index) {
-				const unsigned int iColumn = columnIndices[index] % getICellCount();
-				const unsigned int jColumn = columnIndices[index] / getICellCount();
+			for (uint64_t index = 0; index < datasetValueCount; ++index) {
+				const uint64_t iColumn = columnIndices[index] % getICellCount();
+				const uint64_t jColumn = columnIndices[index] / getICellCount();
 				columnIndices[index] = (getICellCount() - 1 - iColumn) + jColumn*getICellCount();
 			}
 		}
 		if (reverseJAxis) {
-			for (unsigned int index = 0; index < datasetValueCount; ++index) {
-				const unsigned int iColumn = columnIndices[index] % getICellCount();
-				const unsigned int jColumn = columnIndices[index] / getICellCount();
+			for (uint64_t index = 0; index < datasetValueCount; ++index) {
+				const uint64_t iColumn = columnIndices[index] % getICellCount();
+				const uint64_t jColumn = columnIndices[index] / getICellCount();
 				columnIndices[index] = iColumn + (getJCellCount() - 1 - jColumn)*getICellCount();
 			}
 		}
@@ -467,7 +462,7 @@ void AbstractIjkGridRepresentation::getColumnCountOfSplitCoordinateLines(unsigne
 	}
 }
 
-unsigned long AbstractIjkGridRepresentation::getSplitCoordinateLineCount() const
+uint64_t AbstractIjkGridRepresentation::getSplitCoordinateLineCount() const
 {
 	uint64_t splitCoordinateLineCount = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -489,14 +484,10 @@ unsigned long AbstractIjkGridRepresentation::getSplitCoordinateLineCount() const
 		}
 	}
 
-	if (splitCoordinateLineCount > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much split coordinate lines.");
-	}
-
-	return static_cast<unsigned long>(splitCoordinateLineCount);
+	return splitCoordinateLineCount;
 }
 
-unsigned long AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() const
+uint64_t AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() const
 {
 	if (!splitInformation)
 		throw invalid_argument("The split information must have been loaded first.");
@@ -504,7 +495,7 @@ unsigned long AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() 
 		throw invalid_argument("The block information must have been loaded first.");
 	}
 
-	unsigned long splitCoordinateLineCount = 0;
+	uint64_t splitCoordinateLineCount = 0;
 	
 	// I traverse all pillars of the block
 	for (unsigned int jPillarIndex = blockInformation->jInterfaceStart; jPillarIndex <= blockInformation->jInterfaceEnd; ++jPillarIndex) {
@@ -564,8 +555,8 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 		{
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			std::unique_ptr<char[]> tmp(new char[pillarCount]);
-			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[pillarCount]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->PathInHdfFile, tmp.get());
 			for (unsigned int i = 0; i < pillarCount; ++i) {
 				pillarGeometryIsDefined[i] = tmp[i] != 0;
 			}
@@ -589,8 +580,8 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 		{
 			gsoap_eml2_3::eml23__ExternalDataset const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(geom->PillarGeometryIsDefined)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
-			std::unique_ptr<char[]> tmp(new char[pillarCount]);
-			hdfProxy->readArrayNdOfCharValues(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[pillarCount]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
 			for (unsigned int i = 0; i < pillarCount; ++i) {
 				pillarGeometryIsDefined[i] = tmp[i] != 0;
 			}
@@ -667,8 +658,8 @@ void AbstractIjkGridRepresentation::getCellGeometryIsDefinedFlags(bool * cellGeo
 		if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(geom->CellGeometryIsDefined)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			std::unique_ptr<char[]> tmp(new char[cellCount]);
-			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[cellCount]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->PathInHdfFile, tmp.get());
 			for (uint64_t i = 0; i < cellCount; ++i) {
 				cellGeometryIsDefinedFlags[i] = tmp[i] != 0;
 			}
@@ -691,8 +682,8 @@ void AbstractIjkGridRepresentation::getCellGeometryIsDefinedFlags(bool * cellGeo
 		if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 			gsoap_eml2_3::eml23__ExternalDataset const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(geom->CellGeometryIsDefined)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
-			std::unique_ptr<char[]> tmp(new char[cellCount]);
-			hdfProxy->readArrayNdOfCharValues(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[cellCount]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
 			for (unsigned int i = 0; i < cellCount; ++i) {
 				cellGeometryIsDefinedFlags[i] = tmp[i] != 0;
 			}
@@ -990,8 +981,8 @@ void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
 		if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			std::unique_ptr<char[]> tmp(new char[getKCellCount() - 1]);
-			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[getKCellCount() - 1]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->PathInHdfFile, tmp.get());
 			for (uint64_t k = 0; k < getKCellCount() - 1; ++k) {
 				kGaps[k] = tmp[k] != 0;
 			}
@@ -1011,8 +1002,8 @@ void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
 		if (ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 			gsoap_eml2_3::eml23__ExternalDataset const * dataset = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(ijkGrid->KGaps->__KGaps_sequence->GapAfterLayer)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset->ExternalFileProxy[0]);
-			std::unique_ptr<char[]> tmp(new char[getKCellCount() - 1]);
-			hdfProxy->readArrayNdOfCharValues(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
+			std::unique_ptr<int8_t[]> tmp(new int8_t[getKCellCount() - 1]);
+			hdfProxy->readArrayNdOfInt8Values(dataset->ExternalFileProxy[0]->PathInExternalFile, tmp.get());
 			for (uint64_t k = 0; k < getKCellCount() - 1; ++k) {
 				kGaps[k] = tmp[k] != 0;
 			}
@@ -1032,9 +1023,9 @@ void AbstractIjkGridRepresentation::getKGaps(bool * kGaps) const
 	}
 }
 
-unsigned int AbstractIjkGridRepresentation::getFaceCount() const
+uint64_t AbstractIjkGridRepresentation::getFaceCount() const
 {
-	unsigned int faceCount = getICellCount() * getJCellCount() * (getKCellCount() + 1); // K faces which are assumed to be not splitted
+	uint64_t faceCount = getICellCount() * getJCellCount() * (getKCellCount() + 1); // K faces which are assumed to be not splitted
 	faceCount += getICellCount() * (getJCellCount() + 1) * getKCellCount(); // non splitted J faces
 	faceCount += (getICellCount() + 1) * getJCellCount() * getKCellCount(); // non splitted I faces
 
@@ -1296,7 +1287,7 @@ void AbstractIjkGridRepresentation::getXyzPointsOfKInterface(unsigned int kInter
 	getXyzPointsOfKInterfaceSequence(kInterface, kInterface, xyzPoints);
 }
 
-void AbstractIjkGridRepresentation::setCellGeometryIsDefinedFlags(unsigned char* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy)
+void AbstractIjkGridRepresentation::setCellGeometryIsDefinedFlags(uint8_t* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -1335,7 +1326,7 @@ void AbstractIjkGridRepresentation::setCellGeometryIsDefinedFlags(unsigned char*
 	}
 
 	// HDF
-	hsize_t cellGeometryIsDefinedCount[3] = { getKCellCount(), getJCellCount(), getICellCount() };
+	uint64_t cellGeometryIsDefinedCount[3] = { getKCellCount(), getJCellCount(), getICellCount() };
 	proxy->writeArrayNd(getHdfGroup(), "CellGeometryIsDefined", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, cellGeometryIsDefinedFlags, cellGeometryIsDefinedCount, 3);
 }
 

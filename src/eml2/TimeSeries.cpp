@@ -18,16 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "TimeSeries.h"
 
-#include <stdexcept>
-
 #include "../tools/TimeTools.h"
 
 #include "../resqml2/AbstractProperty.h"
 
 using namespace std;
 using namespace EML2_NS;
-
-const char* TimeSeries::XML_TAG = "TimeSeries";
 
 void TimeSeries::pushBackTimestamp(time_t timestamp)
 {

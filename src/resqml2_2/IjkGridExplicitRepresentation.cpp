@@ -16,12 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #include "IjkGridExplicitRepresentation.h"
 
 #include <stdexcept>
-
-#include <hdf5.h>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
@@ -39,7 +36,7 @@ COMMON_NS::DataObjectReference IjkGridExplicitRepresentation::getHdfProxyDor() c
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_2(0));
 }
 
-EML2_NS::AbstractHdfProxy* IjkGridExplicitRepresentation::getPointDatasetPath(std::string & datasetPathInExternalFile, unsigned long & splitCoordinateLineCount) const
+EML2_NS::AbstractHdfProxy* IjkGridExplicitRepresentation::getPointDatasetPath(std::string & datasetPathInExternalFile, uint64_t & splitCoordinateLineCount) const
 {
 	resqml22__PointGeometry* pointGeom = getPointGeometry2_2(0);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray)
@@ -95,7 +92,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfPatch(unsigned int patchIndex,
 void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & points, EML2_NS::AbstractHdfProxy* proxy,
-	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+	uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns,
 	const std::string & definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
@@ -203,10 +200,10 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry,
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind,
 	bool isRightHanded,
-	double * points, EML2_NS::AbstractHdfProxy * proxy,
-	unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns,
-	char * definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	double const* points, EML2_NS::AbstractHdfProxy * proxy,
+	uint64_t splitCoordinateLineCount, unsigned int const* pillarOfCoordinateLine,
+	unsigned int const* splitCoordinateLineColumnCumulativeCount, unsigned int const* splitCoordinateLineColumns,
+	int8_t const* definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (points == nullptr) {
 		throw invalid_argument("The points of the ijk grid cannot be null.");
@@ -225,29 +222,28 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 	setGeometryAsCoordinateLineNodesUsingExistingDatasets(mostComplexPillarGeometry, kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/Points", proxy,
 		splitCoordinateLineCount, pillarOfCoordinateLine == nullptr ? "" : hdfDatasetPrefix + "/PillarIndices",
-		splitCoordinateLineColumnCumulativeCount == nullptr ? "" : hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME,
-		splitCoordinateLineColumns == nullptr ? "" : hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME,
+		splitCoordinateLineColumnCumulativeCount == nullptr ? "" : hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME,
+		splitCoordinateLineColumns == nullptr ? "" : hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME,
 		definedPillars == nullptr ? "" : hdfDatasetPrefix + "/PillarGeometryIsDefined", localCrs);
 
 	// Pillar defined
 	if (definedPillars != nullptr) {
-		hsize_t pillarGeometryIsDefinedCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
+		uint64_t pillarGeometryIsDefinedCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
 		proxy->writeArrayNd(getHdfGroup(), "PillarGeometryIsDefined", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8, definedPillars, pillarGeometryIsDefinedCount, 2);
 	}
 
 	if (splitCoordinateLineCount == 0) {
 		// Points
-		hsize_t numValues[4] = { getKCellCount() + 1 + getKGapsCount(), getJCellCount() + 1, getICellCount() + 1, 3 };
+		uint64_t numValues[4] = { getKCellCount() + 1 + getKGapsCount(), getJCellCount() + 1, getICellCount() + 1, 3 };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 4);
 	}
 	else {
 		// Points
-		hsize_t numValues[3] = { getKCellCount() + 1 + getKGapsCount(), (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount, 3 };
+		uint64_t numValues[3] = { getKCellCount() + 1 + getKGapsCount(), (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount, 3 };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 3);
 		
 		// split coordinate lines
-		hsize_t hdfSplitCoordinateLineCount = splitCoordinateLineCount;
-		proxy->writeArrayNd(getHdfGroup(), "PillarIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, pillarOfCoordinateLine, &hdfSplitCoordinateLineCount, 1);
+		proxy->writeArrayNd(getHdfGroup(), "PillarIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, pillarOfCoordinateLine, &splitCoordinateLineCount, 1);
 		proxy->writeItemizedListOfList(getHdfGroup(), "ColumnsPerSplitCoordinateLine", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
 	}
 }

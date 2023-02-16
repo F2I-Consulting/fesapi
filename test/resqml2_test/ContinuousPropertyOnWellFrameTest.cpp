@@ -30,11 +30,6 @@ using namespace COMMON_NS;
 using namespace RESQML2_NS;
 using namespace resqml2_test;
 
-const char* ContinuousPropertyOnWellFrameTest::defaultUuid = "6e4ca2c9-6780-44bd-b4c2-6bb3ef4682d4";
-const char* ContinuousPropertyOnWellFrameTest::defaultTitle = "Continuous Property on well frame Test";
-const char* ContinuousPropertyOnWellFrameTest::exoticUuid = "8535b08f-739f-470c-b940-36c1bd5209a4";
-const char* ContinuousPropertyOnWellFrameTest::exoticTitle = "Continuous Property exotic uom on well frame Test";
-
 ContinuousPropertyOnWellFrameTest::ContinuousPropertyOnWellFrameTest(const string & repoPath)
 	: commontest::AbstractTest(repoPath) {
 }

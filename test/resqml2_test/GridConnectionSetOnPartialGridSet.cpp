@@ -16,13 +16,16 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_test/GridConnectionSetOnPartialGridSet.h"
+#include "GridConnectionSetOnPartialGridSet.h"
 #include "../catch.hpp"
+
 #include "resqml2/AbstractIjkGridRepresentation.h"
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "resqml2/ContinuousProperty.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
+
+#include "resqml2_0_1/FaultInterpretation.h"
+#include "resqml2_0_1/HorizonInterpretation.h"
+#include "resqml2_0_1/UnstructuredGridRepresentation.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -77,16 +80,20 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 	RESQML2_NS::FaultInterpretation* partialFaultInterp = repo->createPartial<RESQML2_0_1_NS::FaultInterpretation>("83504f50-9301-4565-9615-44099cc73ae3", "Partial Fault");
 	REQUIRE(partialFaultInterp != nullptr);
 
+	// Partial Horizon
+	RESQML2_NS::HorizonInterpretation* partialHorizonInterp = repo->createPartial<RESQML2_0_1_NS::HorizonInterpretation>("e175316e-9f01-4358-87f5-2d6f4e2595b5", "Partial Horizon");
+
 	// Grid Connection Set on one grid
 	RESQML2_NS::GridConnectionSetRepresentation* gcs = repo->createGridConnectionSetRepresentation("c0214c71-eed8-4ea2-9de4-f7508caeb3c6", "Single grid gcs");
 	gcs->pushBackSupportingGridRepresentation(partialGrid);
-	int64_t cellConn[4] = {
-		1, 2, 3, 4
+	int64_t cellConn[6] = {
+		0, 1, 2, 3, 1, 3 
 	};
-	gcs->setCellIndexPairs(2, cellConn, -1, hdfProxy);
+	gcs->setCellIndexPairs(3, cellConn, -1, hdfProxy);
 	gcs->pushBackInterpretation(partialFaultInterp);
-	uint64_t cumulative[2] = { 1, 2 };
-	int64_t interpIndex[2] = { 0, -1 };
+	gcs->pushBackInterpretation(partialHorizonInterp);
+	uint64_t cumulative[3] = { 1, 2, 3 };
+	int64_t interpIndex[3] = { 0, 1, -1 };
 	gcs->setConnectionInterpretationIndices(cumulative, interpIndex, hdfProxy);
 
 	// Grid Connection Set on several grid
@@ -113,22 +120,34 @@ void GridConnectionSetOnPartialGridSet::readRepo() {
 	REQUIRE(!gcsSingleGrid->isBasedOnMultiGrids());
 	REQUIRE(gcsSingleGrid->getSupportingGridRepresentationCount() == 1);
 	REQUIRE(gcsSingleGrid->getSupportingGridRepresentation(0)->isPartial());
-	REQUIRE(gcsSingleGrid->getCellIndexPairCount() == 2);
+	REQUIRE(gcsSingleGrid->getCellIndexPairCount() == 3);
 	{
-		int64_t cellIndexPair[4];
+		int64_t cellIndexPair[6];
 		gcsSingleGrid->getCellIndexPairs(cellIndexPair);
-		REQUIRE(cellIndexPair[0] == 1);
-		REQUIRE(cellIndexPair[1] == 2);
-		REQUIRE(cellIndexPair[2] == 3);
-		REQUIRE(cellIndexPair[3] == 4);
+		REQUIRE(cellIndexPair[0] == 0);
+		REQUIRE(cellIndexPair[1] == 1);
+		REQUIRE(cellIndexPair[2] == 2);
+		REQUIRE(cellIndexPair[3] == 3);
+		REQUIRE(cellIndexPair[4] == 1);
+		REQUIRE(cellIndexPair[5] == 3);
 	}
 	REQUIRE(gcsSingleGrid->isAssociatedToInterpretations());
-	REQUIRE(gcsSingleGrid->getInterpretationCount() == 1);
+	REQUIRE(gcsSingleGrid->getInterpretationCount() == 2);
 	REQUIRE(gcsSingleGrid->getCellIndexPairCountFromInterpretationIndex(0) == 1);
+	REQUIRE(gcsSingleGrid->getCellIndexPairCountFromInterpretationIndex(1) == 1);
 	int64_t cellConn[2];
 	gcsSingleGrid->getGridConnectionSetInformationFromInterpretationIndex(cellConn, nullptr, nullptr, 0);
-	REQUIRE(cellConn[0] == 1);
-	REQUIRE(cellConn[1] == 2);
+	REQUIRE(cellConn[0] == 0);
+	REQUIRE(cellConn[1] == 1);
+	RESQML2_NS::AbstractFeatureInterpretation* interp = gcsSingleGrid->getInterpretationFromIndex(0);
+	REQUIRE(dynamic_cast<RESQML2_0_1_NS::FaultInterpretation*>(interp) != nullptr);
+	REQUIRE(interp->getTitle() == "Partial Fault");
+	gcsSingleGrid->getGridConnectionSetInformationFromInterpretationIndex(cellConn, nullptr, nullptr, 1);
+	REQUIRE(cellConn[0] == 2);
+	REQUIRE(cellConn[1] == 3);
+	interp = gcsSingleGrid->getInterpretationFromIndex(1);
+	REQUIRE(dynamic_cast<RESQML2_0_1_NS::HorizonInterpretation*>(interp) != nullptr);
+	REQUIRE(interp->getTitle() == "Partial Horizon");
 
 	REQUIRE(gcsMultiGrids->isBasedOnMultiGrids());
 	REQUIRE(gcsMultiGrids->getSupportingGridRepresentationCount() == 3);

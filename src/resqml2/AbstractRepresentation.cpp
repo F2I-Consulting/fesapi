@@ -38,8 +38,6 @@ under the License.
 using namespace RESQML2_NS;
 using namespace std;
 
-const char* AbstractRepresentation::XML_TAG = "AbstractRepresentation";
-
 COMMON_NS::DataObjectReference AbstractRepresentation::getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const
 {
 	if (patch != nullptr) {
@@ -137,8 +135,8 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 		geom->Points = xmlPts;
 
 		// HDF
-		std::unique_ptr<hsize_t[]> numValues(new hsize_t[numDimensionsInArray + 1]);
-		for (hsize_t i = 0; i < numDimensionsInArray; ++i) {
+		std::unique_ptr<uint64_t[]> numValues(new uint64_t[numDimensionsInArray + 1]);
+		for (uint32_t i = 0; i < numDimensionsInArray; ++i) {
 			numValues[i] = numPoints[i];
 		}
 		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
@@ -185,8 +183,8 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 		geom->Points = xmlPts;
 
 		// HDF
-		std::unique_ptr<hsize_t[]> numValues(new hsize_t[numDimensionsInArray + 1]);
-		for (hsize_t i = 0; i < numDimensionsInArray; ++i) {
+		std::unique_ptr<uint64_t[]> numValues(new uint64_t[numDimensionsInArray + 1]);
+		for (uint32_t i = 0; i < numDimensionsInArray; ++i) {
 			numValues[i] = numPoints[i];
 		}
 		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
@@ -589,7 +587,7 @@ void AbstractRepresentation::loadTargetRelationships()
 	}
 }
 
-void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double* inlines, double* crosslines, unsigned int pointCount,
+void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double* inlines, double* crosslines, uint64_t pointCount,
 	RESQML2_NS::AbstractRepresentation* seismicSupport, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr || gsoapProxy2_3 != nullptr) {
@@ -675,9 +673,8 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIn
 		}
 
 		// HDF
-		hsize_t dim = pointCount;
-		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), inlines, &dim, 1);
-		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss2.str(), crosslines, &dim, 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), inlines, &pointCount, 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss2.str(), crosslines, &pointCount, 1);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -831,7 +828,7 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(unsigned int patchIn
 		}
 
 		// inlines HDF
-		unsigned long long pointCount = getXyzPointCountOfPatch(patchIndex);
+		const uint64_t pointCount = getXyzPointCountOfPatch(patchIndex);
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), lineAbscissa, &pointCount, 1);
 	}
 	else {

@@ -24,10 +24,10 @@ namespace resqml2_test {
 	class ContinuousPropertyOnWellFrameTest : public commontest::AbstractTest {
 	public:
 
-		static const char* defaultUuid;
-		static const char* exoticUuid;
-		static const char* defaultTitle;
-		static const char* exoticTitle;
+		static constexpr char const* defaultUuid = "6e4ca2c9-6780-44bd-b4c2-6bb3ef4682d4";
+		static constexpr char const* defaultTitle = "Continuous Property on well frame Test";
+		static constexpr char const* exoticUuid = "8535b08f-739f-470c-b940-36c1bd5209a4";
+		static constexpr char const* exoticTitle = "Continuous Property exotic uom on well frame Test";
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,

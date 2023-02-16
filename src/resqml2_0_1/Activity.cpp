@@ -146,12 +146,12 @@ void Activity::pushBackParameter(const std::string& title, AbstractObject* resqm
 	activity->Parameter.push_back(dop);
 }
 
-unsigned int Activity::getParameterCount() const
+uint64_t Activity::getParameterCount() const
 {
 	return static_cast<_resqml20__Activity*>(gsoapProxy2_0_1)->Parameter.size();
 }
 
-unsigned int Activity::getParameterCount(const std::string & paramTitle) const
+uint64_t Activity::getParameterCount(const std::string & paramTitle) const
 {
 	return getParameterFromTitle(paramTitle).size();
 }
@@ -318,14 +318,14 @@ bool Activity::isAnIntegerQuantityParameter(unsigned int index) const
 	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter;
 }
 
-vector<int64_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
+vector<int32_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
 {
 	vector<resqml20__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
 	if (param.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
-	vector<int64_t> result;
+	vector<int32_t> result;
 	for (unsigned int i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter)

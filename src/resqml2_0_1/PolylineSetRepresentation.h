@@ -100,12 +100,12 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
-			unsigned int polylineCount, bool allPolylinesClosedFlag,
+			uint64_t polylineCount, bool allPolylinesClosedFlag,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
-			unsigned int polylineCount, bool * polylineClosedFlags,
+			uint64_t polylineCount, bool * polylineClosedFlags,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const final;

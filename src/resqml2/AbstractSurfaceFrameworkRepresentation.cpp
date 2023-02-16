@@ -33,7 +33,7 @@ using namespace gsoap_eml2_3;
 
 void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	gsoap_resqml2_0_1::resqml20__IdentityKind kind,
-	unsigned int contactCount, int const* contactIndices,
+	uint64_t contactCount, int const* contactIndices,
 	EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
@@ -84,16 +84,15 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	}
 
 	// ************ HDF *************
-	hsize_t dimContactRepresentations = contactCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdfContactRepresentations.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		contactIndices,
-		&dimContactRepresentations, 1);
+		&contactCount, 1);
 }
 
 void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	gsoap_resqml2_0_1::resqml20__IdentityKind kind,
-	unsigned int contactCount, int const* contactIndices,
+	uint64_t contactCount, int const* contactIndices,
 	unsigned int identicalNodesCount, int const* identicalNodesIndexes, EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
@@ -168,14 +167,13 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	}
 
 	// ************ HDF *************
-	hsize_t dimContactRepresentations = contactCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdfContactRepresentations.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		contactIndices,
-		&dimContactRepresentations, 1);
+		&contactCount, 1);
 
 	// ************ HDF *************
-	hsize_t dimIdenticalNodes[2] = { identicalNodesCount, contactCount };
+	uint64_t dimIdenticalNodes[2] = { identicalNodesCount, contactCount };
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdfIdenticalNodes.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		identicalNodesIndexes,

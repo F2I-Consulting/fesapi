@@ -21,8 +21,6 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "AbstractLocal3dCrs.h"
@@ -401,14 +399,14 @@ void IjkGridParametricRepresentation::getParametersOfNodesOfKInterfaceSequence(u
 	EML2_NS::AbstractHdfProxy* hdfProxy = getParametersOfNodesDatasetPath(datasetPath);
 	if (getSplitCoordinateLineCount() != 0)
 	{
-		const unsigned long long numValuesInEachDimension[2] = { kInterfaceEnd - kInterfaceStart + 1, getXyzPointCountOfKInterface() };
-		const unsigned long long offsetInEachDimension[2] = { kInterfaceStart, 0 };
+		const uint64_t numValuesInEachDimension[2] = { kInterfaceEnd - kInterfaceStart + 1, getXyzPointCountOfKInterface() };
+		const uint64_t offsetInEachDimension[2] = { kInterfaceStart, 0 };
 		hdfProxy->readArrayNdOfDoubleValues(datasetPath, parameters, numValuesInEachDimension, offsetInEachDimension, 2);
 	}
 	else
 	{
-		const unsigned long long numValuesInEachDimension[3] = { kInterfaceEnd - kInterfaceStart + 1, getJCellCount() + 1, getICellCount() + 1 };
-		const unsigned long long offsetInEachDimension[3] = { kInterfaceStart , 0, 0 };
+		const uint64_t numValuesInEachDimension[3] = { kInterfaceEnd - kInterfaceStart + 1, getJCellCount() + 1, getICellCount() + 1 };
+		const uint64_t offsetInEachDimension[3] = { kInterfaceStart , 0, 0 };
 		hdfProxy->readArrayNdOfDoubleValues(datasetPath, parameters, numValuesInEachDimension, offsetInEachDimension, 3);
 	}
 }
@@ -657,10 +655,10 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 
 	if (getSplitCoordinateLineCount() == 0)
 	{
-		unsigned long long blockCountPerDimension[3] = { 1, 1, 1 };
-		unsigned long long offsetPerDimension[3] = { blockInformation->kInterfaceStart, blockInformation->jInterfaceStart, blockInformation->iInterfaceStart };
-		unsigned long long strideInEachDimension[3] = { 1, 1, 1 };
-		unsigned long long blockSizeInEachDimension[3] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1,	blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
+		uint64_t blockCountPerDimension[3] = { 1, 1, 1 };
+		uint64_t offsetPerDimension[3] = { blockInformation->kInterfaceStart, blockInformation->jInterfaceStart, blockInformation->iInterfaceStart };
+		uint64_t strideInEachDimension[3] = { 1, 1, 1 };
+		uint64_t blockSizeInEachDimension[3] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1,	blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
 		
 		hdfProxy->selectArrayNdOfValues(
 			datasetPathInExternalFile,
@@ -673,7 +671,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 			dataset,
 			filespace);
 
-		unsigned long long slab_size = 1;
+		uint64_t slab_size = 1;
 		for (size_t h = 0; h < 3; ++h) {
 			slab_size *= blockSizeInEachDimension[h];
 		}
@@ -684,10 +682,10 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	else
 	{
 		// parameters : ordered
-		unsigned long long blockCountPerDimension[2] = { 1, blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1 };
-		unsigned long long offsetPerDimension[2] = { blockInformation->kInterfaceStart , blockInformation->jInterfaceStart * (getICellCount() + 1) + blockInformation->iInterfaceStart };
-		unsigned long long strideInEachDimension[2] = { 1, (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) + ((getICellCount() + 1) - (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1)) };
-		unsigned long long blockSizeInEachDimension[2] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
+		uint64_t blockCountPerDimension[2] = { 1, blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1 };
+		uint64_t offsetPerDimension[2] = { blockInformation->kInterfaceStart , blockInformation->jInterfaceStart * (getICellCount() + 1) + blockInformation->iInterfaceStart };
+		uint64_t strideInEachDimension[2] = { 1, (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) + ((getICellCount() + 1) - (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1)) };
+		uint64_t blockSizeInEachDimension[2] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
 
 		hdfProxy->selectArrayNdOfValues(
 			datasetPathInExternalFile,
@@ -700,7 +698,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 			dataset,
 			filespace);
 
-		unsigned long long slab_size = 1;
+		uint64_t slab_size = 1;
 		for (size_t h = 0; h < 2; ++h) {
 			slab_size *= blockSizeInEachDimension[h];
 		}
@@ -982,21 +980,20 @@ void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNo
 
 void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * parameters,
 	double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar,
-	unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+	uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (splitCoordinateLineCount == 0) {
-		hsize_t numValues[3] = { getKCellCount() + 1 + getKGapsCount(), getJCellCount() + 1, getICellCount() + 1 };
+		uint64_t numValues[3] = { getKCellCount() + 1 + getKGapsCount(), getJCellCount() + 1, getICellCount() + 1 };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "PointParameters", parameters, numValues, 3);
 	}
 	else {
 		// PointParameters
-		hsize_t numValues[2] = { getKCellCount() + 1 + getKGapsCount(), (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount };
+		uint64_t numValues[2] = { getKCellCount() + 1 + getKGapsCount(), (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount };
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "PointParameters", parameters, numValues, 2);
 
 		// split coordinate lines
-		hsize_t hdfSplitCoordinateLineCount = splitCoordinateLineCount;
-		proxy->writeArrayNd(getHdfGroup(), "PillarIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, pillarOfCoordinateLine, &hdfSplitCoordinateLineCount, 1);
+		proxy->writeArrayNd(getHdfGroup(), "PillarIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, pillarOfCoordinateLine, &splitCoordinateLineCount, 1);
 
 		proxy->writeItemizedListOfList(getHdfGroup(), "ColumnsPerSplitCoordinateLine",
 			COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount,
@@ -1007,7 +1004,7 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	// Parametric coordinate lines
 	// *********************************
 	// HDF control points
-	hsize_t controlPointCount[4] = { controlPointCountPerPillar, getJCellCount() + 1, getICellCount() + 1, 3 };
+	uint64_t controlPointCount[4] = { controlPointCountPerPillar, getJCellCount() + 1, getICellCount() + 1, 3 };
 	proxy->writeArrayNd(getHdfGroup(), "ControlPoints", COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, controlPoints, controlPointCount, 4);
 
 	// *********************************
@@ -1015,14 +1012,14 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	// *********************************
 	if (controlPointParameters != nullptr) {
 		// HDF control points parameters
-		hsize_t controlPointParamCount[3] = { controlPointCountPerPillar, getJCellCount() + 1, getICellCount() + 1 };
+		uint64_t controlPointParamCount[3] = { controlPointCountPerPillar, getJCellCount() + 1, getICellCount() + 1 };
 		proxy->writeArrayNd(getHdfGroup(), "controlPointParameters", COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, controlPointParameters, controlPointParamCount, 3);
 	}
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 	double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy * proxy,
-	unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+	uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (parameters == nullptr) {
@@ -1055,7 +1052,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", controlPointParameters != nullptr ? hdfDatasetPrefix + "/controlPointParameters" : "", controlPointCountPerPillar, pillarKind, proxy,
 		splitCoordinateLineCount, hdfDatasetPrefix + "/PillarIndices",
-		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME, localCrs);
+		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, localCrs);
 
 	writeGeometryOnHdf(parameters,
 		controlPoints, controlPointParameters, controlPointCountPerPillar,

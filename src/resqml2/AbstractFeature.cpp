@@ -19,8 +19,6 @@ under the License.
 #include "AbstractFeature.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 
 #include "AbstractFeatureInterpretation.h"
 
@@ -49,26 +47,4 @@ std::vector<AbstractFeatureInterpretation *> AbstractFeature::getInterpretationS
 	result.erase(std::remove_if(result.begin(), result.end(), DifferentFeature(this)), result.end());
 
 	return result;
-}
-
-unsigned int AbstractFeature::getInterpretationCount() const
-{
-	const std::vector<AbstractFeatureInterpretation*>& interpretationSet = getInterpretationSet();
-
-	if (interpretationSet.size() > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many interpretations for this feature.");
-	}
-
-	return static_cast<unsigned int>(interpretationSet.size());
-}
-
-AbstractFeatureInterpretation *	AbstractFeature::getInterpretation(unsigned int index) const
-{
-	const std::vector<AbstractFeatureInterpretation*>& interpretationSet = getInterpretationSet();
-
-	if (interpretationSet.size() > index) {
-		return interpretationSet[index];
-	}
-
-	throw out_of_range("The interpretation index is out of the range of the interpretation set of the feature.");
 }

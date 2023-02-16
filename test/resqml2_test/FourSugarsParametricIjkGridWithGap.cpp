@@ -29,12 +29,8 @@ using namespace COMMON_NS;
 using namespace resqml2_test;
 using namespace RESQML2_NS;
 
-const char* FourSugarsParametricIjkGridWithGap::defaultUuid = "ecd52ad4-ca18-49d4-8394-2e8b9796b9d5";
-const char* FourSugarsParametricIjkGridWithGap::defaultTitle = "Four faulted sugar cubes parametric with k gap";
-double FourSugarsParametricIjkGridWithGap::parameters[32] = { 300, 300, 350, 300, 300, 350, /* SPLIT*/ 350, 350,
-		400, 400, 450, 400, 400, 450, /* SPLIT*/ 450, 450,
-		425, 425, 475, 425, 425, 475, /* SPLIT*/ 475, 475,
-		500, 500, 550, 500, 500, 550, /* SPLIT*/ 550, 550 };
+// https://stackoverflow.com/a/28846608
+constexpr double FourSugarsParametricIjkGridWithGap::parameters[];
 
 FourSugarsParametricIjkGridWithGap::FourSugarsParametricIjkGridWithGap(const string & repoPath)
 	: commontest::AbstractTest(repoPath) {
@@ -78,7 +74,7 @@ void FourSugarsParametricIjkGridWithGap::readRepo() {
 	ijkGrid->loadSplitInformation();
 
 	ijkGrid->loadBlockInformation(0, 1, 0, 1, 0, 3);	// using block hyperslabbing
-	unsigned int xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+	uint64_t xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 	std::unique_ptr<double[]> blockXyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
 	ijkGrid->getXyzPointsOfBlock(blockXyzPoints.get());
 

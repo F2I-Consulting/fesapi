@@ -22,8 +22,6 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractIjkGridRepresentation.h"
@@ -189,9 +187,8 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	integerArray->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 	elements->Indices = integerArray;
 
-	// ************ HDF ************		
-	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), ossForHdf.str(), elementIndices1, &numValues, 1);
+	// ************ HDF ************
+	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), ossForHdf.str(), elementIndices1, &elementCount, 1);
 }
 
 COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const

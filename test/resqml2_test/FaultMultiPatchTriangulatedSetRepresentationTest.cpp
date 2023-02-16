@@ -30,9 +30,6 @@ using namespace resqml2_test;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
 
-const char* FaultMultiPatchTriangulatedSetRepresentationTest::defaultUuid = "4b8503e8-28e5-44c5-877d-b9eb3295b2b9";
-const char* FaultMultiPatchTriangulatedSetRepresentationTest::defaultTitle = "FaultMultiPatchTriangulatedSetRepresentationTest";
-
 FaultMultiPatchTriangulatedSetRepresentationTest::FaultMultiPatchTriangulatedSetRepresentationTest(const string & repoPath)
 	: commontest::AbstractTest(repoPath)
 {

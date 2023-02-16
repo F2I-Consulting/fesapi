@@ -60,16 +60,17 @@ namespace EML2_NS
 			const std::string& name,
 			COMMON_NS::AbstractObject::numericalDatatypeEnum cumulativeLengthDatatype,
 			const void* cumulativeLength,
-			unsigned long long cumulativeLengthSize,
+			uint64_t cumulativeLengthSize,
 			COMMON_NS::AbstractObject::numericalDatatypeEnum elementsDatatype,
 			const void* elements,
-			unsigned long long elementsSize) final;
+			uint64_t elementsSize) final;
 
 		/**
 		 * Get the number of elements in each dimension in an HDF dataset of the proxy.
+		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
 		 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
 		 */
-		std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) final;
+		std::vector<uint32_t> getElementCountPerDimension(const std::string & datasetName) final;
 
 		DLL_IMPORT_OR_EXPORT void setCompressionLevel(unsigned int newCompressionLevel) final {
 			compressionLevel = newCompressionLevel > 9 ? 9 : newCompressionLevel;
@@ -79,14 +80,14 @@ namespace EML2_NS
 			const std::string& name,
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			const void* values,
-			const unsigned long long* numValuesInEachDimension,
+			const uint64_t* numValuesInEachDimension,
 			unsigned int numDimensions) final;
 
 		void createArrayNd(
 			const std::string& groupName,
 			const std::string& name,
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			const unsigned long long* numValuesInEachDimension,
+			const uint64_t* numValuesInEachDimension,
 			unsigned int numDimensions
 		) final;
 
@@ -95,10 +96,10 @@ namespace EML2_NS
 			const std::string& name,
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			const void* values,
-			const unsigned long long* numValuesInEachDimension,
-			const unsigned long long* offsetValuesInEachDimension,
+			const uint64_t* numValuesInEachDimension,
+			const uint64_t* offsetValuesInEachDimension,
 			unsigned int numDimensions
-		) /*final*/;
+		) final;
 
 		void writeGroupAttributes(const std::string& groupName,
 			const std::vector<std::string>& attributeNames,
@@ -141,7 +142,7 @@ namespace EML2_NS
 		double readDoubleAttribute(const std::string& obj_name,
 			const std::string& attr_name) const final;
 
-		int64_t readLongAttribute(const std::string& obj_name,
+		int64_t readInt64Attribute(const std::string& obj_name,
 			const std::string& attr_name) const final;
 
 		void readArrayNdOfDoubleValues(const std::string& datasetName, double* values) final;
@@ -149,25 +150,25 @@ namespace EML2_NS
 		void readArrayNdOfDoubleValues(
 			const std::string& datasetName,
 			double* values,
-			unsigned long long const* numValuesInEachDimension,
-			unsigned long long const* offsetInEachDimension,
+			uint64_t const* numValuesInEachDimension,
+			uint64_t const* offsetInEachDimension,
 			unsigned int numDimensions
 		) final;
 
 		void readArrayNdOfDoubleValues(
 			const std::string& datasetName, double* values,
-			unsigned long long const* blockCountPerDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned long long const* strideInEachDimension,
-			unsigned long long const* blockSizeInEachDimension,
+			uint64_t const* blockCountPerDimension,
+			uint64_t const* offsetInEachDimension,
+			uint64_t const* strideInEachDimension,
+			uint64_t const* blockSizeInEachDimension,
 			unsigned int numDimensions) final;
 
 		void selectArrayNdOfValues(
 			const std::string& datasetName,
-			unsigned long long const* blockCountPerDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned long long const* strideInEachDimension,
-			unsigned long long const* blockSizeInEachDimension,
+			uint64_t const* blockCountPerDimension,
+			uint64_t const* offsetInEachDimension,
+			uint64_t const* strideInEachDimension,
+			uint64_t const* blockSizeInEachDimension,
 			unsigned int numDimensions,
 			bool newSelection,
 			hdf5_hid_t& dataset,
@@ -177,15 +178,15 @@ namespace EML2_NS
 			hdf5_hid_t dataset,
 			hdf5_hid_t filespace,
 			void* values,
-			unsigned long long slabSize) final;
+			uint64_t slabSize) final;
 
 		void readArrayNdOfFloatValues(const std::string& datasetName, float* values) final;
 
 		void readArrayNdOfFloatValues(
 			const std::string& datasetName,
 			float* values,
-			unsigned long long const* numValuesInEachDimension,
-			unsigned long long const* offsetInEachDimension,
+			uint64_t const* numValuesInEachDimension,
+			uint64_t const* offsetInEachDimension,
 			unsigned int numDimensions
 		) final;
 
@@ -194,8 +195,8 @@ namespace EML2_NS
 		void readArrayNdOfInt64Values(
 			const std::string& datasetName,
 			int64_t* values,
-			unsigned long long const* numValuesInEachDimension,
-			unsigned long long const* offsetInEachDimension,
+			uint64_t const* numValuesInEachDimension,
+			uint64_t const* offsetInEachDimension,
 			unsigned int numDimensions) final;
 
 		void readArrayNdOfUInt64Values(const std::string& datasetName, uint64_t* values) final;
@@ -205,8 +206,8 @@ namespace EML2_NS
 		void readArrayNdOfIntValues(
 			const std::string& datasetName,
 			int* values,
-			unsigned long long const* numValuesInEachDimension,
-			unsigned long long const* offsetInEachDimension,
+			uint64_t const* numValuesInEachDimension,
+			uint64_t const* offsetInEachDimension,
 			unsigned int numDimensions
 		) final;
 
@@ -216,15 +217,15 @@ namespace EML2_NS
 
 		void readArrayNdOfUShortValues(const std::string& datasetName, unsigned short* values) final;
 
-		void readArrayNdOfCharValues(const std::string& datasetName, char* values) final;
+		void readArrayNdOfInt8Values(const std::string& datasetName, int8_t* values) final;
 
-		void readArrayNdOfUCharValues(const std::string& datasetName, unsigned char* values) final;
+		void readArrayNdOfUInt8Values(const std::string& datasetName, uint8_t* values) final;
 
 		bool exist(const std::string& absolutePathInHdfFile) const final;
 
 		bool isCompressed(const std::string& datasetName) final;
 
-		std::vector<unsigned long long> getElementCountPerChunkDimension(const std::string & datasetName) final;
+		std::vector<uint32_t> getElementCountPerChunkDimension(const std::string & datasetName) final;
 
 	protected:
 
@@ -297,8 +298,8 @@ namespace EML2_NS
 		void readArrayNdOfValues(
 			const std::string& datasetName,
 			void* values,
-			unsigned long long const* numValuesInEachDimension,
-			unsigned long long const* offsetInEachDimension,
+			uint64_t const* numValuesInEachDimension,
+			uint64_t const* offsetInEachDimension,
 			unsigned int numDimensions,
 			hdf5_hid_t datatype);
 
@@ -328,10 +329,10 @@ namespace EML2_NS
 		void readArrayNdOfValues(
 			const std::string& datasetName,
 			void* values,
-			unsigned long long const* blockCountPerDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned long long const* strideInEachDimension,
-			unsigned long long const* blockSizeInEachDimension,
+			uint64_t const* blockCountPerDimension,
+			uint64_t const* offsetInEachDimension,
+			uint64_t const* strideInEachDimension,
+			uint64_t const* blockSizeInEachDimension,
 			unsigned int numDimensions,
 			hdf5_hid_t datatype);
 
@@ -352,7 +353,7 @@ namespace EML2_NS
 			hdf5_hid_t dataset,
 			hdf5_hid_t filespace,
 			void* values,
-			unsigned long long slabSize,
+			uint64_t slabSize,
 			hdf5_hid_t datatype);
 
 		/**
@@ -379,11 +380,5 @@ namespace EML2_NS
 
 		/** Groups which are currently opened where key is their path and value is their identifier */
 		std::unordered_map< std::string, hdf5_hid_t > openedGroups;
-
-	private:
-
-		std::vector<unsigned long long> reduceForChunking(hdf5_hid_t datatype,
-			const unsigned long long * numValuesInEachDimension,
-			unsigned int numDimensions) const;
 	};
 }

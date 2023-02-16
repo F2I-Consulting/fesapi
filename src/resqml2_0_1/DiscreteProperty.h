@@ -98,7 +98,7 @@ namespace RESQML2_0_1_NS
 
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getNullValue(uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) const final;
 
 		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(uint64_t index = 0) const final;
 

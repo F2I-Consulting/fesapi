@@ -33,10 +33,8 @@ using namespace RESQML2_NS;
 using namespace gsoap_eml2_3;
 using namespace COMMON_NS;
 
-const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepresentation";
-
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
-	double const* inclinations, double const* azimuths, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
+	double const* inclinations, double const* azimuths, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
 	EML2_NS::AbstractHdfProxy* proxy, AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {

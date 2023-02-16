@@ -45,18 +45,18 @@ namespace RESQML2_NS
 		/**
 		 * Checks whether a key is contained within this string lookup.
 		 *
-		 * @param 	longValue	A key.
+		 * @param 	key	A key.
 		 *
 		 * @returns	True if @p longValue is a key of this string table lookup, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool containsKey(long longValue) = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool containsKey(int64_t key) = 0;
 
 		/**
 		 * Gets the count of items in the string table lookup (in its map).
 		 *
 		 * @returns	The count of items.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getItemCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getItemCount() const = 0;
 
 		/**
 		 * Gets the key of a key/value pair at a particular index of this string table lookup (in its
@@ -68,7 +68,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The key of the key/value pair at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual long getKeyAtIndex(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getKeyAtIndex(uint64_t index) const = 0;
 
 		/**
 		 * Gets the string value of a key/value pair at a particular index of this string table lookup
@@ -80,17 +80,17 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The string value of the key/value pair at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getStringValueAtIndex(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string getStringValueAtIndex(uint64_t index) const = 0;
 
 		/**
-		 * Gets a string value from its associated key (long).
+		 * Gets a string value from its associated key.
 		 *
-		 * @param 	longValue	A key.
+		 * @param 	key	A key.
 		 *
 		 * @returns	The string value corresponding to the key @p longValue if it exists, empty string if
 		 * 			not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getStringValue(long longValue) = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string getStringValue(int64_t key) = 0;
 
 		/**
 		 * Adds a key/value pair to this string table lookup. No verification that the key (or string
@@ -99,22 +99,22 @@ namespace RESQML2_NS
 		 * @param 	strValue 	A string value.
 		 * @param 	longValue	A key.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void addValue(const std::string & strValue, long longValue) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void addValue(const std::string & strValue, int64_t key) = 0;
 
 		/**
-		 * Modifies the string value associated to a key (long). If the key does not exist, nothing is
+		 * Modifies the string value associated to a key. If the key does not exist, nothing is
 		 * done.
 		 *
 		 * @param 	strValue 	The new string value.
 		 * @param 	longValue	A key.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setValue(const std::string & strValue, long longValue) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setValue(const std::string & strValue, int64_t key) = 0;
 
 		/**
 		 * Gets the minimum key in this string table lookup. It reads it from file.
 		 *
 		 * @returns	The minimum key if some key/value pairs exists in this string table lookup, otherwise
-		 * 			the long maximum value.
+		 * 			the int64_t maximum value.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual int64_t getMinimumValue() = 0;
 
@@ -122,7 +122,7 @@ namespace RESQML2_NS
 		 * Gets the maximum key in this string table lookup. It reads it from file.
 		 *
 		 * @returns	The maximum key if some key/value pairs exists in this string table lookup, otherwise
-		 * 			the long minimum value.
+		 * 			the int64_t minimum value.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual int64_t getMaximumValue() = 0;
 
@@ -131,10 +131,10 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The key/value map.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::unordered_map<long, std::string> getMap() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::unordered_map<int64_t, std::string> getMap() const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "StringTableLookup";
 
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final { return XML_TAG; }
 

@@ -103,7 +103,7 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 		EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
 
 		// Check if the hdf dataset really contains constant length string.
-		std::vector<hsize_t> dims = hdfProxy->getElementCountPerDimension(datasetPath);
+		std::vector<uint32_t> dims = hdfProxy->getElementCountPerDimension(datasetPath);
 		if (dims.size() != 2) {
 			return result;
 		}
@@ -112,17 +112,17 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 			return result;
 		}
 
-		const unsigned int nbStrings = (unsigned int)dims[0]; // The count of strings in the HDF dataset.
-		const unsigned int stringLength = (unsigned int)dims[1]; // The constant string length in the hdf dataset.
+		const uint32_t nbStrings = dims[0]; // The count of strings in the HDF dataset.
+		const uint32_t stringLength = dims[1]; // The constant string length in the hdf dataset.
 
 		// Read all char/strings from the hdf dataset
 		std::unique_ptr<unsigned char[]> values(new unsigned char[nbStrings * stringLength]);
-		hdfProxy->readArrayNdOfUCharValues(datasetPath, values.get());
+		hdfProxy->readArrayNdOfUInt8Values(datasetPath, values.get());
 
-		for (unsigned int stringIndex = 0; stringIndex < nbStrings; ++stringIndex) {
-			std::string comment = string();
-			unsigned int globalCharIndex = stringIndex * stringLength;
-			for (unsigned int localCharIndex = 0; localCharIndex < stringLength; ++localCharIndex) {
+		for (uint32_t stringIndex = 0; stringIndex < nbStrings; ++stringIndex) {
+			std::string comment;
+			uint32_t globalCharIndex = stringIndex * stringLength;
+			for (uint32_t localCharIndex = 0; localCharIndex < stringLength; ++localCharIndex) {
 				if (values[globalCharIndex] != '\0') {
 					comment.push_back(values[globalCharIndex]);
 				}
@@ -166,13 +166,13 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 	seismicLine->TraceLabels->Values->ExternalFileProxy.push_back(dsPart);
 
 	// Build the CHAR array
-	hsize_t dimTwo = 0;
+	uint64_t dimTwo = 0;
 	for (std::vector<std::string>::const_iterator it = values.begin(); it != values.end(); ++it) {
 		if ((*it).length() > dimTwo)
 			dimTwo = (*it).length();
 	}
 
-	hsize_t strNb = values.size();
+	uint64_t strNb = values.size();
 	std::unique_ptr<unsigned char[]> cTab(new unsigned char[strNb*dimTwo]);
 
 	int indStr = 0;
@@ -186,7 +186,7 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 		indStr++;
 	}
 
-	hsize_t nbValPerDim[2] = { strNb, dimTwo };
+	uint64_t nbValPerDim[2] = { strNb, dimTwo };
 	const unsigned int nbDimensions = 2;
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),

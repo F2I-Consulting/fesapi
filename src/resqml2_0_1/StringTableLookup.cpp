@@ -25,8 +25,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* StringTableLookup::XML_NS = "resqml20";
-
 StringTableLookup::StringTableLookup(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
 	if (repo == nullptr) {
@@ -41,12 +39,12 @@ StringTableLookup::StringTableLookup(COMMON_NS::DataObjectRepository* repo, cons
 	repo->addDataObject(this);
 }
 
-unsigned int StringTableLookup::getItemCount() const
+uint64_t StringTableLookup::getItemCount() const
 {
 	return static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1)->Value.size();
 }
 
-long StringTableLookup::getKeyAtIndex(unsigned int index) const
+int64_t StringTableLookup::getKeyAtIndex(uint64_t index) const
 {
 	if (getItemCount() <= index) {
 		throw out_of_range("The index is out of range.");
@@ -55,7 +53,7 @@ long StringTableLookup::getKeyAtIndex(unsigned int index) const
 	return (static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1)->Value)[index]->Key;
 }
 
-std::string StringTableLookup::getStringValueAtIndex(unsigned int index) const
+std::string StringTableLookup::getStringValueAtIndex(uint64_t index) const
 {
 	if (getItemCount() <= index) {
 		throw out_of_range("The index is out of range.");
@@ -64,12 +62,12 @@ std::string StringTableLookup::getStringValueAtIndex(unsigned int index) const
 	return (static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1)->Value)[index]->Value;
 }
 
-bool StringTableLookup::containsKey(long longValue)
+bool StringTableLookup::containsKey(int64_t key)
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
 	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == longValue) {
+		if (stringLookup->Value[i]->Key == key) {
 			return true;
 		}
 	}
@@ -77,12 +75,12 @@ bool StringTableLookup::containsKey(long longValue)
 	return false;
 }
 
-std::string StringTableLookup::getStringValue(long longValue)
+std::string StringTableLookup::getStringValue(int64_t key)
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
 	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == longValue) {
+		if (stringLookup->Value[i]->Key == key) {
 			return stringLookup->Value[i]->Value;
 		}
 	}
@@ -90,22 +88,22 @@ std::string StringTableLookup::getStringValue(long longValue)
 	return "";
 }
 
-void StringTableLookup::addValue(const string & strValue, long longValue)
+void StringTableLookup::addValue(const string & strValue, int64_t key)
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
 	resqml20__StringLookup* xmlValue = soap_new_resqml20__StringLookup(gsoapProxy2_0_1->soap);
-	xmlValue->Key = longValue;
+	xmlValue->Key = key;
 	xmlValue->Value = strValue;
 	stringLookup->Value.push_back(xmlValue);
 }
 
-void StringTableLookup::setValue(const string & strValue, long longValue)
+void StringTableLookup::setValue(const string & strValue, int64_t key)
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
 	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == longValue) {
+		if (stringLookup->Value[i]->Key == key) {
 			stringLookup->Value[i]->Value = strValue;
 			return;
 		}
@@ -140,9 +138,9 @@ int64_t StringTableLookup::getMaximumValue()
 	return max;
 }
 
-unordered_map<long, string> StringTableLookup::getMap() const
+unordered_map<int64_t, string> StringTableLookup::getMap() const
 {
-	unordered_map<long, string> result;
+	unordered_map<int64_t, string> result;
 
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 

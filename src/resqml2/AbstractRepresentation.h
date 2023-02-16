@@ -298,7 +298,7 @@ namespace RESQML2_NS
 		 * 									values. It must be already opened for writing and won't be
 		 * 									closed in this method.
 		 */
-		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double* inlines, double* crosslines, unsigned int pointCount,
+		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double* inlines, double* crosslines, uint64_t pointCount,
 			RESQML2_NS::AbstractRepresentation* seismicSupport, EML2_NS::AbstractHdfProxy* proxy);
 
 		/**
@@ -387,7 +387,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
 		
 		/** The standard XML tag without XML namespace for serializing this data object */
-		static const char* XML_TAG;
+		static constexpr char const* XML_TAG = "AbstractRepresentation";
 
 		virtual void loadTargetRelationships() override;
 

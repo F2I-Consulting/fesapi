@@ -24,8 +24,6 @@ using namespace std;
 using namespace gsoap_eml2_3;
 using namespace RESQML2_NS;
 
-const char* ContinuousColorMap::XML_TAG = "ContinuousColorMap";
-
 void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 	double const* hsvColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
@@ -54,7 +52,7 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 		}
 
 		resqml22__ContinuousColorMapEntry* continuousColorMapEntry = soap_new_resqml22__ContinuousColorMapEntry(gsoapProxy2_3->soap, 1);
-		indices != nullptr ? continuousColorMapEntry->Index = indices[colorIndex] : continuousColorMapEntry->Index = colorIndex;
+		continuousColorMapEntry->Index = indices != nullptr ? indices[colorIndex] : colorIndex;
 		resqml22__HsvColor* color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap, 1);
 		color->Hue = hsvColors[3 * colorIndex];
 		color->Saturation = hsvColors[3 * colorIndex + 1];

@@ -24,8 +24,8 @@ namespace resqml2_test {
 	class CommentProperty : public commontest::AbstractTest {
 	public:
 
-		static const char* defaultUuid;
-		static const char* defaultTitle;
+		static constexpr char const* defaultUuid = "3e01e290-7df3-450e-ad93-2f88e79fe2fe";
+		static constexpr char const* defaultTitle = "Comment Property on well frame Test";
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,

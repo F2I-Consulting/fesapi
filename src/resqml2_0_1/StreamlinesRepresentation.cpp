@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StreamlinesRepresentation.h"
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/AbstractGridRepresentation.h"
@@ -136,7 +134,7 @@ void StreamlinesRepresentation::setWellboreInformation(uint32_t const* injectorP
 	xmlInjectorPerLine->Values->PathInHdfFile = getHdfGroup() + "/InjectorPerLine";
 	wellboreInfo->InjectorPerLine = xmlInjectorPerLine;
 	// HDF
-	hsize_t datasetDim = rep->LineCount;
+	uint64_t datasetDim = rep->LineCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"InjectorPerLine",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
@@ -224,12 +222,11 @@ void StreamlinesRepresentation::setGeometry(
 	xmlNodeCountPerPolyline->Values->PathInHdfFile = getHdfGroup() + "/NodeCountPerPolyline";
 	polyline->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// HDF
-	hsize_t datasetDim = lineCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"NodeCountPerPolyline",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
-		&datasetDim, 1);
+		&lineCount, 1);
 }
 
 void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices, uint16_t gridIndicesNullValue,
@@ -276,7 +273,7 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	xmlGridIndices->Values->PathInHdfFile = getHdfGroup() + "/GridIndices";
 	igc->GridIndices = xmlGridIndices;
 	// HDF
-	hsize_t datasetDim = igc->CellCount;
+	uint64_t datasetDim = igc->CellCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,

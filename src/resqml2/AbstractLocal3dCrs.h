@@ -108,7 +108,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The projected CRS EPSG code.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned long long getProjectedCrsEpsgCode() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getProjectedCrsEpsgCode() const;
 
 		/**
 		 * Indicates either the associated vertical CRS is identified by means of EPSG or not.
@@ -140,7 +140,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The vertical CRS EPSG code.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned long long getVerticalCrsEpsgCode() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getVerticalCrsEpsgCode() const;
 
 		/**
 		 * Gets the vertical CRS unit of measure as a string

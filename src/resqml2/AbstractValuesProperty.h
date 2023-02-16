@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include <limits>
 #include "AbstractProperty.h"
 
 namespace RESQML2_NS
@@ -63,7 +62,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const final;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -74,7 +73,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getDimensionsCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getDimensionsCountOfPatch(uint64_t patchIndex) const final;
 
 		/**
 		 * Pushes back a new facet to this instance. Facets are qualifiers for property values which
@@ -90,7 +89,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The facet count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getFacetCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getFacetCount() const;
 
 		/**
 		 * Gets the facet at a particular index of the facet collection of this instance.
@@ -101,7 +100,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The facet at index @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__FacetKind getFacetKind(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__FacetKind getFacetKind(uint64_t index) const;
 
 		/**
 		 * Gets the facet value at a particular index of the facet collection of this instance.
@@ -112,7 +111,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The facet value at index @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getFacetValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getFacetValue(uint64_t index) const;
 
 		//****************************
 		//****** INTEGER *************
@@ -129,7 +128,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackIntegerConstantArrayOfValues(int64_t value, uint64_t valueCount);
 
 		/**
-		 * @brief	Adds a 1d array of explicit long values to the property values.
+		 * @brief	Adds a 1d array of explicit int values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -144,31 +143,33 @@ namespace RESQML2_NS
 		 * 								repository.
 		 * @param 		  	nullValue 	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
+			pushBackInt64Hdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+		}
 
 		/**
 		 * Adds a 1d array of explicit integer values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array1dOfValues
+		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackIntHdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 1d array of explicit short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array1dOfValues
+		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 1d array of explicit int8_t values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array1dOfValues
+		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array1dOfValues(const int8_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
-		 * @brief Adds a 2d array of explicit long values to the property values.
+		 * @brief Adds a 2d array of explicit int values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -186,38 +187,41 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			pushBackInt64Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+		}
 
 		/**
 		 * Adds a 2d array of explicit integer values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array2dOfValues
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackIntHdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 2d array of explicit short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array2dOfValues
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackShortHdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 2d array of explicit unsigned short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array2dOfValues
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds a 2d array of explicit int8_t values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array2dOfValues
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
-		 * @brief Adds a 3d array of explicit long values to the property values.
+		 * @brief Adds a 3d array of explicit int values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -237,38 +241,41 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			pushBackInt64Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+		}
 
 		/**
 		 * Adds a 3d array of explicit integer values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array3dOfValues
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackIntHdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 3d array of explicit short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array3dOfValues
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackShortHdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 3d array of explicit unsigned short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array3dOfValues
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds a 3d array of explicit int8_t values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array3dOfValues
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
-		 * @brief	Adds an nd array of explicit long values to the property values.
+		 * @brief	Adds an nd array of explicit int values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -285,35 +292,35 @@ namespace RESQML2_NS
 		 * 											be defined in the repository.
 		 * @param 		  	nullValue				The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds an nd array of explicit integer values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackIntHdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackShortHdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds an nd array of explicit int8_t values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
+		DLL_IMPORT_OR_EXPORT virtual void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written
@@ -381,7 +388,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT double getDoubleConstantValuesOfPatch(uint64_t patchIndex) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be long ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be int ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -392,7 +399,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const;
+		DLL_IMPORT_OR_EXPORT int64_t getInt64ValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
 
 		/**
 		 * Gets the null value of a given patch of this instance. Values are supposed to be integer ones.
@@ -406,7 +413,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	the null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getNullValueOfPatch(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT int64_t getNullValueOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be integer ones.
@@ -420,7 +427,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int getIntValuesOfPatch(unsigned int patchIndex, int * values) const;
+		DLL_IMPORT_OR_EXPORT int32_t getIntValuesOfPatch(uint64_t patchIndex, int32_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -435,7 +442,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const;
+		DLL_IMPORT_OR_EXPORT uint32_t getUIntValuesOfPatch(uint64_t patchIndex, uint32_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
@@ -449,7 +456,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT short getShortValuesOfPatch(unsigned int patchIndex, short * values) const;
+		DLL_IMPORT_OR_EXPORT int16_t getShortValuesOfPatch(uint64_t patchIndex, int16_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -464,7 +471,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned short getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const;
+		DLL_IMPORT_OR_EXPORT uint16_t getUShortValuesOfPatch(uint64_t patchIndex, uint16_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be int8 ones.
@@ -478,7 +485,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int8_t getInt8ValuesOfPatch(unsigned int patchIndex, int8_t* values) const;
+		DLL_IMPORT_OR_EXPORT int8_t getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be uint8 ones
@@ -492,12 +499,12 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT uint8_t getUInt8ValuesOfPatch(unsigned int patchIndex, uint8_t* values) const;
+		DLL_IMPORT_OR_EXPORT uint8_t getUInt8ValuesOfPatch(uint64_t patchIndex, uint8_t* values) const;
 
 		//***********************************
-		//*** For hyperslabbing *****
+		//*** Writing with hyperslabbing *****
 		//***********************************
-		
+
 		/**
 		 * Create an nd array of values to the property values. No values are written to
 		 * this array yet then the HDF5 array contains uninitialized values.
@@ -505,7 +512,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
 		 *
-		 * @param 			datatype			The datatype of the values 
+		 * @param 			datatype			The datatype of the values
 		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write.  It is ordered from slowest dimension to
 		 * 										fastest dimension.
@@ -520,7 +527,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackHdf5ArrayOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			unsigned long long const * numValues,
+			uint64_t const * numValues,
 			unsigned int numArrayDimensions,
 			int64_t nullValue = (std::numeric_limits<int64_t>::max)(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
@@ -533,7 +540,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
 		 *
-		 * @param 			datatype			The datatype of the values 
+		 * @param 			datatype			The datatype of the values
 		 * @param 		  	valueCount			The number of values to write).
 		 * @param 			nullvalue			The integer null value in case we create an integer array.
 		 * 										It is ignored if the @p datatype is a floating point one.
@@ -556,7 +563,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
 		 *
-		 * @param 			datatype				The datatype of the values 
+		 * @param 			datatype				The datatype of the values
 		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
@@ -584,7 +591,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
 		 *
-		 * @param 			datatype				The datatype of the values 
+		 * @param 			datatype				The datatype of the values
 		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
@@ -607,11 +614,11 @@ namespace RESQML2_NS
 			int64_t nullValue = (std::numeric_limits<int64_t>::max)(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
 		);
-		
+
 		/**
-		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
+		 * Adds an nd array of explicit int 64 bits values into to the property values. Since this
 		 * methods only pushes back values into an existing array, it is to be used along with
-		 * pushBackLongHdf5ArrayOfValues().
+		 * pushBackInt64Hdf5ArrayOfValues().
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is null and no default HDF proxy is defined
 		 * 										into the data object repository.
@@ -640,119 +647,119 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setValuesOfInt64Hdf5ArrayOfValues(
 			int64_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) {
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
 			setValuesOfHdf5ArrayOfValues(
 				COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, values, numValues,
-				offsetValues, numArrayDimensions,proxy, patchIndex);
+				offsetValues, numArrayDimensions, proxy, patchIndex);
 		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfUInt64Hdf5ArrayOfValues(
 			uint64_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) {
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
 			setValuesOfHdf5ArrayOfValues(
 				COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, values, numValues,
-				offsetValues, numArrayDimensions,proxy, patchIndex);
+				offsetValues, numArrayDimensions, proxy, patchIndex);
 		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfInt32Hdf5ArrayOfValues(
 			int32_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) {
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
 			setValuesOfHdf5ArrayOfValues(
 				COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32, values, numValues,
-				offsetValues, numArrayDimensions,proxy, patchIndex);
+				offsetValues, numArrayDimensions, proxy, patchIndex);
 		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfUInt32Hdf5ArrayOfValues(
 			uint32_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) {
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
 			setValuesOfHdf5ArrayOfValues(
 				COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, values, numValues,
-				offsetValues, numArrayDimensions,proxy, patchIndex);
+				offsetValues, numArrayDimensions, proxy, patchIndex);
 		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfInt16Hdf5ArrayOfValues(
 			int16_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) {
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
 			setValuesOfHdf5ArrayOfValues(
 				COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, values, numValues,
-				offsetValues, numArrayDimensions,proxy, patchIndex);
+				offsetValues, numArrayDimensions, proxy, patchIndex);
 		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfUInt16Hdf5ArrayOfValues(
 			uint16_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) {
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
 			setValuesOfHdf5ArrayOfValues(
 				COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16, values, numValues,
-				offsetValues, numArrayDimensions,proxy, patchIndex);
+				offsetValues, numArrayDimensions, proxy, patchIndex);
 		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfInt8Hdf5ArrayOfValues(
 			int8_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) {
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
 			setValuesOfHdf5ArrayOfValues(
 				COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8, values, numValues,
-				offsetValues, numArrayDimensions,proxy, patchIndex);
+				offsetValues, numArrayDimensions, proxy, patchIndex);
 		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfUInt8Hdf5ArrayOfValues(
 			uint8_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) {
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
 			setValuesOfHdf5ArrayOfValues(
 				COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, values, numValues,
-				offsetValues, numArrayDimensions,proxy, patchIndex);
+				offsetValues, numArrayDimensions, proxy, patchIndex);
 		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfDoubleHdf5ArrayOfValues(
 			double const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) {
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
 			setValuesOfHdf5ArrayOfValues(
 				COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, values, numValues,
-				offsetValues, numArrayDimensions,proxy, patchIndex);
+				offsetValues, numArrayDimensions, proxy, patchIndex);
 		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5ArrayOfValues(
 			float const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) {
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
 			setValuesOfHdf5ArrayOfValues(
 				COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT, values, numValues,
-				offsetValues, numArrayDimensions,proxy, patchIndex);
+				offsetValues, numArrayDimensions, proxy, patchIndex);
 		}
 
 		/**
-		 * Adds a 1d array of explicit long 64 bits values into the property values. Since this methods
+		 * Adds a 1d array of explicit int 64 bits values into the property values. Since this methods
 		 * only pushes back values into an existing array, it is to be used along with
-		 * pushBackLongHdf5Array3dOfValues().
+		 * pushBackInt64Hdf5Array3dOfValues().
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
@@ -780,30 +787,86 @@ namespace RESQML2_NS
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());		
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			setValuesOfInt64Hdf5ArrayOfValues(values, &valueCount, &offset, 1, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt64Hdf5Array1dOfValues(
+			uint64_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			setValuesOfUInt64Hdf5ArrayOfValues(values, &valueCount, &offset, 1, proxy, patchIndex);
+		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfInt32Hdf5Array1dOfValues(
 			int32_t const* values,
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			setValuesOfInt32Hdf5ArrayOfValues(values, &valueCount, &offset, 1, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt32Hdf5Array1dOfValues(
+			uint32_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			setValuesOfUInt32Hdf5ArrayOfValues(values, &valueCount, &offset, 1, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfInt16Hdf5Array1dOfValues(
+			int16_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			setValuesOfInt16Hdf5ArrayOfValues(values, &valueCount, &offset, 1, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt16Hdf5Array1dOfValues(
+			uint16_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			setValuesOfUInt16Hdf5ArrayOfValues(values, &valueCount, &offset, 1, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfInt8Hdf5Array1dOfValues(
+			int8_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			setValuesOfInt8Hdf5ArrayOfValues(values, &valueCount, &offset, 1, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt8Hdf5Array1dOfValues(
+			uint8_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			setValuesOfUInt8Hdf5ArrayOfValues(values, &valueCount, &offset, 1, proxy, patchIndex);
+		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfDoubleHdf5Array1dOfValues(
 			double const * values,
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			setValuesOfDoubleHdf5ArrayOfValues(values, &valueCount, &offset, 1, proxy, patchIndex);
+		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5Array1dOfValues(
 			float const * values,
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			setValuesOfFloatHdf5ArrayOfValues(values, &valueCount, &offset, 1, proxy, patchIndex);
+		}
 
 		/**
 		 * Adds a 2d array of explicit values into the property values. Since this methods
 		 * only pushes back values into an existing array, it is to be used along with
-		 * pushBackLongHdf5Array2dOfValues().
+		 * pushBackInt64Hdf5Array2dOfValues().
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
@@ -819,7 +882,7 @@ namespace RESQML2_NS
 		 * @param 		  	offsetInFastestDim	  	The offset value for writing in the fastest dimension
 		 * 											(mainly I dimension).
 		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
-		 * 											(mainly K dimension).		 
+		 * 											(mainly K dimension).
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
@@ -839,7 +902,23 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());		
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+			setValuesOfInt64Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 2, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt64Hdf5Array2dOfValues(
+			uint64_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+			setValuesOfUInt64Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 2, proxy, patchIndex);
+		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfInt32Hdf5Array2dOfValues(
 			int32_t const* values,
 			uint64_t valueCountInFastestDim,
@@ -847,7 +926,71 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+			setValuesOfInt32Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 2, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt32Hdf5Array2dOfValues(
+			uint32_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+			setValuesOfUInt32Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 2, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfInt16Hdf5Array2dOfValues(
+			int16_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+			setValuesOfInt16Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 2, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt16Hdf5Array2dOfValues(
+			uint16_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+			setValuesOfUInt16Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 2, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfInt8Hdf5Array2dOfValues(
+			int8_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+			setValuesOfInt8Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 2, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt8Hdf5Array2dOfValues(
+			uint8_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+			setValuesOfUInt8Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 2, proxy, patchIndex);
+		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfDoubleHdf5Array2dOfValues(
 			double const * values,
 			uint64_t valueCountInFastestDim,
@@ -855,7 +998,11 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+			setValuesOfDoubleHdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 2, proxy, patchIndex);
+		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5Array2dOfValues(
 			float const * values,
 			uint64_t valueCountInFastestDim,
@@ -863,12 +1010,16 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[2] = { offsetInSlowestDim, offsetInFastestDim };
+			setValuesOfFloatHdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 2, proxy, patchIndex);
+		}
 
 		/**
-		 * Adds a 3d array of explicit long 64 bits values into the property values. Since this methods
+		 * Adds a 3d array of explicit int 64 bits values into the property values. Since this methods
 		 * only pushes back values into an existing array, it is to be used along with
-		 * pushBackLongHdf5Array3dOfValues().
+		 * pushBackInt64Hdf5Array3dOfValues().
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
@@ -910,7 +1061,25 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());		
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+			setValuesOfInt64Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 3, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt64Hdf5Array3dOfValues(
+			uint64_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+			setValuesOfUInt64Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 3, proxy, patchIndex);
+		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfInt32Hdf5Array3dOfValues(
 			int32_t const* values,
 			uint64_t valueCountInFastestDim,
@@ -920,7 +1089,81 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+			setValuesOfInt32Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 3, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt32Hdf5Array3dOfValues(
+			uint32_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+			setValuesOfUInt32Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 3, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfInt16Hdf5Array3dOfValues(
+			int16_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+			setValuesOfInt16Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 3, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt16Hdf5Array3dOfValues(
+			uint16_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+			setValuesOfUInt16Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 3, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfInt8Hdf5Array3dOfValues(
+			int8_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+			setValuesOfInt8Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 3, proxy, patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT void setValuesOfUInt8Hdf5Array3dOfValues(
+			uint8_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+			setValuesOfUInt8Hdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 3, proxy, patchIndex);
+		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfDoubleHdf5Array3dOfValues(
 			double const * values,
 			uint64_t valueCountInFastestDim,
@@ -930,7 +1173,11 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+			setValuesOfDoubleHdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 3, proxy, patchIndex);
+		}
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5Array3dOfValues(
 			float const * values,
 			uint64_t valueCountInFastestDim,
@@ -940,14 +1187,18 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			const uint64_t offsetPerDimension[3] = { offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim };
+			setValuesOfFloatHdf5ArrayOfValues(values, valueCountPerDimension, offsetPerDimension, 3, proxy, patchIndex);
+		}
 
 		//***********************************
-		//*** INTEGER For hyperslabbing *****
+		//*** Reading with hyperslabbing *****
 		//***********************************
 
 		/**
-		 * Gets some of the values of a given patch of this instance. Values are supposed to be long 64
+		 * Gets some of the values of a given patch of this instance. Values are supposed to be int 64
 		 * bits ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -965,16 +1216,16 @@ namespace RESQML2_NS
 		 * 											dimension.
 		 * @param 	   	numArrayDimensions			The number of dimensions of the array to write.
 		 */
-		DLL_IMPORT_OR_EXPORT void getLongValuesOfPatch(
-			unsigned int patchIndex,
+		DLL_IMPORT_OR_EXPORT void getInt64ValuesOfPatch(
+			uint64_t patchIndex,
 			int64_t* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
 		/**
-		 * Gets some of the values of a given patch of this instance. Values are supposed to be long 64
+		 * Gets some of the values of a given patch of this instance. Values are supposed to be int 64
 		 * bits ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -996,8 +1247,8 @@ namespace RESQML2_NS
 		 * @param 	   	offsetInSlowestDim	  	The offset value for reading in the slowest dimension
 		 * 										(mainly K dimension).
 		 */
-		DLL_IMPORT_OR_EXPORT void getLongValuesOf3dPatch(
-			unsigned int patchIndex,
+		DLL_IMPORT_OR_EXPORT void getInt64ValuesOf3dPatch(
+			uint64_t patchIndex,
 			int64_t* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -1028,11 +1279,11 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT int getIntValuesOfPatch(
-			unsigned int patchIndex,
-			int* values,
-			unsigned long long* numValuesInEachDimension,
-			unsigned long long* offsetInEachDimension,
+		DLL_IMPORT_OR_EXPORT int32_t getIntValuesOfPatch(
+			uint64_t patchIndex,
+			int32_t* values,
+			const uint64_t* numValuesInEachDimension,
+			const uint64_t* offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -1060,8 +1311,8 @@ namespace RESQML2_NS
 		 * 										(mainly K dimension).
 		 */
 		DLL_IMPORT_OR_EXPORT void getIntValuesOf3dPatch(
-			unsigned int patchIndex,
-			int* values,
+			uint64_t patchIndex,
+			int32_t* values,
 			unsigned int valueCountInFastestDim,
 			unsigned int valueCountInMiddleDim,
 			unsigned int valueCountInSlowestDim,
@@ -1159,7 +1410,7 @@ namespace RESQML2_NS
 		 * 										then a default HDF proxy must be defined in the
 		 * 										repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Adds a 1d array of explicit float values to the property values.
@@ -1187,7 +1438,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
@@ -1219,7 +1470,7 @@ namespace RESQML2_NS
 		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
 		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const;
+		DLL_IMPORT_OR_EXPORT void getDoubleValuesOfPatch(uint64_t patchIndex, double * values) const;
 
 		/**
 		 * Gets all the values of a particular patch of this instance which are supposed to be float
@@ -1231,7 +1482,7 @@ namespace RESQML2_NS
 		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
 		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(unsigned int patchIndex, float * values) const;
+		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(uint64_t patchIndex, float * values) const;
 
 		//******************************************
 		//*** For FLOATING POINT hyperslabbing *****
@@ -1256,10 +1507,10 @@ namespace RESQML2_NS
 		 * @param 	   	numArrayDimensions			The number of dimensions of the HDF5 array to read.
 		 */
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			float* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -1286,7 +1537,7 @@ namespace RESQML2_NS
 		 * 											(mainly K dimension).
 		 */
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			float* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -1324,7 +1575,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	patchIndex	The corresponding patch index of the dataset to get.
 		 * @param [out]		nullValue 	If possible, this function will set this parameter to the RESQML
-		 * 								null value of the dataset. If not, it will return long.min.
+		 * 								null value of the dataset. If not, it will return int64_t.min.
 		 * @param [out]		nullValue 	this function will set this parameter to the RESQML
 		 * 								dataset path in the HDF file.
 		 *
@@ -1341,19 +1592,19 @@ namespace RESQML2_NS
 		 * 			Otherwise returns the data object reference of the associated representation. Null
 		 * 			should not occured since each property must be associated to a representation.
 		 */
-		COMMON_NS::DataObjectReference getHdfProxyDor(unsigned int patchIndex) const final;
+		COMMON_NS::DataObjectReference getHdfProxyDor(uint64_t patchIndex) const final;
 
 		/**
 		 * Adds an nd array of values into to the property values. Since this
 		 * methods only pushes back values into an existing array, it is to be used along with
-		 * pushBackLongHdf5ArrayOfValues().
+		 * pushBackInt64Hdf5ArrayOfValues().
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is null and no default HDF proxy is defined
 		 * 										into the data object repository.
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param 			datatype			The datatype of the values 
+		 * @param 			datatype			The datatype of the values
 		 * @param [in]	  	values			  	All the property values to set ordered according to the
 		 * 										topology of the representation it is based on.
 		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
@@ -1377,10 +1628,10 @@ namespace RESQML2_NS
 		void setValuesOfHdf5ArrayOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			void const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)());
 	};
 }

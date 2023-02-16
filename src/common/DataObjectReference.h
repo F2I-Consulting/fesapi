@@ -18,10 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#if defined(__clang__)
+#elif defined(__GNUG__) && __GNUC__ > 12  // https://stackoverflow.com/questions/31509434/gcc-does-not-honor-pragma-gcc-diagnostic-to-silence-warnings
+#pragma GCC diagnostic push 
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#endif
 #include "../proxies/gsoap_resqml2_0_1H.h"
 #include "../proxies/gsoap_eml2_1H.h"
 #include "../proxies/gsoap_eml2_2H.h"
 #include "../proxies/gsoap_eml2_3H.h"
+#if defined(__clang__)
+#elif defined(__GNUG__) && __GNUC__ > 12
+#pragma GCC diagnostic pop
+#endif
 
 #include "../nsDefinitions.h"
 

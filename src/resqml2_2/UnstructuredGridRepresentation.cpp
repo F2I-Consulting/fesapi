@@ -314,7 +314,7 @@ unsigned int UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
 		return 0;
 }
 
-void UnstructuredGridRepresentation::getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const
+void UnstructuredGridRepresentation::getCellFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const
 {
   _resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
   if (grid->Geometry == nullptr)
@@ -322,7 +322,7 @@ void UnstructuredGridRepresentation::getCellFaceIsRightHanded(unsigned char* cel
   if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)  {
 	  auto dataset = static_cast<eml23__BooleanExternalArray*>(grid->Geometry->CellFaceIsRightHanded)->Values->ExternalFileProxy[0];
 	  EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-	  hdfProxy->readArrayNdOfUCharValues(dataset->PathInExternalFile, cellFaceIsRightHanded);
+	  hdfProxy->readArrayNdOfUInt8Values(dataset->PathInExternalFile, cellFaceIsRightHanded);
   }
   else if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray)  {
 	  for (size_t i = 0; i < static_cast<eml23__BooleanConstantArray*>(grid->Geometry->CellFaceIsRightHanded)->Count; ++i)  {

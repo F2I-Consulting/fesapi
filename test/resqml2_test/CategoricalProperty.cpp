@@ -35,8 +35,7 @@ using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_test;
 
-const char* CategoricalProperty::defaultUuid = "5aa6a9d4-253e-43a8-bdf5-621e5df2d425";
-const char* CategoricalProperty::defaultTitle = "Testing Categorical Prop";
+static constexpr int64_t bigNumber = (std::numeric_limits<uint32_t>::max)() + static_cast<int64_t>(10);
 
 CategoricalProperty::CategoricalProperty(const string & repoPath)
 	: commontest::AbstractTest(repoPath) {
@@ -57,6 +56,7 @@ void CategoricalProperty::initRepo() {
 	stringTableLookup->addValue("Item 3", 3);
 	stringTableLookup->addValue("Item 4", 4);
 	stringTableLookup->addValue("Item 5", 5);
+	stringTableLookup->addValue("Item 6", bigNumber);
 	
 	// creating the char CategoricalProperty
 	RESQML2_NS::CategoricalProperty* charCategoricalProperty = repo->createCategoricalProperty(
@@ -91,13 +91,20 @@ void CategoricalProperty::readRepo() {
 	// getting the string CategoricalProperty
 	RESQML2_NS::CategoricalProperty* categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::CategoricalProperty>(defaultUuid);
 	auto strTableLookup = categoricalProperty->getStringLookup();
-	REQUIRE(strTableLookup->getItemCount() == 6);
+	REQUIRE(strTableLookup->getItemCount() == 7);
 	REQUIRE(strTableLookup->getStringValue(0) == "Item 0");
 	REQUIRE(strTableLookup->getStringValueAtIndex(1) == "Item 1");
 	REQUIRE(strTableLookup->getKeyAtIndex(2) == 2);
 	REQUIRE(strTableLookup->getStringValue(3) == "Item 3");
 	REQUIRE(strTableLookup->getStringValue(4) == "Item 4");
 	REQUIRE(strTableLookup->getStringValue(5) == "Item 5");
+	REQUIRE(strTableLookup->getKeyAtIndex(6) == bigNumber);
+	REQUIRE(strTableLookup->getStringValue(bigNumber) == "Item 6");
+
+	auto lookupMap = strTableLookup->getMap();
+	REQUIRE(lookupMap.size() == 7);
+	REQUIRE(lookupMap[0] == "Item 0");
+	REQUIRE(lookupMap[bigNumber] == "Item 6");
 
 	// getting the continuous CategoricalProperty
 	categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::CategoricalProperty>("3de7a1d8-8b5b-45f3-b90c-6c14b2dcb43e");

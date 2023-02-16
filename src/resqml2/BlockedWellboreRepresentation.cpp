@@ -25,8 +25,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-const char* BlockedWellboreRepresentation::XML_TAG = "BlockedWellboreRepresentation";
-
 void BlockedWellboreRepresentation::loadTargetRelationships()
 {
 	WellboreFrameRepresentation::loadTargetRelationships();

@@ -2229,12 +2229,12 @@ namespace RESQML2_NS
 		bool isProjectedCrsDefinedWithEpsg() const;
 		bool isProjectedCrsUnknown() const;
 		const std::string & getProjectedCrsUnknownReason() const;
-		unsigned long long getProjectedCrsEpsgCode() const;
+		uint64_t getProjectedCrsEpsgCode() const;
 		
 		bool isVerticalCrsDefinedWithEpsg() const;
 		bool isVerticalCrsUnknown() const;
 		const std::string & getVerticalCrsUnknownReason() const;
-		unsigned long long getVerticalCrsEpsgCode() const;
+		uint64_t getVerticalCrsEpsgCode() const;
 
 		gsoap_resqml2_0_1::eml20__LengthUom getProjectedCrsUnit() const;
 		std::string getProjectedCrsUnitAsString() const;
@@ -2288,8 +2288,8 @@ namespace RESQML2_NS
 	class AbstractFeature : public COMMON_NS::AbstractObject
 	{
 	public:
-		unsigned int getInterpretationCount() const;
-		AbstractFeatureInterpretation* getInterpretation(unsigned int index) const;
+		uint64_t getInterpretationCount() const;
+		AbstractFeatureInterpretation* getInterpretation(uint64_t index) const;
 	};
 
 #ifdef SWIGPYTHON
@@ -2356,7 +2356,7 @@ namespace RESQML2_NS
 		void setSeismicLineSet(SeismicLineSetFeature * seisLineSet);
 		SeismicLineSetFeature* getSeismicLineSet() const;
 		
-		unsigned int getTraceCount() const;
+		uint64_t getTraceCount() const;
 		
 		void setTraceLabels(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy * proxy);
 		std::vector<std::string> getTraceLabels() const;
@@ -2394,11 +2394,53 @@ namespace RESQML2_NS
 	class AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
 	{
 	public:
-		unsigned int						getRepresentationCount() const;
+
+		/**
+		 * Get the representation count of this interpretation.
+		 *
+		 * @exception	std::range_error	If the representation count is strictly greater than unsigned
+		 * 									int max.
+		 *
+		 * @returns	The representation count.
+		 */
+		uint64_t						getRepresentationCount() const;
+
+		/**
+		 * Gets the feature this instance interprets
+		 *
+		 * @returns	A pointer to the interpreted feature.
+		 */
 		AbstractFeature*				getInterpretedFeature();
-		AbstractRepresentation* 	getRepresentation(unsigned int index) const;
+
+		/**
+		 * Gets a particular representation of this interpretation according to its position in the
+		 * representations ordering.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of the range of the representation set.
+		 *
+		 * @param 	index	Zero-based index of the representation we look for.
+		 *
+		 * @returns	A pointer to the representation at @p index.
+		 */
+		AbstractRepresentation* 	getRepresentation(uint64_t index) const;
 		
+		/**
+		 * Initializes the domain of the interpretation by looking at the local CRS domain of its
+		 * representations.
+		 *
+		 * @param 	defaultDomain	The default domain to set when no representation is associated to
+		 * 							this interpretation.
+		 *
+		 * @returns	The domain that have been set to this interpretation (either deduced from its
+		 * 			representation or @p defaultDomain).
+		 */
 		gsoap_resqml2_0_1::resqml20__Domain initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const;
+
+		/**
+		 * Gets the domain of this interpretation.
+		 *
+		 * @returns	The domain of this interpretation.
+		 */
 		gsoap_resqml2_0_1::resqml20__Domain getDomain() const;
 	};
 	
@@ -2975,7 +3017,7 @@ namespace RESQML2_NS
 		 * 									values. It must be already opened for writing and won't be
 		 * 									closed in this method.
 		 */
-		void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double * inlines, double * crosslines, unsigned int pointCount,
+		void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double * inlines, double * crosslines, uint64_t pointCount,
 			AbstractRepresentation * seismicSupport, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
@@ -3151,12 +3193,12 @@ namespace RESQML2_NS
 		void getNodeCountPerPolylineOfAllPatches(unsigned int * nodeCountPerPolyline) const;
 		void pushBackGeometryPatch(
 			unsigned int * nodeCountPerPolyline, double * nodes,
-			unsigned int polylineCount, bool allPolylinesClosedFlag,
+			uint64_t polylineCount, bool allPolylinesClosedFlag,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
 
 		void pushBackGeometryPatch(
 			unsigned int * nodeCountPerPolyline, double * nodes,
-			unsigned int polylineCount, bool * polylineClosedFlags,
+			uint64_t polylineCount, bool * polylineClosedFlags,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
 				
 		bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const;
@@ -3392,13 +3434,22 @@ namespace RESQML2_NS
 	public:
 		unsigned int getGridConnectionSetRepresentationCount() const;
 		GridConnectionSetRepresentation* getGridConnectionSetRepresentation(unsigned int index) const;
+
+		/**
+		 * Gets the total count of cells in the grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
+		 *
+		 * @returns	The total count of cells in the grid.
+		*/
 		uint64_t getCellCount() const;
 		
 		AbstractGridRepresentation* getParentGrid() const;
 		unsigned int getChildGridCount() const;
 		AbstractGridRepresentation* getChildGrid(unsigned int index) const;
 		void setParentWindow(uint64_t * cellIndices, uint64_t cellIndexCount, UnstructuredGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy * proxy = nullptr);
-		void setParentWindow(unsigned int * columnIndices, unsigned int columnIndexCount,
+		void setParentWindow(unsigned int * columnIndices, uint64_t columnIndexCount,
 			unsigned int kLayerIndexRegridStart,
 			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  unsigned int intervalCount,
 			class AbstractColumnLayerGridRepresentation* parentGrid,
@@ -3450,7 +3501,7 @@ namespace RESQML2_NS
 		void getNonTruncatedFaceIndicesOfTruncatedCells(uint64_t * faceIndices) const;
 		void getCumulativeNonTruncatedFaceCountPerTruncatedCell(uint64_t * cumulativeFaceCountPerCell) const;
 		void getNonTruncatedFaceCountPerTruncatedCell(uint64_t * faceCountPerCell) const;
-		void getTruncatedFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const;
+		void getTruncatedFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const;
 	};
 
 #ifdef SWIGPYTHON
@@ -3459,7 +3510,7 @@ namespace RESQML2_NS
 	class UnstructuredGridRepresentation : public AbstractGridRepresentation
 	{
 	public:
-		void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const;
+		void getCellFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const;
 	
 		uint64_t getFaceCount() const;
 		void getFaceIndicesOfCells(uint64_t * faceIndices) const;
@@ -3486,7 +3537,7 @@ namespace RESQML2_NS
 			uint64_t faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
 			gsoap_resqml2_0_1::resqml20__CellShape cellShape, AbstractLocal3dCrs * localCrs = nullptr);
 
-		void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
+		void setGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, uint64_t * nodeIndicesPerFace, uint64_t * nodeIndicesCumulativeCountPerFace,
 			gsoap_resqml2_0_1::resqml20__CellShape cellShape, AbstractLocal3dCrs * localCrs = nullptr);
@@ -3495,7 +3546,7 @@ namespace RESQML2_NS
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
 
-		void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
+		void setTetrahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
 
@@ -3503,7 +3554,7 @@ namespace RESQML2_NS
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
 
-		void setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
+		void setHexahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
 	};
@@ -3514,9 +3565,25 @@ namespace RESQML2_NS
 	class AbstractColumnLayerGridRepresentation : public AbstractGridRepresentation
 	{
 	public:
-		unsigned int getKCellCount() const;
-		void setKCellCount(unsigned int kCount);
-		
+		/**
+		 * Gets the K layer count of this grid
+		 *
+		 * @exception	std::logic_error	If this grid is partial or if the underlying gSOAP instance
+		 * 									is not a RESQML2.0 one.
+		 *
+		 * @returns	The K layer count of this grid.
+		 */
+		uint64_t getKCellCount() const;
+
+		/**
+		 * Sets the K layer count of this grid
+		 *
+		 * @exception	std::logic_error	If this grid is partial or if the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @param 	kCount	The K layer count to set to this grid.
+		 */
+		void setKCellCount(uint64_t kCount);
+
 		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(int64_t * stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy);
 		RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 		bool hasIntervalStratigraphicUnitIndices() const;
@@ -3536,12 +3603,62 @@ namespace RESQML2_NS
 		void setICellCount(unsigned int iCount);
 		unsigned int getJCellCount() const;
 		void setJCellCount(unsigned int jCount);
-		
+
+		/**
+		 * Gets the count of columns in this grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count of cells in I or J direction is
+		 * 									strictly greater than unsigned int max.
+		 *
+		 * @returns	The column count.
+		 */
 		unsigned int getColumnCount() const;
+
+		/**
+		 * Gets the count of pillars in this grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count of cells in I or J direction is
+		 * 									strictly greater than unsigned int max.
+		 *
+		 * @returns	The pillar count.
+		 */
 		unsigned int getPillarCount() const;
-		
+
+		/**
+		 * Gets the count of K layer gaps in this grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count of cells in I or J direction is
+		 * 									strictly greater than unsigned int max.
+		 *
+		 * @returns	The K Layer gaps count.
+		 */
 		uint64_t getKGapsCount() const;
+
+		/**
+		* For each K Layer except the last one, indicate wether there is a layer or not after it.
+		*
+		* @param [out]	kGaps	An array for receiving the information about kGaps.
+		*						It must have a count of getKCellCount() - 1. It won't be free. A false value in
+		* 						@p kGaps means that the corresponding k layer has no gaps just after it.
+		*						A true value means that the corresponding k layer has a gap just after it.
+		*/
 		void getKGaps(bool * kGaps) const;
+
+		/**
+		 * Gets the count of faces in this grid. This method requires you have already loaded the split
+		 * information thanks to loadSplitInformation().
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::range_error	 	If the count of cells in I, J or K
+		 * 										direction is strictly greater than unsigned int max.
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 *
+		 * @returns	The face count.
+		 */
+		uint64_t getFaceCount() const;
 		
 		unsigned int getIPillarFromGlobalIndex(unsigned int globalIndex) const;
 		unsigned int getJPillarFromGlobalIndex(unsigned int globalIndex) const;
@@ -3565,7 +3682,28 @@ namespace RESQML2_NS
 		void getPillarsOfSplitCoordinateLines(unsigned int * pillarIndices, bool reverseIAxis = false, bool reverseJAxis = false) const;
 		void getColumnsOfSplitCoordinateLines(unsigned int * columnIndices, bool reverseIAxis = false, bool reverseJAxis = false) const;
 		void getColumnCountOfSplitCoordinateLines(unsigned int * columnIndexCountPerSplitCoordinateLine) const;
-		unsigned long getSplitCoordinateLineCount() const;
+
+		/**
+		 * Gets the split coordinate lines count.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this IJK grid.
+		 * @exception	std::range_error	 	If the count of split coordinate lines is strictly
+		 * 										greater than unsigned int max.
+		 *
+		 * @returns	The split coordinate lines count.
+		 */
+		uint64_t getSplitCoordinateLineCount() const;
+
+		/**
+		 * Gets the split coordinate lines count within the block. Block information must be loaded thanks
+		 * to loadBlockInformation().
+		 *
+		 * @exception	std::invalid_argument	If the block information is not loaded.
+		 *
+		 * @returns	The split coordinate lines count within the block.
+		 */
+		uint64_t getBlockSplitCoordinateLineCount() const;
+		
 		/**
 		 * Gets the split nodes count.
 		 *
@@ -3693,7 +3831,7 @@ namespace RESQML2_NS
 		 * 									values. If @c nullptr (default), then the default HDF proxy will be
 		 * 									used.
 		 */
-		void setCellGeometryIsDefinedFlags(unsigned char* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		void setCellGeometryIsDefinedFlags(uint8_t* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Set to "defined" the flags for each cell indicating if its geometry is defined or not
@@ -3813,17 +3951,103 @@ namespace RESQML2_NS
 	class IjkGridExplicitRepresentation : public AbstractIjkGridRepresentation
 	{
 	public:
+		/**
+		 * @brief Sets the geometry of this IJK grid as explicit coordinate line nodes. See RESQML Usage,
+		 * Technical guide and Enterprise Architect diagrams for details.
+		 *
+		 * @exception	std::invalid_argument	If @p points is @c nullptr.
+		 * @exception	std::invalid_argument	If <tt>(splitCoordinateLineCount != 0 &amp;&amp;
+		 * 										(pillarOfCoordinateLine == nullptr ||
+		 * 										splitCoordinateLineColumnCumulativeCount == nullptr ||
+		 * 										splitCoordinateLineColumns == nullptr))</tt>.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default local 3d CRS
+		 * 										is defined.
+		 *
+		 * @param 		  	mostComplexPillarGeometry					The most complex pillar geometry
+		 * 																which occurs on this reservoir grid.
+		 * @param 		  	kDirectionKind								The direction of the K axis on
+		 * 																the earth. It is not directly related
+		 * 																to Z of the vertical CRS but to the
+		 * 																physical earth (as the vertical CRS
+		 * 																is).
+		 * @param 		  	isRightHanded								Indicates that the IJK grid is
+		 * 																right handed, as determined by the
+		 * 																triple product of tangent vectors in
+		 * 																the I, J, and K directions.
+		 * @param [in]	  	points										XYZ double triplets ordered by i
+		 * 																then j then split then k. Count must
+		 * 																be <tt>((iCellCount+1) *
+		 * 																(jCellCount+1) +
+		 * 																splitCoordinateLineCount) *
+		 * 																kCellCount</tt>.
+		 * @param [in,out]	proxy										(Optional) The HDF proxy where
+		 * 																all numerical values will be stored.
+		 * 																If @c nullptr, then the default HDF
+		 * 																proxy of the repository will be used.
+		 * @param 		  	splitCoordinateLineCount					(Optional) The count of split
+		 * 																coordinate line. A grid pillar is
+		 * 																splitted in up to 4 coordinate lines.
+		 * @param [in]	  	pillarOfCoordinateLine						(Optional) For each split
+		 * 																coordinate line, indicates which
+		 * 																pillar it belongs to. Pillars are
+		 * 																identified by their absolute 1d index
+		 * 																<tt>(iPillar + jPillar *
+		 * 																iPillarCount)</tt> where
+		 * 																<tt>iPillarCount ==
+		 * 																iCellCount+1</tt>. Count is
+		 * 																splitCoordinateLineCount.
+		 * @param [in]	  	splitCoordinateLineColumnCumulativeCount	(Optional) For each split
+		 * 																coordinate line, indicates how many
+		 * 																columns of the ijk grid are incident
+		 * 																to it (minimum is one and maximum is
+		 * 																3) + the count of all incident
+		 * 																columns of previous spit coordinate
+		 * 																lines in the array. For example
+		 * 																<tt>{1, 4, 6}</tt> would mean that
+		 * 																the first split coordinate line is
+		 * 																incident to only one column, the
+		 * 																second split coordinate line is
+		 * 																incident to <tt>4 - 1 = 3</tt>
+		 * 																columns and the third column is
+		 * 																incident to <tt>6 - 4 = 2</tt>
+		 * 																columns. Count is
+		 * 																splitCoordinateLineCount.
+		 * @param [in]	  	splitCoordinateLineColumns					(Optional) For each split
+		 * 																coordinate line, indicates which
+		 * 																columns are incident to it. Count is
+		 * 																the last value in the
+		 * 																splitCoordinateLineColumnCumulativeCount
+		 * 																array. Columns are identified by
+		 * 																their absolute 1d index
+		 * 																<tt>(iColumn</tt>
+		 * 																<tt> + jColumn * iColumnCount)</tt>
+		 * 																where
+		 * 																Column == Cell.
+		 * @param [in]	  	definedPillars								(Optional) For each pillar : 0 if
+		 * 																pillar is not defined (i.e points
+		 * 																equal to NaN) else the pillar is
+		 * 																defined.  This information overrides
+		 * 																any pillar geometry information. If
+		 * 																null, then all pillars are assumed to
+		 * 																be defined.
+		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * 																the points are given. If @c nullptr
+		 * 																(default) then the default CRS of the
+		 * 																repository will be used.
+		 */
 		void setGeometryAsCoordinateLineNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
-			double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned long splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
-			unsigned int * splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int * splitCoordinateLineColumns = nullptr,
-			char * definedPillars = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			double const* points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t splitCoordinateLineCount = 0, unsigned int const* pillarOfCoordinateLine = nullptr,
+			unsigned int const* splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int const* splitCoordinateLineColumns = nullptr,
+			int8_t const* definedPillars = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsCoordinateLineNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned long splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
+			uint64_t splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
 			const std::string & definedPillars = "", AbstractLocal3dCrs * localCrs = nullptr);
 	};
@@ -3854,24 +4078,24 @@ namespace RESQML2_NS
 		void setGeometryAsParametricSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
@@ -4642,7 +4866,7 @@ namespace RESQML2_NS
 		//****************************/
 
 		/**
-		 * @brief	Adds a 1d array of explicit long values to the property values.
+		 * @brief	Adds a 1d array of explicit int 64 bits values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -4657,31 +4881,31 @@ namespace RESQML2_NS
 		 * 								repository.
 		 * @param 		  	nullValue 	The null value.
 		 */
-		void pushBackLongHdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		void pushBackInt64Hdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds a 1d array of explicit integer values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array1dOfValues
+		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
 		void pushBackIntHdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 1d array of explicit short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array1dOfValues
+		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
 		void pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 1d array of explicit char values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array1dOfValues
+		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
 		void pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
-		 * @brief Adds a 2d array of explicit long values to the property values.
+		 * @brief Adds a 2d array of explicit int 64 bits values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -4699,38 +4923,38 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
-		void pushBackLongHdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		void pushBackInt64Hdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds a 2d array of explicit integer values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array2dOfValues
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		void pushBackIntHdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 2d array of explicit short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array2dOfValues
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		void pushBackShortHdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 2d array of explicit unsigned short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array2dOfValues
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds a 2d array of explicit char values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array2dOfValues
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
-		 * @brief Adds a 3d array of explicit long values to the property values.
+		 * @brief Adds a 3d array of explicit int 64 bits values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -4750,38 +4974,38 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
-		void pushBackLongHdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		void pushBackInt64Hdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds a 3d array of explicit integer values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array3dOfValues
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		void pushBackIntHdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 3d array of explicit short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array3dOfValues
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		void pushBackShortHdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 3d array of explicit unsigned short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array3dOfValues
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds a 3d array of explicit char values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5Array3dOfValues
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
-		 * @brief	Adds an nd array of explicit long values to the property values.
+		 * @brief	Adds an nd array of explicit int 64 bits values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -4798,35 +5022,35 @@ namespace RESQML2_NS
 		 * 											be defined in the repository.
 		 * @param 		  	nullValue				The null value.
 		 */
-		void pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		virtual void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds an nd array of explicit integer values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		virtual void pushBackIntHdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		virtual void pushBackShortHdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
-		 * Adds an nd array of explicit char values to the property values.
+		 * Adds an nd array of explicit int8_t values to the property values.
 		 *
-		 * @copydetails pushBackLongHdf5ArrayOfValues
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
+		virtual void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written
@@ -4894,7 +5118,7 @@ namespace RESQML2_NS
 		double getDoubleConstantValuesOfPatch(uint64_t patchIndex) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be long ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be int 64 bits ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -4905,7 +5129,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int64_t getLongValuesOfPatch(unsigned int patchIndex, int64_t * values) const;
+		int64_t getInt64ValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
 
 		/**
 		 * Gets the null value of a given patch of this instance. Values are supposed to be integer ones.
@@ -4919,7 +5143,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	the null value.
 		 */
-		int64_t getNullValueOfPatch(unsigned int patchIndex) const;
+		int64_t getNullValueOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be integer ones.
@@ -4933,7 +5157,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int getIntValuesOfPatch(unsigned int patchIndex, int * values) const;
+		int getIntValuesOfPatch(uint64_t patchIndex, int * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -4948,7 +5172,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		unsigned int getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const;
+		unsigned int getUIntValuesOfPatch(uint64_t patchIndex, unsigned int * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
@@ -4962,7 +5186,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		short getShortValuesOfPatch(unsigned int patchIndex, short * values) const;
+		short getShortValuesOfPatch(uint64_t patchIndex, short * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -4977,7 +5201,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		unsigned short getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const;
+		unsigned short getUShortValuesOfPatch(uint64_t patchIndex, unsigned short * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
@@ -4991,7 +5215,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int8_t getInt8ValuesOfPatch(unsigned int patchIndex, int8_t* values) const;
+		int8_t getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -5006,10 +5230,10 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		uint8_t getUInt8ValuesOfPatch(unsigned int patchIndex, uint8_t* values) const;
+		uint8_t getUInt8ValuesOfPatch(uint64_t patchIndex, uint8_t* values) const;
 
 		//***********************************
-		//*** For hyperslabbing *****
+		//*** Writing with hyperslabbing *****
 		//***********************************
 		
 		/**
@@ -5034,7 +5258,7 @@ namespace RESQML2_NS
 		 */
 		void pushBackHdf5ArrayOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			unsigned long long const * numValues,
+			uint64_t const * numValues,
 			unsigned int numArrayDimensions,
 			int64_t nullValue = std::numeric_limits<int64_t>::max(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
@@ -5118,9 +5342,9 @@ namespace RESQML2_NS
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		
 		/**
-		 * Adds an nd array of explicit long 64 bits values into to the property values. Since this
+		 * Adds an nd array of explicit int 64 bits values into to the property values. Since this
 		 * methods only pushes back values into an existing array, it is to be used along with
-		 * pushBackLongHdf5ArrayOfValues().
+		 * pushBackInt64Hdf5ArrayOfValues().
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is null and no default HDF proxy is defined
 		 * 										into the data object repository.
@@ -5149,79 +5373,79 @@ namespace RESQML2_NS
 		 */
 		void setValuesOfInt64Hdf5ArrayOfValues(
 			int64_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfUInt64Hdf5ArrayOfValues(
 			uint64_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5ArrayOfValues(
 			int32_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfUInt32Hdf5ArrayOfValues(
 			uint32_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt16Hdf5ArrayOfValues(
 			int16_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfUInt16Hdf5ArrayOfValues(
 			uint16_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt8Hdf5ArrayOfValues(
 			int8_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfUInt8Hdf5ArrayOfValues(
 			uint8_t const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5ArrayOfValues(
 			double const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfFloatHdf5ArrayOfValues(
 			float const* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		/**
-		 * Adds a 1d array of explicit long 64 bits values into the property values. Since this methods
+		 * Adds a 1d array of explicit int 64 bits values into the property values. Since this methods
 		 * only pushes back values into an existing array, it is to be used along with
-		 * pushBackLongHdf5Array3dOfValues().
+		 * pushBackInt64Hdf5Array3dOfValues().
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
@@ -5249,30 +5473,66 @@ namespace RESQML2_NS
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt64Hdf5Array1dOfValues(
+			uint64_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5Array1dOfValues(
 			int32_t const* values,
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt32Hdf5Array1dOfValues(
+			uint32_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfInt16Hdf5Array1dOfValues(
+			int16_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt16Hdf5Array1dOfValues(
+			uint16_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfInt8Hdf5Array1dOfValues(
+			int8_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt8Hdf5Array1dOfValues(
+			uint8_t const* values,
+			uint64_t valueCount,
+			uint64_t offset,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5Array1dOfValues(
 			double const * values,
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfFloatHdf5Array1dOfValues(
 			float const * values,
 			uint64_t valueCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		/**
 		 * Adds a 2d array of explicit values into the property values. Since this methods
 		 * only pushes back values into an existing array, it is to be used along with
-		 * pushBackLongHdf5Array2dOfValues().
+		 * pushBackInt64Hdf5Array2dOfValues().
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
@@ -5308,7 +5568,15 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());		
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt64Hdf5Array2dOfValues(
+			uint64_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5Array2dOfValues(
 			int32_t const* values,
 			uint64_t valueCountInFastestDim,
@@ -5316,7 +5584,47 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt32Hdf5Array2dOfValues(
+			uint32_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfInt16Hdf5Array2dOfValues(
+			int16_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt16Hdf5Array2dOfValues(
+			uint16_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfInt8Hdf5Array2dOfValues(
+			int8_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt8Hdf5Array2dOfValues(
+			uint8_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5Array2dOfValues(
 			double const * values,
 			uint64_t valueCountInFastestDim,
@@ -5324,7 +5632,7 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfFloatHdf5Array2dOfValues(
 			float const * values,
 			uint64_t valueCountInFastestDim,
@@ -5332,12 +5640,12 @@ namespace RESQML2_NS
 			uint64_t offsetInFastestDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		/**
-		 * Adds a 3d array of explicit long 64 bits values into the property values. Since this methods
+		 * Adds a 3d array of explicit int 64 bits values into the property values. Since this methods
 		 * only pushes back values into an existing array, it is to be used along with
-		 * pushBackLongHdf5Array3dOfValues().
+		 * pushBackInt64Hdf5Array3dOfValues().
 		 *
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined into the data object repository.
@@ -5379,7 +5687,17 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt64Hdf5Array3dOfValues(
+			uint64_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5Array3dOfValues(
 			int32_t const* values,
 			uint64_t valueCountInFastestDim,
@@ -5389,7 +5707,57 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt32Hdf5Array3dOfValues(
+			uint32_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfInt16Hdf5Array3dOfValues(
+			int16_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt16Hdf5Array3dOfValues(
+			uint16_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfInt8Hdf5Array3dOfValues(
+			int8_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
+		void setValuesOfUInt8Hdf5Array3dOfValues(
+			uint8_t const* values,
+			uint64_t valueCountInFastestDim,
+			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
+			uint64_t offsetInFastestDim,
+			uint64_t offsetInMiddleDim,
+			uint64_t offsetInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5Array3dOfValues(
 			double const * values,
 			uint64_t valueCountInFastestDim,
@@ -5399,7 +5767,7 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfFloatHdf5Array3dOfValues(
 			float const * values,
 			uint64_t valueCountInFastestDim,
@@ -5409,14 +5777,14 @@ namespace RESQML2_NS
 			uint64_t offsetInMiddleDim,
 			uint64_t offsetInSlowestDim,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		//***********************************/
 		//*** INTEGER For hyperslabbing *****/
 		//***********************************/
 
 		/**
-		 * Gets some of the values of a given patch of this instance. Values are supposed to be long 64
+		 * Gets some of the values of a given patch of this instance. Values are supposed to be int 64
 		 * bits ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -5434,16 +5802,16 @@ namespace RESQML2_NS
 		 * 											dimension.
 		 * @param 	   	numArrayDimensions			The number of dimensions of the array to write.
 		 */
-		void getLongValuesOfPatch(
+		void getInt64ValuesOfPatch(
 			unsigned int patchIndex,
 			int64_t* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
 		/**
-		 * Gets some of the values of a given patch of this instance. Values are supposed to be long 64
+		 * Gets some of the values of a given patch of this instance. Values are supposed to be int 64
 		 * bits ones.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -5465,7 +5833,7 @@ namespace RESQML2_NS
 		 * @param 	   	offsetInSlowestDim	  	The offset value for reading in the slowest dimension
 		 * 										(mainly K dimension).
 		 */
-		void getLongValuesOf3dPatch(
+		void getInt64ValuesOf3dPatch(
 			unsigned int patchIndex,
 			int64_t* values,
 			uint64_t valueCountInFastestDim,
@@ -5500,8 +5868,8 @@ namespace RESQML2_NS
 		int getIntValuesOfPatch(
 			unsigned int patchIndex,
 			int* values,
-			unsigned long long* numValuesInEachDimension,
-			unsigned long long* offsetInEachDimension,
+			const uint64_t* numValuesInEachDimension,
+			const uint64_t* offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -5618,7 +5986,7 @@ namespace RESQML2_NS
 		 * 										then a default HDF proxy must be defined in the
 		 * 										repository.
 		 */
-		void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		void pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Adds a 1d array of explicit float values to the property values.
@@ -5649,7 +6017,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
-		void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		void pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
@@ -5720,8 +6088,8 @@ namespace RESQML2_NS
 		void getFloatValuesOfPatch(
 			unsigned int patchIndex,
 			float* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -5903,7 +6271,7 @@ namespace RESQML2_NS
 		 * 										value is 1 then both maximum and minimum values will be
 		 * 										computed from the values.
 		 */
-		void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions,
+		void pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions,
 			double * minimumValue, double * maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -5938,7 +6306,7 @@ namespace RESQML2_NS
 		 * 									
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
-		void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions,
+		void pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions,
 			float * minimumValue, float * maximumValue, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -6022,7 +6390,7 @@ namespace RESQML2_NS
 		 */
 		void pushBackHdf5ArrayOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			unsigned long long const * numValues,
+			uint64_t const * numValues,
 			unsigned int numArrayDimensions,
 			double * minimumValue, double * maximumValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
@@ -6174,7 +6542,7 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5Array3dOfValues(
 			double const * values,
 			uint64_t valueCountInFastestDim,
@@ -6185,7 +6553,7 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		/**
 		 * Set some values of an existing 3d array of explicit float values of a particular patch.  This
@@ -6222,20 +6590,20 @@ namespace RESQML2_NS
 		 */
 		void setValuesOfFloatHdf5ArrayOfValues(
 			float const * values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfDoubleHdf5ArrayOfValues(
 			double const * values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 	};
 	
 #ifdef SWIGPYTHON
@@ -6244,31 +6612,31 @@ namespace RESQML2_NS
 	class DiscreteProperty : public AbstractValuesProperty
 	{
 	public:
-		void pushBackLongHdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
+		void pushBackInt64Hdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
 		void pushBackIntHdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
 		void pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
 		void pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 
-		void pushBackLongHdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
+		void pushBackInt64Hdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
 		void pushBackIntHdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
 		void pushBackShortHdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
 		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
 		void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 
-		void pushBackLongHdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
+		void pushBackInt64Hdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
 		void pushBackIntHdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
 		void pushBackShortHdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
 		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
 		void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 
-		void pushBackLongHdf5ArrayOfValues(const int64_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
-		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, unsigned long long * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
+		void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
+		void pushBackIntHdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		void pushBackShortHdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 		
 		/**
-		 * Creates an nd array of explicit long 64 bits values into the property values. No values are
+		 * Creates an nd array of explicit int 64 bits values into the property values. No values are
 		 * written to this array yet then the HDF5 array contains uninitialized values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -6286,7 +6654,7 @@ namespace RESQML2_NS
 		 * @param [in]	  	maximumValue	  	If non-nullptr, a pointer to the maximum values. If non-
 		 * 										nullptr, the count of maximum values is this property
 		 * 										count.
-		 * @param 		  	nullValue		  	(Optional) The null value. Default value is long 64 bits
+		 * @param 		  	nullValue		  	(Optional) The null value. Default value is int 64 bits
 		 * 										maximum value.
 		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
@@ -6296,7 +6664,7 @@ namespace RESQML2_NS
 		 */
 		void pushBackHdf5ArrayOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-			unsigned long long* numValues,
+			const uint64_t* numValues,
 			unsigned int numArrayDimensions,
 			int64_t* minimumValue, int64_t* maximumValue,
 			int64_t nullValue = std::numeric_limits<int64_t>::max(),
@@ -6315,7 +6683,7 @@ namespace RESQML2_NS
 		 * @param 		  	valueCount			The count of values.
 		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
@@ -6332,7 +6700,7 @@ namespace RESQML2_NS
 		using AbstractValuesProperty::pushBackHdf5Array1dOfValues;
 
 		/**
-		 * Creates a 2d array of explicit long 64 values into the property values. No values are written
+		 * Creates a 2d array of explicit int 64 values into the property values. No values are written
 		 * to this array yet then the HDF5 array contains uninitialized values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -6346,7 +6714,7 @@ namespace RESQML2_NS
 		 * 											K dimension).
 		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
@@ -6364,7 +6732,7 @@ namespace RESQML2_NS
 		using AbstractValuesProperty::pushBackHdf5Array2dOfValues;
 
 		/**
-		 * Creates a 3d array of explicit long 64 values into the property values. No values are written
+		 * Creates a 3d array of explicit int 64 values into the property values. No values are written
 		 * to this array yet then the HDF5 array contains uninitialized values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -6380,7 +6748,7 @@ namespace RESQML2_NS
 		 * 											K dimension).
 		 * @param 		  	minimumValue		  	The minimum value of the values in the HDF5 dataset.
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
-		 * @param 		  	nullValue			  	(Optional) The null value. Default value is long 64
+		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
@@ -6408,7 +6776,7 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5Array3dOfValues(
 			int32_t* values,
 			uint64_t valueCountInFastestDim,
@@ -6419,25 +6787,25 @@ namespace RESQML2_NS
 			uint64_t offsetInSlowestDim,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		using AbstractValuesProperty::setValuesOfInt32Hdf5Array3dOfValues;
 
 		void setValuesOfInt64Hdf5ArrayOfValues(
 			int64_t* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		void setValuesOfInt32Hdf5ArrayOfValues(
 			int32_t* values,
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
+			uint64_t const * numValues,
+			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
 			bool computeMinMax,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		using AbstractValuesProperty::setValuesOfInt32Hdf5ArrayOfValues;
 		
 		/**
@@ -6547,17 +6915,88 @@ namespace RESQML2_NS
 	class StringTableLookup : public COMMON_NS::AbstractObject
 	{
 	public:
-		bool containsKey(long longValue);
-	
-		unsigned int getItemCount() const;
-		long getKeyAtIndex(unsigned int index) const;
-		std::string getStringValueAtIndex(unsigned int index) const;
-		std::string getStringValue(long longValue);
-		
-		void addValue(const std::string & strValue, long longValue);
-		void setValue(const std::string & strValue, long longValue);
-		
+		/**
+		 * Checks whether a key is contained within this string lookup.
+		 *
+		 * @param 	key	A key.
+		 *
+		 * @returns	True if @p longValue is a key of this string table lookup, false if not.
+		 */
+		bool containsKey(int64_t key);
+
+		/**
+		 * Gets the count of items in the string table lookup (in its map).
+		 *
+		 * @returns	The count of items.
+		 */
+		uint64_t getItemCount() const;
+
+		/**
+		 * Gets the key of a key/value pair at a particular index of this string table lookup (in its
+		 * map).
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getItemCount().
+		 *
+		 * @param 	index	Zero-based index of the key/value pair.
+		 *
+		 * @returns	The key of the key/value pair at position @p index.
+		 */
+		int64_t getKeyAtIndex(uint64_t index) const;
+
+		/**
+		 * Gets the string value of a key/value pair at a particular index of this string table lookup
+		 * (in its map).
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getItemCount().
+		 *
+		 * @param 	index	Zero-based index of the key/value pair.
+		 *
+		 * @returns	The string value of the key/value pair at position @p index.
+		 */
+		std::string getStringValueAtIndex(uint64_t index) const;
+
+		/**
+		 * Gets a string value from its associated key.
+		 *
+		 * @param 	key	A key.
+		 *
+		 * @returns	The string value corresponding to the key @p longValue if it exists, empty string if
+		 * 			not.
+		 */
+		std::string getStringValue(int64_t key);
+
+		/**
+		 * Adds a key/value pair to this string table lookup. No verification that the key (or string
+		 * value) already exists is done.
+		 *
+		 * @param 	strValue 	A string value.
+		 * @param 	longValue	A key.
+		 */
+		void addValue(const std::string & strValue, int64_t key);
+
+		/**
+		 * Modifies the string value associated to a key. If the key does not exist, nothing is
+		 * done.
+		 *
+		 * @param 	strValue 	The new string value.
+		 * @param 	longValue	A key.
+		 */
+		void setValue(const std::string & strValue, int64_t key);
+
+		/**
+		 * Gets the minimum key in this string table lookup. It reads it from file.
+		 *
+		 * @returns	The minimum key if some key/value pairs exists in this string table lookup, otherwise
+		 * 			the int64_t maximum value.
+		 */
 		int64_t getMinimumValue();
+
+		/**
+		 * Gets the maximum key in this string table lookup. It reads it from file.
+		 *
+		 * @returns	The maximum key if some key/value pairs exists in this string table lookup, otherwise
+		 * 			the int64_t minimum value.
+		 */
 		int64_t getMaximumValue();
 	};
 	
@@ -6722,7 +7161,7 @@ namespace RESQML2_NS
 		 * 											then a default HDF proxy must be defined in the
 		 * 											repository.
 		 */
-		void pushBackArrayOfXyzPoints(double const * xyzPoints, unsigned long long const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		void pushBackArrayOfXyzPoints(double const * xyzPoints, uint64_t const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
@@ -6805,7 +7244,7 @@ namespace RESQML2_NS
 		 * 										CRS of the data object repository will be arbitrarily
 		 * 										selected.
 		 */
-		void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD information.
@@ -6845,7 +7284,7 @@ namespace RESQML2_NS
 		 * 											Local CRS of the DataObject repository will be
 		 * 											arbitrarily selected.
 		 */
-		void setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
+		void setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
@@ -6895,7 +7334,7 @@ namespace RESQML2_NS
 		 * 											selected.
 		 */
 		void setGeometry(double const* controlPoints,
-			double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
+			double const* tangentVectors, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
@@ -6945,7 +7384,7 @@ namespace RESQML2_NS
 		 * 											selected.
 		 */
 		void setGeometry(double const* controlPoints,
-			double const* inclinations, double const* azimuths, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
+			double const* inclinations, double const* azimuths, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
 			
 		/**
@@ -7081,17 +7520,129 @@ namespace RESQML2_NS
 	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
-		void setMdValues(double const * mdValues, unsigned int mdValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Sets the measured depth (MD) values of this wellbore frame representation as a 1d array of explicit values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	mdValues		All the MD values to set from top to bottom of the wellbore
+		 * 									trajectory. Size if @p mdValueCount.
+		 * @param 		  	mdValueCount	The MD values count.
+		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the MD values. It
+		 * 									must be already opened for writing and won't be closed in this
+		 * 									method. If @c nullptr, then a default HDF proxy must be defined
+		 * 									in the repository.
+		 */
+		void setMdValues(double const * mdValues, uint64_t mdValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Sets the measured depth (MD) values of this wellbore frame representation as a regular
+		 * discretization along the wellbore trajectory.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @param 	firstMdValue		The first MD value.
+		 * @param 	incrementMdValue	The increment value between two MDs.
+		 * @param 	mdValueCount		The count of MD values in this wellbore frame representation.
+		 */
 		void setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount);
 
+		/**
+		 * Indicates either the MDs are regularly spaced or not (useful for optimization). Does not
+		 * check the regularity if the writer has used a generic array to store regular MDs.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	True if MD values are regularly spaced, false if not.
+		 */
 		bool areMdValuesRegularlySpaced() const;
+
+		/**
+		 * Indicates the increment value between two MDs in case of regularly spaced MDs. Please check
+		 * the regularity of MDs with areMdValuesRegularlySpaced() before using this method.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If the MD values are not regularly spaced.
+		 *
+		 * @returns	The MD constant increment value.
+		 */
 		double getMdConstantIncrementValue() const;
+
+		/**
+		 * Returns the first MD value of this wellbore frame representation.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the MD values are neither stored in a HDF5 double
+		 * 										array nor in a double lattice array.
+		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
+		 * 										the HDF proxy is missing.
+		 *
+		 * @returns	The first MD value.
+		 */
 		double getMdFirstValue() const;
+
+		/**
+		 * Gets the number of MD values in this wellbore frame representation.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	The MD values count.
+		 */
 		unsigned int getMdValuesCount() const;
+
+		/**
+		 * Gets the MD datatype in the HDF dataset.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
+		 * 										the HDF proxy is missing.
+		 *
+		 * @returns	The MD datatype in the HDF dataset if MD values are actually stored in a HDF dataset.
+		 * 			Returns @c DOUBLE if MD values are stored as a regular discretization along the
+		 * 			wellbore trajectory.
+		 */
 		COMMON_NS::AbstractObject::numericalDatatypeEnum getMdHdfDatatype() const;
+
+		/**
+		 * Gets all the MD values of this instance which are supposed to be double ones.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the MD values are neither stored in a HDF5 double
+		 * 										array nor in a double lattice array.
+		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
+		 * 										the HDF proxy is missing.
+		 *
+		 * @param [out]	values	A buffer to receive the MD values ordered from top to bottom of the
+		 * 						wellbore trajectory. It must be preallocated with size of
+		 * 						getMdValuesCount().
+		 */
 		void getMdAsDoubleValues(double * values) const;
+
+		/**
+		 * Gets all the MD values of this instance which are supposed to be float ones.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the MD values are neither stored in a HDF5 double
+		 * 										array nor in a double lattice array.
+		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
+		 * 										the HDF proxy is missing.
+		 *
+		 * @param [out]	values	A buffer to receive the MD values ordered from top to bottom of the
+		 * 						wellbore trajectory. It must be preallocated with size of
+		 * 						getMdValuesCount().
+		 */
 		void getMdAsFloatValues(float * values) const;
 
+		/** 
+		 * Gets the associated RESQML wellbore trajectory. 
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * 
+		 * @return The associated RESQML wellbore trajectory.
+		 */
 		WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 	};
 	
@@ -7101,17 +7652,68 @@ namespace RESQML2_NS
 	class SeismicWellboreFrameRepresentation : public WellboreFrameRepresentation
 	{
 	public:
-		void setTimeValues(double const * timeValues, unsigned int timeValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+	
+		/**
+		* Set the time values of this SeismicWellboreFrameRepresentation frame to an array 1d of explicit values.
+		* @param timeValues		All the time values to set from top of the well trajectory to bottom.
+		* @param timeValueCount	The time values count. It must be the same that the md values count.
+		* @param proxy			The HDF proxy where to write the time values. It must be already opened for writing and won't be closed in this method.
+		*/
+		void setTimeValues(double const * timeValues, uint64_t timeValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		* Set the time values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.
+		* @param firstTimeValue		The first time value.
+		* @param incrementTimeValue	The increment value between two time values. It must be the same that the md values count.
+		* @param timeValueCount		The count of time values in this WellboreFrameRepresentation.
+		*/
 		void setTimeValues(double firstTimeValue, double incrementTimeValue, unsigned int timeValueCount);
 
+		/**
+		* Indicates either the times are regularly spaced or not (useful for optimization)
+		* Does not verify if the writer has used a generic array to store regular times.
+		*/
 		bool areTimeValuesRegularlySpaced() const;
+
+		/**
+		* Indicates the increment value between two times only if the times are regularly spaced.
+		* Please use areTimeValuesRegularlySpaced before using this method.
+		*/
 		double getTimeConstantIncrementValue() const;
+
+		/**
+		* Returns the first time value of this SeismicWellboreFrameRepresentation
+		*/
 		double getTimeFirstValue() const;
+
+		/**
+		* Get the number of time values in this seismic wellbore frame.
+		*/
 		unsigned int getTimeValuesCount() const;
+
+		/**
+		* Get the time values datatype in the HDF dataset
+		*/
 		COMMON_NS::AbstractObject::numericalDatatypeEnum getTimeHdfDatatype() const;
+
+		/**
+		* Get all the time values of the instance which are supposed to be double ones.
+		*/
 		void getTimeAsDoubleValues(double* values) const;
+
+		/**
+		* Get all the time values of the instance which are supposed to be float ones.
+		*/
 		void getTimeAsFloatValues(float* values) const;
+
+		/**
+		* Returns the seismic reference datum
+		*/
 		double getSeismicReferenceDatum() const;
+
+		/**
+		* Returns the weathering velocity
+		*/
 		double getWeatheringVelocity() const;
 	};
 
@@ -7170,8 +7772,8 @@ namespace RESQML2_NS
 		 * 															values will be stored. If set to nullptr,
 		 *															the default HdfProxy will be used instead.
 		 */
-		void setIntervalGridCells(char const* gridIndices, char gridIndicesNullValue, int64_t const* cellIndices,
-			char const* localFacePairPerCellIndices, char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy = nullptr);
+		void setIntervalGridCells(int8_t const* gridIndices, int8_t gridIndicesNullValue, int64_t const* cellIndices,
+			int8_t const* localFacePairPerCellIndices, int8_t localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy = nullptr);
 
 		/**
 		 * Gets the cell count, that is to say the number of non-null entries in the grid indices array.
@@ -7197,7 +7799,7 @@ namespace RESQML2_NS
 		 * @returns	The null value used in @p gridIndices in order to indicate that an interval does not
 		 * 			correspond to any intersected grid.
 		 */
-		char getGridIndices(char * gridIndices) const;
+		int8_t getGridIndices(int8_t * gridIndices) const;
 
 		/**
 		 * For each interval of the wellbore frame, gets the index of the cell it is associated to.
@@ -7230,7 +7832,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value used in @p localFacePairPerCellIndices in order to indicate that no face is intersected.
 		 */
-		char getLocalFacePairPerCellIndices(char* localFacePairPerCellIndices) const;
+		int8_t getLocalFacePairPerCellIndices(int8_t* localFacePairPerCellIndices) const;
 
 		/**
 		 * Pushes back a grid representation which is one of the support of this representation.

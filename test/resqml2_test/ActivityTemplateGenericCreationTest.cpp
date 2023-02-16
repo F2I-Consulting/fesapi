@@ -26,11 +26,6 @@ using namespace resqml2_test;
 using namespace RESQML2_NS;
 using namespace EML2_NS;
 
-// ***************************************************************
-// two followings values are conventions, they must not be changed
-const char* ActivityTemplateGenericCreationTest::defaultUuid = "a41c63bf-78cb-454b-8018-c9df060c5cf3";
-const char* ActivityTemplateGenericCreationTest::defaultTitle = "GenericCreationActivity";
-
 ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(const string & repoPath)
 	: commontest::AbstractTest(repoPath) {
 		ParameterTest creationInput = {"CreationInput", true, false, 0, -1};

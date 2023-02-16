@@ -47,17 +47,17 @@ SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, co
 	repo->addDataObject(this);
 }
 
-int SeismicLineFeature::getTraceIndexIncrement() const
+int64_t SeismicLineFeature::getTraceIndexIncrement() const
 {
 	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceIndexIncrement;
 }
 		
-int SeismicLineFeature::getFirstTraceIndex() const
+int64_t SeismicLineFeature::getFirstTraceIndex() const
 {
 	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->FirstTraceIndex;
 }
 		
-unsigned int SeismicLineFeature::getTraceCount() const
+uint64_t SeismicLineFeature::getTraceCount() const
 {
 	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceCount;
 }

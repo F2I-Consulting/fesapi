@@ -380,7 +380,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsParametricSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short const * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 			unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
@@ -454,7 +454,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
@@ -522,7 +522,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 			double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 			unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
@@ -590,7 +590,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const final;
@@ -623,7 +623,7 @@ namespace RESQML2_NS
 
 		void writeGeometryOnHdf(double const * parameters,
 			double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar,
-			unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 			unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractHdfProxy * proxy);
 
 		virtual EML2_NS::AbstractHdfProxy* getParameterDatasetPath(std::string & datasetPathInExternalFile) const = 0;
@@ -669,7 +669,7 @@ namespace RESQML2_NS
 
 			unsigned int maxControlPointCount;
 			unsigned int parametricLineCount;
-			unsigned int splitLineCount;
+			uint64_t splitLineCount;
 			double * controlPoints;
 			double * controlPointParameters;
 			short * pillarKind;

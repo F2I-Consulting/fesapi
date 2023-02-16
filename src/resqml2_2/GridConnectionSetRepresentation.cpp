@@ -22,8 +22,6 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
@@ -120,7 +118,7 @@ void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(uint
 
 void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t cellIndexPairCount = getCellIndexPairCount();
+	const uint64_t cellIndexPairCount = getCellIndexPairCount();
 	if (cellIndexPairCount == 0) {
 		throw logic_error("You must set some cell connections before to set local face connections");
 	}
@@ -159,7 +157,7 @@ void GridConnectionSetRepresentation::getInterpretationIndexCumulativeCount(uint
 		readArrayNdOfUInt64Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount);
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -176,7 +174,7 @@ void GridConnectionSetRepresentation::getInterpretationIndices(int64_t * interpr
 		}
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -192,7 +190,7 @@ int64_t GridConnectionSetRepresentation::getInterpretationIndexNullValue() const
 		}
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -234,15 +232,15 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 		{
 			auto dsPart = static_cast<eml23__IntegerExternalArray*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values->ExternalFileProxy[0];
 			auto hdfProxy = getHdfProxyFromDataset(dsPart);
-			const signed long long faultIndexCount = getHdfProxyFromDataset(dsPart)->getElementCount(dsPart->PathInExternalFile);
+			const uint64_t faultIndexCount = getHdfProxyFromDataset(dsPart)->getElementCount(dsPart->PathInExternalFile);
 			if (faultIndexCount < 0) {
 				throw invalid_argument("The HDF5 library could not read the element count of this dataset.");
 			}
-			std::unique_ptr<int64_t[]> faultIndices(new int64_t[static_cast<size_t>(faultIndexCount)]);
+			std::unique_ptr<int64_t[]> faultIndices(new int64_t[faultIndexCount]);
 
 			hdfProxy->readArrayNdOfInt64Values(dsPart->PathInExternalFile, faultIndices.get());
-			for (size_t i = 0; i < static_cast<size_t>(faultIndexCount); ++i) {
-				if (faultIndices[i] == static_cast<unsigned int>(interpretationIndex)) {
+			for (size_t i = 0; i < faultIndexCount; ++i) {
+				if (faultIndices[i] == interpretationIndex) {
 					result++;
 				}
 			}
@@ -375,19 +373,14 @@ COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretatio
 
 	if (rep->ConnectionInterpretations != nullptr) {
 		if (rep->ConnectionInterpretations->FeatureInterpretation.size() > interpretationIndex) {
-			if (rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]->ContentType.find("FaultInterpretation") != string::npos) {
-				return COMMON_NS::DataObjectReference(rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]);
-			}
-			else {
-				throw invalid_argument("The associated feature interpretation is not a fault one. Legal but not yet implemented.");
-			}
+			return COMMON_NS::DataObjectReference(rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]);
 		}
 		else {
-			throw out_of_range("The fault index is out of range in this grid connection context.");
+			throw out_of_range("The interpretation index is out of range in this grid connection context.");
 		}
 	}
 	else {
-		throw invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -462,7 +455,7 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(uint64_
 	cumulativeLength->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/InterpretationIndices/" + CUMULATIVE_LENGTH_DS_NAME;
+	dsPart->PathInExternalFile = getHdfGroup() + "/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME;
 	dsPart->Count = cellIndexPairCount;
 	cumulativeLength->Values->ExternalFileProxy.push_back(dsPart);
 	// Elements
@@ -472,7 +465,7 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(uint64_
 	elements->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
 	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
 	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/InterpretationIndices/" + ELEMENTS_DS_NAME;
+	dsPart->PathInExternalFile = getHdfGroup() + "/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME;
 	dsPart->Count = cumulativeInterpCount[cellIndexPairCount - 1];
 	elements->Values->ExternalFileProxy.push_back(dsPart);
 
@@ -525,8 +518,7 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 	for (size_t i = 0; i < cellIndexPairCount; ++i) {
 		cumulative[i] = i + 1;
 	}
-	hsize_t numValueInEachDim = cellIndexPairCount;
-	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &numValueInEachDim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &cellIndexPairCount, 1);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)

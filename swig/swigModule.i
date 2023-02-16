@@ -19,36 +19,14 @@ under the License.
 %module fesapi
 
 %{
-#include <stdint.h>		// Use the C99 official header
+#if defined(__clang__) || defined(_MSC_VER)
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
 %}
 
-%include <swigarch.i>
-
-/* Exact integral types.  */
-
-/* Signed.  */
-
-typedef signed char		int8_t;
-typedef short int		int16_t;
-typedef int			int32_t;
-#if defined(SWIGWORDSIZE64)
-typedef long int		int64_t;
-#else
-typedef long long int		int64_t;
-#endif
-
-/* Unsigned.  */
-typedef unsigned char		uint8_t;
-typedef unsigned short int	uint16_t;
-typedef unsigned int		uint32_t;
-#ifndef SWIGJAVA	
-#if defined(SWIGWORDSIZE64)
-typedef unsigned long int	uint64_t;
-#else
-typedef unsigned long long int	uint64_t;
-#endif
-#endif
-
+%include "stdint.i"
 %include "std_string.i"
 
 %include "../src/nsDefinitions.h"
@@ -57,14 +35,20 @@ typedef unsigned long long int	uint64_t;
 // JAVA
 //************************/
 
-#ifdef SWIGJAVA		
+#ifdef SWIGJAVA
+	// https://stackoverflow.com/a/60208989
+	%define PRIMITIVE_TYPEMAP(NEW_TYPE, TYPE)
+	%clear NEW_TYPE;
+	%apply TYPE { NEW_TYPE };
+	%enddef // PRIMITIVE_TYPEMAP
+#if defined(SWIGWORDSIZE64)
+	PRIMITIVE_TYPEMAP(long int, long long);
+	PRIMITIVE_TYPEMAP(unsigned long int, long long);
+#endif
 	// We don't want to use BigInteger in java.
-	#if defined(SWIGWORDSIZE64)
-	typedef long int		uint64_t;
-	#else
-	typedef long long int		uint64_t;
-	#endif	
-	
+	PRIMITIVE_TYPEMAP(unsigned long long int, long long);
+#undef PRIMITIVE_TYPEMAP
+
 	/*
 	 When using multiple modules or the nspace feature it is common to invoke SWIG with a different -package command line option for each module.
 	 However, by default the generated code may not compile if generated classes in one package use generated classes in another package.
@@ -127,7 +111,7 @@ typedef unsigned long long int	uint64_t;
 	%array_functions(float, FloatArray);
 	%array_functions(double, DoubleArray);
 	%array_functions(bool, BoolArray);
-#else // Use GC.KeepAlive on these arrays to ensure no premature garbage collection in C#
+#else // Use Dispose() (or GC.KeepAlive) on these arrays to ensure no premature garbage collection in C#
 	%array_class(int64_t, Int64Array);
 	%array_class(uint64_t, UInt64Array);
 	%array_class(int32_t, Int32Array);
@@ -151,8 +135,10 @@ typedef unsigned long long int	uint64_t;
 %include "std_vector.i"
 
 %template(StringVector) std::vector< std::string >;
-%template(Int32Vector) std::vector< int >;
-%template(Int64Vector) std::vector< long long >;
+%template(Int32Vector) std::vector< int32_t >;
+%template(UInt32Vector) std::vector< uint32_t >;
+// Vector of int64 and uint64 are tough to port because of long vs long long platform
+// Indeed c++ long corresponds to int in java where c++ long long corresponds to long in java
 %template(FloatVector) std::vector< float >;
 %template(DoubleVector) std::vector< double >;
 %template(BoolVector) std::vector< bool >;
@@ -362,6 +348,15 @@ namespace COMMON_NS
 		std::vector<std::string> getExtraMetadata(const std::string & key) const;
 
 		/**
+		 * Get the count of extra metadata in this instance
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
+		 *
+		 * @returns	The extra metadata count of this instance.
+		 */
+		unsigned int getExtraMetadataCount() const;
+
+		/**
 		 * Get the key of a key value pair at a particular index in the extra metadata set of this
 		 * instance
 		 *
@@ -479,14 +474,14 @@ import com.f2i_consulting.fesapi.*;
 	class DataObjectRepository
 	{
 	public:
-	
+
 		enum class openingMode : std::int8_t {
 			READ_ONLY = 0,
 			READ_WRITE = 1,
 			READ_WRITE_DO_NOT_CREATE = 2,
 			OVERWRITE = 3
 		};
-		
+
 		enum class EnergisticsStandard : std::int8_t {
 			RESQML2_0_1 = 0,
 			EML2_0 = 1,
@@ -499,16 +494,16 @@ import com.f2i_consulting.fesapi.*;
 		};
 		
 		DataObjectRepository();
-		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);	
-		
+		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
+
 		void setDefaultStandard(EnergisticsStandard version);
 		EnergisticsStandard getDefaultEmlVersion() const;
 		EnergisticsStandard getDefaultProdmlVersion() const;
 		EnergisticsStandard getDefaultResqmlVersion() const;
 		EnergisticsStandard getDefaultWitsmlVersion() const;
-		
+
 		void clear();
-		
+
 		RESQML2_NS::AbstractLocal3dCrs* getDefaultCrs() const;
 		void setDefaultCrs(RESQML2_NS::AbstractLocal3dCrs* crs);
 		
@@ -648,7 +643,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
 
@@ -662,7 +657,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
 
 
@@ -676,7 +671,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, const bool & isUpOriented);
 
@@ -692,7 +687,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
 
@@ -804,8 +799,8 @@ import com.f2i_consulting.fesapi.*;
 
 		RESQML2_NS::StratigraphicUnitInterpretation* createStratigraphicUnitInterpretation(RESQML2_NS::RockVolumeFeature * stratiUnitFeature, const std::string & guid, const std::string & title);
 		RESQML2_NS::StratigraphicColumn* createStratigraphicColumn(const std::string & guid, const std::string & title);
-		RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, unsigned long rank);
-		RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, unsigned long rank);
+		RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank);
+		RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank);
 		RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 		RESQML2_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
 
@@ -892,50 +887,315 @@ import com.f2i_consulting.fesapi.*;
 			const std::string & title,
 			RESQML2_NS::SealedSurfaceFrameworkRepresentation* ssf);
 
+		/**
+		 * Creates a partial ijk grid representation into this repository
+		 *
+		 * @param 	guid 	The guid to set to the sealed volume framework representation. If empty
+		 * 					then a new guid will be generated.
+		 * @param 	title	The title to set to the sealed volume framework representation.
+		 *
+		 * @returns	A pointer to the new partial ijk grid representation.
+		 */
 		RESQML2_NS::AbstractIjkGridRepresentation* createPartialIjkGridRepresentation(const std::string & guid, const std::string & title);
 
+		/**
+		 * Creates a partial truncated ijk grid representation into this repository
+		 *
+		 * @param 	guid 	The guid to set to the sealed volume framework representation.
+		 * @param 	title	The title to set to the sealed volume framework representation.
+		 *
+		 * @returns	A pointer to the new partial truncated ijk grid representation.
+		 */
 		RESQML2_NS::AbstractIjkGridRepresentation* createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title);
 
+		/**
+		 * @brief	Creates an ijk grid explicit representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param		guid  	The guid to set to the ijk grid explicit representation. If empty then a new
+		 * 						guid will be generated.
+		 * @param		title 	The title to set to the ijk grid explicit representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param		iCount	Count of cells in the I direction in the grid.
+		 * @param 		jCount	Count of cells in the J direction in the grid.
+		 * @param		kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
+		 *
+		 * @returns	A pointer to the new ijk grid explicit representation.
+		 */
 		RESQML2_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
+		/**
+		 * @brief	Creates an ijk grid explicit representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param 	  	guid  	The guid to set to the ijk grid explicit representation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	  	title 	The title to set to the ijk grid explicit representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param 	  	iCount	Count of cells in the I direction in the grid.
+		 * @param 	  	jCount	Count of cells in the J direction in the grid.
+		 * @param 	  	kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
+		 *
+		 * @returns	A pointer to the new ijk grid explicit representation.
+		 */
 		RESQML2_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
+		/**
+		 * @brief	Creates an ijk grid parametric representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param		guid  	The guid to set to the ijk grid parametric representation. If empty then a
+		 * 						new guid will be generated.
+		 * @param		title 	The title to set to the ijk grid parametric representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param		iCount	Count of cells in the I direction in the grid.
+		 * @param		jCount	Count of cells in the J direction in the grid.
+		 * @param		kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
+		 *
+		 * @returns	A pointer to the new ijk grid parametric representation.
+		 */
 		RESQML2_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
+		/**
+		 * @brief	Creates an ijk grid parametric representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param 	  	guid  	The guid to set to the ijk grid parametric representation. If empty then
+		 * 						a new guid will be generated.
+		 * @param 	  	title 	The title to set to the ijk grid parametric representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param 	  	iCount	Count of cells in the I direction in the grid.
+		 * @param 	  	jCount	Count of cells in the J direction in the grid.
+		 * @param 	  	kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
+		 *
+		 * @returns	A pointer to the new ijk grid parametric representation.
+		 */
 		RESQML2_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
+		/**
+		 * @brief	Creates an ijk grid lattice representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid  	The guid to set to the ijk grid lattice representation. If empty then a new
+		 * 					guid will be generated.
+		 * @param 	title 	The title to set to the ijk grid lattice representation. If empty then
+		 * 					\"unknown\" title will be set.
+		 * @param 	iCount	Count of cells in the I direction in the grid.
+		 * @param 	jCount	Count of cells in the J direction in the grid.
+		 * @param 	kCount	Number of layers in the grid.
+		 *
+		 * @returns	A pointer to the new ijk grid lattice representation.
+		 */
 		RESQML2_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
+		/**
+		 * @brief	Creates an ijk grid lattice representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param 	  	guid  	The guid to set to the ijk grid lattice representation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	  	title 	The title to set to the ijk grid lattice representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param 	  	iCount	Count of cells in the I direction in the grid.
+		 * @param 	  	jCount	Count of cells in the J direction in the grid.
+		 * @param 	  	kCount	Number of layers in the grid.
+		 *
+		 * @returns	A pointer to the new ijk grid lattice representation.
+		 */
 		RESQML2_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
+		/**
+		 * @brief	Creates an ijk grid with no geometry representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param		guid  	The guid to set to the ijk grid with no geometry representation. If empty
+		 * 						then a new guid will be generated.
+		 * @param		title 	The title to set to the ijk grid with no geometry representation. If empty
+		 * 						then \"unknown\" title will be set.
+		 * @param		iCount	Count of cells in the I direction in the grid.
+		 * @param		jCount	Count of cells in the J direction in the grid.
+		 * @param		kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
+		 *
+		 * @returns	A pointer to the new ijk grid with no geometry representation.
+		 */
 		RESQML2_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
+		/**
+		 * @brief	Creates an ijk grid with no geometry representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param 	  	guid  	The guid to set to the ijk grid with no geometry representation. If empty
+		 * 						then a new guid will be generated.
+		 * @param 	  	title 	The title to set to the ijk grid with no geometry representation. If
+		 * 						empty then \"unknown\" title will be set.
+		 * @param 	  	iCount	Count of cells in the I direction in the grid.
+		 * @param 	  	jCount	Count of cells in the J direction in the grid.
+		 * @param 	  	kCount	Number of layers in the grid.
+		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
+		 *						TRUE if there is a gap after the corresponding layer.
+		 *						Won't be freed by FESAPI.
+		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * 						values. If @c nullptr (default), then the default HDF proxy will be
+		 * 						used.
+		 *
+		 * @returns	A pointer to the new ijk grid with no geometry representation.
+		 */
 		RESQML2_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount, bool* kGaps = nullptr, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
-		RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
-			uint64_t cellCount);
+		/**
+		 * @brief	Creates an unstructured grid representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid	 	The guid to set to the unstructured grid representation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	title	 	The title to set to the unstructured grid representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param 	cellCount	Number of cells in the grid.
+		 *
+		 * @returns	A pointer to the new unstructured grid representation.
+		 */
+		RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string & guid, const std::string & title, uint64_t cellCount);
+		
+		/**
+		 * @brief	Creates an unstructured grid representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param 	guid	 	The guid to set to the unstructured grid representation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	title	 	The title to set to the unstructured grid representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param 	cellCount	Number of cells in the grid.
+		 *
+		 * @returns	A pointer to the new unstructured grid representation.
+		 */
+		RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const std::string & title, uint64_t cellCount);
 
+		/**
+		 * @brief	Creates a sub-representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the sub-representation. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the sub-representation. If empty then \"unknown\" title
+		 * 					will be set.
+		 *
+		 * @returns	A pointer to the new sub-representation.
+		 */
 		RESQML2_NS::SubRepresentation* createSubRepresentation(
 			const std::string & guid, const std::string & title);
 
+		/**
+		 * @brief	Creates a sub-representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
+		 * 						use {@link  createSubRepresentation} if no interpretation is associated
+		 * 						to this representation.
+		 * @param 	  	guid  	The guid to set to the sub-representation. If empty then a new guid will
+		 * 						be generated.
+		 * @param 	  	title 	The title to set to the sub-representation. If empty then \"unknown\"
+		 * 						title will be set.
+		 *
+		 * @returns	A pointer to the new sub-representation.
+		 */
 		RESQML2_NS::SubRepresentation* createSubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
+		/**
+		 * @brief	Creates a grid connection set representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the grid connection set representation. If empty then a
+		 * 					new guid will be generated.
+		 * @param 	title	The title to set to the grid connection set representation. If empty then
+		 * 					\"unknown\" title will be set.
+		 *
+		 * @returns	A pointer to the new grid connection set representation.
+		 */
 		RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(const std::string & guid, const std::string & title);
 
+		/**
+		 * @brief	Creates a grid connection set representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
+		 * 						use {@link  createGridConnectionSetRepresentation} if no interpretation
+		 * 						is associated to this representation.
+		 * @param 	  	guid  	The guid to set to the grid connection set representation. If empty then
+		 * 						a new guid will be generated.
+		 * @param 	  	title 	The title to set to the grid connection set representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 *
+		 * @returns	A pointer to the new grid connection set representation.
+		 */
 		RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 

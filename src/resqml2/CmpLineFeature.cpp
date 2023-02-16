@@ -23,17 +23,15 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_eml2_3;
-
-const char* CmpLineFeature::XML_TAG = "CmpLineFeature";
 		
-unsigned int CmpLineFeature::getTraceCount() const
+uint64_t CmpLineFeature::getTraceCount() const
 {
 	_resqml22__CmpLineFeature* cmpLine = static_cast<_resqml22__CmpLineFeature*>(gsoapProxy2_3);
 	if (cmpLine->NearestShotPointIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray) {
 		return static_cast<eml23__IntegerLatticeArray*>(cmpLine->NearestShotPointIndices)->Offset[0]->Count + 1;
 	}
 	else if (cmpLine->NearestShotPointIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		unsigned int result = 0;
+		uint64_t result = 0;
 		for (size_t i = 0; i < static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalFileProxy.size(); ++i) {
 			result += static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalFileProxy[i]->Count;
 		}

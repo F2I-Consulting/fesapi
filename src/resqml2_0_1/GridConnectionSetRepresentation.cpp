@@ -22,8 +22,6 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractGridRepresentation.h"
 #include "../eml2/AbstractHdfProxy.h"
@@ -145,7 +143,7 @@ void GridConnectionSetRepresentation::getInterpretationIndexCumulativeCount(uint
 		readArrayNdOfUInt64Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount);
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -162,7 +160,7 @@ void GridConnectionSetRepresentation::getInterpretationIndices(int64_t * interpr
 		}
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -178,7 +176,7 @@ int64_t GridConnectionSetRepresentation::getInterpretationIndexNullValue() const
 		}
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -220,14 +218,11 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 		{
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values;
 			EML2_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
-			const signed long long faultIndexCount = hdfProxy->getElementCount(dataset->PathInHdfFile);
-			if (faultIndexCount < 0) {
-				throw invalid_argument("The HDF5 library could not read the element count of this dataset.");
-			}
-			std::unique_ptr<int64_t[]> const faultIndices(new int64_t[static_cast<size_t>(faultIndexCount)]);
+			const uint64_t faultIndexCount = hdfProxy->getElementCount(dataset->PathInHdfFile);
+			std::unique_ptr<int64_t[]> const faultIndices(new int64_t[faultIndexCount]);
 
 			hdfProxy->readArrayNdOfInt64Values(dataset->PathInHdfFile, faultIndices.get());
-			for (size_t i = 0; i < static_cast<size_t>(faultIndexCount); ++i) {
+			for (size_t i = 0; i < faultIndexCount; ++i) {
 				if (faultIndices[i] == interpretationIndex) {
 					result++;
 				}
@@ -361,19 +356,14 @@ COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretatio
 
 	if (rep->ConnectionInterpretations != nullptr) {
 		if (rep->ConnectionInterpretations->FeatureInterpretation.size() > interpretationIndex) {
-			if (rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]->ContentType.find("FaultInterpretation") != string::npos) {
-				return COMMON_NS::DataObjectReference(rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]);
-			}
-			else {
-				throw invalid_argument("The associated feature interpretation is not a fault one. Legal but not yet implemented.");
-			}
+			return COMMON_NS::DataObjectReference(rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]);
 		}
 		else {
-			throw out_of_range("The fault index is out of range in this grid connection context.");
+			throw out_of_range("The interpretation index is out of range in this grid connection context.");
 		}
 	}
 	else {
-		throw invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -442,14 +432,14 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(uint64_
 	cumulativeLength->NullValue = -1;
 	cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	cumulativeLength->Values->HdfProxy = proxy->newResqmlReference();
-	cumulativeLength->Values->PathInHdfFile = getHdfGroup() + "/InterpretationIndices/" + CUMULATIVE_LENGTH_DS_NAME;
+	cumulativeLength->Values->PathInHdfFile = getHdfGroup() + "/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME;
 	// Elements
 	resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	rep->ConnectionInterpretations->InterpretationIndices->Elements = elements;
 	elements->NullValue = -1;
 	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	elements->Values->HdfProxy = proxy->newResqmlReference();
-	elements->Values->PathInHdfFile = getHdfGroup() + "/InterpretationIndices/" + ELEMENTS_DS_NAME;
+	elements->Values->PathInHdfFile = getHdfGroup() + "/InterpretationIndices/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME;
 
 	// HDF
 	const uint64_t cellIndexPairCount = getCellIndexPairCount();
@@ -502,8 +492,7 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 	for (size_t i = 0; i < cellIndexPairCount; ++i) {
 		cumulative[i] = i + 1;
 	}
-	hsize_t numValueInEachDim = cellIndexPairCount;
-	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &numValueInEachDim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &cellIndexPairCount, 1);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)

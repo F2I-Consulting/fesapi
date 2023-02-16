@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SeismicWellboreFrameRepresentation.h"
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 #include "../resqml2/LocalTime3dCrs.h"
 #include "../resqml2/WellboreInterpretation.h"
@@ -29,9 +27,7 @@ using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_eml2_3;
 
-const char* SeismicWellboreFrameRepresentation::XML_TAG = "SeismicWellboreFrameRepresentation";
-
-void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues, unsigned int timeValueCount, EML2_NS::AbstractHdfProxy* proxy)
+void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues, uint64_t timeValueCount, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -55,12 +51,11 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues
 	frame->NodeCount = timeValueCount;
 
 	// HDF
-	hsize_t dim = timeValueCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		"timeValues",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
 		timeValues,
-		&dim, 1);
+		&timeValueCount, 1);
 }
 
 void SeismicWellboreFrameRepresentation::setTimeValues(double firstTimeValue, double incrementTimeValue, unsigned int timeValueCount)

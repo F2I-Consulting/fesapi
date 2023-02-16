@@ -118,7 +118,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getParameterCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterCount() const final;
 
 		/**
 		 * Gets parameter title

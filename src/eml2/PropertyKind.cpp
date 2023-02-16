@@ -18,12 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PropertyKind.h"
 
-#include <stdexcept>
-
 using namespace std;
 using namespace EML2_NS;
-
-const char* PropertyKind::XML_TAG = "PropertyKind";
 
 std::string PropertyKind::getNamingSystem() const
 {

@@ -56,7 +56,7 @@ namespace resqml2_test {
 		 * @param kCount number of cells in the K direction.
 		 * @param faultCount number of faults. Faults are parallel to YZ plane (they fit with i-interfaces). faultCount in [0; iCount[.
 		 */
-		unsigned long long initNodesCountIjkGridRepresentation(unsigned int iCount, unsigned int jCount, unsigned int kCount, unsigned int faultCount);
+		uint64_t initNodesCountIjkGridRepresentation(unsigned int iCount, unsigned int jCount, unsigned int kCount, unsigned int faultCount);
 
 		/**
 		 * Initialize generated grid geometry. Result is stored into class variable nodesIjkGridRepresentation.

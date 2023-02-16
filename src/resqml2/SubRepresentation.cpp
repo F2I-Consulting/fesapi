@@ -22,8 +22,6 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
@@ -49,11 +47,10 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	// Arbitrarily set null value to -1 since it has no interest to write element index null value in this method
 	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/" + subRepDatasetName, -1, proxy, supportingRepDataset);
 
-	// ************ HDF ************		
-	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), subRepDatasetName, elementIndices, &numValues, 1);
+	// ************ HDF ************
+	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), subRepDatasetName, elementIndices, &elementCount, 1);
 	if (supportingRepIndices != nullptr) {
-		proxy->writeArrayNd(getHdfGroup(), ossForHdfSupRep.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, supportingRepIndices, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), ossForHdfSupRep.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, supportingRepIndices, &elementCount, 1);
 	}
 }
 
@@ -69,11 +66,10 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	const std::string datasetName = "subrepresentation_elementIndices0_patch" + std::to_string(getPatchCount());
 
 	// HDF
-	hsize_t numValues = elementCount;
 	proxy->createArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64,
-		&numValues, 1);
+		&elementCount, 1);
 
 	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/" + datasetName, -1, proxy, "");
 }
@@ -106,14 +102,12 @@ void SubRepresentation::setElementIndices(uint64_t* elementIndices,
 	}
 
 	// HDF
-	hsize_t numValues = elementCount;
-	hsize_t offsetValues = offset;
 	proxy->writeArrayNdSlab(getHdfGroup(),
 		oss.str(),
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64,
 		elementIndices,
-		&numValues,
-		&offsetValues,
+		&elementCount,
+		&offset,
 		1);
 }
 

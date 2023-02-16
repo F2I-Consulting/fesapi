@@ -22,8 +22,6 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../common/EnumStringMapper.h"
 #include "../eml2/AbstractHdfProxy.h"
 #include "../eml2/PropertyKind.h"
@@ -83,11 +81,11 @@ std::string DiscreteProperty::pushBackRefToExistingIntegerDataset(EML2_NS::Abstr
 	return result;
 }
 
-int64_t DiscreteProperty::getNullValue(unsigned int patchIndex) const
+int64_t DiscreteProperty::getNullValue(uint64_t patchIndex) const
 {
 	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
 
-	auto abstractIntArray = prop->ValuesForPatch[patchIndex == (numeric_limits<unsigned int>::max)() ? prop->ValuesForPatch.size() - 1 : patchIndex];
+	auto abstractIntArray = prop->ValuesForPatch[patchIndex == (numeric_limits<uint64_t>::max)() ? prop->ValuesForPatch.size() - 1 : patchIndex];
 	if (abstractIntArray->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 		return (std::numeric_limits<int64_t>::max)();
 	}

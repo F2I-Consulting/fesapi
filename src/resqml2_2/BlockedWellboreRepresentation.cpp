@@ -21,8 +21,6 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../resqml2/AbstractGridRepresentation.h"
 #include "../resqml2/WellboreInterpretation.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
@@ -62,8 +60,8 @@ BlockedWellboreRepresentation::BlockedWellboreRepresentation(RESQML2_NS::Wellbor
 	}
 }
 
-void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices, char gridIndicesNullValue, int64_t const* cellIndices,
-	char const* localFacePairPerCellIndices, char localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
+void BlockedWellboreRepresentation::setIntervalGridCells(int8_t const* gridIndices, int8_t gridIndicesNullValue, int64_t const* cellIndices,
+	int8_t const* localFacePairPerCellIndices, int8_t localFacePairPerCellIndicesNullValue, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
 	// Preconditions
 	if (getXyzPointCountOfAllPatches() == 0) {
@@ -110,7 +108,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(char const* gridIndices
 	xmlGridIndices->Values->ExternalFileProxy.push_back(dsPart);
 	rep->IntervalGridCells->GridIndices = xmlGridIndices;
 	// HDF
-	hsize_t intervalCount = rep->NodeCount - 1;
+	uint64_t intervalCount = rep->NodeCount - 1;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
@@ -158,13 +156,13 @@ uint64_t BlockedWellboreRepresentation::getCellCount() const
 	return static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->CellCount;
 }
 
-char BlockedWellboreRepresentation::getGridIndices(char * gridIndices) const
+int8_t BlockedWellboreRepresentation::getGridIndices(int8_t * gridIndices) const
 {
 	auto xmlGridIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->GridIndices;
 
 	if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->Values->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, gridIndices);
+		getHdfProxyFromDataset(dsPart)->readArrayNdOfInt8Values(dsPart->PathInExternalFile, gridIndices);
 		return static_cast<eml23__IntegerExternalArray*>(xmlGridIndices)->NullValue;
 	}
 	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
@@ -200,13 +198,13 @@ int64_t BlockedWellboreRepresentation::getCellIndices(int64_t* cellIndices) cons
 	return (numeric_limits<int64_t>::max)();
 }
 
-char BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(char* localFacePairPerCellIndices) const
+int8_t BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(int8_t* localFacePairPerCellIndices) const
 {
 	auto xmlLocalFacePairPerCellIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->LocalFacePairPerCellIndices;
 
 	if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 		eml23__ExternalDatasetPart const* dsPart = static_cast<eml23__IntegerExternalArray*>(xmlLocalFacePairPerCellIndices)->Values->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, localFacePairPerCellIndices);
+		getHdfProxyFromDataset(dsPart)->readArrayNdOfInt8Values(dsPart->PathInExternalFile, localFacePairPerCellIndices);
 		return static_cast<eml23__IntegerExternalArray*>(xmlLocalFacePairPerCellIndices)->NullValue;
 	}
 	else if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {

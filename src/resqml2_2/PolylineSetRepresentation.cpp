@@ -23,8 +23,6 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include <hdf5.h>
-
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
@@ -78,7 +76,7 @@ PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeature
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int const* nodeCountPerPolyline, double const* nodes,
-				unsigned int polylineCount, bool allPolylinesClosedFlag,
+				uint64_t polylineCount, bool allPolylinesClosedFlag,
 				EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
@@ -110,11 +108,10 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlNodeCountPerPolyline->Values->ExternalFileProxy.push_back(dsPart);
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
-	hsize_t dim = polylineCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
-		&dim, 1);
+		&polylineCount, 1);
 
 	// closed polylines
 	eml23__BooleanConstantArray* xmlClosedPolylines = soap_new_eml23__BooleanConstantArray(gsoapProxy2_3->soap);
@@ -136,7 +133,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int const* nodeCountPerPolyline, double const* nodes,
-				unsigned int polylineCount, bool * polylineClosedFlags,
+				uint64_t polylineCount, bool * polylineClosedFlags,
 				EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
@@ -168,11 +165,10 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlNodeCountPerPolyline->Values->ExternalFileProxy.push_back(dsPart);
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
-	hsize_t dim = polylineCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
-		&dim, 1);
+		&polylineCount, 1);
 
 	// closed polylines
 	eml23__BooleanExternalArray* xmlClosedPolylines = soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
@@ -189,7 +185,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,
 		polylineClosedFlags,
-		&dim, 1);
+		&polylineCount, 1);
 
 	// XYZ points
 	uint64_t xyzPtDim = 0;
@@ -315,8 +311,8 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(unsigned int patchI
 		const unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
 		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalFileProxy[0];
 
-		std::unique_ptr<char[]> tmp(new char[polylineCount]);
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, tmp.get());
+		std::unique_ptr<int8_t[]> tmp(new int8_t[polylineCount]);
+		getHdfProxyFromDataset(dsPart)->readArrayNdOfInt8Values(dsPart->PathInExternalFile, tmp.get());
 		const bool result = find(tmp.get(), tmp.get() + polylineCount, 0) == tmp.get() + polylineCount;
 
 		return result;
@@ -353,9 +349,9 @@ bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(unsigned int pat
 		const unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
 		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalFileProxy[0];
 
-		std::unique_ptr<char[]> tmp(new char[polylineCount]);
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, tmp.get());
-		return find_if(tmp.get(), tmp.get() + polylineCount, [](char i) {return i != 0; }) == tmp.get() + polylineCount;
+		std::unique_ptr<int8_t[]> tmp(new int8_t[polylineCount]);
+		getHdfProxyFromDataset(dsPart)->readArrayNdOfInt8Values(dsPart->PathInExternalFile, tmp.get());
+		return find_if(tmp.get(), tmp.get() + polylineCount, [](int8_t i) {return i != 0; }) == tmp.get() + polylineCount;
 	}
 	else
 		throw logic_error("Not yet implemented.");
@@ -383,8 +379,8 @@ void PolylineSetRepresentation::getClosedFlagPerPolylineOfPatch(unsigned int pat
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 		eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalFileProxy[0];
 
-		std::unique_ptr<char[]> tmp(new char[polylineCount]);
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfCharValues(dsPart->PathInExternalFile, tmp.get());
+		std::unique_ptr<int8_t[]> tmp(new int8_t[polylineCount]);
+		getHdfProxyFromDataset(dsPart)->readArrayNdOfInt8Values(dsPart->PathInExternalFile, tmp.get());
 		for (size_t i = 0; i < polylineCount; ++i) {
 			closedFlagPerPolyline[i] = tmp[i];
 		}

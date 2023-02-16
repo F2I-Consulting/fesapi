@@ -71,7 +71,7 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, int64_t nullValue, int64_t minimumValue, int64_t maximumValue) final;
 		using AbstractValuesProperty::pushBackRefToExistingIntegerDataset;
 
-		DLL_IMPORT_OR_EXPORT int64_t getNullValue(unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getNullValue(uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)()) const final;
 
 		DLL_IMPORT_OR_EXPORT bool hasMinimumValue(uint64_t index = 0) const final;
 

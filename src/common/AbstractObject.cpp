@@ -19,8 +19,7 @@ under the License.
 
 #include "AbstractObject.h"
 
-#include <limits>
-#include <stdexcept>
+#include <numeric>
 #include <string>
 #include <sstream>
 
@@ -1366,7 +1365,7 @@ uint8_t AbstractObject::readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__Ab
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
 		}
-		hdfProxy->readArrayNdOfUCharValues(hdfArray->Values->PathInHdfFile, arrayOutput);
+		hdfProxy->readArrayNdOfUInt8Values(hdfArray->Values->PathInHdfFile, arrayOutput);
 		if (hdfArray->NullValue > (std::numeric_limits<uint8_t>::max)()) {
 			throw range_error("The null value is greater than uint8_t max.");
 		}
@@ -1387,7 +1386,7 @@ uint8_t AbstractObject::readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIn
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
 			}
-			hdfProxy->readArrayNdOfUCharValues(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
+			hdfProxy->readArrayNdOfUInt8Values(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
 		}
 		if (static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue > (std::numeric_limits<uint8_t>::max)()) {
 			throw range_error("The null value is greater than uint8_t max.");
@@ -1532,14 +1531,14 @@ int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_resqml2_0_1::resqml20__Abst
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The hdf proxy " + hdfArray->Values->HdfProxy->UUID + " is not available.");
 		}
-		hdfProxy->readArrayNdOfCharValues(hdfArray->Values->PathInHdfFile, (char*)arrayOutput);
+		hdfProxy->readArrayNdOfInt8Values(hdfArray->Values->PathInHdfFile, arrayOutput);
 		return hdfArray->NullValue;
 	}
 	else {
 		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
 	}
 
-	return (std::numeric_limits<int16_t>::max)();
+	return (std::numeric_limits<int8_t>::max)();
 }
 
 int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, int8_t* arrayOutput) const
@@ -1550,7 +1549,7 @@ int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractInte
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The hdf proxy " + dsPart->EpcExternalPartReference->Uuid + " is not available.");
 			}
-			hdfProxy->readArrayNdOfCharValues(dsPart->PathInExternalFile, (char*)arrayOutput + dsPart->StartIndex);
+			hdfProxy->readArrayNdOfInt8Values(dsPart->PathInExternalFile, arrayOutput + dsPart->StartIndex);
 		}
 		return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
 	}
@@ -1558,7 +1557,7 @@ int8_t AbstractObject::readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractInte
 		readArrayNdOfNonHdf5IntegerValues(arrayInput, arrayOutput);
 	}
 
-	return (std::numeric_limits<int16_t>::max)();
+	return (std::numeric_limits<int8_t>::max)();
 }
 
 int16_t AbstractObject::readArrayNdOfInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, int16_t* arrayOutput) const

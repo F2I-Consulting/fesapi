@@ -114,7 +114,7 @@ namespace RESQML2_NS
 		 * Gets the minimum key in this double table lookup. It reads it from file.
 		 *
 		 * @returns	The minimum key if some key/value pairs exists in this double table lookup, otherwise
-		 * 			the long maximum value.
+		 * 			the double maximum value.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getMinimumValue() = 0;
 
@@ -122,7 +122,7 @@ namespace RESQML2_NS
 		 * Gets the maximum key in this double table lookup. It reads it from file.
 		 *
 		 * @returns	The maximum key if some key/value pairs exists in this double table lookup, otherwise
-		 * 			the long minimum value.
+		 * 			the double lowest value.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getMaximumValue() = 0;
 

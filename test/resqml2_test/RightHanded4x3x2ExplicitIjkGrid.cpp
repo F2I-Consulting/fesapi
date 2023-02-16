@@ -34,7 +34,7 @@ using namespace RESQML2_NS;
 
 const char* RightHanded4x3x2ExplicitIjkGrid::defaultUuid = "f274d3d8-80ff-4860-90fb-609716303887";
 const char* RightHanded4x3x2ExplicitIjkGrid::defaultTitle = "Right Handed 4x3x2 Explicit Ijk Grid";
-const unsigned long long RightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 72;
+const uint64_t RightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 72;
 double RightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[216] = {
 	0, 150, 300, 150, 150, 300, 375, 150, 300, 550, 150, 350, 700, 150, 350, //IJ0K0
 	0, 100, 300, 150, 100, 300, 375, 100, 300, 550, 100, 350, 700, 100, 350, //IJ1K0
@@ -95,14 +95,14 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 	gridConnSet432->setLocalFacePerCellIndexPairs(localFacePerCellIndexPairs432, -1, nullptr);
 
 	// Discrete property
-	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+	auto* propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
 	RESQML2_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
 		gsoap_eml2_3::resqml22__IndexableElement::cells, propertyKind);
 	int64_t discretePropValues[24] = {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
 	};
-	discreteProp->pushBackLongHdf5Array3dOfValues(discretePropValues, 4, 3, 2, nullptr, -1);
+	discreteProp->pushBackInt64Hdf5Array3dOfValues(discretePropValues, 4, 3, 2, nullptr, -1);
 
 	// Continuous property
 	propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);

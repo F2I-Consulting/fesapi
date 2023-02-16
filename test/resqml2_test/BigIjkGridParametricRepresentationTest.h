@@ -23,12 +23,13 @@ under the License.
 namespace resqml2_test {
 	class BigIjkGridParametricRepresentationTest : public AbstractBigIjkGridRepresentationTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
-		static const char* discretePropertyUuid;
-		static const char* discretePropertyTitle;
-		static const char* continuousPropertyUuid;
-		static const char* continuousPropertyTitle;
+
+		static constexpr char const* defaultUuid = "d94033f1-188b-465b-9594-c88403f7767e";
+		static constexpr char const* defaultTitle = "Ijk Grid Param Representation";
+		static constexpr char const* discretePropertyUuid = "e3a36173-1d46-4db3-87d0-84e51efce7ed";
+		static constexpr char const* discretePropertyTitle = "Parametric IJK Grid K Index";
+		static constexpr char const* continuousPropertyUuid = "78fa1c70-f0d6-4ce1-8cc6-401f812cd713";
+		static constexpr char const* continuousPropertyTitle = "Parametric IJK Grid Continuous Property";
 
 		/**
 		* Creation of a parametric IJK grid representation from an EPC document path. Resulting grid is 
