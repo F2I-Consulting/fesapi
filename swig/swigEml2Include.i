@@ -181,10 +181,10 @@ namespace EML2_NS
 			const std::string & name,
 			COMMON_NS::AbstractObject::numericalDatatypeEnum cumulativeLengthDatatype,
 			const void * cumulativeLength,
-			unsigned long long cumulativeLengthSize,
+			uint64_t cumulativeLengthSize,
 			COMMON_NS::AbstractObject::numericalDatatypeEnum elementsDatatype,
 			const void * elements,
-			unsigned long long elementsSize) = 0;
+			uint64_t elementsSize) = 0;
 
 		/**
 		 * Gets the number of dimensions in an HDF5 dataset of the proxy.
@@ -201,7 +201,7 @@ namespace EML2_NS
 		 * Get the number of elements in each dimension of an HDF5 dataset.
 		 * @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
 		 */
-		virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
+		virtual std::vector<uint32_t> getElementCountPerDimension(const std::string & datasetName) = 0;
 
 		/**
 		 * Gets the number of elements in an HDF5 dataset of the proxy. The number of elements is got
@@ -213,7 +213,7 @@ namespace EML2_NS
 		 * @returns	The number of elements of the dataset if successful, otherwise returns a negative
 		 * 			value.
 		 */
-		signed long long getElementCount(const std::string & datasetName);
+		uint64_t getElementCount(const std::string & datasetName);
 
 		/**
 		 * Sets the new compression level which will be used for all data to be written
@@ -240,7 +240,7 @@ namespace EML2_NS
 		void writeArrayNdOfFloatValues(const std::string & groupName,
 		  const std::string & name,
 		  const float * floatValues,
-		  const unsigned long long * numValuesInEachDimension,
+		  const uint64_t * numValuesInEachDimension,
 		  unsigned int numDimensions);
 
 		/**
@@ -260,18 +260,18 @@ namespace EML2_NS
 		void writeArrayNdOfDoubleValues(const std::string & groupName,
 		  const std::string & name,
 		  const double * dblValues,
-		  const unsigned long long * numValuesInEachDimension,
+		  const uint64_t * numValuesInEachDimension,
 		  unsigned int numDimensions);
 
 		/**
-		 * Writes an nd array of char values into the HDF5 file by means of a single dataset
+		 * Writes an nd array of int 8 bits values into the HDF5 file by means of a single dataset
 		 *
 		 * @param 	groupName					The name of the group where to create the nd array of int
 		 * 										values. This name must not contain '/' character and must be
 		 * 										directly contained in RESQML group.
 		 * @param 	name						The name of the nd array HDF5 dataset. It must not
 		 * 										already exist.
-		 * @param 	intValues					1d array of char values ordered firstly by fastest
+		 * @param 	intValues					1d array of int 8 bits values ordered firstly by fastest
 		 * 										direction.
 		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
 		 * 										write. They are ordered from fastest index to slowest index.
@@ -280,7 +280,7 @@ namespace EML2_NS
 		void writeArrayNdOfInt8Values(const std::string & groupName,
 			const std::string & name,
 			const int8_t* intValues,
-			const unsigned long long * numValuesInEachDimension,
+			const uint64_t* numValuesInEachDimension,
 			unsigned int numDimensions);
 
 		/**
@@ -300,7 +300,7 @@ namespace EML2_NS
 		void writeArrayNdOfIntValues(const std::string & groupName,
 		  const std::string & name,
 		  const int * intValues,
-		  const unsigned long long * numValuesInEachDimension,
+		  const uint64_t * numValuesInEachDimension,
 		  unsigned int numDimensions);
 
 		/**
@@ -321,7 +321,7 @@ namespace EML2_NS
  		void writeArrayNdOfInt64Values(const std::string & groupName,
 			const std::string & name,
 			const int64_t * values,
-			const unsigned long long * numValuesInEachDimension,
+			const uint64_t * numValuesInEachDimension,
 			unsigned int numDimensions);
 
  		/**
@@ -342,7 +342,7 @@ namespace EML2_NS
  		void writeArrayNdOfUInt64Values(const std::string & groupName,
 			const std::string & name,
 			const uint64_t * values,
-			const unsigned long long * numValuesInEachDimension,
+			const uint64_t * numValuesInEachDimension,
 			unsigned int numDimensions);
 
 		/**
@@ -364,7 +364,7 @@ namespace EML2_NS
 		  const std::string & name,
 		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		  const void * values,
-		  const unsigned long long * numValuesInEachDimension,
+		  const uint64_t * numValuesInEachDimension,
 		  unsigned int numDimensions) = 0;
 
 		/**
@@ -385,7 +385,7 @@ namespace EML2_NS
 		  const std::string& groupName,
 		  const std::string& name,
 		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-		  const unsigned long long* numValuesInEachDimension,
+		  const uint64_t* numValuesInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
 
@@ -409,8 +409,8 @@ namespace EML2_NS
 		  const std::string& name,
 		  COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 		  const void* values,
-		  const unsigned long long* numValuesInEachDimension,
-		  const unsigned long long* offsetValuesInEachDimension,
+		  const uint64_t* numValuesInEachDimension,
+		  const uint64_t* offsetValuesInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
 
@@ -455,30 +455,30 @@ namespace EML2_NS
 			const std::string & attr_name) const = 0;
 		virtual double readDoubleAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
-		virtual int64_t readLongAttribute(const std::string & obj_name,
+		virtual int64_t readInt64Attribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
 		virtual void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) = 0;
 		virtual void readArrayNdOfDoubleValues(
 		  const std::string & datasetName,
 		  double* values,
-		  unsigned long long const * numValuesInEachDimension,
-		  unsigned long long const * offsetInEachDimension,
+		  uint64_t const * numValuesInEachDimension,
+		  uint64_t const * offsetInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
 		virtual void readArrayNdOfDoubleValues(
 			const std::string & datasetName, 
 			double* values,
-			unsigned long long const * blockCountPerDimension,
-			unsigned long long const * offsetInEachDimension,
-			unsigned long long const * strideInEachDimension,
-			unsigned long long const * blockSizeInEachDimension,
+			uint64_t const * blockCountPerDimension,
+			uint64_t const * offsetInEachDimension,
+			uint64_t const * strideInEachDimension,
+			uint64_t const * blockSizeInEachDimension,
 			unsigned int numDimensions) = 0;
 		virtual void selectArrayNdOfValues(
 			const std::string & datasetName,
-			unsigned long long const* blockCountPerDimension,
-			unsigned long long const* offsetInEachDimension,
-			unsigned long long const* strideInEachDimension,
-			unsigned long long const* blockSizeInEachDimension,
+			uint64_t const* blockCountPerDimension,
+			uint64_t const* offsetInEachDimension,
+			uint64_t const* strideInEachDimension,
+			uint64_t const* blockSizeInEachDimension,
 			unsigned int numDimensions,
 			bool newSelection,
 			hdf5_hid_t & dataset,
@@ -487,35 +487,67 @@ namespace EML2_NS
 			hdf5_hid_t dataset,
 			hdf5_hid_t filespace,
 			void* values,
-			unsigned long long slabSize) = 0;
+			uint64_t slabSize) = 0;
 		virtual void readArrayNdOfFloatValues(const std::string & datasetName, float* values) = 0;
 		virtual void readArrayNdOfFloatValues(
 		  const std::string & datasetName,
 		  float* values,
-		  unsigned long long const * numValuesInEachDimension,
-		  unsigned long long const * offsetInEachDimension,
+		  uint64_t const * numValuesInEachDimension,
+		  uint64_t const * offsetInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
 		virtual void readArrayNdOfInt64Values(const std::string & datasetName, int64_t* values) = 0;
 		virtual void readArrayNdOfInt64Values(
 			const std::string & datasetName,
 			int64_t* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numDimensions) = 0;
 		virtual void readArrayNdOfUInt64Values(const std::string & datasetName, uint64_t* values) = 0;
 		virtual void readArrayNdOfIntValues(const std::string & datasetName, int* values) = 0;
 		virtual void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
+			uint64_t const * numValuesInEachDimension,
+			uint64_t const * offsetInEachDimension,
 			unsigned int numDimensions
 		) = 0;
 		virtual void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) = 0;
 		virtual void readArrayNdOfShortValues(const std::string & datasetName, short* values) = 0;
+		
+		/**
+		 * Reads an nd array of unsigned short values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of unsigned short values ordered firstly by fastest
+		 * 							direction. The values must be pre-allocated and won't be freed by
+		 * 							this method.
+		 */
 		virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
+
+		/**
+		 * Reads an nd array of int 8 bits values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of int 8 bits values ordered firstly by fastest direction. The
+		 * 							values must be pre-allocated and won't be freed by this method.
+		 */
 		virtual void readArrayNdOfInt8Values(const std::string & datasetName, int8_t* values) = 0;
+
+		/**
+		 * Reads an nd array of unsigned int 8 bits values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of unsigned int 8 bits values ordered firstly by fastest
+		 * 							direction. The values must be pre-allocated and won't be freed by
+		 * 							this method.
+		 */
 		virtual void readArrayNdOfUInt8Values(const std::string & datasetName, uint8_t* values) = 0;
 		
 		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
@@ -541,7 +573,7 @@ namespace EML2_NS
 		 * If the dataset is not compressed, then it returns an empty vector.
 		 * @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
 		 */
-		virtual std::vector<unsigned long long> getElementCountPerChunkDimension(const std::string & datasetName) = 0;
+		virtual std::vector<uint32_t> getElementCountPerChunkDimension(const std::string & datasetName) = 0;
 
 		void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, unsigned int emlVersion);
 				
@@ -2031,6 +2063,97 @@ namespace EML2_NS
 		 * @returns	The timestamp at position @p index.
 		 */
 		time_t getTimestamp(uint64_t index) const;
+	};
+	
+	/************ Activity **************/
+
+	class ActivityTemplate : public COMMON_NS::AbstractObject
+	{
+	public:
+		void pushBackParameter(const std::string & title,
+			bool isInput, bool isOutput,
+			unsigned int minOccurs, int maxOccurs);
+		void pushBackParameter(const std::string & title,
+			bool isInput, bool isOutput,
+			unsigned int minOccurs, int maxOccurs,
+			std::string resqmlObjectContentType);
+		bool isAnExistingParameter(const std::string & paramTitle) const;
+		
+		/**
+		 * Gets parameter count
+		 *
+		 * @returns	The parameter count.
+		 */
+		uint64_t getParameterCount() const;
+		const std::string & getParameterTitle(unsigned int index) const;
+		bool getParameterIsInput(unsigned int index) const;
+		bool getParameterIsInput(const std::string & paramTitle) const;
+		bool getParameterIsOutput(unsigned int index) const;
+		bool getParameterIsOutput(const std::string & paramTitle) const;
+		int64_t getParameterMinOccurences(unsigned int index) const;
+		int64_t getParameterMinOccurences(const std::string & paramTitle) const;
+		int64_t getParameterMaxOccurences(unsigned int index) const;
+		int64_t getParameterMaxOccurences(const std::string & paramTitle) const;
+	};
+
+	class Activity : public COMMON_NS::AbstractObject
+	{
+	public:
+		void pushBackParameter(const std::string& title, const std::string& value);
+		void pushBackParameter(const std::string& title, int64_t value);
+		void pushBackParameter(const std::string& title, COMMON_NS::AbstractObject* resqmlObject);
+
+		/**
+		 * Get the count of all the parameters
+		 *
+		 * @returns	The parameter count.
+		 */
+		uint64_t getParameterCount() const;
+
+		/**
+		 * Get the count of all the parameters which have got the same title.
+		 *
+		 * @param 	paramTitle	The parameter title.
+		 *
+		 * @returns	The parameter count.
+		 */
+		uint64_t getParameterCount(const std::string& paramTitle) const;
+
+		const std::string & getParameterTitle(unsigned int index) const;
+
+		bool isAFloatingPointQuantityParameter(const std::string& paramTitle) const;
+		bool isAFloatingPointQuantityParameter(unsigned int index) const;
+		double getFloatingPointQuantityParameterValue(unsigned int index) const;
+
+		bool isAnIntegerQuantityParameter(const std::string& paramTitle) const;
+		bool isAnIntegerQuantityParameter(unsigned int index) const;
+		
+		/**
+		 * Gets the values of all the integer quantity parameters sharing a given title.
+		 *
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 * @exception	std::invalid_argument	If one @p paramTitle parameter contains some non integer
+		 * 										values.
+		 *
+		 * @param 	paramTitle	The title of the integer parameters we look for the value.
+		 *
+		 * @returns	A vector of the value of all the @p paramTitle integer quantity parameters.
+		 */
+		std::vector<int32_t> getIntegerQuantityParameterValue(const std::string & paramTitle);
+		
+		int64_t getIntegerQuantityParameterValue(unsigned int index) const;
+
+		bool isAStringParameter(const std::string& paramTitle) const;
+		bool isAStringParameter(unsigned int index) const;
+		const std::string & getStringParameterValue(unsigned int index) const;
+
+		bool isAResqmlObjectParameter(const std::string& paramTitle) const;
+		bool isAResqmlObjectParameter(unsigned int index) const;
+		COMMON_NS::AbstractObject* getResqmlObjectParameterValue(unsigned int index) const;
+
+		void setActivityTemplate(ActivityTemplate* activityTemplate);
+		ActivityTemplate* getActivityTemplate() const;
 	};
 }
 

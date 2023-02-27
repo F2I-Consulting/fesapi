@@ -48,7 +48,7 @@ namespace RESQML2_2_NS
 		 * 									column.
 		 * @param 	  	orderingCriteria	How the included horizons are ordered.
 		 */
-		StratigraphicColumnRankInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, unsigned long rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria);
+		StratigraphicColumnRankInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

@@ -107,7 +107,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
-			unsigned int polylineCount, bool allPolylinesClosedFlag,
+			uint64_t polylineCount, bool allPolylinesClosedFlag,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
@@ -136,7 +136,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
-			unsigned int polylineCount, bool * polylineClosedFlags,
+			uint64_t polylineCount, bool * polylineClosedFlags,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**

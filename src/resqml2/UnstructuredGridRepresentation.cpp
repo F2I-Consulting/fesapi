@@ -75,7 +75,7 @@ void UnstructuredGridRepresentation::getNodeCountPerFace(uint64_t * nodeCountPer
 	}
 }
 
-void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy * proxy,
+void UnstructuredGridRepresentation::setGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy * proxy,
 	uint64_t * faceIndicesPerCell, uint64_t * faceIndicesCumulativeCountPerCell,
 	uint64_t faceCount, uint64_t * nodeIndicesPerFace, uint64_t * nodeIndicesCumulativeCountPerFace,
 	gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs)
@@ -109,7 +109,7 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 	const uint64_t cellCount = getCellCount();
 
 	// HDF Face Right handness
-	unsigned long long faceCountTmp = faceIndicesCumulativeCountPerCell[cellCount - 1]; // For GCC : uint64_t is not exactly an unsigned long long with GCC but an uint64_t {aka long unsigned int}
+	const uint64_t faceCountTmp = faceIndicesCumulativeCountPerCell[cellCount - 1];
 	proxy->writeArrayNd(getHdfGroup(), "CellFaceIsRightHanded", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, cellFaceIsRightHanded, &faceCountTmp, 1);
 
 	// HDF Face indices
@@ -119,7 +119,7 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 	proxy->writeItemizedListOfList(getHdfGroup(), "NodesPerFace", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, nodeIndicesCumulativeCountPerFace, faceCount, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, nodeIndicesPerFace, nodeIndicesCumulativeCountPerFace[faceCount - 1]);
 
 	// HDF points
-	hsize_t numValues[2] = { pointCount, 3 };
+	uint64_t numValues[2] = { pointCount, 3 };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 2);
 
 	setGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points", pointCount, proxy,
@@ -128,7 +128,7 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 		cellShape, localCrs);
 }
 
-void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char * cellFaceIsRightHanded, double * points,
+void UnstructuredGridRepresentation::setConstantCellShapeGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 	uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
 	uint64_t * faceIndicesPerCell, uint64_t faceCountPerCell,
 	uint64_t * nodeIndicesPerFace, uint64_t nodeCountPerFace)
@@ -155,11 +155,11 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char 
 	const uint64_t cellCount = getCellCount();
 
 	// HDF Face Right handness
-	unsigned long long faceCountTmp = faceCountPerCell * cellCount; // For GCC : uint64_t is not exactly an unsigned long long with GCC but an uint64_t {aka long unsigned int}
+	const uint64_t faceCountTmp = faceCountPerCell * cellCount;
 	proxy->writeArrayNd(getHdfGroup(), "CellFaceIsRightHanded", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, cellFaceIsRightHanded, &faceCountTmp, 1);
 
 	// HDF Face indices
-	hsize_t numValues[2] = { cellCount, faceCountPerCell };
+	uint64_t numValues[2] = { cellCount, faceCountPerCell };
 	proxy->writeArrayNd(getHdfGroup(), "FacesPerCell", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, faceIndicesPerCell, numValues, 2);
 
 	// HDF Node indices
@@ -188,7 +188,7 @@ void UnstructuredGridRepresentation::setTetrahedraOnlyGeometryUsingExistingDatas
 		nodeIndicesPerFace, 3);
 }
 
-void UnstructuredGridRepresentation::setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points, uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy * proxy,
+void UnstructuredGridRepresentation::setTetrahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy * proxy,
 	uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setConstantCellShapeGeometry(cellFaceIsRightHanded, points,
@@ -207,7 +207,7 @@ void UnstructuredGridRepresentation::setHexahedraOnlyGeometryUsingExistingDatase
 		nodeIndicesPerFace, 4);
 }
 
-void UnstructuredGridRepresentation::setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points, uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy * proxy,
+void UnstructuredGridRepresentation::setHexahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy * proxy,
 	uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setConstantCellShapeGeometry(cellFaceIsRightHanded, points,

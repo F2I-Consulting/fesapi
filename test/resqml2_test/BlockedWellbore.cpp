@@ -28,12 +28,6 @@ using namespace COMMON_NS;
 using namespace resqml2_test;
 using namespace RESQML2_NS;
 
-const char* BlockedWellbore::defaultUuid = "442b1bed-c997-42ce-8b99-8e89a23edc0d";
-const char* BlockedWellbore::defaultTitle = "BlockedWellbore representation with null value";
-const char* BlockedWellbore::defaultUuidNoNullValue = "02318f5e-399e-43a0-9e7c-340b5954eaf2";
-const char* BlockedWellbore::defaultTitleNoNullValue = "BlockedWellbore representation without null value";
-const char* BlockedWellbore::defaultGridUuid = "0987a24d-24c0-49ea-bae3-f6c9d91a8d46";
-
 BlockedWellbore::BlockedWellbore(const string & epcDocPath)
 	: commontest::AbstractTest(epcDocPath) {
 }

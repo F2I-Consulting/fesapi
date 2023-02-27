@@ -54,7 +54,7 @@ void LocalDepth3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::st
 LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
 {
 	if (projectedEpsgCode == 0 || verticalEpsgCode == 0) {
@@ -97,7 +97,7 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
 {
 	if (projectedEpsgCode == 0) {

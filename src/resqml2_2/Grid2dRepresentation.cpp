@@ -759,7 +759,7 @@ resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
 	xmlPoints->ZValues = xmlZValues;
 
 	// HDF
-	hsize_t dim[2] = { numJ, numI };
+	uint64_t dim[2] = { numJ, numI };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
 		"points_patch" + std::to_string(patchIndex),
 		zValues,
@@ -835,7 +835,7 @@ resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
 	xmlPoints->ZValues = xmlZValues;
 
 	// HDF
-	hsize_t dim[2] = { numJ, numI };
+	uint64_t dim[2] = { numJ, numI };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
 		"points_patch" + std::to_string(patchIndex),
 		zValues,

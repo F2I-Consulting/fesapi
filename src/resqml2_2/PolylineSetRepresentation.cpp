@@ -20,8 +20,6 @@ under the License.
 
 #include <algorithm>
 
-#include <hdf5.h>
-
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../eml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
@@ -74,7 +72,7 @@ PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeature
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int const* nodeCountPerPolyline, double const* nodes,
-				unsigned int polylineCount, bool allPolylinesClosedFlag,
+				uint64_t polylineCount, bool allPolylinesClosedFlag,
 				EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
@@ -126,7 +124,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int const* nodeCountPerPolyline, double const* nodes,
-				unsigned int polylineCount, bool * polylineClosedFlags,
+				uint64_t polylineCount, bool * polylineClosedFlags,
 				EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {

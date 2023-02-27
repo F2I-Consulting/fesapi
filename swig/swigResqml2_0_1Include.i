@@ -734,8 +734,8 @@ namespace RESQML2_0_1_NS
 	class SeismicLineFeature : public RESQML2_NS::AbstractSeismicLineFeature
 	{
 	public:
-		int getTraceIndexIncrement() const;
-		int getFirstTraceIndex() const;
+		int64_t getTraceIndexIncrement() const;
+		int64_t getFirstTraceIndex() const;
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)

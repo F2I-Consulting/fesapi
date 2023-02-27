@@ -26,7 +26,7 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, unsigned long rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria)
+StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");

@@ -46,7 +46,7 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
 	}
 }
 
-unsigned long long AbstractBigIjkGridRepresentationTest::initNodesCountIjkGridRepresentation(unsigned int iCount, unsigned int jCount, unsigned int kCount,
+uint64_t AbstractBigIjkGridRepresentationTest::initNodesCountIjkGridRepresentation(unsigned int iCount, unsigned int jCount, unsigned int kCount,
 	unsigned int faultCount)
 {
 	return ((iCount + 1) * (jCount + 1) * (kCount + 1)) + (faultCount * (jCount + 1) * (kCount + 1));

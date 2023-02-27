@@ -314,7 +314,7 @@ uint64_t UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
 		return 0;
 }
 
-void UnstructuredGridRepresentation::getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const
+void UnstructuredGridRepresentation::getCellFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const
 {
   _resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
   if (grid->Geometry == nullptr) {

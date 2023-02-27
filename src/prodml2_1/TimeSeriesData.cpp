@@ -19,7 +19,6 @@ under the License.
 #include "TimeSeriesData.h"
 
 #include <stdexcept>
-#include <limits>
 
 #include "../tools/TimeTools.h"
 

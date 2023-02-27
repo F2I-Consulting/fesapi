@@ -50,7 +50,7 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	hsize_t kGapCount = 0;
+	uint64_t kGapCount = 0;
 	if (kGaps != nullptr) {
 		for (size_t k = 0; k < kCount - 1; ++k) {
 			if (kGaps[k]) {
@@ -366,7 +366,7 @@ void AbstractIjkGridRepresentation::getPillarsOfSplitCoordinateLines(unsigned in
 
 void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned int * columnIndices, bool reverseIAxis, bool reverseJAxis) const
 {
-	hssize_t datasetValueCount = 0;
+	uint64_t datasetValueCount = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 		if (geom == nullptr || geom->SplitCoordinateLines == nullptr) {
@@ -404,16 +404,16 @@ void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned in
 
 	if (datasetValueCount > 0) {
 		if (reverseIAxis) {
-			for (unsigned int index = 0; index < datasetValueCount; ++index) {
-				const unsigned int iColumn = columnIndices[index] % getICellCount();
-				const unsigned int jColumn = columnIndices[index] / getICellCount();
+			for (uint64_t index = 0; index < datasetValueCount; ++index) {
+				const uint64_t iColumn = columnIndices[index] % getICellCount();
+				const uint64_t jColumn = columnIndices[index] / getICellCount();
 				columnIndices[index] = (getICellCount() - 1 - iColumn) + jColumn*getICellCount();
 			}
 		}
 		if (reverseJAxis) {
-			for (unsigned int index = 0; index < datasetValueCount; ++index) {
-				const unsigned int iColumn = columnIndices[index] % getICellCount();
-				const unsigned int jColumn = columnIndices[index] / getICellCount();
+			for (uint64_t index = 0; index < datasetValueCount; ++index) {
+				const uint64_t iColumn = columnIndices[index] % getICellCount();
+				const uint64_t jColumn = columnIndices[index] / getICellCount();
 				columnIndices[index] = iColumn + (getJCellCount() - 1 - jColumn)*getICellCount();
 			}
 		}
@@ -438,7 +438,7 @@ void AbstractIjkGridRepresentation::getColumnCountOfSplitCoordinateLines(unsigne
 	}
 }
 
-unsigned long AbstractIjkGridRepresentation::getSplitCoordinateLineCount() const
+uint64_t AbstractIjkGridRepresentation::getSplitCoordinateLineCount() const
 {
 	uint64_t splitCoordinateLineCount = 0;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -460,14 +460,10 @@ unsigned long AbstractIjkGridRepresentation::getSplitCoordinateLineCount() const
 		}
 	}
 
-	if (splitCoordinateLineCount > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much split coordinate lines.");
-	}
-
-	return static_cast<unsigned long>(splitCoordinateLineCount);
+	return splitCoordinateLineCount;
 }
 
-unsigned long AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() const
+uint64_t AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() const
 {
 	if (!splitInformation)
 		throw invalid_argument("The split information must have been loaded first.");
@@ -475,7 +471,7 @@ unsigned long AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() 
 		throw invalid_argument("The block information must have been loaded first.");
 	}
 
-	unsigned long splitCoordinateLineCount = 0;
+	uint64_t splitCoordinateLineCount = 0;
 	
 	// I traverse all pillars of the block
 	for (unsigned int jPillarIndex = blockInformation->jInterfaceStart; jPillarIndex <= blockInformation->jInterfaceEnd; ++jPillarIndex) {
@@ -1269,7 +1265,7 @@ void AbstractIjkGridRepresentation::getXyzPointsOfKInterface(unsigned int kInter
 	getXyzPointsOfKInterfaceSequence(kInterface, kInterface, xyzPoints);
 }
 
-void AbstractIjkGridRepresentation::setCellGeometryIsDefinedFlags(unsigned char* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy)
+void AbstractIjkGridRepresentation::setCellGeometryIsDefinedFlags(uint8_t* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -1303,7 +1299,7 @@ void AbstractIjkGridRepresentation::setCellGeometryIsDefinedFlags(unsigned char*
 	}
 
 	// HDF
-	hsize_t cellGeometryIsDefinedCount[3] = { getKCellCount(), getJCellCount(), getICellCount() };
+	uint64_t cellGeometryIsDefinedCount[3] = { getKCellCount(), getJCellCount(), getICellCount() };
 	proxy->writeArrayNd(getHdfGroup(), "CellGeometryIsDefined", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, cellGeometryIsDefinedFlags, cellGeometryIsDefinedCount, 3);
 }
 

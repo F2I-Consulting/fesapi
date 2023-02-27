@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PointsProperty.h"
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 #include "../eml2/AbstractLocal3dCrs.h"
 
@@ -49,7 +47,7 @@ uint64_t PointsProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uin
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	std::vector<hsize_t> dims = hdfProxy->getElementCountPerDimension(dsPath);
+	std::vector<uint32_t> dims = hdfProxy->getElementCountPerDimension(dsPath);
 
 	if (dimIndex < dims.size()) {
 		return dims[dimIndex];
@@ -143,7 +141,7 @@ void PointsProperty::pushBackArrayOfXyzPoints(double const * points, uint64_t co
 	const string datasetName = "points_patch" + std::to_string(getPatchCount());
 
 	// HDF
-	std::unique_ptr<unsigned long long[]> coordinateCountByDimension(new unsigned long long[numArrayDimensions + 1]);
+	std::unique_ptr<uint64_t[]> coordinateCountByDimension(new uint64_t[numArrayDimensions + 1]);
 	for (unsigned int i = 0; i < numArrayDimensions; ++i) {
 		coordinateCountByDimension[i] = pointCountByDimension[i];
 	}

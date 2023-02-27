@@ -37,8 +37,7 @@ using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_test;
 
-const char* CategoricalProperty::defaultUuid = "5aa6a9d4-253e-43a8-bdf5-621e5df2d425";
-const char* CategoricalProperty::defaultTitle = "Testing Categorical Prop";
+static constexpr int64_t bigNumber = (std::numeric_limits<uint32_t>::max)() + static_cast<int64_t>(10);
 
 CategoricalProperty::CategoricalProperty(const string & repoPath)
 	: commontest::AbstractTest(repoPath) {
@@ -53,8 +52,8 @@ void CategoricalProperty::initRepo() {
 
 	// creating the String Table Lookup
 	auto* stringTableLookup = repo->createFaciesTable("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
-	stringTableLookup->setInt64Values(0, { 0,1,2,3,4,5 });
-	stringTableLookup->setStringValues(1, { "Item 0","Item 1","Item 2","Item 3","Item 4","Item 5" });
+	stringTableLookup->setInt64Values(0, { 0,1,2,3,4,5, bigNumber });
+	stringTableLookup->setStringValues(1, { "Item 0","Item 1","Item 2","Item 3","Item 4","Item 5","Item 6" });
 	
 	// creating the char CategoricalProperty
 	RESQML2_NS::DiscreteProperty* charCategoricalProperty = repo->createCategoricalProperty(
@@ -100,6 +99,8 @@ void CategoricalProperty::readRepo() {
 	REQUIRE(strTableLookup->getStringValues(1)[4] == "Item 4");
 	REQUIRE(strTableLookup->getInt64Values(0)[5] == 5);
 	REQUIRE(strTableLookup->getStringValues(1)[5] == "Item 5");
+	REQUIRE(strTableLookup->getInt64Values(0)[5] == bigNumber);
+	REQUIRE(strTableLookup->getStringValues(1)[5] == "Item 6");
 
 	// getting the continuous CategoricalProperty
 	categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>("3de7a1d8-8b5b-45f3-b90c-6c14b2dcb43e");

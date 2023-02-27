@@ -29,6 +29,43 @@ namespace RESQML2_NS
 	/** @brief	Proxy class for an abstract feature. */
 	class AbstractFeature : public COMMON_NS::AbstractObject
 	{
+	public:
+
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		virtual ~AbstractFeature() = default;
+
+		/**
+		 * Gets all the interpretations of this feature.
+		 *
+		 * @returns The vector of all the interpretations of this feature.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation *> getInterpretationSet() const;
+
+		/**
+		 * Gets the interpretation count of this feature.
+		 *
+		 * @exception	std::range_error	If the interpretation count is strictly greater than unsigned
+		 * 									int max.
+		 *
+		 * @returns	The interpretation count of this feature.
+		 */
+		DLL_IMPORT_OR_EXPORT uint64_t getInterpretationCount() const noexcept { return getInterpretationSet().size(); }
+
+		/**
+		 * Gets a particular interpretation of this feature according to its position in the
+		 * interpretations ordering.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of the range of the interpretation set of
+		 * 									the feature.
+		 *
+		 * @param 	index	Zero-based index of the interpretation we look for.
+		 *
+		 * @returns	A pointer to the interpretation at @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getInterpretation(uint64_t index) const { return getInterpretationSet().at(index); }
+
+		virtual void loadTargetRelationships() override {}
+
 	protected:
 
 		/**
@@ -50,39 +87,5 @@ namespace RESQML2_NS
 		 */
 		AbstractFeature(gsoap_resqml2_0_1::resqml20__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 		AbstractFeature(gsoap_eml2_3::resqml22__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
-	public:
-
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
-		virtual ~AbstractFeature() = default;
-
-		/**
-		 * Gets all the interpretations of this feature.
-		 *
-		 * @returns The vector of all the interpretations of this feature.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation *> getInterpretationSet() const;
-
-		/**
-		 * Gets the interpretation count of this feature.
-		 *
-		 * @returns	The interpretation count of this feature.
-		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getInterpretationCount() const;
-
-		/**
-		 * Gets a particular interpretation of this feature according to its position in the
-		 * interpretations ordering.
-		 *
-		 * @exception	std::out_of_range	If @p index is out of the range of the interpretation set of
-		 * 									the feature.
-		 *
-		 * @param 	index	Zero-based index of the interpretation we look for.
-		 *
-		 * @returns	A pointer to the interpretation at @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getInterpretation(uint64_t index) const;
-
-		virtual void loadTargetRelationships() override {}
 	};
 }

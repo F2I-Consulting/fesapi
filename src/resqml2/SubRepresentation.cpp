@@ -37,11 +37,10 @@ void SubRepresentation::pushBackSubRepresentationPatch(uint64_t elementCount, RE
 	const std::string datasetName = "subrepresentation_elementIndices0_patch" + std::to_string(getPatchCount());
 
 	// HDF
-	hsize_t numValues = elementCount;
 	proxy->createArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64,
-		&numValues, 1);
+		&elementCount, 1);
 
 	pushBackRefToExistingDataset(elementCount, getHdfGroup() + "/" + datasetName, -1, supportingRep, proxy);
 }
@@ -65,14 +64,12 @@ void SubRepresentation::setElementIndices(uint64_t const* elementIndices,
 	getRepository()->addRelationship(this, proxy);
 
 	// HDF
-	hsize_t numValues = elementCount;
-	hsize_t offsetValues = offset;
 	proxy->writeArrayNdSlab(getHdfGroup(),
 		"subrepresentation_elementIndices0_patch" + std::to_string(patchIndex == (numeric_limits<uint64_t>::max)() ? getPatchCount() - 1 : patchIndex),
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64,
 		elementIndices,
-		&numValues,
-		&offsetValues,
+		&elementCount,
+		&offset,
 		1);
 }
 

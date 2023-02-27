@@ -31,9 +31,6 @@ using namespace COMMON_NS;
 using namespace RESQML2_NS;
 using namespace resqml2_test;
 
-const char* DiscretePropertyUsingLocalKindOnWellFrameTest::defaultUuid = "5aa6a9d4-253e-43a8-bdf5-621e5df2d425";
-const char* DiscretePropertyUsingLocalKindOnWellFrameTest::defaultTitle = "Discrete Property Using Local Kind On Well Frame Test";
-
 DiscretePropertyUsingLocalKindOnWellFrameTest::DiscretePropertyUsingLocalKindOnWellFrameTest(const string & repoPath)
 	: commontest::AbstractTest(repoPath) {
 }

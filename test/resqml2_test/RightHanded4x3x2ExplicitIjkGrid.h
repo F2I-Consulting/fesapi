@@ -25,7 +25,7 @@ namespace resqml2_test {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
-		static const unsigned long long nodesCountIjkGridRepresentation;
+		static const uint64_t nodesCountIjkGridRepresentation;
 		static double nodesIjkGridRepresentation[];
 
 		/**

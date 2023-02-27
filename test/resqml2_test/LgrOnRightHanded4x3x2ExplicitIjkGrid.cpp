@@ -32,7 +32,7 @@ using namespace RESQML2_NS;
 
 const char* LgrOnRightHanded4x3x2ExplicitIjkGrid::defaultUuid = "11852778-139e-4fa3-bb34-70c4014553f7";
 const char* LgrOnRightHanded4x3x2ExplicitIjkGrid::defaultTitle = "LGR";
-const unsigned long long LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 40;
+const uint64_t LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 40;
 double LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[] = {
 	0, 50, 300, 50, 50, 300, 100, 50, 300, 150, 50, 300, //IJ0K0
 	0,  0, 300, 50,  0, 300, 100,  0, 300, 150,  0, 300, //IJ1K0

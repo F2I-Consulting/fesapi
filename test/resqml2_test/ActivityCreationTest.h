@@ -23,8 +23,8 @@ under the License.
 namespace resqml2_test {
 	class ActivityCreationTest : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
+		static constexpr char const* defaultUuid = "705cd6f5-8ee8-427b-adde-04b0b6afcdf0";
+		static constexpr char const* defaultTitle = "Activity Creation";
 
 		/**
 		 * Creation of a testing object from an EPC document path. At serialize() call,

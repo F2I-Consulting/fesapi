@@ -18,13 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ShotPointLineFeature.h"
 
-using namespace std;
 using namespace RESQML2_NS;
 		
 uint64_t ShotPointLineFeature::getTraceCount() const
 {
-	auto labels = getTraceLabels();
-	return labels.empty()
-		? (std::numeric_limits<uint64_t>::max)()
-		: labels.size();
+	return getTraceLabels().size();
 }

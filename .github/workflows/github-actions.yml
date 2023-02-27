@@ -73,9 +73,6 @@ jobs:
       CXX: ${{ matrix.cxx }}
     steps:
       - uses: actions/checkout@v3
-      - name: apt-get install
-        run: |
-          sudo apt-get install gcc-multilib ${{ matrix.xcc_pkg }} 
       - uses: actions/setup-java@v2
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
@@ -83,7 +80,7 @@ jobs:
       - name: APT install
         run: |
           sudo apt update
-          sudo apt install -y libminizip-dev libboost-all-dev
+          sudo apt install -y ${{ matrix.xcc_pkg }} libminizip-dev libboost-all-dev
 # Build HDF5 instead of downloading the package because the package is not built with -fPIC causing relocation issue.
       - name: HDF5 build and install
         run: |

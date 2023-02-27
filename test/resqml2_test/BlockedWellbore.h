@@ -23,11 +23,11 @@ under the License.
 namespace resqml2_test {
 	class BlockedWellbore : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultUuidNoNullValue;
-		static const char* defaultTitle;
-		static const char* defaultTitleNoNullValue;
-		static const char* defaultGridUuid;
+		static constexpr char const* defaultUuid = "442b1bed-c997-42ce-8b99-8e89a23edc0d";
+		static constexpr char const* defaultTitle = "BlockedWellbore representation with null value";
+		static constexpr char const* defaultUuidNoNullValue = "02318f5e-399e-43a0-9e7c-340b5954eaf2";
+		static constexpr char const* defaultTitleNoNullValue = "BlockedWellbore representation without null value";
+		static constexpr char const* defaultGridUuid = "0987a24d-24c0-49ea-bae3-f6c9d91a8d46";
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,

@@ -45,17 +45,17 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequence(unsigned in
 	}
 
 	std::string datasetPathInExternalFile;
-	unsigned long splitCoordinateLineCount;
+	uint64_t splitCoordinateLineCount;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getPointDatasetPath(datasetPathInExternalFile, splitCoordinateLineCount);
 
 	if (splitCoordinateLineCount == 0)
 	{
-		std::unique_ptr<unsigned long long[]> valueCountPerDimension(new unsigned long long[4]);
+		std::unique_ptr<uint64_t[]> valueCountPerDimension(new uint64_t[4]);
 		valueCountPerDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
 		valueCountPerDimension[1] = getJCellCount() + 1;
 		valueCountPerDimension[2] = getICellCount() + 1;
 		valueCountPerDimension[3] = 3;
-		std::unique_ptr<unsigned long long[]> offsetPerDimension(new unsigned long long[4]);
+		std::unique_ptr<uint64_t[]> offsetPerDimension(new uint64_t[4]);
 		offsetPerDimension[0] = kInterfaceStart;
 		offsetPerDimension[1] = 0;
 		offsetPerDimension[2] = 0;
@@ -71,11 +71,11 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequence(unsigned in
 	else {
 		const auto dimCount = hdfProxy->getDimensionCount(datasetPathInExternalFile);
 		if (dimCount == 3) {
-			std::unique_ptr<unsigned long long[]> valueCountPerDimension(new unsigned long long[3]);
+			std::unique_ptr<uint64_t[]> valueCountPerDimension(new uint64_t[3]);
 			valueCountPerDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
 			valueCountPerDimension[1] = getPillarCount() + splitCoordinateLineCount;
 			valueCountPerDimension[2] = 3;
-			std::unique_ptr<unsigned long long[]> offsetPerDimension(new unsigned long long[3]);
+			std::unique_ptr<uint64_t[]> offsetPerDimension(new uint64_t[3]);
 			offsetPerDimension[0] = kInterfaceStart;
 			offsetPerDimension[1] = 0;
 			offsetPerDimension[2] = 0;
@@ -88,10 +88,10 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequence(unsigned in
 				3);
 		}
 		else if (dimCount == 2) {
-			std::unique_ptr<unsigned long long[]> valueCountPerDimension(new unsigned long long[2]);
+			std::unique_ptr<uint64_t[]> valueCountPerDimension(new uint64_t[2]);
 			valueCountPerDimension[0] = (kInterfaceEnd - kInterfaceStart + 1) * (getPillarCount() + splitCoordinateLineCount);
 			valueCountPerDimension[1] = 3;
-			std::unique_ptr<unsigned long long[]> offsetPerDimension(new unsigned long long[2]);
+			std::unique_ptr<uint64_t[]> offsetPerDimension(new uint64_t[2]);
 			offsetPerDimension[0] = kInterfaceStart * (getPillarCount() + splitCoordinateLineCount);
 			offsetPerDimension[1] = 0;
 
@@ -121,17 +121,17 @@ void IjkGridExplicitRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	}
 
 	std::string datasetPathInExternalFile;
-	unsigned long splitCoordinateLineCount;
+	uint64_t splitCoordinateLineCount;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getPointDatasetPath(datasetPathInExternalFile, splitCoordinateLineCount);
 
 	if (splitCoordinateLineCount == 0)
 	{
-		std::unique_ptr<unsigned long long[]> valueCountPerDimension(new unsigned long long[4]);
+		std::unique_ptr<uint64_t[]> valueCountPerDimension(new uint64_t[4]);
 		valueCountPerDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
 		valueCountPerDimension[1] = blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1;
 		valueCountPerDimension[2] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
 		valueCountPerDimension[3] = 3;
-		std::unique_ptr<unsigned long long[]> offsetPerDimension(new unsigned long long[4]);
+		std::unique_ptr<uint64_t[]> offsetPerDimension(new uint64_t[4]);
 		offsetPerDimension[0] = blockInformation->kInterfaceStart;
 		offsetPerDimension[1] = blockInformation->jInterfaceStart;
 		offsetPerDimension[2] = blockInformation->iInterfaceStart;
@@ -145,19 +145,19 @@ void IjkGridExplicitRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 			4);
 	}
 	else {
-		std::unique_ptr<unsigned long long[]> blockCountPerDimension(new unsigned long long[3]);
+		std::unique_ptr<uint64_t[]> blockCountPerDimension(new uint64_t[3]);
 		blockCountPerDimension[0] = 1;
 		blockCountPerDimension[1] = blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1;
 		blockCountPerDimension[2] = 1;
-		std::unique_ptr<unsigned long long[]> offsetPerDimension(new unsigned long long[3]);
+		std::unique_ptr<uint64_t[]> offsetPerDimension(new uint64_t[3]);
 		offsetPerDimension[0] = blockInformation->kInterfaceStart;
 		offsetPerDimension[1] = blockInformation->jInterfaceStart * (getICellCount() + 1) + blockInformation->iInterfaceStart;
 		offsetPerDimension[2] = 0;
-		std::unique_ptr<unsigned long long[]> strideInEachDimension(new unsigned long long[3]);
+		std::unique_ptr<uint64_t[]> strideInEachDimension(new uint64_t[3]);
 		strideInEachDimension[0] = 1;
 		strideInEachDimension[1] = (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) + ((getICellCount() + 1) - (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1));
 		strideInEachDimension[2] = 1;
-		std::unique_ptr<unsigned long long[]> blockSizeInEachDimension(new unsigned long long[3]);
+		std::unique_ptr<uint64_t[]> blockSizeInEachDimension(new uint64_t[3]);
 		blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
 		blockSizeInEachDimension[1] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
 		blockSizeInEachDimension[2] = 3;
@@ -174,7 +174,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 			dataset,
 			filespace);
 
-		unsigned long long slab_size = 1;
+		uint64_t slab_size = 1;
 		for (size_t h = 0; h < 3; ++h) {
 			slab_size *= blockSizeInEachDimension[h];
 		}
@@ -250,7 +250,7 @@ AbstractIjkGridRepresentation::geometryKind IjkGridExplicitRepresentation::getGe
 
 bool IjkGridExplicitRepresentation::isNodeGeometryCompressed() const {
 	std::string datasetPathInExternalFile;
-	unsigned long splitCoordinateLineCount;
+	uint64_t splitCoordinateLineCount;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getPointDatasetPath(datasetPathInExternalFile, splitCoordinateLineCount);
 	return hdfProxy->isCompressed(datasetPathInExternalFile);
 }

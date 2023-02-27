@@ -51,7 +51,7 @@ namespace RESQML2_NS
 		 * 									method. If @c nullptr, then a default HDF proxy must be defined
 		 * 									in the repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void setMdValues(double const * mdValues, unsigned int mdValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setMdValues(double const * mdValues, uint64_t mdValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Sets the measured depth (MD) values of this wellbore frame representation as a regular

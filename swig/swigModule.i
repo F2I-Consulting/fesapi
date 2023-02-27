@@ -19,34 +19,14 @@ under the License.
 %module fesapi
 
 %{
-#include <stdint.h>		// Use the C99 official header
+#if defined(__clang__) || defined(_MSC_VER)
+#elif defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic ignored "-Wcast-qual"
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
 %}
 
-/* Exact integral types.  */
-
-/* Signed.  */
-
-typedef signed char		int8_t;
-typedef short int		int16_t;
-typedef int			int32_t;
-#if defined(SWIGWORDSIZE64)
-typedef long int		int64_t;
-#else
-typedef long long int		int64_t;
-#endif
-
-/* Unsigned.  */
-typedef unsigned char		uint8_t;
-typedef unsigned short int	uint16_t;
-typedef unsigned int		uint32_t;
-#ifndef SWIGJAVA
-#if defined(SWIGWORDSIZE64)
-typedef unsigned long int	uint64_t;
-#else
-typedef unsigned long long int	uint64_t;
-#endif
-#endif
-
+%include "stdint.i"
 %include "std_string.i"
 
 %include "../src/nsDefinitions.h"
@@ -55,14 +35,20 @@ typedef unsigned long long int	uint64_t;
 // JAVA
 //************************/
 
-#ifdef SWIGJAVA		
+#ifdef SWIGJAVA
+	// https://stackoverflow.com/a/60208989
+	%define PRIMITIVE_TYPEMAP(NEW_TYPE, TYPE)
+	%clear NEW_TYPE;
+	%apply TYPE { NEW_TYPE };
+	%enddef // PRIMITIVE_TYPEMAP
+#if defined(SWIGWORDSIZE64)
+	PRIMITIVE_TYPEMAP(long int, long long);
+	PRIMITIVE_TYPEMAP(unsigned long int, long long);
+#endif
 	// We don't want to use BigInteger in java.
-	#if defined(SWIGWORDSIZE64)
-	typedef long int		uint64_t;
-	#else
-	typedef long long int		uint64_t;
-	#endif	
-	
+	PRIMITIVE_TYPEMAP(unsigned long long int, long long);
+#undef PRIMITIVE_TYPEMAP
+
 	/*
 	 When using multiple modules or the nspace feature it is common to invoke SWIG with a different -package command line option for each module.
 	 However, by default the generated code may not compile if generated classes in one package use generated classes in another package.
@@ -125,7 +111,7 @@ typedef unsigned long long int	uint64_t;
 	%array_functions(float, FloatArray);
 	%array_functions(double, DoubleArray);
 	%array_functions(bool, BoolArray);
-#else // Use GC.KeepAlive on these arrays to ensure no premature garbage collection in C#
+#else // Use Dispose() (or GC.KeepAlive) on these arrays to ensure no premature garbage collection in C#
 	%array_class(int64_t, Int64Array);
 	%array_class(uint64_t, UInt64Array);
 	%array_class(int32_t, Int32Array);
@@ -149,8 +135,10 @@ typedef unsigned long long int	uint64_t;
 %include "std_vector.i"
 
 %template(StringVector) std::vector< std::string >;
-%template(Int32Vector) std::vector< int >;
-%template(Int64Vector) std::vector< long long >;
+%template(Int32Vector) std::vector< int32_t >;
+%template(UInt32Vector) std::vector< uint32_t >;
+// Vector of int64 and uint64 are tough to port because of long vs long long platform
+// Indeed c++ long corresponds to int in java where c++ long long corresponds to long in java
 %template(FloatVector) std::vector< float >;
 %template(DoubleVector) std::vector< double >;
 %template(BoolVector) std::vector< bool >;
@@ -708,6 +696,15 @@ namespace COMMON_NS
 		std::vector<std::string> getExtraMetadata(const std::string & key) const;
 
 		/**
+		 * Get the count of extra metadata in this instance
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
+		 *
+		 * @returns	The extra metadata count of this instance.
+		 */
+		unsigned int getExtraMetadataCount() const;
+
+		/**
 		 * Get the key of a key value pair at a particular index in the extra metadata set of this
 		 * instance
 		 *
@@ -1141,7 +1138,7 @@ import com.f2i_consulting.fesapi.*;
 		EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
 		/**
@@ -1206,7 +1203,7 @@ import com.f2i_consulting.fesapi.*;
 		EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
 
 		/**
@@ -1272,7 +1269,7 @@ import com.f2i_consulting.fesapi.*;
 		EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
@@ -1341,7 +1338,7 @@ import com.f2i_consulting.fesapi.*;
 		EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
 
@@ -2778,8 +2775,23 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new unstructured grid representation.
 		 */
-		RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string& guid, const std::string& title,
-			uint64_t cellCount);
+		RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string & guid, const std::string & title, uint64_t cellCount);
+		
+		/**
+		 * @brief	Creates an unstructured grid representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param 	guid	 	The guid to set to the unstructured grid representation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	title	 	The title to set to the unstructured grid representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param 	cellCount	Number of cells in the grid.
+		 *
+		 * @returns	A pointer to the new unstructured grid representation.
+		 */
+		RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const std::string & title, uint64_t cellCount);
 
 		/**
 		 * @brief	Creates a sub-representation into this repository
@@ -2790,7 +2802,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 					generated.
 		 * @param 	title	The title to set to the sub-representation. If empty then \"unknown\" title
 		 * 					will be set.
-		 * @param 	defaultElementKind	The indexable element which will be by default used for selecting the subrepresentation of a supporting representation.
+		 * @param 	elementKind	The indexable element which will be by default used for selecting the subrepresentation of a supporting representation.
 		 *
 		 * @returns	A pointer to the new sub-representation.
 		 */
@@ -2810,7 +2822,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 						be generated.
 		 * @param 	  	title 	The title to set to the sub-representation. If empty then \"unknown\"
 		 * 						title will be set.
-		 * @param 		defaultElementKind	The indexable element which will be by default used for selecting the subrepresentation of a supporting representation.
+		 * @param 		elementKind	The indexable element which will be by default used for selecting the subrepresentation of a supporting representation.
 		 *
 		 * @returns	A pointer to the new sub-representation.
 		 */

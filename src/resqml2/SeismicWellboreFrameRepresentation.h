@@ -35,7 +35,7 @@ namespace RESQML2_NS
 		* @param timeValueCount	The time values count. It must be the same that the md values count.
 		* @param proxy			The HDF proxy where to write the time values. It must be already opened for writing and won't be closed in this method.
 		*/
-		DLL_IMPORT_OR_EXPORT void setTimeValues(double const * timeValues, unsigned int timeValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setTimeValues(double const * timeValues, uint64_t timeValueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		* Set the time values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.

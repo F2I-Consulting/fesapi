@@ -93,7 +93,7 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 		EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 
 		// Check if the hdf dataset really contains constant length string.
-		std::vector<hsize_t> dims = hdfProxy->getElementCountPerDimension(datasetPath);
+		std::vector<uint32_t> dims = hdfProxy->getElementCountPerDimension(datasetPath);
 		if (dims.size() != 2) {
 			return result;
 		}
@@ -153,13 +153,13 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 	seismicLine->TraceLabels->Values->ExternalDataArrayPart.push_back(daPart);
 
 	// Build the CHAR array
-	hsize_t dimTwo = 0;
+	uint64_t dimTwo = 0;
 	for (std::vector<std::string>::const_iterator it = values.begin(); it != values.end(); ++it) {
 		if ((*it).length() > dimTwo)
 			dimTwo = (*it).length();
 	}
 
-	hsize_t strNb = values.size();
+	uint64_t strNb = values.size();
 	std::unique_ptr<unsigned char[]> cTab(new unsigned char[strNb*dimTwo]);
 
 	int indStr = 0;
@@ -173,7 +173,7 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 		indStr++;
 	}
 
-	hsize_t nbValPerDim[2] = { strNb, dimTwo };
+	uint64_t nbValPerDim[2] = { strNb, dimTwo };
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
 		daPart->PathInExternalFile,

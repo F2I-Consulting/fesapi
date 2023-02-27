@@ -20,8 +20,6 @@ under the License.
 
 #include <algorithm>
 
-#include <hdf5.h>
-
 #include "../tools/TimeTools.h"
 
 #include "../common/EnumStringMapper.h"

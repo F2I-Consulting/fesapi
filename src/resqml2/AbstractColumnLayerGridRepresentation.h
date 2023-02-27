@@ -35,11 +35,10 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::logic_error	If this grid is partial or if the underlying gSOAP instance
 		 * 									is not a RESQML2.0 one.
-		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
 		 *
 		 * @returns	The K layer count of this grid.
 		 */
-		DLL_IMPORT_OR_EXPORT uint32_t getKCellCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getKCellCount() const;
 
 		/**
 		 * Sets the K layer count of this grid
@@ -48,7 +47,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	kCount	The K layer count to set to this grid.
 		 */
-		DLL_IMPORT_OR_EXPORT void setKCellCount(uint32_t kCount);
+		DLL_IMPORT_OR_EXPORT void setKCellCount(uint64_t kCount);
 
 		/**
 		 * Gets the K direction (up, down or not monotonic) of this grid.
@@ -82,7 +81,7 @@ namespace RESQML2_NS
 		 * 										must be already opened for writing and won't be closed in
 		 * 										this method.
 		 */
-		DLL_IMPORT_OR_EXPORT void setIntervalAssociationWithStratigraphicOrganizationInterpretation(int64_t* stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setIntervalAssociationWithStratigraphicOrganizationInterpretation(int64_t const* stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
 
 		COMMON_NS::DataObjectReference getStratigraphicOrganizationInterpretationDor() const final;
 

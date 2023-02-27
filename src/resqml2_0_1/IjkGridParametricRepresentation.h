@@ -113,19 +113,19 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short const * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 			unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		/**
@@ -149,7 +149,7 @@ namespace RESQML2_0_1_NS
 		void setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, EML2_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs);
 	};
 }

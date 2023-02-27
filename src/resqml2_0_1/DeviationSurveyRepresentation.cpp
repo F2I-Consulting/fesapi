@@ -98,8 +98,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	xmlMds->Values->PathInHdfFile = getHdfGroup() + "/mds";
 	rep->Mds = xmlMds;
 	// HDF mds
-	const hsize_t dim = stationCount;
-	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "mds", mds, &dim, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "mds", mds, &stationCount, 1);
 
 	rep->AngleUom = angleUom;
 	// XML azimuths
@@ -109,7 +108,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	xmlAzims->Values->PathInHdfFile = getHdfGroup() + "/azimuths";
 	rep->Azimuths = xmlAzims;
 	// HDF azimuths
-	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "azimuths", azimuths, &dim, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "azimuths", azimuths, &stationCount, 1);
 	// XML inclinations
 	resqml20__DoubleHdf5Array* xmlIncls = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 	xmlIncls->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
@@ -117,7 +116,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 	xmlIncls->Values->PathInHdfFile = getHdfGroup() + "/inclinations";
 	rep->Inclinations = xmlIncls;
 	// HDF inclinations
-	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inclinations", inclinations, &dim, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inclinations", inclinations, &stationCount, 1);
 }
 
 EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* DeviationSurveyRepresentation::getMdDatum() const

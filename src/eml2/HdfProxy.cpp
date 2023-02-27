@@ -68,6 +68,60 @@ namespace {
 
 		return COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN;
 	}
+
+	vector<hsize_t> reduceForChunking(hid_t datatype,
+		const uint64_t * numValuesInEachDimension,
+		unsigned int numDimensions, size_t maxChunkSize)
+	{
+		// Get size in bytes of this datatype.
+		const size_t elementSize = H5Tget_size(datatype);
+		if (maxChunkSize < elementSize) {
+			throw std::invalid_argument("The maximum chunk size cannot be inferior to the size of one element of the dataset.");
+		}
+
+		vector<hsize_t> chunkDimensions(numDimensions);
+		for (unsigned int i = 0; i < numDimensions; ++i) {
+			chunkDimensions[i] = numValuesInEachDimension[i];
+		}
+
+		// Compute product of all dimensions.
+		uint64_t dimensionProduct =
+			std::accumulate(chunkDimensions.begin(),
+				chunkDimensions.end(),
+				1ULL,
+				std::multiplies<uint64_t>());
+
+		// If the total size exceeds the allowed maximum chunk size,
+		// reduce the chunk dimensions untill it is necessary
+		size_t totalSize = dimensionProduct * elementSize;
+		size_t dimensionToDivide = 0;
+		while (totalSize > maxChunkSize) {
+			while (chunkDimensions[dimensionToDivide] == 1) {
+				++dimensionToDivide;
+			}
+
+			totalSize /= chunkDimensions[dimensionToDivide];
+			chunkDimensions[dimensionToDivide] = maxChunkSize / totalSize;
+			if (chunkDimensions[dimensionToDivide] == 0) {
+				chunkDimensions[dimensionToDivide] = 1;
+			}
+			// else the while loop must exit
+		}
+
+		return chunkDimensions;
+	}
+
+	// https://stackoverflow.com/questions/59747216/casting-size-t-to-hsize-t
+	std::unique_ptr<hsize_t[]> copyToHdf5Datatype(uint64_t const* values, size_t nbValues) {
+		if (values == nullptr || nbValues == 0) {
+			return std::unique_ptr<hsize_t[]>{};
+		}
+		std::unique_ptr<hsize_t[]> result(new hsize_t[nbValues]);
+		for (size_t i = 0; i < nbValues; ++i) {
+			result[i] = values[i];
+		}
+		return result;
+	}
 }
 
 HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess) :
@@ -206,8 +260,8 @@ void HdfProxy::readArrayNdOfValues(const std::string & datasetName, void* values
 void HdfProxy::readArrayNdOfValues(
 	const std::string & datasetName,
 	void* values,
-	unsigned long long const * numValuesInEachDimension,
-	unsigned long long const * offsetInEachDimension,
+	uint64_t const * numValuesInEachDimension,
+	uint64_t const * offsetInEachDimension,
 	unsigned int numDimensions, hid_t datatype)
 {
 	readArrayNdOfValues(datasetName, values, numValuesInEachDimension, offsetInEachDimension, nullptr, nullptr, numDimensions, datatype);
@@ -216,10 +270,10 @@ void HdfProxy::readArrayNdOfValues(
 void HdfProxy::readArrayNdOfValues(
 	const std::string & datasetName,
 	void* values,
-	unsigned long long const * blockCountPerDimension,
-	unsigned long long const * offsetInEachDimension,
-	unsigned long long const * strideInEachDimension,
-	unsigned long long const * blockSizeInEachDimension,
+	uint64_t const * blockCountPerDimension,
+	uint64_t const * offsetInEachDimension,
+	uint64_t const * strideInEachDimension,
+	uint64_t const * blockSizeInEachDimension,
 	unsigned int numDimensions, hid_t datatype)
 {
 	if (!isOpened()) {
@@ -236,7 +290,10 @@ void HdfProxy::readArrayNdOfValues(
 		H5Dclose(dataset);
 		throw invalid_argument("The filespace of HDF5 dataset " + datasetName + " could not be opened.");
 	}
-	herr_t result = H5Sselect_hyperslab(filespace, H5S_SELECT_SET, offsetInEachDimension, strideInEachDimension, blockCountPerDimension, blockSizeInEachDimension);
+
+	herr_t result = H5Sselect_hyperslab(filespace, H5S_SELECT_SET, 
+		copyToHdf5Datatype(offsetInEachDimension, numDimensions).get(), copyToHdf5Datatype(strideInEachDimension, numDimensions).get(),
+		copyToHdf5Datatype(blockCountPerDimension, numDimensions).get(), copyToHdf5Datatype(blockSizeInEachDimension, numDimensions).get());
 	if (result < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
@@ -284,10 +341,10 @@ void HdfProxy::readArrayNdOfValues(
 
 void HdfProxy::selectArrayNdOfValues(
 	const std::string & datasetName,
-	unsigned long long const * blockCountPerDimension,
-	unsigned long long const * offsetInEachDimension,
-	unsigned long long const * strideInEachDimension,
-	unsigned long long const * blockSizeInEachDimension,
+	uint64_t const * blockCountPerDimension,
+	uint64_t const * offsetInEachDimension,
+	uint64_t const * strideInEachDimension,
+	uint64_t const * blockSizeInEachDimension,
 	unsigned int numDimensions,
 	bool newSelection,
 	hid_t & dataset,
@@ -317,7 +374,9 @@ void HdfProxy::selectArrayNdOfValues(
 		}
 	}
 
-	herr_t result = H5Sselect_hyperslab(filespace, newSelection ? H5S_SELECT_SET : H5S_SELECT_OR, offsetInEachDimension, strideInEachDimension, blockCountPerDimension, blockSizeInEachDimension);
+	herr_t result = H5Sselect_hyperslab(filespace, newSelection ? H5S_SELECT_SET : H5S_SELECT_OR,
+		copyToHdf5Datatype(offsetInEachDimension, numDimensions).get(), copyToHdf5Datatype(strideInEachDimension, numDimensions).get(),
+		copyToHdf5Datatype(blockCountPerDimension, numDimensions).get(), copyToHdf5Datatype(blockSizeInEachDimension, numDimensions).get());
 	if (result < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
@@ -329,14 +388,15 @@ void HdfProxy::readArrayNdOfValues(
 	hid_t dataset,
 	hid_t filespace,
 	void* values, 
-	unsigned long long slabSize, 
+	uint64_t slabSize, 
 	hid_t datatype)
 {
 	if (!isOpened()) {
 		open();
 	}
 
-	hid_t memspace = H5Screate_simple(1, &slabSize, nullptr);
+	hsize_t hdfSlabSize = slabSize;
+	hid_t memspace = H5Screate_simple(1, &hdfSlabSize, nullptr);
 	if (memspace < 0) {
 		ssize_t size = 1 + H5Iget_name(dataset, NULL, 0);
 		char * name = (char *)malloc(size);
@@ -399,56 +459,14 @@ int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
 	return result;
 }
 
-vector<unsigned long long> HdfProxy::reduceForChunking(hid_t datatype,
-	const unsigned long long * numValuesInEachDimension,
-	unsigned int numDimensions) const
-{
-	// Get size in bytes of this datatype.
-	const size_t elementSize = H5Tget_size(datatype);
-	if (maxChunkSize < elementSize) {
-		throw std::invalid_argument("The maximum chunk size cannot be inferior to the size of one element of the dataset.");
-	}
-
-	vector<unsigned long long> chunkDimensions(numDimensions);
-	for (unsigned int i = 0; i < numDimensions; ++i) {
-		chunkDimensions[i] = numValuesInEachDimension[i];
-	}
-
-	// Compute product of all dimensions.
-	unsigned long long dimensionProduct =
-		std::accumulate(chunkDimensions.begin(),
-			chunkDimensions.end(),
-			1ULL,
-			std::multiplies<unsigned long long>());
-
-	// If the total size exceeds the allowed maximum chunk size,
-	// reduce the chunk dimensions untill it is necessary
-	size_t totalSize = dimensionProduct * elementSize;
-	size_t dimensionToDivide = 0;
-	while (totalSize > maxChunkSize) {
-		while (chunkDimensions[dimensionToDivide] == 1) {
-			++dimensionToDivide;
-		}
-
-		totalSize /= chunkDimensions[dimensionToDivide];
-		chunkDimensions[dimensionToDivide] = maxChunkSize / totalSize;
-		if (chunkDimensions[dimensionToDivide] == 0) {
-			chunkDimensions[dimensionToDivide] = 1;
-		}
-		// else the while loop must exit
-	}
-
-	return chunkDimensions;
-}
-
 void HdfProxy::writeItemizedListOfList(const string & groupName,
 	const string & name,
 	COMMON_NS::AbstractObject::numericalDatatypeEnum cumulativeLengthDatatype,
 	const void * cumulativeLength,
-	unsigned long long cumulativeLengthSize,
+	uint64_t cumulativeLengthSize,
 	COMMON_NS::AbstractObject::numericalDatatypeEnum elementsDatatype,
 	const void * elements,
-	unsigned long long elementsSize)
+	uint64_t elementsSize)
 {
 	if (!isOpened()) {
 		open();
@@ -459,7 +477,8 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 
 	// ************* CUMULATIVE LENGTH *************
 	// Create dataspace for the dataset in the file.
-	hid_t fspaceCL = H5Screate_simple(1, &cumulativeLengthSize, nullptr);
+	hsize_t hdfCumulativeLengthSize = cumulativeLengthSize;
+	hid_t fspaceCL = H5Screate_simple(1, &hdfCumulativeLengthSize, nullptr);
 
 	hid_t datasetCL;
 	const hid_t hdf5DatatypeCL = convertToHdf5Datatype(cumulativeLengthDatatype);
@@ -468,10 +487,10 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
 
-		vector<unsigned long long> newValues =
+		vector<hsize_t> newValues =
 			reduceForChunking (hdf5DatatypeCL,
 					   &cumulativeLengthSize,
-					   1);
+					   1, maxChunkSize);
 		H5Pset_chunk (dcpl, 1, newValues.data());
 
 		datasetCL = H5Dcreate(grp, CUMULATIVE_LENGTH_DS_NAME, hdf5DatatypeCL, fspaceCL, H5P_DEFAULT, dcpl, H5P_DEFAULT);
@@ -488,7 +507,8 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 
 	// ************* ELEMENTS *************
 	// Create dataspace for the dataset in the file.
-	hid_t fspaceE = H5Screate_simple(1, &elementsSize, nullptr);
+	hsize_t hdfElementsSize = elementsSize;
+	hid_t fspaceE = H5Screate_simple(1, &hdfElementsSize, nullptr);
 
 	hid_t datasetE;
 	const hid_t hdf5DatatypeE = convertToHdf5Datatype(elementsDatatype);
@@ -497,10 +517,10 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
 
-		vector<unsigned long long> newValues =
+		vector<hsize_t> newValues =
 			reduceForChunking (hdf5DatatypeE,
 					   &elementsSize,
-					   1);
+					   1, maxChunkSize);
 
 		H5Pset_chunk (dcpl, 1, newValues.data());
 
@@ -519,7 +539,7 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 	H5Gclose(grp);
 }
 
-std::vector<unsigned long long> HdfProxy::getElementCountPerDimension(const std::string & datasetName)
+std::vector<uint32_t> HdfProxy::getElementCountPerDimension(const std::string & datasetName)
 {
 	if (!isOpened()) {
 		open();
@@ -552,7 +572,7 @@ std::vector<unsigned long long> HdfProxy::getElementCountPerDimension(const std:
 		throw invalid_argument("The number of elements in each dimension of the dataspace for the dataset " + datasetName + " could not be read.");
 	}
 
-	std::vector<unsigned long long> result;
+	std::vector<uint32_t> result;
 	for (auto i = 0; i < ndims; ++i) {
 		result.push_back(dims[i]);
 	}
@@ -564,7 +584,7 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 	const std::string & name,
 	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 	const void * values,
-	const unsigned long long * numValuesInEachDimension,
+	const uint64_t * numValuesInEachDimension,
 	unsigned int numDimensions)
 {
 	if (!isOpened()) {
@@ -577,7 +597,7 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 	}
 
 	// Create the data space
-	hid_t space = H5Screate_simple(numDimensions, numValuesInEachDimension, nullptr);
+	hid_t space = H5Screate_simple(numDimensions, copyToHdf5Datatype(numValuesInEachDimension, numDimensions).get(), nullptr);
 	if (space < 0) {
 		throw invalid_argument("The dataspace for the dataset " + name + " could not be created.");
 	}
@@ -589,10 +609,10 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 	if (compressionLevel) {
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
-		vector<unsigned long long> newValues =
+		vector<hsize_t> newValues =
 			reduceForChunking (hdf5Datatype,
 					   numValuesInEachDimension,
-					   numDimensions);
+					   numDimensions, maxChunkSize);
 
 		H5Pset_chunk (dcpl, numDimensions, newValues.data());
 
@@ -623,7 +643,7 @@ void HdfProxy::createArrayNd(
 	const std::string& groupName,
 	const std::string& datasetName,
 	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
-	const unsigned long long* numValuesInEachDimension,
+	const uint64_t* numValuesInEachDimension,
 	unsigned int numDimensions)
 {
 	if (!isOpened()) {
@@ -636,7 +656,7 @@ void HdfProxy::createArrayNd(
 	}
 
 	// Create the data space
-	hid_t space = H5Screate_simple(numDimensions, numValuesInEachDimension, nullptr);
+	hid_t space = H5Screate_simple(numDimensions, copyToHdf5Datatype(numValuesInEachDimension, numDimensions).get(), nullptr);
 	if (space < 0) {
 		throw invalid_argument("The dataspace for the dataset " + datasetName + " could not be created.");
 	}
@@ -648,10 +668,10 @@ void HdfProxy::createArrayNd(
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
 
-		vector<unsigned long long> newValues =
+		vector<hsize_t> newValues =
 			reduceForChunking (hdf5Datatype,
 			numValuesInEachDimension,
-			numDimensions);
+			numDimensions, maxChunkSize);
 
 		H5Pset_chunk (dcpl, numDimensions, newValues.data());
 
@@ -683,8 +703,8 @@ void HdfProxy::writeArrayNdSlab(
 	const string& datasetName,
 	COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 	const void* values,
-	const hsize_t* numValuesInEachDimension,
-	const hsize_t* offsetInEachDimension,
+	const uint64_t* numValuesInEachDimension,
+	const uint64_t* offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	if (!isOpened()) {
@@ -701,7 +721,7 @@ void HdfProxy::writeArrayNdSlab(
 	if (filespace < 0) {
 		throw invalid_argument("The RESQML dataspace of " + datasetName + " could not be opened.");
 	}
-	herr_t errorCode = H5Sselect_hyperslab(filespace, H5S_SELECT_SET, offsetInEachDimension, nullptr, numValuesInEachDimension, nullptr);
+	herr_t errorCode = H5Sselect_hyperslab(filespace, H5S_SELECT_SET, copyToHdf5Datatype(offsetInEachDimension, numDimensions).get(), nullptr, copyToHdf5Datatype(numValuesInEachDimension, numDimensions).get(), nullptr);
 	if (errorCode < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
@@ -745,8 +765,8 @@ void HdfProxy::readArrayNdOfDoubleValues(const std::string & datasetName, double
 
 void HdfProxy::readArrayNdOfDoubleValues(
 	const std::string & datasetName, double* values,
-	hsize_t const * numValuesInEachDimension,
-	hsize_t const * offsetInEachDimension,
+	uint64_t const * numValuesInEachDimension,
+	uint64_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -756,10 +776,10 @@ void HdfProxy::readArrayNdOfDoubleValues(
 
 void HdfProxy::readArrayNdOfDoubleValues(
 	const std::string & datasetName, double* values,
-	hsize_t const * blockCountPerDimension,
-	hsize_t const * offsetInEachDimension,
-	hsize_t const * strideInEachDimension,
-	hsize_t const * blockSizeInEachDimension,
+	uint64_t const * blockCountPerDimension,
+	uint64_t const * offsetInEachDimension,
+	uint64_t const * strideInEachDimension,
+	uint64_t const * blockSizeInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -771,7 +791,7 @@ void HdfProxy::readArrayNdOfDoubleValues(
 	hid_t dataset,
 	hid_t filespace,
 	void* values,
-	unsigned long long slabSize)
+	uint64_t slabSize)
 {
 	readArrayNdOfValues(dataset, filespace, values, slabSize, H5T_NATIVE_DOUBLE);
 }
@@ -783,8 +803,8 @@ void HdfProxy::readArrayNdOfFloatValues(const std::string & datasetName, float* 
 
 void HdfProxy::readArrayNdOfFloatValues(
 	const std::string& datasetName, float* values,
-	hsize_t const * numValuesInEachDimension,
-	hsize_t const * offsetInEachDimension,
+	uint64_t const * numValuesInEachDimension,
+	uint64_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -799,8 +819,8 @@ void HdfProxy::readArrayNdOfInt64Values(const std::string & datasetName, int64_t
 
 void HdfProxy::readArrayNdOfInt64Values(
 	const std::string& datasetName, int64_t* values,
-	hsize_t const * numValuesInEachDimension,
-	hsize_t const * offsetInEachDimension,
+	uint64_t const * numValuesInEachDimension,
+	uint64_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -820,8 +840,8 @@ void HdfProxy::readArrayNdOfIntValues(const std::string & datasetName, int* valu
 
 void HdfProxy::readArrayNdOfIntValues(
 	const std::string & datasetName, int* values,
-	hsize_t const * numValuesInEachDimension,
-	hsize_t const * offsetInEachDimension,
+	uint64_t const * numValuesInEachDimension,
+	uint64_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -1246,7 +1266,7 @@ double HdfProxy::readDoubleAttribute(const std::string & obj_name,
 	return result;
 }
 
-int64_t HdfProxy::readLongAttribute(const std::string & obj_name,
+int64_t HdfProxy::readInt64Attribute(const std::string & obj_name,
 	const std::string & attr_name) const
 {
 	if (!isOpened()) {
@@ -1311,13 +1331,13 @@ bool HdfProxy::isCompressed(const std::string & datasetName)
 	return compressed;
 }
 
-std::vector<unsigned long long> HdfProxy::getElementCountPerChunkDimension(const std::string & datasetName)
+std::vector<uint32_t> HdfProxy::getElementCountPerChunkDimension(const std::string & datasetName)
 {
 	if (!isOpened()) {
 		open();
 	}
 
-	std::vector<unsigned long long> result;
+	std::vector<uint32_t> result;
 
 	hid_t dataset_id = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
 	if (dataset_id < 0) {

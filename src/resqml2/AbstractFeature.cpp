@@ -48,16 +48,3 @@ std::vector<AbstractFeatureInterpretation *> AbstractFeature::getInterpretationS
 
 	return result;
 }
-
-uint64_t AbstractFeature::getInterpretationCount() const
-{
-	const std::vector<AbstractFeatureInterpretation*>& interpretationSet = getInterpretationSet();
-	return interpretationSet.size();
-}
-
-AbstractFeatureInterpretation *	AbstractFeature::getInterpretation(uint64_t index) const
-{
-	const std::vector<AbstractFeatureInterpretation*>& interpretationSet = getInterpretationSet();
-
-	return interpretationSet.at(index);
-}

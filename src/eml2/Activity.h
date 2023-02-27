@@ -236,7 +236,7 @@ namespace EML2_NS
 		 *
 		 * @returns	A vector of the value of all the @p paramTitle integer quantity parameters.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::vector<int64_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<int32_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Gets the integer quantity value of a given parameter.

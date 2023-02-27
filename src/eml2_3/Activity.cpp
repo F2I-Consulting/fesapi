@@ -311,7 +311,7 @@ bool Activity::isAnIntegerQuantityParameter(uint64_t index) const
 	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerQuantityParameter;
 }
 
-vector<int64_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
+vector<int32_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
 {
 	vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 

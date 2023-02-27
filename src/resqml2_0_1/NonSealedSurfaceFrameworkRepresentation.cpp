@@ -93,7 +93,7 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 	contactGeomPoints->Coordinates->PathInHdfFile = getHdfGroup() + "/" + oss.str();
 	
 	// HDF
-	hsize_t numValues[2];
+	uint64_t numValues[2];
 	numValues[0] = pointCount;
 	numValues[1] = 3; // 3 for X, Y and Z
 

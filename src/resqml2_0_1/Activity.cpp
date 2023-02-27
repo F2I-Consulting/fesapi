@@ -296,7 +296,7 @@ bool Activity::isAnIntegerQuantityParameter(uint64_t index) const
 	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter;
 }
 
-vector<int64_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
+vector<int32_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
 {
 	vector<resqml20__AbstractActivityParameter*> params = getParameterFromTitle(paramTitle);
 

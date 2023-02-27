@@ -769,7 +769,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dO
 	xmlPoints->ZValues = xmlZValues;
 
 	// HDF
-	hsize_t dim[2] = { numJ, numI };
+	uint64_t dim[2] = { numJ, numI };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
 		oss3.str(),
 		zValues,
@@ -848,7 +848,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dO
 	xmlPoints->ZValues = xmlZValues;
 
 	// HDF
-	hsize_t dim[2] = { numJ, numI };
+	uint64_t dim[2] = { numJ, numI };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
 		oss3.str(),
 		zValues,

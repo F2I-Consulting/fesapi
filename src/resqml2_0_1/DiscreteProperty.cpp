@@ -20,8 +20,6 @@ under the License.
 
 #include <sstream>
 
-#include <hdf5.h>
-
 #include "../tools/Statistics.h"
 
 #include "../common/EnumStringMapper.h"

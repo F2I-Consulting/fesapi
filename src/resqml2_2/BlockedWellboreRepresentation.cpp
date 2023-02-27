@@ -102,7 +102,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(int8_t const* gridIndic
 	xmlGridIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/GridIndices", rep->NodeCount, hdfProxy));
 	rep->IntervalGridCells->GridIndices = xmlGridIndices;
 	// HDF
-	hsize_t intervalCount = rep->NodeCount - 1;
+	uint64_t intervalCount = rep->NodeCount - 1;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,

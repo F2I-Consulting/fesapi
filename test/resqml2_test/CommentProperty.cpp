@@ -29,9 +29,6 @@ using namespace COMMON_NS;
 using namespace EML2_NS;
 using namespace resqml2_test;
 
-const char* CommentProperty::defaultUuid = "3e01e290-7df3-450e-ad93-2f88e79fe2fe";
-const char* CommentProperty::defaultTitle = "Comment Property on well frame Test";
-
 CommentProperty::CommentProperty(const string & repoPath)
 	: commontest::AbstractTest(repoPath) {
 }

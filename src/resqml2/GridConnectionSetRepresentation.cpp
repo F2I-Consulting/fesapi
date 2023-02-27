@@ -20,8 +20,6 @@ under the License.
 
 #include <algorithm>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "AbstractFeatureInterpretation.h"
@@ -87,7 +85,7 @@ void GridConnectionSetRepresentation::setCellIndexPairs(uint64_t cellIndexPairCo
 	}
 
 	// ************ HDF ************		
-	hsize_t numValues[2] = { cellIndexPairCount, 2 };
+	uint64_t numValues[2] = { cellIndexPairCount, 2 };
 	proxy->writeArrayNd(getHdfGroup(), "CellIndexPairs", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, cellIndexPair, numValues, 2);
 	if (gridIndexPair != nullptr) {
 		proxy->writeArrayNd(getHdfGroup(), "GridIndexPairs", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16, gridIndexPair, numValues, 2);
@@ -101,7 +99,7 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(int const* l
 	if (gsoapProxy2_0_1 != nullptr && nullValue != -1) {
 		throw invalid_argument("The null value must be -1 in RESQML2.0.1");
 	}
-	const hsize_t cellIndexPairCount = getCellIndexPairCount();
+	const uint64_t cellIndexPairCount = getCellIndexPairCount();
 	if (cellIndexPairCount == 0) {
 		throw logic_error("You must set some cell connections before to set local face connections");
 	}
@@ -114,7 +112,7 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(int const* l
 	}
 
 	// ************ HDF ************		
-	hsize_t numValues[2] = { cellIndexPairCount, 2 };
+	uint64_t numValues[2] = { cellIndexPairCount, 2 };
 	proxy->writeArrayNd(getHdfGroup(), "LocalFacePerCellIndexPairs", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32, localFacePerCellIndexPair, numValues, 2);
 
 	setLocalFacePerCellIndexPairsUsingExistingDataset(getHdfGroup() + "/LocalFacePerCellIndexPairs", nullValue, proxy);

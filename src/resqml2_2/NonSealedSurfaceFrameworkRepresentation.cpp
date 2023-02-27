@@ -89,7 +89,7 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 	contactGeomPoints->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/points_contact_representation" + std::to_string(orgRep->Contacts.size() - 1), pointCount*3, proxy));
 	
 	// HDF
-	hsize_t numValues[2];
+	uint64_t numValues[2];
 	numValues[0] = pointCount;
 	numValues[1] = 3; // 3 for X, Y and Z
 

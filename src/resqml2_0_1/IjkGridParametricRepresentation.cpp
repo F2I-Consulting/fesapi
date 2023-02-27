@@ -237,7 +237,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, d
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 	double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short const * pillarKind, EML2_NS::AbstractHdfProxy * proxy,
-	unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+	uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (pillarKind == nullptr) {
@@ -289,7 +289,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	for (unsigned int i = 0; i < pillarCount; ++i) {
 		definedPillars[i] = pillarKind[i] == -1 ? 0 : 1;
 	}
-	hsize_t pillarGeometryIsDefinedCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
+	uint64_t pillarGeometryIsDefinedCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
 	proxy->writeArrayNd(getHdfGroup(), "PillarGeometryIsDefined", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, definedPillars.get(), pillarGeometryIsDefinedCount, 2);
 
 	// *********************************
@@ -308,14 +308,14 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlLineKinds->Values->PathInHdfFile = getHdfGroup() + "/LineKindIndices";
 
 	// HDF Line kinds
-	hsize_t lineKindCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
+	uint64_t lineKindCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
 	proxy->writeArrayNd(getHdfGroup(), "LineKindIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, pillarKind, lineKindCount, 2);
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy,
-	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+	uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (pillarKind.empty())
@@ -360,7 +360,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, EML2_NS::AbstractHdfProxy* proxy,
-	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+	uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (controlPointCountPerPillar < 1) {
@@ -464,7 +464,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
-	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+	uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (pillarKind < 0 || pillarKind > 5) {

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PropertyKind.h"
 
-#include <stdexcept>
-
 using namespace std;
 using namespace EML2_NS;
 

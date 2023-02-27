@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StreamlinesRepresentation.h"
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/AbstractGridRepresentation.h"
@@ -133,12 +131,11 @@ void StreamlinesRepresentation::setWellboreInformation(uint32_t const* injectorP
 	xmlInjectorPerLine->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/InjectorPerLine", rep->LineCount, hdfProxy));
 	wellboreInfo->InjectorPerLine = xmlInjectorPerLine;
 	// HDF
-	hsize_t datasetDim = rep->LineCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"InjectorPerLine",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		injectorPerLine,
-		&datasetDim, 1);
+		&rep->LineCount, 1);
 
 	// producerPerLine
 	// XML
@@ -152,7 +149,7 @@ void StreamlinesRepresentation::setWellboreInformation(uint32_t const* injectorP
 		"ProducerPerLine",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		producerPerLine,
-		&datasetDim, 1);
+		&rep->LineCount, 1);
 
 	// trajectories
 	for (auto const* traj : wellboreTrajectories) {
@@ -197,7 +194,7 @@ void StreamlinesRepresentation::setGeometry(
 
 	uint64_t nodeCount = 0;
 	uint64_t intervalCount = 0;
-	const auto lineCount = getLineCount();
+	const uint64_t lineCount = getLineCount();
 	for (size_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
 		nodeCount += nodeCountPerPolyline[lineIndex];
 		intervalCount += nodeCount - 1;
@@ -218,12 +215,11 @@ void StreamlinesRepresentation::setGeometry(
 	xmlNodeCountPerPolyline->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/NodeCountPerPolyline", lineCount, hdfProxy));
 	polyline->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// HDF
-	hsize_t datasetDim = lineCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"NodeCountPerPolyline",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
-		&datasetDim, 1);
+		&lineCount, 1);
 
 	// XYZ
 	if (localCrs == nullptr) {
@@ -304,12 +300,11 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	xmlGridIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/GridIndices", igc->CellCount, hdfProxy));
 	igc->GridIndices = xmlGridIndices;
 	// HDF
-	hsize_t datasetDim = igc->CellCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		gridIndices,
-		&datasetDim, 1);
+		&igc->CellCount, 1);
 
 	// CellIndices
 	// XML
@@ -319,12 +314,11 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	xmlCellIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/CellIndices", igc->CellCount, hdfProxy));
 	igc->CellIndices = xmlCellIndices;
 	// HDF
-	datasetDim = igc->CellCount;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"CellIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		cellIndices,
-		&datasetDim, 1);
+		&igc->CellCount, 1);
 
 	// CellIndices
 	// XML
@@ -334,7 +328,7 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	xmlLocalFacePairPerCellIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/LocalFacePairPerCellIndices", igc->CellCount * 2, hdfProxy));
 	igc->LocalFacePairPerCellIndices = xmlLocalFacePairPerCellIndices;
 	// HDF
-	datasetDim = igc->CellCount * 2;
+	uint64_t datasetDim = igc->CellCount * 2;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"LocalFacePairPerCellIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,

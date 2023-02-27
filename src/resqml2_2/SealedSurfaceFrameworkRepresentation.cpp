@@ -94,7 +94,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 	xmlListOfIdenticalNodes->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/listOfIdenticalNodes_contact" + std::to_string(contactRep->Index), identicalNodesCount * patchCount, proxy));
     contactRep->IdenticalNodeIndices = xmlListOfIdenticalNodes;
     // ************ HDF *************
-    hsize_t dim[2] = {identicalNodesCount, patchCount};
+	uint64_t dim[2] = {identicalNodesCount, patchCount};
     proxy->writeArrayNd(getHdfGroup(),
 		"listOfIdenticalNodes_contact" + std::to_string(contactRep->Index), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
         identicalNodes,
@@ -103,7 +103,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 
 void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     unsigned int contactIndex,
-    int const* nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
+    int const* nodeIndicesOnSupportingRepresentation, uint64_t nodeCount,
 	RESQML2_NS::AbstractRepresentation * supportingRepresentation,
 	EML2_NS::AbstractHdfProxy * proxy)
 {
@@ -155,10 +155,9 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 		createExternalDataArrayPart(getHdfGroup() +"/SupportingRepresentationNodes_contact" + std::to_string(contactIndex) + "_patch" + std::to_string(contactRep->Patches.size()), nodeCount, proxy));
     contactPatch->SupportingRepresentationNodes = xmlSupportingRepresentationNodes;
     // ************ HDF *************
-    hsize_t dim = nodeCount;
     proxy->writeArrayNd(getHdfGroup(),
 		"SupportingRepresentationNodes_contact" + std::to_string(contactIndex) + "_patch" + std::to_string(contactRep->Patches.size()), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
-		nodeIndicesOnSupportingRepresentation, &dim, 1);
+		nodeIndicesOnSupportingRepresentation, &nodeCount, 1);
 
     // adding the contact patch to the contact representation
     contactRep->Patches.push_back(contactPatch);

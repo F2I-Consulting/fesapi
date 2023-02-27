@@ -113,8 +113,6 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "ContinuousColorMap";
 
 		/**
-		 * @brief	Gets XML tag
-		 *
 		 * @returns	The XML tag.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }

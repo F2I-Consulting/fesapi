@@ -26,9 +26,6 @@ using namespace COMMON_NS;
 using namespace EML2_NS;
 using namespace resqml2_test;
 
-const char* ContinuousProperty::defaultUuid = "13f40533-96fc-4f4a-940e-cac96228782a";
-const char* ContinuousProperty::defaultTitle = "Testing continuous property";
-
 ContinuousProperty::ContinuousProperty(const string & repoPath)
 	: commontest::AbstractTest(repoPath) {
 }

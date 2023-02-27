@@ -135,8 +135,8 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 		geom->Points = xmlPts;
 
 		// HDF
-		std::unique_ptr<hsize_t[]> numValues(new hsize_t[numDimensionsInArray + 1]);
-		for (hsize_t i = 0; i < numDimensionsInArray; ++i) {
+		std::unique_ptr<uint64_t[]> numValues(new uint64_t[numDimensionsInArray + 1]);
+		for (uint32_t i = 0; i < numDimensionsInArray; ++i) {
 			numValues[i] = numPoints[i];
 		}
 		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
@@ -182,8 +182,8 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 		geom->Points = xmlPts;
 
 		// HDF
-		std::unique_ptr<hsize_t[]> numValues(new hsize_t[numDimensionsInArray + 1]);
-		for (hsize_t i = 0; i < numDimensionsInArray; ++i) {
+		std::unique_ptr<uint64_t[]> numValues(new uint64_t[numDimensionsInArray + 1]);
+		for (uint32_t i = 0; i < numDimensionsInArray; ++i) {
 			numValues[i] = numPoints[i];
 		}
 		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
@@ -662,9 +662,8 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(uint64_t patchIndex,
 		}
 
 		// HDF
-		hsize_t dim = pointCount;
-		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inlineCoordinates_patch" + std::to_string(patchIndex), inlines, &dim, 1);
-		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "crosslineCoordinates_patch" + std::to_string(patchIndex), crosslines, &dim, 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inlineCoordinates_patch" + std::to_string(patchIndex), inlines, &pointCount, 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "crosslineCoordinates_patch" + std::to_string(patchIndex), crosslines, &pointCount, 1);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -760,7 +759,7 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(uint64_t patchIndex,
 		getRepository()->addRelationship(this, proxy);
 		getRepository()->addRelationship(this, seismicSupport);
 		
-		unsigned long long pointCount = getXyzPointCountOfPatch(patchIndex);
+		const uint64_t pointCount = getXyzPointCountOfPatch(patchIndex);
 		if (gsoapProxy2_0_1 != nullptr) {
 			gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
 			if (!geom)

@@ -108,7 +108,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The projected CRS EPSG code.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getProjectedCrsEpsgCode() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getProjectedCrsEpsgCode() const;
 
 		/**
 		 * Indicates either the associated vertical CRS is identified by means of EPSG or not.
@@ -140,7 +140,14 @@ namespace EML2_NS
 		 *
 		 * @returns	The vertical CRS EPSG code.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getVerticalCrsEpsgCode() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getVerticalCrsEpsgCode() const;
+
+		/**
+		 * Gets the vertical CRS unit of measure as a string
+		 *
+		 * @returns	The vertical CRS unit of measure as string.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getVerticalCrsUnitAsString() const;
 
 		/**
 		 * Gets the areal rotation unit of measure.

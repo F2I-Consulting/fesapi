@@ -121,7 +121,7 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	hdfTriangles->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
 	hdfTriangles->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/triangles_patch" + std::to_string(triRep->TrianglePatch.size()), triangleCount*3, proxy));
 	// ************ HDF *************
-	hsize_t dim[2] = {triangleCount, 3};
+	uint64_t dim[2] = {triangleCount, 3};
 	proxy->writeArrayNd(getHdfGroup(),
 		"triangles_patch" + std::to_string(triRep->TrianglePatch.size()), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		triangleNodeIndices,

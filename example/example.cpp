@@ -675,7 +675,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	f1i1triRepSinglePatch = pck->createTriangulatedSetRepresentation(fault1Interp1,
 		"d8a03d57-8bf3-4f75-8645-ef2fbfa5d1e3",
 		"Fault1 Interp1 TriRep Single Patch");
-	//hsize_t dimExplicitPointsFault1 [1] = {6};
+	//uint64_t dimExplicitPointsFault1 [1] = {6};
 	double explicitPointsFault1[54] = { 150, 0, 200, 150, 100, 200, 150, 200, 200,
 		250, 0, 300, 250, 100, 300, 250, 200, 300,
 		300, 0, 350, 300, 100, 350, 300, 200, 350,
@@ -1001,7 +1001,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(twoCellsIjkGrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex",
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	int64_t prop2Values[2] = { 10, 11 };
-	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
+	discreteProp2->pushBackInt64Hdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 		RESQML2_0_1_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true, gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
@@ -1020,10 +1020,10 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 	RESQML2_NS::DiscreteProperty* discreteProp432 = pck->createDiscreteProperty(ijkgrid432, "f9447f76-34c5-4967-a3ee-4f400f96dba6", "4x3x2 grid cellIndex",
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
-	LONG64 discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+	int64_t discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 	//hdfProxy->setMaxChunkSize(192/2); // Create two chunks
-	discreteProp432->pushBackLongHdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
+	discreteProp432->pushBackInt64Hdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
 
 	/**************
 	 Continuous Properties
@@ -2404,7 +2404,7 @@ void deserializeActivity(COMMON_NS::AbstractObject const * resqmlObject)
 					}
 				}
 				else if (activity->isAnIntegerQuantityParameter(paramTitle)) {
-					vector<int64_t> vals = activity->getIntegerQuantityParameterValue(paramTitle);
+					vector<int32_t> vals = activity->getIntegerQuantityParameterValue(paramTitle);
 					for (size_t k = 0; k < vals.size(); ++k) {
 						cout << "Integer value : " << vals[k] << endl;
 					}
@@ -2565,7 +2565,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		for (uint64_t dimIndex = 0; dimIndex < dimCount; ++dimIndex) {
 			std::cout << "\tValues count in dimension " << dimIndex << " is : " << prop->getValuesCountOfDimensionOfPatch(dimIndex, 0) << std::endl;
 		}
-		int64_t valueCount = prop->getValuesCountOfPatch(0);
+		uint64_t valueCount = prop->getValuesCountOfPatch(0);
 		std::cout << "\tValues count in all dimensions is : " << valueCount << std::endl;
 
 		// Datatype
@@ -2605,7 +2605,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 					}
 				}
 				std::unique_ptr<int64_t[]> values(new int64_t[valueCount]);
-				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getLongValuesOfPatch(0, values.get());
+				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getInt64ValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 			}
@@ -2644,7 +2644,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				cerr << "\tERROR !!!!! The discrete or comment property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				std::unique_ptr<int64_t[]> values(new int64_t[valueCount]);
-				dynamic_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getLongValuesOfPatch(0, values.get());
+				dynamic_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getInt64ValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 				cout << "\tPress enter to continue..." << endl;
@@ -4366,16 +4366,10 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 	std::cout << endl << "BEGIN: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl << std::endl;
 	std::cout.precision(17);
 
-	std::unique_ptr<int[]> values(new int[prop->getValuesCountOfPatch(0)]);
+	std::unique_ptr<int32_t[]> values(new int32_t[prop->getValuesCountOfPatch(0)]);
 
-	uint64_t numValuesInEachDimension[3];
-	numValuesInEachDimension[0] = ijkGrid->getKCellCount();
-	numValuesInEachDimension[1] = ijkGrid->getJCellCount();
-	numValuesInEachDimension[2] = ijkGrid->getICellCount();
-	uint64_t offsetInEachDimension[3];
-	offsetInEachDimension[0] = 0;
-	offsetInEachDimension[1] = 0;
-	offsetInEachDimension[2] = 0;
+	uint64_t numValuesInEachDimension[3] = { ijkGrid->getKCellCount(), ijkGrid->getJCellCount(), ijkGrid->getICellCount() };
+	uint64_t offsetInEachDimension[3] = { 0, 0, 0 };
 
 	time_t timeStart, timeEnd;
 	clock_t nonHyperslabClockDuration = 0;
@@ -4460,7 +4454,7 @@ void deserializeLog(COMMON_NS::DataObjectRepository & repo)
 					if (channelSet->hasLoggingCompanyCode()) { cout << "LoggingCompanyCode: " << channelSet->getLoggingCompanyCode() << std::endl; }
 					if (channelSet->hasDataAsFileUri()) { cout << "Data As File Uri: " << channelSet->getDataAsFileUri() << std::endl; }
 					if (channelSet->hasDataAsJsonArray()) { cout << "Data As Json Array: " << channelSet->getDataAsJsonArray() << std::endl; }
-					for (size_t channelIndexIdx = 0; channelIndexIdx < channelSet->getChannelIndexCount(); ++channelIndexIdx) {
+					for (uint32_t channelIndexIdx = 0; channelIndexIdx < channelSet->getChannelIndexCount(); ++channelIndexIdx) {
 						cout << "IndexType: " << static_cast<int>(channelSet->getChannelIndexType(channelIndexIdx)) << std::endl;
 						cout << "Uom: " << channelSet->getChannelIndexUom(channelIndexIdx) << std::endl;
 						cout << "IsIncreasing: " << channelSet->getChannelIndexIsIncreasing(channelIndexIdx) << std::endl;
@@ -4476,7 +4470,7 @@ void deserializeLog(COMMON_NS::DataObjectRepository & repo)
 						if (channel->hasPassNumber()) { cout << "PassNumber: " << channel->getPassNumber() << std::endl; }
 						if (channel->hasLoggingCompanyName()) { cout << "LoggingCompanyName: " << channel->getLoggingCompanyName() << std::endl; }
 						if (channel->hasLoggingCompanyCode()) { cout << "LoggingCompanyCode: " << channel->getLoggingCompanyCode() << std::endl; }
-						for (size_t channelIndexIdx = 0; channelIndexIdx < channel->getChannelIndexCount(); ++channelIndexIdx) {
+						for (uint32_t channelIndexIdx = 0; channelIndexIdx < channel->getChannelIndexCount(); ++channelIndexIdx) {
 							cout << "IndexType: " << static_cast<int>(channel->getChannelIndexType(channelIndexIdx)) << std::endl;
 							cout << "Uom: " << channel->getChannelIndexUom(channelIndexIdx) << std::endl;
 							cout << "IsIncreasing: " << channel->getChannelIndexIsIncreasing(channelIndexIdx) << std::endl;
@@ -5261,7 +5255,7 @@ void deserialize(const string & inputFile)
 		showAllMetadata(horizonTriRep);
 
 		const uint64_t pointCount = horizonTriRep->getXyzPointCountOfAllPatches();
-		uint64_t triangleCount = horizonTriRep->getTriangleCountOfAllPatches();
+		const uint64_t triangleCount = horizonTriRep->getTriangleCountOfAllPatches();
 		cout << "point Count " << pointCount << endl;
 		cout << "triangle Count " << triangleCount << endl;
 

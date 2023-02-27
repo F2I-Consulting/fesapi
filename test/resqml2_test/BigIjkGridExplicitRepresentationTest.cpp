@@ -27,13 +27,6 @@ using namespace COMMON_NS;
 using namespace resqml2_test;
 using namespace RESQML2_NS;
 
-const char* BigIjkGridExplicitRepresentationTest::defaultUuid = "f889e5d2-249e-4827-8532-ce60a1d05b99";
-const char* BigIjkGridExplicitRepresentationTest::defaultTitle = "Ijk Grid Explicit Representation";
-const char* BigIjkGridExplicitRepresentationTest::discretePropertyUuid = "265343eb-6d1b-4015-b08b-8b4abbe7f84b";
-const char* BigIjkGridExplicitRepresentationTest::discretePropertyTitle = "Explicit IJK Grid K Index";
-const char* BigIjkGridExplicitRepresentationTest::continuousPropertyUuid = "a4e8e307-0844-47e9-b9fd-6ad0a1f99b88";
-const char* BigIjkGridExplicitRepresentationTest::continuousPropertyTitle = "Explicit IJK Grid Continuous Property";
-
 BigIjkGridExplicitRepresentationTest::BigIjkGridExplicitRepresentationTest(
 	const string & repoPath,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount,

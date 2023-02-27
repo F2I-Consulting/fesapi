@@ -18,10 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include <unordered_map>
-#include <sstream>
 #include <chrono>
-#include <limits>
+#include <numeric>
+#include <sstream>
+#include <unordered_map>
 
 #include "DataObjectReference.h"
 
@@ -822,7 +822,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
 		/**
@@ -887,7 +887,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
 
 		/**
@@ -953,7 +953,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
@@ -1022,7 +1022,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
 
@@ -1690,7 +1690,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic column rank interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank);
 
 		/**
 		 * @brief	Creates a stratigraphic column rank interpretation ordered by apparent depth into
@@ -1709,7 +1709,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new stratigraphic column rank interpretation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank);
 
 		/**
 		 * @brief	Creates a stratigraphic occurrence interpretation ordered by age into this repository
@@ -2461,6 +2461,23 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string& guid, const std::string& title,
 			uint64_t cellCount);
+
+		/**
+		 * @brief	Creates an unstructured grid representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param 	guid	 	The guid to set to the unstructured grid representation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	title	 	The title to set to the unstructured grid representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param 	cellCount	Number of cells in the grid.
+		 *
+		 * @returns	A pointer to the new unstructured grid representation.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string& guid, const std::string& title, const uint64_t & cellCount);
 
 		/**
 		 * @brief	Creates a sub-representation into this repository

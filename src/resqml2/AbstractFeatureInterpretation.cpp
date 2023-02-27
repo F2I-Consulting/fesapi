@@ -198,18 +198,6 @@ vector<AbstractRepresentation *> AbstractFeatureInterpretation::getRepresentatio
 	return result;
 }
 
-uint64_t AbstractFeatureInterpretation::getRepresentationCount() const
-{
-	return getRepresentationSet().size();
-}
-
-AbstractRepresentation* AbstractFeatureInterpretation::getRepresentation(uint64_t index) const
-{
-	const std::vector<AbstractRepresentation*>& representationSet = getRepresentationSet();
-
-	return representationSet.at(index);
-}
-
 std::vector<GridConnectionSetRepresentation *> AbstractFeatureInterpretation::getGridConnectionSetRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<GridConnectionSetRepresentation>(this);

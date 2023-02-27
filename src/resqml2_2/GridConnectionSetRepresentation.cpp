@@ -20,8 +20,6 @@ under the License.
 
 #include <algorithm>
 
-#include <hdf5.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
@@ -114,7 +112,7 @@ void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(uint
 
 void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t cellIndexPairCount = getCellIndexPairCount();
+	const uint64_t cellIndexPairCount = getCellIndexPairCount();
 	if (cellIndexPairCount == 0) {
 		throw logic_error("You must set some cell connections before to set local face connections");
 	}
@@ -148,7 +146,7 @@ void GridConnectionSetRepresentation::getInterpretationIndexCumulativeCount(uint
 		readArrayNdOfUInt64Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount);
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -165,7 +163,7 @@ void GridConnectionSetRepresentation::getInterpretationIndices(int64_t * interpr
 		}
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -181,7 +179,7 @@ int64_t GridConnectionSetRepresentation::getInterpretationIndexNullValue() const
 		}
 	}
 	else {
-		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -223,15 +221,15 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 		{
 			auto const* daPart = static_cast<eml23__IntegerExternalArray*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values->ExternalDataArrayPart[0];
 			auto hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
-			const signed long long faultIndexCount = getOrCreateHdfProxyFromDataArrayPart(daPart)->getElementCount(daPart->PathInExternalFile);
+			const uint64_t faultIndexCount = getOrCreateHdfProxyFromDataArrayPart(daPart)->getElementCount(daPart->PathInExternalFile);
 			if (faultIndexCount < 0) {
 				throw invalid_argument("The HDF5 library could not read the element count of this dataset.");
 			}
-			std::unique_ptr<int64_t[]> faultIndices(new int64_t[static_cast<size_t>(faultIndexCount)]);
+			std::unique_ptr<int64_t[]> faultIndices(new int64_t[faultIndexCount]);
 
-			hdfProxy->readArrayNdOfInt64Values(daPart->PathInExternalFile, faultIndices.get());
-			for (size_t i = 0; i < static_cast<size_t>(faultIndexCount); ++i) {
-				if (faultIndices[i] == static_cast<unsigned int>(interpretationIndex)) {
+			hdfProxy->readArrayNdOfInt64Values(dsPart->PathInExternalFile, faultIndices.get());
+			for (size_t i = 0; i < faultIndexCount; ++i) {
+				if (faultIndices[i] == interpretationIndex) {
 					result++;
 				}
 			}
@@ -354,19 +352,14 @@ COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getInterpretatio
 
 	if (rep->ConnectionInterpretations != nullptr) {
 		if (rep->ConnectionInterpretations->FeatureInterpretation.size() > interpretationIndex) {
-			if (rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]->QualifiedType.find("FaultInterpretation") != string::npos) {
-				return COMMON_NS::DataObjectReference(rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]);
-			}
-			else {
-				throw invalid_argument("The associated feature interpretation is not a fault one. Legal but not yet implemented.");
-			}
+			return COMMON_NS::DataObjectReference(rep->ConnectionInterpretations->FeatureInterpretation[interpretationIndex]);
 		}
 		else {
-			throw out_of_range("The fault index is out of range in this grid connection context.");
+			throw out_of_range("The interpretation index is out of range in this grid connection context.");
 		}
 	}
 	else {
-		throw invalid_argument("The grid connection does not contain any (fault) interpretation association.");
+		throw invalid_argument("The grid connection does not contain any interpretation association.");
 	}
 }
 
@@ -493,8 +486,7 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 	for (uint64_t i = 0; i < cellIndexPairCount; ++i) {
 		cumulative[i] = i + 1;
 	}
-	hsize_t numValueInEachDim = cellIndexPairCount;
-	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &numValueInEachDim, 1);
+	proxy->writeArrayNd(getHdfGroup(), "InterpretationIndicesCumulativeLength", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulative.get(), &cellIndexPairCount, 1);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp)

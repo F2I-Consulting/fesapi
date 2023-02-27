@@ -461,7 +461,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The split coordinate lines count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned long getSplitCoordinateLineCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getSplitCoordinateLineCount() const;
 
 		/**
 		 * Gets the split coordinate lines count within the block. Block information must be loaded thanks
@@ -471,7 +471,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The split coordinate lines count within the block.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned long getBlockSplitCoordinateLineCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getBlockSplitCoordinateLineCount() const;
 
 		/**
 		 * Gets the split nodes count.
@@ -550,7 +550,7 @@ namespace RESQML2_NS
 		 * 									values. If @c nullptr (default), then the default HDF proxy will be
 		 * 									used.
 		 */
-		DLL_IMPORT_OR_EXPORT void setCellGeometryIsDefinedFlags(unsigned char* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setCellGeometryIsDefinedFlags(uint8_t* cellGeometryIsDefinedFlags, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Set to "defined" the flags for each cell indicating if its geometry is defined or not

@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ActivityTemplate.h"
 
-#include <stdexcept>
-
 using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;

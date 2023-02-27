@@ -21,8 +21,6 @@ under the License.
 #include <algorithm>
 #include <sstream>
 
-#include <hdf5.h>
-
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../eml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
@@ -79,9 +77,9 @@ PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeature
 }
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
-				unsigned int const* nodeCountPerPolyline, double const* nodes,
-				unsigned int polylineCount, bool allPolylinesClosedFlag,
-				EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
+	unsigned int const* nodeCountPerPolyline, double const* nodes,
+	uint64_t polylineCount, bool allPolylinesClosedFlag,
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -111,11 +109,10 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlNodeCountPerPolyline->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
-	hsize_t dim = polylineCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
-		&dim, 1);
+		&polylineCount, 1);
 
 	// closed polylines
 	resqml20__BooleanConstantArray* xmlClosedPolylines = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap);
@@ -124,21 +121,20 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->ClosedPolylines = xmlClosedPolylines;
 
 	// XYZ points
-	unsigned int nodeCount = 0;
-	for (unsigned int i = 0; i < polylineCount; ++i) {
+	uint64_t nodeCount = 0;
+	for (uint64_t i = 0; i < polylineCount; ++i) {
 		nodeCount += nodeCountPerPolyline[i];
 	}
-	uint64_t pointCountDims = nodeCount;
-	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &pointCountDims, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &nodeCount, 1, proxy);
 
 	static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.push_back(patch);
 	getRepository()->addRelationship(this, localCrs);
 }
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
-				unsigned int const* nodeCountPerPolyline, double const* nodes,
-				unsigned int polylineCount, bool * polylineClosedFlags,
-				EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
+	unsigned int const* nodeCountPerPolyline, double const* nodes,
+	uint64_t polylineCount, bool * polylineClosedFlags,
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -168,11 +164,10 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlNodeCountPerPolyline->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
-	hsize_t dim = polylineCount;
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		nodeCountPerPolyline,
-		&dim, 1);
+		&polylineCount, 1);
 
 	// closed polylines
 	resqml20__BooleanHdf5Array* xmlClosedPolylines = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap);
@@ -187,11 +182,11 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,
 		polylineClosedFlags,
-		&dim, 1);
+		&polylineCount, 1);
 
 	// XYZ points
 	uint64_t xyzPtDim = 0;
-	for (unsigned int i = 0; i < polylineCount; ++i) {
+	for (uint64_t i = 0; i < polylineCount; ++i) {
 		xyzPtDim += nodeCountPerPolyline[i];
 	}
 	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &xyzPtDim, 1, proxy);

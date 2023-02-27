@@ -99,7 +99,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
     xmlListOfIdenticalNodes->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
     contactRep->IdenticalNodeIndices = xmlListOfIdenticalNodes;
     // ************ HDF *************
-    hsize_t dim[2] = {identicalNodesCount, patchCount};
+	uint64_t dim[2] = {identicalNodesCount, patchCount};
     proxy->writeArrayNd(getHdfGroup(),
         ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
         identicalNodes,
@@ -108,7 +108,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 
 void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     unsigned int contactIndex,
-    int const* nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
+    int const* nodeIndicesOnSupportingRepresentation, uint64_t nodeCount,
 	RESQML2_NS::AbstractRepresentation * supportingRepresentation,
 	EML2_NS::AbstractHdfProxy * proxy)
 {
@@ -164,11 +164,10 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     xmlSupportingRepresentationNodes->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
     contactPatch->SupportingRepresentationNodes = xmlSupportingRepresentationNodes;
     // ************ HDF *************
-    hsize_t dim = nodeCount;
     proxy->writeArrayNd(getHdfGroup(),
                         ossForHdf.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
                         nodeIndicesOnSupportingRepresentation,
-                        &dim, 1);
+                        &nodeCount, 1);
 
     // adding the contact patch to the contact representation
     contactRep->Contact.push_back(contactPatch);
