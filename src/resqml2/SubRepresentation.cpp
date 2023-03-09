@@ -51,7 +51,7 @@ void SubRepresentation::setElementIndices(uint64_t const* elementIndices,
 	EML2_NS::AbstractHdfProxy* proxy,
 	uint64_t patchIndex)
 {
-	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<unsigned int>::max)()) {
+	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<uint64_t>::max)()) {
 		throw out_of_range("The subrepresentation patch is out of range");
 	}
 

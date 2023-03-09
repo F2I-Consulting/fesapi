@@ -143,13 +143,6 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT uint64_t getVerticalCrsEpsgCode() const;
 
 		/**
-		 * Gets the vertical CRS unit of measure as a string
-		 *
-		 * @returns	The vertical CRS unit of measure as string.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getVerticalCrsUnitAsString() const;
-
-		/**
 		 * Gets the areal rotation unit of measure.
 		 *
 		 * @returns	The areal rotation unit of measure.

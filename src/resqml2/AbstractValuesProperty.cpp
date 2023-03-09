@@ -26,16 +26,6 @@ under the License.
 using namespace RESQML2_NS;
 using namespace std;
 
-namespace {
-	vector<hsize_t> copyToHdf5Datatype(uint64_t const* values, size_t nbValues) {
-		vector<hsize_t> result;
-		for (size_t i = 0; i < nbValues; ++i) {
-			result.push_back(values[i]);
-		}
-		return result;
-	}
-}
-
 uint64_t AbstractValuesProperty::getPatchCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -613,14 +603,11 @@ void AbstractValuesProperty::pushBackInt64Hdf5ArrayOfValues(const int64_t * valu
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -636,14 +623,11 @@ void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, co
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -659,14 +643,11 @@ void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -682,14 +663,11 @@ void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned shor
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -705,14 +683,11 @@ void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t * values
 
 	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
 
-	// Convert to hsize_t (somtimes hsize is unsigned long long (windows), sometimes unsigned long (Linux)...
-	vector<hsize_t> tmp = copyToHdf5Datatype(numValues, numDimensionsInArray);
-
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
 		values,
-		tmp.data(), numDimensionsInArray);
+		numValues, numDimensionsInArray);
 
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
@@ -1088,8 +1063,8 @@ void AbstractValuesProperty::setValuesOfHdf5ArrayOfValues(
 		"values_patch" + std::to_string(patchIndex == (numeric_limits<uint64_t>::max)() ? getPatchCount() - 1 : patchIndex),
 		datatype,
 		values,
-		tmp.data(),
-		tmp2.data(),
+		numValues,
+		offsetValues,
 		numArrayDimensions);
 }
 
@@ -1107,8 +1082,8 @@ void AbstractValuesProperty::getInt64ValuesOfPatch(
 	hdfProxy->readArrayNdOfInt64Values(
 		dsPath,
 		values,
-		copyToHdf5Datatype(numValuesInEachDimension, numArrayDimensions).data(),
-		copyToHdf5Datatype(offsetInEachDimension, numArrayDimensions).data(),
+		numValuesInEachDimension,
+		offsetInEachDimension,
 		numArrayDimensions);
 }
 
@@ -1148,8 +1123,8 @@ int32_t AbstractValuesProperty::getIntValuesOfPatch(
 	hdfProxy->readArrayNdOfIntValues(
 		dsPath,
 		values,
-		copyToHdf5Datatype(numValuesInEachDimension, numArrayDimensions).data(),
-		copyToHdf5Datatype(offsetInEachDimension, numArrayDimensions).data(),
+		numValuesInEachDimension,
+		offsetInEachDimension,
 		numArrayDimensions);
 
 	if (nullValue < (std::numeric_limits<int32_t>::lowest)() || nullValue > (std::numeric_limits<int32_t>::max)()) {
@@ -1252,7 +1227,7 @@ void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * valu
 		datasetName,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
 		values,
-		copyToHdf5Datatype(numValues, numArrayDimensions).data(), numArrayDimensions);
+		numValues, numArrayDimensions);
 
 	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
 }
@@ -1314,7 +1289,7 @@ void AbstractValuesProperty::pushBackHdf5ArrayOfValues(
 	proxy->createArrayNd(getHdfGroup(),
 		datasetName,
 		datatype,
-		copyToHdf5Datatype(numValues, numArrayDimensions).data(), numArrayDimensions);
+		numValues, numArrayDimensions);
 
 	if (datatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE || datatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT) {
 		pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
@@ -1441,8 +1416,8 @@ void AbstractValuesProperty::getFloatValuesOfPatch(
 	hdfProxy->readArrayNdOfFloatValues(
 		datasetPath,
 		values,
-		copyToHdf5Datatype(numValuesInEachDimension, numArrayDimensions).data(),
-		copyToHdf5Datatype(offsetInEachDimension, numArrayDimensions).data(),
+		numValuesInEachDimension,
+		offsetInEachDimension,
 		numArrayDimensions);
 }
 

@@ -83,7 +83,7 @@ void CategoricalProperty::readRepo() {
 	// getting the string CategoricalProperty
 	RESQML2_NS::DiscreteProperty* categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultUuid);
 	auto* strTableLookup = categoricalProperty->getLookup();
-	REQUIRE(strTableLookup->getRowCount() == 6);
+	REQUIRE(strTableLookup->getRowCount() == 7);
 	REQUIRE(strTableLookup->getColumnCount() == 2);
 	REQUIRE(strTableLookup->getDatatype(0) == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
 	REQUIRE(strTableLookup->getDatatype(1) == COMMON_NS::AbstractObject::numericalDatatypeEnum::STRING);
@@ -99,8 +99,8 @@ void CategoricalProperty::readRepo() {
 	REQUIRE(strTableLookup->getStringValues(1)[4] == "Item 4");
 	REQUIRE(strTableLookup->getInt64Values(0)[5] == 5);
 	REQUIRE(strTableLookup->getStringValues(1)[5] == "Item 5");
-	REQUIRE(strTableLookup->getInt64Values(0)[5] == bigNumber);
-	REQUIRE(strTableLookup->getStringValues(1)[5] == "Item 6");
+	REQUIRE(strTableLookup->getInt64Values(0)[6] == bigNumber);
+	REQUIRE(strTableLookup->getStringValues(1)[6] == "Item 6");
 
 	// getting the continuous CategoricalProperty
 	categoricalProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>("3de7a1d8-8b5b-45f3-b90c-6c14b2dcb43e");

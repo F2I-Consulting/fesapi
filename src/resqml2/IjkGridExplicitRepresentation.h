@@ -144,7 +144,7 @@ namespace RESQML2_NS
 			double const* points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t splitCoordinateLineCount = 0, unsigned int const* pillarOfCoordinateLine = nullptr,
 			unsigned int const* splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int const* splitCoordinateLineColumns = nullptr,
-			int8_t const* definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
+			int8_t const* definedPillars = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
 		* @copybrief setGeometryAsCoordinateLineNodes

@@ -3326,7 +3326,7 @@ namespace RESQML2_NS
 			uint64_t elementCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<uint64_t>::max());
 
 		/**
 		 * Pushes back a new patch in this sub-representation.
@@ -5597,7 +5597,7 @@ namespace RESQML2_NS
 			uint64_t const * numValues,
 			uint64_t const * offsetValues,
 			unsigned int numArrayDimensions,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr = nullptr,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 
 		/**

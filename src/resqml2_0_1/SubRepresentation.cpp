@@ -135,11 +135,10 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__Inde
 	}
 
 	const auto patchCount = getPatchCount();
-	// ************ HDF ************		
-	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfInt64Values(getHdfGroup(), "subrepresentation_elementIndices0_patch" + std::to_string(patchCount), elementIndices, &numValues, 1);
+	// ************ HDF ************
+	proxy->writeArrayNdOfInt64Values(getHdfGroup(), "subrepresentation_elementIndices0_patch" + std::to_string(patchCount), elementIndices, &elementCount, 1);
 	if (supportingRepIndices != nullptr) {
-		proxy->writeArrayNd(getHdfGroup(), "subrepresentation_supportingRepresentationIndices_patch" + std::to_string(patchCount), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, supportingRepIndices, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), "subrepresentation_supportingRepresentationIndices_patch" + std::to_string(patchCount), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, supportingRepIndices, &elementCount, 1);
 	}
 
 	const std::string supportingRepDataset = supportingRepIndices != nullptr ? getHdfGroup() + "/subrepresentation_supportingRepresentationIndices_patch" + std::to_string(patchCount) : "";
@@ -171,9 +170,8 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__Inde
 	integerArray->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 	elements->Indices = integerArray;
 
-	// ************ HDF ************		
-	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfInt64Values(getHdfGroup(), "subrepresentation_elementIndices1_patch" + std::to_string(patch->PatchIndex), elementIndices1, &numValues, 1);
+	// ************ HDF ************
+	proxy->writeArrayNdOfInt64Values(getHdfGroup(), "subrepresentation_elementIndices1_patch" + std::to_string(patch->PatchIndex), elementIndices1, &elementCount, 1);
 }
 
 void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,

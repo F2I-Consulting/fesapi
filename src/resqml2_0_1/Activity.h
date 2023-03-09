@@ -191,7 +191,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The integer quantity parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<int32_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const final;
+		DLL_IMPORT_OR_EXPORT std::vector<int64_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const final;
 
 		/**
 		 * Gets integer quantity parameter value

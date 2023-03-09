@@ -849,8 +849,6 @@ gsoap_eml2_2::eml22__DataObjectReference* AbstractObject::newEml22Reference() co
 
 gsoap_eml2_3::eml23__DataObjectReference* AbstractObject::newEml23Reference() const
 {
-	ostringstream oss;
-
 	gsoap_eml2_3::eml23__DataObjectReference* result = gsoap_eml2_3::soap_new_eml23__DataObjectReference(getGsoapContext());
 	result->Uuid = getUuid();
 	result->Title = getTitle();

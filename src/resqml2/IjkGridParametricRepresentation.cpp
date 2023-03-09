@@ -986,9 +986,9 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const hsize_t kNodeCountPluskGapCount = getKCellCount() + 1 + getKGapsCount();
-	const hsize_t jNodeCount = getJCellCount() + 1;
-	const hsize_t iNodeCount = getICellCount() + 1;
+	const uint64_t kNodeCountPluskGapCount = getKCellCount() + 1 + getKGapsCount();
+	const uint64_t jNodeCount = getJCellCount() + 1;
+	const uint64_t iNodeCount = getICellCount() + 1;
 
 	if (splitCoordinateLineCount == 0) {
 		uint64_t numValues[3] = { kNodeCountPluskGapCount, jNodeCount, iNodeCount };

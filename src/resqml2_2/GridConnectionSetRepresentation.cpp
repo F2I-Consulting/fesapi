@@ -227,7 +227,7 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 			}
 			std::unique_ptr<int64_t[]> faultIndices(new int64_t[faultIndexCount]);
 
-			hdfProxy->readArrayNdOfInt64Values(dsPart->PathInExternalFile, faultIndices.get());
+			hdfProxy->readArrayNdOfInt64Values(daPart->PathInExternalFile, faultIndices.get());
 			for (size_t i = 0; i < faultIndexCount; ++i) {
 				if (faultIndices[i] == interpretationIndex) {
 					result++;

@@ -79,7 +79,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 			}
 		}
 		getRepository()->addRelationship(this, hdfProxy);
-		hsize_t dim = getKCellCount();
+		const uint64_t dim = getKCellCount();
 		hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, stratiUnitIndices, &dim, 1);
 
 		resqml20__AbstractColumnLayerGridRepresentation* rep = static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
@@ -103,7 +103,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		gsoap_eml2_3::eml23__IntegerXmlArray* elementDataset = gsoap_eml2_3::soap_new_eml23__IntegerXmlArray(rep->soap);
 		elementDataset->CountPerValue = nullValue;
 		elementDataset->Values = std::to_string(stratiUnitIndices[0]);
-		for (hsize_t i = 1; i < getKCellCount(); ++i) {
+		for (uint64_t i = 1; i < getKCellCount(); ++i) {
 			elementDataset->Values += " " + std::to_string(stratiUnitIndices[i]);
 		}
 		rep->IntervalStratigraphicUnits->UnitIndices->Elements = elementDataset;
@@ -112,7 +112,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		gsoap_eml2_3::eml23__IntegerXmlArray* cumulativeDataset = gsoap_eml2_3::soap_new_eml23__IntegerXmlArray(rep->soap);
 		cumulativeDataset->CountPerValue = 1;
 		cumulativeDataset->Values = "1";
-		for (hsize_t i = 1; i < getKCellCount(); ++i) {
+		for (uint64_t i = 1; i < getKCellCount(); ++i) {
 			cumulativeDataset->Values += " " + std::to_string(i+1);
 		}
 		rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength = cumulativeDataset;

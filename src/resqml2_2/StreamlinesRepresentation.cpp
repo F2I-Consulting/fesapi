@@ -130,12 +130,13 @@ void StreamlinesRepresentation::setWellboreInformation(uint32_t const* injectorP
 	xmlInjectorPerLine->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
 	xmlInjectorPerLine->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/InjectorPerLine", rep->LineCount, hdfProxy));
 	wellboreInfo->InjectorPerLine = xmlInjectorPerLine;
+	const uint64_t lineCount = rep->LineCount;
 	// HDF
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"InjectorPerLine",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		injectorPerLine,
-		&rep->LineCount, 1);
+		&lineCount, 1);
 
 	// producerPerLine
 	// XML
@@ -149,7 +150,7 @@ void StreamlinesRepresentation::setWellboreInformation(uint32_t const* injectorP
 		"ProducerPerLine",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		producerPerLine,
-		&rep->LineCount, 1);
+		&lineCount, 1);
 
 	// trajectories
 	for (auto const* traj : wellboreTrajectories) {
@@ -299,12 +300,13 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	xmlGridIndices->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
 	xmlGridIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/GridIndices", igc->CellCount, hdfProxy));
 	igc->GridIndices = xmlGridIndices;
+	const uint64_t cellcount = igc->CellCount;
 	// HDF
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		gridIndices,
-		&igc->CellCount, 1);
+		&cellcount, 1);
 
 	// CellIndices
 	// XML
@@ -318,7 +320,7 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 		"CellIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		cellIndices,
-		&igc->CellCount, 1);
+		&cellcount, 1);
 
 	// CellIndices
 	// XML

@@ -120,8 +120,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(uint64_t elementCount, in
 	const std::string elementDataset = "indices_patch" + std::to_string(getPatchCount());
 
 	// HDF
-	const hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfInt64Values(getHdfGroup(), elementDataset, elementIndices, &numValues, 1);
+	proxy->writeArrayNdOfInt64Values(getHdfGroup(), elementDataset, elementIndices, &elementCount, 1);
 
 	pushBackRefToExistingDataset(elementCount, getHdfGroup() + "/" + elementDataset, -1, supportingRep, proxy);
 }
