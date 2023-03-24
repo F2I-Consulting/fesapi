@@ -1154,7 +1154,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
-		 * 						use {@link  createSubRepresentation} if no interpretation is associated
+		 * 						use {@link createSubRepresentation} if no interpretation is associated
 		 * 						to this representation.
 		 * @param 	  	guid  	The guid to set to the sub-representation. If empty then a new guid will
 		 * 						be generated.
@@ -1187,7 +1187,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
-		 * 						use {@link  createGridConnectionSetRepresentation} if no interpretation
+		 * 						use {@link createGridConnectionSetRepresentation} if no interpretation
 		 * 						is associated to this representation.
 		 * @param 	  	guid  	The guid to set to the grid connection set representation. If empty then
 		 * 						a new guid will be generated.

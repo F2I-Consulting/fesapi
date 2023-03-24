@@ -105,6 +105,14 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(bool, Wellbore, IsActive, gsoa
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellPurpose, Wellbore, PurposeWellbore, gsoap_eml2_1::soap_new_witsml20__WellPurpose)
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellboreType, Wellbore, TypeWellbore, gsoap_eml2_1::soap_new_witsml20__WellboreType)
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellboreShape, Wellbore, Shape, gsoap_eml2_1::soap_new_witsml20__WellboreShape)
+void Wellbore::setFluidWellbore(const gsoap_eml2_1::witsml20__WellFluid & FluidWellbore) {
+	throw std::logic_error("WITSML 2.0 wellbore does not support fluid information. Please consider using WITSML 2.1 instead.");
+}
+bool Wellbore::hasFluidWellbore() const { return false; }
+gsoap_eml2_1::witsml20__WellFluid Wellbore::getFluidWellbore() const {
+	throw std::logic_error("WITSML 2.0 wellbore does not support fluid information. Please consider using WITSML 2.1 instead.");
+}
+
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(bool, Wellbore, AchievedTD, gsoap_eml2_1::soap_new_bool)
 GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Wellbore, Md, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
 GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Wellbore, MdBit, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
