@@ -344,28 +344,28 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	// WELLBORE COMPLETION
 	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck->createWellboreCompletion(witsmlWellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
 
-	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970, 1980, "myId");
-	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1990, 2000);
+	wellboreCompletion->pushBackConnection(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970, 1980, "myId");
+	wellboreCompletion->pushBackConnection(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1990, 2000, "mySecondId");
 
-	wellboreCompletion->pushBackPerforationExtraMetadata(0, "Testing Key", "Testing Value");
+	wellboreCompletion->pushBackConnectionExtraMetadata(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, "Testing Key", "Testing Value");
 
-	wellboreCompletion->pushBackPerforationHistory(0);
-	wellboreCompletion->setPerforationHistoryStatus(0, 0, gsoap_eml2_1::witsml20__PerforationStatus::open);
-	wellboreCompletion->setPerforationHistoryTopMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970);
-	wellboreCompletion->setPerforationHistoryBaseMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1980);
-	wellboreCompletion->setPerforationHistoryStartDate(0, 0, 407568645);
-	wellboreCompletion->setPerforationHistoryEndDate(0, 0, 1514764800);
-	wellboreCompletion->pushBackPerforationHistory(0);
-	wellboreCompletion->setPerforationHistoryStatus(1, 0, gsoap_eml2_1::witsml20__PerforationStatus::squeezed);
-	wellboreCompletion->setPerforationHistoryTopMd(1, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970);
-	wellboreCompletion->setPerforationHistoryBaseMd(1, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1980);
-	wellboreCompletion->setPerforationHistoryStartDate(1, 0, 1514764800);
-	wellboreCompletion->pushBackPerforationHistory(1);
-	wellboreCompletion->setPerforationHistoryStatus(0, 1, gsoap_eml2_1::witsml20__PerforationStatus::open);
-	wellboreCompletion->setPerforationHistoryStartDate(0, 1, 410104800);
-	wellboreCompletion->pushBackPerforationHistory(1);
-	wellboreCompletion->setPerforationHistoryStatus(1, 1, gsoap_eml2_1::witsml20__PerforationStatus::squeezed);
-	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
+	wellboreCompletion->pushBackConnectionHistory(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0);
+	wellboreCompletion->setConnectionHistoryStatus(0, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_1::witsml20__PhysicalStatus::open);
+	wellboreCompletion->setConnectionHistoryTopMd(0, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970);
+	wellboreCompletion->setConnectionHistoryBaseMd(0, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1980);
+	wellboreCompletion->setConnectionHistoryStartDate(0, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 407568645);
+	wellboreCompletion->setConnectionHistoryEndDate(0, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 1514764800);
+	wellboreCompletion->pushBackConnectionHistory(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0);
+	wellboreCompletion->setConnectionHistoryStatus(1, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_1::witsml20__PhysicalStatus::closed);
+	wellboreCompletion->setConnectionHistoryTopMd(1, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970);
+	wellboreCompletion->setConnectionHistoryBaseMd(1, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1980);
+	wellboreCompletion->setConnectionHistoryStartDate(1, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 1514764800);
+	wellboreCompletion->pushBackConnectionHistory(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1);
+	wellboreCompletion->setConnectionHistoryStatus(0, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1, gsoap_eml2_1::witsml20__PhysicalStatus::open);
+	wellboreCompletion->setConnectionHistoryStartDate(0, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1, 410104800);
+	wellboreCompletion->pushBackConnectionHistory(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1);
+	wellboreCompletion->setConnectionHistoryStatus(1, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1, gsoap_eml2_1::witsml20__PhysicalStatus::closed);
+	wellboreCompletion->setConnectionHistoryStartDate(1, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1, 1514764800);
 }
 #if WITH_RESQML2_2
 void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfProxy * hdfProxy)
@@ -3069,9 +3069,9 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 	{
 		RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(ijkGridIdx);
 
-		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::NO_GEOMETRY)
+		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::NO_GEOMETRY)
 		{
-			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::EXPLICIT || ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::PARAMETRIC) {
+			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::EXPLICIT || ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::PARAMETRIC) {
 				cout << "--------------------------------------------------" << std::endl;
 				showAllMetadata(ijkGrid);
 				if (ijkGrid->isPartial()) {
@@ -4585,60 +4585,60 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 		<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
 		<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
 
-	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
+	for (uint64_t perforationIndex = 0; perforationIndex < wellboreCompletion->getConnectionCount(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION); ++perforationIndex)
 	{
-		cout << std::endl << "perforation " << perforationIndex << " with uid \"" << wellboreCompletion->getPerforationUid(perforationIndex) << "\":" << std::endl;
-		for (const auto& extraMetadata : wellboreCompletion->getPerforationExtraMetadata(0, "Testing Key")) {
+		cout << std::endl << "perforation " << perforationIndex << " with uid \"" << wellboreCompletion->getConnectionUid(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << "\":" << std::endl;
+		for (const auto& extraMetadata : wellboreCompletion->getConnectionExtraMetadata(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, "Testing Key")) {
 			cout << "Testing Key extra Metadata Value: " << extraMetadata << std::endl;
 		}
 
-		if (wellboreCompletion->hasPerforationMdDatum(perforationIndex))
+		if (wellboreCompletion->hasConnectionMdDatum(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 		{
-			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationIndex) << std::endl;
+			cout << "datum: " << wellboreCompletion->getConnectionMdDatum(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 		}
-		if (wellboreCompletion->hasPerforationMdUnit(perforationIndex))
+		if (wellboreCompletion->hasConnectionMdUnit(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 		{
-			cout << "md unit: " << wellboreCompletion->getPerforationMdUnitAsString(perforationIndex) << std::endl;
+			cout << "md unit: " << wellboreCompletion->getConnectionMdUnitAsString(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 		}
-		if (wellboreCompletion->hasPerforationTopMd(perforationIndex))
+		if (wellboreCompletion->hasConnectionTopMd(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 		{
-			cout << "top md: " << wellboreCompletion->getPerforationTopMd(perforationIndex) << std::endl;
+			cout << "top md: " << wellboreCompletion->getConnectionTopMd(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 		}
-		if (wellboreCompletion->hasPerforationBaseMd(perforationIndex))
+		if (wellboreCompletion->hasConnectionBaseMd(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 		{
-			cout << "base md: " << wellboreCompletion->getPerforationBaseMd(perforationIndex) << std::endl;
+			cout << "base md: " << wellboreCompletion->getConnectionBaseMd(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 		}
 
-		for (unsigned int historyIndex = 0; historyIndex < wellboreCompletion->getPerforationHistoryCount(perforationIndex); ++historyIndex)
+		for (uint64_t historyIndex = 0; historyIndex < wellboreCompletion->getConnectionHistoryCount(WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex); ++historyIndex)
 		{
 			cout << "history entry " << historyIndex << ":" << std::endl;
-			if (wellboreCompletion->hasPerforationHistoryStatus(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryStatus(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tstatus: " << wellboreCompletion->getPerforationHistoryStatusToString(historyIndex, perforationIndex) << std::endl;
+				cout << "\tstatus: " << wellboreCompletion->getConnectionHistoryStatusToString(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryStartDate(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryStartDate(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tstart date: " << wellboreCompletion->getPerforationHistoryStartDate(historyIndex, perforationIndex) << std::endl;
+				cout << "\tstart date: " << wellboreCompletion->getConnectionHistoryStartDate(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEndDate(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryEndDate(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tend date: " << wellboreCompletion->getPerforationHistoryEndDate(historyIndex, perforationIndex) << std::endl;
+				cout << "\tend date: " << wellboreCompletion->getConnectionHistoryEndDate(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryMdDatum(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryMdDatum(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tdatum: " << wellboreCompletion->getPerforationHistoryMdDatum(historyIndex, perforationIndex) << std::endl;
+				cout << "\tdatum: " << wellboreCompletion->getConnectionHistoryMdDatum(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryMdUnit(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryMdUnit(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tmd unit: " << wellboreCompletion->getPerforationHistoryMdUnitAsString(historyIndex, perforationIndex) << std::endl;
+				cout << "\tmd unit: " << wellboreCompletion->getConnectionHistoryMdUnitAsString(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryTopMd(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryTopMd(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\ttop md: " << wellboreCompletion->getPerforationHistoryTopMd(historyIndex, perforationIndex) << std::endl;
+				cout << "\ttop md: " << wellboreCompletion->getConnectionHistoryTopMd(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryBaseMd(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryBaseMd(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tbase md: " << wellboreCompletion->getPerforationHistoryBaseMd(historyIndex, perforationIndex) << std::endl;
+				cout << "\tbase md: " << wellboreCompletion->getConnectionHistoryBaseMd(historyIndex, WITSML2_0_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
 		}
 	}
@@ -4769,7 +4769,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 		}
 		std::cout << "compressed." << std::endl;
 
-		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::NO_GEOMETRY)
+		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::NO_GEOMETRY)
 		{
 			std::cout << "Most complex pillar geometry is ";
 			gsoap_resqml2_0_1::resqml20__PillarShape mostcomplexPillarGeom = ijkGrid->getMostComplexPillarGeometry();
@@ -4797,11 +4797,11 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 				}
 			}
 
-			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::LATTICE) {
+			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::LATTICE) {
 				std::cout << "This 3d grid has a lattice geometry." << std::endl;
 			}
 			else {
-				if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::PARAMETRIC)
+				if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::PARAMETRIC)
 				{
 					std::cout << "This 3d grid has a parametric geometry." << std::endl;
 					RESQML2_NS::IjkGridParametricRepresentation* paramIjkGrid = static_cast<RESQML2_NS::IjkGridParametricRepresentation*>(ijkGrid);
@@ -4845,7 +4845,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 					delete[] interfaceXyzPoints;
 					*/
 				}
-				else if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::EXPLICIT)
+				else if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::EXPLICIT)
 				{
 					std::cout << "This 3d grid has an explicit geometry." << std::endl;
 				}

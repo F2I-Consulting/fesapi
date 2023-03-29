@@ -22,10 +22,15 @@ under the License.
 
 namespace WITSML2_0_NS
 {
-	/** The location/interval of the perforation set and its history. */
+	/** The location/interval of the connections between well and reservoir and its history. */
 	class WellboreCompletion : public WITSML2_NS::WellboreObject
 	{
 	public:
+
+		/**
+		* The physical nature of a connection from reservoir to wellbore
+		*/
+		enum class WellReservoirConnectionType { PERFORATION = 0, GRAVEL_PACK = 1, OPEN_HOLE = 2, SLOTS = 3};
 
 		/**
 		 * Only to be used in partial transfer context
@@ -87,442 +92,483 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT void setWellCompletion(class WellCompletion* wellCompletion);
 
 		/**
-		 * Pushes back perforation
+		 * Pushes back a connection
 		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection from reservoir to wellbore to add
 		 * @param 	datum 	The datum.
 		 * @param 	MdUnit	The md unit.
 		 * @param 	TopMd 	The top md.
 		 * @param 	BaseMd	The base md.
-		 * @param 	guid  	(Optional) Unique identifier.
+		 * @param 	guid  	Unique identifier of the connection.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackPerforation(const std::string & datum,
+		DLL_IMPORT_OR_EXPORT void pushBackConnection(WellReservoirConnectionType wellReservoirConnection, const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double TopMd,
 			double BaseMd, 
-			const std::string & guid = "");
+			const std::string & uid);
 
 		/**
-		 * Pushes back perforation extra metadata
+		 * Pushes back connection extra metadata
 		 *
-		 * @param 	index	Zero-based index of the perforation in the wellbore completion.
-		 * @param 	key  	The key of the metadata.
-		 * @param 	value	The value of the metadata.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 * @param 	key  			The key of the metadata.
+		 * @param 	value			The value of the metadata.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackPerforationExtraMetadata(unsigned int index,
+		DLL_IMPORT_OR_EXPORT void pushBackConnectionExtraMetadata(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
 			const std::string & key, const std::string & value);
 
 		/**
-		 * Gets an extra metadata of a particular perforation according to its key
+		 * Pushes a back perforaconnectiontion history
 		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 * @param 	historyGuid 		(Optional) Unique identifier.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackConnectionHistory(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
+			const std::string & historyGuid = "");
+
+		/**
+		 * Pushes back connection history
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 * @param 	status				The connection status.
+		 * @param 	startDate		 	The start date.
+		 * @param 	historyGuid			 (Optional) Unique identifier.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackConnectionHistory(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
+			gsoap_eml2_1::witsml20__PhysicalStatus staus,
+			time_t startDate,
+			const std::string & historyGuid = "");
+
+		/**
+		 * Gets connection count of a certin type
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connections to count
+
+		 * @returns	The connection count of type wellReservoirConnection in this completion.
+		 */
+		DLL_IMPORT_OR_EXPORT uint64_t getConnectionCount(WellReservoirConnectionType wellReservoirConnection) const;
+
+		/**
+		 * Gets the UID of the connection of a particular type at a particular index
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+
+		 * @returns	The connection UIDs of the completion.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getConnectionUid(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Gets an extra metadata of a particular connection according to its key
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
 		 * @param 	key	The key of an extra metadata.
 		 *
-		 * @returns	The vector of all metadata values sharing this @p key (empty vector if there is no such value) in the perforation at @p index.
+		 * @returns	The vector of all metadata values sharing this @p key (empty vector if there is no such value) in the connection at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getPerforationExtraMetadata(unsigned int index, const std::string & key) const;
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getConnectionExtraMetadata(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex, const std::string & key) const;
 
 		/**
-		 * Pushes a back perforation history
+		 * Query if 'index' has connection md datum
 		 *
-		 * @param 	index	Zero-based index of the perforation.
-		 * @param 	guid 	(Optional) Unique identifier.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	True if connection md datum, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(unsigned int index,
-			const std::string & guid = "");
+		DLL_IMPORT_OR_EXPORT bool hasConnectionMdDatum(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Pushes back perforation history
+		 * Gets connection md datum
 		 *
-		 * @param 	index			 	Zero-based index of the perforation.
-		 * @param 	perforationStatus	The perforation status.
-		 * @param 	startDate		 	The start date.
-		 * @param 	guid			 	(Optional) Unique identifier.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	The connection md datum.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(unsigned int index,
-			gsoap_eml2_1::witsml20__PerforationStatus perforationStatus,
-			time_t startDate,
-			const std::string & guid = "");
+		DLL_IMPORT_OR_EXPORT std::string getConnectionMdDatum(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation count
+		 * Query if 'index' has connection md unit
 		 *
-		 * @returns	The perforation count.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	True if connection md unit, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPerforationCount() const;
-
-		/**
-		 * Gets perforation UID
-		 *
-		 * @param 	index	Zero-based index of the perforation.
-		 *
-		 * @returns	The perforation UID.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationUid(unsigned int index) const;
-
-		/**
-		 * Query if 'index' has perforation md datum
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	True if perforation md datum, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationMdDatum(unsigned int index) const;
-
-		/**
-		 * Gets perforation md datum
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	The perforation md datum.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationMdDatum(unsigned int index) const;
-
-		/**
-		 * Query if 'index' has perforation md unit
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	True if perforation md unit, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationMdUnit(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionMdUnit(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
 		 * Returns md base uom if exists, else returns md top uom. Raises an exception if no md is
 		 * defined.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
 		 *
-		 * @returns	The perforation md unit.
+		 * @returns	The connection md unit.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getPerforationMdUnit(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getConnectionMdUnit(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
 		 * Returns md base uom (as string) if exists, else returns md top uom (as string). Raises an
 		 * exception if no md is defined.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
 		 *
-		 * @returns	The perforation md unit as string.
+		 * @returns	The connection md unit as string.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationMdUnitAsString(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getConnectionMdUnitAsString(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Query if 'index' has perforation top md
-		 *
-		 * @param 	index	Zero-based index of the.
-		 *
-		 * @returns	True if perforation top md, false if not.
-		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationTopMd(unsigned int index) const;
-
-		/**
-		 * Gets perforation top md
+		 * Query if 'index' has connection top md
 		 *
 		 * @param 	index	Zero-based index of the.
 		 *
-		 * @returns	The perforation top md.
+		 * @returns	True if connection top md, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPerforationTopMd(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionTopMd(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Query if 'index' has perforation base md
+		 * Gets connection top md
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	The connection top md.
+		 */
+		DLL_IMPORT_OR_EXPORT double getConnectionTopMd(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Query if 'index' has connection base md
 		 *
 		 * @param 	index	Zero-based index of the.
 		 *
-		 * @returns	True if perforation base md, false if not.
+		 * @returns	True if connection base md, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationBaseMd(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionBaseMd(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation base md
+		 * Gets connection base md
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
 		 *
-		 * @returns	The perforation base md.
+		 * @returns	The connection base md.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPerforationBaseMd(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT double getConnectionBaseMd(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation history count
+		 * Gets connection history count
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
 		 *
-		 * @returns	The perforation history count.
+		 * @returns	The connection history count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPerforationHistoryCount(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getConnectionHistoryCount(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Query if 'historyIndex' has perforation history status
+		 * Query if 'historyIndex' has connection history status
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
 		 *
-		 * @returns	True if perforation history status, false if not.
+		 * @returns	True if connection history status, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryStatus(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionHistoryStatus(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation history status
+		 * Gets connection history status
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
 		 *
-		 * @returns	The perforation history status.
+		 * @returns	The connection history status.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::witsml20__PerforationStatus getPerforationHistoryStatus(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::witsml20__PhysicalStatus getConnectionHistoryStatus(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation history status to string
+		 * Gets connection history status to string
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
 		 *
-		 * @returns	The perforation history status to string.
+		 * @returns	The connection history status to string.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryStatusToString(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getConnectionHistoryStatusToString(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Sets perforation history status
+		 * Sets connection history status
 		 *
 		 * @param 	historyIndex	 	Zero-based index of the history.
-		 * @param 	perforationIndex 	Zero-based index of the perforation.
-		 * @param 	perforationStatus	The perforation status.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 * @param 	connectionStatus	The connection status.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryStatus(unsigned int historyIndex,
-			unsigned int perforationIndex, 
-			gsoap_eml2_1::witsml20__PerforationStatus perforationStatus);
+		DLL_IMPORT_OR_EXPORT void setConnectionHistoryStatus(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex, 
+			gsoap_eml2_1::witsml20__PhysicalStatus connectionStatus);
 
 		/**
-		 * Query if 'historyIndex' has perforation history start date
+		 * Query if 'historyIndex' has connection history start date
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
 		 *
-		 * @returns	True if perforation history start date, false if not.
+		 * @returns	True if connection history start date, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryStartDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionHistoryStartDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation history start date
+		 * Gets connection history start date
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	The perforation history start date.
+		 * @returns	The connection history start date.
 		 */
-		DLL_IMPORT_OR_EXPORT time_t getPerforationHistoryStartDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT time_t getConnectionHistoryStartDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Sets perforation history start date
+		 * Sets connection history start date
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 * @param 	startDate			The start date.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryStartDate(unsigned int historyIndex,
-			unsigned int perforationIndex, time_t startDate) const;
+		DLL_IMPORT_OR_EXPORT void setConnectionHistoryStartDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex, time_t startDate) const;
 
 		/**
-		 * Query if 'historyIndex' has perforation history end date
+		 * Query if 'historyIndex' has connection history end date
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	True if perforation history end date, false if not.
+		 * @returns	True if connection history end date, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEndDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionHistoryEndDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation history end date
+		 * Gets connection history end date
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	The perforation history end date.
+		 * @returns	The connection history end date.
 		 */
-		DLL_IMPORT_OR_EXPORT time_t getPerforationHistoryEndDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT time_t getConnectionHistoryEndDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Sets perforation history end date
+		 * Sets connection history end date
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 * @param 	endDate				The end date.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryEndDate(unsigned int historyIndex,
-			unsigned int perforationIndex, time_t endDate) const;
+		DLL_IMPORT_OR_EXPORT void setConnectionHistoryEndDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex, time_t endDate) const;
 
 		/**
-		 * Query if 'historyIndex' has perforation history md datum
+		 * Query if 'historyIndex' has connection history md datum
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	True if perforation history md datum, false if not.
+		 * @returns	True if connection history md datum, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryMdDatum(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionHistoryMdDatum(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation history md datum
+		 * Gets connection history md datum
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	The perforation history md datum.
+		 * @returns	The connection history md datum.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryMdDatum(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getConnectionHistoryMdDatum(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Query if 'historyIndex' has perforation history md unit
+		 * Query if 'historyIndex' has connection history md unit
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	True if perforation history md unit, false if not.
+		 * @returns	True if connection history md unit, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryMdUnit(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionHistoryMdUnit(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
 		 * Returns md base uom if exists, else returns md top uom. Raises an exception if no md is
 		 * defined.
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	The perforation history md unit.
+		 * @returns	The connection history md unit.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getPerforationHistoryMdUnit(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getConnectionHistoryMdUnit(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
 		 * Returns md base uom (as string) if exists, else returns md top uom (as string). Raises an
 		 * exception if no md is defined.
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	The perforation history md unit as string.
+		 * @returns	The connection history md unit as string.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryMdUnitAsString(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getConnectionHistoryMdUnitAsString(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Query if 'historyIndex' has perforation history top md
+		 * Query if 'historyIndex' has connection history top md
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	True if perforation history top md, false if not.
+		 * @returns	True if connection history top md, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryTopMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionHistoryTopMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation history top md
+		 * Gets connection history top md
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	The perforation history top md.
+		 * @returns	The connection history top md.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPerforationHistoryTopMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT double getConnectionHistoryTopMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Perforation history datum is overwritten if exists. For instance if a base md is already
+		 * Connection history datum is overwritten if exists. For instance if a base md is already
 		 * defined.
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 * @param 	datum				The datum.
 		 * @param 	MdUnit				The md unit.
 		 * @param 	TopMd				The top md.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryTopMd(unsigned int historyIndex,
-			unsigned int perforationIndex,
+		DLL_IMPORT_OR_EXPORT void setConnectionHistoryTopMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double TopMd);
 
 		/**
-		 * Query if 'historyIndex' has perforation history base md
+		 * Query if 'historyIndex' has connection history base md
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	True if perforation history base md, false if not.
+		 * @returns	True if connection history base md, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryBaseMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionHistoryBaseMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation history base md
+		 * Gets connection history base md
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	The perforation history base md.
+		 * @returns	The connection history base md.
 		 */
-		DLL_IMPORT_OR_EXPORT double getPerforationHistoryBaseMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT double getConnectionHistoryBaseMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Perforation history datum is overwritten if exists. For instance if a top md is already
+		 * Connection history datum is overwritten if exists. For instance if a top md is already
 		 * defined.
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 * @param 	datum				The datum.
 		 * @param 	MdUnit				The md unit.
 		 * @param 	BaseMd				The base md.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryBaseMd(unsigned int historyIndex,
-			unsigned int perforationIndex,
+		DLL_IMPORT_OR_EXPORT void setConnectionHistoryBaseMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double BaseMd);
 
 		/**
-		 * Query if 'historyIndex' has perforation history comment
+		 * Query if 'historyIndex' has connection history comment
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	True if perforation history comment, false if not.
+		 * @returns	True if connection history comment, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryComment(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT bool hasConnectionHistoryComment(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Gets perforation history comment
+		 * Gets connection history comment
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 *
-		 * @returns	The perforation history comment.
+		 * @returns	The connection history comment.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryComment(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getConnectionHistoryComment(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
 		/**
-		 * Sets perforation history comment
+		 * Sets connection history comment
 		 *
 		 * @param 	historyIndex		Zero-based index of the history.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
 		 * @param 	comment				The comment.
 		 */
-		DLL_IMPORT_OR_EXPORT void setPerforationHistoryComment(unsigned int historyIndex,
-			unsigned int perforationIndex,
-			const std::string & comment);				
+		DLL_IMPORT_OR_EXPORT void setConnectionHistoryComment(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
+			const std::string & comment);
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.
@@ -558,21 +604,89 @@ namespace WITSML2_0_NS
 		/**
 		 * Gets a perforation
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @param 	index  	Zero-based index of the perforation.
 		 *
 		 * @returns	Null if it fails, else the perforation.
 		 */
-		gsoap_eml2_1::witsml20__PerforationSetInterval* getPerforation(unsigned int index) const;
+		gsoap_eml2_1::witsml20__PerforationSetInterval* getPerforation(uint64_t index) const;
+
+		/**
+		 * Gets a gravel pack
+		 *
+		 * @param 	index  	Zero-based index of the gravel pack.
+		 *
+		 * @returns	Null if it fails, else the gravel pack.
+		 */
+		gsoap_eml2_1::witsml20__GravelPackInterval* getGravelPack(uint64_t index) const;
+
+		/**
+		 * Gets a open hole
+		 *
+		 * @param 	index  	Zero-based index of the open hole.
+		 *
+		 * @returns	Null if it fails, else the open hole.
+		 */
+		gsoap_eml2_1::witsml20__OpenHoleInterval* getOpenHole(uint64_t index) const;
+
+		/**
+		 * Gets a slots
+		 *
+		 * @param 	index  	Zero-based index of the slots.
+		 *
+		 * @returns	Null if it fails, else the slots.
+		 */
+		gsoap_eml2_1::witsml20__SlotsInterval* getSlots(uint64_t index) const;
 
 		/**
 		 * Gets perforation history entry
 		 *
-		 * @param 	index				Zero-based index of the.
-		 * @param 	perforationIndex	Zero-based index of the perforation.
+		 * @param 	historyIndex		Zero-based index of the history entry.
+		 * @param 	index  	Zero-based index of the perforation.
 		 *
 		 * @returns	Null if it fails, else the perforation history entry.
 		 */
-		gsoap_eml2_1::witsml20__PerforationStatusHistory* getPerforationHistoryEntry(unsigned int index,
-			unsigned int perforationIndex) const;
+		gsoap_eml2_1::witsml20__PerforationStatusHistory* getPerforationHistoryEntry(uint64_t historyIndex,
+			uint64_t index) const {
+			return getPerforation(index)->PerforationStatusHistory.at(historyIndex);
+		}
+
+		/**
+		 * Gets gravel pack history entry
+		 *
+		 * @param 	historyIndex		Zero-based index of the history entry.
+		 * @param 	index  	Zero-based index of the gravel pack.
+		 *
+		 * @returns	Null if it fails, else the gravel pack history entry.
+		 */
+		gsoap_eml2_1::witsml20__IntervalStatusHistory* getGravelPackHistoryEntry(uint64_t historyIndex,
+			uint64_t index) const {
+			return getGravelPack(index)->StatusHistory.at(historyIndex);
+		}
+
+		/**
+		 * Gets open hole history entry
+		 *
+		 * @param 	historyIndex		Zero-based index of the history entry.
+		 * @param 	index  	Zero-based index of the open hole.
+		 *
+		 * @returns	Null if it fails, else the open hole history entry.
+		 */
+		gsoap_eml2_1::witsml20__IntervalStatusHistory* getOpenHoleHistoryEntry(uint64_t historyIndex,
+			uint64_t index) const {
+			return getOpenHole(index)->StatusHistory.at(historyIndex);
+		}
+
+		/**
+		 * Gets slots history entry
+		 *
+		 * @param 	historyIndex		Zero-based index of the history entry.
+		 * @param 	perforationIndex  	Zero-based index of the slots.
+		 *
+		 * @returns	Null if it fails, else the slots history entry.
+		 */
+		gsoap_eml2_1::witsml20__IntervalStatusHistory* getSlotsHistoryEntry(uint64_t historyIndex,
+			uint64_t index) const {
+			return getSlots(index)->StatusHistory.at(historyIndex);
+		}
 	};
 }

@@ -127,162 +127,494 @@ namespace WITSML2_0_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Witsml20_WellboreCompletion) WellboreCompletion;
 #endif
+	/** The location/interval of the connections between well and reservoir and its history. */
 	class WellboreCompletion : public WITSML2_NS::WellboreObject
 	{
 	public:
+
+		// The physical nature of a connection from reservoir to wellbore
+		enum class WellReservoirConnectionType { PERFORATION = 0, GRAVEL_PACK = 1, OPEN_HOLE = 2, SLOTS = 3};
+		
 		WellCompletion* getWellCompletion() const;
 		void setWellCompletion(WellCompletion* wellCompletion);
-
+		
 		/**
-		 * Pushes back perforation
+		 * Pushes back a connection
 		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection from reservoir to wellbore to add
 		 * @param 	datum 	The datum.
 		 * @param 	MdUnit	The md unit.
 		 * @param 	TopMd 	The top md.
 		 * @param 	BaseMd	The base md.
-		 * @param 	guid  	(Optional) Unique identifier.
+		 * @param 	guid  	Unique identifier of the connection.
 		 */
-		void pushBackPerforation(const std::string & datum,
+		void pushBackConnection(WellReservoirConnectionType wellReservoirConnection, const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double TopMd,
 			double BaseMd, 
-			const std::string & guid = "");
+			const std::string & uid);
 
 		/**
-		 * Pushes back perforation extra metadata
+		 * Pushes back connection extra metadata
 		 *
-		 * @param 	index	Zero-based index of the perforation in the wellbore completion.
-		 * @param 	key  	The key of the metadata.
-		 * @param 	value	The value of the metadata.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 * @param 	key  			The key of the metadata.
+		 * @param 	value			The value of the metadata.
 		 */
-		void pushBackPerforationExtraMetadata(unsigned int index,
+		void pushBackConnectionExtraMetadata(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
 			const std::string & key, const std::string & value);
 
 		/**
-		 * Gets an extra metadata of a particular perforation according to its key
+		 * Pushes a back perforaconnectiontion history
 		 *
-		 * @param 	key	The key of an extra metadata.
-		 *
-		 * @returns	The vector of all metadata values sharing this @p key (empty vector if there is no such value) in the perforation at @p index.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 * @param 	historyGuid 		(Optional) Unique identifier.
 		 */
-		std::vector<std::string> getPerforationExtraMetadata(unsigned int index, const std::string & key) const;
+		void pushBackConnectionHistory(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
+			const std::string & historyGuid = "");
 
 		/**
-		 * Pushes a back perforation history
+		 * Pushes back connection history
 		 *
-		 * @param 	index	Zero-based index of the perforation.
-		 * @param 	guid 	(Optional) Unique identifier.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 * @param 	status				The connection status.
+		 * @param 	startDate		 	The start date.
+		 * @param 	historyGuid			 (Optional) Unique identifier.
 		 */
-		void pushBackPerforationHistory(unsigned int index,
-			const std::string & guid = "");
-			
-		void pushBackPerforationHistory(unsigned int index,
-			gsoap_eml2_1::witsml20__PerforationStatus perforationStatus,
+		void pushBackConnectionHistory(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
+			gsoap_eml2_1::witsml20__PhysicalStatus staus,
 			time_t startDate,
-			const std::string & guid = "");	
+			const std::string & historyGuid = "");
 
-		unsigned int getPerforationCount() const;
-		
-		std::string getPerforationUid(unsigned int index) const;
+		/**
+		 * Gets connection count of a certin type
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connections to count
 
-		bool hasPerforationMdDatum(unsigned int index) const;
-	
-		std::string getPerforationMdDatum(unsigned int index) const;
-		
-		bool hasPerforationMdUnit(unsigned int index) const;
-		
-		gsoap_eml2_1::eml21__LengthUom getPerforationMdUnit(unsigned int index) const;
-		
-		std::string getPerforationMdUnitAsString(unsigned int index) const;
-		
-		bool hasPerforationTopMd(unsigned int index) const;
-		
-		double getPerforationTopMd(unsigned int index) const;
+		 * @returns	The connection count of type wellReservoirConnection in this completion.
+		 */
+		uint64_t getConnectionCount(WellReservoirConnectionType wellReservoirConnection) const;
 
-		bool hasPerforationBaseMd(unsigned int index) const;
+		/**
+		 * Gets the UID of the connection of a particular type at a particular index
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
 
-		double getPerforationBaseMd(unsigned int index) const;
+		 * @returns	The connection UIDs of the completion.
+		 */
+		std::string getConnectionUid(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		unsigned int getPerforationHistoryCount(unsigned int index) const;
+		/**
+		 * Gets an extra metadata of a particular connection according to its key
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 * @param 	key	The key of an extra metadata.
+		 *
+		 * @returns	The vector of all metadata values sharing this @p key (empty vector if there is no such value) in the connection at @p index.
+		 */
+		std::vector<std::string> getConnectionExtraMetadata(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex, const std::string & key) const;
 
-		bool hasPerforationHistoryStatus(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Query if 'index' has connection md datum
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	True if connection md datum, false if not.
+		 */
+		bool hasConnectionMdDatum(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		gsoap_eml2_1::witsml20__PerforationStatus getPerforationHistoryStatus(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Gets connection md datum
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	The connection md datum.
+		 */
+		std::string getConnectionMdDatum(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		std::string getPerforationHistoryStatusToString(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Query if 'index' has connection md unit
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	True if connection md unit, false if not.
+		 */
+		bool hasConnectionMdUnit(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		void setPerforationHistoryStatus(unsigned int historyIndex,
-			unsigned int perforationIndex, 
-			gsoap_eml2_1::witsml20__PerforationStatus perforationStatus);
+		/**
+		 * Returns md base uom if exists, else returns md top uom. Raises an exception if no md is
+		 * defined.
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	The connection md unit.
+		 */
+		gsoap_eml2_1::eml21__LengthUom getConnectionMdUnit(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		bool hasPerforationHistoryStartDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Returns md base uom (as string) if exists, else returns md top uom (as string). Raises an
+		 * exception if no md is defined.
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	The connection md unit as string.
+		 */
+		std::string getConnectionMdUnitAsString(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		time_t getPerforationHistoryStartDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Query if 'index' has connection top md
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	True if connection top md, false if not.
+		 */
+		bool hasConnectionTopMd(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		void setPerforationHistoryStartDate(unsigned int historyIndex,
-			unsigned int perforationIndex, time_t startDate) const;
+		/**
+		 * Gets connection top md
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	The connection top md.
+		 */
+		double getConnectionTopMd(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		bool hasPerforationHistoryEndDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Query if 'index' has connection base md
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	True if connection base md, false if not.
+		 */
+		bool hasConnectionBaseMd(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		time_t getPerforationHistoryEndDate(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Gets connection base md
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	The connection base md.
+		 */
+		double getConnectionBaseMd(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		void setPerforationHistoryEndDate(unsigned int historyIndex,
-			unsigned int perforationIndex, time_t endDate) const;
-		
-		bool hasPerforationHistoryMdDatum(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
-		
-		std::string getPerforationHistoryMdDatum(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
-		
-		bool hasPerforationHistoryMdUnit(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Gets connection history count
+		 *
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	The connection history count.
+		 */
+		uint64_t getConnectionHistoryCount(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		gsoap_eml2_1::eml21__LengthUom getPerforationHistoryMdUnit(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
-			
-		std::string getPerforationHistoryMdUnitAsString(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Query if 'historyIndex' has connection history status
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	True if connection history status, false if not.
+		 */
+		bool hasConnectionHistoryStatus(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		bool hasPerforationHistoryTopMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Gets connection history status
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	The connection history status.
+		 */
+		gsoap_eml2_1::witsml20__PhysicalStatus getConnectionHistoryStatus(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		double getPerforationHistoryTopMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Gets connection history status to string
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	The connection history status to string.
+		 */
+		std::string getConnectionHistoryStatusToString(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		void setPerforationHistoryTopMd(unsigned int historyIndex,
-			unsigned int perforationIndex,
+		/**
+		 * Sets connection history status
+		 *
+		 * @param 	historyIndex	 	Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 * @param 	connectionStatus	The connection status.
+		 */
+		void setConnectionHistoryStatus(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex, 
+			gsoap_eml2_1::witsml20__PhysicalStatus connectionStatus);
+
+		/**
+		 * Query if 'historyIndex' has connection history start date
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex The index of the connection in the array of type wellReservoirConnection.
+		 *
+		 * @returns	True if connection history start date, false if not.
+		 */
+		bool hasConnectionHistoryStartDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Gets connection history start date
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	The connection history start date.
+		 */
+		time_t getConnectionHistoryStartDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Sets connection history start date
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 * @param 	startDate			The start date.
+		 */
+		void setConnectionHistoryStartDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex, time_t startDate) const;
+
+		/**
+		 * Query if 'historyIndex' has connection history end date
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	True if connection history end date, false if not.
+		 */
+		bool hasConnectionHistoryEndDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Gets connection history end date
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	The connection history end date.
+		 */
+		time_t getConnectionHistoryEndDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Sets connection history end date
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 * @param 	endDate				The end date.
+		 */
+		void setConnectionHistoryEndDate(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex, time_t endDate) const;
+
+		/**
+		 * Query if 'historyIndex' has connection history md datum
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	True if connection history md datum, false if not.
+		 */
+		bool hasConnectionHistoryMdDatum(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Gets connection history md datum
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	The connection history md datum.
+		 */
+		std::string getConnectionHistoryMdDatum(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Query if 'historyIndex' has connection history md unit
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	True if connection history md unit, false if not.
+		 */
+		bool hasConnectionHistoryMdUnit(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Returns md base uom if exists, else returns md top uom. Raises an exception if no md is
+		 * defined.
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	The connection history md unit.
+		 */
+		gsoap_eml2_1::eml21__LengthUom getConnectionHistoryMdUnit(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Returns md base uom (as string) if exists, else returns md top uom (as string). Raises an
+		 * exception if no md is defined.
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	The connection history md unit as string.
+		 */
+		std::string getConnectionHistoryMdUnitAsString(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Query if 'historyIndex' has connection history top md
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	True if connection history top md, false if not.
+		 */
+		bool hasConnectionHistoryTopMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Gets connection history top md
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	The connection history top md.
+		 */
+		double getConnectionHistoryTopMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Connection history datum is overwritten if exists. For instance if a base md is already
+		 * defined.
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 * @param 	datum				The datum.
+		 * @param 	MdUnit				The md unit.
+		 * @param 	TopMd				The top md.
+		 */
+		void setConnectionHistoryTopMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double TopMd);
-		
-		bool hasPerforationHistoryBaseMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
 
-		double getPerforationHistoryBaseMd(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Query if 'historyIndex' has connection history base md
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	True if connection history base md, false if not.
+		 */
+		bool hasConnectionHistoryBaseMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		void setPerforationHistoryBaseMd(unsigned int historyIndex,
-			unsigned int perforationIndex,
+		/**
+		 * Gets connection history base md
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	The connection history base md.
+		 */
+		double getConnectionHistoryBaseMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Connection history datum is overwritten if exists. For instance if a top md is already
+		 * defined.
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 * @param 	datum				The datum.
+		 * @param 	MdUnit				The md unit.
+		 * @param 	BaseMd				The base md.
+		 */
+		void setConnectionHistoryBaseMd(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double BaseMd);
-			
-		bool hasPerforationHistoryComment(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
 
-		std::string getPerforationHistoryComment(unsigned int historyIndex,
-			unsigned int perforationIndex) const;
+		/**
+		 * Query if 'historyIndex' has connection history comment
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	True if connection history comment, false if not.
+		 */
+		bool hasConnectionHistoryComment(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
 
-		void setPerforationHistoryComment(unsigned int historyIndex,
-			unsigned int perforationIndex,
+		/**
+		 * Gets connection history comment
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 *
+		 * @returns	The connection history comment.
+		 */
+		std::string getConnectionHistoryComment(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex) const;
+
+		/**
+		 * Sets connection history comment
+		 *
+		 * @param 	historyIndex		Zero-based index of the history.
+		 * @param	wellReservoirConnection	The physical nature of the connection
+		 * @param 	connectionIndex	Zero-based index of the connection.
+		 * @param 	comment				The comment.
+		 */
+		void setConnectionHistoryComment(uint64_t historyIndex,
+			WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
 			const std::string & comment);
 	};
 
@@ -473,3 +805,4 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(DipDirection, gsoap_eml2_1::eml21__PlaneAngleUom)
 	};
 }
+

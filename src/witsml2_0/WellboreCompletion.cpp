@@ -89,11 +89,11 @@ void WellboreCompletion::setWellCompletion(WellCompletion* wellCompletion)
 	getRepository()->addRelationship(this, wellCompletion);
 }
 
-void WellboreCompletion::pushBackPerforation(const string & datum,
+void WellboreCompletion::pushBackConnection(WellReservoirConnectionType wellReservoirConnection, const string & datum,
 	eml21__LengthUom MdUnit,
 	double TopMd,
 	double BaseMd,
-	const string & guid)
+	const string & uid)
 {
 	witsml20__WellboreCompletion* wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
 
@@ -101,87 +101,241 @@ void WellboreCompletion::pushBackPerforation(const string & datum,
 		wellboreCompletion->ContactIntervalSet = soap_new_witsml20__ContactIntervalSet(gsoapProxy2_1->soap);
 	}
 
-	witsml20__PerforationSetInterval* perforationSetInterval = soap_new_witsml20__PerforationSetInterval(gsoapProxy2_1->soap);
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationSetInterval* perforationSetInterval = soap_new_witsml20__PerforationSetInterval(gsoapProxy2_1->soap);
 
-	perforationSetInterval->uid = guid.empty()
-		? std::to_string(wellboreCompletion->ContactIntervalSet->PerforationSetInterval.size())
-		: guid;
+		perforationSetInterval->uid = uid;
 
-	perforationSetInterval->PerforationSetMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
-	perforationSetInterval->PerforationSetMdInterval->datum = datum;
-	perforationSetInterval->PerforationSetMdInterval->MdTop = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
-	perforationSetInterval->PerforationSetMdInterval->MdTop->uom = MdUnit;
-	perforationSetInterval->PerforationSetMdInterval->MdTop->__item = TopMd;
-	perforationSetInterval->PerforationSetMdInterval->MdBase = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
-	perforationSetInterval->PerforationSetMdInterval->MdBase->uom = MdUnit;
-	perforationSetInterval->PerforationSetMdInterval->MdBase->__item = BaseMd;
+		perforationSetInterval->PerforationSetMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
+		perforationSetInterval->PerforationSetMdInterval->datum = datum;
+		perforationSetInterval->PerforationSetMdInterval->MdTop = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		perforationSetInterval->PerforationSetMdInterval->MdTop->uom = MdUnit;
+		perforationSetInterval->PerforationSetMdInterval->MdTop->__item = TopMd;
+		perforationSetInterval->PerforationSetMdInterval->MdBase = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		perforationSetInterval->PerforationSetMdInterval->MdBase->uom = MdUnit;
+		perforationSetInterval->PerforationSetMdInterval->MdBase->__item = BaseMd;
 
-	wellboreCompletion->ContactIntervalSet->PerforationSetInterval.push_back(perforationSetInterval);
+		wellboreCompletion->ContactIntervalSet->PerforationSetInterval.push_back(perforationSetInterval);
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		witsml20__GravelPackInterval* interval = soap_new_witsml20__GravelPackInterval(gsoapProxy2_1->soap);
+
+		interval->uid = uid;
+
+		interval->GravelPackMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
+		interval->GravelPackMdInterval->datum = datum;
+		interval->GravelPackMdInterval->MdTop = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		interval->GravelPackMdInterval->MdTop->uom = MdUnit;
+		interval->GravelPackMdInterval->MdTop->__item = TopMd;
+		interval->GravelPackMdInterval->MdBase = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		interval->GravelPackMdInterval->MdBase->uom = MdUnit;
+		interval->GravelPackMdInterval->MdBase->__item = BaseMd;
+
+		wellboreCompletion->ContactIntervalSet->GravelPackInterval.push_back(interval);
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		witsml20__OpenHoleInterval* interval = soap_new_witsml20__OpenHoleInterval(gsoapProxy2_1->soap);
+
+		interval->uid = uid;
+
+		interval->OpenHoleMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
+		interval->OpenHoleMdInterval->datum = datum;
+		interval->OpenHoleMdInterval->MdTop = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		interval->OpenHoleMdInterval->MdTop->uom = MdUnit;
+		interval->OpenHoleMdInterval->MdTop->__item = TopMd;
+		interval->OpenHoleMdInterval->MdBase = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		interval->OpenHoleMdInterval->MdBase->uom = MdUnit;
+		interval->OpenHoleMdInterval->MdBase->__item = BaseMd;
+
+		wellboreCompletion->ContactIntervalSet->OpenHoleInterval.push_back(interval);
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		witsml20__SlotsInterval* interval = soap_new_witsml20__SlotsInterval(gsoapProxy2_1->soap);
+
+		interval->uid = uid;
+
+		interval->SlottedMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
+		interval->SlottedMdInterval->datum = datum;
+		interval->SlottedMdInterval->MdTop = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		interval->SlottedMdInterval->MdTop->uom = MdUnit;
+		interval->SlottedMdInterval->MdTop->__item = TopMd;
+		interval->SlottedMdInterval->MdBase = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		interval->SlottedMdInterval->MdBase->uom = MdUnit;
+		interval->SlottedMdInterval->MdBase->__item = BaseMd;
+
+		wellboreCompletion->ContactIntervalSet->SlotsInterval.push_back(interval);
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-void WellboreCompletion::pushBackPerforationExtraMetadata(unsigned int index,
+void WellboreCompletion::pushBackConnectionExtraMetadata(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
 	const std::string & key, const std::string & value)
 {
-	witsml20__PerforationSetInterval * perforationSetInterval = getPerforation(index);
 
 	gsoap_eml2_1::eml21__ExtensionNameValue* stringPair = gsoap_eml2_1::soap_new_eml21__ExtensionNameValue(gsoapProxy2_1->soap);
 	stringPair->Name = key;
 	stringPair->Value = gsoap_eml2_1::soap_new_eml21__StringMeasure(gsoapProxy2_1->soap);
 	stringPair->Value->__item = value;
-	perforationSetInterval->ExtensionNameValue.push_back(stringPair);
+
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationSetInterval* interval = getPerforation(connectionIndex);
+		interval->ExtensionNameValue.push_back(stringPair);
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		witsml20__GravelPackInterval* interval = getGravelPack(connectionIndex);
+		interval->ExtensionNameValue.push_back(stringPair);
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		witsml20__OpenHoleInterval* interval = getOpenHole(connectionIndex);
+		interval->ExtensionNameValue.push_back(stringPair);
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		witsml20__SlotsInterval* interval = getSlots(connectionIndex);
+		interval->ExtensionNameValue.push_back(stringPair);
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-std::vector<std::string> WellboreCompletion::getPerforationExtraMetadata(unsigned int index, const std::string & key) const
+std::vector<std::string> WellboreCompletion::getConnectionExtraMetadata(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex, const std::string & key) const
 {
 	vector<string> result;
 
-	witsml20__PerforationSetInterval * perforationSetInterval = getPerforation(index);
-	for (auto const* pair :perforationSetInterval->ExtensionNameValue) {
-		if (pair->Name == key) {
-			result.push_back(pair->Value->__item);
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		for (auto const* pair : getPerforation(connectionIndex)->ExtensionNameValue) {
+			if (pair->Name == key) {
+				result.push_back(pair->Value->__item);
+			}
 		}
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		for (auto const* pair : getGravelPack(connectionIndex)->ExtensionNameValue) {
+			if (pair->Name == key) {
+				result.push_back(pair->Value->__item);
+			}
+		}
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		for (auto const* pair : getOpenHole(connectionIndex)->ExtensionNameValue) {
+			if (pair->Name == key) {
+				result.push_back(pair->Value->__item);
+			}
+		}
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		for (auto const* pair : getSlots(connectionIndex)->ExtensionNameValue) {
+			if (pair->Name == key) {
+				result.push_back(pair->Value->__item);
+			}
+		}
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
 	}
 
 	return result;
 }
 
-void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
+void WellboreCompletion::pushBackConnectionHistory(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
 	const std::string & guid)
 {
-	witsml20__PerforationSetInterval * perforationSetInterval = getPerforation(index);
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory* perforationStatusHistory = soap_new_witsml20__PerforationStatusHistory(gsoapProxy2_1->soap);
+		perforationStatusHistory->uid = guid.empty()
+			? std::to_string(getConnectionHistoryCount(wellReservoirConnection, connectionIndex))
+			: guid;
 
-	witsml20__PerforationStatusHistory* perforationStatusHistory = soap_new_witsml20__PerforationStatusHistory(gsoapProxy2_1->soap);
-	perforationStatusHistory->uid = guid.empty()
-		? std::to_string(perforationSetInterval->PerforationStatusHistory.size())
-		: guid;
+		witsml20__PerforationSetInterval* interval = getPerforation(connectionIndex);
+		interval->PerforationStatusHistory.push_back(perforationStatusHistory);
+	}
+	else {
+		witsml20__IntervalStatusHistory* intervalStatusHistory = soap_new_witsml20__IntervalStatusHistory(gsoapProxy2_1->soap);
+		intervalStatusHistory->uid = guid.empty()
+			? std::to_string(getConnectionHistoryCount(wellReservoirConnection, connectionIndex))
+			: guid;
 
-	perforationSetInterval->PerforationStatusHistory.push_back(perforationStatusHistory);
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			witsml20__GravelPackInterval* interval = getGravelPack(connectionIndex);
+			interval->StatusHistory.push_back(intervalStatusHistory);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			witsml20__OpenHoleInterval* interval = getOpenHole(connectionIndex);
+			interval->StatusHistory.push_back(intervalStatusHistory);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			witsml20__SlotsInterval* interval = getSlots(connectionIndex);
+			interval->StatusHistory.push_back(intervalStatusHistory);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+	}
 }
 
-void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
-	gsoap_eml2_1::witsml20__PerforationStatus perforationStatus,
+void WellboreCompletion::pushBackConnectionHistory(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
+	witsml20__PhysicalStatus perforationStatus,
 	time_t startDate,
 	const std::string & guid)
 {
-	witsml20__PerforationSetInterval * perforationSetInterval = getPerforation(index);
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory* perforationStatusHistory = soap_new_witsml20__PerforationStatusHistory(gsoapProxy2_1->soap);
+		perforationStatusHistory->uid = guid.empty()
+			? std::to_string(getConnectionHistoryCount(wellReservoirConnection, connectionIndex))
+			: guid;
+		perforationStatusHistory->PerforationStatus = soap_new_witsml20__PerforationStatus(gsoapProxy2_1->soap);
+		if (perforationStatus == witsml20__PhysicalStatus::open) {
+			*perforationStatusHistory->PerforationStatus = witsml20__PerforationStatus::open;
+		}
+		else if (perforationStatus == witsml20__PhysicalStatus::closed) {
+			*perforationStatusHistory->PerforationStatus = witsml20__PerforationStatus::squeezed;
+		}
+		else if (perforationStatus == witsml20__PhysicalStatus::proposed) {
+			*perforationStatusHistory->PerforationStatus = witsml20__PerforationStatus::proposed;
+		}
 
-	witsml20__PerforationStatusHistory* perforationStatusHistory = soap_new_witsml20__PerforationStatusHistory(gsoapProxy2_1->soap);
-	perforationStatusHistory->uid = guid.empty()
-		? std::to_string(perforationSetInterval->PerforationStatusHistory.size())
-		: guid;
+		if (startDate != -1) {
+			perforationStatusHistory->StartDate = soap_new_std__string(gsoapProxy2_1->soap);
+			perforationStatusHistory->StartDate->assign(timeTools::convertUnixTimestampToIso(startDate));
+		}
 
-	perforationStatusHistory->PerforationStatus = soap_new_witsml20__PerforationStatus(gsoapProxy2_1->soap);
-	*perforationStatusHistory->PerforationStatus = perforationStatus;
-
-	if (startDate != -1) {
-		perforationStatusHistory->StartDate = soap_new_std__string(gsoapProxy2_1->soap);
-		perforationStatusHistory->StartDate->assign(timeTools::convertUnixTimestampToIso(startDate));
+		witsml20__PerforationSetInterval* interval = getPerforation(connectionIndex);
+		interval->PerforationStatusHistory.push_back(perforationStatusHistory);
 	}
+	else {
+		witsml20__IntervalStatusHistory* intervalStatusHistory = soap_new_witsml20__IntervalStatusHistory(gsoapProxy2_1->soap);
+		intervalStatusHistory->uid = guid.empty()
+			? std::to_string(getConnectionHistoryCount(wellReservoirConnection, connectionIndex))
+			: guid;
+		intervalStatusHistory->PhysicalStatus = soap_new_witsml20__PhysicalStatus(gsoapProxy2_1->soap);
+		*intervalStatusHistory->PhysicalStatus = perforationStatus;
 
-	perforationSetInterval->PerforationStatusHistory.push_back(perforationStatusHistory);
+		if (startDate != -1) {
+			intervalStatusHistory->StartDate = soap_new_std__string(gsoapProxy2_1->soap);
+			intervalStatusHistory->StartDate->assign(timeTools::convertUnixTimestampToIso(startDate));
+		}
+
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			witsml20__GravelPackInterval* interval = getGravelPack(connectionIndex);
+			interval->StatusHistory.push_back(intervalStatusHistory);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			witsml20__OpenHoleInterval* interval = getOpenHole(connectionIndex);
+			interval->StatusHistory.push_back(intervalStatusHistory);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			witsml20__SlotsInterval* interval = getSlots(connectionIndex);
+			interval->StatusHistory.push_back(intervalStatusHistory);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+	}
 }
 
-unsigned int WellboreCompletion::getPerforationCount() const
+uint64_t WellboreCompletion::getConnectionCount(WellReservoirConnectionType wellReservoirConnection) const
 {
 	witsml20__WellboreCompletion* wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
 
@@ -189,352 +343,936 @@ unsigned int WellboreCompletion::getPerforationCount() const
 		throw invalid_argument("No contact interval exists.");
 	}
 
-	return wellboreCompletion->ContactIntervalSet->PerforationSetInterval.size();
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return wellboreCompletion->ContactIntervalSet->PerforationSetInterval.size();
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return wellboreCompletion->ContactIntervalSet->GravelPackInterval.size();
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return wellboreCompletion->ContactIntervalSet->OpenHoleInterval.size();
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return wellboreCompletion->ContactIntervalSet->SlotsInterval.size();
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-std::string WellboreCompletion::getPerforationUid(unsigned int index) const
+std::string WellboreCompletion::getConnectionUid(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	return getPerforation(index)->uid;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforation(index)->uid;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPack(index)->uid;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHole(index)->uid;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlots(index)->uid;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-bool WellboreCompletion::hasPerforationMdDatum(unsigned int index) const
+bool WellboreCompletion::hasConnectionMdDatum(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	return getPerforation(index)->PerforationSetMdInterval != nullptr;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforation(index)->PerforationSetMdInterval != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPack(index)->GravelPackMdInterval != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHole(index)->OpenHoleMdInterval != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlots(index)->SlottedMdInterval != nullptr;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-string WellboreCompletion::getPerforationMdDatum(unsigned int index) const
+string WellboreCompletion::getConnectionMdDatum(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	if (!hasPerforationMdDatum(index)) {
-		throw invalid_argument("No perforation md datum is defined.");
+	if (!hasConnectionMdDatum(wellReservoirConnection, index)) {
+		throw invalid_argument("No connection md datum is defined.");
 	}
 
-	return getPerforation(index)->PerforationSetMdInterval->datum;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforation(index)->PerforationSetMdInterval->datum;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPack(index)->GravelPackMdInterval->datum;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHole(index)->OpenHoleMdInterval->datum;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlots(index)->SlottedMdInterval->datum;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-bool WellboreCompletion::hasPerforationMdUnit(unsigned int index) const
+bool WellboreCompletion::hasConnectionMdUnit(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	witsml20__PerforationSetInterval const * const perforationSetInterval = getPerforation(index);
-
-	return perforationSetInterval->PerforationSetMdInterval == nullptr
-		? false
-		: perforationSetInterval->PerforationSetMdInterval->MdBase != nullptr || perforationSetInterval->PerforationSetMdInterval->MdTop != nullptr;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationSetInterval const * const interval = getPerforation(index);
+		return interval->PerforationSetMdInterval == nullptr
+			? false
+			: interval->PerforationSetMdInterval->MdBase != nullptr || interval->PerforationSetMdInterval->MdTop != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		witsml20__GravelPackInterval const * const interval = getGravelPack(index);
+		return interval->GravelPackMdInterval == nullptr
+			? false
+			: interval->GravelPackMdInterval->MdBase != nullptr || interval->GravelPackMdInterval->MdTop != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		witsml20__OpenHoleInterval const * const interval = getOpenHole(index);
+		return interval->OpenHoleMdInterval == nullptr
+			? false
+			: interval->OpenHoleMdInterval->MdBase != nullptr || interval->OpenHoleMdInterval->MdTop != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		witsml20__SlotsInterval const * const interval = getSlots(index);
+		return interval->SlottedMdInterval == nullptr
+			? false
+			: interval->SlottedMdInterval->MdBase != nullptr || interval->SlottedMdInterval->MdTop != nullptr;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-eml21__LengthUom WellboreCompletion::getPerforationMdUnit(unsigned int index) const
+eml21__LengthUom WellboreCompletion::getConnectionMdUnit(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	if (!hasPerforationMdUnit(index)) {
-		throw invalid_argument("No perforation md unit is defined.");
+	if (!hasConnectionMdUnit(wellReservoirConnection, index)) {
+		throw invalid_argument("No connection md unit is defined.");
 	}
 
-	witsml20__PerforationSetInterval const * const perforationSetInterval = getPerforation(index);
-
-	return perforationSetInterval->PerforationSetMdInterval->MdBase != nullptr
-		? perforationSetInterval->PerforationSetMdInterval->MdBase->uom
-		: perforationSetInterval->PerforationSetMdInterval->MdTop->uom;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationSetInterval const * const interval = getPerforation(index);
+		return interval->PerforationSetMdInterval->MdBase != nullptr
+			? interval->PerforationSetMdInterval->MdBase->uom
+			: interval->PerforationSetMdInterval->MdTop->uom;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		witsml20__GravelPackInterval const * const interval = getGravelPack(index);
+		return interval->GravelPackMdInterval->MdBase != nullptr
+			? interval->GravelPackMdInterval->MdBase->uom
+			: interval->GravelPackMdInterval->MdTop->uom;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		witsml20__OpenHoleInterval const * const interval = getOpenHole(index);
+		return interval->OpenHoleMdInterval->MdBase != nullptr
+			? interval->OpenHoleMdInterval->MdBase->uom
+			: interval->OpenHoleMdInterval->MdTop->uom;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		witsml20__SlotsInterval const * const interval = getSlots(index);
+		return interval->SlottedMdInterval->MdBase != nullptr
+			? interval->SlottedMdInterval->MdBase->uom
+			: interval->SlottedMdInterval->MdTop->uom;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-string WellboreCompletion::getPerforationMdUnitAsString(unsigned int index) const
+string WellboreCompletion::getConnectionMdUnitAsString(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	return gsoap_eml2_1::soap_eml21__LengthUom2s(gsoapProxy2_1->soap, getPerforationMdUnit(index));
+	return gsoap_eml2_1::soap_eml21__LengthUom2s(gsoapProxy2_1->soap, getConnectionMdUnit(wellReservoirConnection, index));
 }
 
-bool WellboreCompletion::hasPerforationTopMd(unsigned int index) const
+bool WellboreCompletion::hasConnectionTopMd(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	witsml20__PerforationSetInterval const * const perforationSetInterval = getPerforation(index);
-
-	return perforationSetInterval->PerforationSetMdInterval == nullptr
-		? false
-		: perforationSetInterval->PerforationSetMdInterval->MdTop != nullptr;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationSetInterval const * const interval = getPerforation(index);
+		return interval->PerforationSetMdInterval == nullptr
+			? false
+			: interval->PerforationSetMdInterval->MdTop != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		witsml20__GravelPackInterval const * const interval = getGravelPack(index);
+		return interval->GravelPackMdInterval == nullptr
+			? false
+			: interval->GravelPackMdInterval->MdTop != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		witsml20__OpenHoleInterval const * const interval = getOpenHole(index);
+		return interval->OpenHoleMdInterval == nullptr
+			? false
+			: interval->OpenHoleMdInterval->MdTop != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		witsml20__SlotsInterval const * const interval = getSlots(index);
+		return interval->SlottedMdInterval == nullptr
+			? false
+			: interval->SlottedMdInterval->MdTop != nullptr;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-double WellboreCompletion::getPerforationTopMd(unsigned int index) const
+double WellboreCompletion::getConnectionTopMd(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	if (!hasPerforationTopMd(index)) {
+	if (!hasConnectionTopMd(wellReservoirConnection, index)) {
 		throw invalid_argument("No perforation top md is defined.");
 	}
 
-	return getPerforation(index)->PerforationSetMdInterval->MdTop->__item;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforation(index)->PerforationSetMdInterval->MdTop->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPack(index)->GravelPackMdInterval->MdTop->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHole(index)->OpenHoleMdInterval->MdTop->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlots(index)->SlottedMdInterval->MdTop->__item;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-bool WellboreCompletion::hasPerforationBaseMd(unsigned int index) const
+bool WellboreCompletion::hasConnectionBaseMd(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	witsml20__PerforationSetInterval const * const perforationSetInterval = getPerforation(index);
-
-	return perforationSetInterval->PerforationSetMdInterval == nullptr
-		? false
-		: perforationSetInterval->PerforationSetMdInterval->MdBase != nullptr;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationSetInterval const * const interval = getPerforation(index);
+		return interval->PerforationSetMdInterval == nullptr
+			? false
+			: interval->PerforationSetMdInterval->MdBase != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		witsml20__GravelPackInterval const * const interval = getGravelPack(index);
+		return interval->GravelPackMdInterval == nullptr
+			? false
+			: interval->GravelPackMdInterval->MdBase != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		witsml20__OpenHoleInterval const * const interval = getOpenHole(index);
+		return interval->OpenHoleMdInterval == nullptr
+			? false
+			: interval->OpenHoleMdInterval->MdBase != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		witsml20__SlotsInterval const * const interval = getSlots(index);
+		return interval->SlottedMdInterval == nullptr
+			? false
+			: interval->SlottedMdInterval->MdBase != nullptr;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-double WellboreCompletion::getPerforationBaseMd(unsigned int index) const
+double WellboreCompletion::getConnectionBaseMd(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	if (!hasPerforationBaseMd(index)) {
+	if (!hasConnectionBaseMd(wellReservoirConnection, index)) {
 		throw invalid_argument("No perforation base md is defined.");
 	}
 
-	return getPerforation(index)->PerforationSetMdInterval->MdBase->__item;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforation(index)->PerforationSetMdInterval->MdBase->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPack(index)->GravelPackMdInterval->MdBase->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHole(index)->OpenHoleMdInterval->MdBase->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlots(index)->SlottedMdInterval->MdBase->__item;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-unsigned int WellboreCompletion::getPerforationHistoryCount(unsigned int index) const
+uint64_t WellboreCompletion::getConnectionHistoryCount(WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	return getPerforation(index)->PerforationStatusHistory.size();
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforation(index)->PerforationStatusHistory.size();
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPack(index)->StatusHistory.size();
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHole(index)->StatusHistory.size();
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlots(index)->StatusHistory.size();
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-bool WellboreCompletion::hasPerforationHistoryStatus(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasConnectionHistoryStatus(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	return getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationStatus != nullptr;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforationHistoryEntry(historyIndex, index)->PerforationStatus != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPackHistoryEntry(historyIndex, index)->PhysicalStatus != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHoleHistoryEntry(historyIndex, index)->PhysicalStatus != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlotsHistoryEntry(historyIndex, index)->PhysicalStatus != nullptr;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-witsml20__PerforationStatus WellboreCompletion::getPerforationHistoryStatus(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+gsoap_eml2_1::witsml20__PhysicalStatus WellboreCompletion::getConnectionHistoryStatus(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	if (!hasPerforationHistoryStatus(historyIndex, perforationIndex)) {
+	if (!hasConnectionHistoryStatus(historyIndex, wellReservoirConnection, index)) {
 		throw invalid_argument("No perforation history entry is defined.");
 	}
 
-	return *getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationStatus;
-}
-
-string WellboreCompletion::getPerforationHistoryStatusToString(unsigned int historyIndex,
-	unsigned int perforationIndex) const
-{
-	return gsoap_eml2_1::soap_witsml20__PerforationStatus2s(gsoapProxy2_1->soap, getPerforationHistoryStatus(historyIndex, perforationIndex));
-}
-
-void WellboreCompletion::setPerforationHistoryStatus(unsigned int historyIndex,
-	unsigned int perforationIndex,
-	gsoap_eml2_1::witsml20__PerforationStatus perforationStatus)
-{
-	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-
-	if (perforationStatusHistory->PerforationStatus == nullptr) {
-		perforationStatusHistory->PerforationStatus = soap_new_witsml20__PerforationStatus(gsoapProxy2_1->soap);
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		auto perfoStatus = *getPerforationHistoryEntry(historyIndex, index)->PerforationStatus;
+		if (perfoStatus == gsoap_eml2_1::witsml20__PerforationStatus::open) {
+			return gsoap_eml2_1::witsml20__PhysicalStatus::open;
+		}
+		else if (perfoStatus == gsoap_eml2_1::witsml20__PerforationStatus::proposed) {
+			return gsoap_eml2_1::witsml20__PhysicalStatus::proposed;
+		}
+		else { //if (perfoStatus == gsoap_eml2_1::witsml20__PerforationStatus::squeezed)
+			return gsoap_eml2_1::witsml20__PhysicalStatus::closed;
+		}
 	}
-
-	*perforationStatusHistory->PerforationStatus = perforationStatus;
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return *getGravelPackHistoryEntry(historyIndex, index)->PhysicalStatus;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return *getOpenHoleHistoryEntry(historyIndex, index)->PhysicalStatus;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return *getSlotsHistoryEntry(historyIndex, index)->PhysicalStatus;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-bool WellboreCompletion::hasPerforationHistoryStartDate(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+string WellboreCompletion::getConnectionHistoryStatusToString(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	return getPerforationHistoryEntry(historyIndex, perforationIndex)->StartDate != nullptr;
+	return gsoap_eml2_1::soap_witsml20__PhysicalStatus2s(gsoapProxy2_1->soap, getConnectionHistoryStatus(historyIndex, wellReservoirConnection, index));
 }
 
-time_t WellboreCompletion::getPerforationHistoryStartDate(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+void WellboreCompletion::setConnectionHistoryStatus(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index,
+	gsoap_eml2_1::witsml20__PhysicalStatus status)
 {
-	if (!hasPerforationHistoryStartDate(historyIndex, perforationIndex)) {
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		if (perforationStatusHistory->PerforationStatus == nullptr) {
+			perforationStatusHistory->PerforationStatus = soap_new_witsml20__PerforationStatus(gsoapProxy2_1->soap);
+		}
+		if (status == gsoap_eml2_1::witsml20__PhysicalStatus::open) {
+			*perforationStatusHistory->PerforationStatus = gsoap_eml2_1::witsml20__PerforationStatus::open;
+		}
+		else if (status == gsoap_eml2_1::witsml20__PhysicalStatus::proposed) {
+			*perforationStatusHistory->PerforationStatus = gsoap_eml2_1::witsml20__PerforationStatus::proposed;
+		}
+		else { //if (status == gsoap_eml2_1::witsml20__PhysicalStatus::closed)
+			*perforationStatusHistory->PerforationStatus = gsoap_eml2_1::witsml20__PerforationStatus::squeezed;
+		}
+	}
+	else {
+		witsml20__IntervalStatusHistory* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+
+		if (statusHistory->PhysicalStatus == nullptr) {
+			statusHistory->PhysicalStatus = soap_new_witsml20__PhysicalStatus(gsoapProxy2_1->soap);
+		}
+		*statusHistory->PhysicalStatus = status;
+	}
+}
+
+bool WellboreCompletion::hasConnectionHistoryStartDate(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
+{
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforationHistoryEntry(historyIndex, index)->StartDate != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPackHistoryEntry(historyIndex, index)->StartDate != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHoleHistoryEntry(historyIndex, index)->StartDate != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlotsHistoryEntry(historyIndex, index)->StartDate != nullptr;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
+}
+
+time_t WellboreCompletion::getConnectionHistoryStartDate(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
+{
+	if (!hasConnectionHistoryStartDate(historyIndex, wellReservoirConnection, index)) {
 		throw invalid_argument("No perforation history entry start date is defined.");
 	}
 
-	return timeTools::convertIsoToUnixTimestamp(*getPerforationHistoryEntry(historyIndex, perforationIndex)->StartDate);
-}
-
-void WellboreCompletion::setPerforationHistoryStartDate(unsigned int historyIndex,
-	unsigned int perforationIndex, time_t startDate) const
-{
-	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-
-	if (perforationStatusHistory->StartDate == nullptr) {
-		perforationStatusHistory->StartDate = soap_new_std__string(gsoapProxy2_1->soap);
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return timeTools::convertIsoToUnixTimestamp(*getPerforationHistoryEntry(historyIndex, index)->StartDate);
 	}
-
-	perforationStatusHistory->StartDate->assign(timeTools::convertUnixTimestampToIso(startDate));
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return timeTools::convertIsoToUnixTimestamp(*getGravelPackHistoryEntry(historyIndex, index)->StartDate);
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return timeTools::convertIsoToUnixTimestamp(*getOpenHoleHistoryEntry(historyIndex, index)->StartDate);
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return timeTools::convertIsoToUnixTimestamp(*getSlotsHistoryEntry(historyIndex, index)->StartDate);
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-bool WellboreCompletion::hasPerforationHistoryEndDate(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+void WellboreCompletion::setConnectionHistoryStartDate(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index, time_t startDate) const
 {
-	return getPerforationHistoryEntry(historyIndex, perforationIndex)->EndDate != nullptr;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		if (perforationStatusHistory->StartDate == nullptr) {
+			perforationStatusHistory->StartDate = soap_new_std__string(gsoapProxy2_1->soap);
+		}
+		perforationStatusHistory->StartDate->assign(timeTools::convertUnixTimestampToIso(startDate));
+	}
+	else {
+		witsml20__IntervalStatusHistory* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+
+		if (statusHistory->StartDate == nullptr) {
+			statusHistory->StartDate = soap_new_std__string(gsoapProxy2_1->soap);
+		}
+		statusHistory->StartDate->assign(timeTools::convertUnixTimestampToIso(startDate));
+	}
 }
 
-time_t WellboreCompletion::getPerforationHistoryEndDate(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasConnectionHistoryEndDate(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	if (!hasPerforationHistoryEndDate(historyIndex, perforationIndex)) {
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforationHistoryEntry(historyIndex, index)->EndDate != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPackHistoryEntry(historyIndex, index)->EndDate != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHoleHistoryEntry(historyIndex, index)->EndDate != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlotsHistoryEntry(historyIndex, index)->EndDate != nullptr;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
+}
+
+time_t WellboreCompletion::getConnectionHistoryEndDate(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
+{
+	if (!hasConnectionHistoryEndDate(historyIndex, wellReservoirConnection, index)) {
 		throw invalid_argument("No perforation history entry end date is defined.");
 	}
 
-	return timeTools::convertIsoToUnixTimestamp(*getPerforationHistoryEntry(historyIndex, perforationIndex)->EndDate);
-}
-
-void WellboreCompletion::setPerforationHistoryEndDate(unsigned int historyIndex,
-	unsigned int perforationIndex, time_t endDate) const
-{
-	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-
-	if (perforationStatusHistory->EndDate == nullptr) {
-		perforationStatusHistory->EndDate = soap_new_std__string(gsoapProxy2_1->soap);
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return timeTools::convertIsoToUnixTimestamp(*getPerforationHistoryEntry(historyIndex, index)->EndDate);
 	}
-
-	perforationStatusHistory->EndDate->assign(timeTools::convertUnixTimestampToIso(endDate));
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return timeTools::convertIsoToUnixTimestamp(*getGravelPackHistoryEntry(historyIndex, index)->EndDate);
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return timeTools::convertIsoToUnixTimestamp(*getOpenHoleHistoryEntry(historyIndex, index)->EndDate);
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return timeTools::convertIsoToUnixTimestamp(*getSlotsHistoryEntry(historyIndex, index)->EndDate);
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-bool WellboreCompletion::hasPerforationHistoryMdDatum(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+void WellboreCompletion::setConnectionHistoryEndDate(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index, time_t endDate) const
 {
-	return (getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationMdInterval != nullptr);
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		if (perforationStatusHistory->EndDate == nullptr) {
+			perforationStatusHistory->EndDate = soap_new_std__string(gsoapProxy2_1->soap);
+		}
+		perforationStatusHistory->EndDate->assign(timeTools::convertUnixTimestampToIso(endDate));
+	}
+	else {
+		witsml20__IntervalStatusHistory* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+
+		if (statusHistory->EndDate == nullptr) {
+			statusHistory->EndDate = soap_new_std__string(gsoapProxy2_1->soap);
+		}
+		statusHistory->EndDate->assign(timeTools::convertUnixTimestampToIso(endDate));
+	}
 }
 
-string WellboreCompletion::getPerforationHistoryMdDatum(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasConnectionHistoryMdDatum(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	if (!hasPerforationHistoryMdDatum(historyIndex, perforationIndex)) {
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforationHistoryEntry(historyIndex, index)->PerforationMdInterval != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPackHistoryEntry(historyIndex, index)->StatusMdInterval != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHoleHistoryEntry(historyIndex, index)->StatusMdInterval != nullptr;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlotsHistoryEntry(historyIndex, index)->StatusMdInterval != nullptr;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
+}
+
+string WellboreCompletion::getConnectionHistoryMdDatum(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
+{
+	if (!hasConnectionHistoryMdDatum(historyIndex, wellReservoirConnection, index)) {
 		throw invalid_argument("No perforation history entry md datum is defined.");
 	}
 
-	return getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationMdInterval->datum;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforationHistoryEntry(historyIndex, index)->PerforationMdInterval->datum;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPackHistoryEntry(historyIndex, index)->StatusMdInterval->datum;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHoleHistoryEntry(historyIndex, index)->StatusMdInterval->datum;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlotsHistoryEntry(historyIndex, index)->StatusMdInterval->datum;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-bool WellboreCompletion::hasPerforationHistoryMdUnit(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasConnectionHistoryMdUnit(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-
-	return perforationStatusHistory->PerforationMdInterval == nullptr
-		? false
-		: perforationStatusHistory->PerforationMdInterval->MdBase != nullptr ||perforationStatusHistory->PerforationMdInterval->MdTop != nullptr;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		return perforationStatusHistory->PerforationMdInterval == nullptr
+			? false
+			: perforationStatusHistory->PerforationMdInterval->MdBase != nullptr || perforationStatusHistory->PerforationMdInterval->MdTop != nullptr;
+	}
+	else {
+		witsml20__IntervalStatusHistory const* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+		return statusHistory->StatusMdInterval == nullptr
+			? false
+			: statusHistory->StatusMdInterval->MdBase != nullptr || statusHistory->StatusMdInterval->MdTop != nullptr;
+	}
 }
 
-eml21__LengthUom WellboreCompletion::getPerforationHistoryMdUnit(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+eml21__LengthUom WellboreCompletion::getConnectionHistoryMdUnit(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	if (!hasPerforationHistoryMdUnit(historyIndex, perforationIndex)) {
+	if (!hasConnectionHistoryMdUnit(historyIndex, wellReservoirConnection, index)) {
 		throw invalid_argument("No perforation history entry md unit is defined.");
 	}
 
-	witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-
-	return perforationStatusHistory->PerforationMdInterval->MdBase != nullptr 
-		? perforationStatusHistory->PerforationMdInterval->MdBase->uom
-		: perforationStatusHistory->PerforationMdInterval->MdTop->uom;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		return perforationStatusHistory->PerforationMdInterval->MdBase != nullptr
+			? perforationStatusHistory->PerforationMdInterval->MdBase->uom
+			: perforationStatusHistory->PerforationMdInterval->MdTop->uom;
+	}
+	else {
+		witsml20__IntervalStatusHistory const* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+		return statusHistory->StatusMdInterval->MdBase != nullptr
+			? statusHistory->StatusMdInterval->MdBase->uom
+			: statusHistory->StatusMdInterval->MdTop->uom;
+	}
 }
 
-string WellboreCompletion::getPerforationHistoryMdUnitAsString(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+string WellboreCompletion::getConnectionHistoryMdUnitAsString(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	return gsoap_eml2_1::soap_eml21__LengthUom2s(gsoapProxy2_1->soap, getPerforationHistoryMdUnit(historyIndex, perforationIndex));
+	return gsoap_eml2_1::soap_eml21__LengthUom2s(gsoapProxy2_1->soap, getConnectionHistoryMdUnit(historyIndex, wellReservoirConnection, index));
 }
 
-bool WellboreCompletion::hasPerforationHistoryTopMd(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasConnectionHistoryTopMd(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-	if (perforationStatusHistory == nullptr) {
-		return false;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		if (perforationStatusHistory == nullptr) {
+			return false;
+		}
+		if (perforationStatusHistory->PerforationMdInterval == nullptr) {
+			return false;
+		}
+		return perforationStatusHistory->PerforationMdInterval->MdTop != nullptr;
+	}
+	else {
+		witsml20__IntervalStatusHistory const* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+		if (statusHistory == nullptr) {
+			return false;
+		}
+		if (statusHistory->StatusMdInterval == nullptr) {
+			return false;
+		}
+		return statusHistory->StatusMdInterval->MdTop != nullptr;
+	}
+}
+
+double WellboreCompletion::getConnectionHistoryTopMd(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
+{
+	if (!hasConnectionHistoryTopMd(historyIndex, wellReservoirConnection, index)) {
+		throw invalid_argument("No perforation history entry top MD is defined.");
 	}
 
-	if (perforationStatusHistory->PerforationMdInterval == nullptr) {
-		return false;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforationHistoryEntry(historyIndex, index)->PerforationMdInterval->MdTop->__item;
 	}
-
-	return perforationStatusHistory->PerforationMdInterval->MdTop != nullptr;
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPackHistoryEntry(historyIndex, index)->StatusMdInterval->MdTop->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHoleHistoryEntry(historyIndex, index)->StatusMdInterval->MdTop->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlotsHistoryEntry(historyIndex, index)->StatusMdInterval->MdTop->__item;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-double WellboreCompletion::getPerforationHistoryTopMd(unsigned int historyIndex,
-	unsigned int perforationIndex) const
-{
-	if (!hasPerforationHistoryTopMd(historyIndex, perforationIndex)) {
-		throw invalid_argument("No perforation history entry top md is defined.");
-	}
-
-	return getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationMdInterval->MdTop->__item;
-}
-
-void WellboreCompletion::setPerforationHistoryTopMd(unsigned int historyIndex,
-	unsigned int perforationIndex,
+void WellboreCompletion::setConnectionHistoryTopMd(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index,
 	const std::string & datum,
 	gsoap_eml2_1::eml21__LengthUom MdUnit,
 	double TopMd)
 {
-	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-
-	if (perforationStatusHistory->PerforationMdInterval == nullptr) {
-		perforationStatusHistory->PerforationMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);	
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		if (perforationStatusHistory->PerforationMdInterval == nullptr) {
+			perforationStatusHistory->PerforationMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
+		}
+		perforationStatusHistory->PerforationMdInterval->datum = datum;
+		perforationStatusHistory->PerforationMdInterval->MdTop = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		perforationStatusHistory->PerforationMdInterval->MdTop->uom = MdUnit;
+		perforationStatusHistory->PerforationMdInterval->MdTop->__item = TopMd;
 	}
+	else {
+		witsml20__IntervalStatusHistory* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
 
-	perforationStatusHistory->PerforationMdInterval->datum = datum;
-	perforationStatusHistory->PerforationMdInterval->MdTop = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
-	perforationStatusHistory->PerforationMdInterval->MdTop->uom = MdUnit;
-	perforationStatusHistory->PerforationMdInterval->MdTop->__item = TopMd;
+		if (statusHistory->StatusMdInterval == nullptr) {
+			statusHistory->StatusMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
+		}
+		statusHistory->StatusMdInterval->datum = datum;
+		statusHistory->StatusMdInterval->MdTop = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		statusHistory->StatusMdInterval->MdTop->uom = MdUnit;
+		statusHistory->StatusMdInterval->MdTop->__item = TopMd;
+	}
 }
 
-bool WellboreCompletion::hasPerforationHistoryBaseMd(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasConnectionHistoryBaseMd(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-	if (perforationStatusHistory == nullptr) {
-		return false;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		if (perforationStatusHistory == nullptr) {
+			return false;
+		}
+		if (perforationStatusHistory->PerforationMdInterval == nullptr) {
+			return false;
+		}
+		return perforationStatusHistory->PerforationMdInterval->MdBase != nullptr;
 	}
-
-	if (perforationStatusHistory->PerforationMdInterval == nullptr) {
-		return false;
+	else {
+		witsml20__IntervalStatusHistory const* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+		if (statusHistory == nullptr) {
+			return false;
+		}
+		if (statusHistory->StatusMdInterval == nullptr) {
+			return false;
+		}
+		return statusHistory->StatusMdInterval->MdBase != nullptr;
 	}
-
-	return perforationStatusHistory->PerforationMdInterval->MdBase != nullptr;
 }
 
-double WellboreCompletion::getPerforationHistoryBaseMd(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+double WellboreCompletion::getConnectionHistoryBaseMd(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	if (!hasPerforationHistoryBaseMd(historyIndex, perforationIndex))
-	{
+	if (!hasConnectionHistoryBaseMd(historyIndex, wellReservoirConnection, index)) {
 		throw invalid_argument("No perforation history entry base md is defined.");
 	}
 
-	return getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationMdInterval->MdBase->__item;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return getPerforationHistoryEntry(historyIndex, index)->PerforationMdInterval->MdBase->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return getGravelPackHistoryEntry(historyIndex, index)->StatusMdInterval->MdBase->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return getOpenHoleHistoryEntry(historyIndex, index)->StatusMdInterval->MdBase->__item;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return getSlotsHistoryEntry(historyIndex, index)->StatusMdInterval->MdBase->__item;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-void WellboreCompletion::setPerforationHistoryBaseMd(unsigned int historyIndex,
-	unsigned int perforationIndex,
+void WellboreCompletion::setConnectionHistoryBaseMd(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index,
 	const std::string & datum,
 	gsoap_eml2_1::eml21__LengthUom MdUnit,
 	double BaseMd)
 {
-	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-
-	if (perforationStatusHistory->PerforationMdInterval == nullptr) {
-		perforationStatusHistory->PerforationMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		if (perforationStatusHistory->PerforationMdInterval == nullptr) {
+			perforationStatusHistory->PerforationMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
+		}
+		perforationStatusHistory->PerforationMdInterval->datum = datum;
+		perforationStatusHistory->PerforationMdInterval->MdBase = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		perforationStatusHistory->PerforationMdInterval->MdBase->uom = MdUnit;
+		perforationStatusHistory->PerforationMdInterval->MdBase->__item = BaseMd;
 	}
+	else {
+		witsml20__IntervalStatusHistory* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
 
-	perforationStatusHistory->PerforationMdInterval->datum = datum;
-	perforationStatusHistory->PerforationMdInterval->MdBase = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
-	perforationStatusHistory->PerforationMdInterval->MdBase->uom = MdUnit;
-	perforationStatusHistory->PerforationMdInterval->MdBase->__item = BaseMd;
+		if (statusHistory->StatusMdInterval == nullptr) {
+			statusHistory->StatusMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap);
+		}
+		statusHistory->StatusMdInterval->datum = datum;
+		statusHistory->StatusMdInterval->MdBase = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap);
+		statusHistory->StatusMdInterval->MdBase->uom = MdUnit;
+		statusHistory->StatusMdInterval->MdBase->__item = BaseMd;
+	}
 }
 
-bool WellboreCompletion::hasPerforationHistoryComment(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+bool WellboreCompletion::hasConnectionHistoryComment(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	witsml20__PerforationStatusHistory const* const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-	if (perforationStatusHistory == nullptr) {
-		return false;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory const * const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		if (perforationStatusHistory == nullptr) {
+			return false;
+		}
+		return perforationStatusHistory->Comment != nullptr;
 	}
-
-	return perforationStatusHistory->Comment != nullptr;
+	else {
+		witsml20__IntervalStatusHistory const* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+		if (statusHistory == nullptr) {
+			return false;
+		}
+		return statusHistory->Comment != nullptr;
+	}
 }
 
-std::string WellboreCompletion::getPerforationHistoryComment(unsigned int historyIndex,
-	unsigned int perforationIndex) const
+std::string WellboreCompletion::getConnectionHistoryComment(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index) const
 {
-	if (!hasPerforationHistoryComment(historyIndex, perforationIndex))
-	{
+	if (!hasConnectionHistoryComment(historyIndex, wellReservoirConnection, index)) {
 		throw invalid_argument("No perforation history comment is defined.");
 	}
 
-	return *getPerforationHistoryEntry(historyIndex, perforationIndex)->Comment;
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		return *getPerforationHistoryEntry(historyIndex, index)->Comment;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+		return *getGravelPackHistoryEntry(historyIndex, index)->Comment;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+		return *getOpenHoleHistoryEntry(historyIndex, index)->Comment;
+	}
+	else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+		return *getSlotsHistoryEntry(historyIndex, index)->Comment;
+	}
+	else {
+		throw std::invalid_argument("This type of completion connection type is not supported");
+	}
 }
 
-void WellboreCompletion::setPerforationHistoryComment(unsigned int historyIndex,
-	unsigned int perforationIndex,
+void WellboreCompletion::setConnectionHistoryComment(uint64_t historyIndex,
+	WellReservoirConnectionType wellReservoirConnection, uint64_t index,
 	const std::string & comment)
 {
-	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
-
-	if (perforationStatusHistory->Comment == nullptr) {
-		perforationStatusHistory->Comment = soap_new_std__string(gsoapProxy2_1->soap, 1);
+	if (wellReservoirConnection == WellReservoirConnectionType::PERFORATION) {
+		witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, index);
+		if (perforationStatusHistory->Comment == nullptr) {
+			perforationStatusHistory->Comment = soap_new_std__string(gsoapProxy2_1->soap, 1);
+		}
+		perforationStatusHistory->Comment->assign(comment);
 	}
-	perforationStatusHistory->Comment->assign(comment);
+	else {
+		witsml20__IntervalStatusHistory* statusHistory;
+		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
+			statusHistory = getGravelPackHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::OPEN_HOLE) {
+			statusHistory = getOpenHoleHistoryEntry(historyIndex, index);
+		}
+		else if (wellReservoirConnection == WellReservoirConnectionType::SLOTS) {
+			statusHistory = getSlotsHistoryEntry(historyIndex, index);
+		}
+		else {
+			throw std::invalid_argument("This type of completion connection type is not supported");
+		}
+
+		if (statusHistory->Comment == nullptr) {
+			statusHistory->Comment = soap_new_std__string(gsoapProxy2_1->soap, 1);
+		}
+		statusHistory->Comment->assign(comment);
+	}
 }
 
 void WellboreCompletion::loadTargetRelationships()
@@ -544,7 +1282,7 @@ void WellboreCompletion::loadTargetRelationships()
 	convertDorIntoRel<WellCompletion>(getWellCompletionDor());
 }
 
-gsoap_eml2_1::witsml20__PerforationSetInterval* WellboreCompletion::getPerforation(unsigned int index) const
+gsoap_eml2_1::witsml20__PerforationSetInterval* WellboreCompletion::getPerforation(uint64_t index) const
 {
 	witsml20__WellboreCompletion const * const wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
 
@@ -552,21 +1290,37 @@ gsoap_eml2_1::witsml20__PerforationSetInterval* WellboreCompletion::getPerforati
 		throw invalid_argument("No contact interval exists.");
 	}
 
-	if (index >= wellboreCompletion->ContactIntervalSet->PerforationSetInterval.size()) {
-		throw out_of_range("Perforation index out of range.");
-	}
-
-	return wellboreCompletion->ContactIntervalSet->PerforationSetInterval[index];
+	return wellboreCompletion->ContactIntervalSet->PerforationSetInterval.at(index);
 }
 
-gsoap_eml2_1::witsml20__PerforationStatusHistory* WellboreCompletion::getPerforationHistoryEntry(unsigned int index,
-	unsigned int perforationIndex) const
+gsoap_eml2_1::witsml20__GravelPackInterval* WellboreCompletion::getGravelPack(uint64_t index) const
 {
-	witsml20__PerforationSetInterval const * const perforationSetInterval = getPerforation(perforationIndex);
+	witsml20__WellboreCompletion const * const wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
 
-	if (index >= perforationSetInterval->PerforationStatusHistory.size()) {
-		throw invalid_argument("History index out of range.");
+	if (wellboreCompletion->ContactIntervalSet == nullptr) {
+		throw invalid_argument("No contact interval exists.");
 	}
 
-	return perforationSetInterval->PerforationStatusHistory[index];
+	return wellboreCompletion->ContactIntervalSet->GravelPackInterval.at(index);
+}
+gsoap_eml2_1::witsml20__OpenHoleInterval* WellboreCompletion::getOpenHole(uint64_t index) const
+{
+	witsml20__WellboreCompletion const * const wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
+
+	if (wellboreCompletion->ContactIntervalSet == nullptr) {
+		throw invalid_argument("No contact interval exists.");
+	}
+
+	return wellboreCompletion->ContactIntervalSet->OpenHoleInterval.at(index);
+}
+
+gsoap_eml2_1::witsml20__SlotsInterval* WellboreCompletion::getSlots(uint64_t index) const
+{
+	witsml20__WellboreCompletion const * const wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
+
+	if (wellboreCompletion->ContactIntervalSet == nullptr) {
+		throw invalid_argument("No contact interval exists.");
+	}
+
+	return wellboreCompletion->ContactIntervalSet->SlotsInterval.at(index);
 }

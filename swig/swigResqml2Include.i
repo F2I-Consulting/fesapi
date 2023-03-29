@@ -3597,11 +3597,44 @@ namespace RESQML2_NS
 	class AbstractIjkGridRepresentation : public AbstractColumnLayerGridRepresentation
 	{
 	public:
-		enum geometryKind { UNKNOWN = 0, EXPLICIT = 1, PARAMETRIC = 2, LATTICE = 3, NO_GEOMETRY = 4 };
+		enum class geometryKind { UNKNOWN = 0, EXPLICIT = 1, PARAMETRIC = 2, LATTICE = 3, NO_GEOMETRY = 4 };
 	
+		/**
+		 * Gets the count of cells in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
+		 *
+		 * @returns	The count of cell in the I direction.
+		 */
 		unsigned int getICellCount() const;
+
+		/**
+		 * Sets the count of cells in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @param 	iCount	The count of cells to set in the I direction.
+		 */
 		void setICellCount(unsigned int iCount);
+
+		/**
+		 * Gets the count of cells in the J direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
+		 *
+		 * @returns	The count of cell in the J direction.
+		 */
 		unsigned int getJCellCount() const;
+
+		/**
+		 * @brief	Sets the count of cells in the J direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @param 	jCount	The count of cells to set in the J direction.
+		 */
 		void setJCellCount(unsigned int jCount);
 
 		/**
@@ -3659,13 +3692,133 @@ namespace RESQML2_NS
 		 * @returns	The face count.
 		 */
 		uint64_t getFaceCount() const;
-		
+
+		/**
+		 * Gets the I index of a pillar from its global index in this grid. The global (or
+		 * linearized) index of a given pillar is <tt>i pillar + j pillar * (nI pillar)</tt> where
+		 * <tt>i pillar</tt> and <tt>j pillar</tt> are respectively the I and J indices of the
+		 * pillar and <tt>nI pillar</tt> is the count of pillars in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is
+		 * 									strictly greater than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getPillarCount()).
+		 *
+		 * @param 	globalIndex	The global index of the pillar for which we want to get the I index.
+		 *
+		 * @returns	The I index of the pillar.
+		 */
 		unsigned int getIPillarFromGlobalIndex(unsigned int globalIndex) const;
+
+		/**
+		 * Gets the J index of a pillar from its global index in this grid. The global (or
+		 * linearized) index of a given pillar is <tt>i pillar + j pillar * (nI pillar)</tt> where
+		 * <tt>i pillar</tt> and <tt>j pillar</tt> are respectively the I and J indices of the
+		 * pillar and <tt>nI pillar</tt> is the count of pillars in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is
+		 * 									strictly greater than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getPillarCount()).
+		 *
+		 * @param 	globalIndex	The global index of the pillar for which we want to get the J index.
+		 *
+		 * @returns	The J index of the pillar.
+		 */
 		unsigned int getJPillarFromGlobalIndex(unsigned int globalIndex) const;
+
+		/**
+		 * Gets the global index of a pillar from its I and J indices in the grid. The global (or
+		 * linearized) index of a given pillar is <tt>i pillar + j pillar * (nI pillar)</tt> where
+		 * <tt>i pillar</tt> and <tt>j pillar</tt> are respectively the I and J indices of the
+		 * pillar and <tt>nI pillar</tt> is the count of pillars in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p iPillar is strictly greater than getICellCount().
+		 * @exception	std::out_of_range	If @p jPillar is strictly greater than getJCellCount().
+		 *
+		 * @param 	iPillar	The I index of the pillar.
+		 * @param 	jPillar	The J index of the pillar.
+		 *
+		 * @returns	The global index of the pillar.
+		 */
 		unsigned int getGlobalIndexPillarFromIjIndex(unsigned int iPillar, unsigned int jPillar) const;
+
+		/**
+		 * Gets the I index of a column from its global index in the grid. The global (or linearized)
+		 * index of a given column is <tt>i column + j column * (nI cell)</tt> where
+		 * <tt>i column</tt> and <tt>j column</tt> are respectively the I and J indices of the
+		 * column and <tt>nI cell</tt> is the count of cells in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getColumnCount()).
+		 *
+		 * @param 	globalIndex	The global index of the column for which we want to get the I index.
+		 *
+		 * @returns	The I index of the column.
+		 */
 		unsigned int getIColumnFromGlobalIndex(unsigned int globalIndex) const;
+
+		/**
+		 * Gets the J index of a column from its global index in the grid. The global (or linearized)
+		 * index of a given column is <tt>i column + j column * (nI cell)</tt> where
+		 * <tt>i column</tt> and <tt>j column</tt> are respectively the I and J indices of the
+		 * column and <tt>nI cell</tt> is the count of cells in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getColumnCount()).
+		 *
+		 * @param 	globalIndex	The global index of the column for which we want to get the J index.
+		 *
+		 * @returns	The J index of the column.
+		 */
 		unsigned int getJColumnFromGlobalIndex(unsigned int globalIndex) const;
+
+		/**
+		 * Gets the global index of a column from its I and J indices in the grid. The global (or
+		 * linearized) index of a given column is <tt>i column + j column * (nI cell)</tt> where
+		 * <tt>i column</tt> and <tt>j column</tt> are respectively the I and J indices of the
+		 * column and <tt>nI cell</tt> is the count of cells in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p iColumn is greater than or equal to getICellCount().
+		 * @exception	std::out_of_range	If @p jColumn is greater than or equal to getJCellCount().
+		 *
+		 * @param 	iColumn	The I index of the column.
+		 * @param 	jColumn	The J index of the column.
+		 *
+		 * @returns	The global index of the column.
+		 */
 		unsigned int getGlobalIndexColumnFromIjIndex(unsigned int iColumn, unsigned int jColumn) const;
+
+		/**
+		 * Gets the global index of a cell from its I, J and K indices in the grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I, J or K direction is strictly
+		 * 									greater than unsigned int max.
+		 * @exception	std::out_of_range	If @p iCell is greater than or equal to getICellCount().
+		 * @exception	std::out_of_range	If @p jCell is greater than or equal to getJCellCount().
+		 * @exception	std::out_of_range	If @p kCell is greater than or equal to getKCellCount().
+		 *
+		 * @param 	iCell	The I index of the cell.
+		 * @param 	jCell	The J index of the cell.
+		 * @param 	kCell	The K index of the cell.
+		 *
+		 * @returns	The global index of the cell.
+		 */
 		unsigned int getGlobalIndexCellFromIjkIndex(unsigned int iCell, unsigned int jCell, unsigned int kCell) const;
 
 		/**
@@ -3679,8 +3832,60 @@ namespace RESQML2_NS
 		 */
 		bool isRightHanded() const;
 
+		/**
+		 * Gets all the pillars which correspond to all split coordinate lines. The order of the pillars
+		 * corresponds to the order of the split coordinate lines.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split coordinate line in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the indices of the pillars corresponding to the split
+		 * 										coordinate lines are not stored within an HDF5 integer
+		 * 										array.
+		 *
+		 * @param [out]	pillarIndices	An array for receiving the indices of the pillars corresponding
+		 * 								to the split coordinate lines. It must be preallocated with a
+		 * 								size of getSplitCoordinateLineCount().
+		 * @param 	   	reverseIAxis 	(Optional) True to reverse I axis. Default value is false.
+		 * @param 	   	reverseJAxis 	(Optional) True to reverse J axis. Default value is false.
+		 */
 		void getPillarsOfSplitCoordinateLines(unsigned int * pillarIndices, bool reverseIAxis = false, bool reverseJAxis = false) const;
+
+		/**
+		 * Gets all the columns impacted by all the split coordinate lines. The order of the columns
+		 * corresponds to the order of the split coordinate lines.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split coordinate line in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the indices of the columns impacted by the split
+		 * 										coordinate lines are not stored within an HDF5 integer
+		 * 										array.
+		 *
+		 * @param [out]	columnIndices	An array for receiving the indices of the columns impacted by the
+		 * 								split coordinate lines. It must be preallocated with a size equal
+		 * 								to the last value of the array outputted from
+		 * 								getColumnCountOfSplitCoordinateLines().
+		 * @param 	   	reverseIAxis 	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis 	(Optional) True to reverse j axis. Default value is false.
+		 */
 		void getColumnsOfSplitCoordinateLines(unsigned int * columnIndices, bool reverseIAxis = false, bool reverseJAxis = false) const;
+
+		/**
+		 * Gets the cumulative count of columns impacted by all the split coordinate lines. The order of
+		 * the cumulative count values corresponds to the order of the split coordinates lines.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split coordinate line in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the cumulative count of the columns impacted by the
+		 * 										split coordinate lines are not stored within an HDF5
+		 * 										integer array.
+		 *
+		 * @param [out]	columnIndexCountPerSplitCoordinateLine	An array for receiving the cumulative
+		 * 														count of columns impacted by the split
+		 * 														coordinate lines.
+		 */
 		void getColumnCountOfSplitCoordinateLines(unsigned int * columnIndexCountPerSplitCoordinateLine) const;
 
 		/**

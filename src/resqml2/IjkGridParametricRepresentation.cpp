@@ -1315,7 +1315,7 @@ void IjkGridParametricRepresentation::getXyzPointsFromParametricPoints(double * 
 
 AbstractIjkGridRepresentation::geometryKind IjkGridParametricRepresentation::getGeometryKind() const
 {
-	return PARAMETRIC;
+	return AbstractIjkGridRepresentation::geometryKind::PARAMETRIC;
 }
 
 namespace {

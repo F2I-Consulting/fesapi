@@ -178,10 +178,10 @@ namespace gsoap_eml2_1
 		S_shaped = 4,
 		vertical = 5
 	};
-	enum class witsml20__PerforationStatus {
-		open = 0,
-		proposed = 1,
-		squeezed = 2
+	enum class witsml20__PhysicalStatus {
+		closed = 0,
+		open = 1,
+		proposed = 2
 	};
 	enum class witsml20__ElevCodeEnum {
 		CF = 0,
