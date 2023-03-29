@@ -2431,4 +2431,3 @@ namespace WITSML2_NS
 }
 
 %include "swigWitsml2_0Include.i"
-%include "swigWitsml1_4Include.i"

@@ -14,8 +14,6 @@ set(FESAPI_RESQML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractSurfaceRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractValuesProperty.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/BlockedWellboreRepresentation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/BoundaryFeature.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/BoundaryFeatureInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/CategoricalProperty.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/CmpLineFeature.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/CommentProperty.cpp
@@ -24,47 +22,30 @@ set(FESAPI_RESQML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DeviationSurveyRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DiscreteColorMap.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DiscreteProperty.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DoubleTableLookup.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/EarthModelInterpretation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/FaultInterpretation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/FluidBoundaryInterpretation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/GenericFeatureInterpretation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/GeobodyBoundaryInterpretation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/GeobodyInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Grid2dRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/GridConnectionSetRepresentation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/HorizonInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridExplicitRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridLatticeRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridNoGeometryRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridParametricRepresentation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/LocalDepth3dCrs.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/MdDatum.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/NonSealedSurfaceFrameworkRepresentation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PlaneSetRepresentation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PointSetRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PointsProperty.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PolylineRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PolylineSetRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PropertySet.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/RepresentationSetRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/RockFluidOrganizationInterpretation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/RockFluidUnitInterpretation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/SealedSurfaceFrameworkRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/SealedVolumeFrameworkRepresentation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/SeismicLatticeFeature.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/SeismicLineSetFeature.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/SeismicWellboreFrameRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/ShotPointLineFeature.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/StratigraphicColumn.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/StratigraphicColumnRankInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/StratigraphicOccurrenceInterpretation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/StratigraphicUnitInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/StreamlinesFeature.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/StreamlinesRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/StructuralOrganizationInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/SubRepresentation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/TriangulatedSetRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/UnstructuredGridRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/WellboreFeature.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/WellboreFrameRepresentation.cpp

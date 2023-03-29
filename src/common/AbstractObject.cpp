@@ -60,8 +60,7 @@ void AbstractObject::cannotBePartial() const
 bool AbstractObject::isPartial() const {
 	return partialObject != nullptr
 		&& gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 == nullptr
-		&& gsoapProxy2_2 == nullptr && gsoapProxy2_3 == nullptr
-		&& gsoapProxyTraj1_4 == nullptr;
+		&& gsoapProxy2_2 == nullptr && gsoapProxy2_3 == nullptr;
 }
 
 void AbstractObject::changeToPartialObject()
@@ -76,7 +75,6 @@ void AbstractObject::changeToPartialObject()
 	gsoapProxy2_1 = nullptr;
 	gsoapProxy2_2 = nullptr;
 	gsoapProxy2_3 = nullptr;
-	gsoapProxyTraj1_4 = nullptr;
 }
 
 soap* AbstractObject::getGsoapContext() const
@@ -93,9 +91,6 @@ soap* AbstractObject::getGsoapContext() const
 	else if (gsoapProxy2_3 != nullptr) {
 		 return gsoapProxy2_3->soap;
 	}
-	else if (gsoapProxyTraj1_4 != nullptr) {
-		 return gsoapProxyTraj1_4->soap;
-	 }
 	else if (isPartial()) {
 		return partialObject->soap;
 	}
@@ -117,9 +112,6 @@ int AbstractObject::getGsoapType() const {
 	else if (gsoapProxy2_3 != nullptr) {
 		return gsoapProxy2_3->soap_type();
 	}
-	else if (gsoapProxyTraj1_4 != nullptr) {
-		return gsoapProxyTraj1_4->soap_type();
-	}
 	else {
 		return partialObject->soap_type();
 	}
@@ -138,9 +130,6 @@ string AbstractObject::getUuid() const
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		return gsoapProxy2_3->uuid;
-	}
-	else if (gsoapProxyTraj1_4 != nullptr) {
-		return gsoapProxyTraj1_4->uid == nullptr ? "00000000-0000-0000-0000-000000000000" : *gsoapProxyTraj1_4->uid;
 	}
 	else if (isPartial()) { // partial transfer
 		return partialObject->UUID;
@@ -162,9 +151,6 @@ string AbstractObject::getTitle() const
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		return gsoapProxy2_3->Citation->Title;
-	}
-	else if (gsoapProxyTraj1_4 != nullptr) {
-		return gsoapProxyTraj1_4->name;
 	}
 	else if (isPartial()) { // partial transfer
 		return partialObject->Title;
@@ -378,14 +364,12 @@ void AbstractObject::setTitle(const std::string & title)
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Title = "unknown";
 		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Title = "unknown";
 		else if (gsoapProxy2_3 != nullptr) gsoapProxy2_3->Citation->Title = "unknown";
-		else if (gsoapProxyTraj1_4 != nullptr) { gsoapProxyTraj1_4->name = "unknown"; }
 	}
 	else {
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Title = title;
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Title = title;
 		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Title = title;
 		else if (gsoapProxy2_3 != nullptr) gsoapProxy2_3->Citation->Title = title;
-		else if (gsoapProxyTraj1_4 != nullptr) { gsoapProxyTraj1_4->name = title; }
 	}
 }
 

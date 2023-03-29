@@ -157,7 +157,6 @@ set (WITH_RESQML2_2 OFF CACHE BOOL "Compile RESQML2.2 experimental support. Don'
 
 list(APPEND FESAPI_PROXIES_SOURCES
 	${FESAPI_ROOT_DIR}/src/proxies/envC.cpp
-	${FESAPI_ROOT_DIR}/src/proxies/gsoap_witsml1_4C.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_resqml2_0_1C.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_1C.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_2C.cpp
@@ -169,8 +168,6 @@ list(APPEND FESAPI_PROXIES_SOURCES
 list(APPEND FESAPI_PROXIES_HEADERS
 	${FESAPI_ROOT_DIR}/src/proxies/envH.h
 	${FESAPI_ROOT_DIR}/src/proxies/envStub.h
-	${FESAPI_ROOT_DIR}/src/proxies/gsoap_witsml1_4H.h
-	${FESAPI_ROOT_DIR}/src/proxies/gsoap_witsml1_4Stub.h
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_resqml2_0_1H.h
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_resqml2_0_1Stub.h
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_1H.h

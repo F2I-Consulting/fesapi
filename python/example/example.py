@@ -88,7 +88,7 @@ def show_ijk_grid(ijk_grid):
     if ijk_grid.isPartial():
         return
 
-    if ijk_grid.getGeometryKind() != fesapi.Resqml2_AbstractIjkGridRepresentation.NO_GEOMETRY:
+    if ijk_grid.getGeometryKind() != fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind.NO_GEOMETRY:
         most_complex_pillar_geom = ijk_grid.getMostComplexPillarGeometry()
         if most_complex_pillar_geom == fesapi.resqml20__PillarShape_vertical:
             print("Most complex pillar geometry is vertical")
@@ -102,15 +102,15 @@ def show_ijk_grid(ijk_grid):
         k_gap_count = ijk_grid.getKGapsCount()
         print("K Gap Count = ", k_gap_count)
 
-        if ijk_grid.getGeometryKind() == fesapi.Resqml2_AbstractIjkGridRepresentation.LATTICE:
+        if ijk_grid.getGeometryKind() == fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind.LATTICE:
             print("This 3d grid has a lattice geometry.")
         else:
             if ijk_grid.getGeometryKind() == \
-               fesapi.Resqml2_AbstractIjkGridRepresentation.PARAMETRIC:
+               fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind.PARAMETRIC:
                 print("This 3d grid has a parametric geometry.")
             else:
                 if ijk_grid.getGeometryKind() == \
-                   fesapi.Resqml2_AbstractIjkGridRepresentation.EXPLICIT:
+                   fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind.EXPLICIT:
                     print("This 3d grid has an explicit geometry.")
                 else:
                     print("This 3d grid has an unknown geometry.")

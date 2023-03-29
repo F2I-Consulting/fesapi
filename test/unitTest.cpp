@@ -29,7 +29,6 @@ under the License.
 
 #include "EpcDocumentTest.h"
 #include "DateTimeTest.h"
-#include "Witsml14Trajectory.h"
 
 #include "eml2_test/HdfProxy.h"
 #include "resqml2_test/BlockedWellbore.h"
@@ -243,8 +242,3 @@ FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)
 FESAPI_TEST("Check points property", "[property]", PointsProperty)
 FESAPI_TEST("Export and import properties using slab", "[property]", PropertyBySlab)
 FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
-
-TEST_CASE("Deserialize the WITMSL 1.4.1 trajectory official example")
-{
-	Witsml14Trajectory::test();
-}

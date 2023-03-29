@@ -184,19 +184,6 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static F2iConsulting.Fesapi.${FESAPI_WITSML2_NS}.Trajectory witsml2_instantiateTrajectory(global::System.IntPtr cPtr, bool owner)
-	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("witsml14")) {
-			return new F2iConsulting.Fesapi.${FESAPI_WITSML1_4_NS}.Trajectory(cPtr, owner);
-		}
-		else if (xmlNs.Equals("witsml20")) {
-			return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
-		}
-		
-		return null;
-	}
-	
 	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.BlockedWellboreRepresentation resqml2_instantiateBlockedWellboreRepresentation(global::System.IntPtr cPtr, bool owner)
 	{
 		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
@@ -1089,7 +1076,7 @@ ${COMMENT_END}
 		case DataObjectName.TECTONICBOUNDARYFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.TectonicBoundaryFeature(cPtr, owner);
 		case DataObjectName.TIMESERIES : return eml2_instantiateTimeSeries(cPtr, owner);
 		case DataObjectName.TIMESERIESDATA : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_1_NS}.TimeSeriesData(cPtr, owner);
-		case DataObjectName.TRAJECTORY : return witsml2_instantiateTrajectory(cPtr, owner);
+		case DataObjectName.TRAJECTORY : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
 		case DataObjectName.TRIANGULATEDSETREPRESENTATION : return resqml2_instantiateTriangulatedSetRepresentation(cPtr, owner);
 		case DataObjectName.TRUNCATEDIJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);
 		case DataObjectName.UNSTRUCTUREDGRIDREPRESENTATION : return resqml2_instantiateUnstructuredGridRepresentation(cPtr, owner);

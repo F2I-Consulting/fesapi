@@ -3631,7 +3631,6 @@ namespace COMMON_NS
 		COMMON_NS::AbstractObject* getEml2_1WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getEml2_3WrapperFromGsoapContext(const std::string & datatype);
 
-		COMMON_NS::AbstractObject* getWitsml1_4WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);
 

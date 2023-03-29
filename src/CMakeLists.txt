@@ -29,7 +29,6 @@ set (RESQML_PREFIX_2 "resqml2")
 set (RESQML_PREFIX_2_0_1 "resqml2_0_1")
 set (RESQML_PREFIX_2_2 "resqml2_2")
 set (WITSML_PREFIX_2 "witsml2")
-set (WITSML_PREFIX_1_4 "witsml1_4")
 set (WITSML_PREFIX_2_0 "witsml2_0")
 set (WITSML_PREFIX_2_1 "witsml2_1")
 set (PRODML_PREFIX_2_1 "prodml2_1")
@@ -165,7 +164,6 @@ set (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 o
 set (FESAPI_RESQML2_2_NS resqml2_2 CACHE STRING "Namespace for resqml2_2 objects")
 
 set (FESAPI_WITSML2_NS witsml2 CACHE STRING "Namespace for witsml2 objects")
-set (FESAPI_WITSML1_4_NS witsml1_4 CACHE STRING "Namespace for witsml1_4 objects")
 set (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml2_0 objects")
 set (FESAPI_WITSML2_1_NS witsml2_1 CACHE STRING "Namespace for witsml2_1 objects")
 
@@ -188,7 +186,6 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_2}/CMakeLists.txt)
 include(${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_1}/CMakeLists.txt)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2}/CMakeLists.txt)
-include(${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_1_4}/CMakeLists.txt)
 include(${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_0}/CMakeLists.txt)
 include(${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/CMakeLists.txt)
 
@@ -267,8 +264,6 @@ if (WIN32)
 	endif (WITH_RESQML2_2)
 	
 	source_group ("${WITSML_PREFIX_2}" FILES ${FESAPI_WITSML_2_SOURCES} ${FESAPI_WITSML_2_HEADERS})
-
-	source_group ("${WITSML_PREFIX_1_4}" FILES ${FESAPI_WITSML_1_4_SOURCES} ${FESAPI_WITSML_1_4_HEADERS})
 
 	source_group ("${WITSML_PREFIX_2_0}" FILES ${FESAPI_WITSML_2_0_SOURCES} ${FESAPI_WITSML_2_0_HEADERS})
 	
@@ -392,12 +387,6 @@ endif (WITH_RESQML2_2)
 INSTALL (
 	FILES ${FESAPI_WITSML_2_HEADERS}
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2}/
-)
-
-INSTALL (
-	FILES ${FESAPI_WITSML_1_4_HEADERS}
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_1_4}/
-	COMPONENT fesapi_headers
 )
 
 INSTALL (

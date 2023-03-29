@@ -184,19 +184,6 @@ ${COMMENT_END}
 		return null;
 	}
 	
-	public static com.f2i_consulting.fesapi.${FESAPI_WITSML2_NS}.Trajectory witsml2_instantiateTrajectory(long cPtr, boolean owner)
-	{
-		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i_consulting.fesapi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
-		if ("witsml14".equals(xmlNs)) {
-			return new com.f2i_consulting.fesapi.${FESAPI_WITSML1_4_NS}.Witsml14_Trajectory(cPtr, owner);
-		}
-		else if ("witsml20".equals(xmlNs)) {
-			return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Witsml20_Trajectory(cPtr, owner);
-		}
-		
-		return null;
-	}
-	
 	public static com.f2i_consulting.fesapi.${FESAPI_RESQML2_NS}.BlockedWellboreRepresentation resqml2_instantiateBlockedWellboreRepresentation(long cPtr, boolean owner)
 	{
 		String xmlNs = ${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(cPtr, new com.f2i_consulting.fesapi.${FESAPI_COMMON_NS}.AbstractObject(cPtr, false));
@@ -1089,7 +1076,7 @@ ${COMMENT_END}
 		case TECTONICBOUNDARYFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_TectonicBoundaryFeature(cPtr, owner);
 		case TIMESERIES : return eml2_instantiateTimeSeries(cPtr, owner);
 		case TIMESERIESDATA : return new com.f2i_consulting.fesapi.${FESAPI_PRODML2_1_NS}.TimeSeriesData(cPtr, owner);
-		case TRAJECTORY : return witsml2_instantiateTrajectory(cPtr, owner);
+		case TRAJECTORY : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_0_NS}.Witsml20_Trajectory(cPtr, owner);
 		case TRIANGULATEDSETREPRESENTATION : return resqml2_instantiateTriangulatedSetRepresentation(cPtr, owner);
 		case TRUNCATEDIJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);
 		case UNSTRUCTUREDGRIDREPRESENTATION : return resqml2_instantiateUnstructuredGridRepresentation(cPtr, owner);

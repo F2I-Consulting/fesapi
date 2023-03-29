@@ -34,7 +34,7 @@ namespace RESQML2_NS
 		virtual ~GeobodyBoundaryInterpretation() = default;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "GeobodyBoundaryInterpretation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

@@ -22,8 +22,6 @@ under the License.
 #include <vector>
 #include <stdexcept>
 
-#include "../proxies/gsoap_witsml1_4H.h"
-
 #include "DataObjectRepository.h"
 
 namespace COMMON_NS
@@ -721,9 +719,6 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
 
 		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
-		gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* gsoapProxyTraj1_4;
-
-		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 
 		/** The underlying generated gSoap proxy for a EML 2.1 dataobject. */
@@ -742,7 +737,7 @@ namespace COMMON_NS
 		* Default constructor
 		*/
 		AbstractObject() :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			partialObject(nullptr),
 			gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_1(nullptr),
 			gsoapProxy2_2(nullptr),
@@ -755,27 +750,14 @@ namespace COMMON_NS
 		 * @param [in,out]	partialObject_	If non-null, the partial object.
 		 */
 		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) :
-			partialObject(partialObject_), gsoapProxyTraj1_4(nullptr),
+			partialObject(partialObject_),
 			gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_1(nullptr),
 			gsoapProxy2_2(nullptr),
 			gsoapProxy2_3(nullptr),
 			repository(nullptr) {}
 		AbstractObject(const DataObjectReference& dor) :
-			partialObject(dor.toDor20()), gsoapProxyTraj1_4(nullptr),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-
-		/**
-		 * Constructor when importing a WITSML1.4 trajectory
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(proxy),
+			partialObject(dor.toDor20()),
 			gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_1(nullptr),
 			gsoapProxy2_2(nullptr),
@@ -788,7 +770,7 @@ namespace COMMON_NS
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
 		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			partialObject(nullptr),
 			gsoapProxy2_0_1(proxy),
 			gsoapProxy2_1(nullptr),
 			gsoapProxy2_2(nullptr),
@@ -801,7 +783,7 @@ namespace COMMON_NS
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			partialObject(nullptr),
 			gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_1(proxy),
 			gsoapProxy2_2(nullptr),
@@ -814,7 +796,7 @@ namespace COMMON_NS
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
 		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			partialObject(nullptr),
 			gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_1(nullptr),
 			gsoapProxy2_2(proxy),
@@ -827,7 +809,7 @@ namespace COMMON_NS
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
 		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			partialObject(nullptr),
 			gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_1(nullptr),
 			gsoapProxy2_2(nullptr),
