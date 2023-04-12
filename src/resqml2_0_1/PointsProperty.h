@@ -55,7 +55,7 @@ namespace RESQML2_0_1_NS
 		 * 										dictionary. Defatul is a length kind
 		 */
 		PointsProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
 			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind = gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 		/**
@@ -78,7 +78,7 @@ namespace RESQML2_0_1_NS
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		PointsProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
-			unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
 			EML2_NS::PropertyKind* localPropKind);
 
 		/**

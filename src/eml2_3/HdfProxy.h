@@ -28,20 +28,6 @@ namespace EML2_3_NS
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 */
-		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::HdfProxy(partialObject) {}
-
-		/**
-		 * @brief	Constructor
-		 *
-		 * @param 	dor	The dor.
-		 */
-		DLL_IMPORT_OR_EXPORT HdfProxy(const COMMON_NS::DataObjectReference& dor) : EML2_NS::HdfProxy(dor) {}
-
-		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
 		 * @param [in,out]	repo				  	The repo where the underlying gsoap proxy is going to
@@ -56,16 +42,6 @@ namespace EML2_3_NS
 		 * @param 		  	hdfPermissionAccess   	(Optional) The hdf permission access.
 		 */
 		DLL_IMPORT_OR_EXPORT HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
-
-		/**
-		 * Hdf proxy
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 *
-		 * 
-		 */
-		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_eml2_3::_eml23__EpcExternalPartReference* fromGsoap) :
-			EML2_NS::HdfProxy(fromGsoap) {}
 
 		/** Destructor */
 		DLL_IMPORT_OR_EXPORT ~HdfProxy() = default;

@@ -72,7 +72,7 @@ namespace RESQML2_0_1_NS
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const final;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getElementCountOfPatch(unsigned int patchIndex) const final;
 
@@ -91,17 +91,17 @@ namespace RESQML2_0_1_NS
 
 		using RESQML2_NS::SubRepresentation::pushBackSubRepresentationPatch;
 
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t originIndex,
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t originIndex,
 			unsigned int elementCountInSlowestDimension,
 			unsigned int elementCountInMiddleDimension,
 			unsigned int elementCountInFastestDimension) final;
 
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
 			uint64_t elementCount,
 			uint64_t * elementIndices0, uint64_t * elementIndices1,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr) final;
 
-		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,
+		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,
 			int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "") final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;

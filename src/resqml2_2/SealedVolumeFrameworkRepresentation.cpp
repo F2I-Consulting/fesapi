@@ -82,38 +82,14 @@ gsoap_eml2_3::resqml22__VolumeShell* SealedVolumeFrameworkRepresentation::create
 	unsigned int shellFaceCount,
 	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
 {
-	if (shellFaceCount == 0) {
-		throw invalid_argument("Cannot create a shell with has got a face count of zero.");
-	}
-
-	resqml22__VolumeShell* externalShell = soap_new_resqml22__VolumeShell(gsoapProxy2_3->soap);
-	externalShell->ShellUid = "dummy uid";
-
-	// Faces
-	for (unsigned int faceIdx = 0; faceIdx < shellFaceCount; ++faceIdx) {
-		resqml22__OrientedMacroFace* face = soap_new_resqml22__OrientedMacroFace(gsoapProxy2_3->soap);
-		face->RepresentationIndex = faceRepresentationIndices[faceIdx];
-		face->PatchIndexOfRepresentation = faceRepPatchIndices[faceIdx];
-		face->SideIsPlus = faceSide[faceIdx];
-		externalShell->MacroFaces.push_back(face);
-	}
-
-	return externalShell;
+	throw logic_error("Not implemented yet");
 }
 
 void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp,
 	unsigned int externalShellFaceCount,
 	unsigned int const* faceRepresentationIndices, unsigned int const* faceRepPatchIndices, bool const* faceSide)
 {
-	// Region
-	resqml22__VolumeRegion* region = soap_new_resqml22__VolumeRegion(gsoapProxy2_3->soap);
-	region->PatchIndex = static_cast<_resqml22__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_3)->Regions.size();
-	static_cast<_resqml22__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_3)->Regions.push_back(region);
-	setInterpretationOfVolumeRegion(region->PatchIndex, stratiUnitInterp);
-
-	// External shell
-	region->ExternalShell = createVolumeShell(externalShellFaceCount,
-		faceRepresentationIndices, faceRepPatchIndices, faceSide);
+	throw logic_error("Not implemented yet");
 }
 
 void SealedVolumeFrameworkRepresentation::pushBackInternalShell(uint64_t regionIndex,
@@ -168,63 +144,40 @@ gsoap_eml2_3::resqml22__VolumeShell* SealedVolumeFrameworkRepresentation::getReg
 
 uint64_t SealedVolumeFrameworkRepresentation::getFaceCountOfExternalShell(uint64_t regionIndex) const
 {
-	return getRegionExternalShell(regionIndex)->MacroFaces.size();
+	throw logic_error("Not implemented yet");
 }
 
 uint64_t SealedVolumeFrameworkRepresentation::getFaceCountOfInternalShell(uint64_t regionIndex, unsigned int internalShellIndex) const
 {
-	gsoap_eml2_3::resqml22__VolumeShell* shell = getRegionInternalShell(regionIndex, internalShellIndex);
-	if (shell->MacroFaces.size() >= (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("The count of faces in this shell is too big for fesapi.");
-	}
-
-	return static_cast<unsigned int>(shell->MacroFaces.size());
-}
-
-gsoap_eml2_3::resqml22__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionExternalShellFace(uint64_t regionIndex, unsigned int faceIndex) const
-{
-	if (faceIndex >= getFaceCountOfExternalShell(regionIndex)) {
-		throw out_of_range("The face index of the region external shell is out of range.");
-	}
-
-	return getRegionExternalShell(regionIndex)->MacroFaces[faceIndex];
-}
-
-gsoap_eml2_3::resqml22__OrientedMacroFace* SealedVolumeFrameworkRepresentation::getRegionInternalShellFace(uint64_t regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
-{
-	if (faceIndex >= getFaceCountOfInternalShell(regionIndex, internalShellIndex)) {
-		throw out_of_range("The face index of the region internal shell is out of range.");
-	}
-
-	return getRegionInternalShell(regionIndex, internalShellIndex)->MacroFaces[faceIndex];
+	throw logic_error("Not implemented yet");
 }
 
 RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepOfExternalShellFace(uint64_t regionIndex, unsigned int faceIndex) const
 {
-	return getRepresentation(getRegionExternalShellFace(regionIndex, faceIndex)->RepresentationIndex);
+	throw logic_error("Not implemented yet");
 }
 
 RESQML2_NS::AbstractRepresentation* SealedVolumeFrameworkRepresentation::getRepOfInternalShellFace(uint64_t regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
 {
-	return getRepresentation(getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->RepresentationIndex);
+	throw logic_error("Not implemented yet");
 }
 
 uint64_t SealedVolumeFrameworkRepresentation::getRepPatchIndexOfExternalShellFace(uint64_t regionIndex, unsigned int faceIndex) const
 {
-	return getRegionExternalShellFace(regionIndex, faceIndex)->PatchIndexOfRepresentation;
+	throw logic_error("Not implemented yet");
 }
 
 uint64_t SealedVolumeFrameworkRepresentation::getRepPatchIndexOfInternalShellFace(uint64_t regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
 {
-	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->PatchIndexOfRepresentation;
+	throw logic_error("Not implemented yet");
 }
 
 bool SealedVolumeFrameworkRepresentation::getSideFlagOfExternalShellFace(uint64_t regionIndex, unsigned int faceIndex) const
 {
-	return getRegionExternalShellFace(regionIndex, faceIndex)->SideIsPlus;
+	throw logic_error("Not implemented yet");
 }
 
 bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(uint64_t regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const
 {
-	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->SideIsPlus;
+	throw logic_error("Not implemented yet");
 }

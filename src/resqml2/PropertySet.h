@@ -167,7 +167,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The time set kind associated to this this property set.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__TimeSetKind getTimeSetKind() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
@@ -193,13 +193,6 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PropertySet(gsoap_resqml2_0_1::_resqml20__PropertySet* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		PropertySet(gsoap_eml2_3::_resqml22__PropertySet* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 			* Sets XML parent

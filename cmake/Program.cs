@@ -21,7 +21,7 @@ namespace Example
             ContinuousProperty propertyCompute = repo.createContinuousProperty(
                 ijkGrid, "9d0a717f-2cd3-4d43-9cbf-3484105ed384", "slab prop compute min max",
                 1,
-                resqml22__IndexableElement.cells,
+                eml23__IndexableElement.cells,
                 resqml20__ResqmlUom.m,
                 propertyKind);
             propertyCompute.pushBackHdf5Array3dOfValues(AbstractObject.numericalDatatypeEnum.FLOAT, 2, 3, 4);
@@ -74,7 +74,7 @@ namespace Example
             DiscreteProperty discretePropertyCompute = repo.createDiscreteProperty(
                 ijkGrid, "50935c31-93ec-4084-8891-6e9f130c49c3", "testing discrete prop",
                 1,
-                resqml22__IndexableElement.cells,
+                eml23__IndexableElement.cells,
                 resqml20__ResqmlPropertyKind.index);
             discretePropertyCompute.pushBackHdf5Array3dOfValues(AbstractObject.numericalDatatypeEnum.INT64, 2, 3, 4, 9999);
 
@@ -126,9 +126,9 @@ namespace Example
                 LocalDepth3dCrs crs = repo.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
                 repo.setDefaultCrs(crs);
                 Console.WriteLine("Serialize : CRS title is " + crs.getTitle());
-                Well well = repo.createWell("1425632e-3c22-4845-b431-ecd36da0671e", "Well");
+                Well well = repo.createWell("1425632e-3c22-4845-b431-ecd36da0671e", "Well", false);
                 well.setNameLegal("Legal Name");
-                well.setWaterDepth(0.0, eml21__LengthUom._0_x002e1_x0020ft);
+                well.setWaterDepth(0.0, eml23__LengthUom._0_x002e1_x0020ft);
                 well.setTimeZone(true, 0, 0);
                 Console.WriteLine("Serialize : Well title is " + well.getTitle());
 
@@ -143,7 +143,7 @@ namespace Example
                 WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
                 // Representation
-                F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__WellboreDatumReference.mean_x0020sea_x0020level, 275, 75, 0);
+                F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), eml23__ReferencePointKind.mean_x0020sea_x0020level, 275, 75, 0);
 
                 //Geometry	
                 WellboreTrajectoryRepresentation w1i1TrajRep = repo.createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);

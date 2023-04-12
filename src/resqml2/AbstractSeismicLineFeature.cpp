@@ -69,16 +69,6 @@ void AbstractSeismicLineFeature::loadTargetRelationships()
 	if (!dor.isEmpty()) {
 		convertDorIntoRel<SeismicLineSetFeature>(dor);
 	}
-
-	if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::resqml22__AbstractSeismicLineFeature* seismicLine = static_cast<gsoap_eml2_3::resqml22__AbstractSeismicLineFeature*>(gsoapProxy2_3);
-
-		if (seismicLine->TraceLabels != nullptr) {
-			for (size_t i = 0; i < seismicLine->TraceLabels->Values->ExternalFileProxy.size(); ++i) {
-				convertDorIntoRel<EML2_NS::AbstractHdfProxy>(COMMON_NS::DataObjectReference(seismicLine->TraceLabels->Values->ExternalFileProxy[i]->EpcExternalPartReference));
-			}
-		}
-	}
 }
 
 std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
@@ -86,7 +76,7 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 	std::vector<std::string> result;
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::_resqml20__SeismicLineFeature* seismicLine = static_cast<gsoap_resqml2_0_1::_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
-		for (unsigned int incr = 0; incr < seismicLine->TraceCount; ++incr) {
+		for (uint64_t incr = 0; incr < seismicLine->TraceCount; ++incr) {
 			result.push_back(std::to_string(seismicLine->FirstTraceIndex + incr * seismicLine->TraceIndexIncrement));
 		}
 	}
@@ -99,8 +89,8 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 
 		// HDF5
 		std::string datasetPath;
-		auto dsPart = seismicLine->TraceLabels->Values->ExternalFileProxy[0];
-		EML2_NS::AbstractHdfProxy* hdfProxy = getHdfProxyFromDataset(dsPart);
+		auto const* daPart = seismicLine->TraceLabels->Values->ExternalDataArrayPart[0];
+		EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 
 		// Check if the hdf dataset really contains constant length string.
 		std::vector<uint32_t> dims = hdfProxy->getElementCountPerDimension(datasetPath);
@@ -108,21 +98,21 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 			return result;
 		}
 		// Check if the hdf dataset really contains unsigned char values.
-		if (hdfProxy->getNumericalDatatype(dsPart->PathInExternalFile) != COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8) {
+		if (hdfProxy->getNumericalDatatype(daPart->PathInExternalFile) != COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8) {
 			return result;
 		}
 
-		const uint32_t nbStrings = dims[0]; // The count of strings in the HDF dataset.
-		const uint32_t stringLength = dims[1]; // The constant string length in the hdf dataset.
+		const uint64_t nbStrings = dims[0]; // The count of strings in the HDF dataset.
+		const uint64_t stringLength = dims[1]; // The constant string length in the hdf dataset.
 
 		// Read all char/strings from the hdf dataset
 		std::unique_ptr<unsigned char[]> values(new unsigned char[nbStrings * stringLength]);
 		hdfProxy->readArrayNdOfUInt8Values(datasetPath, values.get());
 
-		for (uint32_t stringIndex = 0; stringIndex < nbStrings; ++stringIndex) {
+		for (uint64_t stringIndex = 0; stringIndex < nbStrings; ++stringIndex) {
 			std::string comment;
-			uint32_t globalCharIndex = stringIndex * stringLength;
-			for (uint32_t localCharIndex = 0; localCharIndex < stringLength; ++localCharIndex) {
+			uint64_t globalCharIndex = stringIndex * stringLength;
+			for (uint64_t localCharIndex = 0; localCharIndex < stringLength; ++localCharIndex) {
 				if (values[globalCharIndex] != '\0') {
 					comment.push_back(values[globalCharIndex]);
 				}
@@ -158,12 +148,9 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 
 	gsoap_eml2_3::resqml22__AbstractSeismicLineFeature* seismicLine = static_cast<gsoap_eml2_3::resqml22__AbstractSeismicLineFeature*>(gsoapProxy2_3);
 	seismicLine->TraceLabels = gsoap_eml2_3::soap_new_eml23__StringExternalArray(gsoapProxy2_3->soap);
-	seismicLine->TraceLabels->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->Count = values.size();
-	dsPart->PathInExternalFile = getHdfGroup() + "/TraceLabels";
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	seismicLine->TraceLabels->Values->ExternalFileProxy.push_back(dsPart);
+	seismicLine->TraceLabels->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	auto* daPart = createExternalDataArrayPart(getHdfGroup() + "/TraceLabels", values.size(), proxy);
+	seismicLine->TraceLabels->Values->ExternalDataArrayPart.push_back(daPart);
 
 	// Build the CHAR array
 	uint64_t dimTwo = 0;
@@ -187,12 +174,11 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 	}
 
 	uint64_t nbValPerDim[2] = { strNb, dimTwo };
-	const unsigned int nbDimensions = 2;
 	// HDF
 	proxy->writeArrayNd(getHdfGroup(),
-		dsPart->PathInExternalFile,
+		daPart->PathInExternalFile,
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8,
 		cTab.get(),
 		nbValPerDim,   // 0 = number of strings, 1 = length of the longest string 
-		nbDimensions); // 2
+		2);
 }

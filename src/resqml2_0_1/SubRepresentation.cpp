@@ -70,7 +70,7 @@ _resqml20__SubRepresentation* SubRepresentation::getSpecializedGsoapProxy() cons
 	return static_cast<_resqml20__SubRepresentation*>(gsoapProxy2_0_1);
 }
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t originIndex,
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t originIndex,
 	unsigned int elementCountInSlowestDimension,
 	unsigned int elementCountInMiddleDimension,
 	unsigned int elementCountInFastestDimension)
@@ -107,7 +107,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	integerArray->Offset.push_back(offset);
 }
 
-void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,
+void SubRepresentation::pushBackRefToExistingDataset(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, const std::string & elementDataset,
 	int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset)
 {
 	if (proxy == nullptr) {
@@ -161,7 +161,7 @@ DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscreteP
 	return getRepository()->getDataObjectByUuid<DiscreteProperty>(uuid[0]);
 }
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
 	uint64_t elementCount,
 	uint64_t * elementIndices0, uint64_t * elementIndices1,
 	EML2_NS::AbstractHdfProxy * proxy)
@@ -206,20 +206,20 @@ COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const
 	return COMMON_NS::DataObjectReference();
 }
 
-gsoap_eml2_3::resqml22__IndexableElement SubRepresentation::getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const
+gsoap_eml2_3::eml23__IndexableElement SubRepresentation::getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const
 {
 	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() > patchIndex) {
 		if (rep->SubRepresentationPatch[patchIndex]->ElementIndices.size() > elementIndicesIndex) {
 			gsoap_resqml2_0_1::resqml20__IndexableElements ie201 = rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->IndexableElement;
 			if (ie201 == gsoap_resqml2_0_1::resqml20__IndexableElements::cells) {
-				return gsoap_eml2_3::resqml22__IndexableElement::cells;
+				return gsoap_eml2_3::eml23__IndexableElement::cells;
 			}
 			else if (static_cast<int>(ie201) < 17) {
-				return static_cast<gsoap_eml2_3::resqml22__IndexableElement>(static_cast<int>(ie201) + 1);
+				return static_cast<gsoap_eml2_3::eml23__IndexableElement>(static_cast<int>(ie201) + 1);
 			}
 			else {
-				return static_cast<gsoap_eml2_3::resqml22__IndexableElement>(static_cast<int>(ie201) + 2);
+				return static_cast<gsoap_eml2_3::eml23__IndexableElement>(static_cast<int>(ie201) + 2);
 			}
 		}
 		else {

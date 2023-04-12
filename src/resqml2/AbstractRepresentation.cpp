@@ -64,12 +64,12 @@ COMMON_NS::DataObjectReference AbstractRepresentation::getHdfProxyDorFromPointGe
 		case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dZValueArray: {
 			auto const tmp = static_cast<gsoap_eml2_3::resqml22__Point3dZValueArray *>(patch->Points);
 			if (tmp->ZValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray *>(tmp->ZValues)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray *>(tmp->ZValues)->Values->ExternalDataArrayPart[0]));
 			}
 			break;
 		}
 		case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray:
-			return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray *>(patch->Points)->Coordinates->ExternalFileProxy[0]->EpcExternalPartReference);
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::resqml22__Point3dExternalArray *>(patch->Points)->Coordinates->ExternalDataArrayPart[0]));
 		}
 	}
 
@@ -172,14 +172,13 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 		geom->LocalCrs = localCrs->newEml23Reference();
 
 		// XML
+		size_t valueCount = numPoints[0] * 3;
+		for (size_t dimIndex = 1; dimIndex < numDimensionsInArray; ++dimIndex) {
+			valueCount *= numPoints[dimIndex];
+		}
 		gsoap_eml2_3::resqml22__Point3dExternalArray* xmlPts = gsoap_eml2_3::soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
-		xmlPts->Coordinates = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		auto dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		ostringstream oss;
-		oss << "points_patch" << patchIndex;
-		dsPart->PathInExternalFile = getHdfGroup() + "/" + oss.str();
-		xmlPts->Coordinates->ExternalFileProxy.push_back(dsPart);
+		xmlPts->Coordinates = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		xmlPts->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/points_patch" + std::to_string(patchIndex), valueCount, proxy));
 		geom->Points = xmlPts;
 
 		// HDF
@@ -189,7 +188,7 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 		}
 		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
 
-		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), points, numValues.get(), numDimensionsInArray + 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "points_patch" + std::to_string(patchIndex), points, numValues.get(), numDimensionsInArray + 1);
 
 		return geom;
 	}
@@ -330,7 +329,7 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		if (static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation != nullptr) {
+		if (static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedObject != nullptr) {
 			getRepository()->deleteRelationship(this, getInterpretation());
 		}
 	}
@@ -339,7 +338,7 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation = interp->newResqmlReference();
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation = interp->newEml23Reference();
+		static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedObject = interp->newEml23Reference();
 	}
 	else
 		throw logic_error("Not implemented yet");
@@ -358,7 +357,7 @@ COMMON_NS::DataObjectReference AbstractRepresentation::getInterpretationDor() co
 		return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedInterpretation);
+		return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::resqml22__AbstractRepresentation*>(gsoapProxy2_3)->RepresentedObject);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -652,29 +651,21 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIn
 			patch->SeismicSupport = seismicSupport->newEml23Reference();
 
 			// inlines XML
-			gsoap_eml2_3::eml23__DoubleExternalArray* inlineValues = gsoap_eml2_3::soap_new_eml23__DoubleExternalArray(gsoapProxy2_3->soap);
-			inlineValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-			gsoap_eml2_3::eml23__ExternalDatasetPart* dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-			dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-			oss << "inlineCoordinates_patch" << patchIndex;
-			dsPart->PathInExternalFile = getHdfGroup() + "/" + oss.str();
-			inlineValues->Values->ExternalFileProxy.push_back(dsPart);
+			gsoap_eml2_3::eml23__FloatingPointExternalArray* inlineValues = gsoap_eml2_3::soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
+			inlineValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+			inlineValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/inlineCoordinates_patch" + std::to_string(patchIndex), pointCount, proxy));
 			patch->InlineCoordinates = inlineValues;
 
 			// crosslines XML
-			gsoap_eml2_3::eml23__DoubleExternalArray* crosslineValues = gsoap_eml2_3::soap_new_eml23__DoubleExternalArray(gsoapProxy2_3->soap);
-			crosslineValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-			dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-			dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-			oss2 << "crosslineCoordinates_patch" << patchIndex;
-			dsPart->PathInExternalFile = getHdfGroup() + "/" + oss2.str();
-			crosslineValues->Values->ExternalFileProxy.push_back(dsPart);
+			gsoap_eml2_3::eml23__FloatingPointExternalArray* crosslineValues = gsoap_eml2_3::soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
+			crosslineValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+			crosslineValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/crosslineCoordinates_patch" + std::to_string(patchIndex), pointCount, proxy));
 			patch->CrosslineCoordinates = crosslineValues;
 		}
 
 		// HDF
-		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), inlines, &pointCount, 1);
-		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss2.str(), crosslines, &pointCount, 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inlineCoordinates_patch" + std::to_string(patchIndex), inlines, &pointCount, 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "crosslineCoordinates_patch" + std::to_string(patchIndex), crosslines, &pointCount, 1);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -770,8 +761,7 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(unsigned int patchIn
 		getRepository()->addRelationship(this, proxy);
 		getRepository()->addRelationship(this, seismicSupport);
 
-		ostringstream oss;
-
+		const uint64_t pointCount = getXyzPointCountOfPatch(patchIndex);
 		if (gsoapProxy2_0_1 != nullptr) {
 			gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
 			if (!geom)
@@ -794,8 +784,7 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(unsigned int patchIn
 			gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* abscissaValues = gsoap_resqml2_0_1::soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 			abscissaValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 			abscissaValues->Values->HdfProxy = proxy->newResqmlReference();
-			oss << "lineAbscissa_patch" << patchIndex;
-			abscissaValues->Values->PathInHdfFile = getHdfGroup() + "/" + oss.str();
+			abscissaValues->Values->PathInHdfFile = getHdfGroup() + "/lineAbscissa_patch" + std::to_string(patchIndex);
 			patch->LineAbscissa = abscissaValues;
 		}
 		else if (gsoapProxy2_3 != nullptr) {
@@ -817,19 +806,14 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(unsigned int patchIn
 			patch->SeismicSupport = seismicSupport->newEml23Reference();
 
 			// abscissa XML
-			gsoap_eml2_3::eml23__DoubleExternalArray* abscissaValues = gsoap_eml2_3::soap_new_eml23__DoubleExternalArray(gsoapProxy2_3->soap);
-			abscissaValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-			gsoap_eml2_3::eml23__ExternalDatasetPart* dsPart = gsoap_eml2_3::soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-			dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-			oss << "lineAbscissa_patch" << patchIndex;
-			dsPart->PathInExternalFile = getHdfGroup() + "/" + oss.str();
-			abscissaValues->Values->ExternalFileProxy.push_back(dsPart);
+			gsoap_eml2_3::eml23__FloatingPointExternalArray* abscissaValues = gsoap_eml2_3::soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
+			abscissaValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+			abscissaValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/lineAbscissa_patch" + std::to_string(patchIndex), pointCount, proxy));
 			patch->LineAbscissa = abscissaValues;
 		}
 
 		// inlines HDF
-		const uint64_t pointCount = getXyzPointCountOfPatch(patchIndex);
-		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), lineAbscissa, &pointCount, 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "lineAbscissa_patch" + std::to_string(patchIndex), lineAbscissa, &pointCount, 1);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -845,14 +829,8 @@ void AbstractRepresentation::getSeismicLineAbscissaOfPointsOfPatch(unsigned int 
 			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
 
-		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* seisInfo = static_cast<gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates*>(geom->SeismicCoordinates);
-		if (seisInfo->LineAbscissa->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* dblValues = static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(seisInfo->LineAbscissa);
-			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->HdfProxy->UUID)
-				->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates const* seisInfo = static_cast<gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates*>(geom->SeismicCoordinates);
+		readArrayNdOfDoubleValues(seisInfo->LineAbscissa, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::resqml22__PointGeometry* const geom = getPointGeometry2_2(patchIndex);
@@ -861,14 +839,8 @@ void AbstractRepresentation::getSeismicLineAbscissaOfPointsOfPatch(unsigned int 
 			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
 
-		gsoap_eml2_3::resqml22__Seismic2dCoordinates* seisInfo = static_cast<gsoap_eml2_3::resqml22__Seismic2dCoordinates*>(geom->SeismicCoordinates);
-		if (seisInfo->LineAbscissa->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray) {
-			gsoap_eml2_3::eml23__DoubleExternalArray* dblValues = static_cast<gsoap_eml2_3::eml23__DoubleExternalArray*>(seisInfo->LineAbscissa);
-			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid)
-				->readArrayNdOfDoubleValues(dblValues->Values->ExternalFileProxy[0]->PathInExternalFile, values);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		gsoap_eml2_3::resqml22__Seismic2dCoordinates const* seisInfo = static_cast<gsoap_eml2_3::resqml22__Seismic2dCoordinates*>(geom->SeismicCoordinates);
+		readArrayNdOfDoubleValues(seisInfo->LineAbscissa, values);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -897,13 +869,7 @@ void AbstractRepresentation::getInlinesOfPointsOfPatch(unsigned int patchIndex, 
 			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
 
-		if (seisInfo->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray) {
-			gsoap_eml2_3::eml23__DoubleExternalArray* dblValues = static_cast<gsoap_eml2_3::eml23__DoubleExternalArray*>(seisInfo->InlineCoordinates);
-			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid)
-				->readArrayNdOfDoubleValues(dblValues->Values->ExternalFileProxy[0]->PathInExternalFile, values);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		readArrayNdOfDoubleValues(seisInfo->InlineCoordinates, values);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -930,14 +896,7 @@ void AbstractRepresentation::getCrosslinesOfPointsOfPatch(unsigned int patchInde
 		if (seisInfo == nullptr) {
 			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
-
-		if (seisInfo->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray) {
-			gsoap_eml2_3::eml23__DoubleExternalArray* dblValues = static_cast<gsoap_eml2_3::eml23__DoubleExternalArray*>(seisInfo->CrosslineCoordinates);
-			getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dblValues->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid)
-				->readArrayNdOfDoubleValues(dblValues->Values->ExternalFileProxy[0]->PathInExternalFile, values);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		readArrayNdOfDoubleValues(seisInfo->CrosslineCoordinates, values);
 	}
 	else {
 		throw logic_error("Not implemented yet");

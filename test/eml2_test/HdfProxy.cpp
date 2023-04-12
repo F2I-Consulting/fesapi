@@ -39,7 +39,7 @@ void HdfProxy::initRepo() {
 	EML2_NS::PropertyKind * propType1 = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "Partial prop kind");
 
 	RESQML2_NS::DiscreteProperty* discreteProp432 = repo->createDiscreteProperty(ijkgrid432, "f9447f76-34c5-4967-a3ee-4f400f96dba6", "4x3x2 grid cellIndex", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	LONG64 discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 

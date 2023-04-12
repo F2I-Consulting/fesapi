@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "StructuralOrganizationInterpretation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "../resqml2/Model.h"
 #include "../resqml2/FaultInterpretation.h"
 #include "../resqml2/HorizonInterpretation.h"
@@ -40,10 +37,10 @@ StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(RESQM
 
 	gsoapProxy2_3 = soap_new_resqml22__StructuralOrganizationInterpretation(orgFeat->getGsoapContext());
 	
-	static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3)->OrderingCriteria = static_cast<resqml22__OrderingCriteria>(orderingCriteria);
+	static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3)->AscendingOrderingCriteria = static_cast<resqml22__OrderingCriteria>(orderingCriteria);
 
     initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	orgFeat->getRepository()->addDataObject(this);
 	setInterpretedFeature(orgFeat);
@@ -54,42 +51,42 @@ void StructuralOrganizationInterpretation::pushBackFaultInterpretation(RESQML2_N
 	getRepository()->addRelationship(this, faultInterpretation);
 
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
-	if (structuralOrganization->UnorderedFaultCollection == nullptr) {
-		structuralOrganization->UnorderedFaultCollection = soap_new_resqml22__FeatureInterpretationSet(gsoapProxy2_3->soap);
-		structuralOrganization->UnorderedFaultCollection->IsHomogeneous = true;
-		structuralOrganization->UnorderedFaultCollection->Citation = soap_new_eml23__Citation(gsoapProxy2_3->soap);
-		structuralOrganization->UnorderedFaultCollection->Citation->Title = getTitle() + " Fault collection";
-		structuralOrganization->UnorderedFaultCollection->Citation->Originator = getOriginator();
-		structuralOrganization->UnorderedFaultCollection->Citation->Creation = getCreationAsTimeStructure();
-		structuralOrganization->UnorderedFaultCollection->Citation->Format = getFormat();
-	}
 
-	structuralOrganization->UnorderedFaultCollection->FeatureInterpretation.push_back(faultInterpretation->newEml23Reference());
+	resqml22__BoundaryFeatureInterpretationPlusItsRank* tmp = soap_new_resqml22__BoundaryFeatureInterpretationPlusItsRank(gsoapProxy2_3->soap);
+	tmp->BoundaryFeatureInterpretation = faultInterpretation->newEml23Reference();
+	structuralOrganization->OrderedBoundaryFeatureInterpretation.push_back(tmp);
 }
 
 unsigned int StructuralOrganizationInterpretation::getFaultInterpretationCount() const
 {
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 
-	const size_t result = structuralOrganization->UnorderedFaultCollection == nullptr
-		? 0
-		: structuralOrganization->UnorderedFaultCollection->FeatureInterpretation.size();
-
-	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many associated fault interpretations.");
+	unsigned int result = 0;
+	for (auto const* boundary : structuralOrganization->OrderedBoundaryFeatureInterpretation) {
+		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->QualifiedType.find("FaultInterpretation") != std::string::npos) {
+			++result;
+		}
 	}
 
-	return static_cast<unsigned int>(result);
+	return result;
 }
 
 COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getFaultInterpretationDor(unsigned int index) const
 {
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
-	if (index >= getFaultInterpretationCount()) {
-		throw std::out_of_range("The fault index is out of range.");
+	unsigned int currentIndex = 0;
+	for (auto const* boundary : structuralOrganization->OrderedBoundaryFeatureInterpretation) {
+		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->QualifiedType.find("FaultInterpretation") != std::string::npos) {
+			if (currentIndex == index) {
+				return COMMON_NS::DataObjectReference(boundary->BoundaryFeatureInterpretation);
+			}
+			else {
+				++currentIndex;
+			}
+		}
 	}
 
-	return COMMON_NS::DataObjectReference(structuralOrganization->UnorderedFaultCollection->FeatureInterpretation[index]);
+	return COMMON_NS::DataObjectReference();
 }
 
 void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2_NS::HorizonInterpretation * horizonInterpretation, int stratigraphicRank)
@@ -99,7 +96,7 @@ void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 
 	resqml22__BoundaryFeatureInterpretationPlusItsRank* horizonInterpPlusItsRank = soap_new_resqml22__BoundaryFeatureInterpretationPlusItsRank(gsoapProxy2_3->soap);
-	horizonInterpPlusItsRank->StratigraphicRank = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
+	horizonInterpPlusItsRank->StratigraphicRank = static_cast<LONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(LONG64)));
 	*(horizonInterpPlusItsRank->StratigraphicRank) = stratigraphicRank;
 	horizonInterpPlusItsRank->BoundaryFeatureInterpretation = horizonInterpretation->newEml23Reference();
 	structuralOrganization->OrderedBoundaryFeatureInterpretation.push_back(horizonInterpPlusItsRank);
@@ -107,35 +104,34 @@ void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2
 
 unsigned int StructuralOrganizationInterpretation::getHorizonInterpretationCount() const
 {
-	size_t result = 0;
-	for (auto const* boundary : static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3)->OrderedBoundaryFeatureInterpretation) {
-		if (boundary->BoundaryFeatureInterpretation != nullptr) {
+	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
+
+	unsigned int result = 0;
+	for (auto const* boundary : structuralOrganization->OrderedBoundaryFeatureInterpretation) {
+		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->QualifiedType.find("HorizonInterpretation") != std::string::npos) {
 			++result;
 		}
 	}
 
-	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many associated horizon interpretations.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return result;
 }
 
 COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getHorizonInterpretationDor(unsigned int index) const
 {
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
-	if (index >= structuralOrganization->OrderedBoundaryFeatureInterpretation.size()) {
-		throw std::out_of_range("The horizon index is out of range.");
-	}
-
-	size_t tmpIndex = 0;
-	while (tmpIndex < index) {
-		if (structuralOrganization->OrderedBoundaryFeatureInterpretation[tmpIndex]->BoundaryFeatureInterpretation != nullptr) {
-			++tmpIndex;
+	unsigned int currentIndex = 0;
+	for (auto const* boundary : structuralOrganization->OrderedBoundaryFeatureInterpretation) {
+		if (boundary->BoundaryFeatureInterpretation != nullptr && boundary->BoundaryFeatureInterpretation->QualifiedType.find("HorizonInterpretation") != std::string::npos) {
+			if (currentIndex == index) {
+				return COMMON_NS::DataObjectReference(boundary->BoundaryFeatureInterpretation);
+			}
+			else {
+				++currentIndex;
+			}
 		}
 	}
 
-	return COMMON_NS::DataObjectReference(structuralOrganization->OrderedBoundaryFeatureInterpretation[tmpIndex]->BoundaryFeatureInterpretation);
+	return COMMON_NS::DataObjectReference();
 }
 
 void StructuralOrganizationInterpretation::pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation)

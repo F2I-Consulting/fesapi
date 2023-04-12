@@ -66,8 +66,8 @@ void ContinuousColorMapTest::initRepo() {
 	HorizonInterpretation* horizonInterpretation = repo->createHorizonInterpretation(horizon, uuidHorizonInterpretation, titleHorizonInterpretation);
 	AbstractHdfProxy* hdfProxy = this->repo->getHdfProxySet()[0];
 	Grid2dRepresentation* grid2dRepresentation = repo->createGrid2dRepresentation(horizonInterpretation, uuidGrid2dRepresentation, titleGrid2dRepresentation);
-	const unsigned int numPointInFastestDirection = 2;
-	const unsigned int numPointsInSlowestDirection = 1;
+	const unsigned int numPointInFastestDirection = 3;
+	const unsigned int numPointsInSlowestDirection = 2;
 	grid2dRepresentation->setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection,
 		0., 0., 0.,
 		1., 0., 0.,
@@ -75,9 +75,9 @@ void ContinuousColorMapTest::initRepo() {
 		1., 1.);
 
 	// assotiating a Continuous property to the grid 2d representation
-	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
 	ContinuousProperty* continuousProperty = repo->createContinuousProperty(grid2dRepresentation, uuidContinuousProperty, titleContinuousProperty, 2,
-		gsoap_eml2_3::resqml22__IndexableElement::nodes, "continuousColorMapIndex", propertyKind);
+		gsoap_eml2_3::eml23__IndexableElement::nodes, "continuousColorMapIndex", propertyKind);
 	double values[2] = { 0., 1. };
 	continuousProperty->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 

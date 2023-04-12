@@ -32,8 +32,9 @@ uint64_t CmpLineFeature::getTraceCount() const
 	}
 	else if (cmpLine->NearestShotPointIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 		uint64_t result = 0;
-		for (size_t i = 0; i < static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalFileProxy.size(); ++i) {
-			result += static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalFileProxy[i]->Count;
+		for (const auto& dataArrayPart : static_cast<eml23__IntegerExternalArray*>(cmpLine->NearestShotPointIndices)->Values->ExternalDataArrayPart) {
+			// It is safe to cast to unsigned since a Count cannot be < 0
+			result += static_cast<uint64_t>(std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<uint64_t>(1), std::multiplies<LONG64>()));
 		}
 		return result;
 	}

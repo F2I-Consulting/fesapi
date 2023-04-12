@@ -38,14 +38,14 @@ SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* re
 
 	seismicLattice->InlineLabels = soap_new_eml23__IntegerLatticeArray(repo->getGsoapContext());
 	seismicLattice->InlineLabels->StartValue = originInline;
-	auto inlineDef = soap_new_eml23__IntegerConstantArray(repo->getGsoapContext());
+	auto* inlineDef = soap_new_eml23__IntegerConstantArray(repo->getGsoapContext());
 	inlineDef->Value = inlineIncrement;
 	inlineDef->Count = inlineCount - 1;
 	seismicLattice->InlineLabels->Offset.push_back(inlineDef);
 	
 	seismicLattice->CrosslineLabels = soap_new_eml23__IntegerLatticeArray(repo->getGsoapContext());
 	seismicLattice->CrosslineLabels->StartValue = originCrossline;
-	auto crosslineDef = soap_new_eml23__IntegerConstantArray(repo->getGsoapContext());
+	auto* crosslineDef = soap_new_eml23__IntegerConstantArray(repo->getGsoapContext());
 	crosslineDef->Value = crosslineIncrement;
 	crosslineDef->Count = crosslineCount - 1;
 	seismicLattice->CrosslineLabels->Offset.push_back(crosslineDef);
@@ -75,5 +75,3 @@ int SeismicLatticeFeature::getOriginInline() const
 {
 	return static_cast<_resqml22__SeismicLatticeFeature*>(gsoapProxy2_3)->InlineLabels->StartValue;
 }
-
-

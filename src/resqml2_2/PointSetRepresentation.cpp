@@ -18,10 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PointSetRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
-#include "H5public.h"
+#include <numeric>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
@@ -75,14 +72,11 @@ void PointSetRepresentation::pushBackGeometryPatch(
 		}
 	}
 
-	resqml22__NodePatch* patch = soap_new_resqml22__NodePatch(gsoapProxy2_3->soap);
-	patch->Count = xyzPointCount;
-
 	// XYZ points
 	uint64_t pointCountDims = xyzPointCount;
-	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PointSetRepresentation*>(gsoapProxy2_3)->NodePatch.size(), xyzPoints, localCrs, &pointCountDims, 1, proxy);
-
-	static_cast<_resqml22__PointSetRepresentation*>(gsoapProxy2_3)->NodePatch.push_back(patch);
+	static_cast<_resqml22__PointSetRepresentation*>(gsoapProxy2_3)->NodePatchGeometry.push_back(
+		createPointGeometryPatch2_2(static_cast<_resqml22__PointSetRepresentation*>(gsoapProxy2_3)->NodePatchGeometry.size(), xyzPoints, localCrs, &pointCountDims, 1, proxy)
+	);
 	getRepository()->addRelationship(this, localCrs);
 }
 
@@ -97,7 +91,7 @@ resqml22__PointGeometry* PointSetRepresentation::getPointGeometry2_2(uint64_t pa
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 	}
 	
-	return static_cast<_resqml22__PointSetRepresentation*>(gsoapProxy2_3)->NodePatch[patchIndex]->Geometry;
+	return static_cast<_resqml22__PointSetRepresentation*>(gsoapProxy2_3)->NodePatchGeometry[patchIndex];
 }
 
 uint64_t PointSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
@@ -105,8 +99,17 @@ uint64_t PointSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 	}
+	auto const* ptArray = static_cast<_resqml22__PointSetRepresentation*>(gsoapProxy2_3)->NodePatchGeometry[patchIndex]->Points;
+	resqml22__Point3dExternalArray const* externalPtArray = dynamic_cast<resqml22__Point3dExternalArray const*>(ptArray);
+	if (externalPtArray == nullptr) {
+		throw range_error("Does only support point set where points are in a resqml22__Point3dExternalArray");
+	}
 
-	return static_cast<_resqml22__PointSetRepresentation*>(gsoapProxy2_3)->NodePatch[patchIndex]->Count;
+	uint64_t result = 0;
+	for (auto* dataArrayPart : externalPtArray->Coordinates->ExternalDataArrayPart) {
+		result += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
+	}
+	return result / 3;
 }
 
 void PointSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
@@ -117,8 +120,8 @@ void PointSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double
 	resqml22__PointGeometry* pointGeom = getPointGeometry2_2(patchIndex);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray)
 	{
-		auto dsPart = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, xyzPoints);
+		auto const* daPart = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalDataArrayPart[0];
+		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfDoubleValues(daPart->PathInExternalFile, xyzPoints);
 	}
 	else
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
@@ -126,5 +129,5 @@ void PointSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double
 
 uint64_t PointSetRepresentation::getPatchCount() const
 {
-	return static_cast<_resqml22__PointSetRepresentation*>(gsoapProxy2_3)->NodePatch.size();
+	return static_cast<_resqml22__PointSetRepresentation*>(gsoapProxy2_3)->NodePatchGeometry.size();
 }

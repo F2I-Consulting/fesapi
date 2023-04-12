@@ -19,8 +19,6 @@ under the License.
 #include "Grid2dRepresentation.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 
 #include "H5public.h"
 
@@ -84,9 +82,9 @@ void Grid2dRepresentation::getZValues(double* values) const
 	if (rep->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dZValueArray) {
 		eml23__AbstractFloatingPointArray* zValues = static_cast<resqml22__Point3dZValueArray*>(rep->Geometry->Points)->ZValues;
 		if (dynamic_cast<eml23__FloatingPointExternalArray*>(zValues) != nullptr) {
-			eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__FloatingPointExternalArray*>(zValues)->Values->ExternalFileProxy[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
-			hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, values);
+			eml23__ExternalDataArrayPart const* daPart = static_cast<eml23__FloatingPointExternalArray*>(zValues)->Values->ExternalDataArrayPart[0];
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
+			hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, values);
 		}
 		else {
 			throw std::logic_error("The Z values can only be retrieved if they are described as a FloatingPointExternalArray.");
@@ -168,8 +166,8 @@ double Grid2dRepresentation::getXOrigin() const
 	}
 
 	if (!getSupportingRepresentationDor().isEmpty()) {
-		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
-		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
+		const uint64_t iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
+		const uint64_t jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
 		RESQML2_NS::Grid2dRepresentation const * supportingRepresentation = getSupportingRepresentation();
 		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getXOrigin() :
@@ -189,8 +187,8 @@ double Grid2dRepresentation::getYOrigin() const
 	}
 	
 	if (!getSupportingRepresentationDor().isEmpty()) {
-		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
-		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
+		const uint64_t iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
+		const uint64_t jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
 		RESQML2_NS::Grid2dRepresentation const * supportingRepresentation = getSupportingRepresentation();
 		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getYOrigin() :
@@ -209,8 +207,8 @@ double Grid2dRepresentation::getZOrigin() const
 	}
 	
 	if (!getSupportingRepresentationDor().isEmpty()) {
-		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
-		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
+		const uint64_t iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
+		const uint64_t jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
 		RESQML2_NS::Grid2dRepresentation const * supportingRepresentation = getSupportingRepresentation();
 		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getZOrigin() :
@@ -382,7 +380,7 @@ double Grid2dRepresentation::getJSpacing() const
 		return static_cast<eml23__FloatingPointConstantArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing)->Value;
 	}
 
-	const int64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
+	const uint64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
 	const double jSpacingOnSupportingRep = getSupportingRepresentation()->getJSpacing();
 
 	return jIndexOffset * jSpacingOnSupportingRep;
@@ -395,28 +393,12 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 	const uint64_t jSpacingCount = getNodeCountAlongJAxis() - 1;
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		if (arrayLatticeOfPoints3d->Dimension[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray) {
-			const double constantSpacing = static_cast<eml23__FloatingPointConstantArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing)->Value;
-			for (uint64_t j = 0; j < jSpacingCount; ++j) {
-				jSpacings[j] = constantSpacing;
-			}
-		}
-		else if (dynamic_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing) != nullptr) {
-			eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[0]->Spacing)->Values->ExternalFileProxy[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw logic_error("The HDF proxy is missing.");
-			}
-			hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, jSpacings);
-		}
-		else {
-			throw logic_error("Not implemented yet.");
-		}
+		readArrayNdOfDoubleValues(arrayLatticeOfPoints3d->Dimension[0]->Spacing, jSpacings);
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
-		const int jIndexOrigin = getIndexOriginOnSupportingRepresentation(0);
-		const int64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
+		const uint64_t jIndexOrigin = getIndexOriginOnSupportingRepresentation(0);
+		const uint64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
 		std::unique_ptr<double[]> jSpacingsOnSupportingRep(new double[jSpacingCount]);
 		getSupportingRepresentation()->getJSpacing(jSpacingsOnSupportingRep.get());
 		
@@ -453,7 +435,7 @@ double Grid2dRepresentation::getISpacing() const
 		return static_cast<eml23__FloatingPointConstantArray*>(arrayLatticeOfPoints3d->Dimension[1]->Spacing)->Value;
 	}
 
-	const int64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
+	const uint64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
 	const double iSpacingOnSupportingRep = getSupportingRepresentation()->getISpacing();
 
 	return iIndexOffset * iSpacingOnSupportingRep;
@@ -466,28 +448,12 @@ void Grid2dRepresentation::getISpacing(double* iSpacings) const
 	const uint64_t iSpacingCount = getNodeCountAlongIAxis() - 1;
 
 	if (arrayLatticeOfPoints3d != nullptr) {
-		if (arrayLatticeOfPoints3d->Dimension[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray) {
-			const double constantSpacing = static_cast<eml23__FloatingPointConstantArray*>(arrayLatticeOfPoints3d->Dimension[1]->Spacing)->Value;
-			for (uint64_t i = 0; i < iSpacingCount; ++i) {
-				iSpacings[i] = constantSpacing;
-			}
-		}
-		else if (dynamic_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[1]->Spacing) != nullptr) {
-			eml23__ExternalDatasetPart const * dsPart = static_cast<eml23__FloatingPointExternalArray*>(arrayLatticeOfPoints3d->Dimension[1]->Spacing)->Values->ExternalFileProxy[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dsPart);
-			if (hdfProxy == nullptr) {
-				throw invalid_argument("The HDF proxy is missing.");
-			}
-			hdfProxy->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, iSpacings);
-		}
-		else {
-			throw logic_error("Not implemented yet.");
-		}
+		readArrayNdOfDoubleValues(arrayLatticeOfPoints3d->Dimension[1]->Spacing, iSpacings);
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
-		const int iIndexOrigin = getIndexOriginOnSupportingRepresentation(1);
-		const int64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
+		const uint64_t iIndexOrigin = getIndexOriginOnSupportingRepresentation(1);
+		const uint64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
 		std::unique_ptr<double[]> iSpacingsOnSupportingRep(new double[iSpacingCount]);
 		getSupportingRepresentation()->getISpacing(iSpacingsOnSupportingRep.get());
 
@@ -519,6 +485,10 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 	double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
 	double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
+	// The below check exists because Count of spacing must be > 0 in the standard which occurs inly if we have at least two nodes per direction.
+	if (numPointsInFastestDirection < 2 || numPointsInSlowestDirection < 2) {
+		throw std::invalid_argument("You cannot set a lattice with less than two nodes in a direction.");
+	}
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
 		if (localCrs == nullptr) {
@@ -784,19 +754,14 @@ resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
 
 	// Z Values
 	eml23__FloatingPointExternalArray* xmlZValues = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
-	xmlZValues->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	ostringstream oss3;
-	oss3 << "points_patch" << patchIndex;
-	dsPart->PathInExternalFile = getHdfGroup() + "/" + oss3.str();
-	xmlZValues->Values->ExternalFileProxy.push_back(dsPart);
+	xmlZValues->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlZValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/points_patch" + std::to_string(patchIndex), numJ*numI, proxy));
 	xmlPoints->ZValues = xmlZValues;
 
 	// HDF
 	uint64_t dim[2] = { numJ, numI };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
-		oss3.str(),
+		"points_patch" + std::to_string(patchIndex),
 		zValues,
 		dim, 2);
 
@@ -865,19 +830,14 @@ resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
 
 	// Z Values
 	eml23__FloatingPointExternalArray* xmlZValues = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
-	xmlZValues->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	ostringstream oss3;
-	oss3 << "points_patch" << patchIndex;
-	dsPart->PathInExternalFile = getHdfGroup() + "/" + oss3.str();
-	xmlZValues->Values->ExternalFileProxy.push_back(dsPart);
+	xmlZValues->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlZValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/points_patch" + std::to_string(patchIndex), numJ * numI, proxy));
 	xmlPoints->ZValues = xmlZValues;
 
 	// HDF
 	uint64_t dim[2] = { numJ, numI };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
-		oss3.str(),
+		"points_patch" + std::to_string(patchIndex),
 		zValues,
 		dim, 2);
 

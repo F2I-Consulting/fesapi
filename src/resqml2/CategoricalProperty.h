@@ -85,13 +85,6 @@ namespace RESQML2_NS
 		 */
 		CategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
-		/**
-		 * Creates an instance of this class by wrapping a gSOAP RESQML2.2 instance
-		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
-		 */
-		CategoricalProperty(gsoap_eml2_3::_resqml22__CategoricalProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
-
 		/** Loads target relationships */
 		void loadTargetRelationships() final;
 	};

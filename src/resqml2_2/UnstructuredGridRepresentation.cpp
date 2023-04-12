@@ -16,14 +16,14 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #include "UnstructuredGridRepresentation.h"
 
-#include <stdexcept>
+#include "../eml2/AbstractHdfProxy.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
-#include "../eml2/AbstractHdfProxy.h"
+
+#include "../resqml2_2/EarthModelInterpretation.h"
 
 using namespace std;
 using namespace gsoap_eml2_3;
@@ -32,7 +32,7 @@ using namespace RESQML2_2_NS;
 const char* UnstructuredGridRepresentation::XML_NS = "resqml22";
 
 void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
-	const std::string & guid, const std::string & title,
+	const std::string& guid, const std::string& title,
 	uint64_t cellCount)
 {
 	if (repo == nullptr) {
@@ -51,14 +51,16 @@ void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 }
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(COMMON_NS::DataObjectRepository* repo,
-	const std::string & guid, const std::string & title,
+	const std::string& guid, const std::string& title,
 	uint64_t cellCount)
 {
 	init(repo, guid, title, cellCount);
+
+	setInterpretation(repo->createPartial<RESQML2_2_NS::EarthModelInterpretation>("", "Unknown interp"));
 }
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-	const std::string & guid, const std::string & title,
+	const std::string& guid, const std::string& title,
 	uint64_t cellCount)
 {
 	if (interp == nullptr) {
@@ -120,7 +122,7 @@ uint64_t UnstructuredGridRepresentation::getNodeCount() const
 	return 0;
 }
 
-void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -128,8 +130,8 @@ void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex
 
 	resqml22__PointGeometry* pointGeom = getPointGeometry2_2(patchIndex);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
-		auto dataset = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalFileProxy[0];
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		auto dataset = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalDataArrayPart[0];
+		EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset);
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInExternalFile, xyzPoints);
 	}
 	else {
@@ -137,15 +139,15 @@ void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex
 	}
 }
 
-void UnstructuredGridRepresentation::getFaceIndicesOfCells(uint64_t * faceIndices) const
+void UnstructuredGridRepresentation::getFaceIndicesOfCells(uint64_t* faceIndices) const
 {
 	_resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr) {
 		throw invalid_argument("There is no geometry in this grid.");
 	}
 	if (grid->Geometry->FacesPerCell->Elements->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-		auto dataset = static_cast<eml23__IntegerExternalArray*>(grid->Geometry->FacesPerCell->Elements)->Values->ExternalFileProxy[0];
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		auto dataset = static_cast<eml23__IntegerExternalArray*>(grid->Geometry->FacesPerCell->Elements)->Values->ExternalDataArrayPart[0];
+		EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset);
 		hdfProxy->readArrayNdOfUInt64Values(dataset->PathInExternalFile, faceIndices);
 	}
 	else {
@@ -153,15 +155,15 @@ void UnstructuredGridRepresentation::getFaceIndicesOfCells(uint64_t * faceIndice
 	}
 }
 
-void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(uint64_t * cumulativeFaceCountPerCell_) const
+void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(uint64_t* cumulativeFaceCountPerCell_) const
 {
 	_resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr)
 		throw logic_error("There is no geometry in this grid.");
 	if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 	{
-		auto dataset = static_cast<eml23__IntegerExternalArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Values->ExternalFileProxy[0];
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		auto dataset = static_cast<eml23__IntegerExternalArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Values->ExternalDataArrayPart[0];
+		EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset);
 		hdfProxy->readArrayNdOfUInt64Values(dataset->PathInExternalFile, cumulativeFaceCountPerCell_);
 	}
 	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray)
@@ -239,8 +241,8 @@ void UnstructuredGridRepresentation::getNodeIndicesOfFaces(uint64_t * nodeIndice
 	}
 	if (grid->Geometry->NodesPerFace->Elements->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 	{
-		auto dataset = static_cast<eml23__IntegerExternalArray*>(grid->Geometry->NodesPerFace->Elements)->Values->ExternalFileProxy[0];
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		auto dataset = static_cast<eml23__IntegerExternalArray*>(grid->Geometry->NodesPerFace->Elements)->Values->ExternalDataArrayPart[0];
+		EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset);
 		hdfProxy->readArrayNdOfUInt64Values(dataset->PathInExternalFile, nodeIndices);
 	}
 	else
@@ -254,8 +256,8 @@ void UnstructuredGridRepresentation::getCumulativeNodeCountPerFace(uint64_t * no
 			throw invalid_argument("There is no geometry in this grid.");
 	if (grid->Geometry->NodesPerFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 	{
-		auto dataset = static_cast<eml23__IntegerExternalArray*>(grid->Geometry->NodesPerFace->CumulativeLength)->Values->ExternalFileProxy[0];
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		auto dataset = static_cast<eml23__IntegerExternalArray*>(grid->Geometry->NodesPerFace->CumulativeLength)->Values->ExternalDataArrayPart[0];
+		EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset);
 		hdfProxy->readArrayNdOfUInt64Values(dataset->PathInExternalFile, nodeCountPerFace);
 	}
 	else if (grid->Geometry->NodesPerFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray)
@@ -317,20 +319,22 @@ unsigned int UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
 void UnstructuredGridRepresentation::getCellFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const
 {
   _resqml22__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
-  if (grid->Geometry == nullptr)
-    throw invalid_argument("There is no geometry in this grid.");
-  if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray)  {
-	  auto dataset = static_cast<eml23__BooleanExternalArray*>(grid->Geometry->CellFaceIsRightHanded)->Values->ExternalFileProxy[0];
-	  EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+  if (grid->Geometry == nullptr) {
+	  throw invalid_argument("There is no geometry in this grid.");
+  }
+  if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
+	  auto dataset = static_cast<eml23__BooleanExternalArray*>(grid->Geometry->CellFaceIsRightHanded)->Values->ExternalDataArrayPart[0];
+	  EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset);
 	  hdfProxy->readArrayNdOfUInt8Values(dataset->PathInExternalFile, cellFaceIsRightHanded);
   }
-  else if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray)  {
-	  for (size_t i = 0; i < static_cast<eml23__BooleanConstantArray*>(grid->Geometry->CellFaceIsRightHanded)->Count; ++i)  {
+  else if (grid->Geometry->CellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
+	  for (auto i = 0; i < static_cast<eml23__BooleanConstantArray*>(grid->Geometry->CellFaceIsRightHanded)->Count; ++i) {
 		  cellFaceIsRightHanded[i] = static_cast<eml23__BooleanConstantArray*>(grid->Geometry->CellFaceIsRightHanded)->Value;
 	  }
   }
-  else
+  else {
 	  throw logic_error("Not yet implemented.");
+  }
 }
 
 void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
@@ -375,11 +379,8 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 	// Face Right handness
 	//XML
 	eml23__BooleanExternalArray* cellFaceIsRightHandedForHdf5 = soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
-	cellFaceIsRightHandedForHdf5->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = cellFaceIsRightHanded;
-	cellFaceIsRightHandedForHdf5->Values->ExternalFileProxy.push_back(dsPart);
+	cellFaceIsRightHandedForHdf5->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	cellFaceIsRightHandedForHdf5->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(cellFaceIsRightHanded, proxy->getElementCount(cellFaceIsRightHanded), proxy));
 	geom->CellFaceIsRightHanded = cellFaceIsRightHandedForHdf5;
 
 	// Face indices
@@ -389,20 +390,14 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 	eml23__IntegerExternalArray* cumulativeLength = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	geom->FacesPerCell->CumulativeLength = cumulativeLength;
 	cumulativeLength->NullValue = -1;
-	cumulativeLength->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = faceIndicesCumulativeCountPerCell;
-	cumulativeLength->Values->ExternalFileProxy.push_back(dsPart);
+	cumulativeLength->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	cumulativeLength->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(faceIndicesCumulativeCountPerCell, proxy->getElementCount(faceIndicesCumulativeCountPerCell), proxy));
 	// Elements
 	eml23__IntegerExternalArray* elements = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	geom->FacesPerCell->Elements = elements;
 	elements->NullValue = faceCount+1;
-	elements->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = faceIndicesPerCell;
-	elements->Values->ExternalFileProxy.push_back(dsPart);
+	elements->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	elements->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(faceIndicesPerCell, proxy->getElementCount(faceIndicesPerCell), proxy));
 
 	// Node indices
 	//XML
@@ -411,29 +406,20 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 	cumulativeLength = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	geom->NodesPerFace->CumulativeLength = cumulativeLength;
 	cumulativeLength->NullValue = -1;
-	cumulativeLength->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = nodeIndicesCumulativeCountPerFace;
-	cumulativeLength->Values->ExternalFileProxy.push_back(dsPart);
+	cumulativeLength->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	cumulativeLength->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(nodeIndicesCumulativeCountPerFace, proxy->getElementCount(nodeIndicesCumulativeCountPerFace), proxy));
 	// Elements
 	elements = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	geom->NodesPerFace->Elements = elements;
 	elements->NullValue = pointCount+1;
-	elements->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = nodeIndicesPerFace;
-	elements->Values->ExternalFileProxy.push_back(dsPart);
+	elements->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	elements->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(nodeIndicesPerFace, proxy->getElementCount(nodeIndicesPerFace), proxy));
 
 	// XML points
 	resqml22__Point3dExternalArray* xmlPoints = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
 	geom->Points = xmlPoints;
-	xmlPoints->Coordinates = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = points;
-	xmlPoints->Coordinates->ExternalFileProxy.push_back(dsPart);
+	xmlPoints->Coordinates = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlPoints->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(points, proxy->getElementCount(points), proxy));
 
 	getRepository()->addRelationship(this, localCrs);
 }
@@ -486,11 +472,8 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 	// Face Right handness
 	//XML
 	eml23__BooleanExternalArray* cellFaceIsRightHandedForHdf5 = soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
-	cellFaceIsRightHandedForHdf5->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = cellFaceIsRightHanded;
-	cellFaceIsRightHandedForHdf5->Values->ExternalFileProxy.push_back(dsPart);
+	cellFaceIsRightHandedForHdf5->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	cellFaceIsRightHandedForHdf5->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(cellFaceIsRightHanded, proxy->getElementCount(cellFaceIsRightHanded), proxy));
 	geom->CellFaceIsRightHanded = cellFaceIsRightHandedForHdf5;
 
 	// Face indices
@@ -509,7 +492,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 		eml23__IntegerLatticeArray* cumulativeLength = soap_new_eml23__IntegerLatticeArray(gsoapProxy2_3->soap);
 		geom->FacesPerCell->CumulativeLength = cumulativeLength;
 		cumulativeLength->StartValue = faceCountPerCell;
-		cumulativeLength->Offset.push_back(soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap, 1));
+		cumulativeLength->Offset.push_back(soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap));
 		cumulativeLength->Offset[0]->Count = cellCount - 1;
 		cumulativeLength->Offset[0]->Value = faceCountPerCell;
 	}
@@ -517,11 +500,8 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 	eml23__IntegerExternalArray* elements = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	geom->FacesPerCell->Elements = elements;
 	elements->NullValue = faceCount+1;
-	elements->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = faceIndicesPerCell;
-	elements->Values->ExternalFileProxy.push_back(dsPart);
+	elements->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	elements->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(faceIndicesPerCell, proxy->getElementCount(faceIndicesPerCell), proxy));
 
 	// Node indices
 	//XML
@@ -530,27 +510,21 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 	eml23__IntegerLatticeArray* cumulativeLength = soap_new_eml23__IntegerLatticeArray(gsoapProxy2_3->soap);
 	geom->NodesPerFace->CumulativeLength = cumulativeLength;
 	cumulativeLength->StartValue = nodeCountPerFace;
-	cumulativeLength->Offset.push_back(soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap, 1));
+	cumulativeLength->Offset.push_back(soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap));
 	cumulativeLength->Offset[0]->Count = geom->FaceCount - 1;
 	cumulativeLength->Offset[0]->Value = nodeCountPerFace;
 	// Elements
 	elements = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	geom->NodesPerFace->Elements = elements;
 	elements->NullValue = pointCount+1;
-	elements->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = nodeIndicesPerFace;
-	elements->Values->ExternalFileProxy.push_back(dsPart);
+	elements->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	elements->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(nodeIndicesPerFace, proxy->getElementCount(nodeIndicesPerFace), proxy));
 
 	// XML points
 	resqml22__Point3dExternalArray* xmlPoints = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
 	geom->Points = xmlPoints;
-	xmlPoints->Coordinates = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = points;
-	xmlPoints->Coordinates->ExternalFileProxy.push_back(dsPart);
+	xmlPoints->Coordinates = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlPoints->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(points, proxy->getElementCount(points), proxy));
 
 	getRepository()->addRelationship(this, localCrs);
 }

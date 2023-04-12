@@ -1022,6 +1022,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
+
 	if (parameters == nullptr) {
 		throw invalid_argument("The parameters of the nodes of the ijk grid cannot be null.");
 	}
@@ -1048,16 +1049,16 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		? gsoap_resqml2_0_1::resqml20__KDirection::down
 		: computeKDirection(controlPoints, controlPointCountPerPillar, nullptr, localCrs);
 
+	writeGeometryOnHdf(parameters,
+		controlPoints, controlPointParameters, controlPointCountPerPillar,
+		splitCoordinateLineCount, pillarOfCoordinateLine,
+		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, proxy);
+
 	const std::string hdfDatasetPrefix = getHdfGroup();
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", controlPointParameters != nullptr ? hdfDatasetPrefix + "/controlPointParameters" : "", controlPointCountPerPillar, pillarKind, proxy,
 		splitCoordinateLineCount, hdfDatasetPrefix + "/PillarIndices",
 		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, localCrs);
-
-	writeGeometryOnHdf(parameters,
-		controlPoints, controlPointParameters, controlPointCountPerPillar,
-		splitCoordinateLineCount, pillarOfCoordinateLine,
-		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, proxy);
 }
 
 void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRepresentation::PillarInformation & pillarInfo) const

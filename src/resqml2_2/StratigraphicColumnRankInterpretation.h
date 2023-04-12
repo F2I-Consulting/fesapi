@@ -83,16 +83,16 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getStratigraphicUnitInterpretationCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratigraphicUnitInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getStratigraphicUnitInterpretationDor(unsigned int index) const final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getHorizonInterpretationCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getHorizonInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getHorizonInterpretationDor(unsigned int index) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml22";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

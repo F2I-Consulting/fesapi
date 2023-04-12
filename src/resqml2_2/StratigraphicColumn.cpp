@@ -54,9 +54,5 @@ unsigned int StratigraphicColumn::getStratigraphicColumnRankInterpretationCount(
 
 COMMON_NS::DataObjectReference StratigraphicColumn::getStratigraphicColumnRankInterpretationDor(unsigned int index) const
 {
-	if (index >= getStratigraphicColumnRankInterpretationCount()) {
-		throw std::out_of_range("The index is out of range");
-	}
-
-	return COMMON_NS::DataObjectReference(static_cast<_resqml22__StratigraphicColumn*>(gsoapProxy2_3)->Ranks[index]);
+	return COMMON_NS::DataObjectReference(static_cast<_resqml22__StratigraphicColumn*>(gsoapProxy2_3)->Ranks.at(index));
 }

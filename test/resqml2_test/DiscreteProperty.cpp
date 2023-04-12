@@ -45,7 +45,7 @@ void DiscreteProperty::initRepo() {
 	RESQML2_NS::DiscreteProperty* charDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultCharPropUuid, "char prop",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	int8_t charValues[6] = { 0, 1, 2, 3, 4, 5 };
 	charDiscreteProperty->pushBackInt8Hdf5Array3dOfValues(charValues, 1, 2, 3, hdfProxy, -1);
@@ -54,7 +54,7 @@ void DiscreteProperty::initRepo() {
 	RESQML2_NS::DiscreteProperty* shortDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultShortPropUuid, "short prop",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	short shortValues[6] = { 0, 1, 2, 3, 4, 5 };
 	shortDiscreteProperty->pushBackShortHdf5Array3dOfValues(shortValues, 1, 2, 3, hdfProxy, -1);
@@ -63,7 +63,7 @@ void DiscreteProperty::initRepo() {
 	RESQML2_NS::DiscreteProperty* ushortDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultUShortPropUuid, "ushort prop",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	unsigned short ushortValues[6] = { 0, 1, 2, 3, 4, 5 };
 	ushortDiscreteProperty->pushBackUShortHdf5Array3dOfValues(ushortValues, 1, 2, 3, hdfProxy, -1);
@@ -72,7 +72,7 @@ void DiscreteProperty::initRepo() {
 	RESQML2_NS::DiscreteProperty* intDiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultIntPropUuid, "int prop",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	int intValues[6] = { 0, 1, 2, 3, 4, 5 };
 	intDiscreteProperty->pushBackIntHdf5Array3dOfValues(intValues, 1, 2, 3, hdfProxy, -1);
@@ -81,7 +81,7 @@ void DiscreteProperty::initRepo() {
 	RESQML2_NS::DiscreteProperty* int64DiscreteProperty = repo->createDiscreteProperty(
 		ijkGrid, defaultInt64PropUuid, "Int64 prop",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	int64_t int64Values[6] = { 0, 1, 2, 3, 4, 5 };
 	int64DiscreteProperty->pushBackInt64Hdf5Array3dOfValues(int64Values, 1, 2, 3, hdfProxy, -1);
@@ -90,7 +90,7 @@ void DiscreteProperty::initRepo() {
 	RESQML2_NS::DiscreteProperty* constantIntegerProperty = repo->createDiscreteProperty(
 		ijkGrid, "d6896172-795c-46be-bdd1-f9f9ed42f1f0", "Constant Integer Property",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	constantIntegerProperty->pushBackIntegerConstantArrayOfValues(10, 3);
 }

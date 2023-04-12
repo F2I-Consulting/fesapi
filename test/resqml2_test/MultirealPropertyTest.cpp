@@ -44,11 +44,11 @@ void MultirealPropertyTest::initRepo() {
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the ContinuousProperty real 0
-	auto propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
+	auto propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_3::eml23__QuantityClassKind::length);
 	RESQML2_NS::ContinuousProperty* continuousPropertyReal0 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal0, "real0",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	REQUIRE(continuousPropertyReal0 != nullptr);
@@ -60,7 +60,7 @@ void MultirealPropertyTest::initRepo() {
 	RESQML2_NS::ContinuousProperty* continuousPropertyReal1 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal1, "real1",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	REQUIRE(continuousPropertyReal1 != nullptr);
@@ -73,7 +73,7 @@ void MultirealPropertyTest::initRepo() {
 	RESQML2_NS::ContinuousProperty* continuousPropertyReal10 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal10, "real10",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	REQUIRE(continuousPropertyReal10 != nullptr);
@@ -86,7 +86,7 @@ void MultirealPropertyTest::initRepo() {
 	RESQML2_NS::ContinuousProperty* continuousPropertyReal15 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal15, "real15",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	REQUIRE(continuousPropertyReal0 != nullptr);

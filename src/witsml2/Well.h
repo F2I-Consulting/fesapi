@@ -27,7 +27,7 @@ namespace RESQML2_NS
 	class WellboreFeature;
 }
 
-namespace WITSML2_0_NS
+namespace WITSML2_1_NS
 {
 	class WellCompletion;
 }
@@ -63,36 +63,33 @@ namespace WITSML2_NS
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Region)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, District)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Block)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Operator)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OperatorDiv)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OriginalOperator)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumAPI)
 
 		// Optional enum
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWell)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWell)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellFluid, FluidWell)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellDirection, DirectionWell)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::eml23__WellStatus, StatusWell)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellPurpose, PurposeWell)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellFluid, FluidWell)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellDirection, DirectionWell)
 
-		ABSTRACT_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_1::eml21__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_3::eml23__LengthUom)
 		ABSTRACT_GETTER_PRESENCE_ATTRIBUTE(GroundElevation)
 
-		ABSTRACT_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(PcInterest, gsoap_eml2_1::eml21__DimensionlessUom)
+		ABSTRACT_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(PcInterest, gsoap_eml2_3::eml23__DimensionlessUom)
 
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimLicense)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimSpud)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimPa)
 
 		/**
-			* @brief	Sets the ground level elevation (land rigs)
-			*
-			* @exception	std::invalid_argument	If @p value is undefined.
-			*
-			* @param 	value	The elevation value.
-			* @param 	uom  	The elevation unit of measure.
-			* @param 	datum	The elevation datum.
-			*/
-		DLL_IMPORT_OR_EXPORT virtual void setGroundElevation(double value, gsoap_eml2_1::eml21__LengthUom uom, const std::string& datum) = 0;
+		* @brief	Sets the ground level elevation (land rigs)
+		*
+		* @exception	std::invalid_argument	If @p value is undefined.
+		*
+		* @param 	value	The elevation value.
+		* @param 	uom  	The elevation unit of measure.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual void setGroundElevation(double value, gsoap_eml2_3::eml23__LengthUom uom) = 0;
 
 		/**
 		 * @brief	Gets the ground level elevation value
@@ -110,16 +107,7 @@ namespace WITSML2_NS
 		 *
 		 * @returns	The ground level elevation unit of measure.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_1::eml21__LengthUom getGroundElevationUom() const = 0;
-
-		/**
-		 * @brief	Gets the ground level elevation datum
-		 *
-		 * @exception	std::invalid_argument	If the ground elevation does not exist.
-		 *
-		 * @returns	The ground level elevation datum.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getGroundElevationDatum() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::eml23__LengthUom getGroundElevationUom() const = 0;
 
 		/**
 		* Set the time zone in which the well is located.It is the deviation in hours and minutes from
@@ -179,50 +167,19 @@ namespace WITSML2_NS
 		/**
 		 * Pushes a back location
 		 *
-		 * @param 	guid					Unique identifier.
 		 * @param 	projectedX				The projected x coordinate.
 		 * @param 	projectedY				The projected y coordinate.
-		 * @param 	projectedCrsEpsgCode	The projected crs epsg code.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackLocation(
-			const std::string & guid,
 			double projectedX,
-			double projectedY,
-			unsigned int projectedCrsEpsgCode) = 0;
+			double projectedY) = 0;
 
 		/**
-		 * Ge location count
+		 * Get location count
 		 *
 		 * @returns	An int.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int geLocationCount() const = 0;
-
-		/**
-		 * Pushes a back datum
-		 *
-		 * @param 	guid			   	Unique identifier.
-		 * @param 	title			   	The title.
-		 * @param 	code			   	The code.
-		 * @param 	datum			   	The datum.
-		 * @param 	elevationUnit	   	The elevation unit.
-		 * @param 	elevation		   	The elevation.
-		 * @param 	verticalCrsEpsgCode	The vertical crs epsg code.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackDatum(
-			const std::string & guid,
-			const std::string & title,
-			gsoap_eml2_1::eml21__WellboreDatumReference code,
-			const std::string & datum,
-			gsoap_eml2_1::eml21__LengthUom elevationUnit,
-			double elevation,
-			unsigned int verticalCrsEpsgCode) = 0;
-
-		/**
-		 * Gets datum count
-		 *
-		 * @returns	The datum count.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getDatumCount() const = 0;
 
 		/**
 		 * Gets resqml wellbore features
@@ -232,7 +189,7 @@ namespace WITSML2_NS
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::WellboreFeature *> getResqmlWellboreFeatures() const;
 
 		GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, Wellbore)
-		GETTER_DATAOBJECTS(WITSML2_0_NS::WellCompletion, Wellcompletion)
+		GETTER_DATAOBJECTS(WITSML2_1_NS::WellCompletion, Wellcompletion)
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.
@@ -261,7 +218,7 @@ namespace WITSML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		Well(gsoap_eml2_1::witsml20__Well* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		Well(gsoap_eml2_3::witsml21__Well* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.

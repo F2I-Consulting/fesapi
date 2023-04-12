@@ -51,21 +51,6 @@ namespace RESQML2_2_NS
 		WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::MdDatum* mdInfo);
 
 		/**
-		 * Creates an instance with an existing deviation survey as its origin.
-		 *
-		 * @exception	std::invalid_argument	If @p interp or @p deviationSurvey is @c nullptr.
-		 *
-		 * @param [in]	interp		   	The represented interpretation. It cannot be null.
-		 * @param 	  	guid		   	The guid to set to the wellbore trajectory representation. If
-		 * 								empty then a new guid will be generated.
-		 * @param 	  	title		   	The title to set to the wellbore trajectory representation. If
-		 * 								empty then \"unknown\" title will be set.
-		 * @param [in]	deviationSurvey	The deviation survey on which this wellbore trajectory relies on.
-		 * 								MD data will be retrieve from it. It cannot be null.
-		 */
-		WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey);
-
-		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.

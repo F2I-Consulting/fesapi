@@ -119,7 +119,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @returns	A contact from its index in this framework.
 		 */
-		gsoap_eml2_3::resqml22__SealedContactRepresentationPart* getContact(unsigned int contactIdx) const;
+		gsoap_eml2_3::resqml22__SealedContact* getContact(unsigned int contactIdx) const;
 
 		/**
 		 * Get a contact patch from its index in a contact of this framework.

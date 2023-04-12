@@ -28,7 +28,7 @@ def serialize_grid(repo):
 
     # ONE CONTINUOUS PROPERTY ON A PARTIAL 3 cells I=1 J=1 K=3 GRID
     partial_ijk_grid = repo.createPartialIjkGridRepresentation("bc92a216-aa17-4a1f-9253-8b3ab094bf84", "partial grid")
-    continuous_prop = repo.createContinuousProperty(partial_ijk_grid, "827d1074-5b16-4c7d-80bb-a8f3e1413753", "My length property", 1, fesapi.resqml22__IndexableElement_cells,
+    continuous_prop = repo.createContinuousProperty(partial_ijk_grid, "827d1074-5b16-4c7d-80bb-a8f3e1413753", "My length property", 1, fesapi.eml23__IndexableElement_cells,
         fesapi.resqml20__ResqmlUom_m, fesapi.resqml20__ResqmlPropertyKind_length)
     prop_values = [1.1, 2.2, 3.3]
     resqml_values = fesapi.FloatArray(3)
@@ -88,7 +88,7 @@ def show_ijk_grid(ijk_grid):
     if ijk_grid.isPartial():
         return
 
-    if ijk_grid.getGeometryKind() != fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind.NO_GEOMETRY:
+    if ijk_grid.getGeometryKind() != fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind_NO_GEOMETRY:
         most_complex_pillar_geom = ijk_grid.getMostComplexPillarGeometry()
         if most_complex_pillar_geom == fesapi.resqml20__PillarShape_vertical:
             print("Most complex pillar geometry is vertical")
@@ -102,15 +102,15 @@ def show_ijk_grid(ijk_grid):
         k_gap_count = ijk_grid.getKGapsCount()
         print("K Gap Count = ", k_gap_count)
 
-        if ijk_grid.getGeometryKind() == fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind.LATTICE:
+        if ijk_grid.getGeometryKind() == fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind_LATTICE:
             print("This 3d grid has a lattice geometry.")
         else:
             if ijk_grid.getGeometryKind() == \
-               fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind.PARAMETRIC:
+               fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind_PARAMETRIC:
                 print("This 3d grid has a parametric geometry.")
             else:
                 if ijk_grid.getGeometryKind() == \
-                   fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind.EXPLICIT:
+                   fesapi.Resqml2_AbstractIjkGridRepresentation.geometryKind_EXPLICIT:
                     print("This 3d grid has an explicit geometry.")
                 else:
                     print("This 3d grid has an unknown geometry.")

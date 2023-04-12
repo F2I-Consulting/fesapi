@@ -35,7 +35,7 @@ using namespace gsoap_resqml2_0_1;
 const char* CategoricalProperty::XML_NS = "resqml20";
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind,
 	RESQML2_NS::StringTableLookup* strLookup, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
 	if (rep == nullptr) {
@@ -65,7 +65,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind,
 	RESQML2_NS::DoubleTableLookup* dblLookup, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
 	if (rep == nullptr) {
@@ -95,7 +95,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind,
 	RESQML2_NS::StringTableLookup* strLookup, EML2_NS::PropertyKind * localPropKind)
 {
 	if (rep == nullptr) {
@@ -123,7 +123,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind,
+	unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind,
 	RESQML2_NS::DoubleTableLookup* dblLookup, EML2_NS::PropertyKind * localPropKind)
 {
 	if (rep == nullptr) {

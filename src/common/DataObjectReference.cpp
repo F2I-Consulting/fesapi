@@ -23,19 +23,13 @@ under the License.
 using namespace COMMON_NS;
 
 DataObjectReference::DataObjectReference(AbstractObject const * dataObj)
-	: dor20(nullptr), dor21(nullptr), dor22(nullptr), dor23(nullptr)
+	: dor20(nullptr), dor23(nullptr)
 {
 	std::string ns = dataObj->getXmlNamespace();
 	if (ns == "resqml20" || ns == "eml20") {
 		dor20 = dataObj->newResqmlReference();
 	}
-	else if (ns == "witsml20" || ns == "eml21") {
-		dor21 = dataObj->newEmlReference();
-	}
-	else if (ns == "prodml21" || ns == "eml22") {
-		dor22 = dataObj->newEml22Reference();
-	}
-	else if (ns == "resqml22" || ns == "eml23") {
+	else if (ns == "witsml21" || ns == "prodml22" || ns == "resqml22" || ns == "eml23") {
 		dor23 = dataObj->newEml23Reference();
 	}
 }
@@ -46,13 +40,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* DataObjectReference::toDor20() co
 	}
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* result = nullptr;
-	if (dor21 != nullptr) {
-		result = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(dor21->soap);
-	}
-	else if (dor22 != nullptr) {
-		result = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(dor22->soap);
-	}
-	else if (dor23 != nullptr) {
+	if (dor23 != nullptr) {
 		result = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(dor23->soap);
 	}
 	else {

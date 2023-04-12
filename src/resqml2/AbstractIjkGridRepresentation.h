@@ -791,8 +791,10 @@ namespace RESQML2_NS
 
 
 			if (partialObject != nullptr) {
-				if (partialObject->ContentType.find("x-resqml+xml;version=2.0") != std::string::npos) { return "resqml20"; }
-				if (partialObject->ContentType.find("x-resqml+xml;version=2.2") != std::string::npos) { return "resqml22"; }
+				if (partialObject->ContentType.find("x-resqml+xml;version=2.0") != std::string::npos ||
+					partialObject->ContentType.find("resqml20.") == 0) { return "resqml20"; }
+				if (partialObject->ContentType.find("x-resqml+xml;version=2.2") != std::string::npos ||
+					partialObject->ContentType.find("resqml22.") == 0) { return "resqml22"; }
 			}
 
 			throw std::logic_error("Cannot infer what is the Energistics namespace of this instance.");

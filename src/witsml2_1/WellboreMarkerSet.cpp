@@ -16,47 +16,43 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_1/WellboreMarkerSet.h"
+#include "WellboreMarkerSet.h"
 
 #include <stdexcept>
 
-#include "witsml2_1/Well.h"
-
 using namespace std;
 using namespace WITSML2_1_NS;
-using namespace gsoap_eml2_2;
-
-const char* WellboreMarkerSet::XML_TAG = "WellboreMarkerSet";
+using namespace gsoap_eml2_3;
 
 WellboreMarkerSet::WellboreMarkerSet(
-	Wellbore* witsmlWellbore,
+	WITSML2_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
-	const std::string & mdDatum,
-	const double & mdBaseSample,
-	const double & mdTopSample)
+	double mdBaseSample,
+	double mdTopSample,
+	eml23__LengthUom mdUom)
 {
-	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore marker set must be associated to a well.");
+	gsoapProxy2_3 = soap_new_witsml21__WellboreMarkerSet(witsmlWellbore->getGsoapContext());
 
-	gsoapProxy2_2 = soap_new_witsml2__WellboreMarkerSet(witsmlWellbore->getGsoapContext(), 1);
+	static_cast<witsml21__WellboreMarkerSet*>(gsoapProxy2_3)->MarkerSetInterval = soap_new_eml23__MdInterval(witsmlWellbore->getGsoapContext());
+	static_cast<witsml21__WellboreMarkerSet*>(gsoapProxy2_3)->MarkerSetInterval->MdMin = mdTopSample;
+	static_cast<witsml21__WellboreMarkerSet*>(gsoapProxy2_3)->MarkerSetInterval->MdMax = mdBaseSample;
+	static_cast<witsml21__WellboreMarkerSet*>(gsoapProxy2_3)->MarkerSetInterval->Uom = soap_eml23__LengthUom2s(gsoapProxy2_3->soap, mdUom);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	setWellbore(witsmlWellbore);
+	if (witsmlWellbore != nullptr) {
+		setWellbore(witsmlWellbore);
+	}
 }
 
-gsoap_eml2_2::eml22__DataObjectReference* WellboreMarkerSet::getWellboreDor() const
+COMMON_NS::DataObjectReference WellboreMarkerSet::getWellboreDor() const
 {
-	return static_cast<witsml2__WellboreMarkerSet*>(gsoapProxy2_2)->Wellbore;
+	return COMMON_NS::DataObjectReference(static_cast<witsml21__WellboreMarkerSet*>(gsoapProxy2_3)->Wellbore);
 }
 
-class Wellbore* WellboreMarkerSet::getWellbore() const
-{
-	return getRepository()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
-}
-
-void WellboreMarkerSet::setWellbore(Wellbore* witsmlWellbore)
+void WellboreMarkerSet::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 {
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Wellbore to a witsml wellbore marker set");
@@ -69,11 +65,6 @@ void WellboreMarkerSet::setWellbore(Wellbore* witsmlWellbore)
 	getRepository()->addRelationship(this, witsmlWellbore);
 
 	// XML
-	witsml2__WellboreMarkerSet* wms = static_cast<witsml2__WellboreMarkerSet*>(gsoapProxy2_2);
-	wms->Wellbore = witsmlWellbore->newEml22Reference();
-}
-
-void WellboreMarkerSet::loadTargetRelationships()
-{
-	convertDorIntoRel<Wellbore>(getWellboreDor());
+	witsml21__WellboreMarkerSet* wms = static_cast<witsml21__WellboreMarkerSet*>(gsoapProxy2_3);
+	wms->Wellbore = witsmlWellbore->newEml23Reference();
 }

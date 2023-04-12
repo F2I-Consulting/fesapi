@@ -76,6 +76,6 @@ namespace WITSML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		WellboreObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		WellboreObject(gsoap_eml2_3::eml23__AbstractObject* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 	};
 }

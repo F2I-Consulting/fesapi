@@ -20,7 +20,7 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-namespace WITSML2_0_NS
+namespace WITSML2_1_NS
 {
 	class WellboreMarker;
 }
@@ -99,7 +99,7 @@ namespace RESQML2_NS
 		 * @returns	@c nullptr if no WITSML wellbore marker is associated to this wellbore marker, else the
 		 * 			associated WITSML wellbore marker.
 		 */
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreMarker* getWitsmlWellboreMarker() const;
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WellboreMarker* getWitsmlWellboreMarker() const;
 
 		/**
 		 * Gets the DOR of the WITSML wellbore marker linked to this well marker. Especially
@@ -116,7 +116,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	wellbore	The WITSML wellbore marker to associate to this wellbore. It cannot be null.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setWitsmlWellboreMarker(WITSML2_1_NS::WellboreMarker * wellboreMarker) = 0;
 
 		/**
 		 * Check wether this marker has got a dip angle or not.
@@ -142,7 +142,7 @@ namespace RESQML2_NS
 		 *
 		 * @return the Dip angle uom.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__PlaneAngleUom getDipAngleUom() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__PlaneAngleUom getDipAngleUom() const;
 
 		/**
 		 * Get the Dip angle uom as a string.
@@ -177,7 +177,7 @@ namespace RESQML2_NS
 		 *
 		 * @return the Dip direction uom.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__PlaneAngleUom getDipDirectionUom() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__PlaneAngleUom getDipDirectionUom() const;
 
 		/**
 		 * Get the Dip direction uom as a string.
@@ -206,13 +206,6 @@ namespace RESQML2_NS
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreMarker(gsoap_resqml2_0_1::resqml20__WellboreMarker* fromGsoap) : AbstractObject(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gSOAP instance.
-		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
-		 */
-		WellboreMarker(gsoap_eml2_3::resqml22__WellboreMarker* fromGsoap) : AbstractObject(fromGsoap) {}
 
 		/** Loads target relationships */
 		void loadTargetRelationships() final;

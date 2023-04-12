@@ -27,7 +27,7 @@ namespace RESQML2_0_1_NS
 	class WellboreFeature;
 }
 
-namespace WITSML2_0_NS
+namespace WITSML2_1_NS
 {
 	class WellboreCompletion;
 	class WellboreGeometry;
@@ -59,18 +59,17 @@ namespace WITSML2_NS
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Number)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, SuffixAPI)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWellbore)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, IsActive)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWellbore)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreType, TypeWellbore)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreShape, Shape)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellFluid, FluidWellbore)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::eml23__WellStatus, StatusWellbore)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellPurpose, PurposeWellbore)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellboreType, TypeWellbore)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellboreShape, Shape)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellFluid, FluidWellbore)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, AchievedTD)
-		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(Md, gsoap_eml2_1::eml21__LengthUom)
-		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBit, gsoap_eml2_1::eml21__LengthUom)
-		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdKickoff, gsoap_eml2_1::eml21__LengthUom)
-		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdPlanned, gsoap_eml2_1::eml21__LengthUom)
-		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdSubSeaPlanned, gsoap_eml2_1::eml21__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(Md, gsoap_eml2_3::eml23__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBit, gsoap_eml2_3::eml23__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdKickoff, gsoap_eml2_3::eml23__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdPlanned, gsoap_eml2_3::eml23__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdSubSeaPlanned, gsoap_eml2_3::eml23__LengthUom)
 
 		/**
 		 * @brief	Gets the well
@@ -96,9 +95,9 @@ namespace WITSML2_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, ResqmlWellboreFeature);
 
 		GETTER_DATAOBJECTS(WITSML2_NS::Trajectory, Trajectory)
-		GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreCompletion, WellboreCompletion)
-		GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreGeometry, WellboreGeometry)
-		GETTER_DATAOBJECTS(WITSML2_0_NS::Log, Log)
+		GETTER_DATAOBJECTS(WITSML2_1_NS::WellboreCompletion, WellboreCompletion)
+		GETTER_DATAOBJECTS(WITSML2_1_NS::WellboreGeometry, WellboreGeometry)
+		GETTER_DATAOBJECTS(WITSML2_1_NS::Log, Log)
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.
@@ -129,7 +128,7 @@ namespace WITSML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		Wellbore(gsoap_eml2_1::witsml20__Wellbore* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		Wellbore(gsoap_eml2_3::witsml21__Wellbore* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.

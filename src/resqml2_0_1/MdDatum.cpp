@@ -29,7 +29,7 @@ using namespace gsoap_resqml2_0_1;
 const char* MdDatum::XML_NS = "resqml20";
 
 MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
-	RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
+	RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
 {
 	if (repo == nullptr)
@@ -38,9 +38,7 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREMdDatum(repo->getGsoapContext());
 	_resqml20__MdDatum* mdInfo = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
 
-	mdInfo->MdReference = static_cast<std::underlying_type<gsoap_eml2_3::eml23__WellboreDatumReference>::type>(originKind) < 5
-		? static_cast<resqml20__MdReference>(static_cast<std::underlying_type<gsoap_eml2_3::eml23__WellboreDatumReference>::type>(originKind))
-		: static_cast<resqml20__MdReference>(static_cast<std::underlying_type<gsoap_eml2_3::eml23__WellboreDatumReference>::type>(originKind) + 1);
+	soap_s2resqml20__MdReference(gsoapProxy2_0_1->soap, gsoap_eml2_3::soap_eml23__ReferencePointKind2s(gsoapProxy2_0_1->soap, originKind), &mdInfo->MdReference);
 	mdInfo->Location = soap_new_resqml20__Point3d(repo->getGsoapContext());
 	mdInfo->Location->Coordinate1 = referenceLocationOrdinal1;
 	mdInfo->Location->Coordinate2 = referenceLocationOrdinal2;
@@ -85,18 +83,25 @@ double MdDatum::getZ() const
 	return static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->Location->Coordinate3;
 }
 
-gsoap_eml2_3::eml23__WellboreDatumReference MdDatum::getOriginKind() const
+bool MdDatum::hasKind() const
 {
-	resqml20__MdReference mdRef = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->MdReference;
-	if (static_cast<std::underlying_type<resqml20__MdReference>::type>(mdRef) < 5) {
-		return static_cast<gsoap_eml2_3::eml23__WellboreDatumReference>(mdRef);
+	return static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->MdReference != resqml20__MdReference::arbitrary_x0020point;
+}
+
+gsoap_eml2_3::eml23__ReferencePointKind MdDatum::getKind() const
+{
+	if (!hasKind()) {
+		throw logic_error("This reference point has no kind : it is an arbitrary point.");
 	}
-	else if (static_cast<std::underlying_type<resqml20__MdReference>::type>(mdRef) == 5) {
-		throw std::logic_error("This 2.0.1 enum value is no more supported.");
+
+	gsoap_eml2_3::eml23__ReferencePointKind result;
+
+	std::string mdRefStr = soap_resqml20__MdReference2s(getGsoapContext(), static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->MdReference);
+	if (gsoap_eml2_3::soap_s2eml23__ReferencePointKind(getGsoapContext(), mdRefStr.c_str(), &result) != SOAP_OK) {
+		throw invalid_argument("The reference point kind \"" + mdRefStr + "\" is not recognized by FESAPI.");
 	}
-	else {
-		return static_cast<gsoap_eml2_3::eml23__WellboreDatumReference>(static_cast<std::underlying_type<resqml20__MdReference>::type>(mdRef) - 1);
-	}
+
+	return result;
 }
 
 COMMON_NS::DataObjectReference MdDatum::getLocalCrsDor() const

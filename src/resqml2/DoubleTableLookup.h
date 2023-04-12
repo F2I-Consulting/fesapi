@@ -151,13 +151,6 @@ namespace RESQML2_NS
 		 */
 		DoubleTableLookup(gsoap_resqml2_0_1::_resqml20__DoubleTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
 
-		/**
-		 * Creates an instance of this class by wrapping a gSoap RESQML2.2 instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		DoubleTableLookup(gsoap_eml2_3::_resqml22__DoubleTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
-
 		/** Loads target relationships */
 		void loadTargetRelationships() final {}
 	};

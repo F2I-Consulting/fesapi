@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "NonSealedSurfaceFrameworkRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
 #include <sstream>
 
 #include <H5public.h>
@@ -79,28 +77,23 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 
 	_resqml22__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml22__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 
-	resqml22__NonSealedContactRepresentationPart* contactRep = soap_new_resqml22__NonSealedContactRepresentationPart(gsoapProxy2_3->soap);
-	contactRep->Index = orgRep->NonSealedContactRepresentation.size();
-	orgRep->NonSealedContactRepresentation.push_back(contactRep);
+	resqml22__NonSealedContact* contactRep = soap_new_resqml22__NonSealedContact(gsoapProxy2_3->soap);
+	contactRep->Index = orgRep->Contacts.size();
+	orgRep->Contacts.push_back(contactRep);
 	resqml22__PointGeometry* contactGeom = soap_new_resqml22__PointGeometry(gsoapProxy2_3->soap);
 	contactRep->Geometry = contactGeom;
 	contactGeom->LocalCrs = localCrs->newEml23Reference();
 	resqml22__Point3dExternalArray* contactGeomPoints = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
 	contactGeom->Points = contactGeomPoints;
-	contactGeomPoints->Coordinates = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	ostringstream oss;
-	oss << "points_contact_representation" << orgRep->NonSealedContactRepresentation.size()-1;
-	dsPart->PathInExternalFile = getHdfGroup() + "/" + oss.str();
-	contactGeomPoints->Coordinates->ExternalFileProxy.push_back(dsPart);
+	contactGeomPoints->Coordinates = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	contactGeomPoints->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/points_contact_representation" + std::to_string(orgRep->Contacts.size() - 1), pointCount*3, proxy));
 	
 	// HDF
 	uint64_t numValues[2];
 	numValues[0] = pointCount;
 	numValues[1] = 3; // 3 for X, Y and Z
 
-	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), points, numValues, 2);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "points_contact_representation" + std::to_string(orgRep->Contacts.size() - 1), points, numValues, 2);
 
 	getRepository()->addRelationship(this, localCrs);
 }
@@ -109,9 +102,9 @@ unsigned int NonSealedSurfaceFrameworkRepresentation::getContactCount() const
 {
 	_resqml22__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml22__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 
-	if (orgRep->NonSealedContactRepresentation.size() > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too much contact representations for fesapi");
+	if (orgRep->Contacts.size() > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("There are too much contact representations for FESAPI");
 	}
 
-	return static_cast<unsigned int>(orgRep->NonSealedContactRepresentation.size());
+	return static_cast<unsigned int>(orgRep->Contacts.size());
 }

@@ -61,9 +61,6 @@ uint64_t StreamlinesRepresentation::getLineCount() const
 uint64_t StreamlinesRepresentation::getWellboreTrajectoryCount() const
 {
 	auto const* wellbores = static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3)->StreamlineWellbores;
-	if (wellbores == nullptr) {
-		throw std::logic_error("There is no wellbore associated to this streamlines representation");
-	}
 
 	return wellbores->WellboreTrajectoryRepresentation.size();
 }
@@ -130,35 +127,30 @@ void StreamlinesRepresentation::setWellboreInformation(uint32_t const* injectorP
 	// XML
 	eml23__IntegerExternalArray* xmlInjectorPerLine = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlInjectorPerLine->NullValue = nullValue;
-	xmlInjectorPerLine->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/InjectorPerLine";
-	xmlInjectorPerLine->Values->ExternalFileProxy.push_back(dsPart);
+	xmlInjectorPerLine->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlInjectorPerLine->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/InjectorPerLine", rep->LineCount, hdfProxy));
 	wellboreInfo->InjectorPerLine = xmlInjectorPerLine;
+	const uint64_t lineCount = rep->LineCount;
 	// HDF
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"InjectorPerLine",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		injectorPerLine,
-		&rep->LineCount, 1);
+		&lineCount, 1);
 
 	// producerPerLine
 	// XML
 	eml23__IntegerExternalArray* xmlProducerPerLine = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlProducerPerLine->NullValue = nullValue;
-	xmlProducerPerLine->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/ProducerPerLine";
-	xmlProducerPerLine->Values->ExternalFileProxy.push_back(dsPart);
+	xmlProducerPerLine->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlProducerPerLine->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/ProducerPerLine", rep->LineCount, hdfProxy));
 	wellboreInfo->ProducerPerLine = xmlProducerPerLine;
 	// HDF
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"ProducerPerLine",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32,
 		producerPerLine,
-		&rep->LineCount, 1);
+		&lineCount, 1);
 
 	// trajectories
 	for (auto const* traj : wellboreTrajectories) {
@@ -220,11 +212,8 @@ void StreamlinesRepresentation::setGeometry(
 	// XML
 	eml23__IntegerExternalArray* xmlNodeCountPerPolyline = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlNodeCountPerPolyline->NullValue = (std::numeric_limits<uint32_t>::max)();
-	xmlNodeCountPerPolyline->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/NodeCountPerPolyline";
-	xmlNodeCountPerPolyline->Values->ExternalFileProxy.push_back(dsPart);
+	xmlNodeCountPerPolyline->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlNodeCountPerPolyline->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/NodeCountPerPolyline", lineCount, hdfProxy));
 	polyline->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// HDF
 	hdfProxy->writeArrayNd(getHdfGroup(),
@@ -262,8 +251,8 @@ void StreamlinesRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, dou
 	resqml22__PointGeometry* pointGeom = getPointGeometry2_2(patchIndex);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray)
 	{
-		auto dsPart = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, xyzPoints);
+		auto const* daPart = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalDataArrayPart[0];
+		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfDoubleValues(daPart->PathInExternalFile, xyzPoints);
 	}
 	else
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
@@ -308,45 +297,37 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 	// XML
 	eml23__IntegerExternalArray* xmlGridIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlGridIndices->NullValue = gridIndicesNullValue;
-	xmlGridIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/GridIndices";
-	xmlGridIndices->Values->ExternalFileProxy.push_back(dsPart);
+	xmlGridIndices->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlGridIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/GridIndices", igc->CellCount, hdfProxy));
 	igc->GridIndices = xmlGridIndices;
+	const uint64_t cellcount = igc->CellCount;
 	// HDF
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
 		gridIndices,
-		&igc->CellCount, 1);
+		&cellcount, 1);
 
 	// CellIndices
 	// XML
 	eml23__IntegerExternalArray* xmlCellIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlCellIndices->NullValue = -1;
-	xmlCellIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/CellIndices";
-	xmlCellIndices->Values->ExternalFileProxy.push_back(dsPart);
+	xmlCellIndices->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlCellIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/CellIndices", igc->CellCount, hdfProxy));
 	igc->CellIndices = xmlCellIndices;
 	// HDF
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"CellIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
 		cellIndices,
-		&igc->CellCount, 1);
+		&cellcount, 1);
 
 	// CellIndices
 	// XML
 	eml23__IntegerExternalArray* xmlLocalFacePairPerCellIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	xmlLocalFacePairPerCellIndices->NullValue = localFacePairPerCellIndicesNullValue;
-	xmlLocalFacePairPerCellIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = hdfProxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/LocalFacePairPerCellIndices";
-	xmlLocalFacePairPerCellIndices->Values->ExternalFileProxy.push_back(dsPart);
+	xmlLocalFacePairPerCellIndices->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlLocalFacePairPerCellIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/LocalFacePairPerCellIndices", igc->CellCount * 2, hdfProxy));
 	igc->LocalFacePairPerCellIndices = xmlLocalFacePairPerCellIndices;
 	// HDF
 	uint64_t datasetDim = igc->CellCount * 2;
@@ -440,28 +421,28 @@ COMMON_NS::DataObjectReference StreamlinesRepresentation::getHdfProxyDor() const
 	resqml22__StreamlinesRepresentation* rep = static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3);
 	if (rep->StreamlineWellbores != nullptr) {
 		if (rep->StreamlineWellbores->InjectorPerLine->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(rep->StreamlineWellbores->InjectorPerLine)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(rep->StreamlineWellbores->InjectorPerLine)->Values->ExternalDataArrayPart[0]));
 		}
 		if (rep->StreamlineWellbores->ProducerPerLine->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(rep->StreamlineWellbores->ProducerPerLine)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(rep->StreamlineWellbores->ProducerPerLine)->Values->ExternalDataArrayPart[0]));
 		}
 	}
 	if (rep->Geometry != nullptr) {
 		if (rep->Geometry->NodeCountPerPolyline->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(rep->Geometry->NodeCountPerPolyline)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(rep->Geometry->NodeCountPerPolyline)->Values->ExternalDataArrayPart[0]));
 		}
 		if (rep->Geometry->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
-			return COMMON_NS::DataObjectReference(static_cast<eml23__BooleanExternalArray*>(rep->Geometry->ClosedPolylines)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__BooleanExternalArray*>(rep->Geometry->ClosedPolylines)->Values->ExternalDataArrayPart[0]));
 		}
 		if (rep->Geometry->IntervalGridCells != nullptr) {
 			if (rep->Geometry->IntervalGridCells->CellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(rep->Geometry->IntervalGridCells->CellIndices)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(rep->Geometry->IntervalGridCells->CellIndices)->Values->ExternalDataArrayPart[0]));
 			}
 			if (rep->Geometry->IntervalGridCells->GridIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(rep->Geometry->IntervalGridCells->GridIndices)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(rep->Geometry->IntervalGridCells->GridIndices)->Values->ExternalDataArrayPart[0]));
 			}
 			if (rep->Geometry->IntervalGridCells->LocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(rep->Geometry->IntervalGridCells->LocalFacePairPerCellIndices)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(rep->Geometry->IntervalGridCells->LocalFacePairPerCellIndices)->Values->ExternalDataArrayPart[0]));
 			}
 		}
 	}

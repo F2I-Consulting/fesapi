@@ -7,7 +7,7 @@ to you under the Apache License, Version 2.0 (the
 "License"; you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -16,58 +16,77 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_1/Log.h"
-#include "witsml2_1/Wellbore.h"
+#include "Log.h"
 
+#include <sstream>
 #include <stdexcept>
+#include <limits>
+
+#include "Wellbore.h"
+#include "ChannelSet.h"
 
 using namespace std;
 using namespace WITSML2_1_NS;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 
 const char* Log::XML_TAG = "Log";
 
-Log::Log(Wellbore* witsmlWellbore,
-		const std::string & guid,
-		const std::string & title)
+Log::Log(WITSML2_NS::Wellbore* witsmlWellbore,
+	const std::string & guid,
+	const std::string & title,
+	bool isActive)
 {
-	if (witsmlWellbore == nullptr) throw invalid_argument("A log must be associated to a well.");
+	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a log.");
 
-	gsoapProxy2_2 = soap_new_witsml2__Log(witsmlWellbore->getGsoapContext(), 1);
+	gsoapProxy2_3 = soap_new_witsml21__Log(witsmlWellbore->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	static_cast<witsml21__Log*>(gsoapProxy2_3)->ActiveStatus = isActive ? eml23__ActiveStatusKind::active : eml23__ActiveStatusKind::inactive;
+
+	witsmlWellbore->getRepository()->addDataObject(this);
 	setWellbore(witsmlWellbore);
 }
 
-gsoap_eml2_2::eml22__DataObjectReference* Log::getWellboreDor() const
+void Log::pushBackChannelSet(ChannelSet * channelSet)
 {
-	return static_cast<witsml2__Log*>(gsoapProxy2_2)->Wellbore;
-}
-
-class Wellbore* Log::getWellbore() const
-{
-	return getRepository()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
-}
-
-void Log::setWellbore(Wellbore* witsmlWellbore)
-{
-	if (witsmlWellbore == nullptr) {
-		throw invalid_argument("Cannot set a null witsml Wellbore to a witsml log");
+	if (channelSet == nullptr) {
+		throw invalid_argument("You cannot push back a null channel set.");
 	}
-	if (getRepository() == nullptr) {
-		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
-	}
+	static_cast<witsml21__Log*>(gsoapProxy2_3)->ChannelSet.push_back(static_cast<witsml21__ChannelSet*>(channelSet->getEml23GsoapProxy()));
 
-	getRepository()->addRelationship(this, witsmlWellbore);
-
-	// XML
-	witsml2__Log* log = static_cast<witsml2__Log*>(gsoapProxy2_2);
-	log->Wellbore = witsmlWellbore->newEml22Reference();
+	getRepository()->addRelationship(this, channelSet);
 }
+
+std::vector<ChannelSet*> Log::getChannelSets() const
+{
+	return getRepository()->getTargetObjects<ChannelSet>(this);
+}
+
+#define SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(attributeDatatype, attributeName, constructor)\
+void Log::set##attributeName(const attributeDatatype & attributeName) {\
+	if (static_cast<witsml21__Log*>(gsoapProxy2_3)->attributeName == nullptr) { static_cast<witsml21__Log*>(gsoapProxy2_3)->attributeName = constructor(gsoapProxy2_3->soap, 1); }\
+	*static_cast<witsml21__Log*>(gsoapProxy2_3)->attributeName = attributeName;\
+}
+
+SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, RunNumber, gsoap_eml2_3::soap_new_std__string)
+SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, PassNumber, gsoap_eml2_3::soap_new_std__string)
+SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, LoggingToolClassLongName, gsoap_eml2_3::soap_new_std__string)
 
 void Log::loadTargetRelationships()
 {
-	convertDorIntoRel<Wellbore>(getWellboreDor());
+	WellboreObject::loadTargetRelationships();
+
+	const std::vector<witsml21__ChannelSet *>& channelSets = static_cast<witsml21__Log*>(gsoapProxy2_3)->ChannelSet;
+
+	for (size_t i = 0; i < channelSets.size(); ++i) {
+		ChannelSet* channelSet = getRepository()->getDataObjectByUuid<ChannelSet>(channelSets[i]->uuid);
+		if (channelSet == nullptr) {
+			channelSet = new ChannelSet(channelSets[i]);
+			getRepository()->addOrReplaceDataObject(channelSet);
+			channelSet->loadTargetRelationships();
+		}
+		getRepository()->addRelationship(this, channelSet);
+	}
 }

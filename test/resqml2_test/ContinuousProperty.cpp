@@ -38,11 +38,11 @@ void ContinuousProperty::initRepo() {
 	RESQML2_NS::AbstractIjkGridRepresentation * rep = repo->createPartialIjkGridRepresentation("", "");
 
 	// creating Float prop without min max
-	auto propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_1::eml21__QuantityClassKind::pressure);
+	auto propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_3::eml23__QuantityClassKind::pressure);
 	RESQML2_NS::ContinuousProperty* noMinMaxFltProperty = repo->createContinuousProperty(
 		rep, defaultUuid, "Float prop without min max",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	float fltValues[24] = { -1, 0, 1, 2, 3, 4, -1, 0, 1, 2, 3, 4,
@@ -53,7 +53,7 @@ void ContinuousProperty::initRepo() {
 	RESQML2_NS::ContinuousProperty* noMinMaxDblProperty = repo->createContinuousProperty(
 		rep, "f2c1c3de-0986-485a-9d09-d0edeadf0d1e", "Double prop without min max",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	double dblValues[24] = { -1, 0, 1, 2, 3, 4, -1, 0, 1, 2, 3, 4,
@@ -64,7 +64,7 @@ void ContinuousProperty::initRepo() {
 	RESQML2_NS::ContinuousProperty* computedMinMaxFltProperty = repo->createContinuousProperty(
 		rep, "3d31a87a-2715-4d23-b455-ff9980a08819", "Float prop with min max computation",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	computedMinMaxFltProperty->pushBackFloatHdf5Array3dOfValues(fltValues, 2, 3, 4, std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
@@ -73,7 +73,7 @@ void ContinuousProperty::initRepo() {
 	RESQML2_NS::ContinuousProperty* computedMinMaxDblProperty = repo->createContinuousProperty(
 		rep, "1398c2f8-3d95-4d29-87a8-8bb5fc334db0", "Double prop with min max computation",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	computedMinMaxDblProperty->pushBackDoubleHdf5Array3dOfValues(dblValues, 2, 3, 4, std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN());
@@ -82,7 +82,7 @@ void ContinuousProperty::initRepo() {
 	RESQML2_NS::ContinuousProperty* forcingMinMaxFltProperty = repo->createContinuousProperty(
 		rep, "f46f8407-1bfb-43b8-b822-863ba656cfe7", "Float prop with min max forcing",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	forcingMinMaxFltProperty->pushBackFloatHdf5Array3dOfValues(fltValues, 2, 3, 4, -5.5, 2.0);
@@ -91,7 +91,7 @@ void ContinuousProperty::initRepo() {
 	RESQML2_NS::ContinuousProperty* forcingMinMaxDblProperty = repo->createContinuousProperty(
 		rep, "ad589326-dfc7-4af2-a6ed-08c81657b72b", "Double prop with min max forcing",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	forcingMinMaxDblProperty->pushBackDoubleHdf5Array3dOfValues(dblValues, 2, 3, 4, -5.5, 2.0);
@@ -100,7 +100,7 @@ void ContinuousProperty::initRepo() {
 	RESQML2_NS::ContinuousProperty* constantDblProperty = repo->createContinuousProperty(
 		rep, "3ce662a6-c94b-4d19-b9df-b241693dba41", "Constant FloatingPoint Property",
 		1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	constantDblProperty->pushBackFloatingPointConstantArrayOfValues(3.33, 3);
@@ -109,7 +109,7 @@ void ContinuousProperty::initRepo() {
 void ContinuousProperty::readRepo() {
 	RESQML2_NS::ContinuousProperty* noMinMaxFltProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(defaultUuid);
 	REQUIRE(noMinMaxFltProperty->getElementCountPerValue() == 1);
-	REQUIRE(noMinMaxFltProperty->getAttachmentKind() == gsoap_eml2_3::resqml22__IndexableElement::cells);
+	REQUIRE(noMinMaxFltProperty->getAttachmentKind() == gsoap_eml2_3::eml23__IndexableElement::cells);
 	REQUIRE(noMinMaxFltProperty->getUom() == gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa);
 	REQUIRE(noMinMaxFltProperty->getValuesCountOfPatch(0) == 24);
 	float fltValues[24];

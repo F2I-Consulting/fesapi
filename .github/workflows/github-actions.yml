@@ -185,6 +185,7 @@ jobs:
         run: |
           ${{ github.workspace }}/../build/test/unitTest
   webassembly:
+    if: false
     runs-on: ubuntu-20.04    
     steps:
       - uses: mymindstorm/setup-emsdk@v11
@@ -229,8 +230,9 @@ jobs:
           FESAPI_BUILD_DIR: fesapi_build
         run: |
           cd ${{ github.workspace }}
-          wget https://gist.github.com/untereiner/3af2e52fbd135235457d2a707d5480d4/raw/7f7e0706b3421593c4c617b9703e5a90e30bfa51/gsoap_wasm.patch
-          git apply gsoap_wasm.patch
+          # see https://sourceforge.net/p/gsoap2/bugs/1301/
+          #wget https://gist.github.com/untereiner/3af2e52fbd135235457d2a707d5480d4/raw/7f7e0706b3421593c4c617b9703e5a90e30bfa51/gsoap_wasm.patch
+          #git apply gsoap_wasm.patch
           mkdir -p fesapi_build
           cd fesapi_build
           LDFLAGS="-s USE_ZLIB=1 -s USE_BOOST_HEADERS=1" emcmake cmake ../ \

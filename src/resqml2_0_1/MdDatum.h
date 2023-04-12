@@ -54,7 +54,7 @@ namespace RESQML2_0_1_NS
 		 * 												third axis of the local 3d CRS.
 		 */
 		MdDatum(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__WellboreDatumReference originKind,
+			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		/**
@@ -75,7 +75,14 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT double getZ() const final;
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__WellboreDatumReference getOriginKind() const final;
+		/**
+		 * Check if this reference point has a defined kind.
+		 *
+		 * @returns	True if this reference point has a defined kind.
+		 */
+		DLL_IMPORT_OR_EXPORT bool hasKind() const final;
+
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__ReferencePointKind getKind() const final;
 
 		/** Loads target relationships */
 		void loadTargetRelationships() final;

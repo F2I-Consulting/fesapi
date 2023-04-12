@@ -150,13 +150,6 @@ namespace RESQML2_NS
 		 */
 		StringTableLookup(gsoap_resqml2_0_1::_resqml20__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
 
-		/**
-		 * Creates an instance of this class by wrapping a gSoap RESQML2.2 instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		StringTableLookup(gsoap_eml2_3::_resqml22__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
-
 		/** Loads target relationships */
 		void loadTargetRelationships() final {}
 	};

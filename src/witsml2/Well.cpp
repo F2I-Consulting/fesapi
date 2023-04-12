@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/WellboreFeature.h"
 
-#include "../witsml2_0/WellCompletion.h"
+#include "../witsml2_1/WellCompletion.h"
 
 #include "Wellbore.h"
 
@@ -36,7 +36,7 @@ std::vector<Wellbore *> Well::getWellboreSet() const
 	return getRepository()->getSourceObjects<Wellbore>(this);
 }
 
-std::vector<WITSML2_0_NS::WellCompletion *> Well::getWellcompletionSet() const
+std::vector<WITSML2_1_NS::WellCompletion *> Well::getWellcompletionSet() const
 {
-	return getRepository()->getSourceObjects<WITSML2_0_NS::WellCompletion>(this);
+	return getRepository()->getSourceObjects<WITSML2_1_NS::WellCompletion>(this);
 }

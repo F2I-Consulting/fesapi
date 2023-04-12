@@ -38,16 +38,16 @@ WellTest::WellTest(const string & epcDocPath)
 }
 
 void WellTest::initRepo() {
-	Well* well = repo->createWell(defaultUuid, defaultTitle);
+	Well* well = repo->createWell(defaultUuid, defaultTitle, false);
 	REQUIRE(well != nullptr);
 	well->setBlock("my Block");
 	// No county
 	well->setDTimLicense(defaultTimestamp);
-	well->setGroundElevation(10, gsoap_eml2_1::eml21__LengthUom::m, "MSL");
+	well->setGroundElevation(10, gsoap_eml2_3::eml23__LengthUom::m);
 	REQUIRE_THROWS(well->setTimeZone(true, 24, 0));
 	REQUIRE_THROWS(well->setTimeZone(true, 22, 65));
 	well->setTimeZone(true, 0, 0); // time zone == 'Z'
-	well->setStatusWell(gsoap_eml2_1::eml21__WellStatus::active);
+	well->setStatusWell(gsoap_eml2_3::eml23__WellStatus::active);
 }
 
 void WellTest::readRepo() {
@@ -58,10 +58,9 @@ void WellTest::readRepo() {
 	REQUIRE_FALSE(well->hasCounty());
 	REQUIRE(well->getDTimLicense() == defaultTimestamp);
 	REQUIRE(well->getGroundElevationValue() == 10);
-	REQUIRE(well->getGroundElevationUom() == gsoap_eml2_1::eml21__LengthUom::m);
-	REQUIRE(well->getGroundElevationDatum() == "MSL");
+	REQUIRE(well->getGroundElevationUom() == gsoap_eml2_3::eml23__LengthUom::m);
 	REQUIRE(well->getTimeZoneDirection() == true);
 	REQUIRE(well->getTimeZoneHours() == 0);
 	REQUIRE(well->getTimeZoneMinutes() == 0);
-	REQUIRE(well->getStatusWell() == gsoap_eml2_1::eml21__WellStatus::active);
+	REQUIRE(well->getStatusWell() == gsoap_eml2_3::eml23__WellStatus::active);
 }

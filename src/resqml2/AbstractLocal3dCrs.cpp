@@ -66,9 +66,6 @@ double AbstractLocal3dCrs::getOriginOrdinal1() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->XOffset;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->XOffset;
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -77,9 +74,6 @@ double AbstractLocal3dCrs::getOriginOrdinal2() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->YOffset;
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->YOffset;
 	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
@@ -90,9 +84,6 @@ double AbstractLocal3dCrs::getOriginDepthOrElevation() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ZOffset;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ZOffset;
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -101,9 +92,6 @@ double AbstractLocal3dCrs::getArealRotation() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ArealRotation->__item;
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ArealRotation->__item;
 	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
@@ -114,10 +102,6 @@ gsoap_resqml2_0_1::eml20__PlaneAngleUom AbstractLocal3dCrs::getArealRotationUom(
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ArealRotation->uom;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		auto uom = static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ArealRotation->uom;
-		return static_cast<gsoap_resqml2_0_1::eml20__PlaneAngleUom>(uom);
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -126,9 +110,6 @@ bool AbstractLocal3dCrs::isDepthOriented() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ZIncreasingDownward;
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ZIncreasingDownward;
 	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found.It is probably a partial one.");
@@ -139,9 +120,6 @@ bool AbstractLocal3dCrs::isProjectedCrsDefinedWithEpsg() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__ProjectedCrsEpsgCode;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__ProjectedEpsgCrs;
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -150,9 +128,6 @@ bool AbstractLocal3dCrs::isProjectedCrsUnknown() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__ProjectedUnknownCrs;
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__ProjectedUnknownCrs;
 	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
@@ -166,9 +141,6 @@ const std::string & AbstractLocal3dCrs::getProjectedCrsUnknownReason() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::eml20__ProjectedUnknownCrs*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs)->Unknown;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::eml23__ProjectedUnknownCrs*>(static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ProjectedCrs)->Unknown;
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -181,9 +153,6 @@ uint64_t AbstractLocal3dCrs::getProjectedCrsEpsgCode() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::eml20__ProjectedCrsEpsgCode*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs)->EpsgCode;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::eml23__ProjectedEpsgCrs*>(static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ProjectedCrs)->EpsgCode;
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -193,9 +162,6 @@ bool AbstractLocal3dCrs::isVerticalCrsDefinedWithEpsg() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__VerticalCrsEpsgCode;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__VerticalEpsgCrs;
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -204,9 +170,6 @@ bool AbstractLocal3dCrs::isVerticalCrsUnknown() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__VerticalUnknownCrs;
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__VerticalUnknownCrs;
 	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
@@ -220,9 +183,6 @@ const std::string & AbstractLocal3dCrs::getVerticalCrsUnknownReason() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::eml20__VerticalUnknownCrs*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs)->Unknown;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::eml23__VerticalUnknownCrs*>(static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->VerticalCrs)->Unknown;
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -235,9 +195,6 @@ uint64_t AbstractLocal3dCrs::getVerticalCrsEpsgCode() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::eml20__VerticalCrsEpsgCode*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs)->EpsgCode;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::eml23__VerticalEpsgCrs*>(static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->VerticalCrs)->EpsgCode;
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -246,11 +203,6 @@ gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getProjectedCrsUnit() co
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedUom;
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_resqml2_0_1::eml20__LengthUom result;
-		gsoap_resqml2_0_1::soap_s2eml20__LengthUom(gsoapProxy2_3->soap, static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ProjectedUom.c_str(), &result);
-		return result;
 	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
@@ -261,9 +213,6 @@ string AbstractLocal3dCrs::getProjectedCrsUnitAsString() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_0_1->soap, static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedUom);
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ProjectedUom;
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -272,11 +221,6 @@ gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getVerticalCrsUnit() con
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalUom;
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_resqml2_0_1::eml20__LengthUom result;
-		gsoap_resqml2_0_1::soap_s2eml20__LengthUom(gsoapProxy2_3->soap, static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->VerticalUom.c_str(), &result);
-		return result;
 	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
@@ -287,9 +231,6 @@ string AbstractLocal3dCrs::getVerticalCrsUnitAsString() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_0_1->soap, static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalUom);
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->VerticalUom;
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -299,9 +240,6 @@ gsoap_resqml2_0_1::eml20__AxisOrder2d AbstractLocal3dCrs::getAxisOrder() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedAxisOrder;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::eml20__AxisOrder2d>(static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ProjectedAxisOrder);
-	}
 
 	throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
 }
@@ -310,9 +248,6 @@ void AbstractLocal3dCrs::setAxisOrder(gsoap_resqml2_0_1::eml20__AxisOrder2d axis
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedAxisOrder = axisOrder;
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		static_cast<gsoap_eml2_3::resqml22__AbstractLocal3dCrs*>(gsoapProxy2_3)->ProjectedAxisOrder = static_cast<gsoap_eml2_3::eml23__AxisOrder2d>(axisOrder);
 	}
 	else {
 		throw logic_error("The local CRS UUID " + getUuid() + " cannot be found. It is probably a partial one.");
