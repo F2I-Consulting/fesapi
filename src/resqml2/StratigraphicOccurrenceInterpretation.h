@@ -89,11 +89,6 @@ namespace RESQML2_NS
 		*/
 		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		StratigraphicOccurrenceInterpretation(gsoap_eml2_3::_resqml22__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
-
 		/** Loads target relationships */
 		void loadTargetRelationships() final;
 	};

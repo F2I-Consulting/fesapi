@@ -18,8 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "IjkGridParametricRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
+#include <hdf5.h>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
@@ -86,13 +85,13 @@ bool IjkGridParametricRepresentation::isParametricLineKindConstant() const
 		}
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 		{
-			auto dataset = static_cast<eml23__IntegerExternalArray*>(paramLineArray->LineKindIndices)->Values->ExternalFileProxy[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			if (getPillarCount() != hdfProxy->getElementCount(dataset->PathInExternalFile)) {
+			auto const* daPart = static_cast<eml23__IntegerExternalArray*>(paramLineArray->LineKindIndices)->Values->ExternalDataArrayPart[0];
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
+			if (getPillarCount() != hdfProxy->getElementCount(daPart->PathInExternalFile)) {
 				throw std::logic_error("Size difference between values count in hdf and pillars count");
 			}
 			std::unique_ptr<short[]> pillarKind(new short[getPillarCount()]);
-			hdfProxy->readArrayNdOfShortValues(dataset->PathInExternalFile, pillarKind.get());
+			hdfProxy->readArrayNdOfShortValues(daPart->PathInExternalFile, pillarKind.get());
 			short firstPillarKind = pillarKind[0];
 			size_t pillarIndex = 0;
 			while (pillarIndex < getPillarCount()) {
@@ -141,10 +140,10 @@ short IjkGridParametricRepresentation::getConstantParametricLineKind() const
 			return static_cast<short>(result);
 		}
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			auto dataset = static_cast<eml23__IntegerExternalArray*>(paramLineArray->LineKindIndices)->Values->ExternalFileProxy[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			auto const* daPart = static_cast<eml23__IntegerExternalArray*>(paramLineArray->LineKindIndices)->Values->ExternalDataArrayPart[0];
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 			std::unique_ptr<short[]> pillarKind(new short[getPillarCount()]);
-			hdfProxy->readArrayNdOfShortValues(dataset->PathInExternalFile, pillarKind.get());
+			hdfProxy->readArrayNdOfShortValues(daPart->PathInExternalFile, pillarKind.get());
 			return pillarKind[0];
 		}
 		else {
@@ -168,9 +167,9 @@ void IjkGridParametricRepresentation::getRawParametricLineKind(short * pillarKin
 		resqml22__ParametricLineArray* paramLineArray = static_cast<resqml22__ParametricLineArray*>(points->ParametricLines);
 		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
 		{
-			auto dataset = static_cast<eml23__IntegerExternalArray*>(paramLineArray->LineKindIndices)->Values->ExternalFileProxy[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfShortValues(dataset->PathInExternalFile, pillarKind);
+			auto const* daPart = static_cast<eml23__IntegerExternalArray*>(paramLineArray->LineKindIndices)->Values->ExternalDataArrayPart[0];
+			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
+			hdfProxy->readArrayNdOfShortValues(daPart->PathInExternalFile, pillarKind);
 		}
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
 		{
@@ -197,8 +196,9 @@ COMMON_NS::DataObjectReference IjkGridParametricRepresentation::getHdfProxyDor()
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 	resqml22__Point3dParametricArray* points = static_cast<resqml22__Point3dParametricArray*>(geom->Points);
-	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray) {
-		return COMMON_NS::DataObjectReference(static_cast<eml23__DoubleExternalArray*>(points->Parameters)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+
+	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
+		return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(points->Parameters)->Values->ExternalDataArrayPart[0]));
 	}
 	else
 		throw std::logic_error("Not yet implemented");
@@ -218,10 +218,10 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(unsigned int patchInde
 		resqml22__AbstractGridGeometry* truncatedGeom = static_cast<resqml22__AbstractGridGeometry*>(geom);
 		if (truncatedGeom->AdditionalGridPoints.size() == 1 && truncatedGeom->AdditionalGridPoints[0]->Attachment == resqml22__GridGeometryAttachment::nodes) {
 			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
-				auto xmlDataset = static_cast<resqml22__Point3dExternalArray*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates->ExternalFileProxy[0];
-				EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
+				auto const* daPart = static_cast<resqml22__Point3dExternalArray*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates->ExternalDataArrayPart[0];
+				EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 				xyzPoints += (getXyzPointCountOfPatch(patchIndex) - static_cast<_resqml22__TruncatedIjkGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationNodeCount) * 3;
-				hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInExternalFile, xyzPoints);
+				hdfProxy->readArrayNdOfDoubleValues(daPart->PathInExternalFile, xyzPoints);
 			}
 			else {
 				throw logic_error("The additional grid points must be explicit ones for now. Parametric additional points are not supported yet for example.");
@@ -257,16 +257,16 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind = computeKDirection(controlPoints, controlPointMaxCountPerPillar, pillarKind, localCrs);
 
+	writeGeometryOnHdf(parameters,
+		controlPoints, controlPointParameters, controlPointMaxCountPerPillar,
+		splitCoordinateLineCount, pillarOfCoordinateLine,
+		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, proxy);
+
 	const std::string hdfDatasetPrefix = getHdfGroup();
 	setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", controlPointParameters != nullptr ? hdfDatasetPrefix + "/controlPointParameters" : "", controlPointMaxCountPerPillar, proxy,
 		splitCoordinateLineCount, hdfDatasetPrefix + "/PillarIndices",
 		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, localCrs);
-
-	writeGeometryOnHdf(parameters,
-		controlPoints, controlPointParameters, controlPointMaxCountPerPillar,
-		splitCoordinateLineCount, pillarOfCoordinateLine,
-		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, proxy);
 
 	resqml22__IjkGridGeometry* geom = static_cast<resqml22__IjkGridGeometry*>(getPointGeometry2_2(0));
 	if (geom == nullptr) {
@@ -277,11 +277,8 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	// XML Pillar defined
 	eml23__BooleanExternalArray* xmlDefinedPillars = soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
 	geom->PillarGeometryIsDefined = xmlDefinedPillars;
-	xmlDefinedPillars->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/PillarGeometryIsDefined";
-	xmlDefinedPillars->Values->ExternalFileProxy.push_back(dsPart);
+	xmlDefinedPillars->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlDefinedPillars->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/PillarGeometryIsDefined", getPillarCount(), proxy));
 
 	// HDF Pillar defined
 	getRepository()->addRelationship(this, proxy);
@@ -304,11 +301,8 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	eml23__IntegerExternalArray* xmlLineKinds = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	paramLines->LineKindIndices = xmlLineKinds;
 	xmlLineKinds->NullValue = -1;
-	xmlLineKinds->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = getHdfGroup() + "/LineKindIndices";
-	xmlLineKinds->Values->ExternalFileProxy.push_back(dsPart);
+	xmlLineKinds->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlLineKinds->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/LineKindIndices", getPillarCount(), proxy));
 
 	// HDF Line kinds
 	uint64_t lineKindCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
@@ -340,11 +334,8 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	// XML Pillar defined
 	eml23__BooleanExternalArray* xmlDefinedPillars = soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
 	geom->PillarGeometryIsDefined = xmlDefinedPillars;
-	xmlDefinedPillars->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = definedPillars;
-	xmlDefinedPillars->Values->ExternalFileProxy.push_back(dsPart);
+	xmlDefinedPillars->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlDefinedPillars->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(definedPillars, getPillarCount(), proxy));
 
 	// *********************************
 	// Line kind hdf dataset
@@ -357,11 +348,8 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	eml23__IntegerExternalArray* xmlLineKinds = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	paramLines->LineKindIndices = xmlLineKinds;
 	xmlLineKinds->NullValue = -1;
-	xmlLineKinds->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = pillarKind;
-	xmlLineKinds->Values->ExternalFileProxy.push_back(dsPart);
+	xmlLineKinds->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlLineKinds->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(pillarKind, getPillarCount(), proxy));
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(
@@ -401,13 +389,10 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	// XML parametric nodes
 	resqml22__Point3dParametricArray* xmlPoints = soap_new_resqml22__Point3dParametricArray(gsoapProxy2_3->soap);
 	geom->Points = xmlPoints;
-	eml23__DoubleExternalArray* xmlParameters = soap_new_eml23__DoubleExternalArray(gsoapProxy2_3->soap);
+	eml23__FloatingPointExternalArray* xmlParameters = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 	xmlPoints->Parameters = xmlParameters;
-	xmlParameters->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = parameters;
-	xmlParameters->Values->ExternalFileProxy.push_back(dsPart);
+	xmlParameters->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlParameters->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(parameters, proxy->getElementCount(parameters), proxy));
 
 	if (splitCoordinateLineCount > 0) {
 		// XML split coordinate lines
@@ -418,11 +403,8 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		eml23__IntegerExternalArray* pillarIndices = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		geom->ColumnLayerSplitCoordinateLines->PillarIndices = pillarIndices;
 		pillarIndices->NullValue = getPillarCount();
-		pillarIndices->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		dsPart->PathInExternalFile = pillarOfCoordinateLine;
-		pillarIndices->Values->ExternalFileProxy.push_back(dsPart);
+		pillarIndices->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		pillarIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(pillarOfCoordinateLine, proxy->getElementCount(pillarOfCoordinateLine), proxy));
 
 		//XML
 		geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine = soap_new_eml23__JaggedArray(gsoapProxy2_3->soap);
@@ -430,20 +412,14 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		eml23__IntegerExternalArray* cumulativeLength = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength = cumulativeLength;
 		cumulativeLength->NullValue = 0;
-		cumulativeLength->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		dsPart->PathInExternalFile = splitCoordinateLineColumnCumulativeCount;
-		cumulativeLength->Values->ExternalFileProxy.push_back(dsPart);
+		cumulativeLength->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		cumulativeLength->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(splitCoordinateLineColumnCumulativeCount, proxy->getElementCount(splitCoordinateLineColumnCumulativeCount), proxy));
 		// Elements
 		eml23__IntegerExternalArray* elements = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements = elements;
 		elements->NullValue = getColumnCount();
-		elements->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		dsPart->PathInExternalFile = splitCoordinateLineColumns;
-		elements->Values->ExternalFileProxy.push_back(dsPart);
+		elements->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		elements->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(splitCoordinateLineColumns, proxy->getElementCount(splitCoordinateLineColumns), proxy));
 	}
 
 	// *********************************
@@ -456,24 +432,18 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	// XML control points
 	resqml22__Point3dExternalArray* xmlcontrolPoints = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
 	paramLines->ControlPoints = xmlcontrolPoints;
-	xmlcontrolPoints->Coordinates = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-	dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-	dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-	dsPart->PathInExternalFile = controlPoints;
-	xmlcontrolPoints->Coordinates->ExternalFileProxy.push_back(dsPart);
+	xmlcontrolPoints->Coordinates = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	xmlcontrolPoints->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(controlPoints, proxy->getElementCount(controlPoints), proxy));
 
 	// *********************************
 	// Control point parameters are defined
 	// *********************************
 	if (!controlPointParameters.empty()) {
 		// XML control point parameters
-		eml23__DoubleExternalArray* xmlcontrolPointParams = soap_new_eml23__DoubleExternalArray(gsoapProxy2_3->soap);
+		eml23__FloatingPointExternalArray* xmlcontrolPointParams = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 		paramLines->ControlPointParameters = xmlcontrolPointParams;
-		xmlcontrolPointParams->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		dsPart->PathInExternalFile = controlPointParameters;
-		xmlcontrolPointParams->Values->ExternalFileProxy.push_back(dsPart);
+		xmlcontrolPointParams->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		xmlcontrolPointParams->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(controlPointParameters, proxy->getElementCount(controlPointParameters), proxy));
 	}
 
 	getRepository()->addRelationship(this, localCrs);
@@ -533,10 +503,10 @@ EML2_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getParameterDatasetP
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 	resqml22__Point3dParametricArray* parametricPoint3d = static_cast<resqml22__Point3dParametricArray*>(geom->Points);
-	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray) {
-		auto xmlDataset = static_cast<eml23__DoubleExternalArray*>(parametricPoint3d->Parameters)->Values->ExternalFileProxy[0];
-		datasetPathInExternalFile = xmlDataset->PathInExternalFile;
-		return getHdfProxyFromDataset(xmlDataset);
+	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
+		auto const* daPart = static_cast<eml23__FloatingPointExternalArray*>(parametricPoint3d->Parameters)->Values->ExternalDataArrayPart[0];
+		datasetPathInExternalFile = daPart->PathInExternalFile;
+		return getOrCreateHdfProxyFromDataArrayPart(daPart);
 	}
 	else {
 		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
@@ -553,9 +523,9 @@ EML2_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getControlPointDatas
 	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ParametricLineArray) {
 		resqml22__ParametricLineArray* paramLineArray = static_cast<resqml22__ParametricLineArray*>(points->ParametricLines);
 		if (paramLineArray->ControlPoints->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray) {
-			auto dataset = static_cast<resqml22__Point3dExternalArray*>(paramLineArray->ControlPoints)->Coordinates->ExternalFileProxy[0];
-			datasetPathInExternalFile = dataset->PathInExternalFile;
-			return getHdfProxyFromDataset(dataset);
+			auto const* daPart = static_cast<resqml22__Point3dExternalArray*>(paramLineArray->ControlPoints)->Coordinates->ExternalDataArrayPart[0];
+			datasetPathInExternalFile = daPart->PathInExternalFile;
+			return getOrCreateHdfProxyFromDataArrayPart(daPart);
 		}
 		else
 			throw std::logic_error("Not implemented yet");
@@ -577,11 +547,11 @@ EML2_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getControlPointParam
 		resqml22__ParametricLineArray* paramLineArray = static_cast<resqml22__ParametricLineArray*>(points->ParametricLines);
 		if (paramLineArray->ControlPointParameters == nullptr)
 			throw invalid_argument("The grid does not contain any control point parameters.");
-		if (paramLineArray->ControlPointParameters->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray)
+		if (paramLineArray->ControlPointParameters->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 		{
-			auto dataset = static_cast<eml23__DoubleExternalArray*>(paramLineArray->ControlPointParameters)->Values->ExternalFileProxy[0];
-			datasetPathInExternalFile = dataset->PathInExternalFile;
-			return getHdfProxyFromDataset(dataset);
+			auto const* daPart = static_cast<eml23__FloatingPointExternalArray*>(paramLineArray->ControlPointParameters)->Values->ExternalDataArrayPart[0];
+			datasetPathInExternalFile = daPart->PathInExternalFile;
+			return getOrCreateHdfProxyFromDataArrayPart(daPart);
 		}
 		else
 			throw std::logic_error("Not implemented yet");
@@ -597,11 +567,11 @@ EML2_NS::AbstractHdfProxy* IjkGridParametricRepresentation::getParametersOfNodes
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 	resqml22__Point3dParametricArray* points = static_cast<resqml22__Point3dParametricArray*>(geom->Points);
-	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DoubleExternalArray)
+	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 	{
-		auto dataset = static_cast<eml23__DoubleExternalArray*>(points->Parameters)->Values->ExternalFileProxy[0];
-		datasetPathInExternalFile = dataset->PathInExternalFile;
-		return getHdfProxyFromDataset(dataset);
+		auto const* daPart = static_cast<eml23__FloatingPointExternalArray*>(points->Parameters)->Values->ExternalDataArrayPart[0];
+		datasetPathInExternalFile = daPart->PathInExternalFile;
+		return getOrCreateHdfProxyFromDataArrayPart(daPart);
 	}
 	else
 		throw std::logic_error("Not implemented yet");

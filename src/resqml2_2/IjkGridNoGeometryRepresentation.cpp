@@ -16,10 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #include "IjkGridNoGeometryRepresentation.h"
 
-#include <stdexcept>
+#include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 
@@ -37,34 +36,34 @@ COMMON_NS::DataObjectReference IjkGridNoGeometryRepresentation::getHdfProxyDor()
 		if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__IjkParentWindow) {
 			resqml22__IjkParentWindow* pw = static_cast<resqml22__IjkParentWindow *>(parentWindow);
 			if (pw->IRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->IRegrid->Intervals->ChildCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(pw->IRegrid->Intervals->ChildCountPerInterval)->Values->ExternalDataArrayPart[0]));
 			}
 			else if (pw->IRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->IRegrid->Intervals->ParentCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(pw->IRegrid->Intervals->ParentCountPerInterval)->Values->ExternalDataArrayPart[0]));
 			}
 			else if (pw->JRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->JRegrid->Intervals->ChildCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(pw->JRegrid->Intervals->ChildCountPerInterval)->Values->ExternalDataArrayPart[0]));
 			}
 			else if (pw->JRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->JRegrid->Intervals->ParentCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(pw->JRegrid->Intervals->ParentCountPerInterval)->Values->ExternalDataArrayPart[0]));
 			}
 			else if (pw->KRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->KRegrid->Intervals->ChildCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(pw->KRegrid->Intervals->ChildCountPerInterval)->Values->ExternalDataArrayPart[0]));
 			}
 			else if (pw->KRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-				return COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->KRegrid->Intervals->ParentCountPerInterval)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+				return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(pw->KRegrid->Intervals->ParentCountPerInterval)->Values->ExternalDataArrayPart[0]));
 			}
 		}
 		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnLayerParentWindow) {
 			resqml22__ColumnLayerParentWindow* pw = static_cast<resqml22__ColumnLayerParentWindow*>(parentWindow);
 			return pw->ColumnIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray
-				? COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->ColumnIndices)->Values->ExternalFileProxy[0]->EpcExternalPartReference)
+				? COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(pw->ColumnIndices)->Values->ExternalDataArrayPart[0]))
 				: COMMON_NS::DataObjectReference();
 		}
 		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__CellParentWindow) {
 			resqml22__CellParentWindow* pw = static_cast<resqml22__CellParentWindow*>(parentWindow);
 			return pw->CellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray
-				? COMMON_NS::DataObjectReference(static_cast<eml23__IntegerExternalArray*>(pw->CellIndices)->Values->ExternalFileProxy[0]->EpcExternalPartReference)
+				? COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__IntegerExternalArray*>(pw->CellIndices)->Values->ExternalDataArrayPart[0]))
 				: COMMON_NS::DataObjectReference();
 		}
 		else {

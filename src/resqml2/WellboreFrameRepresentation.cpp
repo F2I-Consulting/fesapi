@@ -118,15 +118,10 @@ void WellboreFrameRepresentation::setMdValues(double const * mdValues, uint64_t 
 
 		// XML
 		eml23__FloatingPointExternalArray* xmlMdValues = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
-		xmlMdValues->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		xmlMdValues->Values->ExternalFileProxy.push_back(soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap, 1));
-		xmlMdValues->Values->ExternalFileProxy[0]->Count = mdValueCount;
-		xmlMdValues->Values->ExternalFileProxy[0]->StartIndex = 0;
-		xmlMdValues->Values->ExternalFileProxy[0]->PathInExternalFile = getHdfGroup() + "/mdValues";
-		xmlMdValues->Values->ExternalFileProxy[0]->EpcExternalPartReference = proxy->newEml23Reference();
+		xmlMdValues->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		xmlMdValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/mdValues", mdValueCount, proxy));
 
 		frame->NodeMd = xmlMdValues;
-
 		frame->NodeCount = mdValueCount;
 	}
 	else {
@@ -217,9 +212,8 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 			}
 			std::unique_ptr<double[]> values(new double[getMdValuesCount()]);
 			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values.get());
-			double result = values[0];
 
-			return result;
+			return values[0];
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 		{
@@ -232,16 +226,14 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 		{
-			eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values;
-			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalDataArrayPart[0]);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
 			std::unique_ptr<double[]> values(new double[getMdValuesCount()]);
-			hdfProxy->readArrayNdOfDoubleValues(dataset->ExternalFileProxy[0]->PathInExternalFile, values.get());
-			double result = values[0];
+			hdfProxy->readArrayNdOfDoubleValues(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalDataArrayPart[0]->PathInExternalFile, values.get());
 
-			return result;
+			return values[0];
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 		{
@@ -299,12 +291,11 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum WellboreFrameRepresentation::ge
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 		{
-			eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values;
-			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalDataArrayPart[0]);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
-			return hdfProxy->getNumericalDatatype(dataset->ExternalFileProxy[0]->PathInExternalFile);
+			return hdfProxy->getNumericalDatatype(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalDataArrayPart[0]->PathInExternalFile);
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 		{
@@ -330,10 +321,12 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 		{
-			values[0] = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->StartValue;
-			resqml20__DoubleConstantArray* constantArray = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
-				values[inc] = values[0] + (inc * constantArray->Value);
+			auto const* dla = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd);
+			values[0] = dla->StartValue;
+			resqml20__DoubleConstantArray* constantArray = dla->Offset[0];
+			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc) {
+				values[inc] = values[inc - 1] + constantArray->Value;
+			}
 		}
 		else {
 			throw logic_error("The array structure of MD is not supported?");
@@ -343,19 +336,20 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 		{
-			eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values;
-			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalDataArrayPart[0]);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
-			hdfProxy->readArrayNdOfDoubleValues(dataset->ExternalFileProxy[0]->PathInExternalFile, values);
+			hdfProxy->readArrayNdOfDoubleValues(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalDataArrayPart[0]->PathInExternalFile, values);
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 		{
-			values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->StartValue;
-			eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
-				values[inc] = values[0] + (inc * constantArray->Value);
+			auto const* fla = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd);
+			values[0] = fla->StartValue;
+			eml23__FloatingPointConstantArray* constantArray = fla->Offset[0];
+			for (int64_t inc = 1; inc <= constantArray->Count; ++inc) {
+				values[inc] = values[inc - 1] + constantArray->Value;
+			}
 		}
 		else {
 			throw logic_error("The array structure of MD is not supported?");
@@ -381,10 +375,12 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 		{
-			values[0] = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->StartValue;
-			resqml20__DoubleConstantArray* constantArray = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
-				values[inc] = values[0] + (inc * constantArray->Value);
+			auto const* dla = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd);
+			values[0] = dla->StartValue;
+			resqml20__DoubleConstantArray* constantArray = dla->Offset[0];
+			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc) {
+				values[inc] = values[inc - 1] + constantArray->Value;
+			}
 		}
 		else {
 			throw logic_error("The array structure of MD is not supported?");
@@ -394,19 +390,20 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray)
 		{
-			eml23__ExternalDataset const* dataset = static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values;
-			EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
+			EML2_NS::AbstractHdfProxy* hdfProxy = getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalDataArrayPart[0]);
 			if (hdfProxy == nullptr) {
 				throw invalid_argument("The HDF proxy is missing.");
 			}
-			hdfProxy->readArrayNdOfFloatValues(dataset->ExternalFileProxy[0]->PathInExternalFile, values);
+			hdfProxy->readArrayNdOfFloatValues(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalDataArrayPart[0]->PathInExternalFile, values);
 		}
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 		{
-			values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->StartValue;
-			eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd)->Offset[0];
-			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
-				values[inc] = values[0] + (inc * constantArray->Value);
+			auto const* fla = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd);
+			values[0] = fla->StartValue;
+			eml23__FloatingPointConstantArray* constantArray = fla->Offset[0];
+			for (int64_t inc = 1; inc <= constantArray->Count; ++inc) {
+				values[inc] = values[inc - 1] + constantArray->Value;
+			}
 		}
 		else {
 			throw logic_error("The array structure of MD is not supported?");
@@ -447,7 +444,7 @@ COMMON_NS::DataObjectReference WellboreFrameRepresentation::getHdfProxyDor() con
 	else if (gsoapProxy2_3 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_3);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
-			return COMMON_NS::DataObjectReference(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalFileProxy[0]->EpcExternalPartReference);
+			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<eml23__FloatingPointExternalArray*>(frame->NodeMd)->Values->ExternalDataArrayPart[0]));
 		}
 	}
 	else {

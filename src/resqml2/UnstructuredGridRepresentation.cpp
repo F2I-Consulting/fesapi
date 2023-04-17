@@ -151,11 +151,6 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(uint8_t * cell
 		}
 	}
 
-	setConstantCellShapeGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points",
-		pointCount, faceCount, localCrs, proxy,
-		getHdfGroup() + "/FacesPerCell", faceCountPerCell,
-		getHdfGroup() + "/NodesPerFace", nodeCountPerFace);
-
 	const uint64_t cellCount = getCellCount();
 
 	// HDF Face Right handness
@@ -163,9 +158,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(uint8_t * cell
 	proxy->writeArrayNd(getHdfGroup(), "CellFaceIsRightHanded", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, cellFaceIsRightHanded, &faceCountTmp, 1);
 
 	// HDF Face indices
-	uint64_t numValues[2];
-	numValues[0] = cellCount;
-	numValues[1] = faceCountPerCell;
+	uint64_t numValues[2] = { cellCount, faceCountPerCell };
 	proxy->writeArrayNd(getHdfGroup(), "FacesPerCell", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, faceIndicesPerCell, numValues, 2);
 
 	// HDF Node indices
@@ -177,6 +170,11 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(uint8_t * cell
 	numValues[0] = pointCount;
 	numValues[1] = 3; // 3 for X, Y and Z
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "Points", points, numValues, 2);
+
+	setConstantCellShapeGeometryUsingExistingDatasets(getHdfGroup() + "/CellFaceIsRightHanded", getHdfGroup() + "/Points",
+		pointCount, faceCount, localCrs, proxy,
+		getHdfGroup() + "/FacesPerCell", faceCountPerCell,
+		getHdfGroup() + "/NodesPerFace", nodeCountPerFace);
 }
 
 void UnstructuredGridRepresentation::setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,

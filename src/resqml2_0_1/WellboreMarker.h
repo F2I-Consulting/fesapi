@@ -78,7 +78,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWitsmlWellboreMarkerDor() const final;
 
-		DLL_IMPORT_OR_EXPORT void setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker) final;
+		DLL_IMPORT_OR_EXPORT void setWitsmlWellboreMarker(WITSML2_1_NS::WellboreMarker * wellboreMarker) final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

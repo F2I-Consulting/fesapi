@@ -20,9 +20,8 @@ under the License.
 
 #include <unordered_map>
 #include <vector>
+#include <sstream>
 #include <stdexcept>
-
-#include "../proxies/gsoap_witsml1_4H.h"
 
 #include "DataObjectRepository.h"
 
@@ -377,32 +376,6 @@ namespace COMMON_NS
 		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) { gsoapProxy2_0_1 = gsoapProxy; }
 
 		/**
-		 * Get the EML2.1 gSOAP proxy which is wrapped by this entity
-		 *
-		 * @returns	A pointer to the EML2.1 gSOAP proxy.
-		 */
-		gsoap_eml2_1::eml21__AbstractObject* getEml21GsoapProxy() const { return gsoapProxy2_1; }
-		/**
-		 * Sets the underlying EML2.1 gSOAP proxy of this data object
-		 *
-		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
-		 */
-		void setGsoapProxy(gsoap_eml2_1::eml21__AbstractObject* gsoapProxy) { gsoapProxy2_1 = gsoapProxy; }
-
-		/**
-		 * Get the EML2.2 gSOAP proxy which is wrapped by this entity
-		 *
-		 * @returns	A pointer to the EML2.1 gSOAP proxy.
-		 */
-		gsoap_eml2_2::eml22__AbstractObject* getEml22GsoapProxy() const { return gsoapProxy2_2; }
-		/**
-		 * Sets the underlying EML2.2 gSOAP proxy of this data object
-		 *
-		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
-		 */
-		void setGsoapProxy(gsoap_eml2_2::eml22__AbstractObject* gsoapProxy) { gsoapProxy2_2 = gsoapProxy; }
-
-		/**
 		 * Get the EML2.3 gSOAP proxy which is wrapped by this entity
 		 *
 		 * @returns	A pointer to the EML2.3 gSOAP proxy.
@@ -437,20 +410,6 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new EML2.0 data object reference.
 		 */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* newResqmlReference() const;
-
-		/**
-		 * Creates an returns an EML2.1 data object reference which targets this data object
-		 *
-		 * @returns	A pointer to the new EML2.1 data object reference.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
-
-		/**
-		 * Creates an returns an EML2.2 data object reference which targets this data object
-		 *
-		 * @returns	A pointer to the new EML2.2 data object reference.
-		 */
-		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
 
 		/**
 		 * Creates an returns an EML2.2 data object reference which targets this data object
@@ -721,16 +680,7 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
 
 		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
-		gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* gsoapProxyTraj1_4;
-
-		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
-
-		/** The underlying generated gSoap proxy for a EML 2.1 dataobject. */
-		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
-
-		/** The underlying generated gSoap proxy for a EML 2.2 dataobject. */
-		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
 
 		/** The underlying generated gSoap proxy for a EML 2.3 dataobject. */
 		gsoap_eml2_3::eml23__AbstractObject* gsoapProxy2_3;
@@ -742,10 +692,8 @@ namespace COMMON_NS
 		* Default constructor
 		*/
 		AbstractObject() :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			partialObject(nullptr),
 			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
 			gsoapProxy2_3(nullptr),
 			repository(nullptr) {}
 
@@ -755,30 +703,13 @@ namespace COMMON_NS
 		 * @param [in,out]	partialObject_	If non-null, the partial object.
 		 */
 		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) :
-			partialObject(partialObject_), gsoapProxyTraj1_4(nullptr),
+			partialObject(partialObject_),
 			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
 			gsoapProxy2_3(nullptr),
 			repository(nullptr) {}
 		AbstractObject(const DataObjectReference& dor) :
-			partialObject(dor.toDor20()), gsoapProxyTraj1_4(nullptr),
+			partialObject(dor.toDor20()),
 			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-
-		/**
-		 * Constructor when importing a WITSML1.4 trajectory
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(proxy),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
 			gsoapProxy2_3(nullptr),
 			repository(nullptr) {}
 
@@ -788,36 +719,8 @@ namespace COMMON_NS
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
 		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			partialObject(nullptr),
 			gsoapProxy2_0_1(proxy),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-
-		/**
-		 * Constructor when importing EML 2.1 dataobjects
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(proxy),
-			gsoapProxy2_2(nullptr),
-			gsoapProxy2_3(nullptr),
-			repository(nullptr) {}
-
-		/**
-		 * Constructor when importing EML 2.2 dataobjects
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
-			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(proxy),
 			gsoapProxy2_3(nullptr),
 			repository(nullptr) {}
 
@@ -827,10 +730,8 @@ namespace COMMON_NS
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
 		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) :
-			partialObject(nullptr), gsoapProxyTraj1_4(nullptr),
+			partialObject(nullptr),
 			gsoapProxy2_0_1(nullptr),
-			gsoapProxy2_1(nullptr),
-			gsoapProxy2_2(nullptr),
 			gsoapProxy2_3(proxy),
 			repository(nullptr) {}
 
@@ -944,38 +845,42 @@ namespace COMMON_NS
 		}
 
 		template <class T>
-		void readArrayNdOfNonHdf5IntegerValues(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
+		T readArrayNdOfNonHdf5IntegerValues(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
 			switch (arrayInput->soap_type()) {
-			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerRangeArray:
-			{
-				gsoap_eml2_3::eml23__IntegerRangeArray const* rangeArray = static_cast<gsoap_eml2_3::eml23__IntegerRangeArray const*>(arrayInput);
-				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The range integer values are superior to unsigned int maximum value.");
-				}
-				for (unsigned int i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
-					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
-				}
-				break;
-			}
 			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
 			{
 				gsoap_eml2_3::eml23__IntegerConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(arrayInput);
 				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
+					throw std::range_error("The constant integer value is superior to maximum value of read datatype.");
 				}
 				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
-				break;
+				return (std::numeric_limits<T>::max)();
 			}
 			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
 			{
 				gsoap_eml2_3::eml23__IntegerLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray const*>(arrayInput);
-				if (latticeArray->Offset.size() > 1) {
-					throw std::invalid_argument("The integer lattice array contains more than one offset.");
+				if (latticeArray->Offset.empty() || latticeArray->Offset.size() > 1) {
+					throw std::invalid_argument("The integer lattice array of UUID " + getUuid() + " contains zero or more than one offset.");
 				}
-				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+				if (latticeArray->Offset[0]->Count < 0) {
+					throw std::invalid_argument("The count of the integer lattice array of UUID " + getUuid() + " is negative which is not valid.");
+				}
+
+				for (size_t i = 0; i <= static_cast<size_t>(latticeArray->Offset[0]->Count); ++i) {
 					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
 				}
-				break;
+				return (std::numeric_limits<T>::max)();
+			}
+			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerXmlArray:
+			{
+				gsoap_eml2_3::eml23__IntegerXmlArray const * xmlArray = static_cast<gsoap_eml2_3::eml23__IntegerXmlArray const*>(arrayInput);
+				std::istringstream iss(xmlArray->Values);
+				auto str = std::string{};
+				size_t index = 0;
+				while (iss >> str) {
+					arrayOutput[index++] = std::stoll(str);
+				}
+				return (std::numeric_limits<T>::max)();
 			}
 			default: throw std::invalid_argument("The integer array type is not supported yet.");
 			}
@@ -1167,13 +1072,13 @@ namespace COMMON_NS
 		uint64_t getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput) const;
 
 		/**
-		 * Get the count of item in an array of integer
+		 * Get the count of item in an array
 		 *
-		 * @param [in,out]	arrayInput	The array of integer.
+		 * @param [in,out]	arrayInput	The array.
 		 *
-		 * @returns	The count of item in the array of integer.
+		 * @returns	The count of item in the array.
 		 */
-		uint64_t getCountOfIntegerArray(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput) const;
+		uint64_t getCountOfArray(gsoap_eml2_3::eml23__AbstractValueArray const * arrayInput) const;
 
 		/**
 		 * Converts a data object reference into a data object repository relationship.
@@ -1220,17 +1125,16 @@ namespace COMMON_NS
 		EML2_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
 
 		/**
-		 * Gets an Hdf Proxy from a EML 2.2 dataset.
+		 * Get or reate an Hdf Proxy from a EML 2.3 data array part.
 		 *
 		 * @exception	std::invalid_argument	If <tt>throwException == true</tt> and the HDF proxy is
 		 * 										missing.
 		 *
-		 * @param 	dataset		  	The dataset.
-		 * @param 	throwException	(Optional) True to throw exception.
+		 * @param 	dataArrayPart  	The EML 2.3 data array part.
 		 *
-		 * @returns	Null if it fails, else the HDF proxy from dataset.
+		 * @returns	The Hdf Proxy from a EML 2.3 data array part.
 		 */
-		EML2_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_3::eml23__ExternalDatasetPart const * dataset, bool throwException = true) const;
+		EML2_NS::AbstractHdfProxy* getOrCreateHdfProxyFromDataArrayPart(gsoap_eml2_3::eml23__ExternalDataArrayPart const * dataArrayPart) const;
 
 		/**
 		* @return the HDF group where to write the numerical values associated to this object.
@@ -1239,7 +1143,12 @@ namespace COMMON_NS
 			return "/" + getXmlNamespace() + "/" + getUuid();
 		}
 
-		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::resqml22__IndexableElement toMap) const;
+		/**
+		* Create an external data array part pointing to a named dataset in an HDF proxy
+		*/
+		gsoap_eml2_3::eml23__ExternalDataArrayPart* createExternalDataArrayPart(const std::string& datasetName, LONG64 count, EML2_NS::AbstractHdfProxy* proxy = nullptr) const;
+
+		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::eml23__IndexableElement toMap) const;
 
 	private:
 		/** The variable which holds the format for all exported Energistics DataObjects. */

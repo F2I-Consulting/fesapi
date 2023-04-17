@@ -130,20 +130,6 @@ namespace EML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		PropertyKind(gsoap_eml2_1::eml21__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		PropertyKind(gsoap_eml2_2::eml22__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
 		PropertyKind(gsoap_eml2_3::eml23__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**

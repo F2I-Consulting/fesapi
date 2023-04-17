@@ -80,7 +80,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The kind of elements on which the property values are attached to.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__IndexableElement getAttachmentKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IndexableElement getAttachmentKind() const;
 
 		/**
 		 * Gets the number of patches in this values property. It should be the same count as the patch

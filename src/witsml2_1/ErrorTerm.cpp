@@ -16,10 +16,10 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_1/ErrorTerm.h"
+#include "ErrorTerm.h"
 
-#include "witsml2_1/WeightingFunction.h"
-#include "witsml2_1/ToolErrorModel.h"
+#include "WeightingFunction.h"
+#include "ToolErrorModel.h"
 
 #include <stdexcept>
 #include <sstream>
@@ -27,20 +27,20 @@ under the License.
 
 using namespace std;
 using namespace WITSML2_1_NS;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 
 const char* ErrorTerm::XML_TAG = "ErrorTerm";
 
 ErrorTerm::ErrorTerm(COMMON_NS::DataObjectRepository * repo,
 		const std::string & guid,
 		const std::string & title,
-		gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+		gsoap_eml2_3::witsml21__ErrorPropagationMode propagationMode,
 		WeightingFunction* weightingFunction)
 {
 	if (repo == nullptr) throw invalid_argument("An Error Term must be associated to a repo.");
 
-	gsoapProxy2_2 = soap_new_witsml2__ErrorTerm(repo->getGsoapContext(), 1);
-	static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2)->PropagationMode = propagationMode;
+	gsoapProxy2_3 = soap_new_witsml21__ErrorTerm(repo->getGsoapContext(), 1);
+	static_cast<witsml21__ErrorTerm*>(gsoapProxy2_3)->PropagationMode = propagationMode;
 	setWeightingFunction(weightingFunction);
 
 	initMandatoryMetadata();
@@ -54,9 +54,9 @@ bool ErrorTerm::isTopLevelElement() const
 	return getRepository()->getSourceObjects<ErrorTermDictionary>(this).empty();
 }
 
-gsoap_eml2_2::eml22__DataObjectReference* ErrorTerm::getWeightingFunctionDor() const
+gsoap_eml2_3::eml23__DataObjectReference* ErrorTerm::getWeightingFunctionDor() const
 {
-	return static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2)->WeightingFunction;
+	return static_cast<witsml21__ErrorTerm*>(gsoapProxy2_3)->WeightingFunction;
 }
 
 WeightingFunction* ErrorTerm::getWeightingFunction() const
@@ -72,8 +72,8 @@ void ErrorTerm::setWeightingFunction(WeightingFunction* weightingFunction)
 	getRepository()->addRelationship(this, weightingFunction);
 
 	// XMl
-	if (gsoapProxy2_2 != nullptr) {
-		static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2)->WeightingFunction = weightingFunction->newEml22Reference();
+	if (gsoapProxy2_3 != nullptr) {
+		static_cast<witsml21__ErrorTerm*>(gsoapProxy2_3)->WeightingFunction = weightingFunction->newEml23Reference();
 	}
 	else {
 		throw logic_error("Not implemented yet");

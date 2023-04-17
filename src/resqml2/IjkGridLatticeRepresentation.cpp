@@ -121,5 +121,5 @@ double IjkGridLatticeRepresentation::getZOriginInGlobalCrs() const
 
 AbstractIjkGridRepresentation::geometryKind IjkGridLatticeRepresentation::getGeometryKind() const
 {
-	return LATTICE;
+	return AbstractIjkGridRepresentation::geometryKind::LATTICE;
 }

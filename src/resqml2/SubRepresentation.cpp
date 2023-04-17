@@ -27,7 +27,7 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t * elementIndices, EML2_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, uint64_t * elementIndices, EML2_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -54,7 +54,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__I
 	}
 }
 
-void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount,
+void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount,
 	EML2_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
@@ -129,7 +129,7 @@ uint64_t SubRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) con
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 	}
 
-	if (getElementKindOfPatch(patchIndex, 0) == gsoap_eml2_3::resqml22__IndexableElement::nodes) {
+	if (getElementKindOfPatch(patchIndex, 0) == gsoap_eml2_3::eml23__IndexableElement::nodes) {
 		return getElementCountOfPatch(patchIndex);
 	}
 	else {

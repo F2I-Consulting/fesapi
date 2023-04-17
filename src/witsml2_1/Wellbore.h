@@ -18,55 +18,107 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "witsml2_1/Trajectory.h"
-#include "witsml2_1/Log.h"
-#include "witsml2_1/WellboreMarkerSet.h"
-
-#include "resqml2_0_1/WellboreFeature.h"
+#include "../witsml2/Wellbore.h"
 
 namespace WITSML2_1_NS
 {
-	class Wellbore : public WITSML2_1_NS::AbstractObject
+	/**
+	 * @brief	A wellbore represents the path from surface to a unique bottomhole location.
+	 */
+	class Wellbore : public WITSML2_NS::Wellbore
 	{
 	public:
-		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
-		*/
-		Wellbore(class Well* witsmlWell,
-			const std::string & guid,
-			const std::string & title);
 
-		Wellbore(class Well* witsmlWell,
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 */
+		DLL_IMPORT_OR_EXPORT Wellbore(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::Wellbore(partialObject) {}
+
+		/**
+		 * @brief	Creates an instance of this class in a gsoap context.
+		 *
+		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWell	If non-null, the witsml well.
+		 * @param 	  	guid	  	The guid to set to this instance. If empty then a new guid will be
+		 * 							generated.
+		 * @param 	  	title	  	The title.
+		 * @param 	  	isActive	  	True if is active, false if not.
+		 */
+		Wellbore(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_2::eml22__WellStatus statusWellbore,
+			bool isActive);
+
+		/**
+		 * @brief	Constructor
+		 *
+		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWell	  	If non-null, the witsml well.
+		 * @param 	  	guid		  	Unique identifier.
+		 * @param 	  	title		  	The title.
+		 * @param 	  	statusWellbore	The status wellbore.
+		 * @param 	  	isActive	  	True if is active, false if not.
+		 * @param 	  	achievedTD	  	True to achieved td.
+		 */
+		Wellbore(WITSML2_NS::Well* witsmlWell,
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_3::eml23__WellStatus statusWellbore,
 			bool isActive,
-			gsoap_eml2_2::witsml2__WellPurpose purposeWellbore,
-			gsoap_eml2_2::witsml2__WellboreType typeWellbore,
 			bool achievedTD
 		);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		Wellbore(gsoap_eml2_2::witsml2__Wellbore* fromGsoap):AbstractObject(fromGsoap) {}
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		Wellbore(gsoap_eml2_3::witsml21__Wellbore* fromGsoap) : WITSML2_NS::Wellbore(fromGsoap) {}
+
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		~Wellbore() = default;
 
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
+		 * @brief	Gets well dor
+		 *
+		 * @returns	The well dor.
+		 */
+		COMMON_NS::DataObjectReference getWellDor() const final;
+
+		/**
+		 * Sets a well
+		 *
+		 * @param [in,out]	witsmlWell	If non-null, the witsml well.
+		 */
+		DLL_IMPORT_OR_EXPORT void setWell(WITSML2_NS::Well* witsmlWell) final;
+
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Number)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, SuffixAPI)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::eml23__WellStatus, StatusWellbore)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellPurpose, PurposeWellbore)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellboreType, TypeWellbore)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellboreShape, Shape)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellFluid, FluidWellbore)
+		FINAL_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, AchievedTD)
+		FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(Md, gsoap_eml2_3::eml23__LengthUom)
+		FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBit, gsoap_eml2_3::eml23__LengthUom)
+		FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdKickoff, gsoap_eml2_3::eml23__LengthUom)
+		FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdPlanned, gsoap_eml2_3::eml23__LengthUom)
+		FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdSubSeaPlanned, gsoap_eml2_3::eml23__LengthUom)
+
+		/**
+		* The standard XML namespace for serializing this data object.
 		*/
-		~Wellbore() {}
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml21";
 
-		gsoap_eml2_2::eml22__DataObjectReference* getWellDor() const;
-		DLL_IMPORT_OR_EXPORT class Well* getWell() const;
-
-		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
-
-		DLL_IMPORT_OR_EXPORT void setShape(const gsoap_eml2_2::witsml2__WellboreShape & shape);
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
-		void loadTargetRelationships();
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

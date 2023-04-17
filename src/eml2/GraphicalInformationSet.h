@@ -34,46 +34,58 @@ namespace EML2_NS
 		/**
 		 * Gets the size of this graphical information set
 		 *
-		 * @exception	std::range_error	If the size is strictly greater than unsigned int max.
-		 *
 		 * @returns	The size of this graphical information set.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getGraphicalInformationSetCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getGraphicalInformationSetCount() const;
 
 		/**
-		 * Gets the data object reference of the object which receives some graphical information at a
-		 * particular index of the graphical information set
+		 * Gets the count of data objects which are targeted by a graphical information at @p graphicalInformationIndex.
 		 *
 		 * @exception	std::range_error	If @p index is out of range.
 		 *
-		 * @param 	index	Zero-based index of the data object we look for.
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
 		 *
-		 * @returns	The data object reference of the object which receives some graphical information at
-		 * 			@p index.
+		 * @returns	the count of data objects which are targeted by a graphical information at @p graphicalInformationIndex.
 		 */
-		COMMON_NS::DataObjectReference getTargetObjectDor(uint64_t index) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getTargetObjectCount(uint64_t graphicalInformationIndex) const;
+
+		/**
+		 * Gets a data object reference to the data object which receives some graphical information at a
+		 * particular index of the graphical information set and at a particular target index.
+		 *
+		 * @exception	std::range_error	If @p index is out of range.
+		 *
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
+		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
+		 *
+		 * @returns	The data object reference to the data object which receives some graphical information at
+		 * 			@p graphicalInformationIndex and target @p targetIndex.
+		 */
+		gsoap_eml2_3::eml23__DataObjectReference* getTargetObjectDor(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
 
 		/**
 		 * Gets the UUID of the object which receives some graphical information at a particular index
-		 * of the graphical information set
+		 * of the graphical information set and at a particular target index.
 		 *
 		 * @exception	std::range_error	If @p index is out of range.
 		 *
-		 * @param 	index	Zero-based index of the data object we look for.
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
+		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
 		 *
-		 * @returns	The UUUID of the object which receives some graphical information at @p index.
+		 * @returns	The UUUID of the object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(uint64_t index) const;
+		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
 
 		/**
 		 * Gets the data object which receives some graphical information at a particular index of the
-		 * graphical information set
+		 * graphical information set and at a particular target index.
 		 *
-		 * @param 	index	Zero-based index of the data object we look for.
+		 * @param 	graphicalInformationIndex	Zero-based index of the graphical information in the GraphicalInformationSet
+		 * @param	targetIndex					Zero-based index of the data object reference in the graphical information
 		 *
-		 * @returns	The data object which receives some graphical information at @p index.
+		 * @returns	The data object which receives some graphical information at @p graphicalInformationIndex and target @p targetIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractObject* getTargetObject(uint64_t index) const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* getTargetObject(uint64_t graphicalInformationIndex, uint64_t targetIndex) const;
 
 		/**
 		 * Query if a given data object has some direct graphical information, that is to say if there exists
@@ -583,33 +595,24 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
 
 		/**
-		 * Gets the XML namespace for the tags for the XML serialization of this instance
-		 *
-		 * @returns	The XML namespace of this instance.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const {
-			return "eml23";
-		}
-
-		/**
 		 * Reads the forward relationships of this data object and update the <tt>.rels</tt> of the
 		 * associated data repository.
 		 */
 		void loadTargetRelationships() final;
-	
+
 	protected:
 
 		/**
 		* Default constructor
 		*/
 		GraphicalInformationSet() {}
-	
+
 		/**
 		 * Constructor. Only to be used in partial transfer context
 		 *
 		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
-		GraphicalInformationSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject): COMMON_NS::AbstractObject(partialObject) {}
+		GraphicalInformationSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
@@ -618,7 +621,7 @@ namespace EML2_NS
 		 */
 		GraphicalInformationSet(gsoap_eml2_3::_eml23__GraphicalInformationSet* fromGsoap) :
 			COMMON_NS::AbstractObject(fromGsoap) {}
-	
+
 	private:
 		gsoap_eml2_3::resqml22__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(COMMON_NS::AbstractObject const* targetObject) const;
 		gsoap_eml2_3::resqml22__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;

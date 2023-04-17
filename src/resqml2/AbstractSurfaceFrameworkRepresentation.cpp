@@ -20,7 +20,6 @@ under the License.
 
 #include <limits>
 #include <stdexcept>
-#include <sstream>
 
 #include "H5Tpublic.h"
 
@@ -43,7 +42,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		}
 	}
 
-	ostringstream ossForHdfContactRepresentations;
+	std::string datasetName;
 	if (gsoapProxy2_0_1 != nullptr) {
 		resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
@@ -55,8 +54,8 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		xmlListOfContactRepresentations->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 		xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
-		ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
-		xmlListOfContactRepresentations->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdfContactRepresentations.str();
+		datasetName = "contactIdentity_listOfContactRep_" + std::to_string(orgRep->ContactIdentity.size());
+		xmlListOfContactRepresentations->Values->PathInHdfFile = getHdfGroup() + "/" + datasetName;
 		contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
 		orgRep->ContactIdentity.push_back(contactIdentity);
 	}
@@ -69,14 +68,10 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		// ListOfContactRepresentations handling
 		eml23__IntegerExternalArray * xmlListOfContactRepresentations = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		xmlListOfContactRepresentations->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
-		xmlListOfContactRepresentations->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
-		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdfContactRepresentations.str();
-		dsPart->Count = contactCount;
-		xmlListOfContactRepresentations->Values->ExternalFileProxy.push_back(dsPart);
-		contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
+		xmlListOfContactRepresentations->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		datasetName = "contactIdentity_listOfContactRep_" + std::to_string(orgRep->ContactIdentity.size());
+		xmlListOfContactRepresentations->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/" + datasetName, contactCount, proxy));
+		contactIdentity->ContactIndices = xmlListOfContactRepresentations;
 		orgRep->ContactIdentity.push_back(contactIdentity);
 	}
 	else {
@@ -85,7 +80,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 	// ************ HDF *************
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdfContactRepresentations.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
+		datasetName, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		contactIndices,
 		&contactCount, 1);
 }
@@ -102,8 +97,8 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		}
 	}
 
-	ostringstream ossForHdfContactRepresentations;
-	ostringstream ossForHdfIdenticalNodes;
+	std::string datasetNameForHdfContactRepresentations;
+	std::string datasetNameForHdfIdenticalNodes;
 	if (gsoapProxy2_0_1 != nullptr) {
 		resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
@@ -115,8 +110,8 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		xmlListOfContactRepresentations->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to cell index null value in this method
 		xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
-		ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
-		xmlListOfContactRepresentations->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdfContactRepresentations.str();
+		datasetNameForHdfContactRepresentations = "contactIdentity_listOfContactRep_" + std::to_string(orgRep->ContactIdentity.size());
+		xmlListOfContactRepresentations->Values->PathInHdfFile = getHdfGroup() + "/" + datasetNameForHdfContactRepresentations;
 		contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
 
 		// ListOfIdenticalNodes handling
@@ -124,8 +119,8 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		xmlListOfIdenticalNodes->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
 		xmlListOfIdenticalNodes->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlListOfIdenticalNodes->Values->HdfProxy = proxy->newResqmlReference();
-		ossForHdfIdenticalNodes << "contactIdentity_listOfIdenticalNodes_" << orgRep->ContactIdentity.size();
-		xmlListOfIdenticalNodes->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdfIdenticalNodes.str();
+		datasetNameForHdfIdenticalNodes = "contactIdentity_listOfIdenticalNodes_" + std::to_string(orgRep->ContactIdentity.size());
+		xmlListOfIdenticalNodes->Values->PathInHdfFile = getHdfGroup() + "/" + datasetNameForHdfIdenticalNodes;
 		contactIdentity->ListOfIdenticalNodes = xmlListOfIdenticalNodes;
 
 		orgRep->ContactIdentity.push_back(contactIdentity);
@@ -139,26 +134,20 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		// ListOfContactRepresentations handling
 		eml23__IntegerExternalArray * xmlListOfContactRepresentations = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		xmlListOfContactRepresentations->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
-		xmlListOfContactRepresentations->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		auto dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
-		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdfContactRepresentations.str();
-		dsPart->Count = contactCount;
-		xmlListOfContactRepresentations->Values->ExternalFileProxy.push_back(dsPart);
-		contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
+		xmlListOfContactRepresentations->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		datasetNameForHdfContactRepresentations = "contactIdentity_listOfContactRep_" + std::to_string(orgRep->ContactIdentity.size());
+		auto* daPart = createExternalDataArrayPart(getHdfGroup() + "/" + datasetNameForHdfContactRepresentations, contactCount, proxy);
+		xmlListOfContactRepresentations->Values->ExternalDataArrayPart.push_back(daPart);
+		contactIdentity->ContactIndices = xmlListOfContactRepresentations;
 
 		// ListOfIdenticalNodes handling
 		eml23__IntegerExternalArray * xmlListOfIdenticalNodes = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		xmlListOfIdenticalNodes->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write index null value in this method
-		xmlListOfIdenticalNodes->Values = soap_new_eml23__ExternalDataset(gsoapProxy2_3->soap);
-		dsPart = soap_new_eml23__ExternalDatasetPart(gsoapProxy2_3->soap);
-		dsPart->EpcExternalPartReference = proxy->newEml23Reference();
-		ossForHdfIdenticalNodes << "contactIdentity_listOfIdenticalNodes_" << orgRep->ContactIdentity.size();
-		dsPart->PathInExternalFile = getHdfGroup() + "/" + ossForHdfIdenticalNodes.str();
-		dsPart->Count = identicalNodesCount* contactCount;
-		xmlListOfIdenticalNodes->Values->ExternalFileProxy.push_back(dsPart);
-		contactIdentity->ListOfIdenticalNodes = xmlListOfIdenticalNodes;
+		xmlListOfIdenticalNodes->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		datasetNameForHdfIdenticalNodes = "contactIdentity_listOfIdenticalNodes_" + std::to_string(orgRep->ContactIdentity.size());
+		daPart = createExternalDataArrayPart(getHdfGroup() + "/" + datasetNameForHdfIdenticalNodes, identicalNodesCount* contactCount, proxy);
+		xmlListOfIdenticalNodes->Values->ExternalDataArrayPart.push_back(daPart);
+		contactIdentity->IdenticalNodeIndices = xmlListOfIdenticalNodes;
 
 		orgRep->ContactIdentity.push_back(contactIdentity);
 	}
@@ -168,14 +157,14 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 	// ************ HDF *************
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdfContactRepresentations.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
+		datasetNameForHdfContactRepresentations, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		contactIndices,
 		&contactCount, 1);
 
 	// ************ HDF *************
 	uint64_t dimIdenticalNodes[2] = { identicalNodesCount, contactCount };
 	proxy->writeArrayNd(getHdfGroup(),
-		ossForHdfIdenticalNodes.str(), COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
+		datasetNameForHdfIdenticalNodes, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
 		identicalNodesIndexes,
 		dimIdenticalNodes, 2);
 }
@@ -242,7 +231,7 @@ unsigned int AbstractSurfaceFrameworkRepresentation::getContactCountInContactIde
 		result = getCountOfIntegerArray(getContactIdentity201(ciIndex)->ListOfContactRepresentations);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		result = getCountOfIntegerArray(getContactIdentity22(ciIndex)->ListOfContactRepresentations);
+		result = getCountOfArray(getContactIdentity22(ciIndex)->ContactIndices);
 	}
 	else {
 		throw std::logic_error("Unknown RESQML version");
@@ -261,7 +250,7 @@ void AbstractSurfaceFrameworkRepresentation::getContactIndices(unsigned int ciIn
 		readArrayNdOfUInt32Values(getContactIdentity201(ciIndex)->ListOfContactRepresentations, contactRepIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt32Values(getContactIdentity22(ciIndex)->ListOfContactRepresentations, contactRepIndices);
+		readArrayNdOfUInt32Values(getContactIdentity22(ciIndex)->ContactIndices, contactRepIndices);
 	}
 	else {
 		throw std::logic_error("Unknown RESQML version");
@@ -274,7 +263,7 @@ bool AbstractSurfaceFrameworkRepresentation::areAllContactNodesIdentical(unsigne
 		return getContactIdentity201(ciIndex)->ListOfIdenticalNodes == nullptr;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return getContactIdentity22(ciIndex)->ListOfIdenticalNodes == nullptr;
+		return getContactIdentity22(ciIndex)->IdenticalNodeIndices == nullptr;
 	}
 	else {
 		throw std::logic_error("Unknown RESQML version");
@@ -292,12 +281,12 @@ unsigned int AbstractSurfaceFrameworkRepresentation::getIdenticalContactNodeCoun
 		result = getCountOfIntegerArray(getContactIdentity201(ciIndex)->ListOfIdenticalNodes);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		result = getCountOfIntegerArray(getContactIdentity22(ciIndex)->ListOfIdenticalNodes);
+		result = getCountOfArray(getContactIdentity22(ciIndex)->IdenticalNodeIndices);
 	}
 	else {
 		throw std::logic_error("Unknown RESQML version");
 	}
-	
+
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much identical nodes for fesapi");
 	}
@@ -315,7 +304,7 @@ void AbstractSurfaceFrameworkRepresentation::getIdenticalContactNodeIndices(unsi
 		readArrayNdOfUInt32Values(getContactIdentity201(ciIndex)->ListOfIdenticalNodes, nodeIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt32Values(getContactIdentity22(ciIndex)->ListOfIdenticalNodes, nodeIndices);
+		readArrayNdOfUInt32Values(getContactIdentity22(ciIndex)->IdenticalNodeIndices, nodeIndices);
 	}
 	else {
 		throw std::logic_error("Unknown RESQML version");

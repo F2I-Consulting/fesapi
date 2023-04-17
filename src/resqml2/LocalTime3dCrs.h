@@ -70,12 +70,5 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		LocalTime3dCrs(gsoap_resqml2_0_1::_resqml20__LocalTime3dCrs* fromGsoap) : AbstractLocal3dCrs(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		LocalTime3dCrs(gsoap_eml2_3::_resqml22__LocalTime3dCrs* fromGsoap) : AbstractLocal3dCrs(fromGsoap) {}
 	};
 }

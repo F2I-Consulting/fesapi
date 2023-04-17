@@ -53,15 +53,6 @@ namespace COMMON_NS
 		}
 
 		/**
-		 * Creates an instance of HDF5 file proxy by wrapping a gSOAP instance.
-		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
-		 *
-		 * @returns	A pointer to an instantiated HDF5 file proxy.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual EML2_NS::AbstractHdfProxy* make(gsoap_eml2_3::_eml23__EpcExternalPartReference* fromGsoap);
-
-		/**
 		 * @brief	Creates an instance of HDF5 file proxy for serialization purpose.
 		 *
 		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.

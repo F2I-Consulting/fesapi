@@ -25,6 +25,7 @@ using namespace RESQML2_NS;
 
 WITSML2_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
 {
+	cannotBePartial();
 	return repository->getDataObjectByUuid<WITSML2_NS::Wellbore>(getWitsmlWellboreDor().getUuid());
 }
 

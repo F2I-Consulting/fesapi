@@ -48,13 +48,13 @@ WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(const
 }
 
 void WellboreTrajectoryRepresentationTest::initRepo() {
-	WITSML2_NS::Well* well = repo->createWell("1f885c7b-5262-41ef-bd1c-e06f40c08387", "");
-	WITSML2_NS::Wellbore* wellbore = repo->createWellbore(well, "", "");
+	WITSML2_NS::Well* well = repo->createWell("1f885c7b-5262-41ef-bd1c-e06f40c08387", "", false);
+	WITSML2_NS::Wellbore* wellbore = repo->createWellbore(well, "", "", false);
 	
 	WellboreFeature* feature = repo->createWellboreFeature("", "");
 	feature->setWitsmlWellbore(wellbore);
 	WellboreInterpretation* interp = repo->createWellboreInterpretation(feature, "", "", true);
-	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
+	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__ReferencePointKind::mean_x0020sea_x0020level, 275, 75, 0);
 
 	// creating the WellboreTrajectoryRepresentation in m and ft and depth
 	WellboreTrajectoryRepresentation* rep = repo->createWellboreTrajectoryRepresentation(interp, defaultUuid, defaultTitle, mdDatum);

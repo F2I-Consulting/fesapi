@@ -19,7 +19,7 @@ under the License.
 #include "EnumStringMapper.h"
 
 #include "../proxies/gsoap_resqml2_0_1H.h"
-#include "../proxies/gsoap_eml2_1H.h"
+#include "../proxies/gsoap_eml2_3H.h"
 
 using namespace COMMON_NS;
 
@@ -69,17 +69,17 @@ gsoap_resqml2_0_1::resqml20__Facet EnumStringMapper::getFacet(const std::string 
 	return gsoap_resqml2_0_1::soap_s2resqml20__Facet(gsoapContext, facet.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml20__Facet::what;
 }
 
-std::string EnumStringMapper::lengthUomToString(gsoap_eml2_1::eml21__LengthUom witsmlUom) const
+std::string EnumStringMapper::lengthUomToString(gsoap_eml2_3::eml23__LengthUom witsmlUom) const
 {
-	return gsoap_eml2_1::soap_eml21__LengthUom2s(gsoapContext, witsmlUom);
+	return gsoap_eml2_3::soap_eml23__LengthUom2s(gsoapContext, witsmlUom);
 }
 
-std::string EnumStringMapper::verticalCoordinateUomToString(gsoap_eml2_1::eml21__VerticalCoordinateUom witsmlUom) const
+std::string EnumStringMapper::verticalCoordinateUomToString(gsoap_eml2_3::eml23__VerticalCoordinateUom witsmlUom) const
 {
-	return gsoap_eml2_1::soap_eml21__VerticalCoordinateUom2s(gsoapContext, witsmlUom);
+	return gsoap_eml2_3::soap_eml23__VerticalCoordinateUom2s(gsoapContext, witsmlUom);
 }
 
-std::string EnumStringMapper::planeAngleUomToString(gsoap_eml2_1::eml21__PlaneAngleUom witsmlUom) const
+std::string EnumStringMapper::planeAngleUomToString(gsoap_eml2_3::eml23__PlaneAngleUom witsmlUom) const
 {
-	return gsoap_eml2_1::soap_eml21__PlaneAngleUom2s(gsoapContext, witsmlUom);
+	return gsoap_eml2_3::soap_eml23__PlaneAngleUom2s(gsoapContext, witsmlUom);
 }

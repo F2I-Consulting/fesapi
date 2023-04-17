@@ -36,7 +36,7 @@ using namespace gsoap_eml2_3;
 const char* DiscreteProperty::XML_NS = "resqml22";
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::PropertyKind * localPropKind)
 {
 	if (dimension == 0) {
 		throw invalid_argument("The dimension cannot be zero.");
@@ -45,10 +45,7 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 	gsoapProxy2_3 = soap_new_resqml22__DiscreteProperty(rep->getGsoapContext());	
 	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
 	prop->IndexableElement = attachmentKind;
-	if (dimension > 1) {
-		prop->ValueCountPerIndexableElement = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_3->soap, sizeof(ULONG64)));
-		*prop->ValueCountPerIndexableElement = dimension;
-	}
+	prop->ValueCountPerIndexableElement.push_back(dimension);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -61,24 +58,19 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 
 std::string DiscreteProperty::pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName, int64_t nullValue, int64_t minimumValue, int64_t maximumValue)
 {
-	const string result = AbstractValuesProperty::pushBackRefToExistingIntegerDataset(proxy, datasetName, nullValue);
+	gsoap_eml2_3::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3);
 
-	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
+	// XML
+	gsoap_eml2_3::eml23__IntegerExternalArray* xmlValues = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
+	xmlValues->NullValue = nullValue;
+	xmlValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
 
-	if (prop->ValueCountPerIndexableElement == nullptr || *prop->ValueCountPerIndexableElement == 1)
-	{
-		if (prop->MinimumValue.empty())
-			prop->MinimumValue.push_back(minimumValue);
-		else
-			prop->MinimumValue[0] = minimumValue;
+	auto* daPart = createExternalDataArrayPart(datasetName, proxy->getElementCount(datasetName), proxy);
+	xmlValues->Values->ExternalDataArrayPart.push_back(daPart);
 
-		if (prop->MaximumValue.empty())
-			prop->MaximumValue.push_back(maximumValue);
-		else
-			prop->MaximumValue[0] = maximumValue;
-	}
+	prop->ValuesForPatch.push_back(xmlValues);
 
-	return result;
+	return daPart->PathInExternalFile;
 }
 
 int64_t DiscreteProperty::getNullValue(uint64_t patchIndex) const
@@ -95,60 +87,40 @@ int64_t DiscreteProperty::getNullValue(uint64_t patchIndex) const
 
 bool DiscreteProperty::hasMinimumValue(uint64_t index) const
 {
-	return static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3)->MinimumValue.size() > index;
+	throw logic_error("Not implemented yet");
 }
 
 int64_t DiscreteProperty::getMinimumValue(uint64_t index) const
 {
-	if (!hasMinimumValue(index)) {
-		throw std::logic_error("This property has not minimum value at index " + std::to_string(index));
-	}
-
-	return static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3)->MinimumValue[index];
+	throw logic_error("Not implemented yet");
 }
 
 bool DiscreteProperty::hasMaximumValue(uint64_t index) const
 {
-	return static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3)->MaximumValue.size() > index;
+	throw logic_error("Not implemented yet");
 }
 
 int64_t DiscreteProperty::getMaximumValue(uint64_t index) const
 {
-	if (!hasMaximumValue(index)) {
-		throw std::logic_error("This property has not maximum value at index " + std::to_string(index));
-	}
-
-	return static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3)->MaximumValue[index];
+	throw logic_error("Not implemented yet");
 }
 
 void DiscreteProperty::setMinimumValue(int64_t value, uint64_t index) const
 {
-	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
-
-	while (prop->MinimumValue.size() <= index) {
-		prop->MinimumValue.push_back((std::numeric_limits<int64_t>::max)());
-	}
-
-	prop->MinimumValue[index] = value;
+	throw logic_error("Not implemented yet");
 }
 
 void DiscreteProperty::setMaximumValue(int64_t value, uint64_t index) const
 {
-	_resqml22__DiscreteProperty* prop = static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3);
-
-	while (prop->MaximumValue.size() <= index) {
-		prop->MaximumValue.push_back((std::numeric_limits<int64_t>::min)());
-	}
-
-	prop->MaximumValue[index] = value;
+	throw logic_error("Not implemented yet");
 }
 
 size_t DiscreteProperty::getMinimumValueSize() const
 {
-	return static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3)->MinimumValue.size();
+	throw logic_error("Not implemented yet");
 }
 
 size_t DiscreteProperty::getMaximumValueSize() const
 {
-	return static_cast<_resqml22__DiscreteProperty*>(gsoapProxy2_3)->MaximumValue.size();
+	throw logic_error("Not implemented yet");
 }

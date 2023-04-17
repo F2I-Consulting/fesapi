@@ -20,9 +20,9 @@ under the License.
 
 #include "../resqml2/WellboreFeature.h"
 
-#include "../witsml2_0/WellboreCompletion.h"
-#include "../witsml2_0/WellboreGeometry.h"
-#include "../witsml2_0/Log.h"
+#include "../witsml2_1/WellboreCompletion.h"
+#include "../witsml2_1/WellboreGeometry.h"
+#include "../witsml2_1/Log.h"
 
 #include "Trajectory.h"
 #include "Well.h"
@@ -44,9 +44,9 @@ std::vector<RESQML2_NS::WellboreFeature*> Wellbore::getResqmlWellboreFeatureSet(
 	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFeature>(this);
 }
 
-std::vector<WITSML2_0_NS::WellboreCompletion *> Wellbore::getWellboreCompletionSet() const
+std::vector<WITSML2_1_NS::WellboreCompletion *> Wellbore::getWellboreCompletionSet() const
 {
-	return getRepository()->getSourceObjects<WITSML2_0_NS::WellboreCompletion>(this);
+	return getRepository()->getSourceObjects<WITSML2_1_NS::WellboreCompletion>(this);
 }
 
 std::vector<Trajectory *> Wellbore::getTrajectorySet() const
@@ -54,12 +54,12 @@ std::vector<Trajectory *> Wellbore::getTrajectorySet() const
 	return getRepository()->getSourceObjects<Trajectory>(this);
 }
 
-std::vector<WITSML2_0_NS::WellboreGeometry *> Wellbore::getWellboreGeometrySet() const
+std::vector<WITSML2_1_NS::WellboreGeometry *> Wellbore::getWellboreGeometrySet() const
 {
-	return getRepository()->getSourceObjects<WITSML2_0_NS::WellboreGeometry>(this);
+	return getRepository()->getSourceObjects<WITSML2_1_NS::WellboreGeometry>(this);
 }
 
-std::vector<WITSML2_0_NS::Log *> Wellbore::getLogSet() const
+std::vector<WITSML2_1_NS::Log *> Wellbore::getLogSet() const
 {
-	return getRepository()->getSourceObjects<WITSML2_0_NS::Log>(this);
+	return getRepository()->getSourceObjects<WITSML2_1_NS::Log>(this);
 }

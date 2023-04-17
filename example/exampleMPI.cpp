@@ -58,7 +58,7 @@ void serialize(const std::string filename) {
 	// If it is a random, each rank would write in a different HDF dataset.
 	RESQML2_NS::SubRepresentation* subrep = repo.createSubRepresentation("0c5803ec-b620-4d56-9fc4-bf354fdc5b6b", "parallel subrep");
 	subrep->pushBackSupportingRepresentation(unstructuredGrid_4cells);
-	subrep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::cells, 3); // only 3 cells of the 4
+	subrep->pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement::cells, 3); // only 3 cells of the 4
 	if (world_rank < 3) {
 		uint64_t elementIndice = world_rank;
 		subrep->setElementIndices(&elementIndice, 1, world_rank);
@@ -66,7 +66,7 @@ void serialize(const std::string filename) {
 
 	// It is important to explictely give an UUID to the property in order all ranks write into the same HDF dataset.
 	// If it is a random, each rank would write in a different HDF dataset.
-	RESQML2_NS::ContinuousProperty* prop = repo.createContinuousProperty(unstructuredGrid_4cells, "9cd64cd9-9ecc-4da1-a3f3-ee77335d98c8", "parallel property", 1, gsoap_eml2_3::resqml22__IndexableElement::cells,
+	RESQML2_NS::ContinuousProperty* prop = repo.createContinuousProperty(unstructuredGrid_4cells, "9cd64cd9-9ecc-4da1-a3f3-ee77335d98c8", "parallel property", 1, gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 	prop->pushBackHdf5Array1dOfValues(COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, world_size);

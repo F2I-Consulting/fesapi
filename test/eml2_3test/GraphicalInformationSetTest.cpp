@@ -20,7 +20,6 @@ under the License.
 #include "catch.hpp"
 #include "eml2/GraphicalInformationSet.h"
 #include "resqml2/BoundaryFeature.h"
-#include "resqml2/LocalTime3dCrs.h"
 
 using namespace std;
 using namespace EML2_NS;
@@ -41,7 +40,7 @@ void GraphicalInformationSetTest::initRepo() {
 
 	GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet(defaultUuid, defaultTitle);
 	REQUIRE(graphicalInformationSet != nullptr);
-	
+
 	REQUIRE(graphicalInformationSet->hasGraphicalInformation(feature) == false);
 	REQUIRE(graphicalInformationSet->hasDefaultColor(feature) == false);
 	REQUIRE_THROWS(graphicalInformationSet->setDefaultHsvColor(feature, 361, 0., 0.));
@@ -55,9 +54,10 @@ void GraphicalInformationSetTest::readRepo() {
 	REQUIRE(repo->getDataObjects<GraphicalInformationSet>().size() == 1);
 	GraphicalInformationSet * graphicalInformationSet = repo->getDataObjects<GraphicalInformationSet>()[0];
 	REQUIRE(graphicalInformationSet->getUuid() == defaultUuid);
-	
+
 	REQUIRE(graphicalInformationSet->getGraphicalInformationSetCount() == 1);
-	BoundaryFeature* feature = static_cast<BoundaryFeature *>(graphicalInformationSet->getTargetObject(0));
+	REQUIRE(graphicalInformationSet->getTargetObjectCount(0) == 1);
+	BoundaryFeature* feature = static_cast<BoundaryFeature *>(graphicalInformationSet->getTargetObject(0, 0));
 	REQUIRE(feature->getUuid() == uuidHorizon);
 	REQUIRE(graphicalInformationSet->hasGraphicalInformation(feature) == true);
 	REQUIRE(graphicalInformationSet->hasDefaultColor(feature) == true);
@@ -82,15 +82,15 @@ void GraphicalInformationSetTest::readRepo() {
 	REQUIRE(saturation == 1.);
 	REQUIRE(value == 1.);
 
-	GraphicalInformationSet::rgbToHsv((unsigned int) 255, (unsigned int) 0, (unsigned int) 0, hue, saturation, value); // red
+	GraphicalInformationSet::rgbToHsv((unsigned int)255, (unsigned int)0, (unsigned int)0, hue, saturation, value); // red
 	REQUIRE(hue == 0.);
 	REQUIRE(saturation == 1.);
 	REQUIRE(value == 1.);
-	GraphicalInformationSet::rgbToHsv((unsigned int) 0, (unsigned int) 255, (unsigned int) 0, hue, saturation, value); // green
+	GraphicalInformationSet::rgbToHsv((unsigned int)0, (unsigned int)255, (unsigned int)0, hue, saturation, value); // green
 	REQUIRE(hue == 120.);
 	REQUIRE(saturation == 1.);
 	REQUIRE(value == 1.);
-	GraphicalInformationSet::rgbToHsv((unsigned int)  0, (unsigned int)  0, (unsigned int)  255, hue, saturation, value); // blue
+	GraphicalInformationSet::rgbToHsv((unsigned int)0, (unsigned int)0, (unsigned int)255, hue, saturation, value); // blue
 	REQUIRE(hue == 240.);
 	REQUIRE(saturation == 1.);
 	REQUIRE(value == 1.);

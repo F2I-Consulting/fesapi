@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreGeometryTest.h"
 #include "../catch.hpp"
-#include "witsml2_0/Well.h"
-#include "witsml2_0/Wellbore.h"
-#include "witsml2_0/WellboreGeometry.h"
+#include "witsml2_1/Well.h"
+#include "witsml2_1/Wellbore.h"
+#include "witsml2_1/WellboreGeometry.h"
 #include <stdexcept>
 
 using namespace std;
@@ -35,68 +35,54 @@ WellboreGeometryTest::WellboreGeometryTest(const string & epcDocPath)
 }
 
 void WellboreGeometryTest::initRepo() {
-	WITSML2_0_NS::Wellbore* wellbore = repo->createPartial<WITSML2_0_NS::Wellbore>("", "");
-	WITSML2_0_NS::WellboreGeometry* witsmlWbGeom = repo->createWellboreGeometry(wellbore, defaultUuid, "WellboreGeometry TEST", gsoap_eml2_1::witsml20__ChannelStatus::closed);
+	WITSML2_1_NS::Wellbore* wellbore = repo->createPartial<WITSML2_1_NS::Wellbore>("", "");
+	WITSML2_1_NS::WellboreGeometry* witsmlWbGeom = repo->createWellboreGeometry(wellbore, defaultUuid, "WellboreGeometry TEST", false);
 
-	witsmlWbGeom->setMdBase(0, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
-	witsmlWbGeom->pushBackSection();
-	witsmlWbGeom->setWellboreGeometrySectionTypeHoleCasing(0, gsoap_eml2_1::witsml20__HoleCasingType::casing);
-	witsmlWbGeom->setWellboreGeometrySectionOdSection(0, 30, gsoap_eml2_1::eml21__LengthUom::in);
-	witsmlWbGeom->setWellboreGeometrySectionMdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlWbGeom->pushBackSection();
-	witsmlWbGeom->setWellboreGeometrySectionTypeHoleCasing(1, gsoap_eml2_1::witsml20__HoleCasingType::casing);
+	witsmlWbGeom->pushBackSection(0, 250, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlWbGeom->setWellboreGeometrySectionTypeHoleCasing(0, gsoap_eml2_3::witsml21__HoleCasingType::casing);
+	witsmlWbGeom->setWellboreGeometrySectionOdSection(0, 30, gsoap_eml2_3::eml23__LengthUom::in);
+	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(0, 0, 250, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlWbGeom->pushBackSection(0, 990, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlWbGeom->setWellboreGeometrySectionTypeHoleCasing(1, gsoap_eml2_3::witsml21__HoleCasingType::casing);
 	witsmlWbGeom->setWellboreGeometrySectionCurveConductor(1, false);
-	witsmlWbGeom->setWellboreGeometrySectionDiaDrift(1, 17.5, gsoap_eml2_1::eml21__LengthUom::in);
+	witsmlWbGeom->setWellboreGeometrySectionDiaDrift(1, 17.5, gsoap_eml2_3::eml23__LengthUom::in);
 	witsmlWbGeom->setWellboreGeometrySectionFactFric(1, 0.25);
 	witsmlWbGeom->setWellboreGeometrySectionGrade(1, "L80");
-	witsmlWbGeom->setWellboreGeometrySectionIdSection(1, 18, gsoap_eml2_1::eml21__LengthUom::in);
-	witsmlWbGeom->setWellboreGeometrySectionOdSection(1, 20, gsoap_eml2_1::eml21__LengthUom::in);
-	witsmlWbGeom->setWellboreGeometrySectionWtPerLen(1, 123, gsoap_eml2_1::eml21__MassPerLengthUom::lbm_x002fft);
-	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(1, 0, 990, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom::m);
+	witsmlWbGeom->setWellboreGeometrySectionIdSection(1, 18, gsoap_eml2_3::eml23__LengthUom::in);
+	witsmlWbGeom->setWellboreGeometrySectionOdSection(1, 20, gsoap_eml2_3::eml23__LengthUom::in);
+	witsmlWbGeom->setWellboreGeometrySectionWtPerLen(1, 123, gsoap_eml2_3::eml23__MassPerLengthUom::lbm_x002fft);
+	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(1, 0, 990, gsoap_eml2_3::eml23__LengthUom::m);
 }
 
 void WellboreGeometryTest::readRepo() {
-	WITSML2_0_NS::WellboreGeometry* wbGeom = repo->getDataObjectByUuid<WITSML2_0_NS::WellboreGeometry>(defaultUuid);
+	WITSML2_1_NS::WellboreGeometry* wbGeom = repo->getDataObjectByUuid<WITSML2_1_NS::WellboreGeometry>(defaultUuid);
 	REQUIRE (wbGeom != nullptr);
 
-	REQUIRE(!wbGeom->hasDepthWaterMean());
-	REQUIRE(!wbGeom->hasGapAir());
-	REQUIRE(wbGeom->hasMdBase());
-	REQUIRE(wbGeom->getMdBaseValue() == .0);
-	REQUIRE(wbGeom->getMdBaseUom() == gsoap_eml2_1::eml21__LengthUom::m);
-	REQUIRE(wbGeom->getMdBaseDatum() == "d3ac5401-d3e7-4474-b846-070673b210ae");
 	REQUIRE(wbGeom->getSectionCount() == 2);
 
-	REQUIRE(wbGeom->getWellboreGeometrySectionTypeHoleCasing(0) == gsoap_eml2_1::witsml20__HoleCasingType::casing);
+	REQUIRE(wbGeom->getWellboreGeometrySectionTypeHoleCasing(0) == gsoap_eml2_3::witsml21__HoleCasingType::casing);
 	REQUIRE(wbGeom->getWellboreGeometrySectionOdSectionValue(0) == 30);
-	REQUIRE(wbGeom->getWellboreGeometrySectionOdSectionUom(0) == gsoap_eml2_1::eml21__LengthUom::in);
+	REQUIRE(wbGeom->getWellboreGeometrySectionOdSectionUom(0) == gsoap_eml2_3::eml23__LengthUom::in);
 	REQUIRE(wbGeom->getWellboreGeometrySectionMdIntervalBase(0) == 250);
-	REQUIRE(wbGeom->getWellboreGeometrySectionMdIntervalBaseUom(0) == gsoap_eml2_1::eml21__LengthUom::m);
+	REQUIRE(wbGeom->getWellboreGeometrySectionMdIntervalUom(0) == gsoap_eml2_3::eml23__LengthUom::m);
 	REQUIRE(wbGeom->getWellboreGeometrySectionMdIntervalTop(0) == 0);
-	REQUIRE(wbGeom->getWellboreGeometrySectionMdIntervalTopUom(0) == gsoap_eml2_1::eml21__LengthUom::m);
-	REQUIRE(wbGeom->getWellboreGeometrySectionMdIntervaldatum(0) == "d3ac5401-d3e7-4474-b846-070673b210ae");
 	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervalBase(0) == 250);
-	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervalBaseUom(0) == gsoap_eml2_1::eml21__LengthUom::m);
 	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervalTop(0) == 0);
-	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervalTopUom(0) == gsoap_eml2_1::eml21__LengthUom::m);
-	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervaldatum(0) == "d3ac5401-d3e7-4474-b846-070673b210ae");
+	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervalUom(0) == gsoap_eml2_3::eml23__LengthUom::m);
 
-	REQUIRE(wbGeom->getWellboreGeometrySectionTypeHoleCasing(1) == gsoap_eml2_1::witsml20__HoleCasingType::casing);
+	REQUIRE(wbGeom->getWellboreGeometrySectionTypeHoleCasing(1) == gsoap_eml2_3::witsml21__HoleCasingType::casing);
 	REQUIRE(!wbGeom->getWellboreGeometrySectionCurveConductor(1));
 	REQUIRE(wbGeom->getWellboreGeometrySectionDiaDriftValue(1) == 17.5);
-	REQUIRE(wbGeom->getWellboreGeometrySectionDiaDriftUom(1) == gsoap_eml2_1::eml21__LengthUom::in);
+	REQUIRE(wbGeom->getWellboreGeometrySectionDiaDriftUom(1) == gsoap_eml2_3::eml23__LengthUom::in);
 	REQUIRE(wbGeom->getWellboreGeometrySectionFactFric(1) == 0.25);
 	REQUIRE(wbGeom->getWellboreGeometrySectionGrade(1) == "L80");
 	REQUIRE(wbGeom->getWellboreGeometrySectionIdSectionValue(1) == 18);
-	REQUIRE(wbGeom->getWellboreGeometrySectionIdSectionUom(1) == gsoap_eml2_1::eml21__LengthUom::in);
+	REQUIRE(wbGeom->getWellboreGeometrySectionIdSectionUom(1) == gsoap_eml2_3::eml23__LengthUom::in);
 	REQUIRE(wbGeom->getWellboreGeometrySectionOdSectionValue(1) == 20);
-	REQUIRE(wbGeom->getWellboreGeometrySectionOdSectionUom(1) == gsoap_eml2_1::eml21__LengthUom::in);
+	REQUIRE(wbGeom->getWellboreGeometrySectionOdSectionUom(1) == gsoap_eml2_3::eml23__LengthUom::in);
 	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervalBase(1) == 990);
-	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervalBaseUom(1) == gsoap_eml2_1::eml21__LengthUom::m);
+	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervalUom(1) == gsoap_eml2_3::eml23__LengthUom::m);
 	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervalTop(1) == 0);
-	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervalTopUom(1) == gsoap_eml2_1::eml21__LengthUom::m);
-	REQUIRE(wbGeom->getWellboreGeometrySectionTvdIntervaldatum(1) == "d3ac5401-d3e7-4474-b846-070673b210ae");
 	REQUIRE(wbGeom->getWellboreGeometrySectionWtPerLenValue(1) == 123);
-	REQUIRE(wbGeom->getWellboreGeometrySectionWtPerLenUom(1) == gsoap_eml2_1::eml21__MassPerLengthUom::lbm_x002fft);
+	REQUIRE(wbGeom->getWellboreGeometrySectionWtPerLenUom(1) == gsoap_eml2_3::eml23__MassPerLengthUom::lbm_x002fft);
 }

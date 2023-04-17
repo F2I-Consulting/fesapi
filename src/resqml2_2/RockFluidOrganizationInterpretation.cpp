@@ -49,19 +49,15 @@ void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(RE
 		throw invalid_argument("The rock fluid unit interpretation cannot be null.");
 	}
 
-	static_cast<_resqml22__RockFluidOrganizationInterpretation*>(gsoapProxy2_3)->RockFluidUnitIndex.push_back(rockFluidUnitInterpretation->newEml23Reference());
+	static_cast<_resqml22__RockFluidOrganizationInterpretation*>(gsoapProxy2_3)->RockFluidUnit.push_back(rockFluidUnitInterpretation->newEml23Reference());
 }
 
 unsigned int RockFluidOrganizationInterpretation::getRockFluidUnitInterpCount() const
 {
-	return static_cast<_resqml22__RockFluidOrganizationInterpretation*>(gsoapProxy2_3)->RockFluidUnitIndex.size();
+	return static_cast<_resqml22__RockFluidOrganizationInterpretation*>(gsoapProxy2_3)->RockFluidUnit.size();
 }
 
 COMMON_NS::DataObjectReference RockFluidOrganizationInterpretation::getRockFluidUnitInterpretationDor(unsigned int index) const
 {
-	if (index >= getRockFluidUnitInterpCount()) {
-		throw out_of_range("The index is out of range");
-	}
-
-	return COMMON_NS::DataObjectReference(static_cast<_resqml22__RockFluidOrganizationInterpretation*>(gsoapProxy2_3)->RockFluidUnitIndex[index]);
+	return COMMON_NS::DataObjectReference(static_cast<_resqml22__RockFluidOrganizationInterpretation*>(gsoapProxy2_3)->RockFluidUnit.at(index));
 }

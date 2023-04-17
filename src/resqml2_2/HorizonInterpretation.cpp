@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "HorizonInterpretation.h"
 
-#include <stdexcept>
-
 #include "BoundaryFeature.h"
 
 using namespace std;
@@ -37,7 +35,7 @@ HorizonInterpretation::HorizonInterpretation(RESQML2_NS::BoundaryFeature * horiz
 	gsoapProxy2_3 = soap_new_resqml22__HorizonInterpretation(horizon->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	horizon->getRepository()->addDataObject(this);
 	setInterpretedFeature(horizon);

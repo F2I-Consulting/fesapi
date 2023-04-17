@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_1/WeightingFunctionDictionary.h"
-#include "witsml2_1/WeightingFunction.h"
+#include "WeightingFunctionDictionary.h"
+#include "WeightingFunction.h"
 
 #include <stdexcept>
 #include <sstream>
 
 using namespace std;
 using namespace WITSML2_1_NS;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 
 const char* WeightingFunctionDictionary::XML_TAG = "WeightingFunctionDictionary";
 
@@ -34,7 +34,7 @@ WeightingFunctionDictionary::WeightingFunctionDictionary(COMMON_NS::DataObjectRe
 {
 	if (repo == nullptr) throw invalid_argument("A WeightingFunctionDictionary must be associated to a repo.");
 
-	gsoapProxy2_2 = soap_new_witsml2__WeightingFunctionDictionary(repo->getGsoapContext(), 1);
+	gsoapProxy2_3 = soap_new_witsml21__WeightingFunctionDictionary(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -44,8 +44,8 @@ WeightingFunctionDictionary::WeightingFunctionDictionary(COMMON_NS::DataObjectRe
 
 std::string WeightingFunctionDictionary::getWeightingFunctionUuid(unsigned long index) const
 {
-	if (gsoapProxy2_2 != nullptr) {
-		witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
+	if (gsoapProxy2_3 != nullptr) {
+		witsml21__WeightingFunctionDictionary* dict = static_cast<witsml21__WeightingFunctionDictionary*>(gsoapProxy2_3);
 		if (index < dict->WeightingFunction.size()) {
 			return dict->WeightingFunction[index]->uuid;
 		}
@@ -59,7 +59,7 @@ std::string WeightingFunctionDictionary::getWeightingFunctionUuid(unsigned long 
 }
 
 WeightingFunction* WeightingFunctionDictionary::getWeightingFunction(unsigned long index) const {
-	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
+	witsml21__WeightingFunctionDictionary* dict = static_cast<witsml21__WeightingFunctionDictionary*>(gsoapProxy2_3);
 
 	WeightingFunction* wf = getRepository()->getDataObjectByUuid<WeightingFunction>(dict->WeightingFunction[index]->uuid);
 	return wf == nullptr ? new WITSML2_1_NS::WeightingFunction(dict->WeightingFunction[index]) : wf;
@@ -68,7 +68,7 @@ WeightingFunction* WeightingFunctionDictionary::getWeightingFunction(unsigned lo
 std::vector<WeightingFunction*> WeightingFunctionDictionary::getWeightingFunctions() const {
 	std::vector<WeightingFunction*> result;
 
-	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
+	witsml21__WeightingFunctionDictionary* dict = static_cast<witsml21__WeightingFunctionDictionary*>(gsoapProxy2_3);
 	for (size_t index = 0; index < dict->WeightingFunction.size(); ++index) {
 		result.push_back(getWeightingFunction(index));
 	}
@@ -80,13 +80,13 @@ void WeightingFunctionDictionary::pushBackWeightingFunction(WeightingFunction* w
 {
 	getRepository()->addRelationship(this, wf);
 
-	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
-	dict->WeightingFunction.push_back(static_cast<witsml2__WeightingFunction*>(wf->getGsoapProxy2_2()));
+	witsml21__WeightingFunctionDictionary* dict = static_cast<witsml21__WeightingFunctionDictionary*>(gsoapProxy2_3);
+	dict->WeightingFunction.push_back(static_cast<witsml21__WeightingFunction*>(wf->getEml23GsoapProxy()));
 }
 
 void WeightingFunctionDictionary::loadTargetRelationships()
 {
-	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
+	witsml21__WeightingFunctionDictionary* dict = static_cast<witsml21__WeightingFunctionDictionary*>(gsoapProxy2_3);
 
 	for (size_t index = 0; index < dict->WeightingFunction.size(); ++index) {
 		WeightingFunction* wf = getRepository()->getDataObjectByUuid<WeightingFunction>(dict->WeightingFunction[index]->uuid);

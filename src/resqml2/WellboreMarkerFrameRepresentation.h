@@ -116,14 +116,6 @@ namespace RESQML2_NS
 		WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreMarkerFrameRepresentation* fromGsoap) :
 			WellboreFrameRepresentation(fromGsoap) {}
 
-		/**
-		 * Creates an instance of this class by wrapping a gSOAP instance.
-		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
-		 */
-		WellboreMarkerFrameRepresentation(gsoap_eml2_3::_resqml22__WellboreMarkerFrameRepresentation* fromGsoap) :
-			WellboreFrameRepresentation(fromGsoap) {}
-
 		/** Loads target relationships */
 		virtual void loadTargetRelationships() override;
 	};

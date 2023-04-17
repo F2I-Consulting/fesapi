@@ -95,9 +95,9 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 	gridConnSet432->setLocalFacePerCellIndexPairs(localFacePerCellIndexPairs432, -1, nullptr);
 
 	// Discrete property
-	auto* propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+	auto* propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
 	RESQML2_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propertyKind);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propertyKind);
 	int64_t discretePropValues[24] = {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
@@ -105,9 +105,9 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 	discreteProp->pushBackInt64Hdf5Array3dOfValues(discretePropValues, 4, 3, 2, nullptr, -1);
 
 	// Continuous property
-	propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
+	propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_3::eml23__QuantityClassKind::length);
 	RESQML2_NS::ContinuousProperty* continuousProp = repo->createContinuousProperty(ijkGrid, "de5a71cc-879d-4cda-8fb3-146c70539cf9", "Amplitude", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, propertyKind);
+		gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, propertyKind);
 	double continuousPropValues[24] = {
 		0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0,
 		1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0

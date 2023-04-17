@@ -254,13 +254,6 @@ namespace RESQML2_NS
 		 */
 		DeviationSurveyRepresentation(gsoap_resqml2_0_1::_resqml20__DeviationSurveyRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		DeviationSurveyRepresentation(gsoap_eml2_3::_resqml22__DeviationSurveyRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
-
 		/** Loads target relationships */
 		void loadTargetRelationships() final;
 	};

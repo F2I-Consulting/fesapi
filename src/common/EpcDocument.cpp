@@ -35,13 +35,10 @@ under the License.
 #include "../resqml2/WellboreMarkerFrameRepresentation.h"
 
 #include "../resqml2_0_1/WellboreMarker.h"
-#if WITH_RESQML2_2
-#include "../resqml2_2/WellboreMarker.h"
-#endif
 
-#include "../witsml2_0/Log.h"
-#include "../witsml2_0/Channel.h"
-#include "../witsml2_0/ChannelSet.h"
+#include "../witsml2_1/Log.h"
+#include "../witsml2_1/Channel.h"
+#include "../witsml2_1/ChannelSet.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
@@ -152,8 +149,8 @@ namespace {
 		}
 
 		const std::vector<COMMON_NS::AbstractObject *>& targetObj = repo.getTargetObjects(dataObj);
-		if (dynamic_cast<WITSML2_0_NS::Log const *>(dataObj) == nullptr &&
-			dynamic_cast<WITSML2_0_NS::ChannelSet const *>(dataObj) == nullptr) {
+		if (dynamic_cast<WITSML2_1_NS::Log const *>(dataObj) == nullptr &&
+			dynamic_cast<WITSML2_1_NS::ChannelSet const *>(dataObj) == nullptr) {
 			for (size_t index = 0; index < targetObj.size(); ++index) {
 				if (!targetObj[index]->isPartial()) {
 					if (dynamic_cast<RESQML2_NS::WellboreMarker*>(targetObj[index]) == nullptr) {
@@ -178,8 +175,8 @@ namespace {
 		else {
 			for (size_t index = 0; index < targetObj.size(); ++index) {
 				if (!targetObj[index]->isPartial() &&
-					dynamic_cast<WITSML2_0_NS::ChannelSet*>(targetObj[index]) == nullptr &&
-					dynamic_cast<WITSML2_0_NS::Channel*>(targetObj[index]) == nullptr) {
+					dynamic_cast<WITSML2_1_NS::ChannelSet*>(targetObj[index]) == nullptr &&
+					dynamic_cast<WITSML2_1_NS::Channel*>(targetObj[index]) == nullptr) {
 					epc::Relationship relRep("../" + targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
 					relRep.setDestinationObjectType();
 					result.push_back(relRep);
@@ -211,11 +208,8 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			if (!it->second[i]->isPartial() &&
 				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
-#if WITH_RESQML2_2
-				dynamic_cast<RESQML2_2_NS::WellboreMarker*>(it->second[i]) == nullptr &&
-#endif
-				(dynamic_cast<WITSML2_0_NS::ChannelSet*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::ChannelSet*>(it->second[i])->getLogs().empty()) &&
-				(dynamic_cast<WITSML2_0_NS::Channel*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::Channel*>(it->second[i])->getChannelSets().empty())) {
+				(dynamic_cast<WITSML2_1_NS::ChannelSet*>(it->second[i]) == nullptr || static_cast<WITSML2_1_NS::ChannelSet*>(it->second[i])->getLogs().empty()) &&
+				(dynamic_cast<WITSML2_1_NS::Channel*>(it->second[i]) == nullptr || static_cast<WITSML2_1_NS::Channel*>(it->second[i])->getChannelSets().empty())) {
 				// Dataobject
 				const string str = it->second[i]->serializeIntoString();
 				epc::FilePart* const fp = package->createPart(str, it->second[i]->getPartNameInEpcDocument());
@@ -286,7 +280,6 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 					static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRelativePath(target);
 					static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
 					static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
-					repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
 				}
 				else {
 					result += "The EpcExternalPartReference (aka HDF proxy) " + it.second.getExtensionOrPartName() + " is either not XML valid or it does not contain any EPC external relationship entry towards an HDF5 file.\n";
@@ -310,6 +303,12 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 
 	for (const auto& warning : repo.getWarnings()) {
 		result += warning + '\n';
+	}
+
+	if (repo.getHdfProxyCount() == 1) {
+		auto* defaultHdfProxy = repo.getHdfProxy(0);
+		repo.setDefaultHdfProxy(defaultHdfProxy);
+		defaultHdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not an obj_EpcExternalPartReference
 	}
 
 	return result;
@@ -379,8 +378,6 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 
 					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
 					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
-
-					repo.setDefaultHdfProxy(static_cast<EML2_NS::AbstractHdfProxy*>(wrapper));
 				}
 				else {
 					repo.createPartial(extractUuidFromFileName(it.first), "Partial title", contentType);
@@ -390,6 +387,12 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 	}
 
 	deserializeRelFiles(repo);
+
+	if (repo.getHdfProxyCount() == 1) {
+		auto* defaultHdfProxy = repo.getHdfProxy(0);
+		repo.setDefaultHdfProxy(defaultHdfProxy);
+		defaultHdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not an obj_EpcExternalPartReference
+	}
 
 	return result;
 }

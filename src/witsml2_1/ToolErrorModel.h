@@ -22,14 +22,14 @@ under the License.
 #include <string>
 #include <limits>
 
-#include "witsml2_1/ToolErrorModelDictionary.h"
+#include "ToolErrorModelDictionary.h"
 
 namespace WITSML2_1_NS
 {
-	class ToolErrorModel : public WITSML2_1_NS::AbstractObject
+	class ToolErrorModel : public COMMON_NS::AbstractObject
 	{
 	private :
-		gsoap_eml2_2::witsml2__GyroToolConfiguration* getOrCreateGyroToolConfig();
+		gsoap_eml2_3::witsml21__GyroToolConfiguration* getOrCreateGyroToolConfig();
 
 	public:
 		
@@ -37,7 +37,7 @@ namespace WITSML2_1_NS
 		* Only to be used in partial transfer context
 		*/
 		ToolErrorModel(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			WITSML2_1_NS::AbstractObject(partialObject) {}
+			COMMON_NS::AbstractObject(partialObject) {}
 		
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -46,12 +46,12 @@ namespace WITSML2_1_NS
 		ToolErrorModel(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode);
+			gsoap_eml2_3::witsml21__MisalignmentMode misalignmentMode);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		ToolErrorModel(gsoap_eml2_2::witsml2__ToolErrorModel* fromGsoap) : AbstractObject(fromGsoap) {}
+		ToolErrorModel(gsoap_eml2_3::witsml21__ToolErrorModel* fromGsoap) : AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -60,19 +60,19 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool isTopLevelElement() const;
 
-		gsoap_eml2_2::eml22__DataObjectReference* getErrorTermDor(unsigned long index) const;
+		gsoap_eml2_3::eml23__DataObjectReference* getErrorTermDor(unsigned long index) const;
 		DLL_IMPORT_OR_EXPORT std::string getErrorTermUuid(unsigned long index) const;
 		DLL_IMPORT_OR_EXPORT std::vector<class ErrorTerm*> getErrorTermSet() const;
-		DLL_IMPORT_OR_EXPORT void pushBackErrorTerm(class ErrorTerm* errorTerm, double magnitude, gsoap_eml2_2::eml22__UomEnum uom);
+		DLL_IMPORT_OR_EXPORT void pushBackErrorTerm(class ErrorTerm* errorTerm, double magnitude, gsoap_eml2_3::eml23__UomEnum uom);
 
 		DLL_IMPORT_OR_EXPORT void setApplication(const std::string & application);
 		DLL_IMPORT_OR_EXPORT void setSource(const std::string & source);
-		DLL_IMPORT_OR_EXPORT void setToolKind(gsoap_eml2_2::witsml2__ToolKind toolKind);
-		DLL_IMPORT_OR_EXPORT void pushBackToolSubKind(gsoap_eml2_2::witsml2__ToolSubKind toolSubKind);
-		DLL_IMPORT_OR_EXPORT void pushBackOperatingCondition(gsoap_eml2_2::witsml2__OperatingCondition operatingCondition);
+		DLL_IMPORT_OR_EXPORT void setToolKind(gsoap_eml2_3::witsml21__ToolKind toolKind);
+		DLL_IMPORT_OR_EXPORT void pushBackToolSubKind(gsoap_eml2_3::witsml21__ToolSubKind toolSubKind);
+		DLL_IMPORT_OR_EXPORT void pushBackOperatingCondition(gsoap_eml2_3::witsml21__OperatingCondition operatingCondition);
 		DLL_IMPORT_OR_EXPORT void setSurveyRunDateStart(time_t surveyRunDateStart);
 		DLL_IMPORT_OR_EXPORT void setSurveyRunDateEnd(time_t surveyRunDateEnd);
-		DLL_IMPORT_OR_EXPORT void pushBackCorrectionConsidered(gsoap_eml2_2::witsml2__CorrectionConsidered correctionConsidered);
+		DLL_IMPORT_OR_EXPORT void pushBackCorrectionConsidered(gsoap_eml2_3::witsml21__CorrectionConsidered correctionConsidered);
 
 		DLL_IMPORT_OR_EXPORT void setReplacedToolErrorModel(ToolErrorModel* replaces);
 
@@ -86,29 +86,39 @@ namespace WITSML2_1_NS
 			const std::string & approvedBy, time_t approvedOn,
 			const std::string & checkedBy, time_t checkedOn,
 			const std::string & revisionComment, time_t revisionDate,
-			gsoap_eml2_2::witsml2__AuthorizationStatus* status);
+			gsoap_eml2_3::witsml21__AuthorizationStatus* status);
 
-		DLL_IMPORT_OR_EXPORT void pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom uom, const std::string & comment = std::string());
-		DLL_IMPORT_OR_EXPORT void pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom uom, double horizontalEastWestMaxValue, gsoap_eml2_2::eml22__PlaneAngleUom horizontalEastWestMaxValueUom, const std::string & comment = std::string());
+		DLL_IMPORT_OR_EXPORT void pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_3::eml23__PlaneAngleUom uom, const std::string & comment = std::string());
+		DLL_IMPORT_OR_EXPORT void pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_3::eml23__PlaneAngleUom uom, double horizontalEastWestMaxValue, gsoap_eml2_3::eml23__PlaneAngleUom horizontalEastWestMaxValueUom, const std::string & comment = std::string());
 
 		DLL_IMPORT_OR_EXPORT void setXyzAccelerometer();
-		DLL_IMPORT_OR_EXPORT void setXyAccelerometer(double cantAngle, gsoap_eml2_2::eml22__PlaneAngleUom cantAngleUom, bool switching);
+		DLL_IMPORT_OR_EXPORT void setXyAccelerometer(double cantAngle, gsoap_eml2_3::eml23__PlaneAngleUom cantAngleUom, bool switching);
 
 		DLL_IMPORT_OR_EXPORT void setExternalReference(bool value);
 
-		DLL_IMPORT_OR_EXPORT void pushBackContinuousGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
-			double start, bool startInclusive, double end, bool endInclusive, double initialization, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom,
+		DLL_IMPORT_OR_EXPORT void pushBackContinuousGyro(gsoap_eml2_3::witsml21__GyroAxisCombination axisCombination,
+			double start, bool startInclusive, double end, bool endInclusive, double initialization, gsoap_eml2_3::eml23__PlaneAngleUom rangeUom,
 			double noiseReductionFactor = std::numeric_limits<double>::quiet_NaN(),
-			gsoap_eml2_2::eml22__LengthPerTimeUom speedUom = gsoap_eml2_2::eml22__LengthPerTimeUom__m_x002fs, double speed = std::numeric_limits<double>::quiet_NaN(),
-			gsoap_eml2_2::eml22__LengthUom reinitializationDistanceUom = gsoap_eml2_2::eml22__LengthUom__m, double reinitializationDistance = std::numeric_limits<double>::quiet_NaN());
+			gsoap_eml2_3::eml23__LengthPerTimeUom speedUom = gsoap_eml2_3::eml23__LengthPerTimeUom::m_x002fs, double speed = std::numeric_limits<double>::quiet_NaN(),
+			gsoap_eml2_3::eml23__LengthUom reinitializationDistanceUom = gsoap_eml2_3::eml23__LengthUom::m, double reinitializationDistance = std::numeric_limits<double>::quiet_NaN());
 
-		DLL_IMPORT_OR_EXPORT void pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
-			double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom);
+		DLL_IMPORT_OR_EXPORT void pushBackStationaryGyro(gsoap_eml2_3::witsml21__GyroAxisCombination axisCombination,
+			double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_3::eml23__PlaneAngleUom rangeUom);
 
 		void loadTargetRelationships();
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml21";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
 	};
 }

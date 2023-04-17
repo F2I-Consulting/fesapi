@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The kind of the selected elements.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::resqml22__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const = 0;
 
 		/**
 		 * Gets the count of the selected elements of a particular patch of this sub-representation.
@@ -254,7 +254,7 @@ namespace RESQML2_NS
 		 * @param 	elementCountInFastestDimension	The number of elements in the fastest dimension
 		 * 											(commonly in I dimension).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t originIndex,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t originIndex,
 			unsigned int elementCountInSlowestDimension,
 			unsigned int elementCountInMiddleDimension,
 			unsigned int elementCountInFastestDimension) = 0;
@@ -274,7 +274,7 @@ namespace RESQML2_NS
 		 * 										corresponding to the element indices. The count must be
 		 * 										elementCount.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices,
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, short* supportingRepIndices = nullptr);
 
 		/**
@@ -288,7 +288,7 @@ namespace RESQML2_NS
 		 * @param [in]	proxy					The HDF proxy where the numerical values (indices)
 		 * 										are stored.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount,
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -336,7 +336,7 @@ namespace RESQML2_NS
 		 * 									supporting representation.
 		 * @param [in,out]	proxy		   	The HDF proxy where the numerical values (indices) are stored.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement elementKind0, gsoap_eml2_3::resqml22__IndexableElement elementKind1,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
 			uint64_t elementCount,
 			uint64_t * elementIndices0, uint64_t * elementIndices1,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr) = 0;
@@ -365,7 +365,7 @@ namespace RESQML2_NS
 		 * 										suppporting representation will be exported since there is
 		 * 										only one suppporting representation for this whole patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(gsoap_eml2_3::resqml22__IndexableElement elementKind, uint64_t elementCount, const std::string& elementDataset,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackRefToExistingDataset(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, const std::string& elementDataset,
 			int64_t nullValue, EML2_NS::AbstractHdfProxy* proxy, const std::string& supportingRepDataset = "") = 0;
 
 		/**   

@@ -26,8 +26,9 @@ const char* SeismicLineSetFeature::XML_NS = "resqml22";
 
 SeismicLineSetFeature::SeismicLineSetFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
-	if (repo == nullptr)
+	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
+	}
 
 	gsoapProxy2_3 = soap_new_resqml22__SeismicLineSetFeature(repo->getGsoapContext());
 

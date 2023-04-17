@@ -65,7 +65,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual int getOriginInline() const = 0;
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "SeismicLatticeFeature";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

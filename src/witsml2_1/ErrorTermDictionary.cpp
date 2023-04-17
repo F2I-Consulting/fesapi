@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_1/ErrorTermDictionary.h"
-#include "witsml2_1/ErrorTerm.h"
-#include "witsml2_1/WeightingFunction.h"
+#include "ErrorTermDictionary.h"
+#include "ErrorTerm.h"
+#include "WeightingFunction.h"
 
 #include <stdexcept>
 #include <sstream>
@@ -26,7 +26,7 @@ under the License.
 
 using namespace std;
 using namespace WITSML2_1_NS;
-using namespace gsoap_eml2_2;
+using namespace gsoap_eml2_3;
 
 const char* ErrorTermDictionary::XML_TAG = "ErrorTermDictionary";
 
@@ -36,7 +36,7 @@ ErrorTermDictionary::ErrorTermDictionary(COMMON_NS::DataObjectRepository * repo,
 {
 	if (repo == nullptr) throw invalid_argument("A ErrorTermDictionary must be associated to a repo.");
 
-	gsoapProxy2_2 = soap_new_witsml2__ErrorTermDictionary(repo->getGsoapContext(), 1);
+	gsoapProxy2_3 = soap_new_witsml21__ErrorTermDictionary(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -46,8 +46,8 @@ ErrorTermDictionary::ErrorTermDictionary(COMMON_NS::DataObjectRepository * repo,
 
 std::string ErrorTermDictionary::getErrorTermUuid(unsigned long index) const
 {
-	if (gsoapProxy2_2 != nullptr) {
-		witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
+	if (gsoapProxy2_3 != nullptr) {
+		witsml21__ErrorTermDictionary* dict = static_cast<witsml21__ErrorTermDictionary*>(gsoapProxy2_3);
 		if (index < dict->ErrorTerm.size()) {
 			return dict->ErrorTerm[index]->uuid;
 		}
@@ -61,7 +61,7 @@ std::string ErrorTermDictionary::getErrorTermUuid(unsigned long index) const
 }
 
 ErrorTerm* ErrorTermDictionary::getErrorTerm(unsigned long index) const {
-	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
+	witsml21__ErrorTermDictionary* dict = static_cast<witsml21__ErrorTermDictionary*>(gsoapProxy2_3);
 
 	ErrorTerm* et = getRepository()->getDataObjectByUuid<ErrorTerm>(dict->ErrorTerm[index]->uuid);
 	return et == nullptr ? new WITSML2_1_NS::ErrorTerm(dict->ErrorTerm[index]) : et;
@@ -70,7 +70,7 @@ ErrorTerm* ErrorTermDictionary::getErrorTerm(unsigned long index) const {
 std::vector<ErrorTerm*> ErrorTermDictionary::getErrorTerms() const {
 	std::vector<ErrorTerm*> result;
 
-	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
+	witsml21__ErrorTermDictionary* dict = static_cast<witsml21__ErrorTermDictionary*>(gsoapProxy2_3);
 	for (size_t index = 0; index < dict->ErrorTerm.size(); ++index) {
 		result.push_back(getErrorTerm(index));
 	}
@@ -82,13 +82,13 @@ void ErrorTermDictionary::pushBackErrorTerm(ErrorTerm* et)
 {
 	getRepository()->addRelationship(this, et);
 
-	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
-	dict->ErrorTerm.push_back(static_cast<witsml2__ErrorTerm*>(et->getGsoapProxy2_2()));
+	witsml21__ErrorTermDictionary* dict = static_cast<witsml21__ErrorTermDictionary*>(gsoapProxy2_3);
+	dict->ErrorTerm.push_back(static_cast<witsml21__ErrorTerm*>(et->getEml23GsoapProxy()));
 }
 
 void ErrorTermDictionary::loadTargetRelationships()
 {
-	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
+	witsml21__ErrorTermDictionary* dict = static_cast<witsml21__ErrorTermDictionary*>(gsoapProxy2_3);
 
 	for (size_t index = 0; index < dict->ErrorTerm.size(); ++index) {
 		ErrorTerm* et = getRepository()->getDataObjectByUuid<ErrorTerm>(dict->ErrorTerm[index]->uuid);

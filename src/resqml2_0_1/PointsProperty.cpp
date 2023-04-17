@@ -30,7 +30,7 @@ using namespace gsoap_resqml2_0_1;
 const char* PointsProperty::XML_NS = "resqml20";
 
 PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, resqml20__ResqmlPropertyKind energisticsPropertyKind)
+	unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
 	if (dimension == 0) {
 		throw invalid_argument("The dimension cannot be zero.");
@@ -54,7 +54,7 @@ PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const s
 }
 
 PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_eml2_3::resqml22__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, EML2_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs, EML2_NS::PropertyKind * localPropKind)
 {
 	if (dimension == 0) {
 		throw invalid_argument("The dimension cannot be zero.");

@@ -135,7 +135,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual std::map<double, double> getMap() const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "DoubleTableLookup";
 
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final { return XML_TAG; }
 
@@ -150,13 +150,6 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		DoubleTableLookup(gsoap_resqml2_0_1::_resqml20__DoubleTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gSoap RESQML2.2 instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		DoubleTableLookup(gsoap_eml2_3::_resqml22__DoubleTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
 
 		/** Loads target relationships */
 		void loadTargetRelationships() final {}

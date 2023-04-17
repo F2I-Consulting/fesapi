@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "RepresentationSetRepresentation.h"
 
-#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2_2/GenericFeatureInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
@@ -37,7 +37,7 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::Abs
 	static_cast<_resqml22__RepresentationSetRepresentation*>(gsoapProxy2_3)->IsHomogeneous = true;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	interp->getRepository()->addDataObject(this);
 	// XML relationships
@@ -55,7 +55,8 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::Data
 	static_cast<_resqml22__RepresentationSetRepresentation*>(gsoapProxy2_3)->IsHomogeneous = true;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
+	setInterpretation(repo->createPartial<RESQML2_2_NS::GenericFeatureInterpretation>("", "Unknown interp"));
 }

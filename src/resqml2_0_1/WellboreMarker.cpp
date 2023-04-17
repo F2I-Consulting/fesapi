@@ -22,7 +22,7 @@ under the License.
 
 #include "WellboreMarkerFrameRepresentation.h"
 #include "../resqml2/BoundaryFeatureInterpretation.h"
-#include "../witsml2_0/WellboreMarker.h"
+#include "../witsml2_1/WellboreMarker.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -104,7 +104,7 @@ COMMON_NS::DataObjectReference WellboreMarker::getWitsmlWellboreMarkerDor() cons
 		: COMMON_NS::DataObjectReference();
 }
 
-void WellboreMarker::setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker)
+void WellboreMarker::setWitsmlWellboreMarker(WITSML2_1_NS::WellboreMarker * wellboreMarker)
 {
 	cannotBePartial();
 	getRepository()->addRelationship(this, wellboreMarker);

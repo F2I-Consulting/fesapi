@@ -111,36 +111,36 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Facet getFacet(const std::string & facet) const;
 
 		/**
-		 * Get the name of an EML2.1 length unit of measure as a string based on the unit of measure
+		 * Get the name of an EML2.3 length unit of measure as a string based on the unit of measure
 		 * enumerated value
 		 *
-		 * @param 	witsmlUom	An EML2.1 length unit of measure.
+		 * @param 	witsmlUom	An EML2.3 length unit of measure.
 		 *
 		 * @returns	A string corresponding to @p witsmlUom if successful. The empty string if no
 		 * 			correspondence is found.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string lengthUomToString(gsoap_eml2_1::eml21__LengthUom witsmlUom) const;
+		DLL_IMPORT_OR_EXPORT std::string lengthUomToString(gsoap_eml2_3::eml23__LengthUom witsmlUom) const;
 
 		/**
-		 * Get the name of an EML2.1 vertical coordinate unit of measure as a string based on the unit
+		 * Get the name of an EML2.3 vertical coordinate unit of measure as a string based on the unit
 		 * of measure enumerated value
 		 *
-		 * @param 	witsmlUom	An EML2.1 vertical coordinate unit of measure.
+		 * @param 	witsmlUom	An EML2.3 vertical coordinate unit of measure.
 		 *
 		 * @returns	A string corresponding to @p witsmlUom if successful. The empty string if no
 		 * 			correspondence is found.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string verticalCoordinateUomToString(gsoap_eml2_1::eml21__VerticalCoordinateUom witsmlUom) const;
+		DLL_IMPORT_OR_EXPORT std::string verticalCoordinateUomToString(gsoap_eml2_3::eml23__VerticalCoordinateUom witsmlUom) const;
 
 		/**
-		 * Get the name of an EML2.1 plane angle unit of measure as a string based on the unit of
+		 * Get the name of an EML2.3 plane angle unit of measure as a string based on the unit of
 		 * measure enumerated value
 		 *
-		 * @param 	witsmlUom	An EML2.1 plane angle unit of measure.
+		 * @param 	witsmlUom	An EML2.3 plane angle unit of measure.
 		 *
 		 * @returns	A string corresponding to @p witsmlUom if successful. The empty string if no
 		 * 			correspondence is found.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string planeAngleUomToString(gsoap_eml2_1::eml21__PlaneAngleUom witsmlUom) const;
+		DLL_IMPORT_OR_EXPORT std::string planeAngleUomToString(gsoap_eml2_3::eml23__PlaneAngleUom witsmlUom) const;
 	};
 }

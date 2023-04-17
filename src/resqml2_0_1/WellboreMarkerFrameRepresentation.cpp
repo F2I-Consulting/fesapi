@@ -29,7 +29,7 @@ under the License.
 #include "../resqml2/StratigraphicOccurrenceInterpretation.h"
 #include "../resqml2/BoundaryFeatureInterpretation.h"
 
-#include "../witsml2_0/WellboreMarker.h"
+#include "../witsml2_1/WellboreMarker.h"
 
 #include "WellboreMarker.h"
 
@@ -124,7 +124,7 @@ void WellboreMarkerFrameRepresentation::loadTargetRelationships()
 				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<RESQML2_NS::BoundaryFeatureInterpretation>(gsoapMarker->Interpretation->UUID));
 			}
 			if (gsoapMarker->WitsmlFormationMarker != nullptr) {
-				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<WITSML2_0_NS::WellboreMarker>(gsoapMarker->WitsmlFormationMarker->UUID));
+				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<WITSML2_1_NS::WellboreMarker>(gsoapMarker->WitsmlFormationMarker->UUID));
 			}
 		}
 		getRepository()->addRelationship(marker, this);

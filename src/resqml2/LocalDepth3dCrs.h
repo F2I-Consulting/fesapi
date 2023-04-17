@@ -42,7 +42,7 @@ namespace RESQML2_NS
 		virtual ~LocalDepth3dCrs() = default;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "LocalDepth3dCrs";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
@@ -56,13 +56,6 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		LocalDepth3dCrs(gsoap_resqml2_0_1::_resqml20__LocalDepth3dCrs* fromGsoap) : AbstractLocal3dCrs(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		LocalDepth3dCrs(gsoap_eml2_3::_resqml22__LocalDepth3dCrs* fromGsoap) : AbstractLocal3dCrs(fromGsoap) {}
 
 	};
 }

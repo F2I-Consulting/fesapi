@@ -18,9 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "IjkGridLatticeRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
-
 #include "../resqml2/AbstractFeature.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"

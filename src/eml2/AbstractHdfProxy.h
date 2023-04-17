@@ -942,11 +942,5 @@ namespace EML2_NS
 
 		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
 			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
-
-		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
-			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
-
-		AbstractHdfProxy(gsoap_eml2_3::_eml23__EpcExternalPartReference* fromGsoap) :
-			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
 	};
 }

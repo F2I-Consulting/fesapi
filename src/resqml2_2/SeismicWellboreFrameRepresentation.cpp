@@ -43,7 +43,7 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 		throw invalid_argument("The trajectory cannot be null.");
 	}
 	if (crs == nullptr) {
-		throw invalid_argument("The local time crs cannot be null.");
+		throw invalid_argument("The local 3d crs cannot be null and must be a time one.");
 	}
 
 	gsoapProxy2_3 = soap_new_resqml22__SeismicWellboreFrameRepresentation(interp->getGsoapContext());

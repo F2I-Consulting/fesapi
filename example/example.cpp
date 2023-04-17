@@ -95,12 +95,9 @@ under the License.
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
 #include "resqml2_2/FluidBoundaryInterpretation.h"
-#include "resqml2_2/MdDatum.h"
 #include "resqml2_2/RockVolumeFeature.h"
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
 #include "resqml2_2/ShotPointLineFeature.h"
-#include "resqml2_2/WellboreMarker.h"
-#include "resqml2_2/WellboreMarkerFrameRepresentation.h"
 #endif
 #include "resqml2/SealedVolumeFrameworkRepresentation.h"
 #include "resqml2/StratigraphicColumn.h"
@@ -113,21 +110,20 @@ under the License.
 
 #include "eml2_3/PropertyKind.h"
 
-#include "witsml2_0/Well.h"
-#include "witsml2_0/Wellbore.h"
-#include "witsml2_0/Trajectory.h"
-#include "witsml2_0/WellCompletion.h"
-#include "witsml2_0/WellboreCompletion.h"
-#include "witsml2_0/WellboreGeometry.h"
-#include "witsml2_0/WellboreMarker.h"
-#include "witsml2_0/Log.h"
-#include "witsml2_0/ChannelSet.h"
-#include "witsml2_0/Channel.h"
+#include "witsml2_1/Well.h"
+#include "witsml2_1/Wellbore.h"
+#include "witsml2_1/Trajectory.h"
+#include "witsml2_1/WellboreCompletion.h"
+#include "witsml2_1/WellboreGeometry.h"
+#include "witsml2_1/WellboreMarker.h"
+#include "witsml2_1/Log.h"
+#include "witsml2_1/ChannelSet.h"
+#include "witsml2_1/Channel.h"
 
-#include "prodml2_1/FluidSystem.h"
-#include "prodml2_1/FluidCharacterization.h"
-#include "prodml2_1/FrictionTheorySpecification.h"
-#include "prodml2_1/TimeSeriesData.h"
+#include "prodml2_2/FluidSystem.h"
+#include "prodml2_2/FluidCharacterization.h"
+#include "prodml2_2/FrictionTheorySpecification.h"
+#include "prodml2_2/TimeSeriesData.h"
 
 #include "HdfProxyFactoryExample.h"
 
@@ -169,101 +165,89 @@ RESQML2_NS::RockFluidUnitInterpretation* aquiferInterp = nullptr;
 
 WITSML2_NS::Well* witsmlWell = nullptr;
 WITSML2_NS::Wellbore* witsmlWellbore = nullptr;
-WITSML2_0_NS::WellboreMarker* witsmlWellboreMarker = nullptr;
+WITSML2_1_NS::WellboreMarker* witsmlWellboreMarker = nullptr;
 
 void serializeWitsmlWells(COMMON_NS::DataObjectRepository * pck)
 {
 	// WELL
-	witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
+	witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1", false);
 	witsmlWell->setNameLegal("Legal Name");
-	witsmlWell->pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 23031);
-	witsmlWell->pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", gsoap_eml2_1::eml21__WellboreDatumReference::kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 0, 5100);
-	witsmlWell->pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", gsoap_eml2_1::eml21__WellboreDatumReference::kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 15, 5100);
+	witsmlWell->pushBackLocation(275, 75);
 
 	// WELLBORE
-	witsmlWellbore = pck->createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1");
+	witsmlWellbore = pck->createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1", false);
 	witsmlWellbore->setNumber("Wb1");
-	witsmlWellbore->setStatusWellbore(gsoap_eml2_1::eml21__WellStatus::completed);
-	witsmlWellbore->setIsActive(false);
-	witsmlWellbore->setTypeWellbore(gsoap_eml2_1::witsml20__WellboreType::initial);
-	witsmlWellbore->setShape(gsoap_eml2_1::witsml20__WellboreShape::vertical);
+	witsmlWellbore->setStatusWellbore(gsoap_eml2_3::eml23__WellStatus::completed);
+	witsmlWellbore->setTypeWellbore(gsoap_eml2_3::witsml21__WellboreType::initial);
+	witsmlWellbore->setShape(gsoap_eml2_3::witsml21__WellboreShape::vertical);
 	witsmlWellbore->setAchievedTD(true);
-	witsmlWellbore->setMd(1000, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
-	witsmlWellbore->setMdPlanned(1000, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlWellbore->setMd(1000, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlWellbore->setMdPlanned(1000, gsoap_eml2_3::eml23__LengthUom::m);
 
 	// TRAJECTORY
-	WITSML2_NS::Trajectory* witsmlTrajectory = pck->createTrajectory(
-		witsmlWellbore, "4e76e1de-eff1-4458-805e-a6a877fa333b", "My trajectory", gsoap_eml2_1::witsml20__ChannelStatus::closed);
-	witsmlTrajectory->setMdMn(.0, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
-	witsmlTrajectory->setMdMx(1000., gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	WITSML2_NS::Trajectory* witsmlTrajectory = pck->createTrajectory(witsmlWellbore, "4e76e1de-eff1-4458-805e-a6a877fa333b", "My trajectory", false);
 	witsmlTrajectory->setDefinitive(true);
 	witsmlTrajectory->setFinalTraj(true);
-	witsmlTrajectory->setServiceCompany("F2I-CONSULTING");
 
-	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType::N_x0020E_x0020and_x0020TVD, 0, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_3::witsml21__TrajStationType::N_x0020E_x0020and_x0020TVD, 0, gsoap_eml2_3::eml23__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 	witsmlTrajectory->setTrajectoryStationManuallyEntered(0, true);
-	witsmlTrajectory->setTrajectoryStationDispNs(0, .0, gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlTrajectory->setTrajectoryStationDispEw(0, .0, gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlTrajectory->setTrajectoryStationTvd(0, .0, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
-	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType::N_x0020E_x0020and_x0020TVD, 325, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->setTrajectoryStationDispNs(0, .0, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->setTrajectoryStationDispEw(0, .0, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->setTrajectoryStationTvd(0, .0, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_3::witsml21__TrajStationType::N_x0020E_x0020and_x0020TVD, 325, gsoap_eml2_3::eml23__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 	witsmlTrajectory->setTrajectoryStationManuallyEntered(1, true);
-	witsmlTrajectory->setTrajectoryStationDispNs(1, 325, gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlTrajectory->setTrajectoryStationDispEw(1, 325, gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlTrajectory->setTrajectoryStationTvd(1, 325, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
-	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType::N_x0020E_x0020and_x0020TVD, 500, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->setTrajectoryStationDispNs(1, 325, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->setTrajectoryStationDispEw(1, 325, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->setTrajectoryStationTvd(1, 325, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_3::witsml21__TrajStationType::N_x0020E_x0020and_x0020TVD, 500, gsoap_eml2_3::eml23__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 	witsmlTrajectory->setTrajectoryStationManuallyEntered(2, true);
-	witsmlTrajectory->setTrajectoryStationDispNs(2, 500, gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlTrajectory->setTrajectoryStationDispEw(2, 500, gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlTrajectory->setTrajectoryStationTvd(2, 500, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
-	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType::N_x0020E_x0020and_x0020TVD, 1000, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->setTrajectoryStationDispNs(2, 500, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->setTrajectoryStationDispEw(2, 500, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->setTrajectoryStationTvd(2, 500, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_3::witsml21__TrajStationType::N_x0020E_x0020and_x0020TVD, 1000, gsoap_eml2_3::eml23__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 	witsmlTrajectory->setTrajectoryStationManuallyEntered(3, true);
-	witsmlTrajectory->setTrajectoryStationDispNs(3, 1000, gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlTrajectory->setTrajectoryStationDispEw(3, 1000, gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlTrajectory->setTrajectoryStationTvd(3, 1000, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->setTrajectoryStationDispNs(3, 1000, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->setTrajectoryStationDispEw(3, 1000, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlTrajectory->setTrajectoryStationTvd(3, 1000, gsoap_eml2_3::eml23__LengthUom::m);
 
 	// Geometry
-	WITSML2_0_NS::WellboreGeometry* witsmlWbGeom = pck->createWellboreGeometry(witsmlWellbore, "c9dc03e9-722c-478b-b0ae-b2dd9da67c11", "My wellbore geometry", gsoap_eml2_1::witsml20__ChannelStatus::closed);
-	witsmlWbGeom->setMdBase(0, gsoap_eml2_1::eml21__LengthUom::m, "d3ac5401-d3e7-4474-b846-070673b210ae");
-	witsmlWbGeom->pushBackSection();
-	witsmlWbGeom->setWellboreGeometrySectionTypeHoleCasing(0, gsoap_eml2_1::witsml20__HoleCasingType::casing);
-	witsmlWbGeom->setWellboreGeometrySectionOdSection(0, 30, gsoap_eml2_1::eml21__LengthUom::in);
-	witsmlWbGeom->setWellboreGeometrySectionMdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom::m);
-	witsmlWbGeom->pushBackSection();
-	witsmlWbGeom->setWellboreGeometrySectionTypeHoleCasing(1, gsoap_eml2_1::witsml20__HoleCasingType::casing);
+	WITSML2_1_NS::WellboreGeometry* witsmlWbGeom = pck->createWellboreGeometry(witsmlWellbore, "c9dc03e9-722c-478b-b0ae-b2dd9da67c11", "My wellbore geometry", false);
+	witsmlWbGeom->pushBackSection(0, 250, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlWbGeom->setWellboreGeometrySectionTypeHoleCasing(0, gsoap_eml2_3::witsml21__HoleCasingType::casing);
+	witsmlWbGeom->setWellboreGeometrySectionOdSection(0, 30, gsoap_eml2_3::eml23__LengthUom::in);
+	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(0, 0, 250, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlWbGeom->pushBackSection(0, 99, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlWbGeom->setWellboreGeometrySectionTypeHoleCasing(1, gsoap_eml2_3::witsml21__HoleCasingType::casing);
 	witsmlWbGeom->setWellboreGeometrySectionCurveConductor(1, false);
-	witsmlWbGeom->setWellboreGeometrySectionDiaDrift(1, 17.5, gsoap_eml2_1::eml21__LengthUom::in);
+	witsmlWbGeom->setWellboreGeometrySectionDiaDrift(1, 17.5, gsoap_eml2_3::eml23__LengthUom::in);
 	witsmlWbGeom->setWellboreGeometrySectionFactFric(1, 0.25);
 	witsmlWbGeom->setWellboreGeometrySectionGrade(1, "L80");
-	witsmlWbGeom->setWellboreGeometrySectionIdSection(1, 18, gsoap_eml2_1::eml21__LengthUom::in);
-	witsmlWbGeom->setWellboreGeometrySectionOdSection(1, 20, gsoap_eml2_1::eml21__LengthUom::in);
-	witsmlWbGeom->setWellboreGeometrySectionWtPerLen(1, 123, gsoap_eml2_1::eml21__MassPerLengthUom::lbm_x002fft);
-	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(1, 0, 990, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom::m);
+	witsmlWbGeom->setWellboreGeometrySectionIdSection(1, 18, gsoap_eml2_3::eml23__LengthUom::in);
+	witsmlWbGeom->setWellboreGeometrySectionOdSection(1, 20, gsoap_eml2_3::eml23__LengthUom::in);
+	witsmlWbGeom->setWellboreGeometrySectionWtPerLen(1, 123, gsoap_eml2_3::eml23__MassPerLengthUom::lbm_x002fft);
+	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(1, 0, 99, gsoap_eml2_3::eml23__LengthUom::m);
 
 	// Log
-	//EML2_NS::PropertyKind* channelPk = pck->createPartial<WITSML2_0_NS::PropertyKind>("eac77e0f-d13a-4821-9a48-0c4b229ae06e", "My channel prop kind");
-	EML2_NS::PropertyKind* channelPk = pck->createPropertyKind("eac77e0f-d13a-4821-9a48-0c4b229ae06e", "My channel prop kind", gsoap_eml2_1::eml21__QuantityClassKind::thermodynamic_x0020temperature);
-	WITSML2_0_NS::Channel* channel = pck->createChannel(channelPk, "c3ff6f85-f111-4603-840a-ae8bdc46e0c8", "My channel",
-		"my mnemo", gsoap_eml2_1::eml21__UnitOfMeasure::K, gsoap_eml2_1::witsml20__EtpDataType::double_, gsoap_eml2_1::witsml20__ChannelStatus::closed, "Depth", "F2I-CONSULTING");
-	channel->pushBackChannelIndex(gsoap_eml2_1::witsml20__ChannelIndexType::measured_x0020depth, gsoap_eml2_1::eml21__UnitOfMeasure::m, "MD");
-	WITSML2_0_NS::ChannelSet* channelSet = pck->createChannelSet("00e8ffda-bb07-46db-8c22-8947282d7535", "My channel set");
-	channelSet->pushBackChannelIndex(gsoap_eml2_1::witsml20__ChannelIndexType::measured_x0020depth, gsoap_eml2_1::eml21__UnitOfMeasure::m, "MD");
+	//EML2_NS::PropertyKind* channelPk = pck->createPartial<WITSML2_1_NS::PropertyKind>("eac77e0f-d13a-4821-9a48-0c4b229ae06e", "My channel prop kind");
+	EML2_NS::PropertyKind* channelPk = pck->createPropertyKind("eac77e0f-d13a-4821-9a48-0c4b229ae06e", "My channel prop kind", gsoap_eml2_3::eml23__QuantityClassKind::thermodynamic_x0020temperature);
+	WITSML2_1_NS::Channel* channel = pck->createChannel(channelPk, "c3ff6f85-f111-4603-840a-ae8bdc46e0c8", "My channel",
+		"my mnemo", gsoap_eml2_3::eml23__UnitOfMeasure::K, gsoap_eml2_3::witsml21__ChannelDataKind::double_, false);
+	channel->pushBackChannelIndex(gsoap_eml2_3::eml23__DataIndexKind::measured_x0020depth, gsoap_eml2_3::eml23__UnitOfMeasure::m, "MD");
+	WITSML2_1_NS::ChannelSet* channelSet = pck->createChannelSet("00e8ffda-bb07-46db-8c22-8947282d7535", "My channel set", false);
+	channelSet->pushBackChannelIndex(gsoap_eml2_3::eml23__DataIndexKind::measured_x0020depth, gsoap_eml2_3::eml23__UnitOfMeasure::m, "MD");
 	channelSet->pushBackChannel(channel);
 	channelSet->setDataAsJsonArray("[\n\
 		[[0],[300]],\n\
 		[[500],[305]],\n\
 		[[1000],[310]]\n\
 		]");
-	WITSML2_0_NS::Log* witsmlLog = pck->createLog(witsmlWellbore, "24093183-5a06-4bea-8c69-3e9769971014", "My log");
+	WITSML2_1_NS::Log* witsmlLog = pck->createLog(witsmlWellbore, "24093183-5a06-4bea-8c69-3e9769971014", "My log", false);
 	witsmlLog->pushBackChannelSet(channelSet);
-	witsmlLog->setTimeDepth("Depth");
-	witsmlLog->setLoggingCompanyName("F2I-CONSULTING");
-	witsmlLog->setLoggingCompanyCode("F2I");
 
 	// Marker
-	witsmlWellboreMarker = pck->createWellboreMarker(witsmlWellbore, "08b18514-e0c8-4667-850b-4ddd1cb785b5", "WITSML marker", 350, gsoap_eml2_1::eml21__LengthUom::m, "36e91de5-7833-4b6d-90d0-1d643c0adece");
-	witsmlWellboreMarker->setDipAngle(5, gsoap_eml2_1::eml21__PlaneAngleUom::dega);
-	witsmlWellboreMarker->setDipDirection(10, gsoap_eml2_1::eml21__PlaneAngleUom::dega);
+	witsmlWellboreMarker = pck->createWellboreMarker(witsmlWellbore, "08b18514-e0c8-4667-850b-4ddd1cb785b5", "WITSML marker", 350, gsoap_eml2_3::eml23__LengthUom::m);
+	witsmlWellboreMarker->setDipAngle(5, gsoap_eml2_3::eml23__PlaneAngleUom::dega);
+	witsmlWellboreMarker->setDipDirection(10, gsoap_eml2_3::eml23__PlaneAngleUom::dega);
 }
 
 void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
@@ -278,7 +262,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 	wellbore1Interp1 = pck->createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
 	// Representation
-	RESQML2_NS::MdDatum* mdInfo = pck->createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", local3dCrs, gsoap_eml2_3::eml23__WellboreDatumReference::mean_x0020sea_x0020level, 275, 75, 0);
+	RESQML2_NS::MdDatum* mdInfo = pck->createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", local3dCrs, gsoap_eml2_3::eml23__ReferencePointKind::mean_x0020sea_x0020level, 275, 75, 0);
 
 	//Geometry	
 	w1i1TrajRep = pck->createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
@@ -301,12 +285,12 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfP
 	}
 #if WITH_RESQML2_2
 	else {
-		unitNumberPropType = pck->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+		unitNumberPropType = pck->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
 	}
 #endif
 
 	RESQML2_NS::DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::intervals, unitNumberPropType);
+		gsoap_eml2_3::eml23__IndexableElement::intervals, unitNumberPropType);
 	int8_t unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackInt8Hdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
 #if WITH_RESQML2_2
@@ -339,33 +323,29 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 		return;
 	}
 
-	// WELL COMPLETION
-	WITSML2_0_NS::WellCompletion* wellCompletion = pck->createWellCompletion(witsmlWell, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
 	// WELLBORE COMPLETION
-	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck->createWellboreCompletion(witsmlWellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
+	WITSML2_1_NS::WellboreCompletion* wellboreCompletion = pck->createWellboreCompletion(witsmlWellbore, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1");
 
-	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970, 1980, "myId");
-	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1990, 2000);
+	wellboreCompletion->pushBackConnection(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, gsoap_eml2_3::eml23__LengthUom::m, 1970, 1980, "myId");
+	wellboreCompletion->pushBackConnection(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, gsoap_eml2_3::eml23__LengthUom::m, 1990, 2000, "mySecondId");
 
-	wellboreCompletion->pushBackPerforationExtraMetadata(0, "Testing Key", "Testing Value");
+	wellboreCompletion->pushBackConnectionExtraMetadata(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, "Testing Key", "Testing Value");
 
-	wellboreCompletion->pushBackPerforationHistory(0);
-	wellboreCompletion->setPerforationHistoryStatus(0, 0, gsoap_eml2_1::witsml20__PerforationStatus::open);
-	wellboreCompletion->setPerforationHistoryTopMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970);
-	wellboreCompletion->setPerforationHistoryBaseMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1980);
-	wellboreCompletion->setPerforationHistoryStartDate(0, 0, 407568645);
-	wellboreCompletion->setPerforationHistoryEndDate(0, 0, 1514764800);
-	wellboreCompletion->pushBackPerforationHistory(0);
-	wellboreCompletion->setPerforationHistoryStatus(1, 0, gsoap_eml2_1::witsml20__PerforationStatus::squeezed);
-	wellboreCompletion->setPerforationHistoryTopMd(1, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970);
-	wellboreCompletion->setPerforationHistoryBaseMd(1, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1980);
-	wellboreCompletion->setPerforationHistoryStartDate(1, 0, 1514764800);
-	wellboreCompletion->pushBackPerforationHistory(1);
-	wellboreCompletion->setPerforationHistoryStatus(0, 1, gsoap_eml2_1::witsml20__PerforationStatus::open);
-	wellboreCompletion->setPerforationHistoryStartDate(0, 1, 410104800);
-	wellboreCompletion->pushBackPerforationHistory(1);
-	wellboreCompletion->setPerforationHistoryStatus(1, 1, gsoap_eml2_1::witsml20__PerforationStatus::squeezed);
-	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
+	wellboreCompletion->pushBackConnectionHistory(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0);
+	wellboreCompletion->setConnectionHistoryStatus(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::witsml21__PhysicalStatus::open);
+	wellboreCompletion->setConnectionHistoryMdInterval(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::eml23__LengthUom::m, 1970, 1980);
+	wellboreCompletion->setConnectionHistoryStartDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 407568645);
+	wellboreCompletion->setConnectionHistoryEndDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 1514764800);
+	wellboreCompletion->pushBackConnectionHistory(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0);
+	wellboreCompletion->setConnectionHistoryStatus(1, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::witsml21__PhysicalStatus::closed);
+	wellboreCompletion->setConnectionHistoryMdInterval(1, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::eml23__LengthUom::m, 1970, 1980);
+	wellboreCompletion->setConnectionHistoryStartDate(1, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 1514764800);
+	wellboreCompletion->pushBackConnectionHistory(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1);
+	wellboreCompletion->setConnectionHistoryStatus(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1, gsoap_eml2_3::witsml21__PhysicalStatus::open);
+	wellboreCompletion->setConnectionHistoryStartDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1, 410104800);
+	wellboreCompletion->pushBackConnectionHistory(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1);
+	wellboreCompletion->setConnectionHistoryStatus(1, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1, gsoap_eml2_3::witsml21__PhysicalStatus::closed);
+	wellboreCompletion->setConnectionHistoryStartDate(1, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1, 1514764800);
 }
 #if WITH_RESQML2_2
 void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfProxy * hdfProxy)
@@ -417,7 +397,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	// creating a new discrete property of type propType1 without associating it to a discrete color map.
 	// Thus, its associated discrete color map remains the one associated to propType1
 	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(twoCellsIjkGrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	unsigned short prop2Values[2] = { 0, 1 };
 	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
 
@@ -436,9 +416,9 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 		0., 1., 0.,
 		1., 1.);
 
-	auto standardOrientationPropKind = repo->createPropertyKind("b8e9afa0-7930-483b-931f-e5cf2008d03b", "orientation", gsoap_eml2_1::eml21__QuantityClassKind::plane_x0020angle);
+	auto standardOrientationPropKind = repo->createPropertyKind("b8e9afa0-7930-483b-931f-e5cf2008d03b", "orientation", gsoap_eml2_3::eml23__QuantityClassKind::plane_x0020angle);
 	contColMapContProp = repo->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
-		gsoap_eml2_3::resqml22__IndexableElement::nodes, "continuousColorMapIndex", standardOrientationPropKind);
+		gsoap_eml2_3::eml23__IndexableElement::nodes, "continuousColorMapIndex", standardOrientationPropKind);
 	std::unique_ptr<double[]> values(new double[numPointInFastestDirection * numPointsInSlowestDirection]);
 	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
 		for (size_t fastestIndex = 0; fastestIndex < numPointInFastestDirection; ++fastestIndex) {
@@ -517,7 +497,7 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS:
 		RESQML2_NS::WellboreMarker* marker1 = pck->createWellboreMarker(wmf, "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind::fault);
 		marker1->setBoundaryFeatureInterpretation(fault1Interp1);
 	}
-
+#ifndef WITH_RESQML2_2
 	// ***********************
 	// Sealed volume framework
 	// ***********************
@@ -543,6 +523,7 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, EML2_NS:
 	std::vector<unsigned int> region5PatchIndices = { 1, 0, 1, 3, 2, 1, 1 };
 	bool region5Sides[7] = { false, true, true, true, true, true, true };
 	svf->pushBackVolumeRegion(stratiUnitB1Interp, 7, region5RepIndices.data(), region5PatchIndices.data(), region5Sides);
+#endif // ! 
 }
 
 void serializeGeobody(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfProxy* hdfProxy)
@@ -742,11 +723,11 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	}
 #if WITH_RESQML2_2
 	else {
-		propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", gsoap_eml2_1::eml21__QuantityClassKind::length);
+		propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", gsoap_eml2_3::eml23__QuantityClassKind::length);
 	}
 #endif
 	RESQML2_NS::ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
-		gsoap_eml2_3::resqml22__IndexableElement::nodes, "exoticMeter", propType1);
+		gsoap_eml2_3::eml23__IndexableElement::nodes, "exoticMeter", propType1);
 	float prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
 	contProp1->pushBackFloatHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
 
@@ -756,11 +737,11 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, EML2_NS::Abstrac
 	}
 #if WITH_RESQML2_2
 	else {
-		propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", gsoap_eml2_1::eml21__QuantityClassKind::thermodynamic_x0020temperature);
+		propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", gsoap_eml2_3::eml23__QuantityClassKind::thermodynamic_x0020temperature);
 	}
 #endif
 	RESQML2_NS::ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom::ft, propType2);
+		gsoap_eml2_3::eml23__IndexableElement::nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom::ft, propType2);
 	double prop2Values[8] = { 302, 302, 352, 352, 302, 302, 352, 352 };
 	contProp2->pushBackDoubleHdf5Array2dOfValues(prop2Values, 4, 2, hdfProxy);
 }
@@ -930,12 +911,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	/**************
 	 Subrepresentations
 	***************/
+#ifndef WITH_RESQML2_2
 	if (fault1Interp1 != nullptr)
 	{
 		RESQML2_NS::SubRepresentation * faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid");
 		faultSubRep->pushBackSupportingRepresentation(twoCellsIjkGrid);
 		uint64_t faultPillar[2] = { 1, 4 };
-		faultSubRep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::pillars, 2, faultPillar, hdfProxy);
+		faultSubRep->pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement::pillars, 2, faultPillar, hdfProxy);
 	}
 
 	RESQML2_NS::SubRepresentation * actnum = pck->createSubRepresentation("323001d0-468c-41d7-abec-7d12c3c9428b", "ACTNUM");
@@ -944,7 +926,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
 	};
-	actnum->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::cells, 21, actnumValues, hdfProxy);
+	actnum->pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement::cells, 21, actnumValues, hdfProxy);
 
 	// Double grid subrep
 	RESQML2_NS::SubRepresentation * doubleGridSubrep = pck->createSubRepresentation("f6d23b9c-e45d-4638-9601-ae3b682129a0", "TEST MULTI GRIDS SUBREP");
@@ -961,8 +943,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 	};
 
-	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
-
+	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement::cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
+#endif
 	/**************
 	 Grid Connection
 	***************/
@@ -1014,31 +996,31 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	}
 #if WITH_RESQML2_2
 	else {
-		propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+		propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
 	}
 #endif
 	discreteProp1 = pck->createDiscreteProperty(twoCellsIjkGrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 	RESQML2_NS::DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(twoCellsIjkGrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	int64_t prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackInt64Hdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
-	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_eml2_3::resqml22__TimeSetKind::not_x0020a_x0020time_x0020set);
+	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
 	propSet->pushBackProperty(discreteProp1);
 	propSet->pushBackProperty(discreteProp2);
 
 	RESQML2_NS::DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	unsigned short prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
 	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111, 0, 3);
 	//Move this prop to another same ninjnk ijk grid
 	discreteProp1OnIjkgridParametric->setRepresentation(ijkgridParametricNotSameLineKind);
 
 	RESQML2_NS::DiscreteProperty* discreteProp432 = pck->createDiscreteProperty(ijkgrid432, "f9447f76-34c5-4967-a3ee-4f400f96dba6", "4x3x2 grid cellIndex", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	int64_t discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 	//hdfProxy->setMaxChunkSize(192/2); // Create two chunks
@@ -1049,7 +1031,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	***************/
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 		RESQML2_NS::ContinuousProperty* continuousPropOnIjkgridParametric = pck->createContinuousProperty(ijkgridParametric, "a31d7376-1a2a-47f3-9586-dd74ac13d820", "Continuous prop with nan", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		double continuousPropValuesOnIjkgridParametric[4] = { -1.1, 0.0, std::numeric_limits<double>::quiet_NaN(), 2.2 };
 		continuousPropOnIjkgridParametric->pushBackDoubleHdf5Array3dOfValues(continuousPropValuesOnIjkgridParametric, 2, 1, 2);
 	}
@@ -1074,21 +1056,21 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 		// RESQML2.0 forces to export values at each timestamp of the whole time series in a single property
 
 		RESQML2_NS::ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(twoCellsIjkGrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		continuousPropTime0->setTimeSeries(timeSeries);
 		continuousPropTime0->setSingleTimestamp(timeSeries->getTimestamp(0));
 		double valuesTime0[2] = { 0, 1 };
 		continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
 
 		RESQML2_NS::ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(twoCellsIjkGrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		continuousPropTime1->setTimeSeries(timeSeries);
 		continuousPropTime1->setSingleTimestamp(1409753895);
 		double valuesTime1[2] = { 2, 3 };
 		continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
 
 		RESQML2_NS::ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(twoCellsIjkGrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		continuousPropTime2->setTimeSeries(timeSeries);
 		continuousPropTime2->setSingleTimestamp(1441289895);
 		double valuesTime2[2] = { 3, 4 };
@@ -1098,7 +1080,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	else {
 		pwls3Length = pck->createPartial<EML2_3_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
 		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = pck->createContinuousProperty(twoCellsIjkGrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 
 		dynamicContinuousProp->setTimeSeries(timeSeries);
 		double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
@@ -1111,20 +1093,19 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	/**************
 	 Categorical Properties
 	***************/
-
+#ifndef WITH_RESQML2_2
 	RESQML2_NS::StringTableLookup* stringTableLookup = pck->createStringTableLookup("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
 	stringTableLookup->addValue("Cell index 0", 0);
 	stringTableLookup->addValue("Cell index 1", 1);
 	RESQML2_NS::CategoricalProperty* categoricalProp = pck->createCategoricalProperty(twoCellsIjkGrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, stringTableLookup, propType1);
+		gsoap_eml2_3::eml23__IndexableElement::cells, stringTableLookup, propType1);
 	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
-
+#endif
 	/**************
 	 Points Properties
 	***************/
-
 	RESQML2_NS::PointsProperty* pointsProp = pck->createPointsProperty(twoCellsIjkGrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells, local3dCrs);
+		gsoap_eml2_3::eml23__IndexableElement::cells, local3dCrs);
 	double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
 	pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
 
@@ -1150,21 +1131,21 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	RESQML2_NS::ContinuousProperty* continuousProp1 = nullptr;
 	if (pck->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 		continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "A length property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 	}
 	else {
 		continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "A length property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 	}
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
-
+#ifndef WITH_RESQML2_2
 	// sub rep of a partial unstructured grid
 	RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = pck->createSubRepresentation("6b48c8d0-d60e-42b5-994c-2d4d4f3d0765", "Subrep On Partial grid");
 	subRepOfUnstructuredGrid->pushBackSupportingRepresentation(partialGrid);
 	uint64_t nodeIndex[2] = { 0, 1 };
-	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_eml2_3::resqml22__IndexableElement::nodes, 2, nodeIndex, hdfProxy);
-
+	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement::nodes, 2, nodeIndex, hdfProxy);
+#endif
 	// creating the unstructured grid
 	RESQML2_NS::UnstructuredGridRepresentation* unstructuredGrid = pck->createUnstructuredGridRepresentation("9283cd33-5e52-4110-b7b1-616abde2b303", "One tetrahedron + prism grid", 2);
 
@@ -1196,7 +1177,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 
 		// Create the property
 		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 		// Fill the property
 		double propValues[2] = { 12.3, 45.6 };
@@ -1206,7 +1187,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	else {
 		EML2_NS::PropertyKind * standardLengthPropKind = pck->getDataObjectByUuid<EML2_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d");
 		RESQML2_NS::ContinuousProperty* unstructuredGridProp = pck->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
 
 		// Fill the property
 		double propValues[2] = { 12.3, 45.6 };
@@ -2121,16 +2102,16 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, EML2_
 	*/
 }
 
-PRODML2_1_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository & pck)
+PRODML2_2_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository & pck)
 {
-	PRODML2_1_NS::FluidSystem* fluidSystem = pck.createFluidSystem("e8ae6cf8-c4a4-40bf-a3c7-5bf5d0a5b1dd", "Fluid system Region 1",
-		std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_2::eml22__ThermodynamicTemperatureUom::degF, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_2::eml22__PressureUom::psi,
-		gsoap_eml2_2::prodml21__ReservoirFluidKind::black_x0020oil, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_2::eml22__VolumePerVolumeUom::ft3_x002fbbl);
+	PRODML2_2_NS::FluidSystem* fluidSystem = pck.createFluidSystem("e8ae6cf8-c4a4-40bf-a3c7-5bf5d0a5b1dd", "Fluid system Region 1",
+		std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__ThermodynamicTemperatureUom::degF, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__PressureUom::psi,
+		gsoap_eml2_3::prodml22__ReservoirFluidKind::black_x0020oil, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__VolumePerVolumeUom::ft3_x002fbbl);
 
-	fluidSystem->setPhasesPresent(gsoap_eml2_2::prodml21__PhasePresent::gas_x0020and_x0020oil_x0020and_x0020water);
+	fluidSystem->setPhasesPresent(gsoap_eml2_3::prodml22__PhasePresent::gas_x0020and_x0020oil_x0020and_x0020water);
 	
-	//fluidSystem->setReservoirLifeCycleState(gsoap_eml2_2::prodml21__ReservoirLifeCycleState__primary_x0020production);
-	fluidSystem->setStockTankOilAPIGravity((141.5/0.8989209)-131.5, gsoap_eml2_2::eml22__APIGravityUom::dAPI);
+	//fluidSystem->setReservoirLifeCycleState(gsoap_eml2_3::prodml22__ReservoirLifeCycleState__primary_x0020production);
+	fluidSystem->setStockTankOilAPIGravity((141.5/0.8989209)-131.5, gsoap_eml2_3::eml23__APIGravityUom::dAPI);
 	/*
 	fluidSystem->setNaturalGasGasGravity(0.8);
 	fluidSystem->setRemark("This data comes from the official PRODML PVT Eenrgistics documentation");
@@ -2141,18 +2122,18 @@ PRODML2_1_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository 
 	return fluidSystem;
 }
 
-void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_1_NS::FluidCharacterization* oilFluidCharac = pck.createFluidCharacterization("656aa27f-5373-4c7f-9469-a57890e2b5d8", "Oil Fluid Characterization");
+	PRODML2_2_NS::FluidCharacterization* oilFluidCharac = pck.createFluidCharacterization("656aa27f-5373-4c7f-9469-a57890e2b5d8", "Oil Fluid Characterization");
 	oilFluidCharac->setRockFluidUnit(oilColumnInterp);
 	oilFluidCharac->pushBackModel();
 
-	oilFluidCharac->pushBackParameter(0, 882, gsoap_eml2_2::eml22__UnitOfMeasure::kg_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty::Density, gsoap_eml2_2::prodml21__ThermodynamicPhase::oleic);
+	oilFluidCharac->pushBackParameter(0, 882, gsoap_eml2_3::eml23__UnitOfMeasure::kg_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Density, gsoap_eml2_3::prodml22__ThermodynamicPhase::oleic);
 
 	// Black Oil Variation with Depth
 	oilFluidCharac->pushBackTableFormat();
 	oilFluidCharac->pushBackTableFormatColumn(0, "m", "Depth from MSL");
-	oilFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_2::eml22__UnitOfMeasure::bar, gsoap_eml2_2::prodml21__OutputFluidProperty::Saturation_x0020Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Saturation_x0020Pressure);
 
 	oilFluidCharac->pushBackTable(0, "Black Oil Variation with Depth", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
 	oilFluidCharac->pushBackTableRow(0, 0, { 2600, 333.25 });
@@ -2169,10 +2150,10 @@ void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & p
 
 	// Saturated Oil Table
 	oilFluidCharac->pushBackTableFormat();
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure::bar, gsoap_eml2_2::prodml21__OutputFluidProperty::Pressure);
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure::m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure::cP, gsoap_eml2_2::prodml21__OutputFluidProperty::Viscosity);
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_2::eml22__UnitOfMeasure::m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty::Solution_x0020GOR);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Solution_x0020GOR);
 
 	oilFluidCharac->pushBackTable(0, "Saturated Oil Table", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
 	oilFluidCharac->pushBackTableRow(0, 1, { 268.5, 1.51746, 0.464, 156.9 }, true);
@@ -2184,10 +2165,10 @@ void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & p
 
 	// Undersaturated Oil Table
 	oilFluidCharac->pushBackTableFormat();
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_2::eml22__UnitOfMeasure::bar, gsoap_eml2_2::prodml21__OutputFluidProperty::Saturation_x0020Pressure);
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_2::eml22__UnitOfMeasure::bar, gsoap_eml2_2::prodml21__OutputFluidProperty::Pressure);
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_2::eml22__UnitOfMeasure::m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_2::eml22__UnitOfMeasure::cP, gsoap_eml2_2::prodml21__OutputFluidProperty::Viscosity);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Saturation_x0020Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity);
 
 	oilFluidCharac->pushBackTable(0, "Undersaturated Oil Table", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
 	oilFluidCharac->pushBackTableRow(0, 2, { 50, 100, 1.16296, 1.31 }, false);
@@ -2259,17 +2240,17 @@ void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & p
 	}
 }
 
-void serializeGasFluidCharacCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+void serializeGasFluidCharacCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_1_NS::FluidCharacterization* gasFluidCharac = pck.createFluidCharacterization("5ea0eeb2-a287-4a2e-9362-1d2491e491b2", "Gas Fluid Characterization");
+	PRODML2_2_NS::FluidCharacterization* gasFluidCharac = pck.createFluidCharacterization("5ea0eeb2-a287-4a2e-9362-1d2491e491b2", "Gas Fluid Characterization");
 	gasFluidCharac->setRockFluidUnit(gasCapInterp);
 	gasFluidCharac->pushBackModel();
 
 	// Saturated Gas Table
 	gasFluidCharac->pushBackTableFormat();
-	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_2::eml22__UnitOfMeasure::bar, gsoap_eml2_2::prodml21__OutputFluidProperty::Pressure);
-	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_2::eml22__UnitOfMeasure::m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
-	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_2::eml22__UnitOfMeasure::cP, gsoap_eml2_2::prodml21__OutputFluidProperty::Viscosity);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity);
 
 	gasFluidCharac->pushBackTable(0, "Saturated Gas Table", std::to_string(gasFluidCharac->getTableFormatCount() - 1));
 	gasFluidCharac->pushBackTableRow(0, 0, { 350, 0.003929, 0.034856 }, true);
@@ -2286,60 +2267,60 @@ void serializeGasFluidCharacCharacterization(COMMON_NS::DataObjectRepository & p
 	}
 }
 
-void serializeWaterFluidCharacCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+void serializeWaterFluidCharacCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_1_NS::FluidCharacterization* waterFluidCharac = pck.createFluidCharacterization("8bea1d3f-9599-4a45-b88c-8196aef3f397", "Water Fluid Characterization");
+	PRODML2_2_NS::FluidCharacterization* waterFluidCharac = pck.createFluidCharacterization("8bea1d3f-9599-4a45-b88c-8196aef3f397", "Water Fluid Characterization");
 	waterFluidCharac->setRockFluidUnit(aquiferInterp);
 	waterFluidCharac->pushBackModel();
 
-	waterFluidCharac->pushBackParameter(0, 1101.3, gsoap_eml2_2::eml22__UnitOfMeasure::kg_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty::Density, gsoap_eml2_2::prodml21__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 313000, gsoap_eml2_2::eml22__UnitOfMeasure::_1_x002fbar, gsoap_eml2_2::prodml21__OutputFluidProperty::Compressibility, gsoap_eml2_2::prodml21__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 0.38509, gsoap_eml2_2::eml22__UnitOfMeasure::cP, gsoap_eml2_2::prodml21__OutputFluidProperty::Viscosity, gsoap_eml2_2::prodml21__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 1.03382, gsoap_eml2_2::eml22__UnitOfMeasure::m3_x002fm3, gsoap_eml2_2::prodml21__OutputFluidProperty::Formation_x0020Volume_x0020Factor, gsoap_eml2_2::prodml21__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 978000, gsoap_eml2_2::eml22__UnitOfMeasure::_1_x002fbar, gsoap_eml2_2::prodml21__OutputFluidProperty::Viscosity_x0020Compressibility, gsoap_eml2_2::prodml21__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 268.5, gsoap_eml2_2::eml22__UnitOfMeasure::bar, gsoap_eml2_2::prodml21__OutputFluidProperty::Pressure, gsoap_eml2_2::prodml21__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 1101.3, gsoap_eml2_3::eml23__UnitOfMeasure::kg_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Density, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 313000, gsoap_eml2_3::eml23__UnitOfMeasure::_1_x002fbar, gsoap_eml2_3::prodml22__OutputFluidProperty::Compressibility, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 0.38509, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 1.03382, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 978000, gsoap_eml2_3::eml23__UnitOfMeasure::_1_x002fbar, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity_x0020Compressibility, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 268.5, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
 
 	if (fluidSystem != nullptr) {
 		waterFluidCharac->setFluidSystem(fluidSystem);
 	}
 }
 
-void serializeTabularFluidCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+void serializeTabularFluidCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
 {
 	serializeOilFluidCharacCharacterization(pck, fluidSystem);	
 	serializeGasFluidCharacCharacterization(pck, fluidSystem);	
 	serializeWaterFluidCharacCharacterization(pck, fluidSystem);	
 }
 
-void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_1_NS::FluidSystem* fluidSystem = nullptr)
+void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository & pck, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_1_NS::FluidCharacterization* fluidCharac = pck.createFluidCharacterization("6f5f6146-6f8b-4222-b322-9dbef1e7e4cf", "my compositional Fluid Characterization");
+	PRODML2_2_NS::FluidCharacterization* fluidCharac = pck.createFluidCharacterization("6f5f6146-6f8b-4222-b322-9dbef1e7e4cf", "my compositional Fluid Characterization");
 
 	fluidCharac->pushBackFormationWater("h2o");
 	fluidCharac->setFormationWaterSpecificGravity(0, 1.02);
-	fluidCharac->setFormationWaterSalinity(0, 80000, gsoap_eml2_2::eml22__MassPerMassUom::ppm);
+	fluidCharac->setFormationWaterSalinity(0, 80000, gsoap_eml2_3::eml23__MassPerMassUom::ppm);
 
-	fluidCharac->pushBackPureFluidComponent("c1", gsoap_eml2_2::prodml21__PureComponentEnum::c1, false);
-	fluidCharac->setPureFluidComponentMolecularWeight(0, 16.04, gsoap_eml2_2::eml22__MolecularWeightUom::g_x002fmol);
+	fluidCharac->pushBackPureFluidComponent("c1", gsoap_eml2_3::prodml22__PureComponentKind::c1, false);
+	fluidCharac->setPureFluidComponentMolecularWeight(0, 16.04, gsoap_eml2_3::eml23__MolecularWeightUom::g_x002fmol);
 
-	fluidCharac->pushBackPseudoFluidComponent("c2-3", gsoap_eml2_2::prodml21__PseudoComponentEnum::c2_c4_x002bn2);
+	fluidCharac->pushBackPseudoFluidComponent("c2-3", gsoap_eml2_3::prodml22__PseudoComponentKind::c2_c4_x002bn2);
 	fluidCharac->setPseudoFluidComponentStartingCarbonNumber(0, 2);
 	fluidCharac->setPseudoFluidComponentEndingCarbonNumber(0, 3);
 
 	fluidCharac->pushBackModel("0");
-	fluidCharac->setFluidCharacterizationModelName(0, "F2I Good Oil No. 4 EOS Demonstration");
-	fluidCharac->setFluidCharacterizationModelReferenceTemperature(0, 60, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom::degF);
+	fluidCharac->setModelName(0, "F2I Good Oil No. 4 EOS Demonstration");
+	fluidCharac->setModelReferenceTemperature(0, 60, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom::degF);
 
-	PRODML2_1_NS::PvtSpecification* spec = fluidCharac->initModelSpecification(0, PRODML2_1_NS::FluidCharacterization::SrkEos);
-	PRODML2_1_NS::CompositionalSpecification* srkEosSpec = dynamic_cast<PRODML2_1_NS::CompositionalSpecification*>(spec);
-	srkEosSpec->pushBackCoefficient(1, gsoap_eml2_2::prodml21__PvtModelParameterKind::a1);
-	srkEosSpec->setMixingRule(gsoap_eml2_2::prodml21__MixingRule::classical);
+	PRODML2_2_NS::PvtSpecification* spec = fluidCharac->initModelSpecification(0, PRODML2_2_NS::FluidCharacterization::SrkEos);
+	PRODML2_2_NS::CompositionalSpecification* srkEosSpec = dynamic_cast<PRODML2_2_NS::CompositionalSpecification*>(spec);
+	srkEosSpec->pushBackCoefficient(1, gsoap_eml2_3::prodml22__PvtModelParameterKind::a1);
+	srkEosSpec->setMixingRule(gsoap_eml2_3::prodml22__MixingRule::classical);
 	srkEosSpec->pushBackFluidComponentProperty("h2o");
 	srkEosSpec->pushBackFluidComponentProperty("c1");
 	srkEosSpec->pushBackFluidComponentProperty("c2-3");
 	srkEosSpec->setFluidComponentPropertyCriticalPressure(2, 666.6, "psi");
-	srkEosSpec->setFluidComponentPropertyCriticalTemperature(2, 121.9, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom::degC);
-	srkEosSpec->setFluidComponentPropertyCriticalVolume(2, 2.607, gsoap_eml2_2::eml22__MolarVolumeUom::ft3_x002flbmol);
+	srkEosSpec->setFluidComponentPropertyCriticalTemperature(2, 121.9, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom::degC);
+	srkEosSpec->setFluidComponentPropertyCriticalVolume(2, 2.607, gsoap_eml2_3::eml23__MolarVolumeUom::ft3_x002flbmol);
 	srkEosSpec->setFluidComponentPropertyAcentricFactor(2, 0.1140);
 	srkEosSpec->setFluidComponentPropertyParachor(2, 126.03);
 
@@ -2349,20 +2330,20 @@ void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository
 
 void serializeTimeSeriesData(COMMON_NS::DataObjectRepository & pck)
 {
-	PRODML2_1_NS::TimeSeriesData* timeSeriesData = pck.createTimeSeriesData("25d2e0d8-dffa-414d-b7cd-f871cb436781", "my Time Series Data");
+	PRODML2_2_NS::TimeSeriesData* timeSeriesData = pck.createTimeSeriesData("25d2e0d8-dffa-414d-b7cd-f871cb436781", "my Time Series Data");
 
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_2::prodml21__TimeSeriesKeyword::asset_x0020identifier, "prodml://f2i-consulting.com/manifold(HDR01)");
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_2::prodml21__TimeSeriesKeyword::flow, "production");
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_2::prodml21__TimeSeriesKeyword::product, "oil");
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_2::prodml21__TimeSeriesKeyword::qualifier, "measured");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::asset_x0020identifier, "prodml://f2i-consulting.com/manifold(HDR01)");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::flow, "production");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::product, "oil");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::qualifier, "measured");
 
 	timeSeriesData->setUom(gsoap_resqml2_0_1::resqml20__ResqmlUom::psi);
-	timeSeriesData->setMeasureClass(gsoap_eml2_2::eml22__MeasureClass::pressure);
+	timeSeriesData->setMeasureClass(gsoap_eml2_3::eml23__MeasureClass::pressure);
 
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706000, gsoap_eml2_2::prodml21__ValueStatus::frozen);
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706060, gsoap_eml2_2::prodml21__ValueStatus::frozen);
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706120, gsoap_eml2_2::prodml21__ValueStatus::frozen);
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706180, gsoap_eml2_2::prodml21__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706000, gsoap_eml2_3::prodml22__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706060, gsoap_eml2_3::prodml22__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706120, gsoap_eml2_3::prodml22__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706180, gsoap_eml2_3::prodml22__ValueStatus::frozen);
 	timeSeriesData->pushBackDoubleValue(746.7316, 1328706241);
 	timeSeriesData->pushBackDoubleValue(745.7316, 1328706242);
 	timeSeriesData->pushBackDoubleValue(746.003, 1328706243);
@@ -2482,13 +2463,14 @@ bool serialize(const string & filePath)
 	serializeActivities(&repo);
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
-	PRODML2_1_NS::FluidSystem* fluidSystem = serializeFluidSystem(repo);
+	PRODML2_2_NS::FluidSystem* fluidSystem = serializeFluidSystem(repo);
 	serializeTabularFluidCharacterization(repo, fluidSystem);
 	serializeCompositionalFluidCharacterization(repo);
 	serializeTimeSeriesData(repo);
 #if WITH_RESQML2_2
 	serializeGraphicalInformationSet(&repo, hdfProxy);
 #endif
+
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
@@ -2499,7 +2481,7 @@ bool serialize(const string & filePath)
 
 	// Check HDF proxy factory
 	repo.setHdfProxyFactory(new HdfProxyFactoryExample());
-	auto exoticHdfPox = repo.createHdfProxy("", "Dummy Exotic HDF proxy", "", "", COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
+	auto* exoticHdfPox = repo.createHdfProxy("", "Dummy Exotic HDF proxy", "", "", COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 	double dummyPoints[3] = { 1.0, 2.0, 3.0 };
 	repo.createPointSetRepresentation("", "")->pushBackGeometryPatch(1, dummyPoints, exoticHdfPox);
 
@@ -2597,11 +2579,13 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			}
 			else {
 				if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(prop) != nullptr) {
+#ifndef WITH_RESQML2_2
 					RESQML2_NS::DiscreteProperty const * discreteProp = static_cast<RESQML2_NS::DiscreteProperty const *>(prop);
 					if (discreteProp->hasMinimumValue() && discreteProp->hasMinimumValue()) {
 						std::cout << "\tMax value is " << discreteProp->getMaximumValue() << endl;
 						std::cout << "\tMin value is " << discreteProp->getMinimumValue() << endl;
 					}
+#endif
 				}
 				else { //RESQML2_NS::CategoricalProperty
 					RESQML2_NS::StringTableLookup* stl = static_cast<RESQML2_NS::CategoricalProperty const *>(prop)->getStringLookup();
@@ -2962,9 +2946,9 @@ void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck)
 
 void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 {
-	std::vector<PRODML2_1_NS::FluidCharacterization*> fluidCharacterization = pck.getDataObjects<PRODML2_1_NS::FluidCharacterization>();
+	std::vector<PRODML2_2_NS::FluidCharacterization*> fluidCharacterization = pck.getDataObjects<PRODML2_2_NS::FluidCharacterization>();
 	for (size_t fcIndex = 0; fcIndex < fluidCharacterization.size(); ++fcIndex) {
-		PRODML2_1_NS::FluidCharacterization* fc = fluidCharacterization[fcIndex];
+		PRODML2_2_NS::FluidCharacterization* fc = fluidCharacterization[fcIndex];
 		showAllMetadata(fc);
 		RESQML2_NS::RockFluidUnitInterpretation* rfu = fc->getRockFluidUnit();
 		if (rfu != nullptr) {
@@ -2989,19 +2973,19 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 
 		for (unsigned int modelIndex = 0; modelIndex < fc->getModelCount(); ++modelIndex) {
 			std::cout << "MODEL " << std::endl;
-			if (fc->hasFluidCharacterizationModelName(modelIndex)) { cout << "name: " << fc->getFluidCharacterizationModelName(modelIndex) << std::endl; }
-			if (fc->hasFluidCharacterizationModelReferenceStockTankTemperature(modelIndex)) {
-				cout << "ReferenceStockTankTemperature: " << fc->getFluidCharacterizationModelReferenceStockTankTemperatureValue(modelIndex) << std::endl;
+			if (fc->hasModelName(modelIndex)) { cout << "name: " << fc->getModelName(modelIndex) << std::endl; }
+			if (fc->hasModelReferenceStockTankTemperature(modelIndex)) {
+				cout << "ReferenceStockTankTemperature: " << fc->getModelReferenceStockTankTemperatureValue(modelIndex) << std::endl;
 			}
-			if (fc->hasFluidCharacterizationModelReferenceTemperature(modelIndex)) {
-				cout << "ReferenceTemperature: " << fc->getFluidCharacterizationModelReferenceTemperatureValue(modelIndex) << std::endl;
+			if (fc->hasModelReferenceTemperature(modelIndex)) {
+				cout << "ReferenceTemperature: " << fc->getModelReferenceTemperatureValue(modelIndex) << std::endl;
 			}
-			if (fc->hasFluidCharacterizationModelRemark(modelIndex)) { cout << "Remark: " << fc->getFluidCharacterizationModelRemark(modelIndex) << std::endl; }
+			if (fc->hasModelRemark(modelIndex)) { cout << "Remark: " << fc->getModelRemark(modelIndex) << std::endl; }
 
-			PRODML2_1_NS::PvtSpecification* spec = fc->getModelSpecification(modelIndex);
+			PRODML2_2_NS::PvtSpecification* spec = fc->getModelSpecification(modelIndex);
 			if (spec != nullptr) {
-				if (dynamic_cast<PRODML2_1_NS::CompositionalSpecification*>(spec) != nullptr) {
-					PRODML2_1_NS::CompositionalSpecification* compoSpec = static_cast<PRODML2_1_NS::CompositionalSpecification*>(spec);
+				if (dynamic_cast<PRODML2_2_NS::CompositionalSpecification*>(spec) != nullptr) {
+					PRODML2_2_NS::CompositionalSpecification* compoSpec = static_cast<PRODML2_2_NS::CompositionalSpecification*>(spec);
 					for (unsigned int coeffIndex = 0; coeffIndex < compoSpec->getCoefficientCount(); ++coeffIndex) {
 						cout << "coeff value: " << compoSpec->getCoefficientValue(coeffIndex) << std::endl;
 						cout << "coeff kind: " << static_cast<int>(compoSpec->getCoefficientKind(coeffIndex)) << std::endl;
@@ -3029,9 +3013,9 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 
 void deserializeTimeSeriesData(COMMON_NS::DataObjectRepository & pck)
 {
-	std::vector<PRODML2_1_NS::TimeSeriesData*> timeSeriesDataSet = pck.getDataObjects<PRODML2_1_NS::TimeSeriesData>();
+	std::vector<PRODML2_2_NS::TimeSeriesData*> timeSeriesDataSet = pck.getDataObjects<PRODML2_2_NS::TimeSeriesData>();
 	for (size_t timeSeriesDataSetIdx = 0; timeSeriesDataSetIdx < timeSeriesDataSet.size(); ++timeSeriesDataSetIdx) {
-		PRODML2_1_NS::TimeSeriesData* tsd = timeSeriesDataSet[timeSeriesDataSetIdx];
+		PRODML2_2_NS::TimeSeriesData* tsd = timeSeriesDataSet[timeSeriesDataSetIdx];
 		showAllMetadata(tsd);
 
 		for (unsigned int i = 0; i < tsd->getKeywordCount(); ++i) {
@@ -3069,9 +3053,9 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 	{
 		RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(ijkGridIdx);
 
-		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::NO_GEOMETRY)
+		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::NO_GEOMETRY)
 		{
-			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::EXPLICIT || ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::PARAMETRIC) {
+			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::EXPLICIT || ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::PARAMETRIC) {
 				cout << "--------------------------------------------------" << std::endl;
 				showAllMetadata(ijkGrid);
 				if (ijkGrid->isPartial()) {
@@ -4299,7 +4283,7 @@ void ijkGridHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentation* ijkGri
 
 	unsigned int iCellCount = ijkGrid->getICellCount();
 	unsigned int jCellCount = ijkGrid->getJCellCount();
-	unsigned int kCellCount = ijkGrid->getKCellCount();
+	uint64_t kCellCount = ijkGrid->getKCellCount();
 
 	std::cout << "iCellCount = " << iCellCount << std::endl;
 	std::cout << "jCellCount = " << jCellCount << std::endl;
@@ -4471,48 +4455,37 @@ void deserializeLog(COMMON_NS::DataObjectRepository & repo)
 		std::vector<WITSML2_NS::Wellbore*> witsmlWellbores = witsmlWells[wellIdx]->getWellboreSet();
 		for (size_t wellboreIdx = 0; wellboreIdx < witsmlWellbores.size(); ++wellboreIdx) {
 			cout << "witsml wellbore: " << witsmlWellbores[wellboreIdx]->getTitle() << " (" << witsmlWellbores[wellboreIdx]->getUuid() << ")" << std::endl;
-			std::vector<WITSML2_0_NS::Log*> wbLogs = witsmlWellbores[wellboreIdx]->getLogSet();
+			std::vector<WITSML2_1_NS::Log*> wbLogs = witsmlWellbores[wellboreIdx]->getLogSet();
 			for (size_t wbLogIdx = 0; wbLogIdx < wbLogs.size(); ++wbLogIdx) {
-				WITSML2_0_NS::Log* wbLog = wbLogs[wbLogIdx];
+				WITSML2_1_NS::Log* wbLog = wbLogs[wbLogIdx];
 				cout << "witsml log: " << wbLog->getTitle() << " (" << wbLog->getUuid() << ")" << std::endl;
-				if (wbLog->hasTimeDepth()) { cout << "TimeDepth: " << wbLog->getTimeDepth() << std::endl; }
 				if (wbLog->hasRunNumber()) { cout << "RunNumber: " << wbLog->getRunNumber() << std::endl; }
 				if (wbLog->hasPassNumber()) { cout << "PassNumber: " << wbLog->getPassNumber() << std::endl; }
-				if (wbLog->hasLoggingCompanyName()) { cout << "LoggingCompanyName: " << wbLog->getLoggingCompanyName() << std::endl; }
-				if (wbLog->hasLoggingCompanyCode()) { cout << "LoggingCompanyCode: " << wbLog->getLoggingCompanyCode() << std::endl; }
-				std::vector<WITSML2_0_NS::ChannelSet*> channelSets = wbLog->getChannelSets();
+				std::vector<WITSML2_1_NS::ChannelSet*> channelSets = wbLog->getChannelSets();
 				for (size_t channelSetIdx = 0; channelSetIdx < channelSets.size(); ++channelSetIdx) {
-					WITSML2_0_NS::ChannelSet* channelSet = channelSets[channelSetIdx];
+					WITSML2_1_NS::ChannelSet* channelSet = channelSets[channelSetIdx];
 					cout << "witsml channelSet: " << channelSet->getTitle() << " (" << channelSet->getUuid() << ")" << std::endl;
-					if (channelSet->hasTimeDepth()) { cout << "TimeDepth: " << channelSet->getTimeDepth() << std::endl; }
 					if (channelSet->hasRunNumber()) { cout << "RunNumber: " << channelSet->getRunNumber() << std::endl; }
 					if (channelSet->hasPassNumber()) { cout << "PassNumber: " << channelSet->getPassNumber() << std::endl; }
-					if (channelSet->hasLoggingCompanyName()) { cout << "LoggingCompanyName: " << channelSet->getLoggingCompanyName() << std::endl; }
-					if (channelSet->hasLoggingCompanyCode()) { cout << "LoggingCompanyCode: " << channelSet->getLoggingCompanyCode() << std::endl; }
 					if (channelSet->hasDataAsFileUri()) { cout << "Data As File Uri: " << channelSet->getDataAsFileUri() << std::endl; }
 					if (channelSet->hasDataAsJsonArray()) { cout << "Data As Json Array: " << channelSet->getDataAsJsonArray() << std::endl; }
 					for (uint32_t channelIndexIdx = 0; channelIndexIdx < channelSet->getChannelIndexCount(); ++channelIndexIdx) {
-						cout << "IndexType: " << static_cast<int>(channelSet->getChannelIndexType(channelIndexIdx)) << std::endl;
+						cout << "IndexType: " << static_cast<int>(channelSet->getChannelIndexKind(channelIndexIdx)) << std::endl;
 						cout << "Uom: " << channelSet->getChannelIndexUom(channelIndexIdx) << std::endl;
 						cout << "IsIncreasing: " << channelSet->getChannelIndexIsIncreasing(channelIndexIdx) << std::endl;
 						cout << "Mnemo: " << channelSet->getChannelIndexMnemonic(channelIndexIdx) << std::endl;
-						cout << "Datum: " << channelSet->getChannelIndexDatum(channelIndexIdx) << std::endl;
 					}
-					std::vector<WITSML2_0_NS::Channel*> channels = channelSet->getChannels();
+					std::vector<WITSML2_1_NS::Channel*> channels = channelSet->getChannels();
 					for (size_t channelIdx = 0; channelIdx < channels.size(); ++channelIdx) {
-						WITSML2_0_NS::Channel* channel = channels[channelIdx];
+						WITSML2_1_NS::Channel* channel = channels[channelIdx];
 						cout << "witsml channel: " << channel->getTitle() << " (" << channel->getUuid() << ")" << std::endl;
-						if (channel->hasTimeDepth()) { cout << "TimeDepth: " << channel->getTimeDepth() << std::endl; }
 						if (channel->hasRunNumber()) { cout << "RunNumber: " << channel->getRunNumber() << std::endl; }
 						if (channel->hasPassNumber()) { cout << "PassNumber: " << channel->getPassNumber() << std::endl; }
-						if (channel->hasLoggingCompanyName()) { cout << "LoggingCompanyName: " << channel->getLoggingCompanyName() << std::endl; }
-						if (channel->hasLoggingCompanyCode()) { cout << "LoggingCompanyCode: " << channel->getLoggingCompanyCode() << std::endl; }
 						for (uint32_t channelIndexIdx = 0; channelIndexIdx < channel->getChannelIndexCount(); ++channelIndexIdx) {
-							cout << "IndexType: " << static_cast<int>(channel->getChannelIndexType(channelIndexIdx)) << std::endl;
+							cout << "IndexType: " << static_cast<int>(channel->getChannelIndexKind(channelIndexIdx)) << std::endl;
 							cout << "Uom: " << channel->getChannelIndexUom(channelIndexIdx) << std::endl;
 							cout << "IsIncreasing: " << channel->getChannelIndexIsIncreasing(channelIndexIdx) << std::endl;
 							cout << "Mnemo: " << channel->getChannelIndexMnemonic(channelIndexIdx) << std::endl;
-							cout << "Datum: " << channel->getChannelIndexDatum(channelIndexIdx) << std::endl;
 						}
 						cout << "witsml channel prop kind : " << channel->getPropertyKind()->getTitle() << " (" << channel->getPropertyKind()->getUuid() << ")" << std::endl;
 					}
@@ -4532,13 +4505,10 @@ void deserializeWbGeometry(COMMON_NS::DataObjectRepository & repo)
 		std::vector<WITSML2_NS::Wellbore*> witsmlWellbores = witsmlWells[wellIdx]->getWellboreSet();
 		for (size_t wellboreIdx = 0; wellboreIdx < witsmlWellbores.size(); ++wellboreIdx) {
 			cout << "witsml wellbore: " << witsmlWellbores[wellboreIdx]->getTitle() << " (" << witsmlWellbores[wellboreIdx]->getUuid() << ")" << std::endl;
-			std::vector<WITSML2_0_NS::WellboreGeometry*> wbGeoms = witsmlWellbores[wellboreIdx]->getWellboreGeometrySet();
+			std::vector<WITSML2_1_NS::WellboreGeometry*> wbGeoms = witsmlWellbores[wellboreIdx]->getWellboreGeometrySet();
 			for (size_t wbGeomIdx = 0; wbGeomIdx < wbGeoms.size(); ++wbGeomIdx) {
-				WITSML2_0_NS::WellboreGeometry* wbGeom = wbGeoms[wbGeomIdx];
+				WITSML2_1_NS::WellboreGeometry* wbGeom = wbGeoms[wbGeomIdx];
 				cout << "witsml wellbore geom: " << wbGeom->getTitle() << " (" << wbGeom->getUuid() << ")" << std::endl;
-				if (wbGeom->hasDepthWaterMean()) { cout << "DepthWaterMean: " << wbGeom->getDepthWaterMeanValue() << " " << static_cast<int>(wbGeom->getDepthWaterMeanUom()) << std::endl; }
-				if (wbGeom->hasGapAir()) { cout << "GapAir: " << wbGeom->getGapAirValue() << " " << static_cast<int>(wbGeom->getGapAirUom()) << std::endl; }
-				if (wbGeom->hasMdBase()) { cout << "MdBase: " << wbGeom->getMdBaseValue() << " " << static_cast<int>(wbGeom->getMdBaseUom()) << " datum=" << wbGeom->getMdBaseDatum() << std::endl; }
 				for (uint32_t sectionIdx = 0; sectionIdx < wbGeom->getSectionCount(); ++sectionIdx) {
 					std::cout << "Section " << sectionIdx << endl;
 					if (wbGeom->hasWellboreGeometrySectionCurveConductor(sectionIdx)) { cout << "CurveConductor: " << wbGeom->getWellboreGeometrySectionCurveConductor(sectionIdx) << std::endl; }
@@ -4548,15 +4518,9 @@ void deserializeWbGeometry(COMMON_NS::DataObjectRepository & repo)
 					if (wbGeom->hasWellboreGeometrySectionIdSection(sectionIdx)) { cout << "IdSection: " << wbGeom->getWellboreGeometrySectionIdSectionValue(sectionIdx) << " " << static_cast<int>(wbGeom->getWellboreGeometrySectionIdSectionUom(sectionIdx)) << std::endl; }
 					if (wbGeom->hasWellboreGeometrySectionOdSection(sectionIdx)) { cout << "OdSection: " << wbGeom->getWellboreGeometrySectionOdSectionValue(sectionIdx) << " " << static_cast<int>(wbGeom->getWellboreGeometrySectionOdSectionUom(sectionIdx)) << std::endl; }
 					if (wbGeom->hasWellboreGeometrySectionTypeHoleCasing(sectionIdx)) { cout << "TypeHoleCasing: " << static_cast<int>(wbGeom->getWellboreGeometrySectionTypeHoleCasing(sectionIdx)) << std::endl; }
-					if (wbGeom->hasWellboreGeometrySectionMdInterval(sectionIdx)) {
-						cout << "Base md: " << wbGeom->getWellboreGeometrySectionMdIntervalBase(sectionIdx) << " " << static_cast<int>(wbGeom->getWellboreGeometrySectionMdIntervalBaseUom(sectionIdx)) << std::endl;
-						cout << "Top md: " << wbGeom->getWellboreGeometrySectionMdIntervalTop(sectionIdx) << " " << static_cast<int>(wbGeom->getWellboreGeometrySectionMdIntervalTopUom(sectionIdx)) << std::endl;
-						cout << "datum: " << wbGeom->getWellboreGeometrySectionMdIntervaldatum(sectionIdx) << std::endl;
-					}
 					if (wbGeom->hasWellboreGeometrySectionTvdInterval(sectionIdx)) {
-						cout << "Base Tvd: " << wbGeom->getWellboreGeometrySectionTvdIntervalBase(sectionIdx) << " " << static_cast<int>(wbGeom->getWellboreGeometrySectionTvdIntervalBaseUom(sectionIdx)) << std::endl;
-						cout << "Top Tvd: " << wbGeom->getWellboreGeometrySectionTvdIntervalTop(sectionIdx) << " " << static_cast<int>(wbGeom->getWellboreGeometrySectionTvdIntervalTopUom(sectionIdx)) << std::endl;
-						cout << "datum: " << wbGeom->getWellboreGeometrySectionTvdIntervaldatum(sectionIdx) << std::endl;
+						cout << "Base Tvd: " << wbGeom->getWellboreGeometrySectionTvdIntervalBase(sectionIdx) << " " << static_cast<int>(wbGeom->getWellboreGeometrySectionTvdIntervalUom(sectionIdx)) << std::endl;
+						cout << "Top Tvd: " << wbGeom->getWellboreGeometrySectionTvdIntervalTop(sectionIdx) << " " << static_cast<int>(wbGeom->getWellboreGeometrySectionTvdIntervalUom(sectionIdx)) << std::endl;
 					}
 				}
 			}
@@ -4568,77 +4532,60 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 {
 	cout << endl << "PERFORATIONS" << endl;
 
-	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck.getDataObjectByUuid<WITSML2_0_NS::WellboreCompletion>("7bda8ecf-2037-4dc7-8c59-db6ca09f2008");
+	WITSML2_1_NS::WellboreCompletion* wellboreCompletion = pck.getDataObjectByUuid<WITSML2_1_NS::WellboreCompletion>("7bda8ecf-2037-4dc7-8c59-db6ca09f2008");
 	if (wellboreCompletion == nullptr) {
 		return;
 	}
 
 	cout << "deserializing WellboreCompletion: " << wellboreCompletion->getTitle() << " (" << wellboreCompletion->getUuid() << ")" << std::endl;
 
-	WITSML2_0_NS::WellCompletion* wellCompletion = wellboreCompletion->getWellCompletion();
-	std::cout << "Associated with witsml well completion " << wellCompletion->getTitle()
-		<< " with GUID " << wellCompletion->getUuid() << " and witsml well " << wellCompletion->getWell()->getTitle()
-		<< " with GUID " << wellCompletion->getWell()->getUuid() << std::endl;
-
 	witsmlWellbore = wellboreCompletion->getWellbore();
 	std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
 		<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
 		<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
 
-	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
+	for (uint64_t perforationIndex = 0; perforationIndex < wellboreCompletion->getConnectionCount(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION); ++perforationIndex)
 	{
-		cout << std::endl << "perforation " << perforationIndex << " with uid \"" << wellboreCompletion->getPerforationUid(perforationIndex) << "\":" << std::endl;
-		for (const auto& extraMetadata : wellboreCompletion->getPerforationExtraMetadata(0, "Testing Key")) {
+		cout << std::endl << "perforation " << perforationIndex << " with uid \"" << wellboreCompletion->getConnectionUid(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << "\":" << std::endl;
+		for (const auto& extraMetadata : wellboreCompletion->getConnectionExtraMetadata(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, "Testing Key")) {
 			cout << "Testing Key extra Metadata Value: " << extraMetadata << std::endl;
 		}
 
-		if (wellboreCompletion->hasPerforationMdDatum(perforationIndex))
+		if (wellboreCompletion->hasConnectionMdDatum(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 		{
-			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationIndex) << std::endl;
+			cout << "has a datum but cannot get it for now " << std::endl;
 		}
-		if (wellboreCompletion->hasPerforationMdUnit(perforationIndex))
+		if (wellboreCompletion->hasConnectionMdInterval(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 		{
-			cout << "md unit: " << wellboreCompletion->getPerforationMdUnitAsString(perforationIndex) << std::endl;
-		}
-		if (wellboreCompletion->hasPerforationTopMd(perforationIndex))
-		{
-			cout << "top md: " << wellboreCompletion->getPerforationTopMd(perforationIndex) << std::endl;
-		}
-		if (wellboreCompletion->hasPerforationBaseMd(perforationIndex))
-		{
-			cout << "base md: " << wellboreCompletion->getPerforationBaseMd(perforationIndex) << std::endl;
+			cout << "md unit: " << wellboreCompletion->getConnectionMdUnitAsString(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
+			cout << "top md: " << wellboreCompletion->getConnectionTopMd(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
+			cout << "base md: " << wellboreCompletion->getConnectionBaseMd(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 		}
 
-		for (unsigned int historyIndex = 0; historyIndex < wellboreCompletion->getPerforationHistoryCount(perforationIndex); ++historyIndex)
+		for (uint64_t historyIndex = 0; historyIndex < wellboreCompletion->getConnectionHistoryCount(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex); ++historyIndex)
 		{
 			cout << "history entry " << historyIndex << ":" << std::endl;
-			if (wellboreCompletion->hasPerforationHistoryStatus(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryStatus(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tstatus: " << wellboreCompletion->getPerforationHistoryStatusToString(historyIndex, perforationIndex) << std::endl;
+				cout << "\tstatus: " << wellboreCompletion->getConnectionHistoryStatusToString(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryStartDate(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryStartDate(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tstart date: " << wellboreCompletion->getPerforationHistoryStartDate(historyIndex, perforationIndex) << std::endl;
+				cout << "\tstart date: " << wellboreCompletion->getConnectionHistoryStartDate(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEndDate(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryEndDate(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tend date: " << wellboreCompletion->getPerforationHistoryEndDate(historyIndex, perforationIndex) << std::endl;
+				cout << "\tend date: " << wellboreCompletion->getConnectionHistoryEndDate(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryMdDatum(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryMdDatum(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tdatum: " << wellboreCompletion->getPerforationHistoryMdDatum(historyIndex, perforationIndex) << std::endl;
+				cout << "has a datum but cannot get it for now " << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryMdUnit(historyIndex, perforationIndex))
+			if (wellboreCompletion->hasConnectionHistoryMdInterval(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex))
 			{
-				cout << "\tmd unit: " << wellboreCompletion->getPerforationHistoryMdUnitAsString(historyIndex, perforationIndex) << std::endl;
-			}
-			if (wellboreCompletion->hasPerforationHistoryTopMd(historyIndex, perforationIndex))
-			{
-				cout << "\ttop md: " << wellboreCompletion->getPerforationHistoryTopMd(historyIndex, perforationIndex) << std::endl;
-			}
-			if (wellboreCompletion->hasPerforationHistoryBaseMd(historyIndex, perforationIndex))
-			{
-				cout << "\tbase md: " << wellboreCompletion->getPerforationHistoryBaseMd(historyIndex, perforationIndex) << std::endl;
+				cout << "\tmd unit: " << wellboreCompletion->getConnectionHistoryMdUnitAsString(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
+				cout << "\ttop md: " << wellboreCompletion->getConnectionHistoryTopMd(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
+				cout << "\tbase md: " << wellboreCompletion->getConnectionHistoryBaseMd(historyIndex, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, perforationIndex) << std::endl;
 			}
 		}
 	}
@@ -4653,61 +4600,64 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 		EML2_3_NS::GraphicalInformationSet* graphicalInformationSet = gisSet[gisIndex];
 		for (unsigned int i = 0; i < graphicalInformationSet->getGraphicalInformationSetCount(); ++i)
 		{
-			COMMON_NS::AbstractObject* targetObject = graphicalInformationSet->getTargetObject(i);
+			for (unsigned int targetIndex = 0; targetIndex < graphicalInformationSet->getTargetObjectCount(i); ++targetIndex)
+			{
+				COMMON_NS::AbstractObject const* targetObject = graphicalInformationSet->getTargetObject(i, targetIndex);
 
-			std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
+				std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
 
-			if (graphicalInformationSet->hasDefaultColor(targetObject)) {
-				std::cout << "default hue: " << graphicalInformationSet->getDefaultHue(targetObject) << std::endl;
-				std::cout << "default saturation: " << graphicalInformationSet->getDefaultSaturation(targetObject) << std::endl;
-				std::cout << "default value: " << graphicalInformationSet->getDefaultValue(targetObject) << std::endl;
-				std::cout << "default alpha: " << graphicalInformationSet->getDefaultAlpha(targetObject) << std::endl;
-				if (graphicalInformationSet->hasDefaultColorTitle(targetObject)) {
-					std::cout << "default color title: " << graphicalInformationSet->getDefaultColorTitle(targetObject) << std::endl;
-				}
-			}
-
-			if (graphicalInformationSet->hasDiscreteColorMap(targetObject)) {
-				RESQML2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
-				std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
-				unsigned int r, g, b;
-				for (unsigned int colorIndex = 0; colorIndex < discreteColorMap->getColorCount(); ++colorIndex) {
-					discreteColorMap->getRgbColor(colorIndex, r, g, b);
-					std::cout << colorIndex << ": (" << r << ", " << g << ", " << b << ", ";
-					std::cout << discreteColorMap->getAlpha(colorIndex);
-					if (discreteColorMap->hasColorTitle(colorIndex)) {
-						std::cout << ", " << discreteColorMap->getColorTitle(colorIndex);
+				if (graphicalInformationSet->hasDefaultColor(targetObject)) {
+					std::cout << "default hue: " << graphicalInformationSet->getDefaultHue(targetObject) << std::endl;
+					std::cout << "default saturation: " << graphicalInformationSet->getDefaultSaturation(targetObject) << std::endl;
+					std::cout << "default value: " << graphicalInformationSet->getDefaultValue(targetObject) << std::endl;
+					std::cout << "default alpha: " << graphicalInformationSet->getDefaultAlpha(targetObject) << std::endl;
+					if (graphicalInformationSet->hasDefaultColorTitle(targetObject)) {
+						std::cout << "default color title: " << graphicalInformationSet->getDefaultColorTitle(targetObject) << std::endl;
 					}
-					std::cout << ")" << std::endl;
 				}
-				if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
-					std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
-					std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
-				}
-				if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
-					std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
-				}
-			}
 
-			if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
-				RESQML2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
-				std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
-				unsigned int r, g, b;
-				for (unsigned int mapIndex = 0; mapIndex < continuousColorMap->getColorCount(); ++mapIndex) {
-					continuousColorMap->getRgbColor(mapIndex, r, g, b);
-					std::cout << mapIndex << ": (" << r << ", " << g << ", " << b << ", ";
-					std::cout << continuousColorMap->getAlpha(mapIndex);
-					if (continuousColorMap->hasColorTitle(mapIndex)) {
-						std::cout << ", " << continuousColorMap->getColorTitle(mapIndex);
+				if (graphicalInformationSet->hasDiscreteColorMap(targetObject)) {
+					RESQML2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
+					std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
+					unsigned int r, g, b;
+					for (unsigned int colorIndex = 0; colorIndex < discreteColorMap->getColorCount(); ++colorIndex) {
+						discreteColorMap->getRgbColor(colorIndex, r, g, b);
+						std::cout << colorIndex << ": (" << r << ", " << g << ", " << b << ", ";
+						std::cout << discreteColorMap->getAlpha(colorIndex);
+						if (discreteColorMap->hasColorTitle(colorIndex)) {
+							std::cout << ", " << discreteColorMap->getColorTitle(colorIndex);
+						}
+						std::cout << ")" << std::endl;
 					}
-					std::cout << ")" << std::endl;
+					if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
+						std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
+						std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
+					}
+					if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
+						std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
+					}
 				}
-				if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
-					std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
-					std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
-				}
-				if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
-					std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
+
+				if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
+					RESQML2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
+					std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
+					unsigned int r, g, b;
+					for (unsigned int mapIndex = 0; mapIndex < continuousColorMap->getColorCount(); ++mapIndex) {
+						continuousColorMap->getRgbColor(mapIndex, r, g, b);
+						std::cout << mapIndex << ": (" << r << ", " << g << ", " << b << ", ";
+						std::cout << continuousColorMap->getAlpha(mapIndex);
+						if (continuousColorMap->hasColorTitle(mapIndex)) {
+							std::cout << ", " << continuousColorMap->getColorTitle(mapIndex);
+						}
+						std::cout << ")" << std::endl;
+					}
+					if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
+						std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
+						std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
+					}
+					if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
+						std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
+					}
 				}
 			}
 		}
@@ -4769,7 +4719,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 		}
 		std::cout << "compressed." << std::endl;
 
-		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::NO_GEOMETRY)
+		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::NO_GEOMETRY)
 		{
 			std::cout << "Most complex pillar geometry is ";
 			gsoap_resqml2_0_1::resqml20__PillarShape mostcomplexPillarGeom = ijkGrid->getMostComplexPillarGeometry();
@@ -4797,11 +4747,11 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 				}
 			}
 
-			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::LATTICE) {
+			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::LATTICE) {
 				std::cout << "This 3d grid has a lattice geometry." << std::endl;
 			}
 			else {
-				if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::PARAMETRIC)
+				if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::PARAMETRIC)
 				{
 					std::cout << "This 3d grid has a parametric geometry." << std::endl;
 					RESQML2_NS::IjkGridParametricRepresentation* paramIjkGrid = static_cast<RESQML2_NS::IjkGridParametricRepresentation*>(ijkGrid);
@@ -4845,7 +4795,7 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 					delete[] interfaceXyzPoints;
 					*/
 				}
-				else if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::EXPLICIT)
+				else if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::geometryKind::EXPLICIT)
 				{
 					std::cout << "This 3d grid has an explicit geometry." << std::endl;
 				}
@@ -5613,14 +5563,14 @@ void appendAContinuousProp(const string& filePath)
 	RESQML2_NS::ContinuousProperty* continuousProp = nullptr;
 	if (repo.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 		continuousProp = repo.createContinuousProperty(ijkGrid, "5afcdf0a-221c-4a63-9d64-895add76fa7d", "Appended Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		
 	}
 #if WITH_RESQML2_2
 	else {
 		EML2_NS::PropertyKind* standardLengthPropKind = repo.getDataObjectByUuid<EML2_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d");
 		continuousProp = repo.createContinuousProperty(ijkGrid, "5afcdf0a-221c-4a63-9d64-895add76fa7d", "Appended Property", 1,
-			gsoap_eml2_3::resqml22__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, standardLengthPropKind);
 	}	
 #endif
 

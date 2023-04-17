@@ -109,11 +109,18 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT double getZInGlobalCrs() const;
 
 		/**
+		 * Check if this reference point has a defined kind.
+		 *
+		 * @returns	True if this reference point has a defined kind.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual bool hasKind() const = 0;
+
+		/**
 		 * Gets the origin kind of this MD datum.
 		 *
 		 * @returns	The origin kind.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::eml23__WellboreDatumReference getOriginKind() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::eml23__ReferencePointKind getKind() const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
@@ -136,13 +143,6 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		MdDatum(gsoap_resqml2_0_1::_resqml20__MdDatum* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		MdDatum(gsoap_eml2_3::_resqml22__MdDatum* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 		
 		/**
 		 * Sets the local CRS where the reference point ordinals are given.

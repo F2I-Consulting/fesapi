@@ -45,10 +45,10 @@ void TimeSeriesTest::initRepo()
 
 	// Time series properties
 	auto* partialGrid = repo->createPartialIjkGridRepresentation(partialGridUuid, "Partial grid");
-	auto propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_1::eml21__QuantityClassKind::pressure);
+	auto propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_3::eml23__QuantityClassKind::pressure);
 	ContinuousProperty* prop1 = repo->createContinuousProperty(
 		partialGrid, prop1Uuid, "prop 1", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	float prop1Values[2] = { -1, 0 };
@@ -58,7 +58,7 @@ void TimeSeriesTest::initRepo()
 
 	ContinuousProperty* prop2 = repo->createContinuousProperty(
 		partialGrid, prop2Uuid, "prop 2", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	float prop2Values[2] = { -10, 0 };
@@ -68,7 +68,7 @@ void TimeSeriesTest::initRepo()
 
 	ContinuousProperty* prop3 = repo->createContinuousProperty(
 		partialGrid, prop3Uuid, "prop 3", 1,
-		gsoap_eml2_3::resqml22__IndexableElement::cells,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
 	float prop3Values[2] = { -100, 0 };

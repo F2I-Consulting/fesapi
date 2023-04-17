@@ -43,7 +43,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void pushBackThrowInterpretation(gsoap_resqml2_0_1::resqml20__ThrowKind throwKind) = 0; // TODO: add a parameter to be able to indicate the time period the throw occured.
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "FaultInterpretation";
 
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const final { return XML_TAG; }
 

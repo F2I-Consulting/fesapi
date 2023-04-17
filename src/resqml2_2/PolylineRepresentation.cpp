@@ -18,9 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PolylineRepresentation.h"
 
-#include <stdexcept>
-
-#include "H5public.h"
+#include <numeric>
 
 #include "../resqml2/AbstractFeature.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
@@ -84,7 +82,7 @@ COMMON_NS::DataObjectReference PolylineRepresentation::getHdfProxyDor() const
 
 resqml22__PointGeometry* PolylineRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
 {
-	return patchIndex == 0 ? static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatch->Geometry : nullptr;
+	return patchIndex == 0 ? static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatchGeometry : nullptr;
 }
 
 uint64_t PolylineRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
@@ -92,8 +90,17 @@ uint64_t PolylineRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 	}
+	auto const* ptArray = static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatchGeometry->Points;
+	resqml22__Point3dExternalArray const* externalPtArray = dynamic_cast<resqml22__Point3dExternalArray const*>(ptArray);
+	if (externalPtArray == nullptr) {
+		throw range_error("Does only support point set where points are in a resqml22__Point3dExternalArray");
+	}
 
-	return static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatch->Count;
+	uint64_t result = 0;
+	for (auto* dataArrayPart : externalPtArray->Coordinates->ExternalDataArrayPart) {
+		result += std::accumulate(std::begin(dataArrayPart->Count), std::end(dataArrayPart->Count), static_cast<LONG64>(1), std::multiplies<LONG64>());
+	}
+	return result / 3;
 }
 
 void PolylineRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
@@ -105,8 +112,8 @@ void PolylineRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double
 	resqml22__PointGeometry* pointGeom = getPointGeometry2_2(patchIndex);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray)
 	{
-		auto dsPart = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalFileProxy[0];
-		getHdfProxyFromDataset(dsPart)->readArrayNdOfDoubleValues(dsPart->PathInExternalFile, xyzPoints);
+		auto const* daPart = static_cast<resqml22__Point3dExternalArray*>(pointGeom->Points)->Coordinates->ExternalDataArrayPart[0];
+		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfDoubleValues(daPart->PathInExternalFile, xyzPoints);
 	}
 	else
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
@@ -122,11 +129,8 @@ void PolylineRepresentation::setGeometry(double const* points, unsigned int poin
 	}
 
 	_resqml22__PolylineRepresentation* polylineRep = static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3);
-	polylineRep->NodePatch = soap_new_resqml22__NodePatch(gsoapProxy2_3->soap);
-	polylineRep->NodePatch->Count = pointCount;
-
 	uint64_t pointCountDims = pointCount;
-	polylineRep->NodePatch->Geometry = createPointGeometryPatch2_2(0, points, localCrs, &pointCountDims, 1, proxy);
+	polylineRep->NodePatchGeometry = createPointGeometryPatch2_2(0, points, localCrs, &pointCountDims, 1, proxy);
 	getRepository()->addRelationship(this, localCrs);
 }
 
@@ -146,14 +150,19 @@ gsoap_eml2_3::resqml22__LineRole PolylineRepresentation::getLineRole() const
 		throw logic_error("The polyline doesn't have any role");
 	}
 
-	return *static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole;
+	gsoap_eml2_3::resqml22__LineRole result;
+	if (soap_s2resqml22__LineRole(gsoapProxy2_3->soap, static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole->c_str(), &result) == SOAP_OK) {
+		return result;
+	}
+
+	throw logic_error("The linerole is not recognized and extended line roel is not supported yet.");
 }
 
 void PolylineRepresentation::setLineRole(gsoap_eml2_3::resqml22__LineRole lineRole)
 {
 	if (!hasALineRole()) {
-		static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = (resqml22__LineRole*)soap_malloc(gsoapProxy2_3->soap, sizeof(resqml22__LineRole));
+		static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = soap_new_std__string(gsoapProxy2_3->soap);
 	}
 
-	*static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = lineRole;
+	*static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->LineRole = soap_resqml22__LineRole2s(gsoapProxy2_3->soap, lineRole);
 }

@@ -29,7 +29,6 @@ under the License.
 
 #include "EpcDocumentTest.h"
 #include "DateTimeTest.h"
-#include "Witsml14Trajectory.h"
 
 #include "eml2_test/HdfProxy.h"
 #include "resqml2_test/BlockedWellbore.h"
@@ -193,7 +192,7 @@ FESAPI_TEST("Export and import a LGR on a 4*3*2 explicit right handed ijk grid",
 FESAPI_TEST("Export and import a singel tetra grid", "[grid]", OneTetrahedronUnstructuredGridRepresentationTest)
 FESAPI_TEST("Export and import an unstructured grid", "[grid]", UnstructuredGridTest)
 
-FESAPI_TEST("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
+FESAPI_TEST2_0("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
 
 FESAPI_TEST("Export and import streamlines on a partial grid", "[grid]", Streamlines)
 
@@ -220,7 +219,7 @@ FESAPI_TEST("Export and import continuous properties on a partial grid", "[prope
 
 // RESQML WELL
 FESAPI_TEST("Export and import a wellbore trajectory", "[well][trajectory]", WellboreTrajectoryRepresentationTest)
-FESAPI_TEST("Export and import a wellbore marker frame", "[well][stratigraphy]", WellboreMarkerFrameRepresentationTest)
+FESAPI_TEST2_0("Export and import a wellbore marker frame", "[well][stratigraphy]", WellboreMarkerFrameRepresentationTest)
 FESAPI_TEST("Export and import a wellbore frame (regular md spacings)", "[well]", resqml2_test::WellboreRegularFrameRepresentationTest)
 
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single continuous property on node", "[well][property]", ContinuousPropertyOnWellFrameTest)
@@ -237,14 +236,9 @@ FESAPI_TEST("Export and import a seismic lattice feature", "[seismic]", SeismicL
 FESAPI_TEST("Export and import a seismic horizon grid 2d rep", "[seismic]", Grid2dRepresentationTest)
 FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", HorizonOnSeismicLine)
 
-FESAPI_TEST("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
-FESAPI_TEST("Check categorical property", "[property]", CategoricalProperty)
+FESAPI_TEST2_0("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
+FESAPI_TEST2_0("Check categorical property", "[property]", CategoricalProperty)
 FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)
-FESAPI_TEST("Check points property", "[property]", PointsProperty)
-FESAPI_TEST("Export and import properties using slab", "[property]", PropertyBySlab)
+FESAPI_TEST2_0("Check points property", "[property]", PointsProperty)
+FESAPI_TEST2_0("Export and import properties using slab", "[property]", PropertyBySlab)
 FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
-
-TEST_CASE("Deserialize the WITMSL 1.4.1 trajectory official example")
-{
-	Witsml14Trajectory::test();
-}

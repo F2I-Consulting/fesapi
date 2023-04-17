@@ -58,7 +58,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void setPhase(gsoap_eml2_3::resqml22__Phase phase) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "RockFluidUnitInterpretation";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 

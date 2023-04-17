@@ -145,27 +145,6 @@ namespace RESQML2_2_NS
 		 */
 		gsoap_eml2_3::resqml22__VolumeShell* getRegionInternalShell(uint64_t regionIndex, unsigned int internalShellIndex) const;
 
-		/**
-		 * Gets region external shell face
-		 *
-		 * @param 	regionIndex	Zero-based index of the region.
-		 * @param 	faceIndex  	Zero-based index of the face.
-		 *
-		 * @returns	Null if it fails, else the region external shell face.
-		 */
-		gsoap_eml2_3::resqml22__OrientedMacroFace* getRegionExternalShellFace(uint64_t regionIndex, unsigned int faceIndex) const;
-
-		/**
-		 * Gets region internal shell face
-		 *
-		 * @param 	regionIndex		  	Zero-based index of the region.
-		 * @param 	internalShellIndex	Zero-based index of the internal shell.
-		 * @param 	faceIndex		  	Zero-based index of the face.
-		 *
-		 * @returns	Null if it fails, else the region internal shell face.
-		 */
-		gsoap_eml2_3::resqml22__OrientedMacroFace* getRegionInternalShellFace(uint64_t regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
-
 		COMMON_NS::DataObjectReference getSealedStructuralFrameworkDor() const final;
 
 		COMMON_NS::DataObjectReference getStratiUnitInterpDor(uint64_t regionIndex) const final;
