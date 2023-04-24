@@ -643,7 +643,7 @@ gsoap_eml2_3::resqml22__ContactElement* AbstractObject::newContactElementReferen
 		result->ObjectVersion->assign(getVersion());
 	}
 	result->Title = getTitle();
-	result->QualifiedType = getContentType();
+	result->QualifiedType = getQualifiedType();
 
 	return result;
 }
