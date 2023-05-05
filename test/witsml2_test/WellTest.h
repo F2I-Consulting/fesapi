@@ -35,6 +35,9 @@ namespace witsml2_test {
 		WellTest(const std::string & epcDocPath);
 
 	protected:
+		static constexpr char const* witsmlWellboreUuid = "2632b49d-b18a-4d83-a85d-d6a2bd879d20";
+		static constexpr char const* resqmlWellboreFeatureUuid = "044823a6-2d42-4b32-9606-e7c1c4652804";
+
 		void initRepo();
 		void readRepo();
 	};

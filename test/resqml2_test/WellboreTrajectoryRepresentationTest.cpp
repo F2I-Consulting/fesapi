@@ -26,9 +26,6 @@ under the License.
 #include "resqml2/WellboreInterpretation.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
 
-#include "witsml2/Well.h"
-#include "witsml2/Wellbore.h"
-
 using namespace std;
 using namespace resqml2_test;
 using namespace COMMON_NS;
@@ -47,12 +44,8 @@ WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(const
 	: commontest::AbstractTest(repoPath) {
 }
 
-void WellboreTrajectoryRepresentationTest::initRepo() {
-	WITSML2_NS::Well* well = repo->createWell("1f885c7b-5262-41ef-bd1c-e06f40c08387", "", false);
-	WITSML2_NS::Wellbore* wellbore = repo->createWellbore(well, "", "", false);
-	
+void WellboreTrajectoryRepresentationTest::initRepo() {	
 	WellboreFeature* feature = repo->createWellboreFeature("", "");
-	feature->setWitsmlWellbore(wellbore);
 	WellboreInterpretation* interp = repo->createWellboreInterpretation(feature, "", "", true);
 	MdDatum* mdDatum = repo->createMdDatum("", "", nullptr, gsoap_eml2_3::eml23__ReferencePointKind::mean_x0020sea_x0020level, 275, 75, 0);
 
@@ -92,7 +85,6 @@ void WellboreTrajectoryRepresentationTest::initRepo() {
 void WellboreTrajectoryRepresentationTest::readRepo() {
 	// getting the WellboreTrajectoryRepresentation
 	WellboreTrajectoryRepresentation* traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(defaultUuid);
-	REQUIRE(dynamic_cast<WellboreFeature*>(traj->getInterpretation()->getInterpretedFeature())->getWitsmlWellbore()->getWell()->getUuid() == "1f885c7b-5262-41ef-bd1c-e06f40c08387");
 
 	REQUIRE(traj->getXyzPointCountOfAllPatches() == 4);
 	REQUIRE(traj->getGeometryKind() == 0);
