@@ -80,7 +80,6 @@ namespace RESQML2_NS
 	class PointsProperty;
 	class PolylineRepresentation;
 	class PolylineSetRepresentation;
-	class PropertySet;
 	class RepresentationSetRepresentation;
 	class RockFluidOrganizationInterpretation;
 	class RockFluidUnitInterpretation;
@@ -123,6 +122,7 @@ namespace RESQML2_0_1_NS
 	class Horizon;
 	class PointsProperty;
 	class PropertyKind;
+	class PropertySet;
 	class RockFluidUnitFeature;
 	class SeismicLineFeature;
 	class TectonicBoundaryFeature;
@@ -587,6 +587,8 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, Wellbore)
 		GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFrameRepresentation, WellboreFrameRepresentation)
+
+		GETTER_DATAOBJECTS(RESQML2_0_1_NS::PropertySet, PropertySet)
 
 		GETTER_DATAOBJECTS(WITSML2_NS::Well, WitsmlWell)
 		GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, WitsmlWellbore)
@@ -2737,7 +2739,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new property set.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
 			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind);
 
 		/**

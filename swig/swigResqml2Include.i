@@ -83,7 +83,6 @@ under the License.
 	%nspace RESQML2_NS::PointsProperty;
 	%nspace RESQML2_NS::PolylineRepresentation;
 	%nspace RESQML2_NS::PolylineSetRepresentation;
-	%nspace RESQML2_NS::PropertySet;
 	%nspace RESQML2_NS::RepresentationSetRepresentation;
 	%nspace RESQML2_NS::RockFluidOrganizationInterpretation;
 	%nspace RESQML2_NS::RockFluidUnitInterpretation;
@@ -4847,29 +4846,6 @@ namespace RESQML2_NS
 		RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(uint64_t index) const;
 	};
 	
-	class AbstractProperty;
-#ifdef SWIGPYTHON
-	%rename(Resqml2_PropertySet) PropertySet;
-#endif
-	class PropertySet : public COMMON_NS::AbstractObject
-	{
-	public:
-		void setParent(PropertySet * parent);
-		PropertySet * getParent() const;
-
-		unsigned int getChildrenCount() const;
-		PropertySet* getChildren(unsigned int index) const;
-
-		void pushBackProperty(RESQML2_NS::AbstractProperty * prop);
-
-		unsigned int getPropertyCount() const;
-		AbstractProperty* getProperty(unsigned int index) const;
-
-		bool hasMultipleRealizations() const;
-		bool hasSinglePropertyKind() const;
-		gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const;
-	};
-	
 #ifdef SWIGPYTHON
 	%rename(Resqml2_AbstractProperty) AbstractProperty;
 #endif
@@ -4946,9 +4922,26 @@ namespace RESQML2_NS
 		 */
 		gsoap_eml2_3::eml23__IndexableElement getAttachmentKind() const;
 		
-		std::vector<RESQML2_NS::PropertySet *> getPropertySets() const;
-		unsigned int getPropertySetCount() const;
-		RESQML2_NS::PropertySet * getPropertySet(unsigned int index) const;
+		/**
+		 * Gets the count of property sets which contain this property
+		 *
+		 * @exception	std::range_error	If the count of property sets is strictly greater than
+		 * 									unsigned int max.
+		 *
+		 * @returns	The count of property sets which contain this property.
+		 */
+		uint64_t getPropertySetCount() const;
+
+		/**
+		 * Gets a given property set taken from all property sets which contain this property
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the property set we look for.
+		 *
+		 * @returns	The property set at @p index.
+		 */
+		RESQML2_0_1_NS::PropertySet * getPropertySet(uint64_t index) const;
 		
 		bool hasRealizationIndices() const;
 		std::vector<unsigned int> getRealizationIndices() const;

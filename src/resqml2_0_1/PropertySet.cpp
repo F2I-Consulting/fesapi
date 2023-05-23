@@ -24,8 +24,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* PropertySet::XML_NS = "resqml20";
-
 PropertySet::PropertySet(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
 	bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind)
 {
@@ -45,7 +43,74 @@ PropertySet::PropertySet(COMMON_NS::DataObjectRepository* repo, const std::strin
 	repo->addDataObject(this);
 }
 
-void PropertySet::setXmlParent(RESQML2_NS::PropertySet * parent)
+void PropertySet::setParent(PropertySet * parent)
+{
+	if (parent == nullptr) {
+		throw invalid_argument("The parent property set cannot be null.");
+	}
+
+	repository->addRelationship(this, parent);
+
+	setXmlParent(parent);
+}
+
+PropertySet * PropertySet::getParent() const
+{
+	return static_cast<PropertySet*>(repository->getDataObjectByUuid(getParentDor().getUuid()));
+}
+
+std::vector<PropertySet *> PropertySet::getChildren() const
+{
+	return repository->getSourceObjects<PropertySet>(this);
+}
+
+PropertySet* PropertySet::getChildren(uint64_t index) const
+{
+	const std::vector<PropertySet *> & children = getChildren();
+	return children.at(index);
+}
+
+void PropertySet::pushBackProperty(RESQML2_NS::AbstractProperty * prop)
+{
+	if (prop == nullptr)
+		throw invalid_argument("The property to push cannot be null.");
+
+	pushBackXmlProperty(prop);
+
+	repository->addRelationship(this, prop);
+}
+
+std::vector<RESQML2_NS::AbstractProperty *> PropertySet::getProperties() const
+{
+	return repository->getTargetObjects<RESQML2_NS::AbstractProperty>(this);
+}
+
+uint64_t PropertySet::getPropertyCount() const noexcept
+{
+	return getProperties().size();
+}
+
+RESQML2_NS::AbstractProperty* PropertySet::getProperty(uint64_t index) const
+{
+	const std::vector<RESQML2_NS::AbstractProperty *> & props = getProperties();
+	return props.at(index);
+}
+
+void PropertySet::loadTargetRelationships()
+{
+	COMMON_NS::DataObjectReference dor = getParentDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel(dor);
+	}
+
+	for (auto dor2 : getAllPropertiesDors()) {
+		if (!dor2.isEmpty()) {
+			convertDorIntoRel(dor2);
+		}
+	}
+}
+
+void PropertySet::setXmlParent(PropertySet * parent)
 {
 	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->ParentSet.clear();
 	static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->ParentSet.push_back(parent->newResqmlReference());
@@ -84,8 +149,8 @@ gsoap_resqml2_0_1::resqml20__TimeSetKind PropertySet::getTimeSetKind() const
 std::vector<COMMON_NS::DataObjectReference> PropertySet::getAllPropertiesDors() const
 {
 	std::vector<COMMON_NS::DataObjectReference> result;
-	for (size_t i = 0; i < static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties.size(); ++i) {
-		result.push_back(COMMON_NS::DataObjectReference(static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties[i]));
+	for (auto* dor : static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties) {
+		result.push_back(COMMON_NS::DataObjectReference(dor));
 	}
 
 	return result;

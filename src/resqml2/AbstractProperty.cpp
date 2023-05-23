@@ -31,10 +31,10 @@ under the License.
 #include "../eml2/TimeSeries.h"
 
 #include "AbstractRepresentation.h"
-#include "PropertySet.h"
 #include "AbstractLocal3dCrs.h"
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
+#include "../resqml2_0_1/PropertySet.h"
 
 using namespace RESQML2_NS;
 using namespace std;
@@ -279,31 +279,19 @@ gsoap_eml2_3::eml23__IndexableElement AbstractProperty::getAttachmentKind() cons
 	throw logic_error("Not implemented yet");
 }
 
-std::vector<RESQML2_NS::PropertySet *> AbstractProperty::getPropertySets() const
+std::vector<RESQML2_0_1_NS::PropertySet *> AbstractProperty::getPropertySets() const
 {
-	return repository->getSourceObjects<RESQML2_NS::PropertySet>(this);
+	return repository->getSourceObjects<RESQML2_0_1_NS::PropertySet>(this);
 }
 
-unsigned int AbstractProperty::getPropertySetCount() const
+uint64_t AbstractProperty::getPropertySetCount() const
 {
-	const std::vector<RESQML2_NS::PropertySet *> & propSets = getPropertySets();
-
-	if (propSets.size() > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much property set containing this property");
-	}
-
-	return static_cast<unsigned int>(propSets.size());
+	return getPropertySets().size();
 }
 
-RESQML2_NS::PropertySet * AbstractProperty::getPropertySet(unsigned int index) const
+RESQML2_0_1_NS::PropertySet * AbstractProperty::getPropertySet(uint64_t index) const
 {
-	const std::vector<RESQML2_NS::PropertySet *> & propSets = getPropertySets();
-
-	if (index < propSets.size()) {
-		return propSets[index];
-	}
-
-	throw out_of_range("The index of the prop Set is out of range");
+	return getPropertySets().at(index);
 }
 
 void AbstractProperty::setLocalCrs(AbstractLocal3dCrs * crs)

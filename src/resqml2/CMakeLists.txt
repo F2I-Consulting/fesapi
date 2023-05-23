@@ -33,7 +33,6 @@ set(FESAPI_RESQML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PointsProperty.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PolylineRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PolylineSetRepresentation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PropertySet.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/RepresentationSetRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/RockFluidOrganizationInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/SealedVolumeFrameworkRepresentation.cpp
@@ -105,7 +104,6 @@ set(FESAPI_RESQML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PointsProperty.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PolylineRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PolylineSetRepresentation.h
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/PropertySet.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/RepresentationSetRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/RockFluidOrganizationInterpretation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/RockFluidUnitInterpretation.h

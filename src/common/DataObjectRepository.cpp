@@ -2400,7 +2400,7 @@ EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::strin
 	}
 }
 
-RESQML2_NS::PropertySet* DataObjectRepository::createPropertySet(const std::string & guid, const std::string & title,
+RESQML2_0_1_NS::PropertySet* DataObjectRepository::createPropertySet(const std::string & guid, const std::string & title,
 	bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind)
 {
 		return new RESQML2_0_1_NS::PropertySet(this, guid, title, hasMultipleRealizations, hasSinglePropertyKind, timeSetKind);
@@ -2844,6 +2844,7 @@ GETTER_DATAOBJECTS_IMPL(RESQML2_NS::UnstructuredGridRepresentation, Unstructured
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::WellboreFeature, Wellbore)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::WellboreFrameRepresentation, WellboreFrameRepresentation)
+GETTER_DATAOBJECTS_IMPL(RESQML2_0_1_NS::PropertySet, PropertySet)
 
 GETTER_DATAOBJECTS_IMPL(WITSML2_NS::Well, WitsmlWell)
 GETTER_DATAOBJECTS_IMPL(WITSML2_NS::Wellbore, WitsmlWellbore)

@@ -146,7 +146,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns A vector of all property sets which contain this property.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PropertySet *> getPropertySets() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PropertySet *> getPropertySets() const;
 
 		/**
 		 * Gets the count of property sets which contain this property
@@ -156,7 +156,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of property sets which contain this property.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPropertySetCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getPropertySetCount() const;
 
 		/**
 		 * Gets a given property set taken from all property sets which contain this property
@@ -167,7 +167,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The property set at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet * getPropertySet(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertySet * getPropertySet(uint64_t index) const;
 		
 		//*********************************************
 		//****************** CRS **********************
