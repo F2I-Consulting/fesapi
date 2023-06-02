@@ -206,7 +206,7 @@ namespace RESQML2_NS
 		/**
 		 * Checks if this property has at least one realization index. Realization index is used if the property is
 		 * the result of a multi-realization process.
-		 * Reamrk : v2.0.1 is constrained to have a maximum of one realisation index
+		 * Remark : v2.0.1 is constrained to have a maximum of one realisation index
 		 *
 		 * @returns	True if the property has at least one realization index, false if not.
 		 */
@@ -216,6 +216,7 @@ namespace RESQML2_NS
 		 * Gets the realization index of this property. Realization index is used if the property is the
 		 * result of a multi-realization process. You should have checked before that this property
 		 * actually has a realization index.
+		 * Remark : v2.0.1 is constrained to have a maximum of one realisation index
 		 *
 		 * @exception	std::invalid_argument	If this property has actually no realization index.
 		 *
@@ -242,6 +243,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If no supported gSOAP proxy is available.
 		 *
 		 * @param 		  	realizationIndices	The realization indices to set to this property.
+		 * Remark : v2.0.1 is constrained to have a maximum of one realisation index
 		 * @param [in,out]	hdfProxy		  	(Optional) The HDF proxy where to store @p
 		 * 										realizationIndices values. If @p nullptr (default), then
 		 * 										the repository default HDF proxy will be used.
