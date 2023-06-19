@@ -1166,9 +1166,77 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_PropertySet) PropertySet;
 #endif	
-	class PropertySet : public RESQML2_NS::PropertySet
+	class PropertySet : public COMMON_NS::AbstractObject
 	{
 	public:
+		/**
+		 * Sets the parent property set of this instance.
+		 *
+		 * @exception	std::invalid_argument	If @p parent is nullptr.
+		 *
+		 * @param [in]	parent	The parent to set to this instance.
+		 */
+		void setParent(PropertySet * parent);
+
+		/**
+		 * Gets the parent property set of this instance.
+		 *
+		 * @returns	A pointer to the parent property set or nullptr if no parent property set is defined.
+		 */
+		PropertySet * getParent() const;
+
+		/**
+		 * Gets the count of all children property set of this instance.
+		 *
+		 * @returns	The children count.
+		 */
+		uint64_t getChildrenCount() const;
+
+		/**
+		 * Gets a particular child property set of this property set.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the child property set we look for.
+		 *
+		 * @returns	The child property set at position @p index.
+		 */
+		PropertySet* getChildren(unsigned int index) const;
+
+		/**
+		 * Pushes back a property into this property set.
+		 *
+		 * @exception	std::invalid_argument	If @p prop is nullptr.
+		 *
+		 * @param [in]	prop	The property to push into this property set.
+		 */
+		void pushBackProperty(RESQML2_NS::AbstractProperty * prop);
+
+		/**
+		 * Gets the count of all properties directly contained in this property set. "Directly
+		 * contained" means that this method does not count properties contained in the children
+		 * property set.
+		 *
+		 * @returns	The count of contained properties.
+		 */
+		uint64_t getPropertyCount() const;
+
+		/**
+		 * Gets a particular property among the properties directly contained in this property set.
+		 * "Directly contained" means that this method does not look at properties contained in the
+		 * children property set.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the property we look for.
+		 *
+		 * @returns	The contained property at position @p index.
+		 */
+		RESQML2_NS::AbstractProperty* getProperty(uint64_t index) const;
+
+		bool hasMultipleRealizations() const;
+		bool hasSinglePropertyKind() const;
+		gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const;
 	};
 	
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)

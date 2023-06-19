@@ -1008,7 +1008,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, EML2_NS::AbstractHdfPr
 	int64_t prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackInt64Hdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
-	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
+	RESQML2_0_1_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
 	propSet->pushBackProperty(discreteProp1);
 	propSet->pushBackProperty(discreteProp2);
 
@@ -2525,9 +2525,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		RESQML2_NS::AbstractProperty const * prop = propertySet[propIndex];
 		showAllMetadata(prop, "\t");
 
-		std::vector<RESQML2_NS::PropertySet *> propSets = prop->getPropertySets();
+		std::vector<RESQML2_0_1_NS::PropertySet *> propSets = prop->getPropertySets();
 		for (size_t propSetIndex = 0; propSetIndex < propSets.size(); ++propSetIndex) {
-			RESQML2_NS::PropertySet* propSet = propSets[propSetIndex];
+			RESQML2_0_1_NS::PropertySet* propSet = propSets[propSetIndex];
 			std::cout << "\tContained in property set : ";
 			showAllMetadata(propSet, "\t");
 		}

@@ -22,7 +22,10 @@ under the License.
 
 #include "../catch.hpp"
 
+#include "resqml2/WellboreFeature.h"
+
 #include "witsml2/Well.h"
+#include "witsml2/Wellbore.h"
 
 using namespace std;
 using namespace witsml2_test;
@@ -39,7 +42,11 @@ WellTest::WellTest(const string & epcDocPath)
 
 void WellTest::initRepo() {
 	Well* well = repo->createWell(defaultUuid, defaultTitle, false);
-	REQUIRE(well != nullptr);
+	Wellbore* wellbore = repo->createWellbore(well, witsmlWellboreUuid, "", false);
+
+	RESQML2_NS::WellboreFeature* resqmlWellboreFeature = repo->createWellboreFeature(resqmlWellboreFeatureUuid, "");
+	resqmlWellboreFeature->setWitsmlWellbore(wellbore);
+	
 	well->setBlock("my Block");
 	// No county
 	well->setDTimLicense(defaultTimestamp);
@@ -51,7 +58,12 @@ void WellTest::initRepo() {
 }
 
 void WellTest::readRepo() {
-	Well* well = repo->getDataObjectByUuid<Well>(defaultUuid);
+	auto* well = repo->getDataObjectByUuid<Well>(defaultUuid);
+	auto* wellbore = repo->getDataObjectByUuid<Wellbore>(witsmlWellboreUuid);
+	auto* resqmlWellboreFeature = repo->getDataObjectByUuid<RESQML2_NS::WellboreFeature>(resqmlWellboreFeatureUuid);
+	REQUIRE(resqmlWellboreFeature->getWitsmlWellbore() == wellbore);
+	REQUIRE(wellbore->getWell() == well);
+
 	REQUIRE(well != nullptr);
 	REQUIRE(well->hasBlock());
 	REQUIRE(well->getBlock() == "my Block");

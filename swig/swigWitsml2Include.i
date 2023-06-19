@@ -440,6 +440,7 @@ namespace WITSML2_NS
 		 * @returns	An int.
 		 */unsigned int geLocationCount() const;
 		
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, ResqmlWellboreFeature)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, Wellbore)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::WellCompletion, Wellcompletion)
 	};

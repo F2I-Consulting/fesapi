@@ -577,6 +577,7 @@ import com.f2i_consulting.fesapi.*;
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, Wellbore)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreFrameRepresentation, WellboreFrameRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_0_1_NS::PropertySet, PropertySet)
 
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Well, WitsmlWell)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, WitsmlWellbore)
@@ -1256,7 +1257,7 @@ import com.f2i_consulting.fesapi.*;
 		EML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
 
-		RESQML2_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
 			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind);
 
 		RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,

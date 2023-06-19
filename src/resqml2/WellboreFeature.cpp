@@ -20,7 +20,6 @@ under the License.
 
 #include "../witsml2/Wellbore.h"
 
-using namespace std;
 using namespace RESQML2_NS;
 
 WITSML2_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
@@ -32,13 +31,7 @@ WITSML2_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
 void WellboreFeature::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getWitsmlWellboreDor();
-	WITSML2_NS::Wellbore* witsmlWellbore = getRepository()->getDataObjectByUuid<WITSML2_NS::Wellbore>(dor.getUuid());
-	if (witsmlWellbore == nullptr) { // partial transfer
-		getRepository()->createPartial(dor);
-		witsmlWellbore = getRepository()->getDataObjectByUuid<WITSML2_NS::Wellbore>(dor.getUuid());
+	if (!dor.isEmpty()) {
+		convertDorIntoRel<WITSML2_NS::Wellbore>(dor);
 	}
-	if (witsmlWellbore == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	repository->addRelationship(this, witsmlWellbore);
 }

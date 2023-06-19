@@ -26,7 +26,7 @@ under the License.
 
 using namespace WITSML2_NS;
 
-std::vector<RESQML2_NS::WellboreFeature *> Well::getResqmlWellboreFeatures() const
+std::vector<RESQML2_NS::WellboreFeature *> Well::getResqmlWellboreFeatureSet() const
 {
 	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFeature>(this);
 }

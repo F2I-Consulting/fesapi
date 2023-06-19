@@ -181,13 +181,7 @@ namespace WITSML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int geLocationCount() const = 0;
 
-		/**
-		 * Gets resqml wellbore features
-		 *
-		 * @returns	Null if it fails, else the RESQML wellbore features.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::WellboreFeature *> getResqmlWellboreFeatures() const;
-
+		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, ResqmlWellboreFeature)
 		GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, Wellbore)
 		GETTER_DATAOBJECTS(WITSML2_1_NS::WellCompletion, Wellcompletion)
 

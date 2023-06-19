@@ -1064,7 +1064,6 @@ namespace RESQML2_NS
 						PointsProperty*,
 						PolylineRepresentation*,
 						PolylineSetRepresentation*,
-						PropertySet*,
 						RepresentationSetRepresentation*,
 						RockFluidOrganizationInterpretation*,
 						RockFluidUnitInterpretation*,
