@@ -91,24 +91,24 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) const;
 
 		/**
-		 * Get the name of a RESQML2.0 facet as a string based on the enumerated facet enumerated value
+		 * Get the name of a facet as a string based on the enumerated facet enumerated value
 		 *
-		 * @param 	facet	A RESQML2.0 facet.
+		 * @param 	facet	An enumerated facet.
 		 *
 		 * @returns	A string corresponding to @p facet if successful. The empty string if no
 		 * 			correspondence is found.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getFacet(gsoap_resqml2_0_1::resqml20__Facet facet) const;
+		DLL_IMPORT_OR_EXPORT std::string getFacet(gsoap_eml2_3::eml23__FacetKind facet) const;
 
 		/**
-		 * Get the RESQML2.0 facet enumerated value from the name of a facet.
+		 * Get the enumerated value from the name of a facet.
 		 *
-		 * @param 	facet	The name of a RESQML2.0 facet.
+		 * @param 	facet	The name of a facet.
 		 *
-		 * @returns	The RESQML2.0 facet enumerated value corresponding to @p facet if successful. The @c
+		 * @returns	The facet enumerated value corresponding to @p facet if successful. The @c
 		 * 			what facet enumerated value if no correspendance is found.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Facet getFacet(const std::string & facet) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__FacetKind getFacet(const std::string & facet) const;
 
 		/**
 		 * Get the name of an EML2.3 length unit of measure as a string based on the unit of measure

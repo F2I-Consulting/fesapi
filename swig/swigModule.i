@@ -1931,8 +1931,25 @@ import java.lang.AutoCloseable;
 		std::string getEnergisticsUnitOfMeasureName(gsoap_resqml2_0_1::resqml20__ResqmlUom energisticsUom) const;
 		gsoap_resqml2_0_1::resqml20__ResqmlUom getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) const;
 
-		std::string getFacet(gsoap_resqml2_0_1::resqml20__Facet facet) const;
-		gsoap_resqml2_0_1::resqml20__Facet getFacet(const std::string & facet) const;
+		/**
+		 * Get the name of a facet as a string based on the enumerated facet enumerated value
+		 *
+		 * @param 	facet	An enumerated facet.
+		 *
+		 * @returns	A string corresponding to @p facet if successful. The empty string if no
+		 * 			correspondence is found.
+		 */
+		std::string getFacet(gsoap_eml2_3::eml23__FacetKind facet) const;
+
+		/**
+		 * Get the enumerated value from the name of a facet.
+		 *
+		 * @param 	facet	The name of a facet.
+		 *
+		 * @returns	The facet enumerated value corresponding to @p facet if successful. The @c
+		 * 			what facet enumerated value if no correspendance is found.
+		 */
+		gsoap_eml2_3::eml23__FacetKind getFacet(const std::string & facet) const;
 
 		std::string lengthUomToString(gsoap_eml2_3::eml23__LengthUom witsmlUom) const;
 
