@@ -72,7 +72,6 @@ import com.f2i_consulting.fesapi.resqml2.LocalTime3dCrs;
 import com.f2i_consulting.fesapi.resqml2.MdDatum;
 import com.f2i_consulting.fesapi.resqml2.Model;
 import com.f2i_consulting.fesapi.resqml2.PolylineRepresentation;
-import com.f2i_consulting.fesapi.resqml2.PropertySet;
 import com.f2i_consulting.fesapi.resqml2.SeismicLatticeFeature;
 import com.f2i_consulting.fesapi.resqml2.SeismicLineSetFeature;
 import com.f2i_consulting.fesapi.resqml2.SeismicWellboreFrameRepresentation;
@@ -82,6 +81,7 @@ import com.f2i_consulting.fesapi.resqml2.WellboreFrameRepresentation;
 import com.f2i_consulting.fesapi.resqml2.WellboreInterpretation;
 import com.f2i_consulting.fesapi.resqml2.WellboreTrajectoryRepresentation;
 import com.f2i_consulting.fesapi.resqml2_0_1.Resqml20_Horizon;
+import com.f2i_consulting.fesapi.resqml2_0_1.Resqml20_PropertySet;
 import com.f2i_consulting.fesapi.witsml2.Well;
 import com.f2i_consulting.fesapi.witsml2.Wellbore;
 import com.f2i_consulting.fesapi.witsml2_1.Witsml21_WellboreGeometry;
@@ -503,7 +503,7 @@ ${COMMENT_END}
 			fesapi.delete_UInt16Array(propValues);
 		}
 		
-		PropertySet propSet = repo.createPropertySet("", "Testing property set", false, true, resqml20__TimeSetKind.not_x0020a_x0020time_x0020set);
+		Resqml20_PropertySet propSet = repo.createPropertySet("", "Testing property set", false, true, resqml20__TimeSetKind.not_x0020a_x0020time_x0020set);
 		propSet.pushBackProperty(discreteProp1);
 		propSet.pushBackProperty(discreteProp2);
 	}
@@ -805,7 +805,7 @@ ${COMMENT_END}
 
 			long propSetCount = propVal.getPropertySetCount();
 			for (long propSetIndex = 0; propSetIndex < propSetCount; ++propSetIndex) {
-				PropertySet propSet = propVal.getPropertySet(propSetIndex);
+				Resqml20_PropertySet propSet = propVal.getPropertySet(propSetIndex);
 				System.out.println("\tContained in property set : " + propSet.getTitle());
 			}
 		}

@@ -67,6 +67,12 @@ enum class eml23__ThermodynamicTemperatureUom {
 #endif
 		'N'
 };
+enum class prodml22__ThermodynamicPhase {
+	aqueous = 0,
+	oleic = 1,
+	vapor = 2,
+	total_x0020hydrocarbon = 3
+};
 enum class eml23__PressureUom {
 	_0_x002e01_x0020lbf_x002fft2 = 0,
 	at = 1,

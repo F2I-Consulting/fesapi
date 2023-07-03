@@ -536,6 +536,12 @@ namespace gsoap_resqml2_0_1
 		work = 205,
 		Young_x0020modulus = 206
 	};
+	enum class resqml20__Phase {
+		aquifer = 0,
+		gas_x0020cap = 1,
+		oil_x0020column = 2,
+		seal = 3
+	};
 }
 
 namespace WITSML2_0_NS {
