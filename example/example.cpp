@@ -70,6 +70,7 @@ under the License.
 #include "resqml2_0_1/WellboreMarker.h"
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
 #include "resqml2_0_1/PropertySet.h"
+#include "resqml2_0_1/CommentProperty.h"
 #include "resqml2_0_1/ContinuousProperty.h"
 #include "resqml2_0_1/DiscreteProperty.h"
 #include "resqml2_0_1/PointsProperty.h"
@@ -2560,14 +2561,16 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		std::cout << "\tValues count in all dimensions is : " << valueCount << std::endl;
 
 		// Datatype
-		std::cout << "\tDatatype is : " << static_cast<unsigned char>(prop->getValuesHdfDatatype()) << std::endl;
+		std::cout << "\tDatatype is : " << static_cast<int>(prop->getValuesHdfDatatype()) << std::endl;
 		if (prop->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN) {
 			cerr << "\tERROR !!!!! The hdf datatype is unknown" << endl;
 			cout << "\tPress enter to continue..." << endl;
 			cin.get();
 		}
-		else if (static_cast<unsigned char>(prop->getValuesHdfDatatype()) > 2) {
-			if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(prop) == nullptr && dynamic_cast<RESQML2_NS::CategoricalProperty const *>(prop) == nullptr) {
+		else if (static_cast<int>(prop->getValuesHdfDatatype()) > 2) {
+			if (dynamic_cast<RESQML2_NS::CommentProperty const *>(prop) == nullptr &&
+				dynamic_cast<RESQML2_NS::DiscreteProperty const *>(prop) == nullptr &&
+				dynamic_cast<RESQML2_NS::CategoricalProperty const *>(prop) == nullptr) {
 				cerr << "\tERROR !!!!! Only categorical or Discrete properties should be associated to an integer dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				std::unique_ptr<double[]> values(new double[valueCount]);
@@ -2577,7 +2580,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
 			}
-			else {
+			else if (dynamic_cast<RESQML2_NS::CommentProperty const *>(prop) == nullptr) {
 				if (dynamic_cast<RESQML2_NS::DiscreteProperty const *>(prop) != nullptr) {
 #ifndef WITH_RESQML2_2
 					RESQML2_NS::DiscreteProperty const * discreteProp = static_cast<RESQML2_NS::DiscreteProperty const *>(prop);
@@ -2587,7 +2590,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 					}
 #endif
 				}
-				else { //RESQML2_NS::CategoricalProperty
+				else if (dynamic_cast<RESQML2_NS::CategoricalProperty const *>(prop) != nullptr) {
 					RESQML2_NS::StringTableLookup* stl = static_cast<RESQML2_NS::CategoricalProperty const *>(prop)->getStringLookup();
 					if (stl == nullptr) {
 						cerr << "\tERROR !!!!! An integer categorical property should be associated to a string table lookup." << endl;
@@ -2604,6 +2607,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getInt64ValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
+			}
+			else {
+				cout << "\tIt is a comment property.." << endl;
 			}
 		}
 		else {
@@ -4694,9 +4700,17 @@ void deserializeGridConnectionSetRepresentation(RESQML2_NS::AbstractIjkGridRepre
 			uint64_t interpCellIndexPairCount = gridConnectionSet->getCellIndexPairCountFromInterpretationIndex(interpIndex);
 			std::cout << ". It contains " << interpCellIndexPairCount << " cell index pairs." << endl;
 			std::unique_ptr<int64_t[]> interpCellIndexPairs(new int64_t[interpCellIndexPairCount * 2]);
-			localFacePerCellIndexPairs.reset(new int[interpCellIndexPairCount * 2]);
-			gridConnectionSet->getGridConnectionSetInformationFromInterpretationIndex(interpCellIndexPairs.get(), nullptr, localFacePerCellIndexPairs.get(), interpIndex);
+			if (gridConnectionSet->hasLocalFacePerCell()) {
+				localFacePerCellIndexPairs.reset(new int[interpCellIndexPairCount * 2]);
+				gridConnectionSet->getGridConnectionSetInformationFromInterpretationIndex(interpCellIndexPairs.get(), nullptr, localFacePerCellIndexPairs.get(), interpIndex);
+			}
+			else
+			{
+				gridConnectionSet->getGridConnectionSetInformationFromInterpretationIndex(interpCellIndexPairs.get(), nullptr, nullptr, interpIndex);
+			}
 		}
+
+		showAllProperties(gridConnectionSet);
 	}
 }
 
