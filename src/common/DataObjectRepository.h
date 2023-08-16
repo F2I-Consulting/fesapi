@@ -747,25 +747,6 @@ namespace COMMON_NS
 		//************************************
 
 		/**
-		 * Creates an EPC external part reference into this repository for 
-		 * allowing the use of a different behavior for persisting numerical
-		 * data. @p NumericalValueBase must be a child of {@link eml2::EpcExternalPartReference}
-		 *
-		 * @tparam	NumericalValueBase	Type of the numerical values.
-		 * @param 	guid 	The guid to set to the EPC external part reference.
-		 * @param 	title	The title to set to the EPC external part reference.
-		 *
-		 * @returns	A pointer to the new EPC external part reference.
-		 */
-		template <class NumericalValueBase>
-		NumericalValueBase* createEpcExternalPartReference(const std::string & guid, const std::string & title)
-		{
-			NumericalValueBase* result = new NumericalValueBase(getGsoapContext(), guid);
-			addDataObject(result);
-			return result;
-		}
-
-		/**
 		 * @brief	Creates a non parallel access to an HDF5 file for writing to it. Resulting HDF5 file
 		 * 			proxy is stored into this repository
 		 *
