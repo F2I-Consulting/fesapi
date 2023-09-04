@@ -175,7 +175,9 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/epc/CMakeLists.txt)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/CMakeLists.txt)
 include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_0_1}/CMakeLists.txt)
-include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_2}/CMakeLists.txt)
+if (WITH_RESQML2_2)
+	include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_2}/CMakeLists.txt)
+endif (WITH_RESQML2_2)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_2}/CMakeLists.txt)
 

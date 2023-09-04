@@ -103,7 +103,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @param [in,out]	propKind	If non-null, the property kind.
 		 */
-		void setPropertyKind(EML2_NS::PropertyKind* propKind);
+		DLL_IMPORT_OR_EXPORT void setPropertyKind(EML2_NS::PropertyKind* propKind);
 
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Mnemonic)
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Uom)
