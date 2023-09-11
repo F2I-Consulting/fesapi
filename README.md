@@ -33,14 +33,10 @@ Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is require
 		- (ONLY IF NOT AUTOMATICALLY FOUND) HDF5_ROOT : The path to the folder containing include and lib folders of HDF5
 		- ONLY IF YOU WANT TO STATICALLY LINK TO HDF5, set a cmake variable called HDF5_USE_STATIC_LIBRARIES to ON
 		- ONLY IF YOU WANT TO LINK TO PARALLEL HDF5, set a cmake variable called HDF5_PREFER_PARALLEL to ON
-	- MINIZIP
-		- MINIZIP_INCLUDE_DIR : where the HDF5 headers are located
-		- (ONLY FOR WINDOWS) MINIZIP_LIBRARY_DEBUG : Optional, only used by Visual studio Debug configuration, the MINIZIP debug library you want to link to
-		- MINIZIP_LIBRARY_RELEASE : the MINIZIP library you want to link to.  On Visual studio, it is used on Release configuration. With other compilers, it is the default HDF5 library to link to.
+	- MINIZIP (using [our own cmake find module](./cmake/modules/FindMINIZIP.cmake))
+		- (ONLY IF NOT AUTOMATICALLY FOUND) MINIZIP_ROOT : The path to the folder containing include and lib folders of MINIZIP
 	- ZLIB (using [cmake find module](https://cmake.org/cmake/help/latest/module/FindZLIB.html))
-		- ZLIB_INCLUDE_DIR : where the zlib headers (commonly zlib.h only) are located.
-		- ZLIB_LIBRARY_DEBUG : the ZLIB debug library you want to link to. On Visual studio, it is used on Debug configuration.
-		- ZLIB_LIBRARY_RELEASE : the ZLIB library you want to link to. It must be the same as the one which is linked to HDF5 library and MINIZIP library otherwise you will get a warning from CMake. On Visual studio, it is used on Release and RelWithDebInfo configuration.
+		- (ONLY IF NOT AUTOMATICALLY FOUND) ZLIB_ROOT : The path to the folder containing include and lib folders of ZLIB
 	- SZIP (it is only required when you statically link to HDF5 AND when HDF5 has been built using SZIP)
 		- SZIP_LIBRARY_RELEASE : the SZIP library you want to link to. This warning can be ignored most of time but it can really create unpredictable bugs in some circumstances (static linking to HDF5 with HDF5 making use of szip).
 	- Boost

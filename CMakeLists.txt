@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 3.12)
 
 project (Fesapi)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules)
+
 set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "DEBUG_POSTFIX property is initialized when the target is created to the value of this variable except for executable targets")
 
 set (FESAPI_ROOT_DIR ${CMAKE_SOURCE_DIR})
@@ -70,23 +72,11 @@ ELSE()
 	ENDIF()
 ENDIF()
 
-# Zlib
 FIND_PACKAGE (ZLIB)
-
-# Minizip
-set (MINIZIP_INCLUDE_DIR MINIZIP_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the minizip header files")
-IF (NOT IS_DIRECTORY ${MINIZIP_INCLUDE_DIR})
-	MESSAGE(WARNING "The Minizip include dir (MINIZIP_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
+IF (NOT EXISTS ${ZLIB_INCLUDE_DIR})
+	MESSAGE(ERROR " The ZLIB_INCLUDE_DIR CMake variable is mandatory.")
 ENDIF ()
-set (MINIZIP_LIBRARY_RELEASE MINIZIP_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the minizip library release")
-IF (NOT EXISTS ${MINIZIP_LIBRARY_RELEASE})
-	MESSAGE(WARNING "The Minizip library (MINIZIP_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-set (MINIZIP_LIBRARY_DEBUG MINIZIP_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the file which contains the minizip library DEBUG")
-IF (NOT EXISTS ${MINIZIP_LIBRARY_DEBUG})
-	MESSAGE(WARNING "The Minizip library (MINIZIP_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-
+FIND_PACKAGE (MINIZIP REQUIRED)
 
 # Szip (only useful when using static linking to HDF5)
 set (SZIP_LIBRARY_RELEASE SZIP_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the szip library release")
