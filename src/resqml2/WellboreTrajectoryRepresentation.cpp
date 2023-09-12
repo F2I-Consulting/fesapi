@@ -157,6 +157,53 @@ RESQML2_NS::MdDatum * WellboreTrajectoryRepresentation::getMdDatum() const
 	return getRepository()->getDataObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumDor().getUuid());
 }
 
+void WellboreTrajectoryRepresentation::convertMdValuesToXyzValues(double* mdValues, uint64_t mdCount, double* xyzPoints) const
+{
+	auto const* mdDatum = getMdDatum();
+	if (mdDatum == nullptr || mdDatum->isPartial()) {
+		throw logic_error("Cannot compute the XYZ points of the frame without the MD datum.");
+	}
+
+	// We add 1 trajectory station for MDDatum support.
+	uint64_t trajStationCount = getXyzPointCountOfPatch(0) + 1;
+	if (trajStationCount < 2) {
+		throw logic_error("Cannot compute the XYZ points of the frame with a trajectory which does not contain any trajectory station.");
+	}
+	std::unique_ptr<double[]> mdTrajValues(new double[trajStationCount]);
+	mdTrajValues[0] = .0; // MD Datum
+	getMdValues(mdTrajValues.get() + 1);
+
+	std::unique_ptr<double[]> xyzTrajValues(new double[trajStationCount * 3]);
+	xyzTrajValues[0] = mdDatum->getX();
+	xyzTrajValues[1] = mdDatum->getY();
+	xyzTrajValues[2] = mdDatum->getZ();
+	getXyzPointsOfPatch(0, xyzTrajValues.get() + 3);
+
+	size_t nextTrajStationIndex = 1;
+	for (uint64_t i = 0; i < mdCount; ++i) {
+		while (nextTrajStationIndex < trajStationCount &&
+			mdTrajValues[nextTrajStationIndex] <= mdValues[i]) {
+			++nextTrajStationIndex;
+		}
+		if (nextTrajStationIndex == trajStationCount) {
+			if (mdTrajValues[nextTrajStationIndex - 1] != mdValues[i]) {
+				throw range_error("Cannot compute the frame MD " + std::to_string(mdValues[i]) + " because it is out of the trajectory range");
+			}
+			nextTrajStationIndex = nextTrajStationIndex - 1;
+		}
+
+		const size_t previousTrajStationIndex = nextTrajStationIndex - 1;
+		const double mdDistance = mdTrajValues[nextTrajStationIndex] - mdTrajValues[previousTrajStationIndex];
+		const double ratioFromPreviousControlPoint = mdDistance != .0
+			? (mdValues[i] - mdTrajValues[previousTrajStationIndex]) / mdDistance
+			: .0;
+
+		xyzPoints[i * 3] = xyzTrajValues[previousTrajStationIndex * 3] + ratioFromPreviousControlPoint * (xyzTrajValues[nextTrajStationIndex * 3] - xyzTrajValues[previousTrajStationIndex * 3]);
+		xyzPoints[i * 3 + 1] = xyzTrajValues[previousTrajStationIndex * 3 + 1] + ratioFromPreviousControlPoint * (xyzTrajValues[nextTrajStationIndex * 3 + 1] - xyzTrajValues[previousTrajStationIndex * 3 + 1]);
+		xyzPoints[i * 3 + 2] = xyzTrajValues[previousTrajStationIndex * 3 + 2] + ratioFromPreviousControlPoint * (xyzTrajValues[nextTrajStationIndex * 3 + 2] - xyzTrajValues[previousTrajStationIndex * 3 + 2]);
+	}
+}
+
 WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getParentTrajectory() const
 {
 	return getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(getParentTrajectoryDor().getUuid());

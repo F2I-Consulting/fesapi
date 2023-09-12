@@ -26,6 +26,8 @@ under the License.
 #include "resqml2/DiscreteProperty.h"
 #include "resqml2/ContinuousProperty.h"
 
+#include "resqml2_0_1/PropertyKind.h"
+
 using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_test;
@@ -53,7 +55,7 @@ void BigIjkGridExplicitRepresentationTest::initRepo() {
 		faultCount * (jCount + 1), pillarOfCoordinateLine.get(), splitCoordinateLineColumnCumulativeCount.get(), splitCoordinateLineColumns.get());
 
 	// adding a discrete property
-	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
+	RESQML2_0_1_NS::PropertyKind* propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("5f78f66a-ed1b-4827-a868-beb989febb31", "code");
 	RESQML2_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		ijkGrid, discretePropertyUuid, discretePropertyTitle,
 		1, 
@@ -64,7 +66,7 @@ void BigIjkGridExplicitRepresentationTest::initRepo() {
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues.get(), iCount, jCount, kCount, nullptr, -1);
 
 	// adding a continuous property
-	propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_3::eml23__QuantityClassKind::length);
+	propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
 	RESQML2_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		ijkGrid, continuousPropertyUuid, continuousPropertyTitle,
 		1,

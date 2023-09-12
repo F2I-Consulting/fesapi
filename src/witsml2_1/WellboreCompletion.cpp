@@ -36,7 +36,7 @@ WellboreCompletion::WellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 	gsoapProxy2_3 = soap_new_witsml21__WellboreCompletion(witsmlWellbore->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	witsmlWellbore->getRepository()->addDataObject(this);
 	setWellbore(witsmlWellbore);

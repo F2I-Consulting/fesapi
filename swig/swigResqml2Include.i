@@ -7630,6 +7630,15 @@ namespace RESQML2_NS
 		 * 						of getXyzPointCountOfAllPatches().
 		 */
 		void getMdValues(double* values) const;
+
+		/**
+		 * Converts an array MD values an array of corresponding XYZ values according to this trajectory.
+		 *
+		 * @param [in]	mdValues	An array containing all MD values we want to convert.
+		 * @param [in]	mdCount		The count of MD values in @p mdValues
+		 * @param [out]	xyzValues	A buffer for receiving the XYZ values converted from @p mdValues. It must be preallocated with a size of 3*mdCount.
+		 */
+		void convertMdValuesToXyzValues(double* mdValues, uint64_t mdCount, double* xyzValues) const;
 		
 		/**
 		 * Gets the starting MD of this wellbore trajectory. Range may often be from kickoff to TD, but

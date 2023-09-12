@@ -68,14 +68,12 @@ void WellboreFrameRepresentationTest::readRepo() {
 	REQUIRE(w1i1FrameRep->areMdValuesRegularlySpaced() == false);
 	REQUIRE(w1i1FrameRep->getMdValuesCount() == 5);
 
-	double* logMds = new double[w1i1FrameRep->getMdValuesCount()];
+	std::unique_ptr<double[]> logMds(new double[w1i1FrameRep->getMdValuesCount()]);
 
-	w1i1FrameRep->getMdAsDoubleValues(logMds);
+	w1i1FrameRep->getMdAsDoubleValues(logMds.get());
 	REQUIRE(logMds[0] == .0);
 	REQUIRE(logMds[1] == 250);
 	REQUIRE(logMds[2] == 500);
 	REQUIRE(logMds[3] == 750);
 	REQUIRE(logMds[4] == 1200);
-
-	delete[] logMds;
 }

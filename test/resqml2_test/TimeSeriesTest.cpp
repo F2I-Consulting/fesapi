@@ -26,6 +26,8 @@ under the License.
 #include "resqml2/IjkGridExplicitRepresentation.h"
 #include "resqml2/ContinuousProperty.h"
 
+#include "resqml2_0_1/PropertyKind.h"
+
 using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_test;
@@ -45,11 +47,11 @@ void TimeSeriesTest::initRepo()
 
 	// Time series properties
 	auto* partialGrid = repo->createPartialIjkGridRepresentation(partialGridUuid, "Partial grid");
-	auto propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_3::eml23__QuantityClassKind::pressure);
+	RESQML2_0_1_NS::PropertyKind* propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
 	ContinuousProperty* prop1 = repo->createContinuousProperty(
 		partialGrid, prop1Uuid, "prop 1", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells,
-		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	float prop1Values[2] = { -1, 0 };
 	prop1->pushBackFloatHdf5Array3dOfValues(prop1Values, 2, 1, 1);
@@ -59,7 +61,7 @@ void TimeSeriesTest::initRepo()
 	ContinuousProperty* prop2 = repo->createContinuousProperty(
 		partialGrid, prop2Uuid, "prop 2", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells,
-		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	float prop2Values[2] = { -10, 0 };
 	prop2->pushBackFloatHdf5Array3dOfValues(prop2Values, 2, 1, 1);
@@ -69,7 +71,7 @@ void TimeSeriesTest::initRepo()
 	ContinuousProperty* prop3 = repo->createContinuousProperty(
 		partialGrid, prop3Uuid, "prop 3", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells,
-		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	float prop3Values[2] = { -100, 0 };
 	prop3->pushBackFloatHdf5Array3dOfValues(prop3Values, 2, 1, 1);
