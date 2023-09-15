@@ -37,10 +37,12 @@ Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is require
 		- (ONLY IF NOT AUTOMATICALLY FOUND) MINIZIP_ROOT : The path to the folder containing include and lib folders of MINIZIP
 	- ZLIB (using [cmake find module](https://cmake.org/cmake/help/latest/module/FindZLIB.html))
 		- (ONLY IF NOT AUTOMATICALLY FOUND) ZLIB_ROOT : The path to the folder containing include and lib folders of ZLIB
+		- ONLY IF YOU WANT TO STATICALLY LINK TO ZLIB, set a cmake variable called ZLIB_USE_STATIC_LIBS to ON
 	- SZIP (it is only required when you statically link to HDF5 AND when HDF5 has been built using SZIP)
 		- SZIP_LIBRARY_RELEASE : the SZIP library you want to link to. This warning can be ignored most of time but it can really create unpredictable bugs in some circumstances (static linking to HDF5 with HDF5 making use of szip).
-	- Boost
+	- Boost (using [cmake find module](https://cmake.org/cmake/help/latest/module/FindBoost.html))
 		- Boost_INCLUDE_DIR : where the Boost headers are located (generally the boost install folder)
+		- Be aware that a recent version of Boost needs a recent version of CMake
 - Click again on "Configure" button. You should no more have errors so you can now click on "Generate" button.
 ![alt text](./cmake/cmake.PNG)
 - You can now build your solution with your favorite compiler (and linker) using the generated solution in yourPath/fesapiEnv/build/theNameYouWant
