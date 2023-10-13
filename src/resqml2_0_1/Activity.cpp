@@ -74,7 +74,7 @@ void Activity::pushBackParameter(const std::string& title, const std::string & v
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
-		if (activityTemplate->isAnExistingParameter(title) == false)
+		if (!activityTemplate->isAnExistingParameter(title))
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
@@ -96,7 +96,7 @@ void Activity::pushBackParameter(const std::string& title, int64_t value)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
-		if (activityTemplate->isAnExistingParameter(title) == false)
+		if (!activityTemplate->isAnExistingParameter(title))
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
@@ -121,7 +121,7 @@ void Activity::pushBackParameter(const std::string& title, AbstractObject* resqm
 	}
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
-		if (activityTemplate->isAnExistingParameter(title) == false) {
+		if (!activityTemplate->isAnExistingParameter(title)) {
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
 

@@ -31,7 +31,7 @@ void TimeSeries::pushBackTimestamp(time_t timestamp)
 	pushBackTimestamp(tmConversion);
 }
 
-time_t TimeSeries::getTimestamp(unsigned int index) const
+time_t TimeSeries::getTimestamp(uint64_t index) const
 {
 	tm temp = getTimestampAsTimeStructure(index);
 	return timeTools::timegm(temp);

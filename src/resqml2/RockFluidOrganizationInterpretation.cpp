@@ -28,22 +28,17 @@ using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 
-std::vector<AbstractGridRepresentation *> RockFluidOrganizationInterpretation::getGridRepresentationSet() const
+std::vector<AbstractGridRepresentation*> RockFluidOrganizationInterpretation::getGridRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<AbstractGridRepresentation>(this);
 }
 
-unsigned int RockFluidOrganizationInterpretation::getGridRepresentationCount() const
+uint64_t RockFluidOrganizationInterpretation::getGridRepresentationCount() const
 {
-	const size_t count = getGridRepresentationSet().size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much grid representations.");
-	}
-
-	return static_cast<unsigned int>(count);
+	return getGridRepresentationSet().size();
 }
 
-AbstractGridRepresentation * RockFluidOrganizationInterpretation::getGridRepresentation(unsigned int index) const
+AbstractGridRepresentation* RockFluidOrganizationInterpretation::getGridRepresentation(uint64_t index) const
 {
 	const std::vector<AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentationSet();
 
@@ -60,7 +55,7 @@ bool RockFluidOrganizationInterpretation::isAssociatedToGridRepresentation(Abstr
 	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
 }
 
-RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUnitInterpretation(unsigned int index) const
+RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUnitInterpretation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RockFluidUnitInterpretation>(getRockFluidUnitInterpretationDor(index).getUuid());
 }
@@ -69,7 +64,7 @@ void RockFluidOrganizationInterpretation::loadTargetRelationships()
 {
 	AbstractOrganizationInterpretation::loadTargetRelationships();
 
-	for (unsigned int i = 0; i < getRockFluidUnitInterpCount(); ++i) {
+	for (uint64_t i = 0; i < getRockFluidUnitInterpCount(); ++i) {
 		COMMON_NS::DataObjectReference dor = getRockFluidUnitInterpretationDor(i);
 		if (!dor.isEmpty()) {
 			convertDorIntoRel<RockFluidUnitInterpretation>(dor);

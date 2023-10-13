@@ -81,12 +81,12 @@ uint64_t TimeSeries::getTimestampIndex(const tm & timestamp, LONG64 yearOffset) 
 	throw out_of_range("The timestamp has not been found in the allowed range.");
 }
 
-unsigned int TimeSeries::getTimestampCount() const
+uint64_t TimeSeries::getTimestampCount() const
 {
 	return static_cast<gsoap_eml2_3::_eml23__TimeSeries*>(gsoapProxy2_3)->Time.size();
 }
 
-tm TimeSeries::getTimestampAsTimeStructure(unsigned int index) const
+tm TimeSeries::getTimestampAsTimeStructure(uint64_t index) const
 {
 	gsoap_eml2_3::_eml23__TimeSeries* timeSeries = static_cast<gsoap_eml2_3::_eml23__TimeSeries*>(gsoapProxy2_3);
 

@@ -1003,7 +1003,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	discreteProp1 = repo->createDiscreteProperty(twoCellsIjkGrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
-	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
+	discreteProp1->pushBackUInt16Hdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(twoCellsIjkGrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	int64_t prop2Values[2] = { 10, 11 };
@@ -1016,7 +1016,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	RESQML2_NS::DiscreteProperty* discreteProp1OnIjkgridParametric = repo->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	unsigned short prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
-	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111, 0, 3);
+	discreteProp1OnIjkgridParametric->pushBackUInt16Hdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111, 0, 3);
 	//Move this prop to another same ninjnk ijk grid
 	discreteProp1OnIjkgridParametric->setRepresentation(ijkgridParametricNotSameLineKind);
 
@@ -1100,7 +1100,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	stringTableLookup->addValue("Cell index 1", 1);
 	RESQML2_NS::CategoricalProperty* categoricalProp = repo->createCategoricalProperty(twoCellsIjkGrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, stringTableLookup, propType1);
-	categoricalProp->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
+	categoricalProp->pushBackUInt16Hdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 #endif
 	/**************
 	 Points Properties
@@ -2932,7 +2932,7 @@ void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & repo)
 			showAllMetadata(grid);
 		}
 
-		for (unsigned int unitIndex = 0; unitIndex < rockFluidOrgInterp->getRockFluidUnitInterpCount(); ++unitIndex) {
+		for (uint64_t unitIndex = 0; unitIndex < rockFluidOrgInterp->getRockFluidUnitInterpCount(); ++unitIndex) {
 			RESQML2_NS::RockFluidUnitInterpretation* rockFluidInterp = rockFluidOrgInterp->getRockFluidUnitInterpretation(unitIndex);
 			showAllMetadata(rockFluidInterp);
 
@@ -4414,7 +4414,7 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 		clockStart = clock();
 		time(&timeStart);
 		for (unsigned int n = 0; n < nbIter; ++n) {
-			prop->getIntValuesOfPatch(0, values.get());
+			prop->getInt32ValuesOfPatch(0, values.get());
 		}
 		clockEnd = clock();
 		time(&timeEnd);

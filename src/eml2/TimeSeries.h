@@ -90,7 +90,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The timestamp count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTimestampCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTimestampCount() const = 0;
 
 		/**
 		 * Gets a timestamp at a particular index of this time series.
@@ -102,7 +102,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The timestamp at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT time_t getTimestamp(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT time_t getTimestamp(uint64_t index) const;
 
 		/**
 		 * Gets a timestamp as a time structure at a particular index of this time series. It allows to
@@ -115,7 +115,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The timestamp at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual tm getTimestampAsTimeStructure(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual tm getTimestampAsTimeStructure(uint64_t index) const = 0;
 
 		/**
 		 * Get all the properties which use this time series

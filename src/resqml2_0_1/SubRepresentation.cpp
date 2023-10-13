@@ -350,7 +350,7 @@ void SubRepresentation::getSupportingRepresentationIndicesOfPatch(unsigned int p
 	}
 
 	DiscreteProperty* prop = getSupportingRepresentationIndicesDiscretePropOfPatch(patchIndex);
-	prop->getShortValuesOfPatch(0, supportingRepresentationIndices);
+	prop->getInt16ValuesOfPatch(0, supportingRepresentationIndices);
 }
 
 uint64_t SubRepresentation::getPatchCount() const

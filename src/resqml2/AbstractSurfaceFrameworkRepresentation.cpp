@@ -171,6 +171,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 unsigned int AbstractSurfaceFrameworkRepresentation::getContactIdentityCount() const
 {
+	cannotBePartial();
 	size_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
 		result = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1)->ContactIdentity.size();
@@ -191,6 +192,7 @@ unsigned int AbstractSurfaceFrameworkRepresentation::getContactIdentityCount() c
 
 gsoap_resqml2_0_1::resqml20__ContactIdentity* AbstractSurfaceFrameworkRepresentation::getContactIdentity201(unsigned int ciIndex) const
 {
+	cannotBePartial();
 	resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (ciIndex >= orgRep->ContactIdentity.size()) {
@@ -202,6 +204,7 @@ gsoap_resqml2_0_1::resqml20__ContactIdentity* AbstractSurfaceFrameworkRepresenta
 
 gsoap_eml2_3::resqml22__ContactIdentity* AbstractSurfaceFrameworkRepresentation::getContactIdentity22(unsigned int ciIndex) const
 {
+	cannotBePartial();
 	resqml22__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml22__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 
 	if (ciIndex >= orgRep->ContactIdentity.size()) {
@@ -213,6 +216,7 @@ gsoap_eml2_3::resqml22__ContactIdentity* AbstractSurfaceFrameworkRepresentation:
 
 gsoap_resqml2_0_1::resqml20__IdentityKind AbstractSurfaceFrameworkRepresentation::getContactIdentityKind(unsigned int ciIndex) const
 {
+	cannotBePartial();
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getContactIdentity201(ciIndex)->IdentityKind;
 	}
@@ -226,9 +230,10 @@ gsoap_resqml2_0_1::resqml20__IdentityKind AbstractSurfaceFrameworkRepresentation
 
 unsigned int AbstractSurfaceFrameworkRepresentation::getContactCountInContactIdentity(unsigned int ciIndex) const
 {
+	cannotBePartial();
 	uint64_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
-		result = getCountOfIntegerArray(getContactIdentity201(ciIndex)->ListOfContactRepresentations);
+		result = getCountOfArray(getContactIdentity201(ciIndex)->ListOfContactRepresentations);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		result = getCountOfArray(getContactIdentity22(ciIndex)->ContactIndices);
@@ -246,6 +251,7 @@ unsigned int AbstractSurfaceFrameworkRepresentation::getContactCountInContactIde
 
 void AbstractSurfaceFrameworkRepresentation::getContactIndices(unsigned int ciIndex, unsigned int * contactRepIndices) const
 {
+	cannotBePartial();
 	if (gsoapProxy2_0_1 != nullptr) {
 		readArrayNdOfUInt32Values(getContactIdentity201(ciIndex)->ListOfContactRepresentations, contactRepIndices);
 	}
@@ -259,6 +265,7 @@ void AbstractSurfaceFrameworkRepresentation::getContactIndices(unsigned int ciIn
 
 bool AbstractSurfaceFrameworkRepresentation::areAllContactNodesIdentical(unsigned int ciIndex) const
 {
+	cannotBePartial();
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getContactIdentity201(ciIndex)->ListOfIdenticalNodes == nullptr;
 	}
@@ -272,13 +279,14 @@ bool AbstractSurfaceFrameworkRepresentation::areAllContactNodesIdentical(unsigne
 
 unsigned int AbstractSurfaceFrameworkRepresentation::getIdenticalContactNodeCount(unsigned int ciIndex) const
 {
+	cannotBePartial();
 	if (areAllContactNodesIdentical(ciIndex)) {
 		throw invalid_argument("The nodes are all identical");
 	}
 
 	uint64_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
-		result = getCountOfIntegerArray(getContactIdentity201(ciIndex)->ListOfIdenticalNodes);
+		result = getCountOfArray(getContactIdentity201(ciIndex)->ListOfIdenticalNodes);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		result = getCountOfArray(getContactIdentity22(ciIndex)->IdenticalNodeIndices);
@@ -296,6 +304,7 @@ unsigned int AbstractSurfaceFrameworkRepresentation::getIdenticalContactNodeCoun
 
 void AbstractSurfaceFrameworkRepresentation::getIdenticalContactNodeIndices(unsigned int ciIndex, unsigned int * nodeIndices) const
 {
+	cannotBePartial();
 	if (areAllContactNodesIdentical(ciIndex)) {
 		throw invalid_argument("The nodes are all identical");
 	}

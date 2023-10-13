@@ -499,7 +499,7 @@ void AbstractProperty::setRealizationIndices(int64_t startRealizationIndex, int6
 	}
 }
 
-void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy)
+void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy*)
 {
 	if (realizationIndices.empty()) {
 		throw std::invalid_argument("Cannot set zero realization index.");

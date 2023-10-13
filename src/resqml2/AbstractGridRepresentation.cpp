@@ -36,12 +36,12 @@ std::vector<RESQML2_NS::GridConnectionSetRepresentation *> AbstractGridRepresent
 	return repository->getSourceObjects<RESQML2_NS::GridConnectionSetRepresentation>(this);
 }
 
-unsigned int AbstractGridRepresentation::getGridConnectionSetRepresentationCount() const
+uint64_t AbstractGridRepresentation::getGridConnectionSetRepresentationCount() const
 {
 	return getGridConnectionSetRepresentationSet().size();
 }
 
-RESQML2_NS::GridConnectionSetRepresentation * AbstractGridRepresentation::getGridConnectionSetRepresentation(unsigned int index) const
+RESQML2_NS::GridConnectionSetRepresentation * AbstractGridRepresentation::getGridConnectionSetRepresentation(uint64_t index) const
 {
 	const std::vector<RESQML2_NS::GridConnectionSetRepresentation *>& gridConnectionSetRepresentationSet = getGridConnectionSetRepresentationSet();
 	return gridConnectionSetRepresentationSet.at(index);
@@ -114,11 +114,11 @@ std::vector<RESQML2_NS::AbstractGridRepresentation *> AbstractGridRepresentation
 	return repository->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
 }
 
-unsigned int AbstractGridRepresentation::getChildGridCount() const {
+uint64_t AbstractGridRepresentation::getChildGridCount() const {
 	return getChildGridSet().size();
 }
 
-AbstractGridRepresentation * AbstractGridRepresentation::getChildGrid(unsigned int index) const
+AbstractGridRepresentation * AbstractGridRepresentation::getChildGrid(uint64_t index) const
 {
 	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& childGridSet = getChildGridSet();
 	return childGridSet.at(index);

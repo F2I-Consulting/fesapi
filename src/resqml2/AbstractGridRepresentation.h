@@ -111,7 +111,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of grid connection set representations associated to this grid instance.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getGridConnectionSetRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		DLL_IMPORT_OR_EXPORT uint64_t getGridConnectionSetRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
 		 * Gets a particular grid connection set representation associated to this grid representation.
@@ -122,7 +122,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The grid connection set representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT class GridConnectionSetRepresentation * getGridConnectionSetRepresentation(unsigned int index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		DLL_IMPORT_OR_EXPORT class GridConnectionSetRepresentation * getGridConnectionSetRepresentation(uint64_t index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 
 		//************************************************************
@@ -167,7 +167,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of child grids of this grid.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getChildGridCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getChildGridCount() const;
 
 		/**
 		 * Gets a particular child grid of this grid.
@@ -178,7 +178,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The child grid at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation * getChildGrid(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation * getChildGrid(uint64_t index) const;
 
 		/**
 		 * Indicates that this grid takes place into another unstructured parent grid.

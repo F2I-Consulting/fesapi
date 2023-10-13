@@ -94,16 +94,16 @@ AbstractFeature* AbstractFeatureInterpretation::getInterpretedFeature() const
 
 gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const
 {
-	const unsigned int repCount = getRepresentationCount();
+	const uint64_t repCount = getRepresentationCount();
 	bool isTimeDomain = false;
 	bool isDepthDomain = false;
-	for (unsigned int repIndex = 0; repIndex < repCount && (!isTimeDomain || !isDepthDomain); ++repIndex) {
+	for (uint64_t repIndex = 0; repIndex < repCount && (!isTimeDomain || !isDepthDomain); ++repIndex) {
 		AbstractRepresentation const * rep = getRepresentation(repIndex);
 		if (rep->isPartial()) {
 			continue;
 		}
 		const uint64_t patchCount = rep->getPatchCount();
-		for (unsigned int patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
+		for (uint64_t patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
 			AbstractLocal3dCrs* local3dCrs = rep->getLocalCrs(patchIndex);
 			if (local3dCrs != nullptr) {
 				if (dynamic_cast<LocalTime3dCrs*>(local3dCrs) != nullptr) {

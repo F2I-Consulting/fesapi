@@ -1093,7 +1093,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The timestamp count.
 		 */
-		unsigned int getTimestampCount() const;
+		uint64_t getTimestampCount() const;
 
 		/**
 		 * Gets a timestamp at a particular index of this time series.
@@ -1105,7 +1105,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The timestamp at position @p index.
 		 */
-		time_t getTimestamp(unsigned int index) const;
+		time_t getTimestamp(uint64_t index) const;
 	};
 	
 	/************ Activity **************/
