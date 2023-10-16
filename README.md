@@ -32,7 +32,7 @@ Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is require
 	- HDF5 (using [cmake find module](https://cmake.org/cmake/help/latest/module/FindHDF5.html))
 		- (ONLY IF NOT AUTOMATICALLY FOUND) HDF5_ROOT : The path to the folder containing include and lib folders of HDF5
 		- ONLY IF YOU WANT TO STATICALLY LINK TO HDF5, set a cmake variable called HDF5_USE_STATIC_LIBRARIES to ON
-		- ONLY IF YOU WANT TO LINK TO PARALLEL HDF5, set a cmake variable called HDF5_PREFER_PARALLEL to ON
+		- ONLY IF YOU WANT TO LINK TO PARALLEL HDF5, set a cmake variable called HDF5_PREFER_PARALLEL to ON (and give a look to [example/exampleMPI.cpp](./example/exampleMPI.cpp))
 	- MINIZIP (using [our own cmake find module](./cmake/modules/FindMINIZIP.cmake))
 		- (ONLY IF NOT AUTOMATICALLY FOUND) MINIZIP_ROOT : The path to the folder containing include and lib folders of MINIZIP
 	- ZLIB (using [cmake find module](https://cmake.org/cmake/help/latest/module/FindZLIB.html))

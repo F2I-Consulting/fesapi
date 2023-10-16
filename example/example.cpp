@@ -399,8 +399,8 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	// Thus, its associated discrete color map remains the one associated to propType1
 	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(twoCellsIjkGrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
-	unsigned short prop2Values[2] = { 0, 1 };
-	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
+	uint16_t prop2Values[2] = { 0, 1 };
+	discreteProp2->pushBackUInt16Hdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
 
 	// ********************
 	// Continuous color map

@@ -484,7 +484,7 @@ ${COMMENT_END}
 		try {
 			fesapi.UInt16Array_setitem(propValues, 0, 0);
 			fesapi.UInt16Array_setitem(propValues, 1, 1);
-			discreteProp1.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+			discreteProp1.pushBackUInt16Hdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
 			fesapi.delete_UInt16Array(propValues);
@@ -497,7 +497,7 @@ ${COMMENT_END}
 		try {
 			fesapi.UInt16Array_setitem(propValues, 0, 10);
 			fesapi.UInt16Array_setitem(propValues, 1, 11);
-			discreteProp2.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+			discreteProp2.pushBackUInt16Hdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
 			fesapi.delete_UInt16Array(propValues);

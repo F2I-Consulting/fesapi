@@ -49,6 +49,7 @@ void serialize(const std::string filename) {
 	COMMON_NS::EpcDocument pck(filePath);
 	COMMON_NS::DataObjectRepository repo;
 
+	repo.setHdfProxyFactory(new COMMON_NS::HdfProxyMPIFactory());
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Parallel Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
 	repo.setDefaultHdfProxy(hdfProxy);
 
@@ -89,6 +90,7 @@ void deserialize(const std::string filename) {
 	if (world_rank == 0) {
 		COMMON_NS::EpcDocument pck(filePath);
 		COMMON_NS::DataObjectRepository repo;
+		repo.setHdfProxyFactory(new COMMON_NS::HdfProxyMPIFactory());
 		const std::string resqmlResult = pck.deserializeInto(repo);
 		if (!resqmlResult.empty()) {
 			std::cerr << resqmlResult << std::endl;

@@ -18,10 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include <unordered_map>
-#include <vector>
+#include <regex>
 #include <sstream>
 #include <stdexcept>
+#include <unordered_map>
+#include <vector>
 
 #include "DataObjectRepository.h"
 
