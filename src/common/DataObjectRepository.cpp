@@ -525,8 +525,8 @@ bool DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy)
 
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjects[proxy->getUuid()].push_back(proxy);
-		forwardRels.emplace(proxy, std::vector<common::AbstractObject*>());
-		backwardRels.emplace(proxy, std::vector<common::AbstractObject*>());
+		forwardRels.emplace(proxy, std::vector<COMMON_NS::AbstractObject*>());
+		backwardRels.emplace(proxy, std::vector<COMMON_NS::AbstractObject*>());
 
 		auto now = std::chrono::system_clock::now();
 		journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CREATED));
@@ -2372,8 +2372,13 @@ RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std
 	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, nonStandardUom, parentPropType);
 }
 
+#ifdef WITH_RESQML2_2
 EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
 	gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
+#else
+EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string&, const std::string&,
+	gsoap_eml2_3::eml23__QuantityClassKind, bool, EML2_NS::PropertyKind*)
+#endif	
 {
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
@@ -2382,7 +2387,7 @@ EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::strin
 		return new EML2_3_NS::PropertyKind(this, guid, title, quantityClass, isAbstract, parentPropertyKind);
 #endif
 	default:
-		throw std::invalid_argument("Unrecognized Energistics standard.");
+		throw std::invalid_argument("This createPropertyKind method can only be used in a EML2.3 context.");
 	}
 }
 

@@ -1133,10 +1133,10 @@ namespace EML2_NS
 		bool getParameterIsInput(const std::string & paramTitle) const;
 		bool getParameterIsOutput(unsigned int index) const;
 		bool getParameterIsOutput(const std::string & paramTitle) const;
-		int64_t getParameterMinOccurences(unsigned int index) const;
-		int64_t getParameterMinOccurences(const std::string & paramTitle) const;
-		int64_t getParameterMaxOccurences(unsigned int index) const;
-		int64_t getParameterMaxOccurences(const std::string & paramTitle) const;
+		uint64_t getParameterMinOccurences(unsigned int index) const;
+		uint64_t getParameterMinOccurences(const std::string & paramTitle) const;
+		uint64_t getParameterMaxOccurences(unsigned int index) const;
+		uint64_t getParameterMaxOccurences(const std::string & paramTitle) const;
 	};
 
 	class Activity : public COMMON_NS::AbstractObject

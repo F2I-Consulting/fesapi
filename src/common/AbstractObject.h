@@ -821,7 +821,7 @@ namespace COMMON_NS
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
 			{
 				gsoap_resqml2_0_1::resqml20__IntegerConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(arrayInput);
-				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
+				if (sizeof(constantArray->Value) > sizeof(T) && constantArray->Value > (std::numeric_limits<T>::max)()) {
 					throw std::range_error("The constant integer value is superior to maximum value of read datatype.");
 				}
 				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
@@ -855,7 +855,7 @@ namespace COMMON_NS
 			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
 			{
 				gsoap_eml2_3::eml23__IntegerConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(arrayInput);
-				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
+				if (sizeof(constantArray->Value) > sizeof(T) && constantArray->Value > (std::numeric_limits<T>::max)()) {
 					throw std::range_error("The constant integer value is superior to maximum value of read datatype.");
 				}
 				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));

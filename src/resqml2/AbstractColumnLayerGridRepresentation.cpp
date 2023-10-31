@@ -191,7 +191,7 @@ int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 			if (latticeArray->StartValue == 1 && latticeArray->Offset.size() == 1 &&
 				latticeArray->Offset[0]->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray &&
 				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Value == 1 &&
-				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Count == getKCellCount() - 1) {
+				static_cast<uint64_t>(static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(latticeArray->Offset[0])->Count) == getKCellCount() - 1) {
 				auto const* daPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->Values->ExternalDataArrayPart[0];
 				getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfInt64Values(daPart->PathInExternalFile, stratiUnitIndices);
 				return static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->NullValue;
@@ -199,8 +199,8 @@ int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 			throw logic_error("FESAPI does not support an association of more than one strati unit for a single K layer for now.");
 		}
 		else if (rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerXmlArray) {
-			std::unique_ptr<int64_t[]> cumulativeLength(new int64_t[getKCellCount()]);
-			readArrayNdOfInt64Values(rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength, cumulativeLength.get());
+			std::unique_ptr<uint64_t[]> cumulativeLength(new uint64_t[getKCellCount()]);
+			readArrayNdOfUInt64Values(rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength, cumulativeLength.get());
 			if (cumulativeLength[0] == 1 && cumulativeLength[getKCellCount() - 1] == getKCellCount()) {
 				auto* elements = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements);
 				if (elements != nullptr) {

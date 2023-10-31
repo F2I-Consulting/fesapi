@@ -18,8 +18,7 @@ under the License.
 #include <mpi.h>
 
 #include "common/EpcDocument.h"
-
-#include "eml2/AbstractHdfProxy.h"
+#include "common/HdfProxyMPIFactory.h"
 
 #include "resqml2/SubRepresentation.h"
 
@@ -53,7 +52,7 @@ void serialize(const std::string filename) {
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Parallel Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
 	repo.setDefaultHdfProxy(hdfProxy);
 
-	auto* unstructuredGrid_4cells = repo.createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>("", "Testing Unstructured grid");
+	RESQML2_NS::UnstructuredGridRepresentation* unstructuredGrid_4cells = repo.createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>("", "Testing Unstructured grid");
 
 	// It is important to explictely give an UUID to the subrep in order all ranks write into the same HDF dataset.
 	// If it is a random, each rank would write in a different HDF dataset.

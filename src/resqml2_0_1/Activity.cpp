@@ -51,8 +51,8 @@ void Activity::pushBackParameter(const std::string& title, double value, resqml2
 		if (!activityTemplate->isAnExistingParameter(title)) {
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
-		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title)) {
+		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
 		vector<resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
@@ -76,8 +76,8 @@ void Activity::pushBackParameter(const std::string& title, const std::string & v
 	if (!activityTemplate->isPartial()) {
 		if (!activityTemplate->isAnExistingParameter(title))
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
+		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		vector<resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
 		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind::string) == allowedKinds.end())
@@ -98,8 +98,8 @@ void Activity::pushBackParameter(const std::string& title, int64_t value)
 	if (!activityTemplate->isPartial()) {
 		if (!activityTemplate->isAnExistingParameter(title))
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
+		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		vector<resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
 		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind::integer) == allowedKinds.end())
@@ -125,8 +125,8 @@ void Activity::pushBackParameter(const std::string& title, AbstractObject* resqm
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
 
-		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title)) {
+		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
 
