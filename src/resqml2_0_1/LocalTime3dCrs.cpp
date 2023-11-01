@@ -52,7 +52,7 @@ void LocalTime3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::str
 	local3dCrs->TimeUom = timeUom;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 }

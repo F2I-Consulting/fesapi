@@ -305,10 +305,8 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 		result += warning + '\n';
 	}
 
-	if (repo.getHdfProxyCount() == 1) {
-		auto* defaultHdfProxy = repo.getHdfProxy(0);
-		repo.setDefaultHdfProxy(defaultHdfProxy);
-		defaultHdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not an obj_EpcExternalPartReference
+	for (auto* hdfProxy : repo.getHdfProxySet()) {
+		hdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not an obj_EpcExternalPartReference
 	}
 
 	return result;
@@ -388,10 +386,8 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 
 	deserializeRelFiles(repo);
 
-	if (repo.getHdfProxyCount() == 1) {
-		auto* defaultHdfProxy = repo.getHdfProxy(0);
-		repo.setDefaultHdfProxy(defaultHdfProxy);
-		defaultHdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not an obj_EpcExternalPartReference
+	for (auto* hdfProxy : repo.getHdfProxySet()){
+		hdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not an obj_EpcExternalPartReference
 	}
 
 	return result;

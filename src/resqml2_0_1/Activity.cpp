@@ -326,7 +326,7 @@ vector<int32_t> Activity::getIntegerQuantityParameterValue(const std::string & p
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	vector<int32_t> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
+	for (size_t i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non integer values.");

@@ -912,9 +912,10 @@ void AbstractObject::readArrayNdOfFloatValues(gsoap_resqml2_0_1::resqml20__Abstr
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
 	{
 		gsoap_resqml2_0_1::resqml20__DoubleConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray const*>(arrayInput);
-		for (size_t i = 0; i < constantArray->Count; ++i) {
-			arrayOutput[i] = constantArray->Value;
+		if (constantArray->Value < (std::numeric_limits<float>::min)() || constantArray->Value > (std::numeric_limits<float>::max)()) {
+			throw out_of_range("The double constant array " + std::to_string(constantArray->Value) + " is out of float range value");
 		}
+		std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<float>(constantArray->Value));
 	}
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
