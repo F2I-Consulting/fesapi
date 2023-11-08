@@ -90,8 +90,26 @@ void HdfProxyMPI::open()
 		throw invalid_argument("The HDF5 permission access is unknown.");
 	}
 
+	dsetPlistId = H5Pcreate(H5P_DATASET_XFER);
+
 	/* Release file-access template */
 	if (H5Pclose(fapl_id)) {
 		throw invalid_argument("Cannot release the parallel file-access template");
+	}
+}
+
+void HdfProxyMPI::setCollectiveIO()
+{
+	if( H5Pset_dxpl_mpio( dsetPlistId, H5FD_MPIO_COLLECTIVE) < 0)
+	{
+		throw invalid_argument("Can not set the collective IO flag");
+	}
+}
+
+void HdfProxyMPI::setIndependentIO()
+{
+	if( H5Pset_dxpl_mpio( dsetPlistId, H5FD_MPIO_INDEPENDENT) < 0)
+	{
+		throw invalid_argument("Can not set the independent IO flag");
 	}
 }

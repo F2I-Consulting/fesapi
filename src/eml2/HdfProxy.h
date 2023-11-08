@@ -362,6 +362,9 @@ namespace EML2_NS
 		/** The compression level used for writing data */
 		unsigned int compressionLevel = 0;
 
+		/** The dataset property list Id */
+		hdf5_hid_t dsetPlistId = 0; //properly should be H5P_DEFAULT
+
 		/** Groups which are currently opened where key is their path and value is their identifier */
 		std::unordered_map< std::string, hdf5_hid_t > openedGroups;
 	};
