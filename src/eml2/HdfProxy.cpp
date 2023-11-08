@@ -236,7 +236,10 @@ void HdfProxy::close()
 	if (hdfFile > -1) {
 
 		if(dsetPlistId)
+		{
 			H5Pclose(*dsetPlistId);
+			dsetPlistId.reset();
+		}
 		H5Fclose(hdfFile);
 		hdfFile = -1;
 	}
