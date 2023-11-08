@@ -235,8 +235,8 @@ void HdfProxy::close()
 
 	if (hdfFile > -1) {
 
-		if(dsetPlistId != H5P_DEFAULT)
-			H5Pclose(dsetPlistId);
+		if(dsetPlistId)
+			H5Pclose(*dsetPlistId);
 		H5Fclose(hdfFile);
 		hdfFile = -1;
 	}
@@ -750,7 +750,7 @@ void HdfProxy::writeArrayNdSlab(
 	if (H5Tequal(hdf5Datatype, datatypeOfDataset) <= 0) {
 		throw invalid_argument("The given datatype for the slab is not compatible with the datatype of the dataset.");
 	}
-	errorCode = H5Dwrite(dataset, hdf5Datatype, memspace, filespace, dsetPlistId, values);
+	errorCode = H5Dwrite(dataset, hdf5Datatype, memspace, filespace, dsetPlistId ? *dsetPlistId : H5P_DEFAULT, values);
 
 	H5Sclose(memspace);
 	H5Sclose(filespace);
