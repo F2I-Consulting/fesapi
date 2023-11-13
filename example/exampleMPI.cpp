@@ -17,6 +17,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include <mpi.h>
 
+#include <array>
+
 #include "common/EpcDocument.h"
 #include "common/HdfProxyMPIFactory.h"
 
