@@ -294,15 +294,6 @@ INSTALL (
 	COMPONENT fesapi_headers
 )
 
-# tools headers
-IF (UNIX) # Methods are not exported  under windows
-	INSTALL (
-		FILES ${FESAPI_TOOLS_HEADERS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/tools/
-		COMPONENT fesapi_headers
-	)
-ENDIF (UNIX)
-
 # EPC headers
 INSTALL (
 	FILES ${FESAPI_EPC_HEADERS}
