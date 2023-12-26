@@ -27,11 +27,11 @@ using namespace EML2_NS;
 
 void TimeSeries::pushBackTimestamp(time_t timestamp)
 {
-	std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(timestamp));
+	std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(timestamp));
 	pushBackTimestamp(tmConversion);
 }
 
-time_t TimeSeries::getTimestamp(unsigned int index) const
+time_t TimeSeries::getTimestamp(uint64_t index) const
 {
 	tm temp = getTimestampAsTimeStructure(index);
 	return timeTools::timegm(temp);

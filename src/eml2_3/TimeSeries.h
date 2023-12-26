@@ -99,7 +99,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The timestamp count.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTimestampCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTimestampCount() const final;
 
 		/**
 		 * Gets a timestamp as a time structure at a particular index of this time series. It allows to
@@ -112,7 +112,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The timestamp at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(uint64_t index) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

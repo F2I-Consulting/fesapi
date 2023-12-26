@@ -176,7 +176,7 @@ bool ActivityTemplate::getParameterIsOutput(const std::string & paramTitle) cons
 	return param->IsOutput;
 }
 
-int64_t ActivityTemplate::getParameterMinOccurences(unsigned int index) const
+uint64_t ActivityTemplate::getParameterMinOccurences(unsigned int index) const
 {
 	eml23__ActivityTemplate* activityTemplate = static_cast<eml23__ActivityTemplate*>(gsoapProxy2_3);
 
@@ -186,7 +186,7 @@ int64_t ActivityTemplate::getParameterMinOccurences(unsigned int index) const
 	return activityTemplate->Parameter[index]->MinOccurs;
 }
 
-int64_t ActivityTemplate::getParameterMinOccurences(const std::string & paramTitle) const
+uint64_t ActivityTemplate::getParameterMinOccurences(const std::string & paramTitle) const
 {
 	eml23__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
@@ -196,7 +196,7 @@ int64_t ActivityTemplate::getParameterMinOccurences(const std::string & paramTit
 	return param->MinOccurs;
 }
 
-int64_t ActivityTemplate::getParameterMaxOccurences(unsigned int index) const
+uint64_t ActivityTemplate::getParameterMaxOccurences(unsigned int index) const
 {
 	eml23__ActivityTemplate* activityTemplate = static_cast<eml23__ActivityTemplate*>(gsoapProxy2_3);
 
@@ -206,7 +206,7 @@ int64_t ActivityTemplate::getParameterMaxOccurences(unsigned int index) const
 	return activityTemplate->Parameter[index]->MaxOccurs;
 }
 
-int64_t ActivityTemplate::getParameterMaxOccurences(const std::string & paramTitle) const
+uint64_t ActivityTemplate::getParameterMaxOccurences(const std::string & paramTitle) const
 {
 	eml23__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 

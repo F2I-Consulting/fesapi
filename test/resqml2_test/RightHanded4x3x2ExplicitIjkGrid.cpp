@@ -27,6 +27,8 @@ under the License.
 #include "resqml2/DiscreteProperty.h"
 #include "resqml2/ContinuousProperty.h"
 
+#include "resqml2_0_1/PropertyKind.h"
+
 using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_test;
@@ -95,7 +97,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 	gridConnSet432->setLocalFacePerCellIndexPairs(localFacePerCellIndexPairs432, -1, nullptr);
 
 	// Discrete property
-	auto* propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
+	auto* propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("5f78f66a-ed1b-4827-a868-beb989febb31", "code");
 	RESQML2_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propertyKind);
 	int64_t discretePropValues[24] = {
@@ -105,7 +107,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 	discreteProp->pushBackInt64Hdf5Array3dOfValues(discretePropValues, 4, 3, 2, nullptr, -1);
 
 	// Continuous property
-	propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_3::eml23__QuantityClassKind::length);
+	propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
 	RESQML2_NS::ContinuousProperty* continuousProp = repo->createContinuousProperty(ijkGrid, "de5a71cc-879d-4cda-8fb3-146c70539cf9", "Amplitude", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, propertyKind);
 	double continuousPropValues[24] = {

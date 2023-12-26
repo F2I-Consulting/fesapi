@@ -47,7 +47,7 @@ std::string timeTools::convertMicrosecondUnixTimestampToIso(long long ts)
 */
 std::string timeTools::convertUnixTimestampToIso(time_t ts)
 {
-	auto tmp = std::chrono::system_clock::from_time_t(ts);
+	auto tmp = timeTools::from_time_t(ts);
 	return date::format("%FT%TZ", date::floor<std::chrono::seconds>(tmp));
 }
 
@@ -65,18 +65,24 @@ time_t timeTools::convertIsoToUnixTimestamp(const std::string & s)
 	return timeTools::timegm(tm);
 }
 
-date::sys_seconds
-to_sys_time(std::tm const& t)
-{
-	using namespace date;
-	using namespace std::chrono;
-	return sys_days{ year{t.tm_year + 1900} / (t.tm_mon + 1) / t.tm_mday } +
-		hours{ t.tm_hour } +minutes{ t.tm_min } +seconds{ t.tm_sec };
+date::sys_seconds timeTools::from_time_t(std::time_t time_t) {
+	return date::sys_seconds(std::chrono::seconds(time_t));
+}
+
+namespace {
+
+	date::sys_seconds to_sys_time(std::tm const& t)
+	{
+		using namespace date;
+		using namespace std::chrono;
+		date::sys_seconds tmp = date::sys_days{ date::year{t.tm_year + 1900} / (t.tm_mon + 1) / t.tm_mday };
+		tmp += hours{ t.tm_hour } + minutes{ t.tm_min } + seconds{ t.tm_sec };
+		return tmp;
+	}
+
 }
 
 time_t timeTools::timegm(std::tm const& t)
 {
-	date::sys_seconds tmp = date::sys_days{ date::year{t.tm_year + 1900} / (t.tm_mon + 1) / t.tm_mday } +
-		chrono::hours{ t.tm_hour } +chrono::minutes{ t.tm_min } + chrono::seconds{ t.tm_sec };
-	return std::chrono::system_clock::to_time_t(tmp);
+	return to_sys_time(t).time_since_epoch().count();
 }

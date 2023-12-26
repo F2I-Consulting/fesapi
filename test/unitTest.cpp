@@ -216,6 +216,12 @@ TEST_CASE("Export and import a big parametric ijk grid", "[grid][property]")
 
 // PROPERTY
 FESAPI_TEST("Export and import continuous properties on a partial grid", "[property]", ContinuousProperty)
+FESAPI_TEST2_0("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
+FESAPI_TEST2_0("Check categorical property", "[property]", CategoricalProperty)
+FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)
+FESAPI_TEST2_0("Check points property", "[property]", PointsProperty)
+FESAPI_TEST2_0("Export and import properties using slab", "[property]", PropertyBySlab)
+FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
 
 // RESQML WELL
 FESAPI_TEST("Export and import a wellbore trajectory", "[well][trajectory]", WellboreTrajectoryRepresentationTest)
@@ -235,10 +241,3 @@ FESAPI_TEST("Export and import a WITSML Wellbore Geometry", "[well]", WellboreGe
 FESAPI_TEST("Export and import a seismic lattice feature", "[seismic]", SeismicLatticeRepresentationTest)
 FESAPI_TEST("Export and import a seismic horizon grid 2d rep", "[seismic]", Grid2dRepresentationTest)
 FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", HorizonOnSeismicLine)
-
-FESAPI_TEST2_0("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
-FESAPI_TEST2_0("Check categorical property", "[property]", CategoricalProperty)
-FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)
-FESAPI_TEST2_0("Check points property", "[property]", PointsProperty)
-FESAPI_TEST2_0("Export and import properties using slab", "[property]", PropertyBySlab)
-FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)

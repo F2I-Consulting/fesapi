@@ -180,13 +180,13 @@ void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2
 	static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->Grid.push_back(supportingGridRep->newEml23Reference());
 }
 
-COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridRepresentationDor(uint64_t index) const
 {
 	_resqml22__BlockedWellboreRepresentation* rep = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3);
 	return rep->IntervalGridCells->Grid.at(index);
 }
 
-unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
+uint64_t BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
 {
 	return static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->Grid.size();
 }

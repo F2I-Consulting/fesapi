@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 3.12)
 
 project (Fesapi)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules)
+
 set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "DEBUG_POSTFIX property is initialized when the target is created to the value of this variable except for executable targets")
 
 set (FESAPI_ROOT_DIR ${CMAKE_SOURCE_DIR})
@@ -10,7 +12,7 @@ set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
 set (Fesapi_VERSION_MAJOR 2)
-set (Fesapi_VERSION_MINOR 8)
+set (Fesapi_VERSION_MINOR 9)
 set (Fesapi_VERSION_PATCH 0)
 set (Fesapi_VERSION_TWEAK 0)
 
@@ -54,7 +56,10 @@ IF(WITH_LOCAL_HDF5)
 	ENDIF ()
 	set(HDF5_VERSION "99.99")
 ELSE()
-	find_package(HDF5 1.8.18 REQUIRED COMPONENTS C)
+	FIND_PACKAGE(HDF5 REQUIRED COMPONENTS C)
+	IF(HDF5_VERSION VERSION_LESS 1.8.18)
+	  MESSAGE(FATAL_ERROR "Wrong HDF5_VERSION=${HDF5_VERSION}")
+	ENDIF()
 	IF(HDF5_PREFER_PARALLEL)
 		if(NOT HDF5_IS_PARALLEL)
 			message(FATAL_ERROR
@@ -70,36 +75,11 @@ ELSE()
 	ENDIF()
 ENDIF()
 
-# Zlib
 FIND_PACKAGE (ZLIB)
-MARK_AS_ADVANCED(CLEAR ZLIB_INCLUDE_DIR)
 IF (NOT EXISTS ${ZLIB_INCLUDE_DIR})
-	MESSAGE(WARNING "The zlib include dir (ZLIB_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
+	MESSAGE(ERROR " The ZLIB_INCLUDE_DIR CMake variable is mandatory.")
 ENDIF ()
-MARK_AS_ADVANCED(CLEAR ZLIB_LIBRARY_RELEASE)
-IF (NOT EXISTS ${ZLIB_LIBRARY_RELEASE})
-	MESSAGE(WARNING "The zlib library (ZLIB_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-MARK_AS_ADVANCED(CLEAR ZLIB_LIBRARY_DEBUG)
-IF (NOT EXISTS ${ZLIB_LIBRARY_DEBUG})
-	MESSAGE(WARNING "The zlib library (ZLIB_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-
-
-# Minizip
-set (MINIZIP_INCLUDE_DIR MINIZIP_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the minizip header files")
-IF (NOT IS_DIRECTORY ${MINIZIP_INCLUDE_DIR})
-	MESSAGE(WARNING "The Minizip include dir (MINIZIP_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-ENDIF ()
-set (MINIZIP_LIBRARY_RELEASE MINIZIP_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the minizip library release")
-IF (NOT EXISTS ${MINIZIP_LIBRARY_RELEASE})
-	MESSAGE(WARNING "The Minizip library (MINIZIP_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-set (MINIZIP_LIBRARY_DEBUG MINIZIP_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the file which contains the minizip library DEBUG")
-IF (NOT EXISTS ${MINIZIP_LIBRARY_DEBUG})
-	MESSAGE(WARNING "The Minizip library (MINIZIP_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-
+FIND_PACKAGE (MINIZIP REQUIRED)
 
 # Szip (only useful when using static linking to HDF5)
 set (SZIP_LIBRARY_RELEASE SZIP_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the szip library release")

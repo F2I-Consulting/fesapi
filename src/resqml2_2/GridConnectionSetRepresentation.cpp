@@ -498,12 +498,12 @@ void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::Abst
 	rep->ConnectionInterpretations->FeatureInterpretation.push_back(interp->newEml23Reference());
 }
 
-unsigned int GridConnectionSetRepresentation::getSupportingGridRepresentationCount() const
+uint64_t GridConnectionSetRepresentation::getSupportingGridRepresentationCount() const
 {
 	return static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3)->Grid.size();
 }
 
-COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getSupportingGridRepresentationDor(uint64_t index) const
 {
 	_resqml22__GridConnectionSetRepresentation* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
 

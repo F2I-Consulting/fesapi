@@ -51,8 +51,8 @@ void Activity::pushBackParameter(const std::string& title, double value, resqml2
 		if (!activityTemplate->isAnExistingParameter(title)) {
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
-		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title)) {
+		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
 		vector<resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
@@ -74,10 +74,10 @@ void Activity::pushBackParameter(const std::string& title, const std::string & v
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
-		if (activityTemplate->isAnExistingParameter(title) == false)
+		if (!activityTemplate->isAnExistingParameter(title))
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
+		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		vector<resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
 		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind::string) == allowedKinds.end())
@@ -96,10 +96,10 @@ void Activity::pushBackParameter(const std::string& title, int64_t value)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
-		if (activityTemplate->isAnExistingParameter(title) == false)
+		if (!activityTemplate->isAnExistingParameter(title))
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title))
+		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		vector<resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
 		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind::integer) == allowedKinds.end())
@@ -121,12 +121,12 @@ void Activity::pushBackParameter(const std::string& title, AbstractObject* resqm
 	}
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
-		if (activityTemplate->isAnExistingParameter(title) == false) {
+		if (!activityTemplate->isAnExistingParameter(title)) {
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
 
-		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs > -1 && maxOccurs <= getParameterCount(title)) {
+		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
 
@@ -326,7 +326,7 @@ vector<int32_t> Activity::getIntegerQuantityParameterValue(const std::string & p
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	vector<int32_t> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
+	for (size_t i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non integer values.");

@@ -36,7 +36,7 @@ void BlockedWellboreRepresentation::loadTargetRelationships()
 
 }
 
-RESQML2_NS::AbstractGridRepresentation* BlockedWellboreRepresentation::getSupportingGridRepresentation(unsigned int index) const
+RESQML2_NS::AbstractGridRepresentation* BlockedWellboreRepresentation::getSupportingGridRepresentation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(getSupportingGridRepresentationDor(index).getUuid());
 }

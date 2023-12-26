@@ -913,34 +913,37 @@ namespace EML2_NS
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
 		 */
-		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EpcExternalPartReference(partialObject), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
-		AbstractHdfProxy(const COMMON_NS::DataObjectReference& dor) : EpcExternalPartReference(dor), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
+		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EpcExternalPartReference(partialObject) {}
+		AbstractHdfProxy(const COMMON_NS::DataObjectReference& dor) : EpcExternalPartReference(dor) {}
+
+		/**
+		 * Constructor for serialization purpose
+		 *
+		 * @param 	packageDirAbsolutePath	The soap context where the underlying gSOAP proxy is going to
+		 * 									be created.
+		 * @param 	externalFilePath	  	Full pathname of the external file.
+		 * @param 	hdfPermissionAccess   	(Optional) The hdf permission access.
+		 */
+		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) :
+			packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath), openingMode(hdfPermissionAccess) {}
+
+		/**
+		 * Constructor for deserialization purpose
+		 *
+		 * @param 	fromGsoap	The deserialized EpcExternalPartReference into a gSoap proxy.
+		 */
+		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap) {}
 
 		/** / The directory where the EPC document is stored. */
 		std::string packageDirectoryAbsolutePath;
 		/** / Must be relative to the location of the package */
 		std::string relativeFilePath;
 		/** The opening mode */
-		COMMON_NS::DataObjectRepository::openingMode openingMode;
+		COMMON_NS::DataObjectRepository::openingMode openingMode = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY;
 		/** The maximum size of an HDF5 to be written
 		About 1e6 See https://support.hdfgroup.org/HDF5/doc/RM/RM_H5P.html#Property-SetChunkCache
 		especially "In the absence of any cache settings, H5Dopen will by default create a 1 MB chunk cache for the opened dataset."*/
 		unsigned int maxChunkSize = 1000000;
-
-		/**
-		 * Abstract hdf proxy
-		 *
-		 * @param 	packageDirAbsolutePath	The soap context where the underlying gSOAP proxy is going to
-		 * 									be created.
-		 * @param 	externalFilePath	  	Full pathname of the external file.
-		 * @param 	hdfPermissionAccess   	(Optional) The hdf permission access.
-		 *
-		 * 
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) :
-			packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath), openingMode(hdfPermissionAccess) {}
-
-		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
-			EpcExternalPartReference(fromGsoap), openingMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {}
 	};
 }

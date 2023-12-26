@@ -62,8 +62,9 @@ bool PolylineRepresentation::isAFaciesLine() const
             break;
         }
     }
-    if (!atLeastOneCateProp)
+    if (!atLeastOneCateProp) {
         return false;
+    }
 
 	auto interp = getInterpretation();
 	return interp != nullptr && dynamic_cast<RESQML2_NS::AbstractSeismicLineFeature*>(interp->getInterpretedFeature()) != nullptr;

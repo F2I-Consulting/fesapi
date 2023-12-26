@@ -87,6 +87,17 @@ namespace EML2_0_NS
 		void setMPICommunicator(MPI_Comm communicator) { mpi_comm = communicator; }
 
 		/**
+		 * @brief Set IO to collective
+		 * @details necessary to write with compression enabled
+		 */
+		void setCollectiveIO();
+
+		/**
+		 * @brief Set IO to independent (default)
+		 */
+		void setIndependentIO();
+
+		/**
 		* The standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "eml20";

@@ -747,25 +747,6 @@ namespace COMMON_NS
 		//************************************
 
 		/**
-		 * Creates an EPC external part reference into this repository for 
-		 * allowing the use of a different behavior for persisting numerical
-		 * data. @p NumericalValueBase must be a child of {@link eml2::EpcExternalPartReference}
-		 *
-		 * @tparam	NumericalValueBase	Type of the numerical values.
-		 * @param 	guid 	The guid to set to the EPC external part reference.
-		 * @param 	title	The title to set to the EPC external part reference.
-		 *
-		 * @returns	A pointer to the new EPC external part reference.
-		 */
-		template <class NumericalValueBase>
-		NumericalValueBase* createEpcExternalPartReference(const std::string & guid, const std::string & title)
-		{
-			NumericalValueBase* result = new NumericalValueBase(getGsoapContext(), guid);
-			addDataObject(result);
-			return result;
-		}
-
-		/**
 		 * @brief	Creates a non parallel access to an HDF5 file for writing to it. Resulting HDF5 file
 		 * 			proxy is stored into this repository
 		 *
@@ -3588,23 +3569,23 @@ namespace COMMON_NS
 		// Backward relationships. It is redundant with forward relationships but it allows more performance.
 		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > backwardRels;
 
-		soap* gsoapContext;
+		soap* gsoapContext = soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING);
 
 		std::vector<std::string> warnings;
 
 		std::unique_ptr<RESQML2_0_1_NS::PropertyKindMapper> propertyKindMapper;
 
-		EML2_NS::AbstractHdfProxy* defaultHdfProxy;
-		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
+		EML2_NS::AbstractHdfProxy* defaultHdfProxy = nullptr;
+		RESQML2_NS::AbstractLocal3dCrs* defaultCrs = nullptr;
 
 		std::vector<COMMON_NS::DataFeeder*> dataFeeders;
 
 		std::unique_ptr<COMMON_NS::HdfProxyFactory> hdfProxyFactory;
 
-		EnergisticsStandard defaultEmlVersion;
-		EnergisticsStandard defaultProdmlVersion;
-		EnergisticsStandard defaultResqmlVersion;
-		EnergisticsStandard defaultWitsmlVersion;
+		EnergisticsStandard defaultEmlVersion = EnergisticsStandard::EML2_0;
+		EnergisticsStandard defaultProdmlVersion = EnergisticsStandard::PRODML2_2;
+		EnergisticsStandard defaultResqmlVersion = EnergisticsStandard::RESQML2_0_1;
+		EnergisticsStandard defaultWitsmlVersion = EnergisticsStandard::WITSML2_1;
 
 		std::vector< std::tuple<std::chrono::time_point<std::chrono::system_clock>, DataObjectReference, CUD> > journal;
 

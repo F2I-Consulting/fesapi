@@ -137,7 +137,7 @@ AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretati
 	return repository->getDataObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(interpretationIndex));
 }
 
-AbstractGridRepresentation* GridConnectionSetRepresentation::getSupportingGridRepresentation(unsigned int index) const 
+AbstractGridRepresentation* GridConnectionSetRepresentation::getSupportingGridRepresentation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<AbstractGridRepresentation>(getSupportingGridRepresentationDor(index).getUuid());
 }

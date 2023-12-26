@@ -50,7 +50,7 @@ void LocalDepth3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::st
 	local3dCrs->VerticalUom = verticalUom;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 }

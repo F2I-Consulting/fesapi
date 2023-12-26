@@ -108,9 +108,9 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void setConnectionInterpretationIndices(uint64_t const* cumulativeInterpCount, int64_t const* interpIndices, EML2_NS::AbstractHdfProxy * proxy = nullptr) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getSupportingGridRepresentationCount() const final;
 
-		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(uint64_t index) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

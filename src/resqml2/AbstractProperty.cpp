@@ -158,7 +158,7 @@ void AbstractProperty::setTimeSeries(EML2_NS::TimeSeries * ts)
 
 void AbstractProperty::setSingleTimestamp(time_t timestamp, LONG64 yearOffset)
 {
-	std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(timestamp));
+	std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(timestamp));
 	if (gsoapProxy2_0_1 != nullptr) {
 		auto const* timeSeries = getTimeSeries();
 		if (timeSeries == nullptr) {
@@ -499,7 +499,7 @@ void AbstractProperty::setRealizationIndices(int64_t startRealizationIndex, int6
 	}
 }
 
-void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy)
+void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy*)
 {
 	if (realizationIndices.empty()) {
 		throw std::invalid_argument("Cannot set zero realization index.");

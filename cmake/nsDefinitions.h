@@ -16,7 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#pragma once
+#ifndef NSDEFINITIONS_H
+#define NSDEFINITIONS_H
 
 /** @namespace	${FESAPI_COMMON_NS} @brief The ${FESAPI_COMMON_NS} namespace. This namespace contains classes that are common to different Energistics data models and classes that handle the EPC document (EpcDocument) and the data object repository (DataObjectRepository) as well. These two last classes are starting points to write or read an EPC document contaning some data objects. */
 #define COMMON_NS ${FESAPI_COMMON_NS}
@@ -55,3 +56,5 @@ under the License.
 /** @namespace	timeTools @brief The timeTools namespace. */
 
 /** @namespace	trigonometry @brief The trigonometry namespace. */
+
+#endif // !NSDEFINITIONS_H

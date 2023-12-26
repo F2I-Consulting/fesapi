@@ -147,7 +147,6 @@ bool GraphicalInformationSet::hasDirectGraphicalInformation(AbstractObject const
 	_eml23__GraphicalInformationSet* gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 
 	const std::string targetUuid = targetObject->getUuid();
-	const size_t graphicalInfoCount = gis->GraphicalInformation.size();
 	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
 		for (size_t targetIndex = 0; targetIndex < gis->GraphicalInformation[giIndex]->TargetObject.size(); ++targetIndex) {
 			if (getTargetObjectUuid(giIndex, targetIndex).compare(targetUuid) == 0) {

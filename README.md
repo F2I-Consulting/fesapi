@@ -1,4 +1,6 @@
-
+# If you just want some precompiled binaries (just to test for example)
+ - Please first look in the [assets](https://github.com/F2I-Consulting/fesapi/releases) of the releases if it as already provided
+ - If not, create an [issue](https://github.com/F2I-Consulting/fesapi/issues/new?assignees=&labels=&projects=&template=feature_request.md) and ask for the version you would want.
 # Prepare your build environment
  - Create a folder called fesapiEnv.
  - In this folder create the three following folders
@@ -9,10 +11,11 @@
     - gcc from version 4.8
 	- visual studio from version 2017
 	- clang from version 5.0
+
 # Prepare the dependencies
 Download (build and install if necessary) third party libraries:
-- HDF5: Versions of 1.8.* (starting from 1.8.18), 1.10.* ([starting from 1.10.2](https://www.hdfgroup.org/2018/04/why-should-i-care-about-the-hdf5-1-10-2-release/)) and all 1.12.* should be ok. https://support.hdfgroup.org/ftp/HDF5/releases/
-- MINIZIP : Version 1.1 is needed : it is the official version included in current zlib distribution https://www.zlib.net/ (look into "contrib" folder). You can directly install minizip development package on most of Linux distributions (https://packages.ubuntu.com/xenial/libminizip-dev). On Windows (or older Linux distributions), you can copy the CMakeLists.txt file from fesapi/cmake/minizip to the zlib minizip directory to help you to build minizip (we also provide a copy of minizip 1.1 with cmake files on github : https://github.com/F2I-Consulting/Minizip). It is also highly recommended to link minizip to the same zlib library than the one associated to your HDF5 library.
+- HDF5: Versions of 1.8.* (starting from 1.8.18), 1.10.* ([starting from 1.10.2](https://www.hdfgroup.org/2018/04/why-should-i-care-about-the-hdf5-1-10-2-release/)), all 1.12.* and all 1.14.* should be ok. https://support.hdfgroup.org/ftp/HDF5/releases/
+- MINIZIP : Version 1.1 is needed : it is the official version included in [current zlib distribution](https://www.zlib.net/) (look into "contrib" folder). You can directly install minizip development package on most of Linux distributions (https://packages.ubuntu.com/xenial/libminizip-dev). On Windows (or older Linux distributions), you can copy the CMakeLists.txt file from fesapi/cmake/minizip to the zlib minizip directory to help you to build minizip (we also provide a copy of minizip 1.1 with cmake files on github : https://github.com/F2I-Consulting/Minizip). It is also highly recommended to link minizip to the same zlib library than the one associated to your HDF5 library.
 - BOOST : Starting from version 1.44.0 (and at least 1.67.0 if you don't want to face [valgrid false positives](https://www.boost.org/doc/libs/1_66_0/libs/uuid/doc/uuid.html#Design%20notes)). FYI, on windows, boost uuid depends on bcrypt library.
 
 We advise you to install these third party libraries respectively into
@@ -29,26 +32,25 @@ Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is require
 	- HDF5 (using [cmake find module](https://cmake.org/cmake/help/latest/module/FindHDF5.html))
 		- (ONLY IF NOT AUTOMATICALLY FOUND) HDF5_ROOT : The path to the folder containing include and lib folders of HDF5
 		- ONLY IF YOU WANT TO STATICALLY LINK TO HDF5, set a cmake variable called HDF5_USE_STATIC_LIBRARIES to ON
-		- ONLY IF YOU WANT TO LINK TO PARALLEL HDF5, set a cmake variable called HDF5_PREFER_PARALLEL to ON
-	- MINIZIP
-		- MINIZIP_INCLUDE_DIR : where the HDF5 headers are located
-		- (ONLY FOR WINDOWS) MINIZIP_LIBRARY_DEBUG : Optional, only used by Visual studio Debug configuration, the MINIZIP debug library you want to link to
-		- MINIZIP_LIBRARY_RELEASE : the MINIZIP library you want to link to.  On Visual studio, it is used on Release configuration. With other compilers, it is the default HDF5 library to link to.
-	- ZLIB
-		- ZLIB_INCLUDE_DIR : where the zlib headers (commonly zlib.h only) are located. If you use the HDF5 binaries downloaded from HDF Group website, then it should be the same as HDF5_C_INCLUDE_DIR.
-		- (ONLY FOR WINDOWS) ZLIB_LIBRARY_DEBUG : Optional, only used by Visual studio Debug configuration, the ZLIB debug library you want to link to
-		- ZLIB_LIBRARY_RELEASE : the ZLIB library you want to link to. It must be the same as the one which is linked to HDF5 library and MINIZIP library otherwise you will get a warning from CMake. If you use the HDF5 binaries downloaded from HDF Group website, use the zlib library which lies in the same directory as HDF5_C_LIBRARY_RELEASE. On Visual studio, it is used on Release configuration. With other compilers, it is the default ZLIB library to link to.
+		- ONLY IF YOU WANT TO LINK TO PARALLEL HDF5, set a cmake variable called HDF5_PREFER_PARALLEL to ON (and give a look to [example/exampleMPI.cpp](./example/exampleMPI.cpp))
+	- MINIZIP (using [our own cmake find module](./cmake/modules/FindMINIZIP.cmake))
+		- (ONLY IF NOT AUTOMATICALLY FOUND) MINIZIP_ROOT : The path to the folder containing include and lib folders of MINIZIP
+	- ZLIB (using [cmake find module](https://cmake.org/cmake/help/latest/module/FindZLIB.html))
+		- (ONLY IF NOT AUTOMATICALLY FOUND) ZLIB_ROOT : The path to the folder containing include and lib folders of ZLIB
+		- ONLY IF YOU WANT TO STATICALLY LINK TO ZLIB, set a cmake variable called ZLIB_USE_STATIC_LIBS to ON
 	- SZIP (it is only required when you statically link to HDF5 AND when HDF5 has been built using SZIP)
 		- SZIP_LIBRARY_RELEASE : the SZIP library you want to link to. This warning can be ignored most of time but it can really create unpredictable bugs in some circumstances (static linking to HDF5 with HDF5 making use of szip).
-	- Boost
+	- Boost (using [cmake find module](https://cmake.org/cmake/help/latest/module/FindBoost.html))
 		- Boost_INCLUDE_DIR : where the Boost headers are located (generally the boost install folder)
+		- Be aware that a recent version of Boost needs a recent version of CMake
 - Click again on "Configure" button. You should no more have errors so you can now click on "Generate" button.
 ![alt text](./cmake/cmake.PNG)
 - You can now build your solution with your favorite compiler (and linker) using the generated solution in yourPath/fesapiEnv/build/theNameYouWant
 - OPTIONALLY, you can build the tutorial example by setting WITH_EXAMPLE cmake variable to ON
 - OPTIONALLY, you can also set the variables WITH_DOTNET_WRAPPING, WITH_JAVA_WRAPPING or WITH_PYTHON_WRAPPING to true if you want to also generate wrappers on top of FESAPI for these two other programming languages. Don't forget to click again on "Configure" button once you changed the value of these two variables.
-	- You will then have to also provide the path to the SWIG (version 3 as a mininum version) executable http://swig.org/download.html in the SWIG_EXECUTABLE variable (and click again on "Configure" button)
-	- FOR Java and only for JAVA, you'll also have to provide various path to some java executables. Still only for Java, it is highly recommended to lower the optimization level of the C++ compilation by setting O1 instead of O2 in the variables called CMAKE_CXX_FLAGS_RELEASE and CMAKE_CXX_FLAGS_RELWITHDEBINFO
+	- You will then have to also provide the path to the [SWIG](http://swig.org/download.html) (version 3 as a mininum version) executable in the SWIG_EXECUTABLE variable (and click again on "Configure" button)
+	- FOR Java and only for JAVA, you'll also have to provide various path to some java executables.
+	- For Python, be sure to install FESAPI and not only build it since the wheel generation is operated during the install step, not during the build step.
 	- you will find the wrappers in fesapi/java/src or fesapi/cs/src (fesapi/cs also contains a VS2015 project for the wrappers) or fesapi/python/fesapi
 
 Remark : you can choose where FESAPI will be installed (using "make install" on Linux or by generating the "INSTALL" project on Visual Studio) by setting the cmake variable called CMAKE_INSTALL_PREFIX

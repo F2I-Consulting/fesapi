@@ -52,12 +52,12 @@ void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(RE
 	static_cast<_resqml22__RockFluidOrganizationInterpretation*>(gsoapProxy2_3)->RockFluidUnit.push_back(rockFluidUnitInterpretation->newEml23Reference());
 }
 
-unsigned int RockFluidOrganizationInterpretation::getRockFluidUnitInterpCount() const
+uint64_t RockFluidOrganizationInterpretation::getRockFluidUnitInterpCount() const
 {
 	return static_cast<_resqml22__RockFluidOrganizationInterpretation*>(gsoapProxy2_3)->RockFluidUnit.size();
 }
 
-COMMON_NS::DataObjectReference RockFluidOrganizationInterpretation::getRockFluidUnitInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference RockFluidOrganizationInterpretation::getRockFluidUnitInterpretationDor(uint64_t index) const
 {
 	return COMMON_NS::DataObjectReference(static_cast<_resqml22__RockFluidOrganizationInterpretation*>(gsoapProxy2_3)->RockFluidUnit.at(index));
 }

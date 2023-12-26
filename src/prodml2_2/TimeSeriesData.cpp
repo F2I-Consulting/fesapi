@@ -77,7 +77,7 @@ void TimeSeriesData::pushBackDoubleValue(double value, time_t timestamp)
 	dblVal->DoubleValue->__item = value;
 	if (timestamp > -1) {
 		dblVal->DoubleValue->dTim = (tm*)soap_malloc(getGsoapContext(), sizeof(tm));
-		std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(timestamp));
+		std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(timestamp));
 		*dblVal->DoubleValue->dTim = tmConversion;
 	}
 
@@ -101,7 +101,7 @@ void TimeSeriesData::pushBackStringValue(const std::string & value, time_t times
 	strVal->StringValue->__item = value;
 	if (timestamp > -1) {
 		strVal->StringValue->dTim = (tm*)soap_malloc(getGsoapContext(), sizeof(tm));
-		std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(timestamp));
+		std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(timestamp));
 		*strVal->StringValue->dTim = tmConversion;
 	}
 

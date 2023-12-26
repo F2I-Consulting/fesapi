@@ -55,9 +55,9 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void pushBackRockFluidUnitInterpretation(RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterpretation) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidUnitInterpCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getRockFluidUnitInterpCount() const final;
 
-		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(uint64_t index) const final;
 
 		/** The standard XML tag without XML namespace for serializing this data object.
 		 *  It is not a bug to have a strati occurence tag instead of a rock fluid org one : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html

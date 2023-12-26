@@ -146,6 +146,13 @@ enum class resqml22__FluidContact {
 	seal = 3,
 	water_x0020oil_x0020contact = 4
 };
+enum class resqml22__CulturalFeatureKind {
+	fieldblock = 0,
+	licenses = 1,
+	pipeline = 2,
+	project_x0020boundaries = 3,
+	model_x0020frontier = 4
+};
 }
 
 namespace RESQML2_2_NS

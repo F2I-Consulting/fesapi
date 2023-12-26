@@ -505,18 +505,12 @@ void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::Abst
 	rep->ConnectionInterpretations->FeatureInterpretation.push_back(interp->newResqmlReference());
 }
 
-unsigned int GridConnectionSetRepresentation::getSupportingGridRepresentationCount() const
+uint64_t GridConnectionSetRepresentation::getSupportingGridRepresentationCount() const
 {
-	const size_t result = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.size();
-
-	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many supporting grid representations.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.size();
 }
 
-COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getSupportingGridRepresentationDor(uint64_t index) const
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 

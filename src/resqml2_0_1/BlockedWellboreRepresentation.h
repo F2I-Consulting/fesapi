@@ -72,9 +72,9 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getSupportingGridRepresentationCount() const final;
 
-		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(uint64_t index) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

@@ -23,14 +23,8 @@ under the License.
 #include <ctime>
 #include <functional>
 
-#include <hdf5.h> // We must do this include to ckeck H5_HAVE_PARALLEL
-
 #include "../common/DataFeeder.h"
-#ifdef H5_HAVE_PARALLEL
-	#include "../common/HdfProxyMPIFactory.h"
-#else
-	#include "../common/HdfProxyFactory.h"
-#endif
+#include "../common/HdfProxyFactory.h"
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
 
@@ -302,38 +296,12 @@ namespace {
 	}
 
 DataObjectRepository::DataObjectRepository() :
-	dataObjects(),
-	forwardRels(),
-	backwardRels(),
-	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
-	warnings(),
-	propertyKindMapper(), defaultHdfProxy(nullptr), defaultCrs(nullptr),
-#ifdef H5_HAVE_PARALLEL
-	hdfProxyFactory(new COMMON_NS::HdfProxyMPIFactory()),
-#else
-	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
-#endif
-	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
-	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_2),
-	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),
-	defaultWitsmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::WITSML2_1) {}
+	propertyKindMapper(),
+	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()) {}
 
 DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappingFilesDirectory) :
-	dataObjects(),
-	forwardRels(),
-	backwardRels(),
-	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
-	warnings(),
-	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr),
-#ifdef H5_HAVE_PARALLEL
-	hdfProxyFactory(new COMMON_NS::HdfProxyMPIFactory()),
-#else
-	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()),
-#endif
-	defaultEmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0),
-	defaultProdmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::PRODML2_2),
-	defaultResqmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1),
-	defaultWitsmlVersion(COMMON_NS::DataObjectRepository::EnergisticsStandard::WITSML2_1)
+	propertyKindMapper(new PropertyKindMapper(this)),
+	hdfProxyFactory(new COMMON_NS::HdfProxyFactory())
 {
 	const string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);
 	if (!error.empty()) {
@@ -539,12 +507,27 @@ bool DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy)
 
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjects[proxy->getUuid()].push_back(proxy);
-		forwardRels.emplace(proxy, std::vector<common::AbstractObject*>());
-		backwardRels.emplace(proxy, std::vector<common::AbstractObject*>());
+		forwardRels.emplace(proxy, std::vector<COMMON_NS::AbstractObject*>());
+		backwardRels.emplace(proxy, std::vector<COMMON_NS::AbstractObject*>());
 
 		auto now = std::chrono::system_clock::now();
 		journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CREATED));
 		on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
+
+		auto* crs = dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(proxy);
+		if (crs != nullptr) {
+			if (getDataObjects<RESQML2_NS::AbstractLocal3dCrs>().size() == 1) {
+				setDefaultCrs(crs);
+			}
+		}
+		else {
+			auto* hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy*>(proxy);
+			if (hdfProxy != nullptr) {
+				if (getDataObjects<EML2_NS::AbstractHdfProxy>().size() == 1) {
+					setDefaultHdfProxy(hdfProxy);
+				}
+			}
+		}
 
 		return true;
 	}
@@ -2386,8 +2369,13 @@ RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std
 	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, nonStandardUom, parentPropType);
 }
 
+#ifdef WITH_RESQML2_2
 EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
 	gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
+#else
+EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string&, const std::string&,
+	gsoap_eml2_3::eml23__QuantityClassKind, bool, EML2_NS::PropertyKind*)
+#endif	
 {
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
@@ -2396,7 +2384,7 @@ EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::strin
 		return new EML2_3_NS::PropertyKind(this, guid, title, quantityClass, isAbstract, parentPropertyKind);
 #endif
 	default:
-		throw std::invalid_argument("Unrecognized Energistics standard.");
+		throw std::invalid_argument("This createPropertyKind method can only be used in a EML2.3 context.");
 	}
 }
 

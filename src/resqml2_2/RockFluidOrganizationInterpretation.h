@@ -57,9 +57,9 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT void pushBackRockFluidUnitInterpretation(RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterpretation) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidUnitInterpCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getRockFluidUnitInterpCount() const final;
 
-		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(uint64_t index) const final;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

@@ -190,7 +190,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The parameter minimum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getParameterMinOccurences(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterMinOccurences(unsigned int index) const final;
 
 		/**
 		 * Gets parameter minimum occurences
@@ -199,7 +199,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The parameter minimum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getParameterMinOccurences(const std::string & paramTitle) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterMinOccurences(const std::string & paramTitle) const final;
 
 		/**
 		 * Gets parameter maximum occurences
@@ -208,7 +208,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The parameter maximum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getParameterMaxOccurences(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterMaxOccurences(unsigned int index) const final;
 
 		/**
 		 * Gets parameter maximum occurences
@@ -217,7 +217,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The parameter maximum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getParameterMaxOccurences(const std::string & paramTitle) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterMaxOccurences(const std::string & paramTitle) const final;
 
 		/**
 		 * ******************************************************************

@@ -64,38 +64,21 @@ if (WITH_LOCAL_HDF5 OR CMAKE_VERSION VERSION_LESS "3.19")
 else()
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE hdf5::hdf5)
 endif()
+target_link_libraries (${CPP_LIBRARY_NAME}
+	PRIVATE ZLIB::ZLIB
+	PRIVATE MINIZIP::MINIZIP)
 if (WIN32)
-	if (EXISTS ${MINIZIP_LIBRARY_DEBUG} AND EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
+	if (EXISTS ${ZLIB_LIBRARY_DEBUG} AND EXISTS ${MINIZIP_LIBRARY_DEBUG} AND EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
 		set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo;Debug" CACHE STRING "" FORCE)
 	endif ()
-	if (NOT EXISTS ${MINIZIP_LIBRARY_DEBUG} OR NOT EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
+	if (NOT EXISTS ${ZLIB_LIBRARY_DEBUG} OR NOT EXISTS ${MINIZIP_LIBRARY_DEBUG} OR NOT EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
 		set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo" CACHE STRING "" FORCE)
 	endif ()
-	if (NOT EXISTS ${MINIZIP_LIBRARY_RELEASE} OR NOT EXISTS ${HDF5_hdf5_LIBRARY_RELEASE})
+	if (NOT EXISTS ${ZLIB_LIBRARY_RELEASE} OR NOT EXISTS ${MINIZIP_LIBRARY_RELEASE} OR NOT EXISTS ${HDF5_hdf5_LIBRARY_RELEASE})
 		set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 	endif ()
 
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Boost::boost)
-
-	if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${MINIZIP_LIBRARY_RELEASE} debug ${MINIZIP_LIBRARY_DEBUG})
-	elseif (EXISTS ${MINIZIP_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE})
-	elseif (EXISTS ${MINIZIP_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_DEBUG})
-	else ()
-		message(ERROR "No minizip library has been set.")
-	endif ()
-
-# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
-# zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
-	if (EXISTS ${ZLIB_LIBRARY_RELEASE} AND EXISTS ${ZLIB_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${ZLIB_LIBRARY_RELEASE} debug ${ZLIB_LIBRARY_DEBUG})
-	elseif (EXISTS ${ZLIB_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_RELEASE})
-	elseif (EXISTS ${ZLIB_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_DEBUG})
-	endif ()
 
 # szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
 	if (EXISTS ${SZIP_LIBRARY_RELEASE} AND EXISTS ${SZIP_LIBRARY_DEBUG})
@@ -116,12 +99,6 @@ if (WIN32)
 		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}
 	)
 ELSEIF (UNIX)
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE})
-# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
-# zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
-	if (EXISTS ${ZLIB_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_RELEASE})
-	endif ()
 # szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
 	if (EXISTS ${SZIP_LIBRARY_RELEASE})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
@@ -175,7 +152,9 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/epc/CMakeLists.txt)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/CMakeLists.txt)
 include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_0_1}/CMakeLists.txt)
-include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_2}/CMakeLists.txt)
+if (WITH_RESQML2_2)
+	include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_2}/CMakeLists.txt)
+endif (WITH_RESQML2_2)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_2}/CMakeLists.txt)
 
@@ -222,7 +201,7 @@ list(APPEND ALL_SOURCES_AND_HEADERS
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS} ${MINIZIP_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} SYSTEM PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS} ${MINIZIP_INCLUDE_DIR})
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:include>
@@ -315,15 +294,6 @@ INSTALL (
 	COMPONENT fesapi_headers
 )
 
-# tools headers
-IF (UNIX) # Methods are not exported  under windows
-	INSTALL (
-		FILES ${FESAPI_TOOLS_HEADERS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/tools/
-		COMPONENT fesapi_headers
-	)
-ENDIF (UNIX)
-
 # EPC headers
 INSTALL (
 	FILES ${FESAPI_EPC_HEADERS}
@@ -365,7 +335,7 @@ INSTALL (
 )
 
 INSTALL (
-	FILES ${FESAPI_WITSML2_1_HEADERS}
+	FILES ${FESAPI_WITSML_2_1_HEADERS}
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2_1}/
 	COMPONENT fesapi_headers
 )

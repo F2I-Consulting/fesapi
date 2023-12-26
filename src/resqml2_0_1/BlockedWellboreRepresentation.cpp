@@ -300,7 +300,7 @@ void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2
 	static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
 }
 
-COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridRepresentationDor(uint64_t index) const
 {
 	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
@@ -310,13 +310,7 @@ COMMON_NS::DataObjectReference BlockedWellboreRepresentation::getSupportingGridR
 	return rep->Grid[index];
 }
 
-unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
+uint64_t BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
 {
-	const size_t result = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much supporting representations");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.size();
 }

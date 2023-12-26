@@ -449,7 +449,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The supporting grid representation count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getSupportingGridRepresentationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getSupportingGridRepresentationCount() const = 0;
 
 		/**
 		 * Gets the supporting grid representation located at a specific index of this grid connection set
@@ -461,7 +461,7 @@ namespace RESQML2_NS
 		 * 
 		 * @returns The supporting grid representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class AbstractGridRepresentation* getSupportingGridRepresentation(uint64_t index) const;
 
 		/**
 		 * Gets the data object reference of the supporting grid representation located at a specific
@@ -473,7 +473,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The data object reference of the supporting grid representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(uint64_t index) const = 0;
 
 		/** Please do note use: not implemented yet. */
 		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;

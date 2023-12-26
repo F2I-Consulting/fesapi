@@ -2647,11 +2647,65 @@ namespace RESQML2_NS
 	class RockFluidOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
 	public:
-		AbstractGridRepresentation* getGridRepresentation(unsigned int index) const;
+		/**
+		 * Gets the count of grid representations associated to this rock fluid organization.
+		 *
+		 * @exception	std::range_error	If the count of associated grid representations is strictly
+		 * 									greater than unsigned int max.
+		 *
+		 * @returns	The count of grid representations associated to this rock fluid organization.
+		 */
+		uint64_t getGridRepresentationCount() const;
+
+		/**
+		 * Gets a grid representation associated to this rock fluid organization by means of its index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getGridRepresentationCount().
+		 *
+		 * @param 	index	Zero-based index of the grid representation to get in the array of grid
+		 * 					representations of this rock fluid organization.
+		 *
+		 * @returns	The associated grid representation at position @p index.
+		 */
+		AbstractGridRepresentation* getGridRepresentation(uint64_t index) const;
+
+		/**
+		 * Checks whether a given grid representation is associated to this rock fluid organization.
+		 *
+		 * @param [in]	gridRep	The grid representation for which we want to know if it is associated to
+		 * 						this rock fluid organization.
+		 *
+		 * @returns	True if @p gridRep is associated to this rock fluid organization, false if not.
+		 */
 		bool isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const;
+
+		/**
+		 * Pushes back a rock fluid unit interpretation in this rock fluid organization.
+		 *
+		 * @exception	std::invalid_argument	If <tt>rockFluidUnitInterpretation == nullptr</tt>.
+		 *
+		 * @param [in]	rockFluidUnitInterpretation	The rock fluid unit interpretation to push back.
+		 */
 		void pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation* rockFluidUnitInterpretation);
-		unsigned int getRockFluidUnitInterpCount() const;
-		RockFluidUnitInterpretation* getRockFluidUnitInterpretation(unsigned int index) const;
+
+		/**
+		 * Gets the count of rock fluid unit interpretations of this rock fluid organization.
+		 *
+		 * @returns	The count of rock fluid unit interpretations of this rock fluid organization.
+		 */
+		uint64_t getRockFluidUnitInterpCount() const;
+
+		/**
+		 * Gets a rock fluid unit interpretation of this rock fluid organization by means of
+		 * its index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getRockFluidUnitInterpCount().
+		 *
+		 * @param 	index	Zero-based index of the rock fluid unit interpretation we look for.
+		 *
+		 * @returns	The rock fluid unit interpretation at position @p index.
+		 */
+		RockFluidUnitInterpretation* getRockFluidUnitInterpretation(uint64_t index) const;
 	};
 	
 #ifdef SWIGPYTHON
@@ -3374,8 +3428,26 @@ namespace RESQML2_NS
 	class AbstractGridRepresentation : public AbstractRepresentation
 	{
 	public:
-		unsigned int getGridConnectionSetRepresentationCount() const;
-		GridConnectionSetRepresentation* getGridConnectionSetRepresentation(unsigned int index) const;
+		/**
+		 * Gets the count of grid connection set representations associated to this grid instance.
+		 *
+		 * @exception	std::range_error	If the count of grid connection set representations is
+		 * 									strictly greater than unsigned int max.
+		 *
+		 * @returns	The count of grid connection set representations associated to this grid instance.
+		 */
+		uint64_t getGridConnectionSetRepresentationCount() const;
+		
+		/**
+		 * Gets a particular grid connection set representation associated to this grid representation.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range (greater than {@link getGridConnectionSetRepresentationCount()}).
+		 *
+		 * @param 	index	Zero-based index of the grid connection set representation we look for.
+		 *
+		 * @returns	The grid connection set representation at position @p index.
+		 */
+		 GridConnectionSetRepresentation* getGridConnectionSetRepresentation(uint64_t index) const;
 
 		/**
 		 * Gets the total count of cells in the grid.
@@ -3388,8 +3460,8 @@ namespace RESQML2_NS
 		uint64_t getCellCount() const;
 		
 		AbstractGridRepresentation* getParentGrid() const;
-		unsigned int getChildGridCount() const;
-		AbstractGridRepresentation* getChildGrid(unsigned int index) const;
+		uint64_t getChildGridCount() const;
+		AbstractGridRepresentation* getChildGrid(uint64_t index) const;
 		void setParentWindow(uint64_t * cellIndices, uint64_t cellIndexCount, UnstructuredGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy * proxy = nullptr);
 		void setParentWindow(unsigned int * columnIndices, uint64_t columnIndexCount,
 			unsigned int kLayerIndexRegridStart,
@@ -5029,14 +5101,14 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
-		void pushBackIntHdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackInt32Hdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 1d array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
-		void pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackInt16Hdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 1d array of explicit char values to the property values.
@@ -5071,21 +5143,21 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		void pushBackIntHdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackInt32Hdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 2d array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		void pushBackShortHdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackInt16Hdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 2d array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		void pushBackUInt16Hdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds a 2d array of explicit char values to the property values.
@@ -5122,21 +5194,21 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		void pushBackIntHdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackInt32Hdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 3d array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		void pushBackShortHdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackInt16Hdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 3d array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		void pushBackUInt16Hdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds a 3d array of explicit char values to the property values.
@@ -5170,21 +5242,21 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackIntHdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		virtual void pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackShortHdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		virtual void pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		virtual void pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds an nd array of explicit int8_t values to the property values.
@@ -5298,7 +5370,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int getIntValuesOfPatch(uint64_t patchIndex, int * values) const;
+		int32_t getInt32ValuesOfPatch(uint64_t patchIndex, int32_t * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -5313,7 +5385,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		unsigned int getUIntValuesOfPatch(uint64_t patchIndex, unsigned int * values) const;
+		uint32_t getUInt32ValuesOfPatch(uint64_t patchIndex, uint32_t * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
@@ -5327,7 +5399,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		short getShortValuesOfPatch(uint64_t patchIndex, short * values) const;
+		int16_t getInt16ValuesOfPatch(uint64_t patchIndex, int16_t * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -5342,7 +5414,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		unsigned short getUShortValuesOfPatch(uint64_t patchIndex, unsigned short * values) const;
+		uint16_t getUInt16ValuesOfPatch(uint64_t patchIndex, uint16_t * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
@@ -6754,26 +6826,26 @@ namespace RESQML2_NS
 	{
 	public:
 		void pushBackInt64Hdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		void pushBackInt32Hdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		void pushBackInt16Hdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
 		void pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 
 		void pushBackInt64Hdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		void pushBackInt32Hdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		void pushBackInt16Hdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		void pushBackUInt16Hdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
 		void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 
 		void pushBackInt64Hdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		void pushBackInt32Hdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		void pushBackInt16Hdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		void pushBackUInt16Hdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
 		void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 
 		void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
-		void pushBackIntHdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
-		void pushBackShortHdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		void pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		void pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		void pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
 		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 		
 		/**
@@ -7630,6 +7702,15 @@ namespace RESQML2_NS
 		 * 						of getXyzPointCountOfAllPatches().
 		 */
 		void getMdValues(double* values) const;
+
+		/**
+		 * Converts an array MD values an array of corresponding XYZ values according to this trajectory.
+		 *
+		 * @param [in]	mdValues	An array containing all MD values we want to convert.
+		 * @param [in]	mdCount		The count of MD values in @p mdValues
+		 * @param [out]	xyzValues	A buffer for receiving the XYZ values converted from @p mdValues. It must be preallocated with a size of 3*mdCount.
+		 */
+		void convertMdValuesToXyzValues(double* mdValues, uint64_t mdCount, double* xyzValues) const;
 		
 		/**
 		 * Gets the starting MD of this wellbore trajectory. Range may often be from kickoff to TD, but
@@ -7992,7 +8073,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of supporting grid representation.
 		 */
-		unsigned int getSupportingGridRepresentationCount() const;
+		uint64_t getSupportingGridRepresentationCount() const;
 
 		/**
 		 * Gets the supporting grid representation located at a specific index of this blocked wellbore
@@ -8005,20 +8086,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The supporting grid representation at position @p index.
 		 */
-		RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
-
-		/**
-		 * Get the DOR of the supporting grid representation located at a specific index of this blocked
-		 * wellbore representation.
-		 *
-		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
-		 * 									getSupportingGridRepresentationCount().
-		 *
-		 * @param 	index	Zero-based index of the supporting grid representation we look for.
-		 *
-		 * @returns	The DOR of the supporting grid representation at position @p index.
-		 */
-		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const;
+		RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(uint64_t index) const;
 	};
 	
 #ifdef SWIGPYTHON

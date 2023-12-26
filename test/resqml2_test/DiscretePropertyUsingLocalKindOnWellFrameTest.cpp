@@ -22,8 +22,10 @@ under the License.
 #include "resqml2_test/WellboreFrameRepresentationTest.h"
 #include "resqml2_test/PropertyKindTest.h"
 
-#include "resqml2/DiscreteProperty.h"
 #include "eml2/AbstractHdfProxy.h"
+
+#include "resqml2/DiscreteProperty.h"
+
 #include "resqml2_0_1/WellboreFrameRepresentation.h"
 #include "resqml2_0_1/PropertyKind.h"
 
@@ -41,8 +43,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepo()
 	// creation
 	RESQML2_NS::WellboreFrameRepresentation * frame = repo->createPartial<RESQML2_0_1_NS::WellboreFrameRepresentation>(WellboreFrameRepresentationTest::defaultUuid, "");
 
-	EML2_NS::PropertyKind* parentPropertyKind = repo->createPropertyKind("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property", gsoap_eml2_3::eml23__QuantityClassKind::unitless);
-	EML2_NS::PropertyKind* propertyKind = repo->createPropertyKind("", "", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure, false, parentPropertyKind);
+	RESQML2_0_1_NS::PropertyKind* propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("5f78f66a-ed1b-4827-a868-beb989febb31", "code");
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
@@ -54,8 +55,8 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepo()
 		gsoap_eml2_3::eml23__IndexableElement::intervals,
 		propertyKind);
 	REQUIRE(discreteProperty != nullptr);
-	int values[5] = { 0, 1, 2, 3 };
-	discreteProperty->pushBackIntHdf5Array1dOfValues(values, 4, hdfProxy, -1);
+	int values[4] = { 0, 1, 2, 3 };
+	discreteProperty->pushBackInt32Hdf5Array1dOfValues(values, 4, hdfProxy, -1);
 }
 
 void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepo()
@@ -79,7 +80,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepo()
 	REQUIRE(discreteProperty->getValuesCountOfPatch(0) == 4);
 
 	int values[4];
-	discreteProperty->getIntValuesOfPatch(0, values);
+	discreteProperty->getInt32ValuesOfPatch(0, values);
 	REQUIRE(values[0] == 0);
 	REQUIRE(values[1] == 1);
 	REQUIRE(values[2] == 2);

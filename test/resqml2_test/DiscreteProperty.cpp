@@ -57,7 +57,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	short shortValues[6] = { 0, 1, 2, 3, 4, 5 };
-	shortDiscreteProperty->pushBackShortHdf5Array3dOfValues(shortValues, 1, 2, 3, hdfProxy, -1);
+	shortDiscreteProperty->pushBackInt16Hdf5Array3dOfValues(shortValues, 1, 2, 3, hdfProxy, -1);
 
 	// creating the ushort DiscreteProperty
 	RESQML2_NS::DiscreteProperty* ushortDiscreteProperty = repo->createDiscreteProperty(
@@ -66,7 +66,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	unsigned short ushortValues[6] = { 0, 1, 2, 3, 4, 5 };
-	ushortDiscreteProperty->pushBackUShortHdf5Array3dOfValues(ushortValues, 1, 2, 3, hdfProxy, -1);
+	ushortDiscreteProperty->pushBackUInt16Hdf5Array3dOfValues(ushortValues, 1, 2, 3, hdfProxy, -1);
 
 	// creating the int DiscreteProperty
 	RESQML2_NS::DiscreteProperty* intDiscreteProperty = repo->createDiscreteProperty(
@@ -75,7 +75,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	int intValues[6] = { 0, 1, 2, 3, 4, 5 };
-	intDiscreteProperty->pushBackIntHdf5Array3dOfValues(intValues, 1, 2, 3, hdfProxy, -1);
+	intDiscreteProperty->pushBackInt32Hdf5Array3dOfValues(intValues, 1, 2, 3, hdfProxy, -1);
 
 	// creating the Int64 DiscreteProperty
 	RESQML2_NS::DiscreteProperty* int64DiscreteProperty = repo->createDiscreteProperty(

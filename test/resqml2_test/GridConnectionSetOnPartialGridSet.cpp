@@ -25,6 +25,7 @@ under the License.
 
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/HorizonInterpretation.h"
+#include "resqml2_0_1/PropertyKind.h"
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
 
 using namespace std;
@@ -48,7 +49,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 	// Unstructured grid
 	RESQML2_NS::UnstructuredGridRepresentation* partialGrid = repo->createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>(unstructuredGridUuid, unstructuredGridTitle);
 	REQUIRE( partialGrid != nullptr );
-	auto* propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_3::eml23__QuantityClassKind::length);
+	RESQML2_0_1_NS::PropertyKind* propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
 	RESQML2_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(partialGrid, "62d7e07d-5e17-4e42-b4b2-a4c26204cba2", "Continuous prop on partial unstructured grid", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, 
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m, 

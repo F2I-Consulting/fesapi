@@ -21,9 +21,12 @@ under the License.
 #include "catch.hpp"
 #include "resqml2_test/WellboreFrameRepresentationTest.h"
 
-#include "resqml2/CommentProperty.h"
-#include "resqml2_0_1/WellboreFrameRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
+
+#include "resqml2/CommentProperty.h"
+
+#include "resqml2_0_1/PropertyKind.h"
+#include "resqml2_0_1/WellboreFrameRepresentation.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -42,7 +45,7 @@ void CommentProperty::initRepo() {
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the ContinuousProperty
-	auto propertyKind = repo->createPropertyKind("", "comment", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
+	RESQML2_0_1_NS::PropertyKind* propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "comment");
 	RESQML2_NS::CommentProperty* commentProperty = repo->createCommentProperty(
 		frame, defaultUuid, defaultTitle,
 		1,

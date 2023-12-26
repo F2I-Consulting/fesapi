@@ -174,7 +174,7 @@ namespace WITSML2_1_NS
 		 * @param 	historyGuid			 (Optional) Unique identifier.
 		 */
 		void pushBackConnectionHistory(WellReservoirConnectionType wellReservoirConnection, uint64_t connectionIndex,
-			gsoap_eml2_3::witsml21__PhysicalStatus staus,
+			gsoap_eml2_3::witsml21__PhysicalStatus status,
 			time_t startDate,
 			const std::string & historyGuid = "");
 

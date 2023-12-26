@@ -112,32 +112,25 @@ void DoubleTableLookup::setValue(double key, double value)
 	}
 }
 
+namespace {
+	auto doubleLookupComparator = [](resqml20__DoubleLookup * a, resqml20__DoubleLookup * b)
+    {
+        return a->Key < b->Key;
+    };
+}
+
 double DoubleTableLookup::getMinimumValue()
 {
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
+	std::vector<resqml20__DoubleLookup *> stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value;
 
-	int64_t min = (std::numeric_limits<double>::max)();
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (min > stringLookup->Value[i]->Key) {
-			min = stringLookup->Value[i]->Key;
-		}
-	}
-
-	return min;
+ 	return (*std::min_element(stringLookup.begin(), stringLookup.end(), doubleLookupComparator))->Key;
 }
 
 double DoubleTableLookup::getMaximumValue()
 {
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
+	std::vector<resqml20__DoubleLookup *> stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value;
 
-	int64_t max = (std::numeric_limits<double>::lowest)();
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (max < stringLookup->Value[i]->Key) {
-			max = stringLookup->Value[i]->Key;
-		}
-	}
-
-	return max;
+ 	return (*std::max_element(stringLookup.begin(), stringLookup.end(), doubleLookupComparator))->Key;
 }
 
 std::map<double, double> DoubleTableLookup::getMap() const

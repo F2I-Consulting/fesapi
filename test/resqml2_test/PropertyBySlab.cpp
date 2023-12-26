@@ -23,12 +23,14 @@ under the License.
 #include "catch.hpp"
 
 #include "eml2/AbstractHdfProxy.h"
-#include "resqml2_0_1/PropertyKind.h"
+
 #include "eml2_3/PropertyKind.h"
 
 #include "resqml2/ContinuousProperty.h"
 #include "resqml2/DiscreteProperty.h"
 #include "resqml2/AbstractIjkGridRepresentation.h"
+
+#include "resqml2_0_1/PropertyKind.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -113,7 +115,7 @@ void PropertyBySlab::initRepo() {
 	REQUIRE(propertyNoCompute->getMaximumValue() == 100.0f);
 
 	// Creating the Discrete property using slab
-	auto discPropertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
+	RESQML2_0_1_NS::PropertyKind* discPropertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("5f78f66a-ed1b-4827-a868-beb989febb31", "code");
 	RESQML2_NS::DiscreteProperty* discretePropertyCompute = repo->createDiscreteProperty(
 		ijkGrid, defaultDiscretePropComputeUuid, "testing discrete prop",
 		1,

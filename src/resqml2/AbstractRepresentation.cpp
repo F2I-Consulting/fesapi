@@ -136,7 +136,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 
 		// HDF
 		std::unique_ptr<uint64_t[]> numValues(new uint64_t[numDimensionsInArray + 1]);
-		for (uint32_t i = 0; i < numDimensionsInArray; ++i) {
+		for (size_t i = 0; i < numDimensionsInArray; ++i) {
 			numValues[i] = numPoints[i];
 		}
 		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
@@ -426,7 +426,7 @@ bool AbstractRepresentation::isInSingleLocalCrs() const
 	}
 	AbstractLocal3dCrs const* localCrsRef = getLocalCrs(0);
 
-	for (unsigned int patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
+	for (uint64_t patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
 		if (getLocalCrs(patchIndex) != localCrsRef) {
 			return false;
 		}
@@ -502,7 +502,7 @@ std::set<AbstractRepresentation*> AbstractRepresentation::getAllSeismicSupport()
 {
 	std::set<AbstractRepresentation*> result;
 	const uint64_t patchCount = getPatchCount();
-	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
+	for (uint64_t patchIndex = 0; patchIndex < patchCount; ++patchIndex)
 	{
 		AbstractRepresentation* seismicSupport = getSeismicSupportOfPatch(patchIndex);
 		if (seismicSupport != nullptr)
@@ -555,7 +555,7 @@ void AbstractRepresentation::loadTargetRelationships()
 	// Seismic support
 	if (gsoapProxy2_0_1 != nullptr) {
 		// Seismic support
-		for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+		for (uint64_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 			gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
 			if (geom != nullptr && geom->SeismicCoordinates != nullptr) {
 				if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Seismic3dCoordinates) {
@@ -570,7 +570,7 @@ void AbstractRepresentation::loadTargetRelationships()
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+		for (uint64_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 			gsoap_eml2_3::resqml22__PointGeometry* geom = getPointGeometry2_2(patchIndex);
 			if (geom != nullptr && geom->SeismicCoordinates != nullptr) {
 				if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Seismic3dCoordinates) {
@@ -726,7 +726,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIn
 		else {
 			throw logic_error("Not implemented yet");
 		}
-		auto patch = static_cast<gsoap_eml2_3::resqml22__Seismic3dCoordinates*>(geom->SeismicCoordinates);
+		auto* patch = static_cast<gsoap_eml2_3::resqml22__Seismic3dCoordinates*>(geom->SeismicCoordinates);
 
 		patch->SeismicSupport = seismicSupport->newEml23Reference();
 		getRepository()->addRelationship(this, seismicSupport);
