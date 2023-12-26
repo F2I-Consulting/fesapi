@@ -158,7 +158,7 @@ void AbstractProperty::setTimeSeries(EML2_NS::TimeSeries * ts)
 
 void AbstractProperty::setSingleTimestamp(time_t timestamp, LONG64 yearOffset)
 {
-	std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(timestamp));
+	std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(timestamp));
 	if (gsoapProxy2_0_1 != nullptr) {
 		auto const* timeSeries = getTimeSeries();
 		if (timeSeries == nullptr) {

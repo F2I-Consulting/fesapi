@@ -332,7 +332,7 @@ void AbstractObject::setEditor(const std::string & editor)
 void AbstractObject::setCreation(time_t creation)
 {
 	if (creation > 0) {
-		std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(creation));
+		std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(creation));
 		setCreation(tmConversion);
 	}
 	else {
@@ -419,7 +419,7 @@ void AbstractObject::setLastUpdate(time_t lastUpdate)
 			throw invalid_argument("Last update cannot be inferior to creation date.");
 		}
 
-		std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(lastUpdate));
+		std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(lastUpdate));
 		setLastUpdate(tmConversion);
 	}
 }

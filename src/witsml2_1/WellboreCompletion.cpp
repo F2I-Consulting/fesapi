@@ -274,7 +274,7 @@ void WellboreCompletion::pushBackConnectionHistory(WellReservoirConnectionType w
 
 		if (startDate != -1) {
 			perforationStatusHistory->StartDate = soap_new_tm(gsoapProxy2_3->soap);
-			*perforationStatusHistory->StartDate = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(startDate));
+			*perforationStatusHistory->StartDate = timeTools::to_calendar_time(timeTools::from_time_t(startDate));
 		}
 
 		witsml21__PerforationSetInterval* interval = getPerforation(connectionIndex);
@@ -290,7 +290,7 @@ void WellboreCompletion::pushBackConnectionHistory(WellReservoirConnectionType w
 
 		if (startDate != -1) {
 			intervalStatusHistory->StartDate = soap_new_tm(gsoapProxy2_3->soap);
-			*intervalStatusHistory->StartDate = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(startDate));
+			*intervalStatusHistory->StartDate = timeTools::to_calendar_time(timeTools::from_time_t(startDate));
 		}
 
 		if (wellReservoirConnection == WellReservoirConnectionType::GRAVEL_PACK) {
@@ -649,7 +649,7 @@ void WellboreCompletion::setConnectionHistoryStartDate(uint64_t historyIndex,
 		if (perforationStatusHistory->StartDate == nullptr) {
 			perforationStatusHistory->StartDate = soap_new_tm(gsoapProxy2_3->soap);
 		}
-		*perforationStatusHistory->StartDate = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(startDate));
+		*perforationStatusHistory->StartDate = timeTools::to_calendar_time(timeTools::from_time_t(startDate));
 	}
 	else {
 		witsml21__IntervalStatusHistory* statusHistory;
@@ -669,7 +669,7 @@ void WellboreCompletion::setConnectionHistoryStartDate(uint64_t historyIndex,
 		if (statusHistory->StartDate == nullptr) {
 			statusHistory->StartDate = soap_new_tm(gsoapProxy2_3->soap);
 		}
-		*statusHistory->StartDate = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(startDate));
+		*statusHistory->StartDate = timeTools::to_calendar_time(timeTools::from_time_t(startDate));
 	}
 }
 
@@ -725,7 +725,7 @@ void WellboreCompletion::setConnectionHistoryEndDate(uint64_t historyIndex,
 		if (perforationStatusHistory->EndDate == nullptr) {
 			perforationStatusHistory->EndDate = soap_new_tm(gsoapProxy2_3->soap);
 		}
-		*perforationStatusHistory->EndDate = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(endDate));
+		*perforationStatusHistory->EndDate = timeTools::to_calendar_time(timeTools::from_time_t(endDate));
 	}
 	else {
 		witsml21__IntervalStatusHistory* statusHistory;
@@ -745,7 +745,7 @@ void WellboreCompletion::setConnectionHistoryEndDate(uint64_t historyIndex,
 		if (statusHistory->EndDate == nullptr) {
 			statusHistory->EndDate = soap_new_tm(gsoapProxy2_3->soap);
 		}
-		*statusHistory->StartDate = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(endDate));
+		*statusHistory->StartDate = timeTools::to_calendar_time(timeTools::from_time_t(endDate));
 	}
 }
 

@@ -44,6 +44,7 @@ void TimeSeriesTest::initRepo()
 	timeSeries->pushBackTimestamp(1378217895);
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
+	timeSeries->pushBackTimestamp(170266171200); // Huge datetime 7365-07-09 06:40:00 UTC
 
 	// Time series properties
 	auto* partialGrid = repo->createPartialIjkGridRepresentation(partialGridUuid, "Partial grid");
@@ -78,6 +79,16 @@ void TimeSeriesTest::initRepo()
 	prop3->setTimeSeries(timeSeries);
 	prop3->setSingleTimestamp(1441289895);
 
+	ContinuousProperty* prop4 = repo->createContinuousProperty(
+		partialGrid, prop4Uuid, "prop 4", 1,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
+		propertyKind);
+	float prop4Values[2] = { -1000, 0 };
+	prop4->pushBackFloatHdf5Array3dOfValues(prop3Values, 2, 1, 1);
+	prop4->setTimeSeries(timeSeries);
+	prop4->setSingleTimestamp(170266171200);
+
 	double nodes[72] = {
 		0,0,0, 1,0,0, 2,0,0, 0,1,0, 1,1,0, 2,1,0,
 		0,0,1, 1,0,1, 2,0,1, 0,1,1, 1,1,1, 2,1,1,
@@ -108,13 +119,15 @@ void TimeSeriesTest::readRepo() {
 	// **********************
 	// reading the TimeSeries
 
+	// getTimestampCount
+	REQUIRE(timeSeries->getTimestampCount() == 4);
+
 	// getTimestampIndex
 	REQUIRE(timeSeries->getTimestampIndex(1378217895) == 0);
 	REQUIRE(timeSeries->getTimestampIndex(1409753895) == 1);
 	REQUIRE(timeSeries->getTimestampIndex(1441289895) == 2);
+	REQUIRE(timeSeries->getTimestampIndex(170266171200) == 3);
 
-	// getTimestampCount
-	REQUIRE(timeSeries->getTimestampCount() == 3);
 
 	// getTimestamp
 	REQUIRE(timeSeries->getTimestamp(0) == 1378217895);
@@ -137,6 +150,9 @@ void TimeSeriesTest::readRepo() {
 		}
 		else if (uuid == prop3Uuid) {
 			REQUIRE(prop->getSingleTimestamp() == 1441289895);
+		}
+		else if (uuid == prop4Uuid) {
+			REQUIRE(prop->getSingleTimestamp() == 170266171200);
 		}
 	}
 

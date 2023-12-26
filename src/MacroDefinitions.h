@@ -521,7 +521,7 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
 #define GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(className, attributeName)\
 	void GLUE(,className)::set##attributeName(const time_t & attributeName) {\
 		CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, gsoap_eml2_3::soap_new_tm)\
-		*static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(attributeName));\
+		*static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName = timeTools::to_calendar_time(timeTools::from_time_t(attributeName));\
 	}\
 	GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName)\
 	time_t GLUE(,className)::get##attributeName() const {\
@@ -538,7 +538,7 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
   */
 #define GETTER_AND_SETTER_TIME_T_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	void GLUE(,className)::set##vectorName##attributeName(unsigned int index, const time_t & attributeName) {\
-		static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(attributeName));\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName = timeTools::to_calendar_time(timeTools::from_time_t(attributeName));\
 	}\
 	time_t GLUE(,className)::get##vectorName##attributeName(unsigned int index) const {\
 		return timeTools::timegm(static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName);\
@@ -553,7 +553,7 @@ void className::set##vectorName##attributeName(unsigned int index, double value,
  */
 #define GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	void GLUE(,className)::set##vectorName##attributeName(unsigned int index, const time_t & attributeName) {\
-		*static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(attributeName));\
+		*static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName = timeTools::to_calendar_time(timeTools::from_time_t(attributeName));\
 	}\
 	time_t GLUE(,className)::get##vectorName##attributeName(unsigned int index) const {\
 		return timeTools::timegm(*static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName);\

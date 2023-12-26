@@ -27,6 +27,7 @@ namespace resqml2_test {
 		static constexpr char const* prop1Uuid = "481c8393-e9f4-403f-a119-d68affaa96e8";
 		static constexpr char const* prop2Uuid = "43b0f9e7-c39c-43fc-aafe-7948f5a43a2b";
 		static constexpr char const* prop3Uuid = "f24666e7-fede-411c-af41-376b19f933a7";
+		static constexpr char const* prop4Uuid = "ddc4f5c5-a17e-47fc-947a-2cfd882338e3";
 		static constexpr char const* partialGridUuid = "9d5b27b3-6d67-4c56-8600-2e7377b771e3";
 		static constexpr char const* rep1Uuid = "8c515fe5-025f-49dd-b613-b1b020b97f6d";
 		static constexpr char const* rep2Uuid = "87cb4efd-69c0-4c21-a2f6-ba34f5b65ef7";
