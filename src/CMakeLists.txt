@@ -56,28 +56,25 @@ if (WIN32)
 	endif ()
 endif (WIN32)
 
-target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_DEFINITIONS})
-
 # Linker instructions
 if (WITH_LOCAL_HDF5 OR CMAKE_VERSION VERSION_LESS "3.19")
+	# Do not use target because find_package has not been used
+	target_include_directories(${CPP_LIBRARY_NAME} SYSTEM PRIVATE ${HDF5_INCLUDE_DIRS})
+	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_DEFINITIONS})
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_LIBRARIES})
 else()
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE hdf5::hdf5)
+	# Do not mix with hdf5::hdf5 (lowercase) which does not export HDF5 DEFINITIONS every time on windows
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE HDF5::HDF5)
 endif()
-target_link_libraries (${CPP_LIBRARY_NAME}
-	PRIVATE ZLIB::ZLIB
-	PRIVATE MINIZIP::MINIZIP)
-if (WIN32)
-	if (EXISTS ${ZLIB_LIBRARY_DEBUG} AND EXISTS ${MINIZIP_LIBRARY_DEBUG} AND EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
-		set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo;Debug" CACHE STRING "" FORCE)
-	endif ()
-	if (NOT EXISTS ${ZLIB_LIBRARY_DEBUG} OR NOT EXISTS ${MINIZIP_LIBRARY_DEBUG} OR NOT EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
-		set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo" CACHE STRING "" FORCE)
-	endif ()
-	if (NOT EXISTS ${ZLIB_LIBRARY_RELEASE} OR NOT EXISTS ${MINIZIP_LIBRARY_RELEASE} OR NOT EXISTS ${HDF5_hdf5_LIBRARY_RELEASE})
-		set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
-	endif ()
 
+if (TARGET ZLIB::ZLIB)
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ZLIB::ZLIB MINIZIP::MINIZIP)
+else ()
+	target_include_directories(${CPP_LIBRARY_NAME} SYSTEM PRIVATE ${ZLIB_INCLUDE_DIR})
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE MINIZIP::MINIZIP)
+endif ()
+
+if (WIN32)
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Boost::boost)
 
 # szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
@@ -201,7 +198,7 @@ list(APPEND ALL_SOURCES_AND_HEADERS
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
-target_include_directories(${CPP_LIBRARY_NAME} SYSTEM PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS} ${MINIZIP_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} SYSTEM PRIVATE ${MINIZIP_INCLUDE_DIR})
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:include>

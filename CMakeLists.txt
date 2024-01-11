@@ -14,7 +14,7 @@ set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 set (Fesapi_VERSION_MAJOR 2)
 set (Fesapi_VERSION_MINOR 9)
 set (Fesapi_VERSION_PATCH 0)
-set (Fesapi_VERSION_TWEAK 0)
+set (Fesapi_VERSION_TWEAK 1)
 
 set (Fesapi_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VERSION_PATCH}.${Fesapi_VERSION_TWEAK})
 
@@ -44,7 +44,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 # hdf5
-set (WITH_LOCAL_HDF5 OFF CACHE BOOL "Also builds and installs an example executable which allows to serialize and deserialize a basic EPC document.")
+set (WITH_LOCAL_HDF5 OFF CACHE BOOL "Force usage of a local and exotic version HDF5.")
 IF(WITH_LOCAL_HDF5)
 	set (HDF5_INCLUDE_DIRS HDF5_INCLUDE_DIRS-NOTFOUND CACHE PATH "Path to the directory which contains the hdf5 header files")	
 	IF (NOT IS_DIRECTORY ${HDF5_INCLUDE_DIRS})
@@ -75,6 +75,7 @@ ELSE()
 	ENDIF()
 ENDIF()
 
+# Only the zlib.h file is mandatory. The libray may be not if, for instance, zlib symbols are already in minizip library (and HDF5 has no zlib support)
 FIND_PACKAGE (ZLIB)
 IF (NOT EXISTS ${ZLIB_INCLUDE_DIR})
 	MESSAGE(ERROR " The ZLIB_INCLUDE_DIR CMake variable is mandatory.")
