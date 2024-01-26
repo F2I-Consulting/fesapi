@@ -26,11 +26,12 @@ under the License.
 #include "resqml2_test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
 #include "resqml2_test/PolylineSetRepresentation.h"
 
+#include "resqml2/PolylineSetRepresentation.h"
+#include "resqml2/TriangulatedSetRepresentation.h"
+
 #include "resqml2_0_1/TectonicBoundaryFeature.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"
-#include "resqml2/TriangulatedSetRepresentation.h"
-#include "resqml2/PolylineSetRepresentation.h"
 
 using namespace std;
 using namespace resqml2_test;
@@ -58,10 +59,7 @@ void InterpretationDomain::initRepo()
 		depthRep->pushBackTrianglePatch(3, nodesFaultSinglePatchTriangulatedSetRepresentation, 1, triangleNodeIndexFault, repo->getHdfProxySet()[0]);
 		REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml20__Domain::depth);
 
-		RESQML2_NS::LocalTime3dCrs * timeCrs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>("");
-		if (timeCrs == nullptr) {
-			timeCrs = repo->createPartial<RESQML2_0_1_NS::LocalTime3dCrs>("", "");
-		}
+		auto* timeCrs = repo->createPartial<RESQML2_0_1_NS::LocalTime3dCrs>("", "");
 		RESQML2_NS::PolylineSetRepresentation* timeRep = repo->createPolylineSetRepresentation(faultInterp, "", "");
 		unsigned int numNodesPerPolylinePerPatch[] = { 1 };
 		double polylinePoints[3] = { 150, 0, 200 };

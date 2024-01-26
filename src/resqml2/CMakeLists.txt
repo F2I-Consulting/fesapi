@@ -4,7 +4,6 @@ set(FESAPI_RESQML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractFeatureInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractGridRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractIjkGridRepresentation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractLocal3dCrs.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractOrganizationInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractProperty.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractRepresentation.cpp
@@ -58,7 +57,6 @@ set(FESAPI_RESQML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractFeatureInterpretation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractGridRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractIjkGridRepresentation.h
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractLocal3dCrs.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractOrganizationInterpretation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractProperty.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractRepresentation.h
@@ -94,8 +92,6 @@ set(FESAPI_RESQML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridLatticeRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridNoGeometryRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridParametricRepresentation.h
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/LocalDepth3dCrs.h
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/LocalTime3dCrs.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/MdDatum.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Model.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/NonSealedSurfaceFrameworkRepresentation.h

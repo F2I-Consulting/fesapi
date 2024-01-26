@@ -20,7 +20,7 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-namespace RESQML2_NS
+namespace EML2_NS
 {
 	/** @brief	Proxy class for an abstract local 3D coordinate reference system (CRS). */
 	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
@@ -99,7 +99,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The projected CRS unknown reason.
 		 */
-		DLL_IMPORT_OR_EXPORT const std::string & getProjectedCrsUnknownReason() const;
+		DLL_IMPORT_OR_EXPORT std::string getProjectedCrsUnknownReason() const;
 
 		/**
 		 * Gets the EPSG code of the projected CRS
@@ -131,7 +131,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The vertical CRS unknown reason.
 		 */
-		DLL_IMPORT_OR_EXPORT const std::string & getVerticalCrsUnknownReason() const;
+		DLL_IMPORT_OR_EXPORT std::string getVerticalCrsUnknownReason() const;
 
 		/**
 		 * Gets the EPSG code of the vertical CRS
@@ -141,13 +141,6 @@ namespace RESQML2_NS
 		 * @returns	The vertical CRS EPSG code.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getVerticalCrsEpsgCode() const;
-
-		/**
-		 * Gets the vertical CRS unit of measure as a string
-		 *
-		 * @returns	The vertical CRS unit of measure as string.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getVerticalCrsUnitAsString() const;
 
 		/**
 		 * Gets the areal rotation unit of measure.
@@ -178,11 +171,41 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__LengthUom getVerticalCrsUnit() const;
 
 		/**
+		 * Gets the vertical CRS unit of measure as a string
+		 *
+		 * @returns	The vertical CRS unit of measure as string.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getVerticalCrsUnitAsString() const;
+
+		/**
+		 * Check if the third axis of this local 3d CRS is in timeor not.
+		 *
+		 * @returns	True if this local 3d CRS is a time one. False if it is a depth/elevation one.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual bool isATimeCrs() const = 0;
+
+		/**
+		 * Gets the unit of measure of the third axis of this local CRS if it is a time CRS.
+		 * Otherwise throw an exception (if isATimeCrs() returns false)
+		 *
+		 * @returns	The time unit of measure of the third axis.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__TimeUom getTimeUom() const = 0;
+
+		/**
+		 * Gets the unit of measure as a sting of the third axis of this local CRS if it is a time CRS.
+		 * Otherwise throw an exception (if isATimeCrs() returns false)
+		 *
+		 * @returns	The time unit of measure of the third axis.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getTimeUomAsString() const;
+
+		/**
 		 * Gets the axis order of the projected CRS.
 		 *
 		 * @returns	The axis order of the projected CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__AxisOrder2d getAxisOrder() const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__AxisOrder2d getAxisOrder() const;
 
 		/**
 		 * Sets the axis order of the projected CRS. It defines the coordinate system axis order of the
@@ -191,7 +214,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	axisOrder	The axis order to set.
 		 */
-		DLL_IMPORT_OR_EXPORT void setAxisOrder(gsoap_resqml2_0_1::eml20__AxisOrder2d axisOrder) const;
+		DLL_IMPORT_OR_EXPORT void setAxisOrder(gsoap_eml2_3::eml23__AxisOrder2d axisOrder) const;
 
 		/**
 		 * Convert some xyz points from local to global CRS.
@@ -229,14 +252,19 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		AbstractLocal3dCrs(gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs* fromGsoap) :
+			COMMON_NS::AbstractObject(fromGsoap) {}
+
+		/**
 		 * Get the Z offset which is always equal to zero for a time CRS. Don't mix zOffset vs
 		 * depthOffset : the schema calls zOffset what is actually a depthOrElevationOffset.
 		 *
 		 * @returns	The z coordinate offset.
 		 */
 		virtual double getZOffset() const = 0;
-		
-		/** Loads target relationships */
-		void loadTargetRelationships() final;
 	};
 }

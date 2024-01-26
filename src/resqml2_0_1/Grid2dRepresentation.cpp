@@ -19,15 +19,14 @@ under the License.
 #include "Grid2dRepresentation.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 
 #include "H5public.h"
 
+#include "../eml2/AbstractHdfProxy.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+
 #include "../resqml2/AbstractFeature.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../eml2/AbstractHdfProxy.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -516,7 +515,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 	double xOrigin, double yOrigin, double zOrigin,
 	double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 	double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-	double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	double spacingInFastestDirection, double spacingInSlowestDirection, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -545,7 +544,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 	double * zValues,
 	unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
-	RESQML2_NS::Grid2dRepresentation * supportingGrid2dRepresentation, RESQML2_NS::AbstractLocal3dCrs * localCrs,
+	RESQML2_NS::Grid2dRepresentation * supportingGrid2dRepresentation, EML2_NS::AbstractLocal3dCrs * localCrs,
 	unsigned int startIndexI, unsigned int startIndexJ,
 	int indexIncrementI, int indexIncrementJ)
 {
@@ -579,7 +578,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 	unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 	double originX, double originY, double originZ,
 	double offsetIX, double offsetIY, double offsetIZ, double spacingI,
-	double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	double offsetJX, double offsetJY, double offsetJZ, double spacingJ, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -707,7 +706,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dO
 	double xOrigin, double yOrigin, double zOrigin,
 	double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 	double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-	double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	double spacingInFastestDirection, double spacingInSlowestDirection, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (localCrs == nullptr) {
 		throw invalid_argument("The CRS cannot be the null pointer");
@@ -753,7 +752,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dO
 }
 
 gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
-	unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
+	unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 	unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 	RESQML2_NS::Grid2dRepresentation * supportingRepresentation,
 	uint64_t startGlobalIndex,
@@ -820,7 +819,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dO
 }
 
 gsoap_resqml2_0_1::resqml20__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
-	unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
+	unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 	unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 	double originX, double originY, double originZ,
 	double offsetIX, double offsetIY, double offsetIZ, double spacingI,

@@ -23,11 +23,13 @@ under the License.
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 #include "resqml2_test/LocalTime3dCrs.h"
 
-#include "resqml2_2/WellboreInterpretation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
-#include "resqml2_2/SeismicWellboreFrameRepresentation.h"
+
 #include "resqml2_0_1/LocalTime3dCrs.h"
+#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+
+#include "resqml2_2/SeismicWellboreFrameRepresentation.h"
+#include "resqml2_2/WellboreInterpretation.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -51,8 +53,8 @@ void SeismicWellboreRegularFrameRepresentationTest::initRepo() {
 	REQUIRE(hdfProxy != nullptr);
 
 	// getting the local time crs
-	RESQML2_NS::LocalTime3dCrs* crs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>(resqml2_test::LocalTime3dCrs::defaultUuid);
-	if (crs == nullptr) {
+	auto* crs = repo->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(resqml2_test::LocalTime3dCrs::defaultUuid);
+	if (crs == nullptr || !crs->isATimeCrs()) {
 		crs = repo->createPartial<RESQML2_0_1_NS::LocalTime3dCrs>("", "");
 	}
 

@@ -84,7 +84,7 @@ namespace EML2_3_NS
 		 * @param 	value	The value.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
-			const std::string & value);
+			const std::string& value) final;
 
 		/**
 		 * Push back an integer parameter in the instance. This parameter must exist in the associated
@@ -94,7 +94,7 @@ namespace EML2_3_NS
 		 * @param 	value	The value.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
-			int64_t value);
+			int64_t value) final;
 
 		/**
 		 * Push back a resqml object parameter in the instance. This parameter must exist in the
@@ -104,14 +104,14 @@ namespace EML2_3_NS
 		 * @param [in,out]	resqmlObject	If non-null, the resqml object.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
-			AbstractObject* resqmlObject);
+			AbstractObject* resqmlObject) final;
 
 		/**
 		 * Get the count of all the parameters
 		 *
 		 * @returns	The parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getParameterCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterCount() const final;
 
 		/**
 		 * Get the count of all the parameters which have got the same title.
@@ -120,7 +120,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter count.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getParameterCount(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getParameterCount(const std::string & paramTitle) const final;
 
 		/**
 		 * Gets parameter title
@@ -129,7 +129,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter title.
 		 */
-		DLL_IMPORT_OR_EXPORT const std::string & getParameterTitle(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getParameterTitle(uint64_t index) const final;
 
 		/**
 		 * Gets parameter index of title
@@ -138,7 +138,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter index of title.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<unsigned int> getParameterIndexOfTitle(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT std::vector<uint64_t> getParameterIndexOfTitle(const std::string & paramTitle) const final;
 
 		/**
 		 * Query if 'paramTitle' is a floating point quantity parameter
@@ -147,7 +147,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	True if a floating point quantity parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isAFloatingPointQuantityParameter(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT bool isAFloatingPointQuantityParameter(const std::string & paramTitle) const final;
 
 		/**
 		 * Query if 'index' is a floating point quantity parameter
@@ -156,7 +156,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	True if a floating point quantity parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isAFloatingPointQuantityParameter(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool isAFloatingPointQuantityParameter(uint64_t index) const final;
 
 		/**
 		 * Gets floating point quantity parameter value
@@ -165,7 +165,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The floating point quantity parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<double> getFloatingPointQuantityParameterValue(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT std::vector<double> getFloatingPointQuantityParameterValue(const std::string & paramTitle) const final;
 
 		/**
 		 * Gets floating point quantity parameter value
@@ -174,7 +174,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The floating point quantity parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT double getFloatingPointQuantityParameterValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT double getFloatingPointQuantityParameterValue(uint64_t index) const final;
 
 		/**
 		 * Gets floating point quantity parameter uom
@@ -192,7 +192,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The floating point quantity parameter uom.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getFloatingPointQuantityParameterUom(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getFloatingPointQuantityParameterUom(uint64_t index) const;
 
 		/**
 		 * Query if 'paramTitle' is an integer quantity parameter
@@ -201,7 +201,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	True if an integer quantity parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isAnIntegerQuantityParameter(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT bool isAnIntegerQuantityParameter(const std::string & paramTitle) const final;
 
 		/**
 		 * Query if 'index' is an integer quantity parameter
@@ -210,7 +210,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	True if an integer quantity parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isAnIntegerQuantityParameter(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool isAnIntegerQuantityParameter(uint64_t index) const final;
 
 		/**
 		 * Gets integer quantity parameter value
@@ -219,7 +219,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The integer quantity parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<int32_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT std::vector<int64_t> getIntegerQuantityParameterValue(const std::string & paramTitle) const final;
 
 		/**
 		 * Gets integer quantity parameter value
@@ -228,7 +228,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The integer quantity parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getIntegerQuantityParameterValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT int64_t getIntegerQuantityParameterValue(uint64_t index) const final;
 
 		/**
 		 * Query if 'paramTitle' is a string parameter
@@ -237,7 +237,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	True if a string parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isAStringParameter(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT bool isAStringParameter(const std::string & paramTitle) const final;
 
 		/**
 		 * Query if 'index' is a string parameter
@@ -246,7 +246,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	True if a string parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isAStringParameter(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool isAStringParameter(uint64_t index) const final;
 
 		/**
 		 * Gets string parameter value
@@ -255,7 +255,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The string parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringParameterValue(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringParameterValue(const std::string & paramTitle) const final;
 
 		/**
 		 * Gets string parameter value
@@ -264,7 +264,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The string parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT const std::string & getStringParameterValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getStringParameterValue(uint64_t index) const final;
 
 		/**
 		 * Query if 'paramTitle' is a resqml object parameter
@@ -273,7 +273,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	True if a resqml object parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isAResqmlObjectParameter(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT bool isAResqmlObjectParameter(const std::string & paramTitle) const final;
 
 		/**
 		 * Query if 'index' is a resqml object parameter
@@ -282,7 +282,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	True if a resqml object parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool isAResqmlObjectParameter(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT bool isAResqmlObjectParameter(uint64_t index) const final;
 
 		/**
 		 * Gets resqml object parameter value
@@ -291,7 +291,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	Null if it fails, else the resqml object parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const final;
 
 		/**
 		 * Gets resqml object parameter value
@@ -300,21 +300,21 @@ namespace EML2_3_NS
 		 *
 		 * @returns	Null if it fails, else the resqml object parameter value.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractObject* getResqmlObjectParameterValue(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractObject* getResqmlObjectParameterValue(uint64_t index) const final;
 
 		/**
 		 * Set the activity template of the activity
 		 *
 		 * @param [in,out]	activityTemplate	If non-null, the activity template.
 		 */
-		DLL_IMPORT_OR_EXPORT void setActivityTemplate(EML2_NS::ActivityTemplate* activityTemplate);
+		DLL_IMPORT_OR_EXPORT void setActivityTemplate(EML2_NS::ActivityTemplate* activityTemplate) final;
 
 		/**
 		 * Gets activity template dor
 		 *
 		 * @returns	Empty data object reference if it fails, else the activity template data object reference.
 		 */
-		COMMON_NS::DataObjectReference getActivityTemplateDor() const;
+		COMMON_NS::DataObjectReference getActivityTemplateDor() const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

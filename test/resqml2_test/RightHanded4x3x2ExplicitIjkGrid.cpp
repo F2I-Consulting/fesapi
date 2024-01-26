@@ -19,9 +19,7 @@ under the License.
 #include "resqml2_test/RightHanded4x3x2ExplicitIjkGrid.h"
 
 #include "catch.hpp"
-#include "resqml2_test/LocalDepth3dCrsTest.h"
 
-#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/IjkGridExplicitRepresentation.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
 #include "resqml2/DiscreteProperty.h"

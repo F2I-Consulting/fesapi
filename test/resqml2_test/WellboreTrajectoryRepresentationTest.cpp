@@ -19,8 +19,9 @@ under the License.
 #include "resqml2_test/WellboreTrajectoryRepresentationTest.h"
 
 #include "catch.hpp"
-#include "resqml2/LocalDepth3dCrs.h"
-#include "resqml2/LocalTime3dCrs.h"
+
+#include "eml2/AbstractLocal3dCrs.h"
+
 #include "resqml2/MdDatum.h"
 #include "resqml2/WellboreFeature.h"
 #include "resqml2/WellboreInterpretation.h"
@@ -140,7 +141,7 @@ void WellboreTrajectoryRepresentationTest::readRepo() {
 	REQUIRE(azimuths[3] < pi / 2 + epsilon);
 
 	traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(TRAJ_MMTIME_UUID);
-	REQUIRE(dynamic_cast<RESQML2_NS::LocalTime3dCrs*>(traj->getLocalCrs(0)) != nullptr);
+	REQUIRE(dynamic_cast<EML2_NS::AbstractLocal3dCrs*>(traj->getLocalCrs(0)) != nullptr);
 
 	traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(TRAJ_MMELEV_UUID);
 	traj->getInclinationsAndAzimuths(inclinations, azimuths);

@@ -109,6 +109,7 @@ under the License.
 #include "eml2/PropertyKind.h"
 #include "eml2/TimeSeries.h"
 
+#include "eml2_3/LocalEngineeringCompoundCrs.h"
 #include "eml2_3/PropertyKind.h"
 
 #include "witsml2_1/Well.h"
@@ -130,6 +131,8 @@ under the License.
 
 using namespace std;
 
+EML2_NS::AbstractLocal3dCrs* local3dCrs = nullptr;
+EML2_NS::AbstractLocal3dCrs* localTime3dCrs = nullptr;
 EML2_NS::PropertyKind* propType1 = nullptr;
 EML2_NS::PropertyKind* pwls3Length = nullptr;
 
@@ -150,8 +153,6 @@ RESQML2_NS::TriangulatedSetRepresentation* xPlusFrontierRep = nullptr;
 RESQML2_NS::TriangulatedSetRepresentation* yMinusFrontierRep = nullptr;
 RESQML2_NS::TriangulatedSetRepresentation* yPlusFrontierRep = nullptr;
 RESQML2_NS::WellboreTrajectoryRepresentation* w1i1TrajRep = nullptr;
-RESQML2_NS::LocalDepth3dCrs* local3dCrs = nullptr;
-RESQML2_NS::LocalTime3dCrs* localTime3dCrs = nullptr;
 RESQML2_NS::WellboreFeature* wellbore1 = nullptr;
 RESQML2_NS::WellboreInterpretation* wellbore1Interp1 = nullptr;
 RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
@@ -170,10 +171,20 @@ WITSML2_1_NS::WellboreMarker* witsmlWellboreMarker = nullptr;
 
 void serializeWitsmlWells(COMMON_NS::DataObjectRepository * repo)
 {
+	EML2_3_NS::LocalEngineeringCompoundCrs* eml23Crs = dynamic_cast<EML2_3_NS::LocalEngineeringCompoundCrs*>(local3dCrs);
+	if (eml23Crs == nullptr) {
+		repo->setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3);
+		eml23Crs = static_cast<EML2_3_NS::LocalEngineeringCompoundCrs*>
+			(repo->createLocalDepth3dCrs("", "Local engineering compound CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", false));
+		repo->setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0);
+	}
+
 	// WELL
 	witsmlWell = repo->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1", false);
 	witsmlWell->setNameLegal("Legal Name");
-	witsmlWell->pushBackLocation(275, 75);
+	witsmlWell->pushBackLocation(275, 75, eml23Crs->getLocalEngineering2dCrs());
+	witsmlWell->setWellheadElevation(15, gsoap_eml2_3::eml23__LengthUom::m, eml23Crs->getVerticalCrs());
+	witsmlWell->setGroundElevation(.0, gsoap_eml2_3::eml23__LengthUom::m, eml23Crs->getVerticalCrs());
 
 	// WELLBORE
 	witsmlWellbore = repo->createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1", false);
@@ -263,7 +274,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdf
 	wellbore1Interp1 = repo->createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
 	// Representation
-	RESQML2_NS::MdDatum* mdInfo = repo->createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", local3dCrs, gsoap_eml2_3::eml23__ReferencePointKind::mean_x0020sea_x0020level, 275, 75, 0);
+	RESQML2_NS::MdDatum* mdInfo = repo->createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", local3dCrs, gsoap_eml2_3::eml23__ReferencePointKind::mean_x0020sea_x0020level, 275, 75, 15);
 
 	//Geometry	
 	w1i1TrajRep = repo->createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
@@ -2396,7 +2407,7 @@ void deserializeActivity(COMMON_NS::AbstractObject const * resqmlObject)
 					}
 				}
 				else if (activity->isAnIntegerQuantityParameter(paramTitle)) {
-					vector<int32_t> vals = activity->getIntegerQuantityParameterValue(paramTitle);
+					vector<int64_t> vals = activity->getIntegerQuantityParameterValue(paramTitle);
 					for (size_t k = 0; k < vals.size(); ++k) {
 						cout << "Integer value : " << vals[k] << endl;
 					}
@@ -2414,7 +2425,7 @@ void deserializeActivity(COMMON_NS::AbstractObject const * resqmlObject)
 					}
 				}
 				else {
-					const vector<unsigned int> & paramIndex = activity->getParameterIndexOfTitle(paramTitle);
+					const vector<uint64_t> & paramIndex = activity->getParameterIndexOfTitle(paramTitle);
 					for (size_t k = 0; k < paramIndex.size(); ++k) {
 						if (activity->isAFloatingPointQuantityParameter(paramIndex[k]))
 							cout << "Floating Point value : " << activity->getFloatingPointQuantityParameterValue(paramIndex[k]);
@@ -5059,21 +5070,22 @@ void deserialize(const string & inputFile)
 	cout << "m (meter) == " << enumStrMapper.getEnergisticsUnitOfMeasureName(enumStrMapper.getEnergisticsUnitOfMeasure("m")) << endl;
 
 	cout << "CRS" << endl;
-	vector<RESQML2_NS::LocalDepth3dCrs*> depthCrsSet = repo.getLocalDepth3dCrsSet();
-	for (size_t i = 0; i < depthCrsSet.size(); ++i) {
-		cout << "Title is : " << depthCrsSet[i]->getTitle() << endl;
-		if (depthCrsSet[i]->isProjectedCrsDefinedWithEpsg())
-			cout << "Projected : EPSG " << depthCrsSet[i]->getProjectedCrsEpsgCode() << endl;
-		else if (depthCrsSet[i]->isProjectedCrsUnknown())
-			cout << "Projected : Unknown." << "Reason is:" << depthCrsSet[i]->getProjectedCrsUnknownReason() << endl;
-	}
-	vector<RESQML2_NS::LocalTime3dCrs*> timeCrsSet = repo.getLocalTime3dCrsSet();
-	for (size_t i = 0; i < timeCrsSet.size(); ++i) {
-		cout << "Title is : " << timeCrsSet[i]->getTitle() << endl;
-		if (timeCrsSet[i]->isVerticalCrsDefinedWithEpsg())
+	vector<EML2_NS::AbstractLocal3dCrs*> crsSet = repo.getLocal3dCrsSet();
+	for (auto* crs : crsSet) {
+		cout << "Title is : " << crs->getTitle() << endl;
+		if (crs->isProjectedCrsDefinedWithEpsg())
+			cout << "Projected : EPSG " << crs->getProjectedCrsEpsgCode() << endl;
+		else if (crs->isProjectedCrsUnknown())
+			cout << "Projected : Unknown." << "Reason is:" << crs->getProjectedCrsUnknownReason() << endl;
+
+		if (crs->isVerticalCrsDefinedWithEpsg())
 			cout << "Vertical : EPSG one" << endl;
-		else if (timeCrsSet[i]->isVerticalCrsUnknown())
-			cout << "Vertical : Unknown." << "Reason is:" << timeCrsSet[i]->getVerticalCrsUnknownReason() << endl;
+		else if (crs->isVerticalCrsUnknown())
+			cout << "Vertical : Unknown." << "Reason is:" << crs->getVerticalCrsUnknownReason() << endl;
+
+		if (crs->isATimeCrs()) {
+			cout << "Time Unit of measure is : " << crs->getTimeUomAsString() << endl;
+		}
 	}
 	cout << endl;
 

@@ -22,7 +22,7 @@ under the License.
 
 #include "common/EpcDocument.h"
 
-#include "resqml2/LocalDepth3dCrs.h"
+#include "eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace commontest;

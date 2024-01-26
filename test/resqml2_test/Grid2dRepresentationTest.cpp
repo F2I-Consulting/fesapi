@@ -21,10 +21,8 @@ under the License.
 #include "resqml2/BoundaryFeature.h"
 #include "resqml2/HorizonInterpretation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
-#include "resqml2/LocalDepth3dCrs.h"
 #include "eml2/AbstractHdfProxy.h"
 #include "resqml2_test/SeismicLatticeRepresentationTest.h"
-#include "resqml2_test/LocalDepth3dCrsTest.h"
 #include "resqml2/SeismicLatticeFeature.h"
 #include "resqml2/GenericFeatureInterpretation.h"
 

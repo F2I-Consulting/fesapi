@@ -17,10 +17,10 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "LocalDepth3dCrsTest.h"
-#include "resqml2/LocalDepth3dCrs.h"
+
 #include "../catch.hpp"
 
-#include "resqml2/LocalDepth3dCrs.h"
+#include "eml2/AbstractLocal3dCrs.h"
 
 using namespace resqml2_test;
 using namespace COMMON_NS;
@@ -42,8 +42,8 @@ void LocalDepth3dCrsTest::initRepo()
 
 void LocalDepth3dCrsTest::readRepo()
 {
-	REQUIRE( repo->getLocalDepth3dCrsSet().size() == 2 );
-	LocalDepth3dCrs* crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(defaultUuid);
+	REQUIRE( repo->getLocal3dCrsSet().size() == 2 );
+	auto* crs = repo->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(defaultUuid);
 	REQUIRE(crs->getOriginOrdinal1() == 1000);
 	REQUIRE(crs->getOriginOrdinal2() == 2000);
 	REQUIRE(crs->getOriginDepthOrElevation() == 3000);

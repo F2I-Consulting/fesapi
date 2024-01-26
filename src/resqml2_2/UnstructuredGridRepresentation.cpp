@@ -19,7 +19,7 @@ under the License.
 #include "UnstructuredGridRepresentation.h"
 
 #include "../eml2/AbstractHdfProxy.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 
@@ -340,7 +340,7 @@ void UnstructuredGridRepresentation::getCellFaceIsRightHanded(uint8_t* cellFaceI
 void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 	const std::string& faceIndicesPerCell, const std::string&faceIndicesCumulativeCountPerCell,
 	uint64_t faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
-	gsoap_resqml2_0_1::resqml20__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (cellFaceIsRightHanded.empty())
 		throw invalid_argument("The cellFaceIsRightHanded dataset path information cannot be empty.");
@@ -425,7 +425,7 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 }
 
 void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
-	uint64_t pointCount, uint64_t faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
+	uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractLocal3dCrs * localCrs, EML2_NS::AbstractHdfProxy* proxy,
 	const std::string& faceIndicesPerCell, uint64_t faceCountPerCell,
 	const std::string& nodeIndicesPerFace, uint64_t nodeCountPerFace)
 {

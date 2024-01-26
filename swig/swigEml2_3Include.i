@@ -20,16 +20,22 @@ under the License.
 #include "../src/eml2_3/Activity.h"
 #include "../src/eml2_3/ActivityTemplate.h"
 #include "../src/eml2_3/GraphicalInformationSet.h"
+#include "../src/eml2_3/LocalEngineering2dCrs.h"
+#include "../src/eml2_3/LocalEngineeringCompoundCrs.h"
 #include "../src/eml2_3/PropertyKind.h"
 #include "../src/eml2_3/TimeSeries.h"
+#include "../src/eml2_3/VerticalCrs.h"
 %}
 
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace EML2_3_NS::Activity;
 	%nspace EML2_3_NS::ActivityTemplate;
 	%nspace EML2_3_NS::GraphicalInformationSet;
+	%nspace EML2_3_NS::LocalEngineering2dCrs;
+	%nspace EML2_3_NS::LocalEngineeringCompoundCrs;
 	%nspace EML2_3_NS::PropertyKind;
 	%nspace EML2_3_NS::TimeSeries;
+	%nspace EML2_3_NS::VerticalCrs;
 #endif
 
 namespace std {
@@ -2004,6 +2010,33 @@ namespace EML2_3_NS
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(Eml23_LocalEngineering2dCrs) LocalEngineering2dCrs;
+#endif
+	class LocalEngineering2dCrs : public COMMON_NS::AbstractObject
+	{
+	public:
+	};
+
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(Eml23_VerticalCrs) VerticalCrs;
+#endif
+	class VerticalCrs : public COMMON_NS::AbstractObject
+	{
+	public:
+	};
+
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(Eml23_LocalEngineeringCompoundCrs) LocalEngineeringCompoundCrs;
+#endif
+	class LocalEngineeringCompoundCrs : public EML2_NS::AbstractLocal3dCrs
+	{
+	public:
+
+		LocalEngineering2dCrs* getLocalEngineering2dCrs() const;
+		VerticalCrs* getVerticalCrs() const;
+	};
+
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Eml23_PropertyKind) PropertyKind;
 #endif
 	class PropertyKind : public EML2_NS::PropertyKind
@@ -2018,5 +2051,4 @@ namespace EML2_3_NS
 	{
 	public:
 	};
-	
 }

@@ -71,7 +71,7 @@ namespace EML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string & title,
 			bool isInput, bool isOutput,
-			unsigned int minOccurs, int maxOccurs) = 0;
+			uint64_t minOccurs, int64_t maxOccurs) = 0;
 
 		/**
 		 * Pushes back a parameter in the activity template instance. This parameter must be of a RESQML
@@ -90,7 +90,7 @@ namespace EML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string & title,
 			bool isInput, bool isOutput,
-			unsigned int minOccurs, int maxOccurs,
+			uint64_t minOccurs, int64_t maxOccurs,
 			std::string resqmlObjectContentType) = 0;
 
 		/**
@@ -118,7 +118,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The title of the parameter at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual const std::string & getParameterTitle(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string getParameterTitle(uint64_t index) const = 0;
 
 		/**
 		 * Gets parameter allowed kinds
@@ -127,7 +127,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter allowed kinds.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::vector<gsoap_resqml2_0_1::resqml20__ParameterKind> getParameterAllowedKinds(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<gsoap_resqml2_0_1::resqml20__ParameterKind> getParameterAllowedKinds(uint64_t index) const = 0;
 
 		/**
 		 * Gets parameter allowed kinds
@@ -147,7 +147,7 @@ namespace EML2_NS
 		 *
 		 * @returns	True is the parameter at @p index is an input parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool getParameterIsInput(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool getParameterIsInput(uint64_t index) const = 0;
 
 		/**
 		 * Queries if a particular parameter is an input parameter.
@@ -170,7 +170,7 @@ namespace EML2_NS
 		 *
 		 * @returns	True is the parameter at @p index is an output parameter, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool getParameterIsOutput(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool getParameterIsOutput(uint64_t index) const = 0;
 
 		/**
 		 * Queries if a particular parameter is an output parameter.
@@ -193,7 +193,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter minimum occurrences.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getParameterMinOccurences(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getParameterMinOccurences(uint64_t index) const = 0;
 
 		/**
 		 * Gets the minimum occurrences of a particular parameter.
@@ -205,7 +205,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter minimum occurrences.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getParameterMinOccurences(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getParameterMinOccurences(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Gets the maximum occurrences of a particular parameter.
@@ -216,7 +216,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter maximum occurrences.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getParameterMaxOccurences(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getParameterMaxOccurences(uint64_t index) const = 0;
 
 		/**
 		 * Gets the maximum occurrences of a particular parameter.
@@ -228,7 +228,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The parameter maximum occurrences.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getParameterMaxOccurences(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getParameterMaxOccurences(const std::string & paramTitle) const = 0;
 
 		/**
 		 * Gets the set of activities which are based on this activity template within the repository.

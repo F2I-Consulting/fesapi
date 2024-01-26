@@ -176,7 +176,7 @@ void StreamlinesRepresentation::getNodeCountPerLine(uint32_t * nodeCountPerPolyl
 
 void StreamlinesRepresentation::setGeometry(
 	uint32_t const * nodeCountPerPolyline, double const * xyzPoints,
-	EML2_NS::AbstractHdfProxy* hdfProxy, RESQML2_NS::AbstractLocal3dCrs*)
+	EML2_NS::AbstractHdfProxy* hdfProxy, EML2_NS::AbstractLocal3dCrs*)
 {
 	if (nodeCountPerPolyline == nullptr) {
 		throw invalid_argument("The nodeCountPerPolyline cannot be null.");

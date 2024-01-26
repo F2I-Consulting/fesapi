@@ -77,7 +77,7 @@ namespace RESQML2_NS
 		 * 										CRS of the data object repository will be arbitrarily
 		 * 										selected.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD information.
@@ -118,7 +118,7 @@ namespace RESQML2_NS
 		 * 											arbitrarily selected.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
@@ -168,7 +168,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
@@ -218,7 +218,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints,
 			double const* inclinations, double const* azimuths, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Gets the geometry kind.

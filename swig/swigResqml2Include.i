@@ -37,7 +37,6 @@ under the License.
 	%nspace RESQML2_NS::AbstractFeatureInterpretation;
 	%nspace RESQML2_NS::AbstractGridRepresentation;
 	%nspace RESQML2_NS::AbstractIjkGridRepresentation;
-	%nspace RESQML2_NS::AbstractLocal3dCrs;
 	%nspace RESQML2_NS::AbstractOrganizationInterpretation;
 	%nspace RESQML2_NS::AbstractProperty;
 	%nspace RESQML2_NS::AbstractRepresentation;
@@ -73,8 +72,6 @@ under the License.
 	%nspace RESQML2_NS::IjkGridLatticeRepresentation;
 	%nspace RESQML2_NS::IjkGridNoGeometryRepresentation;
 	%nspace RESQML2_NS::IjkGridParametricRepresentation;
-	%nspace RESQML2_NS::LocalDepth3dCrs;
-	%nspace RESQML2_NS::LocalTime3dCrs;
 	%nspace RESQML2_NS::MdDatum;
 	%nspace RESQML2_NS::Model;
 	%nspace RESQML2_NS::NonSealedSurfaceFrameworkRepresentation;
@@ -1967,59 +1964,59 @@ namespace gsoap_resqml2_0_1
 }
 namespace gsoap_eml2_3
 {
-enum class resqml22__Shape3d {
-	sheet = 0,
-	dyke = 1,
-	dome = 2,
-	mushroom = 3,
-	channel = 4,
-	delta = 5,
-	dune = 6,
-	fan = 7,
-	reef = 8,
-	wedge = 9
-};
-enum class resqml22__ContactVerb {
-	stops = 0,
-	splits = 1,
-	crosses = 2
-};
-enum class resqml22__ContactMode {
-	conformable = 0,
-	extended = 1,
-	unconformable = 2
-};
-enum class resqml22__Phase {
-	aquifer = 0,
-	gas_x0020cap = 1,
-	oil_x0020column = 2,
-	seal = 3
-};
-enum class resqml22__LineRole {
-	fault_x0020center_x0020line = 0,
-	pick = 1,
-	inner_x0020ring = 2,
-	outer_x0020ring = 3,
-	trajectory = 4,
-	interpretation_x0020line = 5,
-	contact = 6,
-	depositional_x0020line = 7,
-	erosion_x0020line = 8,
-	contour = 9,
-	pillar = 10,
-	break_x0020line = 11,
-	structural_x0020closure = 12,
-	culture = 13
-};
-enum class eml23__FacetKind {
-	conditions = 0,
-	side = 1,
-	direction = 2,
-	netgross = 3,
-	qualifier = 4,
-	statistics = 5,
-	what = 6
-};
+	enum class resqml22__Shape3d {
+		sheet = 0,
+		dyke = 1,
+		dome = 2,
+		mushroom = 3,
+		channel = 4,
+		delta = 5,
+		dune = 6,
+		fan = 7,
+		reef = 8,
+		wedge = 9
+	};
+	enum class resqml22__ContactVerb {
+		stops = 0,
+		splits = 1,
+		crosses = 2
+	};
+	enum class resqml22__ContactMode {
+		conformable = 0,
+		extended = 1,
+		unconformable = 2
+	};
+	enum class resqml22__Phase {
+		aquifer = 0,
+		gas_x0020cap = 1,
+		oil_x0020column = 2,
+		seal = 3
+	};
+	enum class resqml22__LineRole {
+		fault_x0020center_x0020line = 0,
+		pick = 1,
+		inner_x0020ring = 2,
+		outer_x0020ring = 3,
+		trajectory = 4,
+		interpretation_x0020line = 5,
+		contact = 6,
+		depositional_x0020line = 7,
+		erosion_x0020line = 8,
+		contour = 9,
+		pillar = 10,
+		break_x0020line = 11,
+		structural_x0020closure = 12,
+		culture = 13
+	};
+	enum class eml23__FacetKind {
+		conditions = 0,
+		side = 1,
+		direction = 2,
+		netgross = 3,
+		qualifier = 4,
+		statistics = 5,
+		what = 6
+	};
 }
 
 namespace RESQML2_NS
@@ -2154,64 +2151,19 @@ namespace RESQML2_NS
 
 		gsoap_eml2_3::resqml22__InterpolationMethod getInterpolationMethod();
 		std::string getInterpolationMethodAsString();
-	};
-	
-#if defined(SWIGPYTHON)
-	%rename(Resqml2_AbstractLocal3dCrs) AbstractLocal3dCrs;
-#endif	
-	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
-	{
-	public:
-		double getOriginOrdinal1() const;
-		double getOriginOrdinal2() const;
-		double getOriginDepthOrElevation() const;
-		double getArealRotation() const;
-		bool isDepthOriented() const;
-		
-		bool isProjectedCrsDefinedWithEpsg() const;
-		bool isProjectedCrsUnknown() const;
-		const std::string & getProjectedCrsUnknownReason() const;
-		uint64_t getProjectedCrsEpsgCode() const;
-		
-		bool isVerticalCrsDefinedWithEpsg() const;
-		bool isVerticalCrsUnknown() const;
-		const std::string & getVerticalCrsUnknownReason() const;
-		uint64_t getVerticalCrsEpsgCode() const;
 
-		gsoap_resqml2_0_1::eml20__LengthUom getProjectedCrsUnit() const;
-		std::string getProjectedCrsUnitAsString() const;
-		gsoap_resqml2_0_1::eml20__LengthUom getVerticalCrsUnit() const;
-		std::string getVerticalCrsUnitAsString() const;
-		
-		gsoap_resqml2_0_1::eml20__AxisOrder2d getAxisOrder() const;
-		void setAxisOrder(gsoap_resqml2_0_1::eml20__AxisOrder2d axisOrder) const;
-	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_LocalDepth3dCrs) LocalDepth3dCrs;
-#endif
-	class LocalDepth3dCrs : public AbstractLocal3dCrs
-	{
-	public:
+		void setNanHsvColor(double hue, double saturation, double value, double alpha = 1, std::string const& colorTitle = "");
+		void setNanRgbColor(double red, double green, double blue, double alpha = 1, std::string const& colorTitle = "");
+		void setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha = 1, std::string const& colorTitle = "");
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_LocalTime3dCrs) LocalTime3dCrs;
-#endif
-	class LocalTime3dCrs : public AbstractLocal3dCrs
-	{
-	public:
-		gsoap_resqml2_0_1::eml20__TimeUom getUnit() const;
-		std::string getUnitAsString() const;
-	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_MdDatum) LocalTime3dCrs;
+	%rename(Resqml2_MdDatum) MdDatum;
 #endif
 	class MdDatum : public COMMON_NS::AbstractObject
 	{
 	public:
-		AbstractLocal3dCrs * getLocalCrs() const;
+		EML2_NS::AbstractLocal3dCrs * getLocalCrs() const;
 
 		double getX() const;
 		double getXInGlobalCrs() const;
@@ -2789,7 +2741,7 @@ namespace RESQML2_NS
 		 * 						
 		 * @returns Null if it fails, else the local CRS associated to the @p patchIndex patch.
 		 */
-		AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
+		EML2_NS::AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
 		
 		/**
 		 * Set a time index in a time series for all point geometries of all existing patches of this representation.
@@ -3158,12 +3110,12 @@ namespace RESQML2_NS
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-			double spacingInFastestDirection, double spacingInSlowestDirection, AbstractLocal3dCrs * localCrs = nullptr);
+			double spacingInFastestDirection, double spacingInSlowestDirection, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
-			Grid2dRepresentation * supportingGrid2dRepresentation, AbstractLocal3dCrs * localCrs = nullptr,
+			Grid2dRepresentation * supportingGrid2dRepresentation, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr,
 			unsigned int startIndexI = 0, unsigned int startIndexJ = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1);
 
@@ -3172,7 +3124,7 @@ namespace RESQML2_NS
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
-			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, AbstractLocal3dCrs * localCrs = nullptr);
+			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 		
 		Grid2dRepresentation*  getSupportingRepresentation();
 	};
@@ -3190,12 +3142,12 @@ namespace RESQML2_NS
 		void pushBackGeometryPatch(
 			unsigned int * nodeCountPerPolyline, double * nodes,
 			uint64_t polylineCount, bool allPolylinesClosedFlag,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		void pushBackGeometryPatch(
 			unsigned int * nodeCountPerPolyline, double * nodes,
 			uint64_t polylineCount, bool * polylineClosedFlags,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 				
 		bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const;
 		bool areAllPolylinesClosedOfAllPatches() const;
@@ -3216,7 +3168,7 @@ namespace RESQML2_NS
 	public:
 		void pushBackGeometryPatch(
 			unsigned int xyzPointCount, double * xyzPoints,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -3225,13 +3177,13 @@ namespace RESQML2_NS
 	class PlaneSetRepresentation : public AbstractRepresentation
 	{
 	public:
-		void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, AbstractLocal3dCrs* localCrs = nullptr);
+		void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		void pushBackTiltedPlaneGeometryPatch(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
 			double x3, double y3, double z3,
-			AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
 
 #ifdef SWIGPYTHON
@@ -3240,7 +3192,7 @@ namespace RESQML2_NS
 	class PolylineRepresentation : public AbstractRepresentation
 	{
 	public:
-		void setGeometry(double * points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void setGeometry(double * points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 		bool isClosed() const;
 		bool hasALineRole() const;
 		gsoap_eml2_3::resqml22__LineRole getLineRole() const;
@@ -3257,7 +3209,7 @@ namespace RESQML2_NS
 		uint64_t getTriangleCountOfAllPatches() const;
 		void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const;
 		void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
-		void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
 
 #ifdef SWIGPYTHON
@@ -3285,7 +3237,7 @@ namespace RESQML2_NS
 	class NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
 	public:
-		void pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -3549,28 +3501,28 @@ namespace RESQML2_NS
 		void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml20__CellShape cellShape, AbstractLocal3dCrs * localCrs = nullptr);
+			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, uint64_t * nodeIndicesPerFace, uint64_t * nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml20__CellShape cellShape, AbstractLocal3dCrs * localCrs = nullptr);
+			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setTetrahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setHexahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -4155,7 +4107,7 @@ namespace RESQML2_NS
 			double originX, double originY, double originZ,
 			double directionIX, double directionIY, double directionIZ, double spacingI,
 			double directionJX, double directionJY, double directionJZ, double spacingJ,
-			double directionKX, double directionKY, double directionKZ, double spacingK, AbstractLocal3dCrs * localCrs = nullptr);
+			double directionKX, double directionKY, double directionKZ, double spacingK, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void addSeismic3dCoordinatesToPatch(
 			unsigned int patchIndex,
@@ -4261,14 +4213,14 @@ namespace RESQML2_NS
 			double const* points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t splitCoordinateLineCount = 0, unsigned int const* pillarOfCoordinateLine = nullptr,
 			unsigned int const* splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int const* splitCoordinateLineColumns = nullptr,
-			int8_t const* definedPillars = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			int8_t const* definedPillars = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsCoordinateLineNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
-			const std::string & definedPillars = "", AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string & definedPillars = "", EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 
 #ifdef SWIGPYTHON
@@ -4287,35 +4239,35 @@ namespace RESQML2_NS
 		void setGeometryAsParametricNonSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -4844,7 +4796,7 @@ namespace RESQML2_NS
 		 */
 		void setGeometry(
 			uint32_t const * nodeCountPerPolyline, double const * xyzPoints,
-			EML2_NS::AbstractHdfProxy* hdfProxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* hdfProxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * For each interval of the lines of the representation, gets the index of the grid it is associated to.
@@ -7457,7 +7409,7 @@ namespace RESQML2_NS
 		 * 										CRS of the data object repository will be arbitrarily
 		 * 										selected.
 		 */
-		void setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD information.
@@ -7498,7 +7450,7 @@ namespace RESQML2_NS
 		 * 											arbitrarily selected.
 		 */
 		void setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
@@ -7548,7 +7500,7 @@ namespace RESQML2_NS
 		 */
 		void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
@@ -7598,7 +7550,7 @@ namespace RESQML2_NS
 		 */
 		void setGeometry(double const* controlPoints,
 			double const* inclinations, double const* azimuths, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 			
 		/**
 		 * Sets the MD datum of this trajectory.

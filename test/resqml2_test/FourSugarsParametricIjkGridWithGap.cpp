@@ -19,9 +19,7 @@ under the License.
 #include "resqml2_test/FourSugarsParametricIjkGridWithGap.h"
 
 #include "catch.hpp"
-#include "resqml2_test/LocalDepth3dCrsTest.h"
 
-#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/IjkGridParametricRepresentation.h"
 
 using namespace std;

@@ -22,7 +22,7 @@ under the License.
 
 #include "../resqml2/AbstractFeature.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../resqml2/AbstractValuesProperty.h"
 #include "../eml2/AbstractHdfProxy.h"
 
@@ -119,7 +119,7 @@ void PolylineRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
 }
 
-void PolylineRepresentation::setGeometry(double const* points, unsigned int pointCount, EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+void PolylineRepresentation::setGeometry(double const* points, unsigned int pointCount, EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

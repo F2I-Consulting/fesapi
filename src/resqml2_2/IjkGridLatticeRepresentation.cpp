@@ -20,7 +20,7 @@ under the License.
 
 #include "../resqml2/AbstractFeature.h"
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../resqml2/AbstractValuesProperty.h"
 #include "../eml2/AbstractHdfProxy.h"
 
@@ -304,7 +304,7 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 	double originX, double originY, double originZ,
 	double directionIX, double directionIY, double directionIZ, double spacingI,
 	double directionJX, double directionJY, double directionJZ, double spacingJ,
-	double directionKX, double directionKY, double directionKZ, double spacingK, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	double directionKX, double directionKY, double directionKZ, double spacingK, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

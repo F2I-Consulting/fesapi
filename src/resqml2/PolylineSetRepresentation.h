@@ -108,7 +108,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
 			uint64_t polylineCount, bool allPolylinesClosedFlag,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Pushes back a new patch of polylines.
@@ -137,7 +137,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void pushBackGeometryPatch(
 			unsigned int const * nodeCountPerPolyline, double const * nodes,
 			uint64_t polylineCount, bool * polylineClosedFlags,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Checks if all polylines contained in a given patch are closed. Notice that a returned "false"

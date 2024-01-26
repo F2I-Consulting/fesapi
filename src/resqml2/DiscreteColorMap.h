@@ -48,16 +48,16 @@ namespace RESQML2_NS
 		 * 						are cast to unsigned int in the case of a discrete color map. If indices
 		 * 						== nullptr (default value), indices are set from 0 to colorCount - 1.
 		 */
-		DLL_IMPORT_OR_EXPORT void setHsvColors(unsigned int colorCount, 
-			double const * hsvColors, double const * alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const * indices = nullptr) final;
+		DLL_IMPORT_OR_EXPORT void setHsvColors(uint64_t colorCount,
+			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
+			double const* indices = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getColorCount() const final;
 
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "DiscreteColorMap";
 
 		/**
 		* Get the standard XML tag without XML namespace for serializing this data object.

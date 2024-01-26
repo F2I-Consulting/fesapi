@@ -22,10 +22,11 @@ under the License.
 
 #include "H5public.h"
 
-#include "../resqml2/WellboreInterpretation.h"
-#include "../resqml2/MdDatum.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+
+#include "../resqml2/MdDatum.h"
+#include "../resqml2/WellboreInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -51,8 +52,8 @@ DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::Wellbor
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
-		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
+	if (dynamic_cast<EML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
+		rep->MdUom = static_cast<EML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
 
 	interp->getRepository()->addDataObject(this);

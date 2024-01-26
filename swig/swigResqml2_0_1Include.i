@@ -660,7 +660,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_LocalDepth3dCrs) LocalDepth3dCrs;
 #endif
-	class LocalDepth3dCrs : public RESQML2_NS::LocalDepth3dCrs
+	class LocalDepth3dCrs : public EML2_NS::AbstractLocal3dCrs
 	{
 	public:
 	};
@@ -668,7 +668,7 @@ namespace RESQML2_0_1_NS
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_LocalTime3dCrs) LocalTime3dCrs;
 #endif
-	class LocalTime3dCrs : public RESQML2_NS::LocalTime3dCrs
+	class LocalTime3dCrs : public EML2_NS::AbstractLocal3dCrs
 	{
 	public:
 	};

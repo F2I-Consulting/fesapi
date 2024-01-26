@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
 		* @param indices		array (of size solorCount) of color indices. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
-		DLL_IMPORT_OR_EXPORT void setHsvColors(unsigned int colorCount,
+		DLL_IMPORT_OR_EXPORT void setHsvColors(uint64_t colorCount,
 			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
 			double const* indices = nullptr) final;
 
@@ -72,6 +72,42 @@ namespace RESQML2_NS
 		 * @returns	The interpolation method as string.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getInterpolationMethodAsString();
+
+		/**
+		 * @brief	Sets the NanColor value of a continuous color map
+		 *
+		 * @param 	hue		  	hue in the range [0, 360].
+		 * @param 	saturation	saturation in the range [0, 1].
+		 * @param 	value	  	value in the range [0, 1].
+		 * @param 	alpha	  	(Optional) alpha in the range [0, 1] (0 means transparent and 1 means
+		 * 						opaque). Default alpha value is 1.
+		 * @param 	colorTitle	(Optional) color title. It is not set if empty string (default value)
+		 */
+		DLL_IMPORT_OR_EXPORT void setNanHsvColor(double hue, double saturation, double value, double alpha = 1, std::string const& colorTitle = "");
+
+		/**
+		 * @brief	Sets the NanColor value of a continuous color map
+		 *
+		 * @param 	red		  	red value in the range [0, 1].
+		 * @param 	green	  	green value in the range [0, 1].
+		 * @param 	blue	  	blue value in the range [0, 1].
+		 * @param 	alpha	  	(Optional) alpha in the range [0, 1] (0 means transparent and 1 means
+		 * 						opaque). Default alpha value is 1.
+		 * @param 	colorTitle	(Optional) color title. It is not set if empty string (default value)
+		 */
+		DLL_IMPORT_OR_EXPORT void setNanRgbColor(double red, double green, double blue, double alpha = 1, std::string const& colorTitle = "");
+
+		/**
+		 * @brief	Sets the NanColor value of a continuous color map
+		 *
+		 * @param 	red		  	red value in the range [0, 255].
+		 * @param 	green	  	green value in the range [0, 255].
+		 * @param 	blue	  	blue value in the range [0, 255].
+		 * @param 	alpha	  	(Optional) alpha in the range [0, 1] (0 means transparent and 1 means
+		 * 						opaque). Default alpha value is 1.
+		 * @param 	colorTitle	(Optional) color title. It is not set if empty string (default value)
+		 */
+		DLL_IMPORT_OR_EXPORT void setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha = 1, std::string const& colorTitle = "");
 
 		/** @brief	The XML tag */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "ContinuousColorMap";

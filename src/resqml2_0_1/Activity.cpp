@@ -21,13 +21,10 @@ under the License.
 #include "../eml2/ActivityTemplate.h"
 
 #include <algorithm>
-#include <stdexcept>
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-
-const char* Activity::XML_NS = "resqml20";
 
 Activity::Activity(EML2_NS::ActivityTemplate* activityTemplate, const string & guid, const string & title)
 {
@@ -51,8 +48,8 @@ void Activity::pushBackParameter(const std::string& title, double value, resqml2
 		if (!activityTemplate->isAnExistingParameter(title)) {
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
-		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs <= getParameterCount(title)) {
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
 		vector<resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
@@ -74,10 +71,10 @@ void Activity::pushBackParameter(const std::string& title, const std::string & v
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
-		if (!activityTemplate->isAnExistingParameter(title))
+		if (activityTemplate->isAnExistingParameter(title) == false)
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs <= getParameterCount(title))
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		vector<resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
 		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind::string) == allowedKinds.end())
@@ -96,10 +93,10 @@ void Activity::pushBackParameter(const std::string& title, int64_t value)
 {
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
-		if (!activityTemplate->isAnExistingParameter(title))
+		if (activityTemplate->isAnExistingParameter(title) == false)
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
-		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs <= getParameterCount(title))
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		vector<resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
 		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), resqml20__ParameterKind::integer) == allowedKinds.end())
@@ -121,12 +118,12 @@ void Activity::pushBackParameter(const std::string& title, AbstractObject* resqm
 	}
 	EML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (!activityTemplate->isPartial()) {
-		if (!activityTemplate->isAnExistingParameter(title)) {
+		if (activityTemplate->isAnExistingParameter(title) == false) {
 			throw invalid_argument("The parameter " + title + " does not exist in the associated activity template.");
 		}
 
-		uint64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
-		if (maxOccurs <= getParameterCount(title)) {
+		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
+		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
 
@@ -156,25 +153,20 @@ uint64_t Activity::getParameterCount(const std::string & paramTitle) const
 	return getParameterFromTitle(paramTitle).size();
 }
 
-const std::string & Activity::getParameterTitle(unsigned int index) const
+std::string Activity::getParameterTitle(uint64_t index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	return activity->Parameter[index]->Title;
+	return activity->Parameter.at(index)->Title;
 }
 
-std::vector<unsigned int> Activity::getParameterIndexOfTitle(const std::string & paramTitle) const
+std::vector<uint64_t> Activity::getParameterIndexOfTitle(const std::string & paramTitle) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	vector<unsigned int> paramIndex;
-	for (unsigned int i = 0; i < activity->Parameter.size(); ++i)
-	{
-		if (activity->Parameter[i]->Title == paramTitle)
-		{
+	vector<uint64_t> paramIndex;
+	for (uint64_t i = 0; i < activity->Parameter.size(); ++i) {
+		if (activity->Parameter[i]->Title == paramTitle) {
 			paramIndex.push_back(i);
 		}
 	}
@@ -201,57 +193,51 @@ std::vector<resqml20__AbstractActivityParameter*> Activity::getParameterFromTitl
 *****************************/
 bool Activity::isAFloatingPointQuantityParameter(const std::string & paramTitle) const
 {
-	vector<resqml20__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<resqml20__AbstractActivityParameter*> params = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
+	if (params.empty()) {
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
-	for (unsigned int i = 0; i < param.size(); ++i)
-	{
-		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter)
+	for (const auto* param : params) 	{
+		if (param->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter) {
 			return false;
+		}
 	}
 
 	return true;
 }
 
-bool Activity::isAFloatingPointQuantityParameter(unsigned int index) const
+bool Activity::isAFloatingPointQuantityParameter(uint64_t index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter;
+	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter;
 }
 
 vector<double> Activity::getFloatingPointQuantityParameterValue(const std::string & paramTitle) const
 {
-	vector<resqml20__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<resqml20__AbstractActivityParameter*> params = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
+	if (params.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	vector<double> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
-	{
-		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter)
+	for (auto const* param : params) {
+		if (param->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non double values.");
 		else
-			result.push_back(static_cast<resqml20__FloatingPointQuantityParameter*>(param[i])->Value);
+			result.push_back(static_cast<resqml20__FloatingPointQuantityParameter const*>(param)->Value);
 	}
 
 	return result;
 }
 
-double Activity::getFloatingPointQuantityParameterValue(unsigned int index) const
+double Activity::getFloatingPointQuantityParameterValue(uint64_t index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	if (activity->Parameter[index]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter)
+	if (activity->Parameter.at(index)->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter)
 		throw invalid_argument("The parameter at index is not a floating point quantity parameter.");
 
 	return static_cast<resqml20__FloatingPointQuantityParameter*>(activity->Parameter[index])->Value;
@@ -259,31 +245,27 @@ double Activity::getFloatingPointQuantityParameterValue(unsigned int index) cons
 
 vector<resqml20__ResqmlUom> Activity::getFloatingPointQuantityParameterUom(const std::string & paramTitle) const
 {
-	vector<resqml20__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<resqml20__AbstractActivityParameter*> params = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
+	if (params.size() < 1)
 		throw range_error("The parameter " + paramTitle + " is not in the parameter range.");
 
 	vector<resqml20__ResqmlUom> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
-	{
-		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter)
+	for (auto const* param : params) {
+		if (param->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non double values.");
 		else
-			result.push_back(static_cast<resqml20__FloatingPointQuantityParameter*>(param[i])->Uom);
+			result.push_back(static_cast<resqml20__FloatingPointQuantityParameter const*>(param)->Uom);
 	}
 
 	return result;
 }
 
-gsoap_resqml2_0_1::resqml20__ResqmlUom Activity::getFloatingPointQuantityParameterUom(unsigned int index) const
+gsoap_resqml2_0_1::resqml20__ResqmlUom Activity::getFloatingPointQuantityParameterUom(uint64_t index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	if (activity->Parameter.size() <= index)
-		throw range_error("The parameter index is not in the parameter range.");
-
-	if (activity->Parameter[index]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter)
+	if (activity->Parameter.at(index)->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__FloatingPointQuantityParameter)
 		throw invalid_argument("The parameter index is not in the parameter range.");
 
 	return static_cast<resqml20__FloatingPointQuantityParameter*>(activity->Parameter[index])->Uom;
@@ -294,57 +276,49 @@ gsoap_resqml2_0_1::resqml20__ResqmlUom Activity::getFloatingPointQuantityParamet
 *****************************/
 bool Activity::isAnIntegerQuantityParameter(const std::string & paramTitle) const
 {
-	vector<resqml20__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<resqml20__AbstractActivityParameter*> params = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
+	if (params.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
-	for (unsigned int i = 0; i < param.size(); ++i)
-	{
-		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter)
+	for (auto const* param : params) {
+		if (param->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter)
 			return false;
 	}
 
 	return true;
 }
 
-bool Activity::isAnIntegerQuantityParameter(unsigned int index) const
+bool Activity::isAnIntegerQuantityParameter(uint64_t index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter;
+	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter;
 }
 
-vector<int32_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
+vector<int64_t> Activity::getIntegerQuantityParameterValue(const std::string & paramTitle) const
 {
-	vector<resqml20__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
+	vector<resqml20__AbstractActivityParameter*> params = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
+	if (params.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
-	vector<int32_t> result;
-	for (size_t i = 0; i < param.size(); ++i)
-	{
-		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter)
+	vector<int64_t> result;
+	for (auto const* param : params) {
+		if (param->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non integer values.");
 		else
-			result.push_back(static_cast<resqml20__IntegerQuantityParameter*>(param[i])->Value);
+			result.push_back(static_cast<resqml20__IntegerQuantityParameter const*>(param)->Value);
 	}
 
 	return result;
 }
 
-int64_t Activity::getIntegerQuantityParameterValue(unsigned int index) const
+int64_t Activity::getIntegerQuantityParameterValue(uint64_t index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	if (activity->Parameter[index]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter)
+	if (activity->Parameter.at(index)->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerQuantityParameter)
 		throw invalid_argument("The parameter at index is not an integer quantity parameter.");
 
 	return static_cast<resqml20__IntegerQuantityParameter*>(activity->Parameter[index])->Value;
@@ -369,14 +343,11 @@ bool Activity::isAStringParameter(const std::string & paramTitle) const
 	return true;
 }
 
-bool Activity::isAStringParameter(unsigned int index) const
+bool Activity::isAStringParameter(uint64_t index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StringParameter;
+	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StringParameter;
 }
 
 vector<string> Activity::getStringParameterValue(const std::string & paramTitle) const
@@ -387,8 +358,7 @@ vector<string> Activity::getStringParameterValue(const std::string & paramTitle)
 		invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	vector<string> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
-	{
+	for (size_t i = 0; i < param.size(); ++i) {
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StringParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non string values.");
 		else
@@ -398,14 +368,11 @@ vector<string> Activity::getStringParameterValue(const std::string & paramTitle)
 	return result;
 }
 
-const std::string & Activity::getStringParameterValue(unsigned int index) const
+std::string Activity::getStringParameterValue(uint64_t index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	if (activity->Parameter[index]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StringParameter)
+	if (activity->Parameter.at(index)->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StringParameter)
 		throw invalid_argument("The parameter at index is not a string parameter.");
 
 	return static_cast<resqml20__StringParameter*>(activity->Parameter[index])->Value;
@@ -421,8 +388,7 @@ bool Activity::isAResqmlObjectParameter(const std::string & paramTitle) const
 	if (param.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
-	for (unsigned int i = 0; i < param.size(); ++i)
-	{
+	for (size_t i = 0; i < param.size(); ++i) {
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DataObjectParameter)
 			return false;
 	}
@@ -430,14 +396,11 @@ bool Activity::isAResqmlObjectParameter(const std::string & paramTitle) const
 	return true;
 }
 
-bool Activity::isAResqmlObjectParameter(unsigned int index) const
+bool Activity::isAResqmlObjectParameter(uint64_t index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	return activity->Parameter[index]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DataObjectParameter;
+	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DataObjectParameter;
 }
 
 vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectParameterValue(const std::string & paramTitle) const
@@ -459,14 +422,11 @@ vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectParameterValue(const
 	return result;
 }
 
-COMMON_NS::AbstractObject* Activity::getResqmlObjectParameterValue(unsigned int index) const
+COMMON_NS::AbstractObject* Activity::getResqmlObjectParameterValue(uint64_t index) const
 {
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	if (activity->Parameter.size() <= index)
-		throw out_of_range("The parameter index is not in the parameter range.");
-
-	if (activity->Parameter[index]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DataObjectParameter)
+	if (activity->Parameter.at(index)->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DataObjectParameter)
 		throw invalid_argument("The parameter at index is not a RESQML object parameter.");
 
 	return getRepository()->getDataObjectByUuid(static_cast<resqml20__DataObjectParameter*>(activity->Parameter[index])->DataObject->UUID);

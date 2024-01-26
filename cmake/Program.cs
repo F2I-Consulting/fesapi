@@ -123,7 +123,7 @@ namespace Example
             EpcDocument epc_file = new EpcDocument("TestingPackageCs.epc");
             using (DataObjectRepository repo = new DataObjectRepository())
             {
-                LocalDepth3dCrs crs = repo.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
+                AbstractLocal3dCrs crs = repo.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
                 repo.setDefaultCrs(crs);
                 Console.WriteLine("Serialize : CRS title is " + crs.getTitle());
                 Well well = repo.createWell("1425632e-3c22-4845-b431-ecd36da0671e", "Well", false);
@@ -197,7 +197,7 @@ namespace Example
                 w1i1RegularFrameRep.setMdValues(0, 200, 6);
 ${COMMENT_START}
                 // WellboreFeature seismic frame
-                LocalTime3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.m, 23031, eml20__TimeUom.s, eml20__LengthUom.m, "Unknown", false);
+                AbstractLocal3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.m, 23031, eml20__TimeUom.s, eml20__LengthUom.m, "Unknown", false);
 
                 SeismicWellboreFrameRepresentation w1i1SeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
                     wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",

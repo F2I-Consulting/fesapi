@@ -55,7 +55,7 @@ namespace RESQML2_NS
 		 * @param [in]	localCrs   	(Optional) If non-null, the local CRS. If @c nullptr (default), the
 		 * 							repository default local CRS will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Pushs back a new patch which is not a horizontal plane. Its geometry is given by means of 3
@@ -80,7 +80,7 @@ namespace RESQML2_NS
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
 			double x3, double y3, double z3,
-			RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+			EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "PlaneSetRepresentation";

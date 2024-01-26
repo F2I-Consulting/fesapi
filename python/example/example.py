@@ -173,23 +173,18 @@ def deserialize(file_name):
         enum_str_mapper.getEnergisticsUnitOfMeasure("m")))
 
     print("CRS")
-    for depth_crs_index in range(repo.getLocalDepth3dCrsCount()):
-        depth_crs = repo.getLocalDepth3dCrs(depth_crs_index)
-        print("Title is : " + depth_crs.getTitle())
-        if depth_crs.isProjectedCrsDefinedWithEpsg():
-            print("Projected : EPSG " + str(depth_crs.getProjectedCrsEpsgCode()))
+    for crs_index in range(repo.getLocal3dCrsCount()):
+        crs = repo.getLocal3dCrs(crs_index)
+        print("Title is : " + crs.getTitle())
+        if crs.isProjectedCrsDefinedWithEpsg():
+            print("Projected : EPSG " + str(crs.getProjectedCrsEpsgCode()))
         else:
-            if depth_crs.isProjectedCrsUnknown():
-                print("Projected : Unknown. Reason is:" + depth_crs.getProjectedCrsUnknownReason())
-
-    for time_crs_index in range(repo.getLocalTime3dCrsCount()):
-        time_crs = repo.getLocalTime3dCrs(time_crs_index)
-        print("Title is : " + time_crs.getTitle())
-        if time_crs.isVerticalCrsDefinedWithEpsg():
-            print("Vertical : EPSG one")
+            if crs.isProjectedCrsUnknown():
+                print("Projected : Unknown. Reason is:" + crs.getProjectedCrsUnknownReason())
+        if crs.isATimeCrs():
+            print("It is a time CRS")
         else:
-            if time_crs.isVerticalCrsUnknown():
-                print("Vertical : Unknown. Reason is:" + time_crs.getVerticalCrsUnknownReason())
+            print("It is a depth CRS")
 
     ijk_grid_count = repo.getIjkGridRepresentationCount()
     for ijk_grid_index in range(ijk_grid_count):

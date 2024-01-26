@@ -18,9 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Grid2dRepresentation.h"
 
-#include <stdexcept>
-
-#include "AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -49,7 +47,7 @@ void Grid2dRepresentation::getZValuesInGlobalCrs(double * values) const
 {
 	getZValues(values);
 
-	RESQML2_NS::AbstractLocal3dCrs* localCrs = !getSupportingRepresentationDor().isEmpty()
+	EML2_NS::AbstractLocal3dCrs* localCrs = !getSupportingRepresentationDor().isEmpty()
 		? getSupportingRepresentation()->getLocalCrs(0)
 		: getLocalCrs(0);
 
@@ -71,7 +69,7 @@ double Grid2dRepresentation::getComponentInGlobalCrs(double x, double y, double 
 	}
 
 	// there can be only one patch in a 2d grid repesentation
-	RESQML2_NS::AbstractLocal3dCrs* localCrs = componentIndex != 2 && !getSupportingRepresentationDor().isEmpty()
+	EML2_NS::AbstractLocal3dCrs* localCrs = componentIndex != 2 && !getSupportingRepresentationDor().isEmpty()
 		? getSupportingRepresentation()->getLocalCrs(0)
 		: getLocalCrs(0);
 

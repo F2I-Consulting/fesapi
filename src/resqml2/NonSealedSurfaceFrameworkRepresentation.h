@@ -56,7 +56,7 @@ namespace RESQML2_NS
 		 * 								representation is based on. If @c nullptr (default), then the
 		 * 								default local 3d CRS of the repository will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackNonSealedContactRepresentation(unsigned int pointCount, double const* points, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackNonSealedContactRepresentation(unsigned int pointCount, double const* points, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
                 
         /*
 		* Pushes back a contact patch in a particular contact representation of the structural framework.

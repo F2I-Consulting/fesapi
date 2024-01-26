@@ -22,6 +22,11 @@ under the License.
 
 namespace RESQML2_NS
 {
+	class AbstractLocal3dCrs;
+}
+
+namespace RESQML2_NS
+{
 	/**
 	 * @brief	Proxy class for a MD datum. An MD datum specifies the location of the measured depth
 	 * 			= 0 reference point. The location of this reference point is defined with respect to
@@ -49,7 +54,7 @@ namespace RESQML2_NS
 		 * 										
 		 * @returns	A pointer to the local CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs * getLocalCrs() const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getLocalCrs() const;
 
 		/**
 		 * Gets the data object reference of the local 3d CRS where the reference point ordinals are
@@ -153,6 +158,6 @@ namespace RESQML2_NS
 		 * @param [in]	localCrs	If non-nullptr, the local CRS. If nullptr, the data object repository
 		 * 							default CRS is set.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setLocalCrs(EML2_NS::AbstractLocal3dCrs * localCrs) = 0;
 	};
 }

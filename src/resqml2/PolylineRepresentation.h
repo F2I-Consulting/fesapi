@@ -59,7 +59,7 @@ namespace RESQML2_NS
 		 * 								nullptr (default), then the repository default local CRS will be
 		 * 								used.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		 * Indicates if this representation is a closed polyline or a non closed polyline. A closed

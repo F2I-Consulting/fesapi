@@ -19,19 +19,17 @@ under the License.
 #include "AbstractProperty.h"
 
 #include <algorithm>
-#include <limits>
-#include <stdexcept>
 
 #include "../tools/TimeTools.h"
 
 #include "../common/EnumStringMapper.h"
 
 #include "../eml2/AbstractHdfProxy.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../eml2/PropertyKind.h"
 #include "../eml2/TimeSeries.h"
 
 #include "AbstractRepresentation.h"
-#include "AbstractLocal3dCrs.h"
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
 #include "../resqml2_0_1/PropertySet.h"
@@ -51,7 +49,7 @@ void AbstractProperty::loadTargetRelationships()
 
 	dor = getLocalCrsDor();
 	if (!dor.isEmpty()) {
-		convertDorIntoRel<AbstractLocal3dCrs>(dor);
+		convertDorIntoRel<EML2_NS::AbstractLocal3dCrs>(dor);
 	}
 
 	dor = getPropertyKindDor();
@@ -294,7 +292,7 @@ RESQML2_0_1_NS::PropertySet * AbstractProperty::getPropertySet(uint64_t index) c
 	return getPropertySets().at(index);
 }
 
-void AbstractProperty::setLocalCrs(AbstractLocal3dCrs * crs)
+void AbstractProperty::setLocalCrs(EML2_NS::AbstractLocal3dCrs* crs)
 {
 	if (crs == nullptr) {
 		throw invalid_argument("The crs of this property values cannot be null.");
@@ -314,9 +312,9 @@ void AbstractProperty::setLocalCrs(AbstractLocal3dCrs * crs)
 	getRepository()->addRelationship(this, crs);
 }
 
-AbstractLocal3dCrs* AbstractProperty::getLocalCrs() const
+EML2_NS::AbstractLocal3dCrs* AbstractProperty::getLocalCrs() const
 {
-	return getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(getLocalCrsDor().getUuid());
+	return getRepository()->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(getLocalCrsDor().getUuid());
 }
 
 COMMON_NS::DataObjectReference AbstractProperty::getLocalCrsDor() const

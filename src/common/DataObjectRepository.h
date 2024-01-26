@@ -28,6 +28,7 @@ under the License.
 namespace EML2_NS
 {
 	class AbstractHdfProxy;
+	class AbstractLocal3dCrs;
 	class Activity;
 	class ActivityTemplate;
 	class GraphicalInformationSet;
@@ -40,7 +41,6 @@ namespace RESQML2_NS
 	class AbstractFeature;
 	class AbstractFeatureInterpretation;
 	class AbstractIjkGridRepresentation;
-	class AbstractLocal3dCrs;
 	class AbstractOrganizationInterpretation;
 	class AbstractRepresentation;
 	class AbstractSeismicLineFeature;
@@ -70,8 +70,6 @@ namespace RESQML2_NS
 	class IjkGridLatticeRepresentation;
 	class IjkGridNoGeometryRepresentation;
 	class IjkGridParametricRepresentation;
-	class LocalDepth3dCrs;
-	class LocalTime3dCrs;
 	class MdDatum;
 	class Model;
 	class NonSealedSurfaceFrameworkRepresentation;
@@ -495,7 +493,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the default CRS if it is defined, else null.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractLocal3dCrs* getDefaultCrs() const { return defaultCrs; }
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getDefaultCrs() const { return defaultCrs; }
 
 		/**
 		 * Sets a default CRS for writing. It will be used in all writing methods if no explicit CRS is
@@ -503,7 +501,7 @@ namespace COMMON_NS
 		 *
 		 * @param [in]	crs	If non-null, the default CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT void setDefaultCrs(RESQML2_NS::AbstractLocal3dCrs* crs) { defaultCrs = crs; }
+		DLL_IMPORT_OR_EXPORT void setDefaultCrs(EML2_NS::AbstractLocal3dCrs* crs) { defaultCrs = crs; }
 
 		/**
 		 * Gets the default HDF5 file proxy for writing. It is used in all writing methods if no
@@ -537,8 +535,13 @@ namespace COMMON_NS
 			return all[index];\
 		}
 
-		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
+		GETTER_DATAOBJECTS(EML2_NS::AbstractLocal3dCrs, Local3dCrs)
+		GETTER_DATAOBJECTS(EML2_NS::Activity, Activity)
+		GETTER_DATAOBJECTS(EML2_NS::ActivityTemplate, ActivityTemplate)
+		GETTER_DATAOBJECTS(EML2_NS::GraphicalInformationSet, GraphicalInformationSet)
+		GETTER_DATAOBJECTS(EML2_NS::PropertyKind, PropertyKind)
+		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 
 		GETTER_DATAOBJECTS(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
 		GETTER_DATAOBJECTS(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
@@ -556,8 +559,6 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridParametricRepresentation, IjkGridParametricRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridExplicitRepresentation, IjkGridExplicitRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridLatticeRepresentation, IjkSeismicCubeGridRepresentation)
-		GETTER_DATAOBJECTS(RESQML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
-		GETTER_DATAOBJECTS(RESQML2_NS::LocalTime3dCrs, LocalTime3dCrs)
 		GETTER_DATAOBJECTS(RESQML2_NS::Model, Model)
 		GETTER_DATAOBJECTS(RESQML2_NS::PointSetRepresentation, PointSetRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, AllPolylineRepresentation)
@@ -793,7 +794,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
@@ -825,11 +826,11 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local depth 3d CRS which is identified by an EPSG code for its projected
@@ -858,11 +859,11 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local depth 3d CRS which is unknown for its projected part and which is
@@ -891,10 +892,10 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
 		/**
@@ -924,7 +925,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
@@ -958,12 +959,12 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local time 3d CRS which is identified by an EPSG code for its projected
@@ -993,12 +994,12 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local time 3d CRS which unknown for its projected part and which is
@@ -1028,10 +1029,10 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
@@ -1057,7 +1058,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new MD datum.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum* createMdDatum(const std::string & guid, const std::string & title,
-			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
+			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		//************ FEATURE ***************
@@ -2039,7 +2040,7 @@ namespace COMMON_NS
 			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
-			RESQML2_NS::LocalTime3dCrs* crs);
+			EML2_NS::AbstractLocal3dCrs* crs);
 
 		/**
 		 * Creates a wellbore marker frame representation into this repository
@@ -3068,7 +3069,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new points property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::AbstractLocal3dCrs* localCrs,
 			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind = gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 		/**
@@ -3093,7 +3094,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new points property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::AbstractLocal3dCrs* localCrs,
 			EML2_NS::PropertyKind * localPropType);
 
 		//************* ACTIVITIES ***********
@@ -3576,7 +3577,7 @@ namespace COMMON_NS
 		std::unique_ptr<RESQML2_0_1_NS::PropertyKindMapper> propertyKindMapper;
 
 		EML2_NS::AbstractHdfProxy* defaultHdfProxy = nullptr;
-		RESQML2_NS::AbstractLocal3dCrs* defaultCrs = nullptr;
+		EML2_NS::AbstractLocal3dCrs* defaultCrs = nullptr;
 
 		std::vector<COMMON_NS::DataFeeder*> dataFeeders;
 

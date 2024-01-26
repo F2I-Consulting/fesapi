@@ -54,7 +54,7 @@ namespace RESQML2_0_1_NS
 		 * 												third axis of the local 3d CRS.
 		 */
 		MdDatum(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
+			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		/**
@@ -108,6 +108,6 @@ namespace RESQML2_0_1_NS
 		 * @param [in]	localCrs	If non-nullptr, the local CRS. If nullptr, the data object repository
 		 * 							default CRS is set.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs) final;
+		DLL_IMPORT_OR_EXPORT void setLocalCrs(EML2_NS::AbstractLocal3dCrs * localCrs) final;
 	};
 }

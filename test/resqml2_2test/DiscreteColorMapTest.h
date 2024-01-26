@@ -30,8 +30,6 @@ namespace resqml2_2test {
 		static char const* titleOrganizationFeature;
 		static char const* uuidEarthModelInterpretation;
 		static char const* titleEarthModelInterpretation;
-		static char const* uuidLocalDepth3dCrs;
-		static char const* titleLocalDepth3dCrs;
 		static char const* uuidIjkGridExplicitRepresentation;
 		static char const* titleIjkGridExplicitRepresentation;
 		static char const* uuidPropertyKind;

@@ -19,9 +19,8 @@ under the License.
 #include "SeismicWellboreFrameRepresentation.h"
 
 #include "../eml2/AbstractHdfProxy.h"
-#include "../resqml2/LocalTime3dCrs.h"
-#include "../resqml2/WellboreInterpretation.h"
-#include "../resqml2/WellboreTrajectoryRepresentation.h"
+
+#include "AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_NS;

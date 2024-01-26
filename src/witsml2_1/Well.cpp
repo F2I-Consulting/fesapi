@@ -18,14 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Well.h"
 
-#include <limits>
 #include <stdexcept>
-#include <sstream>
 
-#include "Wellbore.h"
-#include "WellCompletion.h"
-
-#include "../resqml2_0_1/WellboreFeature.h"
+#include "../eml2_3/LocalEngineering2dCrs.h"
+#include "../eml2_3/VerticalCrs.h"
 
 #include "../tools/TimeTools.h"
 
@@ -103,6 +99,7 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_3::witsml21__WellDi
 
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, WaterDepth, gsoap_eml2_3::eml23__LengthUom, gsoap_eml2_3::soap_eml23__LengthUom2s, gsoap_eml2_3::soap_new_eml23__LengthMeasure)
 GETTER_PRESENCE_ATTRIBUTE_IMPL(Well, GroundElevation)
+GETTER_PRESENCE_ATTRIBUTE_IMPL(Well, WellheadElevation)
 
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, PcInterest, gsoap_eml2_3::eml23__DimensionlessUom, gsoap_eml2_3::soap_eml23__DimensionlessUom2s, gsoap_eml2_3::soap_new_eml23__DimensionlessMeasure)
 
@@ -122,7 +119,18 @@ gsoap_eml2_3::eml23__LengthUom Well::getGroundElevationUom() const {
 	return result;
 }
 
-void Well::setGroundElevation(double value, gsoap_eml2_3::eml23__LengthUom uom)
+COMMON_NS::DataObjectReference Well::getGroundElevationDatumDor() const {
+	if (!hasGroundElevation()) { return COMMON_NS::DataObjectReference(); }
+	witsml21__Well* well = static_cast<witsml21__Well*>(gsoapProxy2_3);
+	if (well->GroundElevation->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DatumElevation) {
+		return COMMON_NS::DataObjectReference(static_cast<eml23__DatumElevation*>(well->GroundElevation)->Datum);
+	}
+	else {
+		return COMMON_NS::DataObjectReference(static_cast<eml23__ReferencePointElevation*>(well->GroundElevation)->ReferencePoint);
+	}
+}
+
+void Well::setGroundElevation(double value, gsoap_eml2_3::eml23__LengthUom uom, EML2_3_NS::VerticalCrs* verticalCrs)
 {
 	if (value != value) { throw invalid_argument("You cannot set an undefined measure"); }
 	witsml21__Well* well = static_cast<witsml21__Well*>(gsoapProxy2_3);
@@ -135,11 +143,48 @@ void Well::setGroundElevation(double value, gsoap_eml2_3::eml23__LengthUom uom)
 	lengthMeasure->__item = value;
 	lengthMeasure->uom = gsoap_eml2_3::soap_eml23__LengthUom2s(gsoapProxy2_3->soap, uom);
 	datumElevation->Elevation = lengthMeasure;
-	datumElevation->Datum = soap_new_eml23__DataObjectReference(gsoapProxy2_3->soap); // TODO : allow to reference an existing vertical CRS
-	datumElevation->Datum->Uuid.assign("00000000-0000-0000-0000-000000000000");
-	datumElevation->Datum->QualifiedType.assign("eml23.VerticalCrs");
-	datumElevation->Datum->Title.assign("Fake Vertical CRS");
+	datumElevation->Datum = verticalCrs->newEml23Reference();
 	well->GroundElevation = datumElevation;
+}
+
+double Well::getWellheadElevationValue() const {
+	if (!hasWellheadElevation()) { throw invalid_argument("The Wellhead elevation does not exist."); }
+	return static_cast<witsml21__Well*>(gsoapProxy2_3)->WellheadElevation->Elevation->__item;
+}
+
+gsoap_eml2_3::eml23__LengthUom Well::getWellheadElevationUom() const {
+	if (!hasWellheadElevation()) { throw invalid_argument("The Wellhead elevation does not exist."); }
+	gsoap_eml2_3::eml23__LengthUom result;
+	gsoap_eml2_3::soap_s2eml23__LengthUom(gsoapProxy2_3->soap, static_cast<witsml21__Well*>(gsoapProxy2_3)->WellheadElevation->Elevation->uom.c_str(), &result);
+	return result;
+}
+
+COMMON_NS::DataObjectReference Well::getWellheadElevationDatumDor() const {
+	if (!hasWellheadElevation()) { return COMMON_NS::DataObjectReference(); }
+	witsml21__Well* well = static_cast<witsml21__Well*>(gsoapProxy2_3);
+	if (well->WellheadElevation->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DatumElevation) {
+		return COMMON_NS::DataObjectReference(static_cast<eml23__DatumElevation*>(well->WellheadElevation)->Datum);
+	}
+	else {
+		return COMMON_NS::DataObjectReference(static_cast<eml23__ReferencePointElevation*>(well->WellheadElevation)->ReferencePoint);
+	}
+}
+
+void Well::setWellheadElevation(double value, gsoap_eml2_3::eml23__LengthUom uom, EML2_3_NS::VerticalCrs* verticalCrs)
+{
+	if (value != value) { throw invalid_argument("You cannot set an undefined measure"); }
+	witsml21__Well* well = static_cast<witsml21__Well*>(gsoapProxy2_3);
+	eml23__DatumElevation* datumElevation = well->WellheadElevation == nullptr
+		? soap_new_eml23__DatumElevation(gsoapProxy2_3->soap)
+		: dynamic_cast<eml23__DatumElevation*>(well->WellheadElevation);
+	eml23__LengthMeasureExt* lengthMeasure = datumElevation->Elevation == nullptr
+		? soap_new_eml23__LengthMeasureExt(gsoapProxy2_3->soap)
+		: datumElevation->Elevation;
+	lengthMeasure->__item = value;
+	lengthMeasure->uom = gsoap_eml2_3::soap_eml23__LengthUom2s(gsoapProxy2_3->soap, uom);
+	datumElevation->Elevation = lengthMeasure;
+	datumElevation->Datum = verticalCrs->newEml23Reference();
+	well->WellheadElevation = datumElevation;
 }
 
 void Well::setTimeZone(bool direction, unsigned short hours, unsigned short minutes)
@@ -150,29 +195,23 @@ void Well::setTimeZone(bool direction, unsigned short hours, unsigned short minu
 	if (well->TimeZone == nullptr) { well->TimeZone = soap_new_eml23__TimeZone(gsoapProxy2_3->soap); }
 
 	if (hours == 00 && minutes == 0) {
-		well->TimeZone->assign("Z");
+		well->TimeZone->assign(1, 'Z');
 		return;
 	}
 
-	std::ostringstream oss;
-	if (direction) {
-		oss << "+";
-	}
-	else {
-		oss << "-";
-	}
+	std::string timeZone(1, direction ? '+' : '-');
 
 	if (hours < 10) {
-		oss << "0";
+		timeZone += '0';
 	}
-	oss << hours << ":";
+	timeZone += std::to_string(hours) + ':';
 
 	if (minutes < 10) {
-		oss << "0";
+		timeZone += '0';
 	}
-	oss << minutes;
+	timeZone += std::to_string(minutes);
 
-	well->TimeZone->assign(oss.str());
+	well->TimeZone->assign(timeZone);
 }
 GETTER_PRESENCE_ATTRIBUTE_IMPL(Well, TimeZone)
 bool Well::getTimeZoneDirection() const {
@@ -192,7 +231,7 @@ unsigned short Well::getTimeZoneHours() const {
 unsigned short Well::getTimeZoneMinutes() const {
 	if (!hasTimeZone()) { throw invalid_argument("The attribute to get does not exist."); }
 	if (static_cast<witsml21__Well*>(gsoapProxy2_3)->TimeZone->size() == 1) { return 0; }
-	if (static_cast<witsml21__Well*>(gsoapProxy2_3)->TimeZone->size() != 6) { throw invalid_argument("The time zone does not looks to conform to the XSD standard."); }
+	if (static_cast<witsml21__Well*>(gsoapProxy2_3)->TimeZone->size() != 6) { throw invalid_argument("The time zone does not look to conform to the XSD standard."); }
 
 	istringstream iss(static_cast<witsml21__Well*>(gsoapProxy2_3)->TimeZone->substr(4, 2));
 	unsigned short result;
@@ -200,57 +239,40 @@ unsigned short Well::getTimeZoneMinutes() const {
 	return result;
 }
 
-double Well::getLocationProjectedX(unsigned int locationIndex)
+double Well::getLocationProjectedX(uint64_t locationIndex)
 {
-	witsml21__Well* well = static_cast<witsml21__Well*>(gsoapProxy2_3);
+	auto* surfaceLocation = static_cast<witsml21__Well*>(gsoapProxy2_3)->WellSurfaceLocation.at(locationIndex);
 
-	if (well->WellSurfaceLocation.size() <= locationIndex) {
-		throw range_error("The well location index is out of range.");
-	}
-	if (well->WellSurfaceLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__Projected2dPosition){
-		throw invalid_argument("The well location is not a projected one.");
+	if (surfaceLocation->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__LocalEngineering2dPosition){
+		throw invalid_argument("The well location is not a LocalEngineering2dPosition one.");
 	}
 
-	return static_cast<eml23__Projected2dPosition*>(well->WellSurfaceLocation[locationIndex])->Coordinate1;
+	return static_cast<eml23__LocalEngineering2dPosition*>(surfaceLocation)->Coordinate1;
 }
 
-double Well::getLocationProjectedY(unsigned int locationIndex)
+double Well::getLocationProjectedY(uint64_t locationIndex)
 {
-	witsml21__Well* well = static_cast<witsml21__Well*>(gsoapProxy2_3);
+	auto* surfaceLocation = static_cast<witsml21__Well*>(gsoapProxy2_3)->WellSurfaceLocation.at(locationIndex);
 
-	if (well->WellSurfaceLocation.size() <= locationIndex) {
-		throw range_error("The well location index is out of range.");
-	}
-	if (well->WellSurfaceLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__Projected2dPosition){
-		throw invalid_argument("The well location is not a projected one.");
+	if (surfaceLocation->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__LocalEngineering2dPosition){
+		throw invalid_argument("The well location is not a LocalEngineering2dPosition one.");
 	}
 
-	return static_cast<eml23__Projected2dPosition*>(well->WellSurfaceLocation[locationIndex])->Coordinate2;
+	return static_cast<eml23__LocalEngineering2dPosition*>(surfaceLocation)->Coordinate2;
 }
 
-void Well::pushBackLocation(
-	double projectedX,
-	double projectedY)
+void Well::pushBackLocation(double projectedX, double projectedY, EML2_3_NS::LocalEngineering2dCrs* crs)
 {
 	witsml21__Well* well = static_cast<witsml21__Well*>(gsoapProxy2_3);
 
-	eml23__Projected2dPosition* location = soap_new_eml23__Projected2dPosition(gsoapProxy2_3->soap);
+	eml23__LocalEngineering2dPosition* location = soap_new_eml23__LocalEngineering2dPosition(gsoapProxy2_3->soap);
 	location->Coordinate1 = projectedX;
 	location->Coordinate2 = projectedY;
-	location->ProjectedCrs = soap_new_eml23__DataObjectReference(gsoapProxy2_3->soap);
-	location->ProjectedCrs->Uuid.assign("00000000-0000-0000-0000-000000000001");
-	location->ProjectedCrs->QualifiedType.assign("eml23.ProjectedCrs");
-	location->ProjectedCrs->Title.assign("Fake Projected CRS");
+	location->LocalEngineering2dCrs = crs->newEml23Reference();
 
 	well->WellSurfaceLocation.push_back(location);
 }
 
-unsigned int Well::geLocationCount() const {
-	const size_t result = static_cast<witsml21__Well*>(gsoapProxy2_3)->WellSurfaceLocation.size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much locations");
-	}
-
-	return static_cast<unsigned int>(result);
+uint64_t Well::geLocationCount() const {
+	return static_cast<witsml21__Well*>(gsoapProxy2_3)->WellSurfaceLocation.size();
 }

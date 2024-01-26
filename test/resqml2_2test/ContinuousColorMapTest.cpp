@@ -26,7 +26,6 @@ under the License.
 #include "resqml2/Grid2dRepresentation.h"
 #include "resqml2/Model.h"
 #include "resqml2/EarthModelInterpretation.h"
-#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/ContinuousProperty.h"
 #include "resqml2_2/ContinuousColorMap.h"
 
@@ -51,8 +50,6 @@ char const* ContinuousColorMapTest::uuidOrganizationFeature = "ceefeac1-21b1-4a3
 char const* ContinuousColorMapTest::titleOrganizationFeature = "Organization Feature";
 char const* ContinuousColorMapTest::uuidEarthModelInterpretation = "8f6afd90-71e1-4a1e-891f-9c628feeb980";
 char const* ContinuousColorMapTest::titleEarthModelInterpretation = "Earth Model Interpretation";
-char const* ContinuousColorMapTest::uuidLocalDepth3dCrs = "69aa7e50-1538-4818-93a4-11fcfdc2292e";
-char const* ContinuousColorMapTest::titleLocalDepth3dCrs = "Loacl Depth 3d Crs";
 char const* ContinuousColorMapTest::uuidGraphicalInformationSet = "3b5c1be9-d2a0-4bd3-806f-883d928d1a7d";
 char const* ContinuousColorMapTest::titleGraphicalInformationSet = "Graphical Information Set";
 

@@ -24,7 +24,7 @@ using namespace std;
 using namespace gsoap_eml2_3;
 using namespace RESQML2_NS;
 
-void AbstractColorMap::setRgbColors(unsigned int colorCount,
+void AbstractColorMap::setRgbColors(uint64_t colorCount,
 	double const* rgbColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
@@ -49,7 +49,7 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 	setHsvColors(colorCount, hsvColors.get(), alphas, colorTitles, indices);
 }
 
-void AbstractColorMap::setRgbColors(unsigned int colorCount,
+void AbstractColorMap::setRgbColors(uint64_t colorCount,
 	unsigned int const* rgbColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
@@ -78,7 +78,7 @@ double AbstractColorMap::getHue(double colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw out_of_range("There is no such color index");
+		throw out_of_range("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 
 	return color->Hue;
@@ -88,7 +88,7 @@ double AbstractColorMap::getSaturation(double colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw invalid_argument("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 	return color->Saturation;
 }
@@ -97,7 +97,7 @@ double AbstractColorMap::getValue(double colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw invalid_argument("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 
 	return color->Value;
@@ -107,7 +107,7 @@ double AbstractColorMap::getAlpha(double colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw invalid_argument("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 
 	return color->Alpha;
@@ -127,7 +127,7 @@ bool AbstractColorMap::hasColorTitle(double colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw invalid_argument("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 
 	return color->Title != nullptr;
@@ -136,7 +136,7 @@ std::string AbstractColorMap::getColorTitle(double colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw invalid_argument("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 
 	if (!hasColorTitle(colorIndex)) {

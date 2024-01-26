@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -29,7 +29,7 @@ using namespace gsoap_resqml2_0_1;
 const char* MdDatum::XML_NS = "resqml20";
 
 MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
-	RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
+	EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
 {
 	if (repo == nullptr)
@@ -45,13 +45,13 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	mdInfo->Location->Coordinate3 = referenceLocationOrdinal3;
 	
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 	setLocalCrs(locCrs);
 }
 
-void MdDatum::setLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs)
+void MdDatum::setLocalCrs(EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	// The constructor must force getRepository() not to return nullptr
 
@@ -113,6 +113,6 @@ void MdDatum::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getLocalCrsDor();
 	if (!dor.isEmpty()) {
-		convertDorIntoRel<RESQML2_NS::AbstractLocal3dCrs>(dor);
+		convertDorIntoRel<EML2_NS::AbstractLocal3dCrs>(dor);
 	}
 }

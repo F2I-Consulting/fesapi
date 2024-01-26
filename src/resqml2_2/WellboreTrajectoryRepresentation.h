@@ -63,14 +63,14 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT void setMinimalGeometry(double startMd, double endMd) final;
 
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount,
-			int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 		
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT int getGeometryKind() const final;
 
