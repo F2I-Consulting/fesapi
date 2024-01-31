@@ -711,6 +711,30 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	return nullptr;
 }
 
+uint64_t DataObjectRepository::cascadeDeleteDataObject(COMMON_NS::AbstractObject* proxy)
+{
+	uint64_t result = 0;
+
+	if (!getSourceObjects(proxy).empty()) {
+		return result;
+	}
+	else {
+		++result;
+	}
+	backwardRels.erase(proxy);
+
+	for (COMMON_NS::AbstractObject* targetDataobject : getTargetObjects(proxy)) {
+		std::vector< COMMON_NS::AbstractObject*>& srcObjs = backwardRels.at(targetDataobject);
+		srcObjs.erase(std::remove(srcObjs.begin(), srcObjs.end(), proxy), srcObjs.end());
+		result += cascadeDeleteDataObject(targetDataobject);
+	}
+	forwardRels.erase(proxy);
+
+	dataObjects.erase(proxy->getUuid());
+
+	return result;
+}
+
 std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByDataType() const
 {
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;

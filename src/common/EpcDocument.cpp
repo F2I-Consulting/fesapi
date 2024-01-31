@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "EpcDocument.h"
 
-#include <sstream>
 #include <stdexcept>
 
 #include "H5Epublic.h"
@@ -202,26 +201,22 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 	// 0 means APPEND_STATUS_CREATE
 	package->openForWriting(filePath, 0, useZip64);
 
-	const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects = repo.getDataObjects();
-	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
-	{
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (!it->second[i]->isPartial() &&
-				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
-				(dynamic_cast<WITSML2_1_NS::ChannelSet*>(it->second[i]) == nullptr || static_cast<WITSML2_1_NS::ChannelSet*>(it->second[i])->getLogs().empty()) &&
-				(dynamic_cast<WITSML2_1_NS::Channel*>(it->second[i]) == nullptr || static_cast<WITSML2_1_NS::Channel*>(it->second[i])->getChannelSets().empty())) {
+	for (auto const& uuidDataobjectPair : repo.getDataObjects()) {
+		for (auto* dataobject : uuidDataobjectPair.second) {
+			if (!dataobject->isPartial() &&
+				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(dataobject) == nullptr &&
+				(dynamic_cast<WITSML2_1_NS::ChannelSet*>(dataobject) == nullptr || static_cast<WITSML2_1_NS::ChannelSet*>(dataobject)->getLogs().empty()) &&
+				(dynamic_cast<WITSML2_1_NS::Channel*>(dataobject) == nullptr || static_cast<WITSML2_1_NS::Channel*>(dataobject)->getChannelSets().empty())) {
 				// Dataobject
-				const string str = it->second[i]->serializeIntoString();
-				epc::FilePart* const fp = package->createPart(str, it->second[i]->getPartNameInEpcDocument());
+				epc::FilePart* const fp = package->createPart(dataobject->serializeIntoString(), dataobject->getPartNameInEpcDocument());
 
 				// Relationships
-				const std::vector<epc::Relationship>& relSet = getAllEpcRelationships(repo, it->second[i]);
-				for (size_t relIndex = 0; relIndex < relSet.size(); ++relIndex) {
-					fp->addRelationship(relSet[relIndex]);
+				for (const auto& rel : getAllEpcRelationships(repo, dataobject)) {
+					fp->addRelationship(rel);
 				}
 
 				// Content Type entry
-				package->addContentType(epc::ContentType(false, it->second[i]->getContentType(), it->second[i]->getPartNameInEpcDocument()));
+				package->addContentType(epc::ContentType(false, dataobject->getContentType(), dataobject->getPartNameInEpcDocument()));
 			}
 		}
 	}
@@ -236,9 +231,9 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 		result += warning + '\n';
 	}
 
-	// 14 equals "application/x-".size()
 	for (auto it : package->getFileContentType().getAllContentType()) {
 		std::string contentType = it.second.getContentTypeString();
+		// 14 equals "application/x-".size()
 		if (contentType.find("resqml", 14) != std::string::npos ||
 			contentType.find("eml", 14) != std::string::npos ||
 			contentType.find("witsml", 14) != std::string::npos ||

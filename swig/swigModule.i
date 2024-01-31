@@ -939,6 +939,18 @@ import com.f2i_consulting.fesapi.*;
 		 */
 		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string& xml, const std::string& contentType, const std::string& uriSource);
 		
+		/**
+		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobejct ot delte has got backward relationships.
+		* It also goes on every forward related dataobject and delete them if they have no more backward relationships.
+		* It does that recursively.
+		* Remark : it is mainly used to delete properties because usually no dataobject points to them.
+		* For now, this method only deletes the XML part of the dataobject, not the HDF5 part.
+		*
+		* @param [in]	proxy	The data object to delete.
+		* @return				The count of deleted objects
+		*/
+		uint64_t cascadeDeleteDataObject(COMMON_NS::AbstractObject* proxy);
+		
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractLocal3dCrs, Local3dCrs)

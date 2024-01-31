@@ -433,6 +433,18 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType, const std::string& uriSource);
 
 		/**
+		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobejct ot delte has got backward relationships.
+		* It also goes on every forward related dataobject and delete them if they have no more backward relationships.
+		* It does that recursively.
+		* Remark : it is mainly used to delete properties because usually no dataobject points to them.
+		* For now, this method only deletes the XML part of the dataobject, not the HDF5 part.
+		*
+		* @param [in]	proxy	The data object to delete.
+		* @return				The count of deleted objects
+		*/
+		DLL_IMPORT_OR_EXPORT uint64_t cascadeDeleteDataObject(COMMON_NS::AbstractObject* proxy);
+
+		/**
 		 * Gets all the data objects which are part of this repository
 		 *
 		 * @returns	A map where the key is the UUID of a data object and the value is a vector of
@@ -3547,7 +3559,7 @@ namespace COMMON_NS
 
 		/**
 		* Creates a transaction.
-		* The transactionis actually a child dataobject repository which will be merged into this master dataobject repository.
+		* The transaction is actually a child dataobject repository which will be merged into this master dataobject repository.
 		*/
 		DataObjectRepository* newTransactionRepo();
 
