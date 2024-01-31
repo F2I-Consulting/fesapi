@@ -3885,6 +3885,14 @@ import java.lang.AutoCloseable;
     delete();
   }
 %}
+	/** @brief	EPC is an implementation of the Open Packaging Conventions (OPC), a widely used container-file technology
+	 * that allows multiple types of files to be bundled together into a single package.
+	 * Built on the widely used ZIP file structure and originally created by Microsoft, OPC is now an open standard supported by these standards organizations:
+	 *  - Ecma International (http://www.ecma-international.org/publications/standards/Ecma-376.htm )
+	 *  - ISO/IEC 29500-2:2012, which has 4 parts, which are all freely available at this link (http://standards.iso.org/ittf/PubliclyAvailableStandards/index.html ).
+	 * An EPC file (or package) is a ZIP file, which may be “unzipped” to view its components.
+	 * When implemented as part of an Energistics standard, the zipping/unzipping is done using the OPC libraries (per the EPC Specification).
+	 */
 	class EpcDocument
 	{
 	public:
@@ -3908,13 +3916,12 @@ import java.lang.AutoCloseable;
 		void setFilePath(const std::string & fp);
 
 		/**
-		 * Serializes the content of a data object repository into this EPC document. It also allows to
-		 * optionally zip this EPC document.
+		 * Serializes the content of a data object repository into this EPC document.
 		 *
 		 * @param 	repo		A data object repository.
-		 * @param 	useZip64	(Optional) True to zip the EPC document, else false (default).
+		 * @param 	useZip64	(Optional) True to zip the EPC document using Zip64 format, else (default) simply use Zip format.
 		 */
-		virtual void serializeFrom(const DataObjectRepository & repo, bool useZip64 = false);
+		void serializeFrom(DataObjectRepository& repo, bool useZip64 = false);
 
 		/**
 		 * Deserializes this package (data objects and relationships) into a data object repository
@@ -3925,7 +3932,7 @@ import java.lang.AutoCloseable;
 		 *
 		 * @returns	An empty string if success otherwise the warning string.
 		 */
-		virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
+		virtual std::string deserializeInto(DataObjectRepository& repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 
 // JAVA uses autocloseable and consequently cannot use a second "close" method
 #ifdef SWIGJAVA

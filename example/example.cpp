@@ -1020,9 +1020,11 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	int64_t prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackInt64Hdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
-	RESQML2_0_1_NS::PropertySet* propSet = repo->createPropertySet("", "Testing property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
-	propSet->pushBackProperty(discreteProp1);
-	propSet->pushBackProperty(discreteProp2);
+	RESQML2_0_1_NS::PropertySet* parentPropSet = repo->createPropertySet("3135a6c1-1204-4c30-a0ec-c9357ec13510", "Testing parent property set", false, true, gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
+	RESQML2_0_1_NS::PropertySet* childPropSet = repo->createPropertySet("1d4b4342-288d-47c1-9572-9f330f8e632a", "Testing child property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
+	childPropSet->setParent(parentPropSet);
+	childPropSet->pushBackProperty(discreteProp1);
+	childPropSet->pushBackProperty(discreteProp2);
 
 	RESQML2_NS::DiscreteProperty* discreteProp1OnIjkgridParametric = repo->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
