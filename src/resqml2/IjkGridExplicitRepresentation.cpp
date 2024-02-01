@@ -245,7 +245,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 
 AbstractIjkGridRepresentation::geometryKind IjkGridExplicitRepresentation::getGeometryKind() const
 {
-	return EXPLICIT;
+	return AbstractIjkGridRepresentation::geometryKind::EXPLICIT;
 }
 
 bool IjkGridExplicitRepresentation::isNodeGeometryCompressed() const {

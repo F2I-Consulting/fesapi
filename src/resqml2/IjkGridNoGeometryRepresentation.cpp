@@ -72,5 +72,5 @@ void IjkGridNoGeometryRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, d
 
 AbstractIjkGridRepresentation::geometryKind IjkGridNoGeometryRepresentation::getGeometryKind() const
 {
-	return NO_GEOMETRY;
+	return AbstractIjkGridRepresentation::geometryKind::NO_GEOMETRY;
 }

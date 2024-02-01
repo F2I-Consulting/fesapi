@@ -287,6 +287,15 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual void getMdValues(double* values) const = 0;
 
 		/**
+		 * Converts an array MD values an array of corresponding XYZ points according to this trajectory.
+		 *
+		 * @param [in]	mdValues	An array containing all MD values we want to convert.
+		 * @param [in]	mdCount		The count of MD values in @p mdValues
+		 * @param [out]	xyzPoints	A buffer for receiving the XYZ points converted from @p mdValues. It must be preallocated with a size of 3*mdCount.
+		 */
+		DLL_IMPORT_OR_EXPORT void convertMdValuesToXyzValues(double* mdValues, uint64_t mdCount, double* xyzPoints) const;
+
+		/**
 		 * Gets the starting MD of this wellbore trajectory. Range may often be from kickoff to TD, but
 		 * this is not necessary.
 		 *

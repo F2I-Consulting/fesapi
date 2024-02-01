@@ -113,7 +113,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		cumulativeDataset->CountPerValue = 1;
 		cumulativeDataset->Values = "1";
 		for (uint64_t i = 1; i < getKCellCount(); ++i) {
-			cumulativeDataset->Values += " " + std::to_string(i+1);
+			cumulativeDataset->Values += " " + std::to_string(i + 1);
 		}
 		rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength = cumulativeDataset;
 	}

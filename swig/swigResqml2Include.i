@@ -2575,11 +2575,65 @@ namespace RESQML2_NS
 	class RockFluidOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
 	public:
-		AbstractGridRepresentation* getGridRepresentation(unsigned int index) const;
+		/**
+		 * Gets the count of grid representations associated to this rock fluid organization.
+		 *
+		 * @exception	std::range_error	If the count of associated grid representations is strictly
+		 * 									greater than unsigned int max.
+		 *
+		 * @returns	The count of grid representations associated to this rock fluid organization.
+		 */
+		uint64_t getGridRepresentationCount() const;
+
+		/**
+		 * Gets a grid representation associated to this rock fluid organization by means of its index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getGridRepresentationCount().
+		 *
+		 * @param 	index	Zero-based index of the grid representation to get in the array of grid
+		 * 					representations of this rock fluid organization.
+		 *
+		 * @returns	The associated grid representation at position @p index.
+		 */
+		AbstractGridRepresentation* getGridRepresentation(uint64_t index) const;
+
+		/**
+		 * Checks whether a given grid representation is associated to this rock fluid organization.
+		 *
+		 * @param [in]	gridRep	The grid representation for which we want to know if it is associated to
+		 * 						this rock fluid organization.
+		 *
+		 * @returns	True if @p gridRep is associated to this rock fluid organization, false if not.
+		 */
 		bool isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const;
+
+		/**
+		 * Pushes back a rock fluid unit interpretation in this rock fluid organization.
+		 *
+		 * @exception	std::invalid_argument	If <tt>rockFluidUnitInterpretation == nullptr</tt>.
+		 *
+		 * @param [in]	rockFluidUnitInterpretation	The rock fluid unit interpretation to push back.
+		 */
 		void pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation* rockFluidUnitInterpretation);
-		unsigned int getRockFluidUnitInterpCount() const;
-		RockFluidUnitInterpretation* getRockFluidUnitInterpretation(unsigned int index) const;
+
+		/**
+		 * Gets the count of rock fluid unit interpretations of this rock fluid organization.
+		 *
+		 * @returns	The count of rock fluid unit interpretations of this rock fluid organization.
+		 */
+		uint64_t getRockFluidUnitInterpCount() const;
+
+		/**
+		 * Gets a rock fluid unit interpretation of this rock fluid organization by means of
+		 * its index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getRockFluidUnitInterpCount().
+		 *
+		 * @param 	index	Zero-based index of the rock fluid unit interpretation we look for.
+		 *
+		 * @returns	The rock fluid unit interpretation at position @p index.
+		 */
+		RockFluidUnitInterpretation* getRockFluidUnitInterpretation(uint64_t index) const;
 	};
 	
 #ifdef SWIGPYTHON
@@ -2652,6 +2706,17 @@ namespace RESQML2_NS
 		 * 			the associated interpretation.
 		 */
 		AbstractFeatureInterpretation* getInterpretation() const;
+		
+		/**
+		 * Gets the local 3d CRS associated to a given patch of this representation in read and write
+		 * access.
+		 * 
+		 * @exception std::out_of_range	If @p patchIndex is out of range.
+		 * 								
+		 * @param patchIndex	Zero-based index of the patch for which we look for the local CRS.
+		 * 						
+		 * @returns Null if it fails, else the local CRS associated to the @p patchIndex patch.
+		 */
 		EML2_NS::AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
 		
 		/**
@@ -3433,8 +3498,26 @@ namespace RESQML2_NS
 	class AbstractGridRepresentation : public AbstractRepresentation
 	{
 	public:
-		unsigned int getGridConnectionSetRepresentationCount() const;
-		GridConnectionSetRepresentation* getGridConnectionSetRepresentation(unsigned int index) const;
+		/**
+		 * Gets the count of grid connection set representations associated to this grid instance.
+		 *
+		 * @exception	std::range_error	If the count of grid connection set representations is
+		 * 									strictly greater than unsigned int max.
+		 *
+		 * @returns	The count of grid connection set representations associated to this grid instance.
+		 */
+		uint64_t getGridConnectionSetRepresentationCount() const;
+		
+		/**
+		 * Gets a particular grid connection set representation associated to this grid representation.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range (greater than {@link getGridConnectionSetRepresentationCount()}).
+		 *
+		 * @param 	index	Zero-based index of the grid connection set representation we look for.
+		 *
+		 * @returns	The grid connection set representation at position @p index.
+		 */
+		 GridConnectionSetRepresentation* getGridConnectionSetRepresentation(uint64_t index) const;
 
 		/**
 		 * Gets the total count of cells in the grid.
@@ -3447,8 +3530,8 @@ namespace RESQML2_NS
 		uint64_t getCellCount() const;
 		
 		AbstractGridRepresentation* getParentGrid() const;
-		unsigned int getChildGridCount() const;
-		AbstractGridRepresentation* getChildGrid(unsigned int index) const;
+		uint64_t getChildGridCount() const;
+		AbstractGridRepresentation* getChildGrid(uint64_t index) const;
 		void setParentWindow(uint64_t * cellIndices, uint64_t cellIndexCount, UnstructuredGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy * proxy = nullptr);
 		void setParentWindow(unsigned int * columnIndices, uint64_t columnIndexCount,
 			unsigned int kLayerIndexRegridStart,
@@ -3598,11 +3681,44 @@ namespace RESQML2_NS
 	class AbstractIjkGridRepresentation : public AbstractColumnLayerGridRepresentation
 	{
 	public:
-		enum geometryKind { UNKNOWN = 0, EXPLICIT = 1, PARAMETRIC = 2, LATTICE = 3, NO_GEOMETRY = 4 };
+		enum class geometryKind { UNKNOWN = 0, EXPLICIT = 1, PARAMETRIC = 2, LATTICE = 3, NO_GEOMETRY = 4 };
 	
+		/**
+		 * Gets the count of cells in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
+		 *
+		 * @returns	The count of cell in the I direction.
+		 */
 		unsigned int getICellCount() const;
+
+		/**
+		 * Sets the count of cells in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @param 	iCount	The count of cells to set in the I direction.
+		 */
 		void setICellCount(unsigned int iCount);
+
+		/**
+		 * Gets the count of cells in the J direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
+		 *
+		 * @returns	The count of cell in the J direction.
+		 */
 		unsigned int getJCellCount() const;
+
+		/**
+		 * @brief	Sets the count of cells in the J direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @param 	jCount	The count of cells to set in the J direction.
+		 */
 		void setJCellCount(unsigned int jCount);
 
 		/**
@@ -3660,13 +3776,133 @@ namespace RESQML2_NS
 		 * @returns	The face count.
 		 */
 		uint64_t getFaceCount() const;
-		
+
+		/**
+		 * Gets the I index of a pillar from its global index in this grid. The global (or
+		 * linearized) index of a given pillar is <tt>i pillar + j pillar * (nI pillar)</tt> where
+		 * <tt>i pillar</tt> and <tt>j pillar</tt> are respectively the I and J indices of the
+		 * pillar and <tt>nI pillar</tt> is the count of pillars in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is
+		 * 									strictly greater than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getPillarCount()).
+		 *
+		 * @param 	globalIndex	The global index of the pillar for which we want to get the I index.
+		 *
+		 * @returns	The I index of the pillar.
+		 */
 		unsigned int getIPillarFromGlobalIndex(unsigned int globalIndex) const;
+
+		/**
+		 * Gets the J index of a pillar from its global index in this grid. The global (or
+		 * linearized) index of a given pillar is <tt>i pillar + j pillar * (nI pillar)</tt> where
+		 * <tt>i pillar</tt> and <tt>j pillar</tt> are respectively the I and J indices of the
+		 * pillar and <tt>nI pillar</tt> is the count of pillars in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is
+		 * 									strictly greater than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getPillarCount()).
+		 *
+		 * @param 	globalIndex	The global index of the pillar for which we want to get the J index.
+		 *
+		 * @returns	The J index of the pillar.
+		 */
 		unsigned int getJPillarFromGlobalIndex(unsigned int globalIndex) const;
+
+		/**
+		 * Gets the global index of a pillar from its I and J indices in the grid. The global (or
+		 * linearized) index of a given pillar is <tt>i pillar + j pillar * (nI pillar)</tt> where
+		 * <tt>i pillar</tt> and <tt>j pillar</tt> are respectively the I and J indices of the
+		 * pillar and <tt>nI pillar</tt> is the count of pillars in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p iPillar is strictly greater than getICellCount().
+		 * @exception	std::out_of_range	If @p jPillar is strictly greater than getJCellCount().
+		 *
+		 * @param 	iPillar	The I index of the pillar.
+		 * @param 	jPillar	The J index of the pillar.
+		 *
+		 * @returns	The global index of the pillar.
+		 */
 		unsigned int getGlobalIndexPillarFromIjIndex(unsigned int iPillar, unsigned int jPillar) const;
+
+		/**
+		 * Gets the I index of a column from its global index in the grid. The global (or linearized)
+		 * index of a given column is <tt>i column + j column * (nI cell)</tt> where
+		 * <tt>i column</tt> and <tt>j column</tt> are respectively the I and J indices of the
+		 * column and <tt>nI cell</tt> is the count of cells in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getColumnCount()).
+		 *
+		 * @param 	globalIndex	The global index of the column for which we want to get the I index.
+		 *
+		 * @returns	The I index of the column.
+		 */
 		unsigned int getIColumnFromGlobalIndex(unsigned int globalIndex) const;
+
+		/**
+		 * Gets the J index of a column from its global index in the grid. The global (or linearized)
+		 * index of a given column is <tt>i column + j column * (nI cell)</tt> where
+		 * <tt>i column</tt> and <tt>j column</tt> are respectively the I and J indices of the
+		 * column and <tt>nI cell</tt> is the count of cells in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p globalIndex is out of range (greater than or equal to
+		 * 									getColumnCount()).
+		 *
+		 * @param 	globalIndex	The global index of the column for which we want to get the J index.
+		 *
+		 * @returns	The J index of the column.
+		 */
 		unsigned int getJColumnFromGlobalIndex(unsigned int globalIndex) const;
+
+		/**
+		 * Gets the global index of a column from its I and J indices in the grid. The global (or
+		 * linearized) index of a given column is <tt>i column + j column * (nI cell)</tt> where
+		 * <tt>i column</tt> and <tt>j column</tt> are respectively the I and J indices of the
+		 * column and <tt>nI cell</tt> is the count of cells in the I direction.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I or J direction is strictly greater
+		 * 									than unsigned int max.
+		 * @exception	std::out_of_range	If @p iColumn is greater than or equal to getICellCount().
+		 * @exception	std::out_of_range	If @p jColumn is greater than or equal to getJCellCount().
+		 *
+		 * @param 	iColumn	The I index of the column.
+		 * @param 	jColumn	The J index of the column.
+		 *
+		 * @returns	The global index of the column.
+		 */
 		unsigned int getGlobalIndexColumnFromIjIndex(unsigned int iColumn, unsigned int jColumn) const;
+
+		/**
+		 * Gets the global index of a cell from its I, J and K indices in the grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error 	If the count of cells in I, J or K direction is strictly
+		 * 									greater than unsigned int max.
+		 * @exception	std::out_of_range	If @p iCell is greater than or equal to getICellCount().
+		 * @exception	std::out_of_range	If @p jCell is greater than or equal to getJCellCount().
+		 * @exception	std::out_of_range	If @p kCell is greater than or equal to getKCellCount().
+		 *
+		 * @param 	iCell	The I index of the cell.
+		 * @param 	jCell	The J index of the cell.
+		 * @param 	kCell	The K index of the cell.
+		 *
+		 * @returns	The global index of the cell.
+		 */
 		unsigned int getGlobalIndexCellFromIjkIndex(unsigned int iCell, unsigned int jCell, unsigned int kCell) const;
 
 		/**
@@ -3680,8 +3916,60 @@ namespace RESQML2_NS
 		 */
 		bool isRightHanded() const;
 
+		/**
+		 * Gets all the pillars which correspond to all split coordinate lines. The order of the pillars
+		 * corresponds to the order of the split coordinate lines.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split coordinate line in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the indices of the pillars corresponding to the split
+		 * 										coordinate lines are not stored within an HDF5 integer
+		 * 										array.
+		 *
+		 * @param [out]	pillarIndices	An array for receiving the indices of the pillars corresponding
+		 * 								to the split coordinate lines. It must be preallocated with a
+		 * 								size of getSplitCoordinateLineCount().
+		 * @param 	   	reverseIAxis 	(Optional) True to reverse I axis. Default value is false.
+		 * @param 	   	reverseJAxis 	(Optional) True to reverse J axis. Default value is false.
+		 */
 		void getPillarsOfSplitCoordinateLines(unsigned int * pillarIndices, bool reverseIAxis = false, bool reverseJAxis = false) const;
+
+		/**
+		 * Gets all the columns impacted by all the split coordinate lines. The order of the columns
+		 * corresponds to the order of the split coordinate lines.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split coordinate line in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the indices of the columns impacted by the split
+		 * 										coordinate lines are not stored within an HDF5 integer
+		 * 										array.
+		 *
+		 * @param [out]	columnIndices	An array for receiving the indices of the columns impacted by the
+		 * 								split coordinate lines. It must be preallocated with a size equal
+		 * 								to the last value of the array outputted from
+		 * 								getColumnCountOfSplitCoordinateLines().
+		 * @param 	   	reverseIAxis 	(Optional) True to reverse i axis. Default value is false.
+		 * @param 	   	reverseJAxis 	(Optional) True to reverse j axis. Default value is false.
+		 */
 		void getColumnsOfSplitCoordinateLines(unsigned int * columnIndices, bool reverseIAxis = false, bool reverseJAxis = false) const;
+
+		/**
+		 * Gets the cumulative count of columns impacted by all the split coordinate lines. The order of
+		 * the cumulative count values corresponds to the order of the split coordinates lines.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split coordinate line in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the cumulative count of the columns impacted by the
+		 * 										split coordinate lines are not stored within an HDF5
+		 * 										integer array.
+		 *
+		 * @param [out]	columnIndexCountPerSplitCoordinateLine	An array for receiving the cumulative
+		 * 														count of columns impacted by the split
+		 * 														coordinate lines.
+		 */
 		void getColumnCountOfSplitCoordinateLines(unsigned int * columnIndexCountPerSplitCoordinateLine) const;
 
 		/**
@@ -4801,7 +5089,28 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The property set at @p index.
 		 */
-		RESQML2_0_1_NS::PropertySet* getPropertySet(uint64_t index) const;
+		gsoap_eml2_3::eml23__IndexableElement getAttachmentKind() const;
+		
+		/**
+		 * Gets the count of property sets which contain this property
+		 *
+		 * @exception	std::range_error	If the count of property sets is strictly greater than
+		 * 									unsigned int max.
+		 *
+		 * @returns	The count of property sets which contain this property.
+		 */
+		uint64_t getPropertySetCount() const;
+
+		/**
+		 * Gets a given property set taken from all property sets which contain this property
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the property set we look for.
+		 *
+		 * @returns	The property set at @p index.
+		 */
+		RESQML2_0_1_NS::PropertySet * getPropertySet(uint64_t index) const;
 		
 		//*********************************************
 		//****************** CRS **********************
@@ -5051,14 +5360,14 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
-		void pushBackIntHdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackInt32Hdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 1d array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
-		void pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackInt16Hdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 1d array of explicit char values to the property values.
@@ -5093,21 +5402,21 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		void pushBackIntHdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackInt32Hdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 2d array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		void pushBackShortHdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackInt16Hdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 2d array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		void pushBackUInt16Hdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds a 2d array of explicit char values to the property values.
@@ -5144,21 +5453,21 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		void pushBackIntHdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackInt32Hdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 3d array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		void pushBackShortHdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackInt16Hdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 3d array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		void pushBackUInt16Hdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds a 3d array of explicit char values to the property values.
@@ -5192,21 +5501,21 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackIntHdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		virtual void pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackShortHdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		virtual void pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		virtual void pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds an nd array of explicit int8_t values to the property values.
@@ -5318,7 +5627,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int32_t getIntValuesOfPatch(uint64_t patchIndex, int32_t* values) const;
+		int32_t getInt32ValuesOfPatch(uint64_t patchIndex, int32_t * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -5333,7 +5642,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		uint32_t getUIntValuesOfPatch(uint64_t patchIndex, uint32_t* values) const;
+		uint32_t getUInt32ValuesOfPatch(uint64_t patchIndex, uint32_t * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
@@ -5347,7 +5656,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		int16_t getShortValuesOfPatch(uint64_t patchIndex, int16_t* values) const;
+		int16_t getInt16ValuesOfPatch(uint64_t patchIndex, int16_t * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
@@ -5362,7 +5671,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The null value.
 		 */
-		uint16_t getUShortValuesOfPatch(uint64_t patchIndex, uint16_t* values) const;
+		uint16_t getUInt16ValuesOfPatch(uint64_t patchIndex, uint16_t * values) const;
 
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
@@ -7537,7 +7846,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of supporting grid representation.
 		 */
-		unsigned int getSupportingGridRepresentationCount() const;
+		uint64_t getSupportingGridRepresentationCount() const;
 
 		/**
 		 * Gets the supporting grid representation located at a specific index of this blocked wellbore
@@ -7550,7 +7859,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The supporting grid representation at position @p index.
 		 */
-		RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
+		RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(uint64_t index) const;
 	};
 	
 #ifdef SWIGPYTHON
@@ -7575,15 +7884,15 @@ namespace RESQML2_NS
 		WellboreMarkerFrameRepresentation const * getWellboreMarkerFrameRepresentation() const;
 		BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const;
 		void setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp);
-		WITSML2_0_NS::WellboreMarker* getWitsmlWellboreMarker() const;
-		void setWitsmlWellboreMarker(WITSML2_0_NS::WellboreMarker * wellboreMarker);
+		WITSML2_1_NS::WellboreMarker* getWitsmlWellboreMarker() const;
+		void setWitsmlWellboreMarker(WITSML2_1_NS::WellboreMarker * wellboreMarker);
 		bool hasDipAngle() const;
 		double getDipAngleValue() const;
-		gsoap_eml2_1::eml21__PlaneAngleUom getDipAngleUom() const;
+		gsoap_eml2_3::eml23__PlaneAngleUom getDipAngleUom() const;
 		std::string getDipAngleUomAsString() const;
 		bool hasDipDirection() const;
 		double getDipDirectionValue() const;
-		gsoap_eml2_1::eml21__PlaneAngleUom getDipDirectionUom() const;
+		gsoap_eml2_3::eml23__PlaneAngleUom getDipDirectionUom() const;
 		std::string getDipDirectionUomAsString() const;
 	};
 }

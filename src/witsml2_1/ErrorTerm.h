@@ -21,12 +21,12 @@ under the License.
 #include <vector>
 #include <string>
 
-#include "witsml2_1/ErrorTermDictionary.h"
-#include "witsml2_1/ToolErrorModel.h"
+#include "ErrorTermDictionary.h"
+#include "ToolErrorModel.h"
 
 namespace WITSML2_1_NS
 {
-	class ErrorTerm : public WITSML2_1_NS::AbstractObject
+	class ErrorTerm : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -34,7 +34,7 @@ namespace WITSML2_1_NS
 		* Only to be used in partial transfer context
 		*/
 		ErrorTerm(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			WITSML2_1_NS::AbstractObject(partialObject) {}
+			COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -43,13 +43,13 @@ namespace WITSML2_1_NS
 		ErrorTerm(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+			gsoap_eml2_3::witsml21__ErrorPropagationMode propagationMode,
 			class WeightingFunction* weightingFunction);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		ErrorTerm(gsoap_eml2_2::witsml2__ErrorTerm* fromGsoap) :AbstractObject(fromGsoap) {}
+		ErrorTerm(gsoap_eml2_3::witsml21__ErrorTerm* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -58,7 +58,7 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool isTopLevelElement() const;
 
-		gsoap_eml2_2::eml22__DataObjectReference* getWeightingFunctionDor() const;
+		gsoap_eml2_3::eml23__DataObjectReference* getWeightingFunctionDor() const;
 		DLL_IMPORT_OR_EXPORT class WeightingFunction* getWeightingFunction() const;
 		DLL_IMPORT_OR_EXPORT void setWeightingFunction(class WeightingFunction* weightingFunction);
 
@@ -66,6 +66,16 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml21";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }
 

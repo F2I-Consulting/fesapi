@@ -62,6 +62,8 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		HORIZONINTERPRETATION,
 		IJKGRIDREPRESENTATION,
 		LOCALDEPTH3DCRS,
+		LOCALENGINEERING2DCRS,
+		LOCALENGINEERINGCOMPOUNDCRS,
 		LOCALTIME3DCRS,
 		LOG,
 		MDDATUM,
@@ -104,6 +106,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		TRIANGULATEDSETREPRESENTATION,
 		TRUNCATEDIJKGRIDREPRESENTATION,
 		UNSTRUCTUREDGRIDREPRESENTATION,
+		VERTICALCRS,
 		WELL,
 		WELLBORE,
 		WELLBORECOMPLETION,
@@ -158,9 +161,6 @@ ${COMMENT_END}
 		if (xmlNs.Equals("resqml20")) {
 			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.PropertyKind(cPtr, owner);
 		}
-		else if (xmlNs.Equals("eml21")) {
-			return new F2iConsulting.Fesapi.${FESAPI_EML2_1_NS}.PropertyKind(cPtr, owner);
-		}
 ${COMMENT_START}
 		else if (xmlNs.Equals("eml23")) {
 			return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.PropertyKind(cPtr, owner);
@@ -181,19 +181,6 @@ ${COMMENT_START}
 			return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.TimeSeries(cPtr, owner);
 		}
 ${COMMENT_END}
-		
-		return null;
-	}
-	
-	public static F2iConsulting.Fesapi.${FESAPI_WITSML2_NS}.Trajectory witsml2_instantiateTrajectory(global::System.IntPtr cPtr, bool owner)
-	{
-		string xmlNs = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespace(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
-		if (xmlNs.Equals("witsml14")) {
-			return new F2iConsulting.Fesapi.${FESAPI_WITSML1_4_NS}.Trajectory(cPtr, owner);
-		}
-		else if (xmlNs.Equals("witsml20")) {
-			return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
-		}
 		
 		return null;
 	}
@@ -473,7 +460,6 @@ ${COMMENT_END}
 		
 		return null;
 	}
-	
 	
 	public static F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.Grid2dRepresentation resqml2_instantiateGrid2dRepresentation(global::System.IntPtr cPtr, bool owner)
 	{
@@ -882,8 +868,8 @@ ${COMMENT_END}
 		case DataObjectName.BOUNDARYFEATURE : return resqml2_instantiateBoundaryFeature(cPtr, owner);
 		case DataObjectName.BOUNDARYFEATUREINTERPRETATION : return resqml2_instantiateBoundaryFeatureInterpretation(cPtr, owner);
 		case DataObjectName.CATEGORICALPROPERTY : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.CategoricalProperty(cPtr, owner);
-		case DataObjectName.CHANNEL : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Channel(cPtr, owner);
-		case DataObjectName.CHANNELSET : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.ChannelSet(cPtr, owner);
+		case DataObjectName.CHANNEL : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.Channel(cPtr, owner);
+		case DataObjectName.CHANNELSET : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.ChannelSet(cPtr, owner);
 ${COMMENT_START}
 		case DataObjectName.CMPLINEFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.CmpLineFeature(cPtr, owner);
 ${COMMENT_END}
@@ -908,8 +894,8 @@ ${COMMENT_END}
 ${COMMENT_START}
 		case DataObjectName.FLUIDBOUNDARYINTERPRETATION : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.FluidBoundaryInterpretation(cPtr, owner);
 ${COMMENT_END}
-		case DataObjectName.FLUIDCHARACTERIZATION : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_1_NS}.FluidCharacterization(cPtr, owner);
-		case DataObjectName.FLUIDSYSTEM : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_1_NS}.FluidSystem(cPtr, owner);
+		case DataObjectName.FLUIDCHARACTERIZATION : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_2_NS}.FluidCharacterization(cPtr, owner);
+		case DataObjectName.FLUIDSYSTEM : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_2_NS}.FluidSystem(cPtr, owner);
 		case DataObjectName.FRONTIERFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.FrontierFeature(cPtr, owner);
 		case DataObjectName.GENETICBOUNDARYFEATURE :
 			F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature result = new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature(cPtr, owner);
@@ -923,14 +909,15 @@ ${COMMENT_END}
 		case DataObjectName.STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
 ${COMMENT_START}
 		case DataObjectName.GRAPHICALINFORMATIONSET : return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.GraphicalInformationSet(cPtr, owner);
-${COMMENT_END}
 		case DataObjectName.GRID2DREPRESENTATION : return resqml2_instantiateGrid2dRepresentation(cPtr, owner);
 		case DataObjectName.GRIDCONNECTIONSETREPRESENTATION : return resqml2_instantiateGridConnectionSetRepresentation(cPtr, owner);
 		case DataObjectName.HORIZONINTERPRETATION : return resqml2_instantiateHorizonInterpretation(cPtr, owner);
 		case DataObjectName.IJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);
 		case DataObjectName.LOCALDEPTH3DCRS : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.LocalDepth3dCrs(cPtr, owner);
+		case DataObjectName.LOCALENGINEERING2DCRS : return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.LocalEngineering2dCrs(cPtr, owner);
+		case DataObjectName.LOCALENGINEERINGCOMPOUNDCRS : return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.LocalEngineeringCompoundCrs(cPtr, owner);
 		case DataObjectName.LOCALTIME3DCRS : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.LocalTime3dCrs(cPtr, owner);
-		case DataObjectName.LOG : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
+		case DataObjectName.LOG : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.Log(cPtr, owner);
 		case DataObjectName.MDDATUM : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.MdDatum(cPtr, owner);
 ${COMMENT_START}
 		case DataObjectName.MODEL : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.Model(cPtr, owner);
@@ -971,22 +958,23 @@ ${COMMENT_END}
 		case DataObjectName.SUBREPRESENTATION : return resqml2_instantiateSubRepresentation(cPtr, owner);
 		case DataObjectName.TECTONICBOUNDARYFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.TectonicBoundaryFeature(cPtr, owner);
 		case DataObjectName.TIMESERIES : return eml2_instantiateTimeSeries(cPtr, owner);
-		case DataObjectName.TIMESERIESDATA : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_1_NS}.TimeSeriesData(cPtr, owner);
-		case DataObjectName.TRAJECTORY : return witsml2_instantiateTrajectory(cPtr, owner);
+		case DataObjectName.TIMESERIESDATA : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_2_NS}.TimeSeriesData(cPtr, owner);
+		case DataObjectName.TRAJECTORY : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.Trajectory(cPtr, owner);
 		case DataObjectName.TRIANGULATEDSETREPRESENTATION : return resqml2_instantiateTriangulatedSetRepresentation(cPtr, owner);
 		case DataObjectName.TRUNCATEDIJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);
 		case DataObjectName.UNSTRUCTUREDGRIDREPRESENTATION : return resqml2_instantiateUnstructuredGridRepresentation(cPtr, owner);
-		case DataObjectName.WELL : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);
-		case DataObjectName.WELLBORE : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.Wellbore(cPtr, owner);
-		case DataObjectName.WELLBORECOMPLETION : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
+		case DataObjectName.VERTICALCRS : return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.VerticalCrs(cPtr, owner);
+		case DataObjectName.WELL : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.Well(cPtr, owner);
+		case DataObjectName.WELLBORE : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.Wellbore(cPtr, owner);
+		case DataObjectName.WELLBORECOMPLETION : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.WellboreCompletion(cPtr, owner);
 		case DataObjectName.WELLBOREFEATURE : return resqml2_instantiateWellboreFeature(cPtr, owner);
 		case DataObjectName.WELLBOREFRAMEREPRESENTATION : return resqml2_instantiateWellboreFrameRepresentation(cPtr, owner);
-		case DataObjectName.WELLBOREGEOMETRY : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.WellboreGeometry(cPtr, owner);
+		case DataObjectName.WELLBOREGEOMETRY : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.WellboreGeometry(cPtr, owner);
 		case DataObjectName.WELLBOREINTERPRETATION : return resqml2_instantiateWellboreInterpretation(cPtr, owner);
 		case DataObjectName.WELLBOREMARKER : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.WellboreMarker(cPtr, owner);
 		case DataObjectName.WELLBOREMARKERFRAMEREPRESENTATION : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.WellboreMarkerFrameRepresentation(cPtr, owner);
 		case DataObjectName.WELLBORETRAJECTORYREPRESENTATION : return resqml2_instantiateWellboreTrajectoryRepresentation(cPtr, owner);
-		case DataObjectName.WELLCOMPLETION : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_0_NS}.WellCompletion(cPtr, owner);
+		case DataObjectName.WELLCOMPLETION : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.WellCompletion(cPtr, owner);
 		default : throw new System.ArgumentException("Encountered type " + type + " that is not known to be a RESQML or WITSML concrete class");
     }
   }
@@ -1003,10 +991,8 @@ namespace COMMON_NS
 
 namespace EML2_NS
 {
-	%typemap(csout, excode=SWIGEXCODE) 	Activity*, ActivityTemplate*, EpcExternalPartReference*, PropertyKind*, TimeSeries*
-#ifdef WITH_RESQML2_2
+	%typemap(csout, excode=SWIGEXCODE) 	Activity*, ActivityTemplate*, EpcExternalPartReference*, PropertyKind*, TimeSeries*, AbstractLocal3dCrs*
 										,GraphicalInformationSet*
-#endif
 	{
 		global::System.IntPtr cPtr = $imcall;
 		$csclassname ret = ($csclassname) $modulePINVOKE.eml2_instantiateConcreteObject(cPtr, $owner);$excode
@@ -1026,7 +1012,7 @@ namespace WITSML2_NS
 
 namespace RESQML2_NS
 {		
-	%typemap(csout, excode=SWIGEXCODE)	AbstractFeature*, AbstractFeatureInterpretation*, AbstractRepresentation*, AbstractGridRepresentation*, AbstractLocal3dCrs*,
+	%typemap(csout, excode=SWIGEXCODE)	AbstractFeature*, AbstractFeatureInterpretation*, AbstractRepresentation*, AbstractGridRepresentation*,
 										AbstractProperty*, AbstractValuesProperty*,
 										AbstractIjkGridRepresentation*, AbstractStratigraphicOrganizationInterpretation*,
 #ifdef WITH_RESQML2_2
@@ -1071,7 +1057,6 @@ namespace RESQML2_NS
 										PointsProperty*,
 										PolylineRepresentation*,
 										PolylineSetRepresentation*,
-										PropertySet*,
 										RepresentationSetRepresentation*,
 										RockFluidOrganizationInterpretation*,
 										RockFluidUnitInterpretation*,

@@ -409,16 +409,16 @@ void AbstractValuesProperty::pushBackIntegerConstantArrayOfValues(int64_t value,
 	}
 }
 
-void AbstractValuesProperty::pushBackIntHdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
+void AbstractValuesProperty::pushBackInt32Hdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	int nullValue)
 {
-	pushBackIntHdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+	pushBackInt32Hdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackShortHdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
+void AbstractValuesProperty::pushBackInt16Hdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
 	short nullValue)
 {
-	pushBackShortHdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+	pushBackInt16Hdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
@@ -427,24 +427,24 @@ void AbstractValuesProperty::pushBackInt8Hdf5Array1dOfValues(const int8_t * valu
 	pushBackInt8Hdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackIntHdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
+void AbstractValuesProperty::pushBackInt32Hdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	int nullValue)
 {
 	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+	pushBackInt32Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackShortHdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
+void AbstractValuesProperty::pushBackInt16Hdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	short nullValue)
 {
 	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+	pushBackInt16Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackUShortHdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
+void AbstractValuesProperty::pushBackUInt16Hdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
 {
 	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+	pushBackUInt16Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
@@ -454,25 +454,25 @@ void AbstractValuesProperty::pushBackInt8Hdf5Array2dOfValues(const int8_t * valu
 	pushBackInt8Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackIntHdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
+void AbstractValuesProperty::pushBackInt32Hdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	int nullValue)
 {
 	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+	pushBackInt32Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackShortHdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
+void AbstractValuesProperty::pushBackInt16Hdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	short nullValue)
 {
 	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+	pushBackInt16Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackUShortHdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
+void AbstractValuesProperty::pushBackUInt16Hdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
 	unsigned short nullValue)
 {
 	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+	pushBackUInt16Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
@@ -612,7 +612,7 @@ void AbstractValuesProperty::pushBackInt64Hdf5ArrayOfValues(const int64_t * valu
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
+void AbstractValuesProperty::pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -632,7 +632,7 @@ void AbstractValuesProperty::pushBackIntHdf5ArrayOfValues(const int * values, co
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
+void AbstractValuesProperty::pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -652,7 +652,7 @@ void AbstractValuesProperty::pushBackShortHdf5ArrayOfValues(const short * values
 	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
 }
 
-void AbstractValuesProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
+void AbstractValuesProperty::pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -769,14 +769,7 @@ int64_t AbstractValuesProperty::getInt64ValuesOfPatch(uint64_t patchIndex, int64
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfInt64Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
+		return readArrayNdOfInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
@@ -843,7 +836,7 @@ int64_t AbstractValuesProperty::getNullValueOfPatch(uint64_t patchIndex) const
 	}
 }
 
-int32_t AbstractValuesProperty::getIntValuesOfPatch(uint64_t patchIndex, int32_t * values) const
+int32_t AbstractValuesProperty::getInt32ValuesOfPatch(uint64_t patchIndex, int32_t * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -851,14 +844,7 @@ int32_t AbstractValuesProperty::getIntValuesOfPatch(uint64_t patchIndex, int32_t
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfInt32Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
+		return readArrayNdOfInt32Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
@@ -875,7 +861,7 @@ int32_t AbstractValuesProperty::getIntValuesOfPatch(uint64_t patchIndex, int32_t
 	}
 }
 
-uint32_t AbstractValuesProperty::getUIntValuesOfPatch(uint64_t patchIndex, uint32_t * values) const
+uint32_t AbstractValuesProperty::getUInt32ValuesOfPatch(uint64_t patchIndex, uint32_t * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -883,14 +869,7 @@ uint32_t AbstractValuesProperty::getUIntValuesOfPatch(uint64_t patchIndex, uint3
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfUInt32Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
+		return readArrayNdOfUInt32Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
@@ -907,7 +886,7 @@ uint32_t AbstractValuesProperty::getUIntValuesOfPatch(uint64_t patchIndex, uint3
 	}
 }
 
-int16_t AbstractValuesProperty::getShortValuesOfPatch(uint64_t patchIndex, int16_t * values) const
+int16_t AbstractValuesProperty::getInt16ValuesOfPatch(uint64_t patchIndex, int16_t * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -915,14 +894,7 @@ int16_t AbstractValuesProperty::getShortValuesOfPatch(uint64_t patchIndex, int16
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfInt16Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
+		return readArrayNdOfInt16Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
@@ -939,7 +911,7 @@ int16_t AbstractValuesProperty::getShortValuesOfPatch(uint64_t patchIndex, int16
 	}
 }
 
-uint16_t AbstractValuesProperty::getUShortValuesOfPatch(uint64_t patchIndex, uint16_t * values) const
+uint16_t AbstractValuesProperty::getUInt16ValuesOfPatch(uint64_t patchIndex, uint16_t * values) const
 {
 	cannotBePartial();
 	if (patchIndex >= getPatchCount()) {
@@ -947,14 +919,7 @@ uint16_t AbstractValuesProperty::getUShortValuesOfPatch(uint64_t patchIndex, uin
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfUInt16Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
+		return readArrayNdOfUInt16Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
@@ -981,14 +946,7 @@ int8_t AbstractValuesProperty::getInt8ValuesOfPatch(uint64_t patchIndex, int8_t*
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfInt8Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
+		return readArrayNdOfInt8Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
@@ -1013,14 +971,7 @@ uint8_t AbstractValuesProperty::getUInt8ValuesOfPatch(uint64_t patchIndex, uint8
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const*>(patch->Values);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfUInt8Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
+		return readArrayNdOfUInt8Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];

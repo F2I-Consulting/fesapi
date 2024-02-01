@@ -149,7 +149,7 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 	gsoap_eml2_3::resqml22__AbstractSeismicLineFeature* seismicLine = static_cast<gsoap_eml2_3::resqml22__AbstractSeismicLineFeature*>(gsoapProxy2_3);
 	seismicLine->TraceLabels = gsoap_eml2_3::soap_new_eml23__StringExternalArray(gsoapProxy2_3->soap);
 	seismicLine->TraceLabels->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-	auto* daPart = createExternalDataArrayPart(getHdfGroup() +"/TraceLabels", values.size(), proxy);
+	auto* daPart = createExternalDataArrayPart(getHdfGroup() + "/TraceLabels", values.size(), proxy);
 	seismicLine->TraceLabels->Values->ExternalDataArrayPart.push_back(daPart);
 
 	// Build the CHAR array

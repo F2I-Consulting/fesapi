@@ -22,7 +22,7 @@ under the License.
 
 namespace EML2_3_NS
 {
-	/** A local depth 3D crs. */
+	/** A local engineering 2D crs. */
 	class LocalEngineering2dCrs final : public COMMON_NS::AbstractObject
 	{
 	public:

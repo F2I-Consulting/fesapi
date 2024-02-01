@@ -24,6 +24,7 @@ under the License.
 
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/HorizonInterpretation.h"
+#include "resqml2_0_1/PropertyKind.h"
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
 
 using namespace std;

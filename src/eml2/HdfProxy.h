@@ -238,14 +238,6 @@ namespace EML2_NS
 			AbstractHdfProxy(fromGsoap) {}
 
 		/**
-		 * Constructor
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		HdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
-			AbstractHdfProxy(fromGsoap) {}
-
-		/**
 		 * Creates an instance of this class in a gsoap context.
 		 * @packageDirAbsolutePath	The directory where the EPC document is stored. Must end with a slash
 		 * or back-slash
@@ -369,6 +361,9 @@ namespace EML2_NS
 
 		/** The compression level used for writing data */
 		unsigned int compressionLevel = 0;
+
+		/** The dataset property list Id */
+		std::unique_ptr<hdf5_hid_t> dsetPlistId;
 
 		/** Groups which are currently opened where key is their path and value is their identifier */
 		std::unordered_map< std::string, hdf5_hid_t > openedGroups;

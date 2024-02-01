@@ -155,7 +155,7 @@ void AbstractProperty::setTimeSeries(EML2_NS::TimeSeries * ts)
 
 void AbstractProperty::setSingleTimestamp(time_t timestamp, LONG64 yearOffset)
 {
-	std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(timestamp));
+	std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(timestamp));
 	if (gsoapProxy2_0_1 != nullptr) {
 		auto const* timeSeries = getTimeSeries();
 		if (timeSeries == nullptr) {
@@ -288,7 +288,7 @@ RESQML2_0_1_NS::PropertySet * AbstractProperty::getPropertySet(uint64_t index) c
 	return getPropertySets().at(index);
 }
 
-void AbstractProperty::setLocalCrs(EML2_NS::AbstractLocal3dCrs * crs)
+void AbstractProperty::setLocalCrs(EML2_NS::AbstractLocal3dCrs* crs)
 {
 	if (crs == nullptr) {
 		throw invalid_argument("The crs of this property values cannot be null.");

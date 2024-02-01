@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Activity.h"
 
-#include "ActivityTemplate.h"
-
 #include <algorithm>
+
+#include "ActivityTemplate.h"
 
 using namespace std;
 using namespace EML2_NS;
@@ -30,7 +30,7 @@ std::vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectSet() const
 	std::vector<COMMON_NS::AbstractObject*> result;
 
 	const uint64_t paramCount = getParameterCount();
-	for (uint64_t index=0; index < paramCount; ++index) {
+	for (uint64_t index = 0; index < paramCount; ++index) {
 		if (isAResqmlObjectParameter(index)) {
 			COMMON_NS::AbstractObject* obj = getResqmlObjectParameterValue(index);
 			if (std::find(result.begin(), result.end(), obj) == result.end()) {

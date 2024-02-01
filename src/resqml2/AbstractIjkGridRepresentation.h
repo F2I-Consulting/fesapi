@@ -35,7 +35,7 @@ namespace RESQML2_NS
 	public:
 
 		/** Values that represent geometry kinds. */
-		enum geometryKind { UNKNOWN = 0, EXPLICIT = 1, PARAMETRIC = 2, LATTICE = 3, NO_GEOMETRY = 4}; // UNKNOWN exists in case of partial transfer
+		enum class geometryKind { UNKNOWN = 0, EXPLICIT = 1, PARAMETRIC = 2, LATTICE = 3, NO_GEOMETRY = 4}; // UNKNOWN exists in case of partial transfer
 
 		/**
 		 * Constructor of an IJK grid representation without link to an interpretation.
@@ -752,7 +752,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The geometry kind of this IJK grid.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual geometryKind getGeometryKind() const { return UNKNOWN; }
+		DLL_IMPORT_OR_EXPORT virtual geometryKind getGeometryKind() const { return geometryKind::UNKNOWN; }
 
 		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const override { throw std::logic_error("Partial object"); }
 
@@ -789,8 +789,10 @@ namespace RESQML2_NS
 
 
 			if (partialObject != nullptr) {
-				if (partialObject->ContentType.find("x-resqml+xml;version=2.0") != std::string::npos) { return "resqml20"; }
-				if (partialObject->ContentType.find("x-resqml+xml;version=2.2") != std::string::npos) { return "resqml22"; }
+				if (partialObject->ContentType.find("x-resqml+xml;version=2.0") != std::string::npos ||
+					partialObject->ContentType.find("resqml20.") == 0) { return "resqml20"; }
+				if (partialObject->ContentType.find("x-resqml+xml;version=2.2") != std::string::npos ||
+					partialObject->ContentType.find("resqml22.") == 0) { return "resqml22"; }
 			}
 
 			throw std::logic_error("Cannot infer what is the Energistics namespace of this instance.");

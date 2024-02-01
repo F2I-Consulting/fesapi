@@ -21,11 +21,11 @@ under the License.
 #include <vector>
 #include <string>
 
-#include "witsml2_1/AbstractObject.h"
+#include "../common/AbstractObject.h"
 
 namespace WITSML2_1_NS
 {
-	class WeightingFunctionDictionary : public WITSML2_1_NS::AbstractObject
+	class WeightingFunctionDictionary : public COMMON_NS::AbstractObject
 	{
 	public:
 		/**
@@ -39,7 +39,7 @@ namespace WITSML2_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WeightingFunctionDictionary(gsoap_eml2_2::witsml2__WeightingFunctionDictionary* fromGsoap) :AbstractObject(fromGsoap) {}
+		WeightingFunctionDictionary(gsoap_eml2_3::witsml21__WeightingFunctionDictionary* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -55,5 +55,15 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml21";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

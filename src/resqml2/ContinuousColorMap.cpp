@@ -115,7 +115,7 @@ void ContinuousColorMap::setNanHsvColor(double hue, double saturation, double va
 		throw invalid_argument("alpha must be in range [0, 1]");
 	}
 
-	resqml22__ContinuousColorMap * const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_3);
+	resqml22__ContinuousColorMap* const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_3);
 
 	if (continuousColorMap->NullColor == nullptr) {
 		continuousColorMap->NullColor = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
@@ -158,7 +158,7 @@ void ContinuousColorMap::setNanRgbColor(double red, double green, double blue, d
 void ContinuousColorMap::setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha, std::string const& colorTitle)
 {
 	if (red > 255) {
-		 throw invalid_argument("red must be in range [0, 255]");
+		throw invalid_argument("red must be in range [0, 255]");
 	}
 
 	if (green > 255) {

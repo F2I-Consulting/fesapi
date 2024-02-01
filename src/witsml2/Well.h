@@ -27,9 +27,15 @@ namespace RESQML2_NS
 	class WellboreFeature;
 }
 
-namespace WITSML2_0_NS
+namespace WITSML2_1_NS
 {
 	class WellCompletion;
+}
+
+namespace EML2_3_NS
+{
+	class LocalEngineering2dCrs;
+	class VerticalCrs;
 }
 
 namespace WITSML2_NS
@@ -63,36 +69,35 @@ namespace WITSML2_NS
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Region)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, District)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Block)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Operator)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OperatorDiv)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OriginalOperator)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumAPI)
 
 		// Optional enum
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWell)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWell)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellFluid, FluidWell)
-		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellDirection, DirectionWell)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::eml23__WellStatus, StatusWell)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellPurpose, PurposeWell)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellFluid, FluidWell)
+		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_3::witsml21__WellDirection, DirectionWell)
 
-		ABSTRACT_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_1::eml21__LengthUom)
+		ABSTRACT_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_3::eml23__LengthUom)
 		ABSTRACT_GETTER_PRESENCE_ATTRIBUTE(GroundElevation)
+		ABSTRACT_GETTER_PRESENCE_ATTRIBUTE(WellheadElevation)
 
-		ABSTRACT_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(PcInterest, gsoap_eml2_1::eml21__DimensionlessUom)
+		ABSTRACT_GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(PcInterest, gsoap_eml2_3::eml23__DimensionlessUom)
 
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimLicense)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimSpud)
 		ABSTRACT_GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimPa)
 
 		/**
-			* @brief	Sets the ground level elevation (land rigs)
-			*
-			* @exception	std::invalid_argument	If @p value is undefined.
-			*
-			* @param 	value	The elevation value.
-			* @param 	uom  	The elevation unit of measure.
-			* @param 	datum	The elevation datum.
-			*/
-		DLL_IMPORT_OR_EXPORT virtual void setGroundElevation(double value, gsoap_eml2_1::eml21__LengthUom uom, const std::string& datum) = 0;
+		* @brief	Sets the ground level elevation (land rigs)
+		*
+		* @exception	std::invalid_argument	If @p value is undefined.
+		*
+		* @param 	value		The elevation value.
+		* @param 	uom  		The elevation unit of measure.
+		* @param	verticalCrs	The vertical CRS which is used as the datum for the ground elevation
+		*/
+		DLL_IMPORT_OR_EXPORT virtual void setGroundElevation(double value, gsoap_eml2_3::eml23__LengthUom uom, EML2_3_NS::VerticalCrs* verticalCrs) = 0;
 
 		/**
 		 * @brief	Gets the ground level elevation value
@@ -110,16 +115,64 @@ namespace WITSML2_NS
 		 *
 		 * @returns	The ground level elevation unit of measure.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_1::eml21__LengthUom getGroundElevationUom() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::eml23__LengthUom getGroundElevationUom() const = 0;
 
 		/**
-		 * @brief	Gets the ground level elevation datum
+		 * Gets the data object reference of the datum of this ground elevation.
 		 *
-		 * @exception	std::invalid_argument	If the ground elevation does not exist.
-		 *
-		 * @returns	The ground level elevation datum.
+		 * @returns	The data object reference of the datum of this ground elevation.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getGroundElevationDatum() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getGroundElevationDatumDor() const = 0;
+
+		/**
+		 * Gets the vertical CRS which acts as the datum of this ground elevation.
+		 *
+		 * @returns	The vertical CRS which acts as the datum of this ground elevation..
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_3_NS::VerticalCrs* getGroundElevationDatum() const;
+
+		/**
+		* @brief	Sets the well head elevation
+		*
+		* @exception	std::invalid_argument	If @p value is undefined.
+		*
+		* @param 	value		The elevation value.
+		* @param 	uom  		The elevation unit of measure.
+		* @param	verticalCrs	The vertical CRS which is used as the datum for the well head elevation
+		*/
+		DLL_IMPORT_OR_EXPORT virtual void setWellheadElevation(double value, gsoap_eml2_3::eml23__LengthUom uom, EML2_3_NS::VerticalCrs* verticalCrs) = 0;
+
+		/**
+		 * @brief	Gets the well head elevation value
+		 *
+		 * @exception	std::invalid_argument	If the well head elevation does not exist.
+		 *
+		 * @returns	The well head elevation value.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual double getWellheadElevationValue() const = 0;
+
+		/**
+		 * @brief	Gets the well head elevation unit of measure
+		 *
+		 * @exception	std::invalid_argument	If the well head elevation does not exist.
+		 *
+		 * @returns	The well head elevation unit of measure.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::eml23__LengthUom getWellheadElevationUom() const = 0;
+
+		/**
+		 * Gets the data object reference of the datum of this well head elevation.
+		 *
+		 * @returns	The data object reference of the datum of this well head elevation.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getWellheadElevationDatumDor() const = 0;
+
+		/**
+		 * Gets the vertical CRS which acts as the datum of this well head elevation.
+		 *
+		 * @returns	The vertical CRS which acts as the datum of this well head elevation..
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_3_NS::VerticalCrs* getWellheadElevationDatum() const;
 
 		/**
 		* Set the time zone in which the well is located.It is the deviation in hours and minutes from
@@ -179,60 +232,22 @@ namespace WITSML2_NS
 		/**
 		 * Pushes a back location
 		 *
-		 * @param 	guid					Unique identifier.
-		 * @param 	projectedX				The projected x coordinate.
-		 * @param 	projectedY				The projected y coordinate.
-		 * @param 	projectedCrsEpsgCode	The projected crs epsg code.
+		 * @param 	projectedX		The projected x coordinate.
+		 * @param 	projectedY		The projected y coordinate.
+		 * @param 	crs				The CRS of the X and Y coordinates.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackLocation(
-			const std::string & guid,
-			double projectedX,
-			double projectedY,
-			unsigned int projectedCrsEpsgCode) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackLocation(double projectedX, double projectedY, EML2_3_NS::LocalEngineering2dCrs* crs) = 0;
 
 		/**
-		 * Ge location count
+		 * Get location count
 		 *
 		 * @returns	An int.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t geLocationCount() const noexcept = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t geLocationCount() const = 0;
 
-		/**
-		 * Pushes a back datum
-		 *
-		 * @param 	guid			   	Unique identifier.
-		 * @param 	title			   	The title.
-		 * @param 	code			   	The code.
-		 * @param 	datum			   	The datum.
-		 * @param 	elevationUnit	   	The elevation unit.
-		 * @param 	elevation		   	The elevation.
-		 * @param 	verticalCrsEpsgCode	The vertical crs epsg code.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackDatum(
-			const std::string & guid,
-			const std::string & title,
-			gsoap_eml2_1::eml21__WellboreDatumReference code,
-			const std::string & datum,
-			gsoap_eml2_1::eml21__LengthUom elevationUnit,
-			double elevation,
-			unsigned int verticalCrsEpsgCode) = 0;
-
-		/**
-		 * Gets datum count
-		 *
-		 * @returns	The datum count.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getDatumCount() const noexcept = 0;
-
-		/**
-		 * Gets resqml wellbore features
-		 *
-		 * @returns	Null if it fails, else the RESQML wellbore features.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::WellboreFeature *> getResqmlWellboreFeatures() const;
-
+		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, ResqmlWellboreFeature)
 		GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, Wellbore)
-		GETTER_DATAOBJECTS(WITSML2_0_NS::WellCompletion, Wellcompletion)
+		GETTER_DATAOBJECTS(WITSML2_1_NS::WellCompletion, Wellcompletion)
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.
@@ -248,9 +263,6 @@ namespace WITSML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
-		/** A WITSML well points towards no other dataobject */
-		void loadTargetRelationships() {}
-
 	protected:
 
 		/** Default constructor does nothing */
@@ -261,13 +273,9 @@ namespace WITSML2_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		Well(gsoap_eml2_1::witsml20__Well* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		Well(gsoap_eml2_3::witsml21__Well* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		//Well(gsoap_eml2_3::_resqml22__Well* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		/** Loads target relationships */
+		void loadTargetRelationships();
 	};
 }

@@ -27,7 +27,7 @@ using namespace EML2_NS;
 
 void TimeSeries::pushBackTimestamp(time_t timestamp, LONG64 yearOffset)
 {
-	std::tm tmConversion = timeTools::to_calendar_time(std::chrono::system_clock::from_time_t(timestamp));
+	std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(timestamp));
 	pushBackTimestamp(tmConversion, yearOffset);
 }
 

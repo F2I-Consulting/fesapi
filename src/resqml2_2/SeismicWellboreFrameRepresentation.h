@@ -36,7 +36,7 @@ namespace RESQML2_2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		SeismicWellboreFrameRepresentation(gsoap_eml2_3::resqml22__SeismicWellboreFrameRepresentation * fromGsoap) :
+		SeismicWellboreFrameRepresentation(gsoap_eml2_3::resqml22__SeismicWellboreFrameRepresentation* fromGsoap) :
 			RESQML2_NS::SeismicWellboreFrameRepresentation(fromGsoap) {}
 
 		~SeismicWellboreFrameRepresentation() = default;

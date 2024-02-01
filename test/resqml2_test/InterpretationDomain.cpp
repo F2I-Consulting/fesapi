@@ -23,6 +23,9 @@ under the License.
 #include "resqml2/TriangulatedSetRepresentation.h"
 #include "resqml2/PolylineSetRepresentation.h"
 
+#include "resqml2/PolylineSetRepresentation.h"
+#include "resqml2/TriangulatedSetRepresentation.h"
+
 #include "resqml2_0_1/TectonicBoundaryFeature.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"

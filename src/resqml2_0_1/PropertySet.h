@@ -43,8 +43,6 @@ namespace RESQML2_0_1_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT PropertySet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
@@ -198,7 +196,10 @@ namespace RESQML2_0_1_NS
 		/** Loads target relationships */
 		void loadTargetRelationships() final;
 
-	private :
+		/** A fake property is needed when we want to create a property set which does not contain any property (but one or more property sets). */
+		static constexpr char const* FAKE_PROP_UUID = "6b6656bb-32c4-4c4a-84ec-f66cf50bd4dd";
+
+	private:
 
 		/**
 		 * Sets XML parent

@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MdDatum.h"
 
+#include <stdexcept>
+
 #include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
@@ -41,7 +43,7 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	mdInfo->Location->Coordinate3 = referenceLocationOrdinal3;
 	
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 	setLocalCrs(locCrs);

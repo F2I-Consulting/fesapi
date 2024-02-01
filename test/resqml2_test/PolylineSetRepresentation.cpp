@@ -45,7 +45,7 @@ void PolylineSetRepresentation::initRepo() {
 		interp = repo->createPartial<RESQML2_0_1_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid, "");
 	}
 
-	RESQML2_0_1_NS::LocalTime3dCrs* crs = repo->createPartial<RESQML2_0_1_NS::LocalTime3dCrs>("", "");
+	auto* crs = repo->createPartial<RESQML2_0_1_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid, "");
 
 	RESQML2_NS::PolylineSetRepresentation* rep = repo->createPolylineSetRepresentation(interp, defaultUuid, defaultTitle);
 	rep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 2, false, nullptr, crs);

@@ -276,6 +276,18 @@ gsoap_resqml2_0_1::eml20__TimeUom LocalEngineeringCompoundCrs::getTimeUom() cons
 	return result;
 }
 
+LocalEngineering2dCrs* LocalEngineeringCompoundCrs::getLocalEngineering2dCrs() const
+{
+	return getRepository()->getDataObjectByUuid<LocalEngineering2dCrs>
+		(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid);
+}
+
+VerticalCrs* LocalEngineeringCompoundCrs::getVerticalCrs() const
+{
+	return getRepository()->getDataObjectByUuid<VerticalCrs>
+		(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs->Uuid);
+}
+
 void LocalEngineeringCompoundCrs::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dorVerticalCrs(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs);

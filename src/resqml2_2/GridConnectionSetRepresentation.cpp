@@ -21,12 +21,10 @@ under the License.
 #include <algorithm>
 
 #include "../eml2/AbstractHdfProxy.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractGridRepresentation.h"
-#include "../eml2/AbstractLocal3dCrs.h"
-
-#include "../resqml2_2/GenericFeatureInterpretation.h"
 
 #include "../resqml2_2/GenericFeatureInterpretation.h"
 

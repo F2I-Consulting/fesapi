@@ -17,9 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "FaultSinglePatchTriangulatedSetRepresentationTest.h"
-
 #include "FaultInterpretationTest.h"
-#include "LocalDepth3dCrsTest.h"
 
 #include "eml2/AbstractHdfProxy.h"
 

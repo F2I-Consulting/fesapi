@@ -22,7 +22,7 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-void LocalTime3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+void LocalTime3dCrs::init(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom,
@@ -48,12 +48,12 @@ void LocalTime3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::str
 	local3dCrs->TimeUom = timeUom;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 }
 
-LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
@@ -77,12 +77,12 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 	vertCrs->EpsgCode = verticalEpsgCode;
 }
 
-LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented)
 {
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, timeUom, verticalUom, isUpOriented);
 	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
@@ -98,12 +98,12 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 	vertCrs->Unknown = verticalUnknownReason;
 }
 
-LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented)
 {
 	if (projectedEpsgCode == 0) {
 		throw invalid_argument("The EPSG code must be positive.");
@@ -122,10 +122,10 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 	vertCrs->Unknown = verticalUnknownReason;
 }
 
-LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
 {

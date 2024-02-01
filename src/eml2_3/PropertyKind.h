@@ -55,7 +55,7 @@ namespace EML2_3_NS
 		 * 										kind called "property".
 		 */
 		PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
+			gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.

@@ -20,7 +20,16 @@ under the License.
 
 #include <stdexcept>
 
+#include "../catch.hpp"
+
+#include "eml2_3/LocalEngineering2dCrs.h"
+#include "eml2_3/LocalEngineeringCompoundCrs.h"
+#include "eml2_3/VerticalCrs.h"
+
+#include "resqml2/WellboreFeature.h"
+
 #include "witsml2/Well.h"
+#include "witsml2/Wellbore.h"
 
 using namespace std;
 using namespace witsml2_test;
@@ -36,30 +45,51 @@ WellTest::WellTest(const string & epcDocPath)
 }
 
 void WellTest::initRepo() {
-	Well* well = repo->createWell(defaultUuid, defaultTitle);
-	REQUIRE(well != nullptr);
+	Well* well = repo->createWell(defaultUuid, defaultTitle, false);
+	Wellbore* wellbore = repo->createWellbore(well, witsmlWellboreUuid, "", false);
+
+	auto previousStandard = repo->getDefaultEmlVersion();
+	repo->setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3);
+	auto* witsmlCrs = static_cast<EML2_3_NS::LocalEngineeringCompoundCrs*>
+		(repo->createLocalDepth3dCrs("", "WITSML CRS", 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__LengthUom::ft, "Unknown", false));
+	repo->setDefaultStandard(previousStandard);
+
+	RESQML2_NS::WellboreFeature* resqmlWellboreFeature = repo->createWellboreFeature(resqmlWellboreFeatureUuid, "");
+	resqmlWellboreFeature->setWitsmlWellbore(wellbore);
+	
 	well->setBlock("my Block");
 	// No county
 	well->setDTimLicense(defaultTimestamp);
-	well->setGroundElevation(10, gsoap_eml2_1::eml21__LengthUom::m, "MSL");
+	well->setGroundElevation(.0, gsoap_eml2_3::eml23__LengthUom::m, witsmlCrs->getVerticalCrs());
+	well->setWellheadElevation(15, gsoap_eml2_3::eml23__LengthUom::m, witsmlCrs->getVerticalCrs());
+	well->pushBackLocation(1000, -2000, witsmlCrs->getLocalEngineering2dCrs());
 	REQUIRE_THROWS(well->setTimeZone(true, 24, 0));
 	REQUIRE_THROWS(well->setTimeZone(true, 22, 65));
 	well->setTimeZone(true, 0, 0); // time zone == 'Z'
-	well->setStatusWell(gsoap_eml2_1::eml21__WellStatus::active);
+	well->setStatusWell(gsoap_eml2_3::eml23__WellStatus::active);
 }
 
 void WellTest::readRepo() {
-	Well* well = repo->getDataObjectByUuid<Well>(defaultUuid);
+	auto* well = repo->getDataObjectByUuid<Well>(defaultUuid);
+	auto* wellbore = repo->getDataObjectByUuid<Wellbore>(witsmlWellboreUuid);
+	auto* resqmlWellboreFeature = repo->getDataObjectByUuid<RESQML2_NS::WellboreFeature>(resqmlWellboreFeatureUuid);
+	REQUIRE(resqmlWellboreFeature->getWitsmlWellbore() == wellbore);
+	REQUIRE(wellbore->getWell() == well);
+
 	REQUIRE(well != nullptr);
 	REQUIRE(well->hasBlock());
 	REQUIRE(well->getBlock() == "my Block");
 	REQUIRE_FALSE(well->hasCounty());
 	REQUIRE(well->getDTimLicense() == defaultTimestamp);
-	REQUIRE(well->getGroundElevationValue() == 10);
-	REQUIRE(well->getGroundElevationUom() == gsoap_eml2_1::eml21__LengthUom::m);
-	REQUIRE(well->getGroundElevationDatum() == "MSL");
+	REQUIRE(well->getGroundElevationValue() == .0);
+	REQUIRE(well->getGroundElevationUom() == gsoap_eml2_3::eml23__LengthUom::m);
+	REQUIRE(well->getWellheadElevationValue() == 15);
+	REQUIRE(well->getWellheadElevationUom() == gsoap_eml2_3::eml23__LengthUom::m);
+	REQUIRE(well->geLocationCount() == 1);
+	REQUIRE(well->getLocationProjectedX(0) == 1000);
+	REQUIRE(well->getLocationProjectedY(0) == -2000);
 	REQUIRE(well->getTimeZoneDirection() == true);
 	REQUIRE(well->getTimeZoneHours() == 0);
 	REQUIRE(well->getTimeZoneMinutes() == 0);
-	REQUIRE(well->getStatusWell() == gsoap_eml2_1::eml21__WellStatus::active);
+	REQUIRE(well->getStatusWell() == gsoap_eml2_3::eml23__WellStatus::active);
 }

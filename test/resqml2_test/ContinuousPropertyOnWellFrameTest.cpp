@@ -23,6 +23,11 @@ under the License.
 #include "resqml2/ContinuousProperty.h"
 #include "resqml2_0_1/WellboreFrameRepresentation.h"
 
+#include "resqml2/ContinuousProperty.h"
+
+#include "resqml2_0_1/WellboreFrameRepresentation.h"
+#include "resqml2_0_1/PropertyKind.h"
+
 using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_NS;
@@ -38,7 +43,7 @@ void ContinuousPropertyOnWellFrameTest::initRepo() {
 
 
 	// creating the ContinuousProperty
-	auto propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
+	RESQML2_0_1_NS::PropertyKind* propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
 	RESQML2_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		frame, defaultUuid, defaultTitle,
 		gsoap_eml2_3::eml23__IndexableElement::nodes,

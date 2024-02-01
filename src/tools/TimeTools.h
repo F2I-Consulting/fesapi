@@ -87,4 +87,10 @@ namespace timeTools
 		result.tm_isdst = -1; // Information not available
 		return result;
 	}
+
+	/**
+	* Redefines std::chrono::system_clock::from_time_t to be able to support date superior to year 2262.
+	* Indeed Linux's system_clock is nanoseconds and 2262 corresponds to 2^63 nanoseconds since the epoch.
+	*/
+	date::sys_seconds from_time_t(std::time_t time_t);
 }

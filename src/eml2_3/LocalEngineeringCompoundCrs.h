@@ -22,7 +22,10 @@ under the License.
 
 namespace EML2_3_NS
 {
-	/** A local depth 3D crs. */
+	class LocalEngineering2dCrs;
+	class VerticalCrs;
+
+	/** A local Engineering compound CRS is based on a LocalEngineering2dCRS + a vertical CRS. */
 	class LocalEngineeringCompoundCrs final : public EML2_NS::AbstractLocal3dCrs
 	{
 	public:
@@ -31,8 +34,6 @@ namespace EML2_3_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT LocalEngineeringCompoundCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::AbstractLocal3dCrs(partialObject) {}
 
@@ -304,6 +305,10 @@ namespace EML2_3_NS
 		DLL_IMPORT_OR_EXPORT bool isATimeCrs() const final { return static_cast<gsoap_eml2_3::_eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalAxis->IsTime; }
 
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__TimeUom getTimeUom() const final;
+
+		DLL_IMPORT_OR_EXPORT LocalEngineering2dCrs* getLocalEngineering2dCrs() const;
+
+		DLL_IMPORT_OR_EXPORT VerticalCrs* getVerticalCrs() const;
 
 		/**
 		* The standard XML namespace for serializing this data object.

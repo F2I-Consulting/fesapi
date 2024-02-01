@@ -147,7 +147,6 @@ bool GraphicalInformationSet::hasDirectGraphicalInformation(AbstractObject const
 	_eml23__GraphicalInformationSet* gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 
 	const std::string targetUuid = targetObject->getUuid();
-	const size_t graphicalInfoCount = gis->GraphicalInformation.size();
 	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
 		for (size_t targetIndex = 0; targetIndex < gis->GraphicalInformation[giIndex]->TargetObject.size(); ++targetIndex) {
 			if (getTargetObjectUuid(giIndex, targetIndex).compare(targetUuid) == 0) {
@@ -167,7 +166,8 @@ bool GraphicalInformationSet::hasGraphicalInformation(AbstractObject const* targ
 
 	if (hasDirectGraphicalInformation(targetObject)) {
 		return true;
-	} else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
+	}
+	else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
 		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
 		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
 			return hasDirectGraphicalInformation(property->getPropertyKind());
@@ -322,7 +322,7 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject * targetObject, 
 			}
 		}
 	}
-	
+
 	color->Hue = hue;
 	color->Saturation = saturation;
 	color->Value = value;
@@ -571,7 +571,7 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject
 
 	colorInformation->UseReverseMapping = useReverseMapping;
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
-	
+
 	getRepository()->addRelationship(this, continuousColorMap);
 	colorInformation->ColorMap = continuousColorMap->newEml23Reference();
 }
@@ -667,7 +667,7 @@ void GraphicalInformationSet::rgbToHsv(double red, double green, double blue, do
 	max = max > blue ? max : blue;
 
 	double min = red < green ? red : green;
-	min = min < blue ? min : blue;	
+	min = min < blue ? min : blue;
 
 	// computing hue
 
@@ -704,7 +704,7 @@ void GraphicalInformationSet::hsvToRgb(double hue, double saturation, double val
 {
 	double c = value * saturation;
 	double hprim = hue / 60.;
-	double x = c * (1. - fabs(fmod(hprim,2) - 1.));
+	double x = c * (1. - fabs(fmod(hprim, 2) - 1.));
 	double m = value - c;
 
 	if (0. <= hprim && hprim <= 1.) {

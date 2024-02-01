@@ -584,9 +584,7 @@ namespace EML2_NS
 		
 	};
 	
-	
 	/** @brief	Proxy class for an abstract local 3D coordinate reference system (CRS). */
-	
 #if defined(SWIGPYTHON)
 	%rename(Eml2_AbstractLocal3dCrs) AbstractLocal3dCrs;
 #endif
@@ -1266,6 +1264,8 @@ namespace EML2_NS
 		 */
 		ActivityTemplate* getActivityTemplate() const;
 	};
+	
+	/************ GraphicalInformationSet **************/
 
 #if defined(SWIGPYTHON)
 	%rename(Eml2_GraphicalInformationSet) GraphicalInformationSet;
@@ -2064,10 +2064,6 @@ namespace EML2_NS
 		 */
 		time_t getTimestamp(uint64_t index) const;
 	};
-	
 }
 
-%include "swigEml2_1Include.i"
-#ifdef WITH_RESQML2_2
 %include "swigEml2_3Include.i"
-#endif

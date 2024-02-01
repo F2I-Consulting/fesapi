@@ -1027,6 +1027,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
 	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
+
 	if (parameters == nullptr) {
 		throw invalid_argument("The parameters of the nodes of the ijk grid cannot be null.");
 	}
@@ -1320,7 +1321,7 @@ void IjkGridParametricRepresentation::getXyzPointsFromParametricPoints(double * 
 
 AbstractIjkGridRepresentation::geometryKind IjkGridParametricRepresentation::getGeometryKind() const
 {
-	return PARAMETRIC;
+	return AbstractIjkGridRepresentation::geometryKind::PARAMETRIC;
 }
 
 namespace {

@@ -124,9 +124,9 @@ namespace Example
                 AbstractLocal3dCrs crs = repo.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
                 repo.setDefaultCrs(crs);
                 Console.WriteLine("Serialize : CRS title is " + crs.getTitle());
-                Well well = repo.createWell("1425632e-3c22-4845-b431-ecd36da0671e", "Well");
+                Well well = repo.createWell("1425632e-3c22-4845-b431-ecd36da0671e", "Well", false);
                 well.setNameLegal("Legal Name");
-                well.setWaterDepth(0.0, eml21__LengthUom._0_x002e1_x0020ft);
+                well.setWaterDepth(0.0, eml23__LengthUom._0_x002e1_x0020ft);
                 well.setTimeZone(true, 0, 0);
                 Console.WriteLine("Serialize : Well title is " + well.getTitle());
 

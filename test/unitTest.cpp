@@ -25,9 +25,15 @@ under the License.
 #include "common/DataObjectRepository.h"
 #include "eml2/AbstractHdfProxy.h"
 
+#include "resqml2/ContinuousProperty.h"
+#include "resqml2/IjkGridExplicitRepresentation.h"
+
+#include "resqml2_0_1/DiscreteProperty.h"
+#include "resqml2_0_1/PropertyKind.h"
+#include "resqml2_0_1/PropertySet.h"
+
 #include "EpcDocumentTest.h"
 #include "DateTimeTest.h"
-#include "Witsml14Trajectory.h"
 
 #include "eml2_test/HdfProxy.h"
 #include "resqml2_test/ActivityCreationTest.h"
@@ -165,6 +171,36 @@ TEST_CASE("Test hdf5 opening mode", "[hdf]")
 	hdfProxy->close();
 }
 
+TEST_CASE("Cascade Delete", "[CRUD]")
+{
+	COMMON_NS::DataObjectRepository repo;
+	auto* ijkGrid = repo.createIjkGridExplicitRepresentation("0c05eda0-ccbc-41b7-90b7-8ea003ae2be1", "", 2, 3, 4);
+
+	// Independant prop which does not point to anything
+	auto* discreteProp = repo.createDiscreteProperty(ijkGrid, "b9c65ec4-3d44-4a7b-a064-b1299fa654d3", "", 1, gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
+
+	// Independant prop which does point to a prop kind
+	auto* propKind = repo.createPropertyKind("f8f21808-68f1-4219-aeac-0379097948c8", "", "testing", gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::quantity);
+	auto* continuousProp = repo.createContinuousProperty(ijkGrid, "0cb055ae-61cd-4cc3-ba7d-7c7496b58c17", "", 1, gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, propKind);
+
+	// Prop in a propertyset
+	auto* propSet = repo.createPropertySet("cc6abfd6-6e04-491f-b6bb-d600ebc1f763", "", false, false, gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
+	auto* discretePropInPropSet = repo.createDiscreteProperty(ijkGrid, "51bab97e-d3c0-47fb-9281-75ff98de4d1d", "", 1, gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
+	propSet->pushBackProperty(discretePropInPropSet);
+
+	REQUIRE(repo.cascadeDeleteDataObject(discreteProp) == 1);
+	REQUIRE(repo.getDataObjectByUuid("b9c65ec4-3d44-4a7b-a064-b1299fa654d3") == nullptr);
+
+	REQUIRE(repo.cascadeDeleteDataObject(continuousProp) == 2);
+	REQUIRE(repo.getDataObjectByUuid("f8f21808-68f1-4219-aeac-0379097948c8") == nullptr);
+	REQUIRE(repo.getDataObjectByUuid("0cb055ae-61cd-4cc3-ba7d-7c7496b58c17") == nullptr);
+
+	REQUIRE(repo.cascadeDeleteDataObject(discretePropInPropSet) == 0);
+	REQUIRE(repo.getDataObjectByUuid("51bab97e-d3c0-47fb-9281-75ff98de4d1d") != nullptr);
+	REQUIRE(repo.getDataObjectByUuid("cc6abfd6-6e04-491f-b6bb-d600ebc1f763") != nullptr);
+	REQUIRE(repo.getDataObjectByUuid("0c05eda0-ccbc-41b7-90b7-8ea003ae2be1") != nullptr);
+}
+
 FESAPI_TEST("Export and import of date time", "[datetime]", DateTimeTest)
 
 FESAPI_TEST("Test HDF5 compression and chunking", "[hdf]", HdfProxy)
@@ -197,7 +233,7 @@ FESAPI_TEST("Export and import a LGR on a 4*3*2 explicit right handed ijk grid",
 FESAPI_TEST("Export and import a singel tetra grid", "[grid]", OneTetrahedronUnstructuredGridRepresentationTest)
 FESAPI_TEST("Export and import an unstructured grid", "[grid]", UnstructuredGridTest)
 
-FESAPI_TEST("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
+FESAPI_TEST2_0("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
 
 FESAPI_TEST("Export and import streamlines on a partial grid", "[grid]", Streamlines)
 
@@ -221,6 +257,12 @@ TEST_CASE("Export and import a big parametric ijk grid", "[grid][property]")
 
 // PROPERTY
 FESAPI_TEST("Export and import continuous properties on a partial grid", "[property]", ContinuousProperty)
+FESAPI_TEST2_0("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
+FESAPI_TEST2_0("Check categorical property", "[property]", CategoricalProperty)
+FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)
+FESAPI_TEST2_0("Check points property", "[property]", PointsProperty)
+FESAPI_TEST2_0("Export and import properties using slab", "[property]", PropertyBySlab)
+FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
 
 // RESQML WELL
 FESAPI_TEST("Export and import a wellbore trajectory", "[well][trajectory]", WellboreTrajectoryRepresentationTest)
@@ -240,15 +282,3 @@ FESAPI_TEST("Export and import a WITSML Wellbore Geometry", "[well]", WellboreGe
 FESAPI_TEST("Export and import a seismic lattice feature", "[seismic]", SeismicLatticeRepresentationTest)
 FESAPI_TEST("Export and import a seismic horizon grid 2d rep", "[seismic]", Grid2dRepresentationTest)
 FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", HorizonOnSeismicLine)
-
-FESAPI_TEST("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
-FESAPI_TEST("Check categorical property", "[property]", CategoricalProperty)
-FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)
-FESAPI_TEST("Check points property", "[property]", PointsProperty)
-FESAPI_TEST("Export and import properties using slab", "[property]", PropertyBySlab)
-FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
-
-TEST_CASE("Deserialize the WITMSL 1.4.1 trajectory official example")
-{
-	Witsml14Trajectory::test();
-}

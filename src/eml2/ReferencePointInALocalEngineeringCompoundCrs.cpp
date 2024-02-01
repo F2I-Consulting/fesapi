@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ReferencePointInALocalEngineeringCompoundCrs.h"
 
-#include "AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace EML2_NS;
@@ -55,8 +55,8 @@ double ReferencePointInALocalEngineeringCompoundCrs::getZInGlobalCrs() const
 	return getZ() + originOrdinal3;
 }
 
-AbstractLocal3dCrs * ReferencePointInALocalEngineeringCompoundCrs::getLocalCrs() const
+EML2_NS::AbstractLocal3dCrs * ReferencePointInALocalEngineeringCompoundCrs::getLocalCrs() const
 {
 	const string uuidLocalCrs = getLocalCrsDor().getUuid();
-	return static_cast<AbstractLocal3dCrs*>(repository->getDataObjectByUuid(uuidLocalCrs));
+	return static_cast<EML2_NS::AbstractLocal3dCrs*>(repository->getDataObjectByUuid(uuidLocalCrs));
 }

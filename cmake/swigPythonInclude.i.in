@@ -27,14 +27,11 @@ namespace COMMON_NS
 		std::string cppNs;
 		const std::string xmlNs(result->getXmlNamespace());
 		if (xmlNs == "eml20") cppNs = "${FESAPI_EML2_0_NS}";
-		else if (xmlNs == "eml21") cppNs = "${FESAPI_EML2_1_NS}";
-		else if (xmlNs == "eml22") cppNs = "${FESAPI_EML2_2_NS}";
 		else if (xmlNs == "eml23") cppNs = "${FESAPI_EML2_3_NS}";
 		else if (xmlNs == "resqml20") cppNs = "${FESAPI_RESQML2_0_1_NS}";
 		else if (xmlNs == "resqml22") cppNs = "${FESAPI_RESQML2_2_NS}";
-		else if (xmlNs == "witsml20") cppNs = "${FESAPI_WITSML2_0_NS}";
 		else if (xmlNs == "witsml21") cppNs = "${FESAPI_WITSML2_1_NS}";
-		else if (xmlNs == "prodml21") cppNs = "${FESAPI_PRODML2_1_NS}";
+		else if (xmlNs == "prodml22") cppNs = "${FESAPI_PRODML2_2_NS}";
 		
 		// Check potential downcasting
 		swig_type_info * const outtype = SWIG_TypeQuery((cppNs + "::" + result->getXmlTag() + " *").c_str());
@@ -53,14 +50,11 @@ namespace EML2_NS
 		std::string cppNs;
 		const std::string xmlNs(result->getXmlNamespace());
 		if (xmlNs == "eml20") cppNs = "${FESAPI_EML2_0_NS}";
-		else if (xmlNs == "eml21") cppNs = "${FESAPI_EML2_1_NS}";
-		else if (xmlNs == "eml22") cppNs = "${FESAPI_EML2_2_NS}";
 		else if (xmlNs == "eml23") cppNs = "${FESAPI_EML2_3_NS}";
 		else if (xmlNs == "resqml20") cppNs = "${FESAPI_RESQML2_0_1_NS}";
 		else if (xmlNs == "resqml22") cppNs = "${FESAPI_RESQML2_2_NS}";
-		else if (xmlNs == "witsml20") cppNs = "${FESAPI_WITSML2_0_NS}";
 		else if (xmlNs == "witsml21") cppNs = "${FESAPI_WITSML2_1_NS}";
-		else if (xmlNs == "prodml21") cppNs = "${FESAPI_PRODML2_1_NS}";
+		else if (xmlNs == "prodml22") cppNs = "${FESAPI_PRODML2_2_NS}";
 		
 		// Check potential downcasting
 		swig_type_info * const outtype = SWIG_TypeQuery((cppNs + "::" + result->getXmlTag() + " *").c_str());
@@ -113,7 +107,6 @@ namespace RESQML2_NS
 										PointsProperty*,
 										PolylineRepresentation*,
 										PolylineSetRepresentation*,
-										PropertySet*,
 										RepresentationSetRepresentation*,
 										RockFluidOrganizationInterpretation*,
 										RockFluidUnitInterpretation*,
@@ -145,14 +138,11 @@ namespace RESQML2_NS
 		std::string cppNs;
 		const std::string xmlNs(result->getXmlNamespace());
 		if (xmlNs == "eml20") cppNs = "${FESAPI_EML2_0_NS}";
-		else if (xmlNs == "eml21") cppNs = "${FESAPI_EML2_1_NS}";
-		else if (xmlNs == "eml22") cppNs = "${FESAPI_EML2_2_NS}";
 		else if (xmlNs == "eml23") cppNs = "${FESAPI_EML2_3_NS}";
 		else if (xmlNs == "resqml20") cppNs = "${FESAPI_RESQML2_0_1_NS}";
 		else if (xmlNs == "resqml22") cppNs = "${FESAPI_RESQML2_2_NS}";
-		else if (xmlNs == "witsml20") cppNs = "${FESAPI_WITSML2_0_NS}";
 		else if (xmlNs == "witsml21") cppNs = "${FESAPI_WITSML2_1_NS}";
-		else if (xmlNs == "prodml21") cppNs = "${FESAPI_PRODML2_1_NS}";
+		else if (xmlNs == "prodml22") cppNs = "${FESAPI_PRODML2_2_NS}";
 		
 		// Check potential downcasting
 		swig_type_info * const outtype = SWIG_TypeQuery((cppNs + "::" + result->getXmlTag() + " *").c_str());
@@ -169,14 +159,11 @@ namespace RESQML2_NS
 		std::string cppNs;
 		const std::string xmlNs(result->getXmlNamespace());
 		if (xmlNs == "eml20") cppNs = "${FESAPI_EML2_0_NS}";
-		else if (xmlNs == "eml21") cppNs = "${FESAPI_EML2_1_NS}";
-		else if (xmlNs == "eml22") cppNs = "${FESAPI_EML2_2_NS}";
 		else if (xmlNs == "eml23") cppNs = "${FESAPI_EML2_3_NS}";
 		else if (xmlNs == "resqml20") cppNs = "${FESAPI_RESQML2_0_1_NS}";
 		else if (xmlNs == "resqml22") cppNs = "${FESAPI_RESQML2_2_NS}";
-		else if (xmlNs == "witsml20") cppNs = "${FESAPI_WITSML2_0_NS}";
 		else if (xmlNs == "witsml21") cppNs = "${FESAPI_WITSML2_1_NS}";
-		else if (xmlNs == "prodml21") cppNs = "${FESAPI_PRODML2_1_NS}";
+		else if (xmlNs == "prodml22") cppNs = "${FESAPI_PRODML2_2_NS}";
 		
 		std::string cppClass;
 		auto geomKind = result->getGeometryKind();

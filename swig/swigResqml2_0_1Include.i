@@ -536,6 +536,12 @@ namespace gsoap_resqml2_0_1
 		work = 205,
 		Young_x0020modulus = 206
 	};
+	enum class resqml20__Phase {
+		aquifer = 0,
+		gas_x0020cap = 1,
+		oil_x0020column = 2,
+		seal = 3
+	};
 }
 
 namespace WITSML2_0_NS {
@@ -1343,12 +1349,9 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Gets the count of all children property set of this instance.
 		 *
-		 * @exception	std::range_error	If the count of children property set is strictly greater
-		 * 									than unsigned int max.
-		 *
 		 * @returns	The children count.
 		 */
-		unsigned int getChildrenCount() const;
+		uint64_t getChildrenCount() const;
 
 		/**
 		 * Gets a particular child property set of this property set.
@@ -1377,7 +1380,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The count of contained properties.
 		 */
-		unsigned int getPropertyCount() const;
+		uint64_t getPropertyCount() const;
 
 		/**
 		 * Gets a particular property among the properties directly contained in this property set.
@@ -1390,7 +1393,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The contained property at position @p index.
 		 */
-		RESQML2_NS::AbstractProperty* getProperty(unsigned int index) const;
+		RESQML2_NS::AbstractProperty* getProperty(uint64_t index) const;
 
 		bool hasMultipleRealizations() const;
 		bool hasSinglePropertyKind() const;

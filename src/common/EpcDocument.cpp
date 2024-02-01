@@ -31,13 +31,16 @@ under the License.
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/AbstractProperty.h"
+#include "../resqml2/AbstractRepresentation.h"
 #include "../resqml2/WellboreMarkerFrameRepresentation.h"
 
+#include "../resqml2_0_1/DiscreteProperty.h"
+#include "../resqml2_0_1/PropertySet.h"
 #include "../resqml2_0_1/WellboreMarker.h"
 
-#include "../witsml2_0/Log.h"
-#include "../witsml2_0/Channel.h"
-#include "../witsml2_0/ChannelSet.h"
+#include "../witsml2_1/Log.h"
+#include "../witsml2_1/Channel.h"
+#include "../witsml2_1/ChannelSet.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -147,8 +150,8 @@ namespace {
 		}
 
 		const std::vector<COMMON_NS::AbstractObject *>& targetObj = repo.getTargetObjects(dataObj);
-		if (dynamic_cast<WITSML2_0_NS::Log const *>(dataObj) == nullptr &&
-			dynamic_cast<WITSML2_0_NS::ChannelSet const *>(dataObj) == nullptr) {
+		if (dynamic_cast<WITSML2_1_NS::Log const *>(dataObj) == nullptr &&
+			dynamic_cast<WITSML2_1_NS::ChannelSet const *>(dataObj) == nullptr) {
 			for (size_t index = 0; index < targetObj.size(); ++index) {
 				if (!targetObj[index]->isPartial()) {
 					if (dynamic_cast<RESQML2_NS::WellboreMarker*>(targetObj[index]) == nullptr) {
@@ -173,8 +176,8 @@ namespace {
 		else {
 			for (size_t index = 0; index < targetObj.size(); ++index) {
 				if (!targetObj[index]->isPartial() &&
-					dynamic_cast<WITSML2_0_NS::ChannelSet*>(targetObj[index]) == nullptr &&
-					dynamic_cast<WITSML2_0_NS::Channel*>(targetObj[index]) == nullptr) {
+					dynamic_cast<WITSML2_1_NS::ChannelSet*>(targetObj[index]) == nullptr &&
+					dynamic_cast<WITSML2_1_NS::Channel*>(targetObj[index]) == nullptr) {
 					epc::Relationship relRep("../" + targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
 					relRep.setDestinationObjectType();
 					result.push_back(relRep);
@@ -194,20 +197,43 @@ namespace {
 	}
 }
 
-void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64)
+namespace {
+	RESQML2_0_1_NS::DiscreteProperty* getOrCreateFakeProperty(DataObjectRepository& repo) {
+		RESQML2_0_1_NS::DiscreteProperty* fakeProp = repo.getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID);
+		if (fakeProp != nullptr) { return fakeProp; }
+
+		auto* firstRep = repo.getDataObjects<RESQML2_NS::AbstractRepresentation>().at(0);
+		fakeProp = repo.createDiscreteProperty(
+			firstRep, RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID, "Fake Property", 1, gsoap_eml2_3::eml23__IndexableElement::representation, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
+		fakeProp->pushBackIntegerConstantArrayOfValues(-1, 1);
+
+		return fakeProp;
+	}
+
+	void addFakePropertyToEmptyPropertySet(DataObjectRepository& repo) {
+		for (auto* propSet : repo.getDataObjects<RESQML2_0_1_NS::PropertySet>()) {
+			if (propSet->getProperties().empty()) {
+				//Add a fake property since the RESQML2.0.1 does not allow empty property set
+				propSet->pushBackProperty(getOrCreateFakeProperty(repo));
+			}
+		}
+	}
+}
+
+void EpcDocument::serializeFrom(DataObjectRepository& repo, bool useZip64)
 {
+	addFakePropertyToEmptyPropertySet(repo);
+
 	// Cannot include zip.h for some macro conflict reasons with beast which also includes a port of zlib. Consequently cannot use macros below.
 	// 0 means APPEND_STATUS_CREATE
 	package->openForWriting(filePath, 0, useZip64);
 
-	//const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects = repo.getDataObjects();
-	//for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
 	for (auto const& uuidDataobjectPair : repo.getDataObjects()) {
 		for (auto* dataobject : uuidDataobjectPair.second) {
 			if (!dataobject->isPartial() &&
 				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(dataobject) == nullptr &&
-				(dynamic_cast<WITSML2_0_NS::ChannelSet*>(dataobject) == nullptr || static_cast<WITSML2_0_NS::ChannelSet*>(dataobject)->getLogs().empty()) &&
-				(dynamic_cast<WITSML2_0_NS::Channel*>(dataobject) == nullptr || static_cast<WITSML2_0_NS::Channel*>(dataobject)->getChannelSets().empty())) {
+				(dynamic_cast<WITSML2_1_NS::ChannelSet*>(dataobject) == nullptr || static_cast<WITSML2_1_NS::ChannelSet*>(dataobject)->getLogs().empty()) &&
+				(dynamic_cast<WITSML2_1_NS::Channel*>(dataobject) == nullptr || static_cast<WITSML2_1_NS::Channel*>(dataobject)->getChannelSets().empty())) {
 				// Dataobject
 				epc::FilePart* const fp = package->createPart(dataobject->serializeIntoString(), dataobject->getPartNameInEpcDocument());
 
@@ -233,6 +259,10 @@ std::string EpcDocument::deserializeInto(DataObjectRepository& repo, DataObjectR
 	}
 
 	for (const auto& contentTypeEntry : package->getFileContentType().getAllContentType()) {
+		if (contentTypeEntry.second.getExtensionOrPartName().find(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) != std::string::npos) {
+			result += "The FESAPI fake property " + std::string(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) + " has been detected and will be ignored.";
+			continue;
+		}
 		std::string contentType = contentTypeEntry.second.getContentTypeString();
 		// 14 equals "application/x-".size()
 		if (contentType.find("resqml", 14) != std::string::npos ||
@@ -283,6 +313,10 @@ std::string EpcDocument::deserializeInto(DataObjectRepository& repo, DataObjectR
 				wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 			}
 		}
+		else if (contentType.find("application/vnd.openxmlformats-package") == std::string::npos &&
+			contentType != "application/x-extended-core-properties+xml") {
+			result += "The content type " + contentType + " is not recognized by FESAPI and will be ignored.";
+		}
 	}
 
 	repo.updateAllRelationships();
@@ -298,10 +332,8 @@ std::string EpcDocument::deserializeInto(DataObjectRepository& repo, DataObjectR
 		result += warning + '\n';
 	}
 
-	if (repo.getHdfProxyCount() == 1) {
-		auto* defaultHdfProxy = repo.getHdfProxy(0);
-		repo.setDefaultHdfProxy(defaultHdfProxy);
-		defaultHdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not and obj_EpcExternalPartReference
+	for (auto* hdfProxy : repo.getHdfProxySet()) {
+		hdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not an obj_EpcExternalPartReference
 	}
 
 	return result;
@@ -379,10 +411,8 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 
 	deserializeRelFiles(repo);
 
-	if (repo.getHdfProxyCount() == 1) {
-		auto* defaultHdfProxy = repo.getHdfProxy(0);
-		repo.setDefaultHdfProxy(defaultHdfProxy);
-		defaultHdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not and obj_EpcExternalPartReference
+	for (auto* hdfProxy : repo.getHdfProxySet()){
+		hdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not an obj_EpcExternalPartReference
 	}
 
 	return result;

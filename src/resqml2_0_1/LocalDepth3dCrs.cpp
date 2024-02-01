@@ -22,7 +22,7 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-void LocalDepth3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+void LocalDepth3dCrs::init(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom,
@@ -46,12 +46,12 @@ void LocalDepth3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::st
 	local3dCrs->VerticalUom = verticalUom;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 }
 
-LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
@@ -74,11 +74,11 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 	vertCrs->EpsgCode = verticalEpsgCode;
 }
 
-LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented)
 {
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, verticalUom, isUpOriented);
 	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
@@ -94,11 +94,11 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 	vertCrs->Unknown = verticalUnknownReason;
 }
 
-LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented)
 {
 	if (projectedEpsgCode == 0) {
 		throw invalid_argument("The EPSG code must be positive.");
@@ -117,10 +117,10 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 	vertCrs->Unknown = verticalUnknownReason;
 }
 
-LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
 	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
 {
 	if (verticalEpsgCode == 0) {

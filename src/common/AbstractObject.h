@@ -18,17 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include <regex>
+#include <sstream>
+#include <stdexcept>
 #include <unordered_map>
 #include <vector>
-#include <stdexcept>
-#if !defined(__GLIBCXX__) || __GLIBCXX__ > 20150623 || __GLIBCXX__ == 20140422 || __GLIBCXX__ == 20140716 || __GLIBCXX__ == 20141030
-#include <regex>
-#else
-#include <boost/regex.hpp>
-#endif
-#include <limits>
-
-#include "../proxies/gsoap_witsml1_4H.h"
 
 #include "DataObjectRepository.h"
 
@@ -383,32 +377,6 @@ namespace COMMON_NS
 		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) { gsoapProxy2_0_1 = gsoapProxy; }
 
 		/**
-		 * Get the EML2.1 gSOAP proxy which is wrapped by this entity
-		 *
-		 * @returns	A pointer to the EML2.1 gSOAP proxy.
-		 */
-		gsoap_eml2_1::eml21__AbstractObject* getEml21GsoapProxy() const { return gsoapProxy2_1; }
-		/**
-		 * Sets the underlying EML2.1 gSOAP proxy of this data object
-		 *
-		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
-		 */
-		void setGsoapProxy(gsoap_eml2_1::eml21__AbstractObject* gsoapProxy) { gsoapProxy2_1 = gsoapProxy; }
-
-		/**
-		 * Get the EML2.2 gSOAP proxy which is wrapped by this entity
-		 *
-		 * @returns	A pointer to the EML2.1 gSOAP proxy.
-		 */
-		gsoap_eml2_2::eml22__AbstractObject* getEml22GsoapProxy() const { return gsoapProxy2_2; }
-		/**
-		 * Sets the underlying EML2.2 gSOAP proxy of this data object
-		 *
-		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
-		 */
-		void setGsoapProxy(gsoap_eml2_2::eml22__AbstractObject* gsoapProxy) { gsoapProxy2_2 = gsoapProxy; }
-
-		/**
 		 * Get the EML2.3 gSOAP proxy which is wrapped by this entity
 		 *
 		 * @returns	A pointer to the EML2.3 gSOAP proxy.
@@ -443,20 +411,6 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new EML2.0 data object reference.
 		 */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* newResqmlReference() const;
-
-		/**
-		 * Creates an returns an EML2.1 data object reference which targets this data object
-		 *
-		 * @returns	A pointer to the new EML2.1 data object reference.
-		 */
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
-
-		/**
-		 * Creates an returns an EML2.2 data object reference which targets this data object
-		 *
-		 * @returns	A pointer to the new EML2.2 data object reference.
-		 */
-		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
 
 		/**
 		 * Creates an returns an EML2.2 data object reference which targets this data object
@@ -720,16 +674,7 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject = nullptr;
 
 		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
-		gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* gsoapProxyTraj1_4 = nullptr;
-
-		/** The underlying generated gSoap proxy for a EML 2.0 dataobject. */
-		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1 = nullptr;
-
-		/** The underlying generated gSoap proxy for a EML 2.1 dataobject. */
-		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1 = nullptr;
-
-		/** The underlying generated gSoap proxy for a EML 2.2 dataobject. */
-		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2 = nullptr;
+		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 
 		/** The underlying generated gSoap proxy for a EML 2.3 dataobject. */
 		gsoap_eml2_3::eml23__AbstractObject* gsoapProxy2_3 = nullptr;
@@ -740,50 +685,49 @@ namespace COMMON_NS
 		/**
 		* Default constructor
 		*/
-		AbstractObject() = default;
+		AbstractObject() :
+			partialObject(nullptr),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
 
 		/**
 		 * Constructor for partial transfer
 		 *
 		 * @param [in,out]	partialObject_	If non-null, the partial object.
 		 */
-		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) : partialObject(partialObject_) {}
-		AbstractObject(const DataObjectReference& dor) : partialObject(dor.toDor20()) {}
-
-		/**
-		 * Constructor when importing a WITSML1.4 trajectory
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_witsml1_4::witsml14__obj_USCOREtrajectory* proxy) : gsoapProxyTraj1_4(proxy) {}
+		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) :
+			partialObject(partialObject_),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
+		AbstractObject(const DataObjectReference& dor) :
+			partialObject(dor.toDor20()),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
 
 		/**
 		 * Constructor when importing EML 2.0 (i.e RESQML2.0.1) dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) : gsoapProxy2_0_1(proxy) {}
-
-		/**
-		 * Constructor when importing EML 2.1 dataobjects
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : gsoapProxy2_1(proxy) {}
-
-		/**
-		 * Constructor when importing EML 2.2 dataobjects
-		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
-		 */
-		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) : gsoapProxy2_2(proxy) {}
+		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) :
+			partialObject(nullptr),
+			gsoapProxy2_0_1(proxy),
+			gsoapProxy2_3(nullptr),
+			repository(nullptr) {}
 
 		/**
 		 * Constructor when importing EML 2.3 dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) : gsoapProxy2_3(proxy) {}
+		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) :
+			partialObject(nullptr),
+			gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_3(proxy),
+			repository(nullptr) {}
 
 		
 		friend bool COMMON_NS::DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy);
@@ -854,7 +798,7 @@ namespace COMMON_NS
 		void readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray const* arrayInput, double * arrayOutput) const;
 
 		template <class T>
-		T readArrayNdOfNonHdf5IntegerValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
+		T readArrayNdOfNonHdf5IntegerValues(gsoap_resqml2_0_1::resqml20__AbstractValueArray const * arrayInput, T * arrayOutput) const {
 			switch (arrayInput->soap_type()) {
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray:
 			{
@@ -870,12 +814,16 @@ namespace COMMON_NS
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
 			{
 				gsoap_resqml2_0_1::resqml20__IntegerConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(arrayInput);
-				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
+				if (sizeof(constantArray->Value) > sizeof(T) && constantArray->Value > (std::numeric_limits<T>::max)()) {
 					throw std::range_error("The constant integer value is superior to maximum value of read datatype.");
 				}
-				for (size_t i = 0; i < constantArray->Count; ++i) {
-					arrayOutput[i] = static_cast<T>(constantArray->Value);
-				}
+				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
+				return (std::numeric_limits<T>::max)();
+			}
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray:
+			{
+				gsoap_resqml2_0_1::resqml20__BooleanConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__BooleanConstantArray const*>(arrayInput);
+				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
 				return (std::numeric_limits<T>::max)();
 			}
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
@@ -895,14 +843,20 @@ namespace COMMON_NS
 		}
 
 		template <class T>
-		T readArrayNdOfNonHdf5IntegerValues(gsoap_eml2_3::eml23__AbstractIntegerArray const * arrayInput, T * arrayOutput) const {
+		T readArrayNdOfNonHdf5IntegerValues(gsoap_eml2_3::eml23__AbstractValueArray const * arrayInput, T * arrayOutput) const {
 			switch (arrayInput->soap_type()) {
 			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
 			{
 				gsoap_eml2_3::eml23__IntegerConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(arrayInput);
-				if (constantArray->Value > (std::numeric_limits<T>::max)()) {
+				if (sizeof(constantArray->Value) > sizeof(T) && constantArray->Value > (std::numeric_limits<T>::max)()) {
 					throw std::range_error("The constant integer value is superior to maximum value of read datatype.");
 				}
+				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
+				return (std::numeric_limits<T>::max)();
+			}
+			case SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray:
+			{
+				gsoap_eml2_3::eml23__BooleanConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__BooleanConstantArray const*>(arrayInput);
 				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
 				return (std::numeric_limits<T>::max)();
 			}
@@ -962,7 +916,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint8_t::max
 		 */
-		uint8_t readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, uint8_t * arrayOutput) const;
+		uint8_t readArrayNdOfUInt8Values(gsoap_resqml2_0_1::resqml20__AbstractValueArray const* arrayInput, uint8_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -973,7 +927,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint16_t::max
 		 */
-		uint8_t readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, uint8_t * arrayOutput) const;
+		uint8_t readArrayNdOfUInt8Values(gsoap_eml2_3::eml23__AbstractValueArray const* arrayInput, uint8_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -984,7 +938,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint16_t::max
 		 */
-		uint16_t readArrayNdOfUInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, uint16_t * arrayOutput) const;
+		uint16_t readArrayNdOfUInt16Values(gsoap_resqml2_0_1::resqml20__AbstractValueArray const* arrayInput, uint16_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -995,7 +949,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint8_t::max
 		 */
-		uint16_t readArrayNdOfUInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, uint16_t * arrayOutput) const;
+		uint16_t readArrayNdOfUInt16Values(gsoap_eml2_3::eml23__AbstractValueArray const* arrayInput, uint16_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1006,7 +960,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint32_t::max
 		 */
-		uint32_t readArrayNdOfUInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, uint32_t * arrayOutput) const;
+		uint32_t readArrayNdOfUInt32Values(gsoap_resqml2_0_1::resqml20__AbstractValueArray const* arrayInput, uint32_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
@@ -1017,7 +971,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint32_t::max
 		 */
-		uint32_t readArrayNdOfUInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, uint32_t * arrayOutput) const;
+		uint32_t readArrayNdOfUInt32Values(gsoap_eml2_3::eml23__AbstractValueArray const* arrayInput, uint32_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1028,7 +982,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint64_t::max
 		 */
-		uint64_t readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, uint64_t * arrayOutput) const;
+		uint64_t readArrayNdOfUInt64Values(gsoap_resqml2_0_1::resqml20__AbstractValueArray const* arrayInput, uint64_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1039,7 +993,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint64_t::max
 		 */
-		uint64_t readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, uint64_t * arrayOutput) const;
+		uint64_t readArrayNdOfUInt64Values(gsoap_eml2_3::eml23__AbstractValueArray const* arrayInput, uint64_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1050,7 +1004,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint8_t::max
 		 */
-		int8_t readArrayNdOfInt8Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, int8_t * arrayOutput) const;
+		int8_t readArrayNdOfInt8Values(gsoap_resqml2_0_1::resqml20__AbstractValueArray const* arrayInput, int8_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1061,7 +1015,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint16_t::max
 		 */
-		int8_t readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, int8_t * arrayOutput) const;
+		int8_t readArrayNdOfInt8Values(gsoap_eml2_3::eml23__AbstractValueArray const* arrayInput, int8_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1072,7 +1026,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint8_t::max
 		 */
-		int16_t readArrayNdOfInt16Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, int16_t * arrayOutput) const;
+		int16_t readArrayNdOfInt16Values(gsoap_resqml2_0_1::resqml20__AbstractValueArray const* arrayInput, int16_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1083,7 +1037,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint16_t::max
 		 */
-		int16_t readArrayNdOfInt16Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, int16_t * arrayOutput) const;
+		int16_t readArrayNdOfInt16Values(gsoap_eml2_3::eml23__AbstractValueArray const* arrayInput, int16_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1094,7 +1048,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint8_t::max
 		 */
-		int32_t readArrayNdOfInt32Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, int32_t * arrayOutput) const;
+		int32_t readArrayNdOfInt32Values(gsoap_resqml2_0_1::resqml20__AbstractValueArray const* arrayInput, int32_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1105,7 +1059,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint16_t::max
 		 */
-		int32_t readArrayNdOfInt32Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, int32_t * arrayOutput) const;
+		int32_t readArrayNdOfInt32Values(gsoap_eml2_3::eml23__AbstractValueArray const* arrayInput, int32_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1116,7 +1070,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint64_t::max
 		 */
-		int64_t readArrayNdOfInt64Values(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput, int64_t * arrayOutput) const;
+		int64_t readArrayNdOfInt64Values(gsoap_resqml2_0_1::resqml20__AbstractValueArray const* arrayInput, int64_t * arrayOutput) const;
 
 		/**
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
@@ -1127,7 +1081,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The null value of this array. Default returned value is uint64_t::max
 		 */
-		int64_t readArrayNdOfInt64Values(gsoap_eml2_3::eml23__AbstractIntegerArray const* arrayInput, int64_t * arrayOutput) const;
+		int64_t readArrayNdOfInt64Values(gsoap_eml2_3::eml23__AbstractValueArray const* arrayInput, int64_t * arrayOutput) const;
 
 		/**
 		 * Get the count of item in an array of integer
@@ -1136,7 +1090,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The count of item in the array of integer.
 		 */
-		uint64_t getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* arrayInput) const;
+		uint64_t getCountOfArray(gsoap_resqml2_0_1::resqml20__AbstractValueArray const* arrayInput) const;
 
 		/**
 		 * Get the count of item in an array

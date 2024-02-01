@@ -225,7 +225,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  * @param 	className	 	Name of the class.
  * @param 	attributeName	Name of the attribute.
  */
-#define CHECK_ATTRIBUTE_EXISTENCE(className, attributeName) if (static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName == nullptr) { throw std::invalid_argument("The attribute does not exist"); }
+#define CHECK_ATTRIBUTE_EXISTENCE(className, attributeName) if (static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName == nullptr) { throw std::invalid_argument("The attribute does not exist"); }
 
 /**
  * A macro that defines check attribute in vector existence
@@ -235,7 +235,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  * @param 	attributeName	Name of the attribute.
  */
 #define CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName) \
-		if (static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName.at(index)->attributeName == nullptr) { throw std::invalid_argument("The attribute in vector does not exist"); }
+	if (static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName == nullptr) { throw std::invalid_argument("The attribute in vector does not exist"); }
 
 /**
  * A macro that defines create attribute if not present
@@ -244,7 +244,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  * @param 	attributeName	Name of the attribute.
  * @param 	constructor  	The constructor.
  */
-#define CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor) if (static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap); }
+#define CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor) if (static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName == nullptr) { static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName = constructor(gsoapProxy2_3->soap); }
 
 /**
  * A macro that defines create attribute in vector if not present
@@ -255,7 +255,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  * @param 	constructor  	The constructor.
  */
 #define CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, constructor)\
-		if (static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName.at(index)->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = constructor(gsoapProxy2_1->soap); }
+	if (static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName == nullptr) { static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName = constructor(gsoapProxy2_3->soap); }
 
 /**
 * A macro that defines getter presence attribute
@@ -284,7 +284,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  * @param 	className	 	Name of the class.
  * @param 	attributeName	Name of the attribute.
  */
-#define GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName) bool GLUE(,className)::has##attributeName() const { return static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName != nullptr; }
+#define GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName) bool GLUE(,className)::has##attributeName() const { return static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName != nullptr; }
 
 /**
 * A macro that defines getter presence attribute in vector
@@ -318,7 +318,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  * @param 	attributeName	Name of the attribute.
  */
 #define GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName) bool GLUE(,className)::has##vectorName##attributeName(uint64_t index) const {\
-	return static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName.at(index)->attributeName != nullptr;\
+	return static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName != nullptr;\
 }
 
  /**
@@ -359,8 +359,8 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  * @param 	attributeName	 	Name of the attribute.
  */
 #define GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(attributeDatatype, className, attributeName)\
-	void GLUE(,className)::set##attributeName(const attributeDatatype & value) { static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName = value; }\
-	attributeDatatype GLUE(,className)::get##attributeName() const { return static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName; }
+	void GLUE(,className)::set##attributeName(const attributeDatatype & value) { static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName = value; }\
+	attributeDatatype GLUE(,className)::get##attributeName() const { return static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName; }
 
  /**
   * A macro that defines getter and setter generic attribute in vector
@@ -405,10 +405,10 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  */
 #define GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR_IMPL(attributeDatatype, className, vectorName, attributeName)\
 	void GLUE(,className)::set##vectorName##attributeName(uint64_t index, const attributeDatatype & value) {\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName.at(index)->attributeName = value;\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName = value;\
 	}\
 	attributeDatatype GLUE(,className)::get##vectorName##attributeName(uint64_t index) const {\
-		return static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName.at(index)->attributeName;\
+		return static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName;\
 	}
 
 /**
@@ -452,12 +452,12 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 #define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(attributeDatatype, className, attributeName, constructor)\
 	void GLUE(,className)::set##attributeName(const attributeDatatype & attributeName) {\
 		CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor)\
-		*static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName = attributeName;\
+		*static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName = attributeName;\
 	}\
 	GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName)\
 	attributeDatatype GLUE(,className)::get##attributeName() const {\
 		CHECK_ATTRIBUTE_EXISTENCE(className, attributeName)\
-		return *static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName;\
+		return *static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName;\
 	}
 
 /**
@@ -504,12 +504,12 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 #define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(attributeDatatype, className, vectorName, attributeName, constructor)\
 	void GLUE(,className)::set##vectorName##attributeName(uint64_t index, const attributeDatatype & value) {\
 		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, constructor)\
-		*static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = value;\
+		*static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName = value;\
 	}\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	attributeDatatype GLUE(,className)::get##vectorName##attributeName(uint64_t index) const {\
 		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName)\
-		return *static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName;\
+		return *static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName;\
 	}
 
 /**
@@ -520,13 +520,28 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  */
 #define GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(className, attributeName)\
 	void GLUE(,className)::set##attributeName(const time_t & attributeName) {\
-		CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, gsoap_eml2_1::soap_new_std__string)\
-		*static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName = timeTools::convertUnixTimestampToIso(attributeName);\
+		CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, gsoap_eml2_3::soap_new_tm)\
+		*static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName = timeTools::to_calendar_time(timeTools::from_time_t(attributeName));\
 	}\
 	GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName)\
 	time_t GLUE(,className)::get##attributeName() const {\
 		CHECK_ATTRIBUTE_EXISTENCE(className, attributeName)\
-		return timeTools::convertIsoToUnixTimestamp(*static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName);\
+		return timeTools::timegm(*static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName);\
+	}
+
+ /**
+  * A macro that defines getter and setter time t optional attribute in vector Implementation
+  *
+  * @param 	className	 	Name of the class.
+  * @param 	vectorName   	Name of the vector.
+  * @param 	attributeName	Name of the attribute.
+  */
+#define GETTER_AND_SETTER_TIME_T_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
+	void GLUE(,className)::set##vectorName##attributeName(unsigned int index, const time_t & attributeName) {\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName = timeTools::to_calendar_time(timeTools::from_time_t(attributeName));\
+	}\
+	time_t GLUE(,className)::get##vectorName##attributeName(unsigned int index) const {\
+		return timeTools::timegm(static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName);\
 	}
 
 /**
@@ -538,14 +553,12 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  */
 #define GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	void GLUE(,className)::set##vectorName##attributeName(uint64_t index, const time_t & attributeName) {\
-		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, gsoap_eml2_1::soap_new_std__string)\
-		*static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = timeTools::convertUnixTimestampToIso(attributeName);\
+		*static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName = timeTools::to_calendar_time(timeTools::from_time_t(attributeName));\
 	}\
-	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	time_t GLUE(,className)::get##vectorName##attributeName(uint64_t index) const {\
-		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName)\
-		return timeTools::convertIsoToUnixTimestamp(*static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName);\
-	}
+		return timeTools::timegm(*static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName);\
+	}\
+	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)
 
 /**
 * A macro that defines getter and setter measure attribute
@@ -620,10 +633,9 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 * @param 	uomDatatype  	The uom datatype.
 */
 #define ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
-	DLL_IMPORT_OR_EXPORT virtual void set##attributeName(double value, uomDatatype uom, const std::string & datum) = 0;\
+	DLL_IMPORT_OR_EXPORT virtual void set##attributeName(double value, uomDatatype uom) = 0;\
 	DLL_IMPORT_OR_EXPORT virtual double get##attributeName##Value() const = 0;\
-	DLL_IMPORT_OR_EXPORT virtual uomDatatype get##attributeName##Uom() const = 0;\
-	DLL_IMPORT_OR_EXPORT virtual std::string get##attributeName##Datum() const = 0;
+	DLL_IMPORT_OR_EXPORT virtual uomDatatype get##attributeName##Uom() const = 0;
 
 /**
 * A macro that defines getter and setter depth measure attribute
@@ -632,10 +644,9 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 * @param 	uomDatatype  	The uom datatype.
 */
 #define FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
-	DLL_IMPORT_OR_EXPORT void set##attributeName(double value, uomDatatype uom, const std::string & datum) final;\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(double value, uomDatatype uom) final;\
 	DLL_IMPORT_OR_EXPORT double get##attributeName##Value() const final;\
-	DLL_IMPORT_OR_EXPORT uomDatatype get##attributeName##Uom() const final;\
-	DLL_IMPORT_OR_EXPORT std::string get##attributeName##Datum() const final;
+	DLL_IMPORT_OR_EXPORT uomDatatype get##attributeName##Uom() const final;
 
 /**
  * A macro that defines getter and setter depth measure attribute
@@ -644,10 +655,9 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  * @param 	uomDatatype  	The uom datatype.
  */
 #define GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
-	DLL_IMPORT_OR_EXPORT void set##attributeName(double value, uomDatatype uom, const std::string & datum);\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(double value, uomDatatype uom);\
 	DLL_IMPORT_OR_EXPORT double get##attributeName##Value() const;\
-	DLL_IMPORT_OR_EXPORT uomDatatype get##attributeName##Uom() const;\
-	DLL_IMPORT_OR_EXPORT std::string get##attributeName##Datum() const;
+	DLL_IMPORT_OR_EXPORT uomDatatype get##attributeName##Uom() const;
 
 /**
 * A macro that defines getter and setter depth measure optional attribute
@@ -756,10 +766,9 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 * @param 	uomDatatype  	The uom datatype.
 */
 #define ABSTRACT_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
-	DLL_IMPORT_OR_EXPORT virtual void set##vectorName##attributeName(uint64_t index, double value, uomDatatype uom, const std::string & datum) = 0;\
+	DLL_IMPORT_OR_EXPORT virtual void set##vectorName##attributeName(uint64_t index, double value, uomDatatype uom) = 0;\
 	DLL_IMPORT_OR_EXPORT virtual double get##vectorName##attributeName##Value(uint64_t index) const = 0;\
-	DLL_IMPORT_OR_EXPORT virtual uomDatatype get##vectorName##attributeName##Uom(uint64_t index) const = 0;\
-	DLL_IMPORT_OR_EXPORT virtual std::string get##vectorName##attributeName##Datum(uint64_t index) const = 0;
+	DLL_IMPORT_OR_EXPORT virtual uomDatatype get##vectorName##attributeName##Uom(uint64_t index) const = 0;
 
 /**
 * A macro that defines getter and setter depth measure attribute in vector
@@ -769,10 +778,9 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 * @param 	uomDatatype  	The uom datatype.
 */
 #define FINAL_GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
-	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(uint64_t index, double value, uomDatatype uom, const std::string & datum) final;\
+	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(uint64_t index, double value, uomDatatype uom) final;\
 	DLL_IMPORT_OR_EXPORT double get##vectorName##attributeName##Value(uint64_t index) const final;\
-	DLL_IMPORT_OR_EXPORT uomDatatype get##vectorName##attributeName##Uom(uint64_t index) const final;\
-	DLL_IMPORT_OR_EXPORT std::string get##vectorName##attributeName##Datum(uint64_t index) const final;
+	DLL_IMPORT_OR_EXPORT uomDatatype get##vectorName##attributeName##Uom(uint64_t index) const final;
 
 /**
  * A macro that defines getter and setter depth measure attribute in vector
@@ -829,7 +837,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 #define GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IMPL(className, attributeName)\
 	double GLUE(,className)::get##attributeName##Value() const {\
 		if (!has##attributeName()) { throw invalid_argument("The measure attribute to get does not exist."); }\
-		return static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName->__item;\
+		return static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName->__item;\
 	}
 
 /**
@@ -842,7 +850,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 #define GETTER_UOM_OF_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype)\
 	uomDatatype GLUE(, className)::get##attributeName##Uom() const {\
 		if (!has##attributeName()) { throw invalid_argument("The measure attribute to get does not exist."); }\
-		return static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName->uom;\
+		return static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName->uom;\
 	}
 
 /**
@@ -854,7 +862,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  */
 #define GETTER_UOM_OF_MEASURE_AS_STRING_ATTRIBUTE_IMPL(className, attributeName, uomDatatypeStringConversion)\
 	std::string GLUE(, className)::get##attributeName##UomAsString() const {\
-		return uomDatatypeStringConversion(gsoapProxy2_1->soap, get##attributeName##Uom());\
+		return uomDatatypeStringConversion(gsoapProxy2_3->soap, get##attributeName##Uom());\
 	}
 
 /**
@@ -869,8 +877,8 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 	void GLUE(,className)::set##attributeName(double value, uomDatatype uom) {\
 		if (value != value) { throw invalid_argument("You cannot set an undefined measure"); }\
 		CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor)\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName->__item = value;\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName->uom = uom;\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName->__item = value;\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName->uom = uom;\
 	}\
 	GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IMPL(className, attributeName)\
 	GETTER_UOM_OF_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype)\
@@ -884,19 +892,24 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  * @param 	uomDatatype  	The uom datatype.
  * @param 	constructor  	The constructor.
  */
-#define GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, constructor)\
-	void GLUE(,className)::set##attributeName(double value, uomDatatype uom, const std::string & datum) {\
+#define GETTER_AND_SETTER_MEASURED_DEPTH_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, constructor)\
+	void GLUE(,className)::set##attributeName(double value, uomDatatype uom) {\
 		if (value != value) { throw invalid_argument("You cannot set an undefined depth measure"); }\
 		CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor)\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName->__item = value;\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName->uom = uom;\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName->datum = datum;\
+		if (static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName->MeasuredDepth == nullptr) {\
+			static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName->MeasuredDepth = gsoap_eml2_3::soap_new_eml23__LengthMeasureExt(gsoapProxy2_3->soap); }\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName->MeasuredDepth->__item = value;\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName->MeasuredDepth->uom = gsoap_eml2_3::soap_eml23__LengthUom2s(gsoapProxy2_3->soap, uom);\
 	}\
-	GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IMPL(className, attributeName)\
-	GETTER_UOM_OF_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype)\
-	std::string GLUE(, className)::get##attributeName##Datum() const {\
+	double GLUE(,className)::get##attributeName##Value() const {\
 		if (!has##attributeName()) { throw invalid_argument("The measure attribute to get does not exist."); }\
-		return static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName->datum;\
+		return static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName->MeasuredDepth->__item;\
+	}\
+	uomDatatype GLUE(, className)::get##attributeName##Uom() const {\
+		if (!has##attributeName()) { throw invalid_argument("The measure attribute to get does not exist."); }\
+		gsoap_eml2_3::eml23__LengthUom result;\
+		gsoap_eml2_3::soap_s2eml23__LengthUom(gsoapProxy2_3->soap, static_cast<witsml21__##className*>(gsoapProxy2_3)->attributeName->MeasuredDepth->uom.c_str(), &result);\
+		return result;\
 	}
 
 /**
@@ -919,8 +932,8 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
  * @param 	uomDatatype  	The uom datatype.
  * @param 	constructor  	The constructor.
  */
-#define GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, constructor)\
-	GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, constructor)\
+#define GETTER_AND_SETTER_MEASURED_DEPTH_OPTIONAL_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, constructor)\
+	GETTER_AND_SETTER_MEASURED_DEPTH_ATTRIBUTE_IMPL(className, attributeName, uomDatatype, constructor)\
 	GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName)
 
 /**
@@ -933,7 +946,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 #define GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	double GLUE(,className)::get##vectorName##attributeName##Value(uint64_t index) const {\
 		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName)\
-		return static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName->__item;\
+		return static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName->__item;\
 	}
 
 /**
@@ -947,7 +960,7 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 #define GETTER_UOM_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName, uomDatatype)\
 	uomDatatype GLUE(,className)::get##vectorName##attributeName##Uom(uint64_t index) const {\
 		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName)\
-		return static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName->uom;\
+		return static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName->uom;\
 	}
 
 /**
@@ -963,34 +976,39 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 	void GLUE(,className)::set##vectorName##attributeName(uint64_t index, double value, uomDatatype uom) {\
 		if (value != value) { throw invalid_argument("You cannot set an undefined measured depth coord"); }\
 		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, constructor)\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName->__item = value;\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName->uom = uom;\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName->__item = value;\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName->uom = uom;\
 	}\
 	GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	GETTER_UOM_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName, uomDatatype)
 
-/**
- * A macro that defines getter and setter depth measure attribute in vector Implementation
- *
- * @param 	className	 	Name of the class.
- * @param 	vectorName   	Name of the vector.
- * @param 	attributeName	Name of the attribute.
- * @param 	uomDatatype  	The uom datatype.
- * @param 	constructor  	The constructor.
- */
-#define GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName, uomDatatype, constructor)\
-	void GLUE(,className)::set##vectorName##attributeName(uint64_t index, double value, uomDatatype uom, const std::string & datum) {\
+ /**
+  * A macro that defines getter and setter depth measure attribute in vector Implementation
+  *
+  * @param 	className	 	Name of the class.
+  * @param 	vectorName   	Name of the vector.
+  * @param 	attributeName	Name of the attribute.
+  * @param 	uomDatatype  	The uom datatype.
+  * @param 	constructor  	The constructor.
+  */
+#define GETTER_AND_SETTER_MEASURED_DEPTH_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName, uomDatatype, constructor)\
+	void GLUE(,className)::set##vectorName##attributeName(uint64_t index, double value, uomDatatype uom) {\
 		if (value != value) { throw invalid_argument("You cannot set an undefined measured depth coord"); }\
 		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, constructor)\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName->__item = value;\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName->uom = uom;\
-		static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName->datum = datum;\
+		if (static_cast<witsml21__Trajectory*>(gsoapProxy2_3)->TrajectoryStation[index]->Md->MeasuredDepth == nullptr) {\
+			static_cast<witsml21__Trajectory*>(gsoapProxy2_3)->TrajectoryStation[index]->Md->MeasuredDepth = gsoap_eml2_3::soap_new_eml23__LengthMeasureExt(gsoapProxy2_3->soap); }\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName->MeasuredDepth->__item = value;\
+		static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName->MeasuredDepth->uom = gsoap_eml2_3::soap_eml23__LengthUom2s(gsoapProxy2_3->soap, uom);\
 	}\
-	GETTER_VALUE_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
-	GETTER_UOM_OF_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName, uomDatatype)\
-	std::string GLUE(, className)::get##vectorName##attributeName##Datum(uint64_t index) const {\
+	double GLUE(,className)::get##vectorName##attributeName##Value(uint64_t index) const {\
 		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName)\
-		return static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName->datum;\
+		return static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName->MeasuredDepth->__item;\
+	}\
+	uomDatatype GLUE(,className)::get##vectorName##attributeName##Uom(uint64_t index) const {\
+		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName)\
+		gsoap_eml2_3::eml23__LengthUom result;\
+		gsoap_eml2_3::soap_s2eml23__LengthUom(gsoapProxy2_3->soap, static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName[index]->attributeName->MeasuredDepth->uom.c_str(), &result);\
+		return result;\
 	}
 
 /**
@@ -1006,16 +1024,16 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
 	GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName, uomDatatype, constructor)\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)
 
-/**
- * A macro that defines getter and setter depth measure optional attribute in vector
- * Implementation
- *
- * @param 	className	 	Name of the class.
- * @param 	vectorName   	Name of the vector.
- * @param 	attributeName	Name of the attribute.
- * @param 	uomDatatype  	The uom datatype.
- * @param 	constructor  	The constructor.
- */
-#define GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName, uomDatatype, constructor)\
-	GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName, uomDatatype, constructor)\
+ /**
+  * A macro that defines getter and setter depth measure optional attribute in vector
+  * Implementation
+  *
+  * @param 	className	 	Name of the class.
+  * @param 	vectorName   	Name of the vector.
+  * @param 	attributeName	Name of the attribute.
+  * @param 	uomDatatype  	The uom datatype.
+  * @param 	constructor  	The constructor.
+  */
+#define GETTER_AND_SETTER_MEASURED_DEPTH_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName, uomDatatype, constructor)\
+	GETTER_AND_SETTER_MEASURED_DEPTH_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName, uomDatatype, constructor)\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)

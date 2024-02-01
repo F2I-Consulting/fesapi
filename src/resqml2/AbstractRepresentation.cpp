@@ -30,9 +30,9 @@ under the License.
 #include "../eml2/TimeSeries.h"
 
 #include "AbstractFeatureInterpretation.h"
-#include "RepresentationSetRepresentation.h"
 #include "AbstractValuesProperty.h"
 #include "PointsProperty.h"
+#include "RepresentationSetRepresentation.h"
 #include "SubRepresentation.h"
 
 using namespace RESQML2_NS;
@@ -136,7 +136,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 
 		// HDF
 		std::unique_ptr<uint64_t[]> numValues(new uint64_t[numDimensionsInArray + 1]);
-		for (uint32_t i = 0; i < numDimensionsInArray; ++i) {
+		for (size_t i = 0; i < numDimensionsInArray; ++i) {
 			numValues[i] = numPoints[i];
 		}
 		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
@@ -178,7 +178,7 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 		}
 		gsoap_eml2_3::resqml22__Point3dExternalArray* xmlPts = gsoap_eml2_3::soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
 		xmlPts->Coordinates = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-		xmlPts->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/points_patch" + std::to_string(patchIndex), valueCount, proxy));
+		xmlPts->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/points_patch" + std::to_string(patchIndex), valueCount, proxy));
 		geom->Points = xmlPts;
 
 		// HDF
@@ -651,13 +651,13 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(uint64_t patchIndex,
 			// inlines XML
 			gsoap_eml2_3::eml23__FloatingPointExternalArray* inlineValues = gsoap_eml2_3::soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 			inlineValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-			inlineValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/inlineCoordinates_patch" + std::to_string(patchIndex), pointCount, proxy));
+			inlineValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/inlineCoordinates_patch" + std::to_string(patchIndex), pointCount, proxy));
 			patch->InlineCoordinates = inlineValues;
 
 			// crosslines XML
 			gsoap_eml2_3::eml23__FloatingPointExternalArray* crosslineValues = gsoap_eml2_3::soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 			crosslineValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-			crosslineValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/crosslineCoordinates_patch" + std::to_string(patchIndex), pointCount, proxy));
+			crosslineValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/crosslineCoordinates_patch" + std::to_string(patchIndex), pointCount, proxy));
 			patch->CrosslineCoordinates = crosslineValues;
 		}
 
@@ -724,7 +724,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(uint64_t patchIndex,
 		else {
 			throw logic_error("Not implemented yet");
 		}
-		auto patch = static_cast<gsoap_eml2_3::resqml22__Seismic3dCoordinates*>(geom->SeismicCoordinates);
+		auto* patch = static_cast<gsoap_eml2_3::resqml22__Seismic3dCoordinates*>(geom->SeismicCoordinates);
 
 		patch->SeismicSupport = seismicSupport->newEml23Reference();
 		getRepository()->addRelationship(this, seismicSupport);
@@ -758,7 +758,6 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(uint64_t patchIndex,
 	if (gsoapProxy2_0_1 != nullptr || gsoapProxy2_3 != nullptr) {
 		getRepository()->addRelationship(this, proxy);
 		getRepository()->addRelationship(this, seismicSupport);
-		
 		const uint64_t pointCount = getXyzPointCountOfPatch(patchIndex);
 		if (gsoapProxy2_0_1 != nullptr) {
 			gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
@@ -806,7 +805,7 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(uint64_t patchIndex,
 			// abscissa XML
 			gsoap_eml2_3::eml23__FloatingPointExternalArray* abscissaValues = gsoap_eml2_3::soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 			abscissaValues->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-			abscissaValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/lineAbscissa_patch" + std::to_string(patchIndex), pointCount, proxy));
+			abscissaValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/lineAbscissa_patch" + std::to_string(patchIndex), pointCount, proxy));
 			patch->LineAbscissa = abscissaValues;
 		}
 

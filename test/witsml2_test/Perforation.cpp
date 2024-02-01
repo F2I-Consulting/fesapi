@@ -17,13 +17,12 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "Perforation.h"
-
+#include "../catch.hpp"
+#include "witsml2_1/Well.h"
+#include "witsml2_1/Wellbore.h"
+#include "witsml2_1/WellCompletion.h"
+#include "witsml2_1/WellboreCompletion.h"
 #include <stdexcept>
-
-#include "witsml2_0/Well.h"
-#include "witsml2_0/Wellbore.h"
-#include "witsml2_0/WellCompletion.h"
-#include "witsml2_0/WellboreCompletion.h"
 
 using namespace std;
 using namespace witsml2_test;
@@ -37,50 +36,41 @@ Perforation::Perforation(const string & epcDocPath)
 }
 
 void Perforation::initRepo() {
-	WITSML2_0_NS::Well* well = repo->createPartial<WITSML2_0_NS::Well>("", "");
-	WITSML2_0_NS::Wellbore* wellbore = repo->createPartial<WITSML2_0_NS::Wellbore>("", "");
-	WITSML2_0_NS::WellCompletion* wellCompletion = repo->createWellCompletion(well, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
-	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = repo->createWellboreCompletion(wellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
+	WITSML2_1_NS::Well* well = repo->createPartial<WITSML2_1_NS::Well>("", "");
+	WITSML2_1_NS::Wellbore* wellbore = repo->createPartial<WITSML2_1_NS::Wellbore>("", "");
+	WITSML2_1_NS::WellCompletion* wellCompletion = repo->createWellCompletion(well, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
+	WITSML2_1_NS::WellboreCompletion* wellboreCompletion = repo->createWellboreCompletion(wellbore, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1");
 
-	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970, 1980, "myId");
-	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1990, 2000);
-	wellboreCompletion->pushBackPerforationHistory(0);
-	wellboreCompletion->setPerforationHistoryStatus(0, 0, gsoap_eml2_1::witsml20__PerforationStatus::open);
-	wellboreCompletion->setPerforationHistoryTopMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1970);
-	wellboreCompletion->setPerforationHistoryBaseMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom::m, 1980);
-	wellboreCompletion->setPerforationHistoryStartDate(0, 0, 407568645);
-	wellboreCompletion->setPerforationHistoryEndDate(0, 0, 1514764800);
-	wellboreCompletion->setPerforationHistoryComment(0, 0, "Comment");
+	wellboreCompletion->pushBackConnection(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, gsoap_eml2_3::eml23__LengthUom::m, 1970, 1980, "myId");
+	wellboreCompletion->pushBackConnection(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, gsoap_eml2_3::eml23__LengthUom::m, 1990, 2000, "myOtherUid");
+	wellboreCompletion->pushBackConnectionHistory(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0);
+	wellboreCompletion->setConnectionHistoryStatus(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::witsml21__PhysicalStatus::open);
+	wellboreCompletion->setConnectionHistoryMdInterval(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::eml23__LengthUom::m, 1970, 1980);
+	wellboreCompletion->setConnectionHistoryStartDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 407568645);
+	wellboreCompletion->setConnectionHistoryEndDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 1514764800);
+	wellboreCompletion->setConnectionHistoryComment(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, "Comment");
 }
 
 void Perforation::readRepo() {
-	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = repo->getDataObjectByUuid<WITSML2_0_NS::WellboreCompletion>("7bda8ecf-2037-4dc7-8c59-db6ca09f2008");
+	WITSML2_1_NS::WellboreCompletion* wellboreCompletion = repo->getDataObjectByUuid<WITSML2_1_NS::WellboreCompletion>("7bda8ecf-2037-4dc7-8c59-db6ca09f2008");
 	REQUIRE (wellboreCompletion != nullptr);
 
-	REQUIRE(wellboreCompletion->getPerforationCount() == 2);
-	REQUIRE(wellboreCompletion->getPerforationUid(0) == "myId");
-	REQUIRE(wellboreCompletion->hasPerforationMdDatum(0));
-	REQUIRE(wellboreCompletion->getPerforationMdDatum(0) == "Mean Sea Level");
-	REQUIRE(wellboreCompletion->hasPerforationMdUnit(0));
-	REQUIRE(wellboreCompletion->getPerforationMdUnit(0) == gsoap_eml2_1::eml21__LengthUom::m);
-	REQUIRE(wellboreCompletion->hasPerforationTopMd(0));
-	REQUIRE(wellboreCompletion->getPerforationTopMd(0) == 1970);
-	REQUIRE(wellboreCompletion->hasPerforationBaseMd(0));
-	REQUIRE(wellboreCompletion->getPerforationBaseMd(0) == 1980);
-	REQUIRE(wellboreCompletion->getPerforationHistoryCount(0) == 1);
-	REQUIRE(wellboreCompletion->hasPerforationHistoryStatus(0, 0));
-	REQUIRE(wellboreCompletion->getPerforationHistoryStatus(0, 0) == gsoap_eml2_1::witsml20__PerforationStatus::open);
-	REQUIRE(wellboreCompletion->hasPerforationHistoryStartDate(0, 0));
-	REQUIRE(wellboreCompletion->getPerforationHistoryStartDate(0, 0) == 407568645);
-	REQUIRE(wellboreCompletion->hasPerforationHistoryEndDate(0, 0));
-	REQUIRE(wellboreCompletion->getPerforationHistoryEndDate(0, 0) == 1514764800);
-	REQUIRE(wellboreCompletion->hasPerforationHistoryMdDatum(0, 0));
-	REQUIRE(wellboreCompletion->getPerforationHistoryMdDatum(0, 0) == "Mean Sea Level");
-	REQUIRE(wellboreCompletion->hasPerforationHistoryMdUnit(0, 0));
-	REQUIRE(wellboreCompletion->getPerforationHistoryMdUnit(0, 0) == gsoap_eml2_1::eml21__LengthUom::m);
-	REQUIRE(wellboreCompletion->hasPerforationHistoryTopMd(0, 0));
-	REQUIRE(wellboreCompletion->getPerforationHistoryTopMd(0, 0) == 1970);
-	REQUIRE(wellboreCompletion->hasPerforationHistoryBaseMd(0, 0));
-	REQUIRE(wellboreCompletion->getPerforationHistoryBaseMd(0, 0) == 1980);
-	REQUIRE(wellboreCompletion->getPerforationHistoryComment(0, 0) == "Comment");
+	REQUIRE(wellboreCompletion->getConnectionCount(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION) == 2);
+	REQUIRE(wellboreCompletion->getConnectionUid(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == "myId");
+	REQUIRE(wellboreCompletion->hasConnectionMdInterval(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0));
+	REQUIRE(wellboreCompletion->getConnectionMdUnit(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == gsoap_eml2_3::eml23__LengthUom::m);
+	REQUIRE(wellboreCompletion->getConnectionTopMd(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == 1970);
+	REQUIRE(wellboreCompletion->getConnectionBaseMd(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == 1980);
+	REQUIRE(wellboreCompletion->getConnectionHistoryCount(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == 1);
+	REQUIRE(wellboreCompletion->hasConnectionHistoryStatus(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0));
+	REQUIRE(wellboreCompletion->getConnectionHistoryStatus(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == gsoap_eml2_3::witsml21__PhysicalStatus::open);
+	REQUIRE(wellboreCompletion->hasConnectionHistoryStartDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0));
+	REQUIRE(wellboreCompletion->getConnectionHistoryStartDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == 407568645);
+	REQUIRE(wellboreCompletion->hasConnectionHistoryEndDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0));
+	REQUIRE(wellboreCompletion->getConnectionHistoryEndDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == 1514764800);
+	REQUIRE(wellboreCompletion->hasConnectionHistoryMdInterval(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0));
+	REQUIRE(wellboreCompletion->getConnectionHistoryMdUnit(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == gsoap_eml2_3::eml23__LengthUom::m);
+	REQUIRE(wellboreCompletion->getConnectionHistoryTopMd(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == 1970);
+	REQUIRE(wellboreCompletion->getConnectionHistoryBaseMd(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == 1980);
+	REQUIRE(wellboreCompletion->getConnectionHistoryComment(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0) == "Comment");
 }

@@ -27,7 +27,14 @@ under the License.
 
 namespace COMMON_NS
 {
-	/** @brief	This class allows an access to a memory package representing an EPC document. */
+	/** @brief	EPC is an implementation of the Open Packaging Conventions (OPC), a widely used container-file technology
+	 * that allows multiple types of files to be bundled together into a single package.
+	 * Built on the widely used ZIP file structure and originally created by Microsoft, OPC is now an open standard supported by these standards organizations:
+	 *  - Ecma International (http://www.ecma-international.org/publications/standards/Ecma-376.htm )
+	 *  - ISO/IEC 29500-2:2012, which has 4 parts, which are all freely available at this link (http://standards.iso.org/ittf/PubliclyAvailableStandards/index.html ).
+	 * An EPC file (or package) is a ZIP file, which may be “unzipped” to view its components.
+	 * When implemented as part of an Energistics standard, the zipping/unzipping is done using the OPC libraries (per the EPC Specification).
+	 */
 	class EpcDocument : public DataFeeder
 	{		
 	public:
@@ -71,13 +78,12 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void setFilePath(const std::string & fp);
 
 		/**
-		 * Serializes the content of a data object repository into this EPC document. It also allows to
-		 * optionally zip this EPC document.
+		 * Serializes the content of a data object repository into this EPC document.
 		 *
-		 * @param 	repo		A data object repository.
-		 * @param 	useZip64	(Optional) True to zip the EPC document, else false (default).
+		 * @param 	repo		A data object repository (not const because we may create a Fake Property for solivng a RESQML2.0.1 empty PropertySet issue)
+		 * @param 	useZip64	(Optional) True to zip the EPC document using Zip64 format, else (default) simply use Zip format.
 		 */
-		DLL_IMPORT_OR_EXPORT void serializeFrom(const DataObjectRepository & repo, bool useZip64 = false);
+		DLL_IMPORT_OR_EXPORT void serializeFrom(DataObjectRepository& repo, bool useZip64 = false);
 
 		/**
 		 * Deserializes this package (data objects and relationships) into a data object repository
@@ -88,13 +94,13 @@ namespace COMMON_NS
 		 *
 		 * @returns	An empty string if success otherwise the warning string.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
+		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository& repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 
 		/**
 		* Unzip the package (dataobjects + relationships) into a data repository by only creating partial objects.
 		* @return			An empty string if success otherwise the warning string.
 		*/
-		DLL_IMPORT_OR_EXPORT std::string deserializePartiallyInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
+		DLL_IMPORT_OR_EXPORT std::string deserializePartiallyInto(DataObjectRepository& repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 
 		/**
 		 * Gets the absolute path of the directory where the EPC document is stored.

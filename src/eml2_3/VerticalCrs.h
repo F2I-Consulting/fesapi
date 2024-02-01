@@ -22,7 +22,7 @@ under the License.
 
 namespace EML2_3_NS
 {
-	/** A local depth 3D crs. */
+	/** A vertical crs. */
 	class VerticalCrs final : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -31,8 +31,6 @@ namespace EML2_3_NS
 		 * Only to be used in partial transfer context
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * 
 		 */
 		DLL_IMPORT_OR_EXPORT VerticalCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
@@ -73,7 +71,7 @@ namespace EML2_3_NS
 		 */
 		VerticalCrs(gsoap_eml2_3::_eml23__VerticalCrs* fromGsoap): COMMON_NS::AbstractObject(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is manged by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~VerticalCrs() = default;
 
 		/**

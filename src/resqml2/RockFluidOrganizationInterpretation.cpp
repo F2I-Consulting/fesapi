@@ -27,7 +27,7 @@ using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 
-std::vector<AbstractGridRepresentation *> RockFluidOrganizationInterpretation::getGridRepresentationSet() const
+std::vector<AbstractGridRepresentation*> RockFluidOrganizationInterpretation::getGridRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<AbstractGridRepresentation>(this);
 }
@@ -37,7 +37,7 @@ uint64_t RockFluidOrganizationInterpretation::getGridRepresentationCount() const
 	return getGridRepresentationSet().size();
 }
 
-AbstractGridRepresentation * RockFluidOrganizationInterpretation::getGridRepresentation(uint64_t index) const
+AbstractGridRepresentation* RockFluidOrganizationInterpretation::getGridRepresentation(uint64_t index) const
 {
 	const std::vector<AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentationSet();
 	return gridRepresentationSet.at(index);
@@ -49,7 +49,7 @@ bool RockFluidOrganizationInterpretation::isAssociatedToGridRepresentation(Abstr
 	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
 }
 
-RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUnitInterpretation(unsigned int index) const
+RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUnitInterpretation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RockFluidUnitInterpretation>(getRockFluidUnitInterpretationDor(index).getUuid());
 }
@@ -58,7 +58,7 @@ void RockFluidOrganizationInterpretation::loadTargetRelationships()
 {
 	AbstractOrganizationInterpretation::loadTargetRelationships();
 
-	for (unsigned int i = 0; i < getRockFluidUnitInterpCount(); ++i) {
+	for (uint64_t i = 0; i < getRockFluidUnitInterpCount(); ++i) {
 		COMMON_NS::DataObjectReference dor = getRockFluidUnitInterpretationDor(i);
 		if (!dor.isEmpty()) {
 			convertDorIntoRel<RockFluidUnitInterpretation>(dor);

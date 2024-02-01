@@ -22,7 +22,6 @@ under the License.
 #include "resqml2/GenericFeatureInterpretation.h"
 #include "resqml2/PolylineRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
-#include "resqml2_test/LocalDepth3dCrsTest.h"
 
 using namespace std;
 using namespace resqml2_test;

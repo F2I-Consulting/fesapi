@@ -18,7 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreMarker.h"
 
-#include "../witsml2_0/WellboreMarker.h"
+#include <stdexcept>
+
+#include "../witsml2_1/WellboreMarker.h"
 
 #include "WellboreMarkerFrameRepresentation.h"
 #include "BoundaryFeatureInterpretation.h"
@@ -37,14 +39,14 @@ WellboreMarkerFrameRepresentation const * WellboreMarker::getWellboreMarkerFrame
 	return wmfr.size() == 1 ? wmfr[0] : nullptr;
 }
 
-WITSML2_0_NS::WellboreMarker* WellboreMarker::getWitsmlWellboreMarker() const
+WITSML2_1_NS::WellboreMarker* WellboreMarker::getWitsmlWellboreMarker() const
 {
-	return getWellboreMarkerFrameRepresentation()->getRepository()->getDataObjectByUuid<WITSML2_0_NS::WellboreMarker>(getWitsmlWellboreMarkerDor().getUuid());
+	return getWellboreMarkerFrameRepresentation()->getRepository()->getDataObjectByUuid<WITSML2_1_NS::WellboreMarker>(getWitsmlWellboreMarkerDor().getUuid());
 }
 
 bool WellboreMarker::hasDipAngle() const
 {
-	WITSML2_0_NS::WellboreMarker* witsmlMarker = getWitsmlWellboreMarker();
+	WITSML2_1_NS::WellboreMarker* witsmlMarker = getWitsmlWellboreMarker();
 	if (witsmlMarker == nullptr) {
 		return false;
 	}
@@ -63,7 +65,7 @@ double WellboreMarker::getDipAngleValue() const
 	return getWitsmlWellboreMarker()->getDipAngleValue();
 }
 
-gsoap_eml2_1::eml21__PlaneAngleUom WellboreMarker::getDipAngleUom() const
+gsoap_eml2_3::eml23__PlaneAngleUom WellboreMarker::getDipAngleUom() const
 {
 	if (!hasDipAngle()) {
 		throw std::logic_error("There is no dip angle");
@@ -82,7 +84,7 @@ string WellboreMarker::getDipAngleUomAsString() const
 
 bool WellboreMarker::hasDipDirection() const
 {
-	WITSML2_0_NS::WellboreMarker* witsmlMarker = getWitsmlWellboreMarker();
+	WITSML2_1_NS::WellboreMarker* witsmlMarker = getWitsmlWellboreMarker();
 	if (witsmlMarker == nullptr) {
 		return false;
 	}
@@ -101,7 +103,7 @@ double WellboreMarker::getDipDirectionValue() const
 	return getWitsmlWellboreMarker()->getDipDirectionValue();
 }
 
-gsoap_eml2_1::eml21__PlaneAngleUom WellboreMarker::getDipDirectionUom() const
+gsoap_eml2_3::eml23__PlaneAngleUom WellboreMarker::getDipDirectionUom() const
 {
 	if (!hasDipDirection()) {
 		throw std::logic_error("There is no dip direction");
@@ -128,6 +130,6 @@ void WellboreMarker::loadTargetRelationships()
 
 	dor = getWitsmlWellboreMarkerDor();
 	if (!dor.isEmpty()) {
-		convertDorIntoRel<WITSML2_0_NS::WellboreMarker>(dor);
+		convertDorIntoRel<WITSML2_1_NS::WellboreMarker>(dor);
 	}
 }

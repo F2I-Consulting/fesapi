@@ -119,7 +119,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The rock fluid unit interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT class RockFluidUnitInterpretation* getRockFluidUnitInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class RockFluidUnitInterpretation* getRockFluidUnitInterpretation(uint64_t index) const;
 
 	protected:
 		/**

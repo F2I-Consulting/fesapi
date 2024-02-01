@@ -22,10 +22,11 @@ under the License.
 
 #include "H5public.h"
 
-#include "../resqml2/AbstractFeature.h"
-#include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../eml2/AbstractHdfProxy.h"
 #include "../eml2/AbstractLocal3dCrs.h"
+
+#include "../resqml2/AbstractFeature.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

@@ -38,7 +38,7 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues
 	// XML
 	eml23__FloatingPointExternalArray* xmlTimeValues = soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 	xmlTimeValues->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-	xmlTimeValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/timeValues", timeValueCount, proxy));
+	xmlTimeValues->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/timeValues", timeValueCount, proxy));
 
 	frame->NodeTimeValues = xmlTimeValues;
 	frame->NodeCount = timeValueCount;

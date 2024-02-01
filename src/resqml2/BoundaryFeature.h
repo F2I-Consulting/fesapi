@@ -34,7 +34,6 @@ namespace RESQML2_NS
 		virtual ~BoundaryFeature() = default;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
-
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "BoundaryFeature";
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }

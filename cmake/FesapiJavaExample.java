@@ -28,14 +28,11 @@ import com.f2i_consulting.fesapi.SWIGTYPE_p_unsigned_short;
 import com.f2i_consulting.fesapi.StringVector;
 import com.f2i_consulting.fesapi.eml20__LengthUom;
 import com.f2i_consulting.fesapi.eml20__TimeUom;
-import com.f2i_consulting.fesapi.eml21__LengthUom;
-import com.f2i_consulting.fesapi.eml21__MassPerLengthUom;
-import com.f2i_consulting.fesapi.eml21__WellStatus;
-import com.f2i_consulting.fesapi.eml21__WellboreDatumReference;
-${COMMENT_START}
 import com.f2i_consulting.fesapi.eml23__IndexableElement;
+import com.f2i_consulting.fesapi.eml23__LengthUom;
+import com.f2i_consulting.fesapi.eml23__MassPerLengthUom;
 import com.f2i_consulting.fesapi.eml23__ReferencePointKind;
-${COMMENT_END}
+import com.f2i_consulting.fesapi.eml23__WellStatus;
 import com.f2i_consulting.fesapi.fesapi;
 import com.f2i_consulting.fesapi.resqml20__ResqmlPropertyKind;
 import com.f2i_consulting.fesapi.resqml20__ResqmlUom;
@@ -44,10 +41,9 @@ ${COMMENT_START}
 import com.f2i_consulting.fesapi.resqml22__InterpolationDomain;
 import com.f2i_consulting.fesapi.resqml22__InterpolationMethod;
 ${COMMENT_END}
-import com.f2i_consulting.fesapi.witsml20__ChannelStatus;
-import com.f2i_consulting.fesapi.witsml20__HoleCasingType;
-import com.f2i_consulting.fesapi.witsml20__WellboreShape;
-import com.f2i_consulting.fesapi.witsml20__WellboreType;
+import com.f2i_consulting.fesapi.witsml21__HoleCasingType;
+import com.f2i_consulting.fesapi.witsml21__WellboreShape;
+import com.f2i_consulting.fesapi.witsml21__WellboreType;
 import com.f2i_consulting.fesapi.common.AbstractObject;
 import com.f2i_consulting.fesapi.common.AbstractObject.numericalDatatypeEnum;
 import com.f2i_consulting.fesapi.common.DataObjectRepository;
@@ -58,13 +54,17 @@ import com.f2i_consulting.fesapi.eml2.AbstractLocal3dCrs;
 import com.f2i_consulting.fesapi.eml2.PropertyKind;
 import com.f2i_consulting.fesapi.eml2.ReferencePointInALocalEngineeringCompoundCrs;
 import com.f2i_consulting.fesapi.eml2.GraphicalInformationSet;
+import com.f2i_consulting.fesapi.eml2.PropertyKind;
+import com.f2i_consulting.fesapi.eml2_3.Eml23_LocalEngineeringCompoundCrs;
 import com.f2i_consulting.fesapi.resqml2.AbstractIjkGridRepresentation;
 import com.f2i_consulting.fesapi.resqml2.AbstractRepresentation;
 import com.f2i_consulting.fesapi.resqml2.AbstractSeismicLineFeature;
 import com.f2i_consulting.fesapi.resqml2.AbstractValuesProperty;
 import com.f2i_consulting.fesapi.resqml2.BoundaryFeature;
 import com.f2i_consulting.fesapi.resqml2.CommentProperty;
+import com.f2i_consulting.fesapi.resqml2.ContinuousColorMap;
 import com.f2i_consulting.fesapi.resqml2.ContinuousProperty;
+import com.f2i_consulting.fesapi.resqml2.DiscreteColorMap;
 import com.f2i_consulting.fesapi.resqml2.DiscreteProperty;
 import com.f2i_consulting.fesapi.resqml2.EarthModelInterpretation;
 import com.f2i_consulting.fesapi.resqml2.GenericFeatureInterpretation;
@@ -75,19 +75,17 @@ import com.f2i_consulting.fesapi.resqml2.Model;
 import com.f2i_consulting.fesapi.resqml2.PolylineRepresentation;
 import com.f2i_consulting.fesapi.resqml2.SeismicLatticeFeature;
 import com.f2i_consulting.fesapi.resqml2.SeismicLineSetFeature;
+import com.f2i_consulting.fesapi.resqml2.SeismicWellboreFrameRepresentation;
 import com.f2i_consulting.fesapi.resqml2.TriangulatedSetRepresentation;
 import com.f2i_consulting.fesapi.resqml2.WellboreFeature;
 import com.f2i_consulting.fesapi.resqml2.WellboreFrameRepresentation;
 import com.f2i_consulting.fesapi.resqml2.WellboreInterpretation;
 import com.f2i_consulting.fesapi.resqml2.WellboreTrajectoryRepresentation;
-import com.f2i_consulting.fesapi.resqml2.ContinuousColorMap;
-import com.f2i_consulting.fesapi.resqml2.DiscreteColorMap;
-import com.f2i_consulting.fesapi.resqml2.SeismicWellboreFrameRepresentation;
 import com.f2i_consulting.fesapi.resqml2_0_1.Resqml20_Horizon;
 import com.f2i_consulting.fesapi.resqml2_0_1.Resqml20_PropertySet;
 import com.f2i_consulting.fesapi.witsml2.Well;
 import com.f2i_consulting.fesapi.witsml2.Wellbore;
-import com.f2i_consulting.fesapi.witsml2_0.Witsml20_WellboreGeometry;
+import com.f2i_consulting.fesapi.witsml2_1.Witsml21_WellboreGeometry;
 
 public class FesapiJavaExample {
 	private static String storageDirectory = System.getProperty("user.dir"); 
@@ -112,44 +110,51 @@ public class FesapiJavaExample {
 
 	private static void serializeWells(DataObjectRepository repo)
 	{
+		Eml23_LocalEngineeringCompoundCrs eml23Crs = null;
+		if (repo.getDefaultCrs() instanceof Eml23_LocalEngineeringCompoundCrs) {
+			eml23Crs = (Eml23_LocalEngineeringCompoundCrs)(repo.getDefaultCrs());
+		}
+		else {
+			repo.setDefaultStandard(EnergisticsStandard.EML2_3);
+			eml23Crs = (Eml23_LocalEngineeringCompoundCrs)(repo.createLocalDepth3dCrs(UUID.randomUUID().toString(), "UTF8 Crs title", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false));
+			repo.setDefaultStandard(EnergisticsStandard.EML2_0);
+		}
+
 		// WELL
-		Well witsmlWell = repo.createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
+		Well witsmlWell = repo.createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1", false);
 		witsmlWell.setNameLegal("Legal Name");
-		witsmlWell.setWaterDepth(0.0, eml21__LengthUom.ft);
+		witsmlWell.setWaterDepth(0.0, eml23__LengthUom.ft);
 		witsmlWell.setTimeZone(true, 0, 0);
-		witsmlWell.pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 5100);
-		witsmlWell.pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", eml21__WellboreDatumReference.kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.m, 0, 5100);
-		witsmlWell.pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", eml21__WellboreDatumReference.kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.m, 15, 5100);
-	
+		witsmlWell.pushBackLocation(275, 75, eml23Crs.getLocalEngineering2dCrs());
+		witsmlWell.setWellheadElevation(15, eml23__LengthUom.m, eml23Crs.getVerticalCrs());
+		witsmlWell.setGroundElevation(.0, eml23__LengthUom.m, eml23Crs.getVerticalCrs());
+
 		// WELLBORE
-		Wellbore witsmlWellbore = repo.createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1");
+		Wellbore witsmlWellbore = repo.createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1", false);
 		witsmlWellbore.setNumber("Wb1");
-		witsmlWellbore.setStatusWellbore(eml21__WellStatus.completed);
-		witsmlWellbore.setIsActive(false);
-		witsmlWellbore.setTypeWellbore(witsml20__WellboreType.initial);
-		witsmlWellbore.setShape(witsml20__WellboreShape.vertical);
+		witsmlWellbore.setStatusWellbore(eml23__WellStatus.completed);
+		witsmlWellbore.setTypeWellbore(witsml21__WellboreType.initial);
+		witsmlWellbore.setShape(witsml21__WellboreShape.vertical);
 		witsmlWellbore.setAchievedTD(true);
-		witsmlWellbore.setMd(1000, eml21__LengthUom.m, "d3ac5401-d3e7-4474-b846-070673b210ae");
-		witsmlWellbore.setMdPlanned(1000, eml21__LengthUom.m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+		witsmlWellbore.setMd(1000, eml23__LengthUom.m);
+		witsmlWellbore.setMdPlanned(1000, eml23__LengthUom.m);
 
 		// Geometry
-		Witsml20_WellboreGeometry witsmlWbGeom = repo.createWellboreGeometry(witsmlWellbore, "c9dc03e9-722c-478b-b0ae-b2dd9da67c11", "My wellbore geometry", witsml20__ChannelStatus.closed);
-		witsmlWbGeom.setMdBase(0, eml21__LengthUom.m, "d3ac5401-d3e7-4474-b846-070673b210ae");
-		witsmlWbGeom.pushBackSection();
-		witsmlWbGeom.setWellboreGeometrySectionTypeHoleCasing(0, witsml20__HoleCasingType.casing);
-		witsmlWbGeom.setWellboreGeometrySectionOdSection(0, 30, eml21__LengthUom.in);
-		witsmlWbGeom.setWellboreGeometrySectionMdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", eml21__LengthUom.m);
-		witsmlWbGeom.setWellboreGeometrySectionTvdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", eml21__LengthUom.m);
-		witsmlWbGeom.pushBackSection();
-		witsmlWbGeom.setWellboreGeometrySectionTypeHoleCasing(1, witsml20__HoleCasingType.casing);
+		Witsml21_WellboreGeometry witsmlWbGeom = repo.createWellboreGeometry(witsmlWellbore, "c9dc03e9-722c-478b-b0ae-b2dd9da67c11", "My wellbore geometry",  false);
+		witsmlWbGeom.pushBackSection(0, 250, eml23__LengthUom.m);
+		witsmlWbGeom.setWellboreGeometrySectionTypeHoleCasing(0, witsml21__HoleCasingType.casing);
+		witsmlWbGeom.setWellboreGeometrySectionOdSection(0, 30, eml23__LengthUom.in);
+		witsmlWbGeom.setWellboreGeometrySectionTvdInterval(0, 0, 250, eml23__LengthUom.m);
+		witsmlWbGeom.pushBackSection(0, 990, eml23__LengthUom.m);
+		witsmlWbGeom.setWellboreGeometrySectionTypeHoleCasing(1, witsml21__HoleCasingType.casing);
 		witsmlWbGeom.setWellboreGeometrySectionCurveConductor(1, false);
-		witsmlWbGeom.setWellboreGeometrySectionDiaDrift(1, 17.5, eml21__LengthUom.in);
+		witsmlWbGeom.setWellboreGeometrySectionDiaDrift(1, 17.5, eml23__LengthUom.in);
 		witsmlWbGeom.setWellboreGeometrySectionFactFric(1, 0.25);
 		witsmlWbGeom.setWellboreGeometrySectionGrade(1, "L80");
-		witsmlWbGeom.setWellboreGeometrySectionIdSection(1, 18, eml21__LengthUom.in);
-		witsmlWbGeom.setWellboreGeometrySectionOdSection(1, 20, eml21__LengthUom.in);
-		witsmlWbGeom.setWellboreGeometrySectionWtPerLen(1, 123, eml21__MassPerLengthUom.lbm_x002fft);
-		witsmlWbGeom.setWellboreGeometrySectionTvdInterval(1, 0, 990, "d3ac5401-d3e7-4474-b846-070673b210ae", eml21__LengthUom.m);
+		witsmlWbGeom.setWellboreGeometrySectionIdSection(1, 18, eml23__LengthUom.in);
+		witsmlWbGeom.setWellboreGeometrySectionOdSection(1, 20, eml23__LengthUom.in);
+		witsmlWbGeom.setWellboreGeometrySectionWtPerLen(1, 123, eml23__MassPerLengthUom.lbm_x002fft);
+		witsmlWbGeom.setWellboreGeometrySectionTvdInterval(1, 0, 990, eml23__LengthUom.m);
 		
 		// Features
 		WellboreFeature wellbore1 = repo.createWellboreFeature("22d5b48f-f789-46e7-a454-6d8bd05afd0b", "Wellbore1");
@@ -202,7 +207,7 @@ public class FesapiJavaExample {
 			fesapi.delete_DoubleArray(trajectoryTangentVectors);
 			fesapi.delete_DoubleArray(trajectoryMds);
 		}
-		
+
 		// WellboreFeature frame
 		WellboreFrameRepresentation w1i1FrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
 		SWIGTYPE_p_double logMds = fesapi.new_DoubleArray(5);
@@ -217,13 +222,12 @@ public class FesapiJavaExample {
 		finally {
 			fesapi.delete_DoubleArray(logMds);
 		}
-	
+
 		WellboreFrameRepresentation w1i1RegularFrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
 		w1i1RegularFrameRep.setMdValues(0, 200, 6);
 ${COMMENT_START}
 		// SeismicWellboreFrameRepresentation
 		AbstractLocal3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.m, 23031, eml20__TimeUom.s, eml20__LengthUom.m, "Unknown", false);
-				
 		SeismicWellboreFrameRepresentation w1i1SeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
 			wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",
 			w1i1TrajRep,
@@ -243,7 +247,7 @@ ${COMMENT_START}
 		finally {
 			fesapi.delete_DoubleArray(logTimes);
 		}
-		
+
 		SeismicWellboreFrameRepresentation w1i1RegularSeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
 			wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
 			w1i1TrajRep,
@@ -493,7 +497,7 @@ ${COMMENT_END}
 		try {
 			fesapi.UInt16Array_setitem(propValues, 0, 0);
 			fesapi.UInt16Array_setitem(propValues, 1, 1);
-			discreteProp1.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+			discreteProp1.pushBackUInt16Hdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
 			fesapi.delete_UInt16Array(propValues);
@@ -506,7 +510,7 @@ ${COMMENT_END}
 		try {
 			fesapi.UInt16Array_setitem(propValues, 0, 10);
 			fesapi.UInt16Array_setitem(propValues, 1, 11);
-			discreteProp2.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+			discreteProp2.pushBackUInt16Hdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
 			fesapi.delete_UInt16Array(propValues);
@@ -584,7 +588,7 @@ ${COMMENT_START}
 		try {
 			fesapi.UInt16Array_setitem(propValues, 0, 10);
 			fesapi.UInt16Array_setitem(propValues, 1, 11);
-			discreteProp2.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+			discreteProp2.pushBackUInt16Hdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
 			fesapi.delete_UInt16Array(propValues);
@@ -839,11 +843,8 @@ ${COMMENT_END}
 				Wellbore witsmlWellbore = witsmlWell.getWellbore(wellboreIdx);
 				System.out.println("witsml wellbore: " + witsmlWellbore.getTitle() + " (" + witsmlWellbore.getUuid() + ")");
 				for (int wbGeomIdx = 0; wbGeomIdx < witsmlWellbore.getWellboreGeometryCount(); ++wbGeomIdx) {
-					Witsml20_WellboreGeometry wbGeom = witsmlWellbore.getWellboreGeometry(wbGeomIdx);
+					Witsml21_WellboreGeometry wbGeom = witsmlWellbore.getWellboreGeometry(wbGeomIdx);
 					System.out.println("witsml wellbore geom: " + wbGeom.getTitle() + " (" + wbGeom.getUuid() + ")");
-					if (wbGeom.hasDepthWaterMean()) { System.out.println("DepthWaterMean: " + wbGeom.getDepthWaterMeanValue() + " " + wbGeom.getDepthWaterMeanUom()); }
-					if (wbGeom.hasGapAir()) { System.out.println("GapAir: " + wbGeom.getGapAirValue() + " " + wbGeom.getGapAirUom()); }
-					if (wbGeom.hasMdBase()) { System.out.println("MdBase: " + wbGeom.getMdBaseValue() + " " + wbGeom.getMdBaseUom() + " datum=" + wbGeom.getMdBaseDatum()); }
 					for (int sectionIdx = 0; sectionIdx < wbGeom.getSectionCount(); ++sectionIdx) {
 						System.out.println("Section " + sectionIdx);
 						if (wbGeom.hasWellboreGeometrySectionCurveConductor(sectionIdx)) { System.out.println("CurveConductor: " + wbGeom.getWellboreGeometrySectionCurveConductor(sectionIdx)); }
@@ -853,15 +854,11 @@ ${COMMENT_END}
 						if (wbGeom.hasWellboreGeometrySectionIdSection(sectionIdx)) { System.out.println("IdSection: " + wbGeom.getWellboreGeometrySectionIdSectionValue(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionIdSectionUom(sectionIdx)); }
 						if (wbGeom.hasWellboreGeometrySectionOdSection(sectionIdx)) { System.out.println("OdSection: " + wbGeom.getWellboreGeometrySectionOdSectionValue(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionOdSectionUom(sectionIdx)); }
 						if (wbGeom.hasWellboreGeometrySectionTypeHoleCasing(sectionIdx)) { System.out.println("TypeHoleCasing: " + wbGeom.getWellboreGeometrySectionTypeHoleCasing(sectionIdx)); }
-						if (wbGeom.hasWellboreGeometrySectionMdInterval(sectionIdx)) {
-							System.out.println("Base md: " + wbGeom.getWellboreGeometrySectionMdIntervalBase(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionMdIntervalBaseUom(sectionIdx));
-							System.out.println("Top md: " + wbGeom.getWellboreGeometrySectionMdIntervalTop(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionMdIntervalTopUom(sectionIdx));
-							System.out.println("datum: " + wbGeom.getWellboreGeometrySectionMdIntervaldatum(sectionIdx));
-						}
+							System.out.println("Base md: " + wbGeom.getWellboreGeometrySectionMdIntervalBase(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionMdIntervalUom(sectionIdx));
+							System.out.println("Top md: " + wbGeom.getWellboreGeometrySectionMdIntervalTop(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionMdIntervalUom(sectionIdx));
 						if (wbGeom.hasWellboreGeometrySectionTvdInterval(sectionIdx)) {
-							System.out.println("Base Tvd: " + wbGeom.getWellboreGeometrySectionTvdIntervalBase(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionTvdIntervalBaseUom(sectionIdx));
-							System.out.println("Top Tvd: " + wbGeom.getWellboreGeometrySectionTvdIntervalTop(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionTvdIntervalTopUom(sectionIdx));
-							System.out.println("datum: " + wbGeom.getWellboreGeometrySectionTvdIntervaldatum(sectionIdx));
+							System.out.println("Base Tvd: " + wbGeom.getWellboreGeometrySectionTvdIntervalBase(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionTvdIntervalUom(sectionIdx));
+							System.out.println("Top Tvd: " + wbGeom.getWellboreGeometrySectionTvdIntervalTop(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionTvdIntervalUom(sectionIdx));
 						}
 					}
 				}

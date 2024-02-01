@@ -698,39 +698,6 @@ namespace COMMON_NS
 		/**
 		 * Get the count of extra metadata in this instance
 		 *
-		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
-		 *
-		 * @returns	The extra metadata count of this instance.
-		 */
-		unsigned int getExtraMetadataCount() const;
-
-		/**
-		 * Get the key of a key value pair at a particular index in the extra metadata set of this
-		 * instance
-		 *
-		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
-		 *
-		 * @param 	index	Zero-based index of the asked key.
-		 *
-		 * @returns	The extra metadata key at @p index.
-		 */
-		std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
-
-		/**
-		 * Get the value of a key value pair at a particular index in the extra metadata set of this
-		 * instance
-		 *
-		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
-		 *
-		 * @param 	index	Zero-based index of the asked value.
-		 *
-		 * @returns	The extra metadata value at @p index.
-		 */
-		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
-
-		/**
-		 * Get the count of extra metadata in this instance
-		 *
 		 * @returns	The extra metadata count of this instance.
 		 */
 		uint64_t getExtraMetadataCount() const;
@@ -747,6 +714,18 @@ namespace COMMON_NS
 		 */
 		std::string getExtraMetadataKeyAtIndex(uint64_t index) const;
 
+		/**
+		 * Get the value of a key value pair at a particular index in the extra metadata set of this
+		 * instance
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
+		 *
+		 * @param 	index	Zero-based index of the asked value.
+		 *
+		 * @returns	The extra metadata value at @p index.
+		 */
+		std::string getExtraMetadataStringValueAtIndex(uint64_t index) const;
+
 		/*
 		* Build and return an ETP1.2 URI from an Energistics dataobject.
 		* @return	The ETP1.2 URI built from the Energistics dataobject
@@ -762,18 +741,6 @@ namespace COMMON_NS
 		* Get the EPC document absolute path or the ETP dataspace URI where this dataobject comes from.
 		*/
 		const std::string& getUriSource() const;
-
-		/**
-		 * Get the value of a key value pair at a particular index in the extra metadata set of this
-		 * instance
-		 *
-		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
-		 *
-		 * @param 	index	Zero-based index of the asked value.
-		 *
-		 * @returns	The extra metadata value at @p index.
-		 */
-		std::string getExtraMetadataStringValueAtIndex(uint64_t index) const;
 	};
 
 %warnfilter(473) HdfProxyFactory::make;
@@ -821,7 +788,7 @@ namespace COMMON_NS
 %include "swigEml2Include.i"
 %include "swigResqml2Include.i"
 %include "swigWitsml2Include.i"
-%include "swigProdml2_1Include.i"
+%include "swigProdml2_2Include.i"
 #ifdef WITH_ETP
 %include "swigEtp1_2Include.i"
 #endif
@@ -862,12 +829,10 @@ import com.f2i_consulting.fesapi.*;
 		enum class EnergisticsStandard : std::int8_t {
 			RESQML2_0_1 = 0,
 			EML2_0 = 1,
-			WITSML2_0 = 2,
-			EML2_1 = 3,
-			PRODML2_1 = 4,
-			EML2_2 = 5,
-			RESQML2_2 = 6,
-			EML2_3 = 7
+			EML2_3 = 2,
+			PRODML2_2 = 3,
+			RESQML2_2 = 4,
+			WITSML2_1 = 5
 		};
 		
 		DataObjectRepository();
@@ -972,6 +937,18 @@ import com.f2i_consulting.fesapi.*;
 		 */
 		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string& xml, const std::string& contentType, const std::string& uriSource);
 		
+		/**
+		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobejct ot delte has got backward relationships.
+		* It also goes on every forward related dataobject and delete them if they have no more backward relationships.
+		* It does that recursively.
+		* Remark : it is mainly used to delete properties because usually no dataobject points to them.
+		* For now, this method only deletes the XML part of the dataobject, not the HDF5 part.
+		*
+		* @param [in]	proxy	The data object to delete.
+		* @return				The count of deleted objects
+		*/
+		uint64_t cascadeDeleteDataObject(COMMON_NS::AbstractObject* proxy);
+		
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractLocal3dCrs, Local3dCrs)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::Activity, Activity)
@@ -1027,20 +1004,21 @@ import com.f2i_consulting.fesapi.*;
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, Wellbore)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreFrameRepresentation, WellboreFrameRepresentation)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_0_1_NS::PropertySet, PropertySet)
 
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Well, WitsmlWell)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, WitsmlWellbore)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Trajectory, WitsmlTrajectory)
-
-		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::WellCompletion, WellCompletion)
-		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreCompletion, WellboreCompletion)
-		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::WellboreGeometry, WellboreGeometry)
-		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::Log, Log)
-		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::ChannelSet, ChannelSet)
-		SWIG_GETTER_DATAOBJECTS(WITSML2_0_NS::Channel, Channel)
-
-		SWIG_GETTER_DATAOBJECTS(PRODML2_1_NS::FluidSystem, FluidSystem)
-		SWIG_GETTER_DATAOBJECTS(PRODML2_1_NS::FluidCharacterization, FluidCharacterization)
+				
+		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::WellCompletion, WellCompletion)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::WellboreCompletion, WellboreCompletion)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::WellboreGeometry, WellboreGeometry)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::Log, Log)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::ChannelSet, ChannelSet)
+		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::Channel, Channel)
+				
+		SWIG_GETTER_DATAOBJECTS(PRODML2_2_NS::FluidSystem, FluidSystem)
+		SWIG_GETTER_DATAOBJECTS(PRODML2_2_NS::FluidCharacterization, FluidCharacterization)
 
 		/**
 		 * Gets a data object from the repository by means of its uuid. If several data object
@@ -1076,17 +1054,6 @@ import com.f2i_consulting.fesapi.*;
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a content type + a version
 		*/
 		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version = "");
-
-		/**
-		 * Creates a partial object in this repository based on a data object reference.
-		 *
-		 * @exception	std::invalid_argument	If no partial object can be created from @p dor.
-		 *
-		 * @param 	dor	A data object reference.
-		 *
-		 * @returns	A pointer to the created partial object.
-		 */
-		COMMON_NS::AbstractObject* createPartial(const DataObjectReference& dor);
 
 		/**
 		 * @brief	Creates a non parallel access to an HDF5 file for writing to it. Resulting HDF5 file
@@ -1569,7 +1536,6 @@ import com.f2i_consulting.fesapi.*;
 		 * @returns	A pointer to the new CMP line.
 		 */
 		RESQML2_NS::ShotPointLineFeature* createShotPointLine(const std::string & guid, const std::string & title);
-
 		/**
 		 * @brief	Creates a seismic line set into this repository
 		 *
@@ -2349,7 +2315,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @returns	A pointer to the new wellbore frame representation.
 		 */
 		RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
-
+		
 		/**
 		 * @brief	Creates a seismic wellbore frame representation into this repository
 		 *
@@ -2816,7 +2782,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
-		 * 						use {@link  createSubRepresentation} if no interpretation is associated
+		 * 						use {@link createSubRepresentation} if no interpretation is associated
 		 * 						to this representation.
 		 * @param 	  	guid  	The guid to set to the sub-representation. If empty then a new guid will
 		 * 						be generated.
@@ -2850,7 +2816,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
-		 * 						use {@link  createGridConnectionSetRepresentation} if no interpretation
+		 * 						use {@link createGridConnectionSetRepresentation} if no interpretation
 		 * 						is associated to this representation.
 		 * @param 	  	guid  	The guid to set to the grid connection set representation. If empty then
 		 * 						a new guid will be generated.
@@ -3042,7 +3008,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @returns	A pointer to the new property kind.
 		 */
 		EML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
+			gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
 
 		/**
 		 * @brief	Creates a property set into this repository.
@@ -3419,47 +3385,18 @@ import com.f2i_consulting.fesapi.*;
 		EML2_NS::Activity* createActivity(EML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 
 		//*************** WITSML *************
-/*
-		WITSML2_1_NS::ToolErrorModel* createToolErrorModel(
-			const std::string & guid,
-			const std::string & title,
-			gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode);
-
-		WITSML2_1_NS::ToolErrorModelDictionary* createToolErrorModelDictionary(
-			const std::string & guid,
-			const std::string & title);
-
-		WITSML2_1_NS::ErrorTerm* createErrorTerm(
-			const std::string & guid,
-			const std::string & title,
-			gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
-			WITSML2_1_NS::WeightingFunction* weightingFunction);
-
-		WITSML2_1_NS::ErrorTermDictionary* createErrorTermDictionary(
-			const std::string & guid,
-			const std::string & title);
-
-		WITSML2_1_NS::WeightingFunction* createWeightingFunction(
-			const std::string & guid,
-			const std::string & title,
-			const std::string & depthFormula,
-			const std::string & inclinationFormula,
-			const std::string & azimuthFormula);
-
-		WITSML2_1_NS::WeightingFunctionDictionary* createWeightingFunctionDictionary(
-			const std::string & guid,
-			const std::string & title);
-*/
+		
 		/**
 		 * Creates a well into this repository
 		 *
 		 * @param 	guid 	The guid to set to the well. If empty then a new guid will be generated.
 		 * @param 	title	The title to set to the well. If empty then \"unknown\" title will be set.
+		 * @param 	isActive	True if is active, false if not.
 		 *
 		 * @returns	A pointer to the new well.
 		 */
 		WITSML2_NS::Well* createWell(const std::string & guid,
-			const std::string & title);
+			const std::string & title, bool isActive);
 
 		/**
 		 * Creates a well into this repository
@@ -3468,7 +3405,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 							generated.
 		 * @param 	title		 	The title to set to the well. If empty then \"unknown\" title will be
 		 * 							set.
-		 * @param 	operator_	 	The operator company name.
+		 * @param 	isActive		True if is active, false if not.
 		 * @param 	statusWell   	POSC well status.
 		 * @param 	directionWell	POSC well direction. The direction of the flow of the fluids in a
 		 * 							well facility (generally, injected or produced, or some combination).
@@ -3477,9 +3414,9 @@ import com.f2i_consulting.fesapi.*;
 		 */
 		WITSML2_NS::Well* createWell(const std::string & guid,
 			const std::string & title,
-			const std::string & operator_,
-			gsoap_eml2_1::eml21__WellStatus statusWell,
-			gsoap_eml2_1::witsml20__WellDirection directionWell
+			bool isActive,
+			gsoap_eml2_3::eml23__WellStatus statusWell,
+			gsoap_eml2_3::witsml21__WellDirection directionWell
 		);
 
 		/**
@@ -3492,12 +3429,14 @@ import com.f2i_consulting.fesapi.*;
 		 * 							generated.
 		 * @param 	  	title	  	The title to set to the wellbore. If empty then \"unknown\" title
 		 * 							will be set.
+		 * @param 	  	isActive	  	True if is active, false if not.
 		 *
 		 * @returns	A pointer to the new wellbore.
 		 */
 		WITSML2_NS::Wellbore* createWellbore(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
-			const std::string & title);
+			const std::string & title,
+			bool isActive);
 
 		/**
 		 * @brief	Creates a wellbore into this repository.
@@ -3519,7 +3458,7 @@ import com.f2i_consulting.fesapi.*;
 		WITSML2_NS::Wellbore* createWellbore(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_1::eml21__WellStatus statusWellbore,
+			gsoap_eml2_3::eml23__WellStatus statusWellbore,
 			bool isActive,
 			bool achievedTD
 		);
@@ -3537,7 +3476,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new well completion.
 		 */
-		WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_NS::Well* witsmlWell,
+		WITSML2_1_NS::WellCompletion* createWellCompletion(WITSML2_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
@@ -3546,22 +3485,16 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @param [in]	witsmlWellbore	  	The wellbore associated to this wellbore completion. It
 		 * 									cannot be null.
-		 * @param [in]	wellCompletion	  	The well completion associated to this wellbore completion.
-		 * 									It cannot be null.
 		 * @param 	  	guid			  	The guid to set to the wellbore completion. If empty then a new guid will be
 		 * 									generated.
 		 * @param 	  	title			  	The title to set to the wellbore completion. If empty then \"unknown\" title
 		 * 									will be set.
-		 * @param 	  	wellCompletionName	Human-recognizable context for the well completion that
-		 * 									contains the completion.
 		 *
 		 * @returns	A pointer to the new wellbore completion.
 		 */
-		WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
-			WITSML2_0_NS::WellCompletion* wellCompletion,
+		WITSML2_1_NS::WellboreCompletion* createWellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
-			const std::string & title,
-			const std::string & wellCompletionName);
+			const std::string & title);
 
 		/**
 		 * @brief	Creates a wellbore geometry into this repository. It is used to capture information
@@ -3575,15 +3508,14 @@ import com.f2i_consulting.fesapi.*;
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the geometry. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	channelStatus 	Describes the growing status of the wellbore geometry, whether
-		 * 								active, inactive or closed.
+		 * @param 		isActive	  	True if is active, false if not.
 		 *
 		 * @returns	A pointer to the new wellbore geometry.
 		 */
-		WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
+		WITSML2_1_NS::WellboreGeometry* createWellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
+			bool isActive);
 
 		/**
 		 * @brief	Creates a wellbore trajectory into this repository
@@ -3596,15 +3528,14 @@ import com.f2i_consulting.fesapi.*;
 		 * 								be generated.
 		 * @param 	  	title		  	The title to set to the trajectory. If empty then \"unknown\"
 		 * 								title will be set.
-		 * @param 	  	channelStatus 	Describes the growing status of the trajectory, whether active,
-		 * 								inactive or closed.
+		 * @param 		isActive	  	True if is active, false if not.
 		 *
 		 * @returns	A pointer to the new trajectory.
 		 */
-		WITSML2_NS::Trajectory* createTrajectory(WITSML2_NS::Wellbore* witsmlWellbore,
+		WITSML2_1_NS::Trajectory* createTrajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
+			bool isActive);
 
 		/**
 		 * @brief	Creates a wellbore log into this repository
@@ -3612,28 +3543,32 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
 		 *
 		 * @param [in]	witsmlWellbore	The wellbore associated to this log. It cannot be null.
-		 * @param 	  	guid		  	The guid to set to the log. If empty then a new guid will be
+		 * @param 		guid			The guid to set to the log. If empty then a new guid will be
 		 * 								generated.
-		 * @param 	  	title		  	The title to set to the log. If empty then \"unknown\" title will
+		 * @param 		title			The title to set to the log. If empty then \"unknown\" title will
 		 * 								be set.
+		 * @param 		isActive		True if is active, false if not.
 		 *
 		 * @returns	A pointer to the new log.
 		 */
-		WITSML2_0_NS::Log* createLog(WITSML2_NS::Wellbore* witsmlWellbore,
+		WITSML2_1_NS::Log* createLog(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
-			const std::string & title);
+			const std::string & title,
+			bool isActive);
 
 		/**
 		 * Creates a channel set into this repository
 		 *
 		 * @param 	guid 	The guid to set to the channel set. If empty then a new guid will be generated.
 		 * @param 	title	The title to set to the channel set. If empty then \"unknown\" title will be set.
+		 * @param 	isActive	True if is active, false if not.
 		 *
 		 * @returns	A pointer to the new channel set.
 		 */
-		WITSML2_0_NS::ChannelSet* createChannelSet(
+		WITSML2_1_NS::ChannelSet* createChannelSet(
 			const std::string & guid,
-			const std::string & title);
+			const std::string & title,
+			bool isActive);
 
 		/**
 		 * @brief	Creates a channel into this repository
@@ -3648,20 +3583,17 @@ import com.f2i_consulting.fesapi.*;
 		 * 									title will be set.
 		 * @param 	  	mnemonic		  	The mnemonic name to set to this channel.
 		 * @param 	  	uom				  	The underlying unit of measure of the value.
-		 * @param 	  	dataType		  	The underlying ETP data type of the value.
-		 * @param 	  	growingStatus	  	The status of a channel with respect to creating new
-		 * 									measurements.
-		 * @param 	  	timeDepth		  	Use to indicate if this is a time or depth log.
-		 * @param 	  	loggingCompanyName	Name of the logging company.
+		 * @param 	  	dataKind		  	The underlying data kind of the value.
+		 * @param 	  	isActive	  	True if is active, false if not.
 		 *
 		 * @returns	A pointer to the new channel.
 		 */
-		WITSML2_0_NS::Channel* createChannel(EML2_NS::PropertyKind * propertyKind,
+		WITSML2_1_NS::Channel* createChannel(EML2_NS::PropertyKind * propertyKind,
 			const std::string & guid, const std::string & title,
-			const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
-			const std::string & timeDepth, const std::string & loggingCompanyName);
-
-		/**
+			const std::string & mnemonic, gsoap_eml2_3::eml23__UnitOfMeasure uom, gsoap_eml2_3::witsml21__ChannelDataKind dataKind,
+			bool isActive);
+			
+			/**
 		 * @brief	Creates a WITSML2.0 Wellbore Marker into this repository
 		 *
 		 * @param 	  	guid		  	The guid to set to the marker. If empty then a new guid will be
@@ -3670,13 +3602,12 @@ import com.f2i_consulting.fesapi.*;
 		 * 								be set.
 		 * @param 	  	md		  		The Measured Depth to set to this marker.
 		 * @param 	  	mdUom			The underlying unit of measure of the MD value.
-		 * @param 	  	mdDatum		  	A free string to unformally indicate the datum of the MD (i.e. where MD==0).
 		 *
 		 * @returns	A pointer to the new Wellbore Marker.
 		 */
-		WITSML2_0_NS::WellboreMarker* createWellboreMarker(
+		WITSML2_1_NS::WellboreMarker* createWellboreMarker(
 			const std::string & guid, const std::string & title,
-			double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum);
+			double md, gsoap_eml2_3::eml23__LengthUom mdUom);
 
 		/**
 		 * @brief	Creates a WITSML2.0 Wellbore Marker into this repository
@@ -3690,16 +3621,15 @@ import com.f2i_consulting.fesapi.*;
 		 * 								be set.
 		 * @param 	  	md		  		The Measured Depth to set to this marker.
 		 * @param 	  	mdUom			The underlying unit of measure of the MD value.
-		 * @param 	  	mdDatum		  	A free string to unformally indicate the datum of the MD (i.e. where MD==0).
 		 *
 		 * @returns	A pointer to the new Wellbore Marker.
 		 */
-		WITSML2_0_NS::WellboreMarker* createWellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
+		WITSML2_1_NS::WellboreMarker* createWellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid, const std::string & title,
-			double md, gsoap_eml2_1::eml21__LengthUom mdUom, const std::string & mdDatum);
-
-		//*************** PRODML *************
-
+			double md, gsoap_eml2_3::eml23__LengthUom mdUom);
+			
+		//*************** PRODML *************/	
+		
 		/**
 		 * Creates a fluid system into this repository
 		 *
@@ -3717,12 +3647,12 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new fluid system.
 		 */
-		PRODML2_1_NS::FluidSystem* createFluidSystem(const std::string & guid,
+		PRODML2_2_NS::FluidSystem* createFluidSystem(const std::string & guid,
 			const std::string & title,
-			double temperatureValue, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom temperatureUom,
-			double pressureValue, gsoap_eml2_2::eml22__PressureUom pressureUom,
-			gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
-			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
+			double temperatureValue, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom temperatureUom,
+			double pressureValue, gsoap_eml2_3::eml23__PressureUom pressureUom,
+			gsoap_eml2_3::prodml22__ReservoirFluidKind reservoirFluidKind,
+			double gasOilRatio, gsoap_eml2_3::eml23__VolumePerVolumeUom gasOilRatioUom);
 
 		/**
 		 * Creates a fluid system into this repository
@@ -3754,7 +3684,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new fluid characterization.
 		 */
-		PRODML2_1_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
+		PRODML2_2_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a time series data into this repository
@@ -3766,7 +3696,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new time series data.
 		 */
-		PRODML2_1_NS::TimeSeriesData* createTimeSeriesData(const std::string & guid, const std::string & title);
+		PRODML2_2_NS::TimeSeriesData* createTimeSeriesData(const std::string & guid, const std::string & title);
 
 		//************** EML2.3 ****************
 
@@ -3817,7 +3747,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @returns	The property kind mapper, or @c nullptr if no property kind mapper was given at
 		 * 			repository construction time.
 		 */
-		RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const { return propertyKindMapper.get(); }
+		RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const;
 
 		//************************************/
 		//************* WARNINGS *************/
@@ -3832,6 +3762,99 @@ import com.f2i_consulting.fesapi.*;
 		 * @returns	A vector of all repository warnings.
 		 */
 		const std::vector<std::string> & getWarnings() const;
+		
+		template <class valueType>
+		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & version = "")
+		{
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
+			dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
+			dor->Title = title;
+			if (!version.empty()) {
+				dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext);
+				dor->VersionString->assign(version);
+			}
+			valueType* result = new valueType(dor);
+			addOrReplaceDataObject(result);
+			return result;
+		}
+		
+		// Template for partial RESQML2.2
+#ifdef WITH_RESQML2_2		
+		%template(createPartialDiscreteColorMap) createPartial<RESQML2_2_NS::DiscreteColorMap>;
+		%template(createPartialContinuousColorMap) createPartial<RESQML2_2_NS::ContinuousColorMap>;
+		%template(createPartialSeismicWellboreFrameRepresentation) createPartial<RESQML2_2_NS::SeismicWellboreFrameRepresentation>;
+#endif
+		// Template for partial RESQML2.0.1
+		
+		%template(createPartialLocalDepth3dCrs) createPartial<RESQML2_0_1_NS::LocalDepth3dCrs>;
+		%template(createPartialLocalTime3dCrs) createPartial<RESQML2_0_1_NS::LocalTime3dCrs>;
+		%template(createPartialMdDatum) createPartial<RESQML2_0_1_NS::MdDatum>;
+
+		%template(createPartialHorizon) createPartial<RESQML2_0_1_NS::Horizon>;
+		%template(createPartialTectonicBoundaryFeature) createPartial<RESQML2_0_1_NS::TectonicBoundaryFeature>;
+		%template(createPartialFrontierFeature) createPartial<RESQML2_0_1_NS::FrontierFeature>;
+		%template(createPartialWellboreFeature) createPartial<RESQML2_0_1_NS::WellboreFeature>;
+		%template(createPartialSeismicLineFeature) createPartial<RESQML2_0_1_NS::SeismicLineFeature>;
+		%template(createPartialSeismicLineSetFeature) createPartial<RESQML2_0_1_NS::SeismicLineSetFeature>;
+		%template(createPartialSeismicLatticeFeature) createPartial<RESQML2_0_1_NS::SeismicLatticeFeature>;
+		%template(createPartialOrganizationFeature) createPartial<RESQML2_0_1_NS::OrganizationFeature>;
+		%template(createPartialStratigraphicUnitFeature) createPartial<RESQML2_0_1_NS::StratigraphicUnitFeature>;
+		%template(createPartialGeobodyFeature) createPartial<RESQML2_0_1_NS::GeobodyFeature>;
+		%template(createPartialFluidBoundaryFeature) createPartial<RESQML2_0_1_NS::FluidBoundaryFeature>;
+
+		%template(createPartialGenericFeatureInterpretation) createPartial<RESQML2_0_1_NS::GenericFeatureInterpretation>;
+		%template(createPartialHorizonInterpretation) createPartial<RESQML2_0_1_NS::HorizonInterpretation>;
+		%template(createPartialFaultInterpretation) createPartial<RESQML2_0_1_NS::FaultInterpretation>;
+		%template(createPartialWellboreInterpretation) createPartial<RESQML2_0_1_NS::WellboreInterpretation>;
+		%template(createPartialStratigraphicUnitInterpretation) createPartial<RESQML2_0_1_NS::StratigraphicUnitInterpretation>;
+		%template(createPartialStructuralOrganizationInterpretation) createPartial<RESQML2_0_1_NS::StructuralOrganizationInterpretation>;
+		%template(createPartialStratigraphicColumnRankInterpretation) createPartial<RESQML2_0_1_NS::StratigraphicColumnRankInterpretation>;
+		%template(createPartialStratigraphicOccurrenceInterpretation) createPartial<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation>;
+		%template(createPartialEarthModelInterpretation) createPartial<RESQML2_0_1_NS::EarthModelInterpretation>;
+		%template(createPartialGeobodyBoundaryInterpretation) createPartial<RESQML2_0_1_NS::GeobodyBoundaryInterpretation>;
+		%template(createPartialGeobodyInterpretation) createPartial<RESQML2_0_1_NS::GeobodyInterpretation>;
+
+		%template(createPartialPolylineSetRepresentation) createPartial<RESQML2_0_1_NS::PolylineSetRepresentation>;
+		%template(createPartialPointSetRepresentation) createPartial<RESQML2_0_1_NS::PointSetRepresentation>;
+		%template(createPartialPlaneSetRepresentation) createPartial<RESQML2_0_1_NS::PlaneSetRepresentation>;
+		%template(createPartialPolylineRepresentation) createPartial<RESQML2_0_1_NS::PolylineRepresentation>;
+		%template(createPartialGrid2dRepresentation) createPartial<RESQML2_0_1_NS::Grid2dRepresentation>;
+		%template(createPartialTriangulatedSetRepresentation) createPartial<RESQML2_0_1_NS::TriangulatedSetRepresentation>;
+		%template(createPartialWellboreTrajectoryRepresentation) createPartial<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>;
+		%template(createPartialDeviationSurveyRepresentation) createPartial<RESQML2_0_1_NS::DeviationSurveyRepresentation>;
+		%template(createPartialRepresentationSetRepresentation) createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>;
+		%template(createPartialNonSealedSurfaceFrameworkRepresentation) createPartial<RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation>;
+		%template(createPartialSealedSurfaceFrameworkRepresentation) createPartial<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation>;
+
+		%template(createPartialUnstructuredGridRepresentation) createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>;
+		%template(createPartialSubRepresentation) createPartial<RESQML2_0_1_NS::SubRepresentation>;
+		%template(createPartialGridConnectionSetRepresentation) createPartial<RESQML2_0_1_NS::GridConnectionSetRepresentation>;
+
+		%template(createPartialTimeSeries) createPartial<RESQML2_0_1_NS::TimeSeries>;
+
+		%template(createPartialPropertyKind) createPartial<RESQML2_0_1_NS::PropertyKind>;
+		%template(createPartialPropertySet) createPartial<RESQML2_0_1_NS::PropertySet>;
+		%template(createPartialDoubleTableLookup) createPartial<RESQML2_0_1_NS::DoubleTableLookup>;
+		%template(createPartialStringTableLookup) createPartial<RESQML2_0_1_NS::StringTableLookup>;
+		%template(createPartialDiscreteProperty) createPartial<RESQML2_0_1_NS::DiscreteProperty>;
+		%template(createPartialCategoricalProperty) createPartial<RESQML2_0_1_NS::CategoricalProperty>;
+		%template(createPartialCommentProperty) createPartial<RESQML2_0_1_NS::CommentProperty>;
+		%template(createPartialContinuousProperty) createPartial<RESQML2_0_1_NS::ContinuousProperty>;
+
+		%template(createPartialActivity) createPartial<RESQML2_0_1_NS::Activity>;
+		%template(createPartialActivityTemplate) createPartial<RESQML2_0_1_NS::ActivityTemplate>;
+		
+		// Template for partial WITSML2.0
+		
+		%template(createPartialWell) createPartial<WITSML2_1_NS::Well>;
+		%template(createPartialWellCompletion) createPartial<WITSML2_1_NS::WellCompletion>;
+		%template(createPartialWellbore) createPartial<WITSML2_1_NS::Wellbore>;
+		%template(createPartialWellboreCompletion) createPartial<WITSML2_1_NS::WellboreCompletion>;
+		%template(createPartialWellboreGeometry) createPartial<WITSML2_1_NS::WellboreGeometry>;
+		%template(createPartialTrajectory) createPartial<WITSML2_1_NS::Trajectory>;
+		%template(createPartialLog) createPartial<WITSML2_1_NS::Log>;
+		%template(createPartialChannelSet) createPartial<WITSML2_1_NS::ChannelSet>;
+		%template(createPartialChannel) createPartial<WITSML2_1_NS::Channel>;
 	};
 	
 %typemap(javaimports) COMMON_NS::EpcDocument %{
@@ -3845,6 +3868,14 @@ import java.lang.AutoCloseable;
     delete();
   }
 %}
+	/** @brief	EPC is an implementation of the Open Packaging Conventions (OPC), a widely used container-file technology
+	 * that allows multiple types of files to be bundled together into a single package.
+	 * Built on the widely used ZIP file structure and originally created by Microsoft, OPC is now an open standard supported by these standards organizations:
+	 *  - Ecma International (http://www.ecma-international.org/publications/standards/Ecma-376.htm )
+	 *  - ISO/IEC 29500-2:2012, which has 4 parts, which are all freely available at this link (http://standards.iso.org/ittf/PubliclyAvailableStandards/index.html ).
+	 * An EPC file (or package) is a ZIP file, which may be “unzipped” to view its components.
+	 * When implemented as part of an Energistics standard, the zipping/unzipping is done using the OPC libraries (per the EPC Specification).
+	 */
 	class EpcDocument
 	{
 	public:
@@ -3868,13 +3899,12 @@ import java.lang.AutoCloseable;
 		void setFilePath(const std::string & fp);
 
 		/**
-		 * Serializes the content of a data object repository into this EPC document. It also allows to
-		 * optionally zip this EPC document.
+		 * Serializes the content of a data object repository into this EPC document.
 		 *
 		 * @param 	repo		A data object repository.
-		 * @param 	useZip64	(Optional) True to zip the EPC document, else false (default).
+		 * @param 	useZip64	(Optional) True to zip the EPC document using Zip64 format, else (default) simply use Zip format.
 		 */
-		virtual void serializeFrom(const DataObjectRepository & repo, bool useZip64 = false);
+		void serializeFrom(DataObjectRepository& repo, bool useZip64 = false);
 
 		/**
 		 * Deserializes this package (data objects and relationships) into a data object repository
@@ -3885,7 +3915,7 @@ import java.lang.AutoCloseable;
 		 *
 		 * @returns	An empty string if success otherwise the warning string.
 		 */
-		virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
+		virtual std::string deserializeInto(DataObjectRepository& repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 
 // JAVA uses autocloseable and consequently cannot use a second "close" method
 #ifdef SWIGJAVA
@@ -3983,24 +4013,24 @@ import java.lang.AutoCloseable;
 		gsoap_resqml2_0_1::resqml20__ResqmlUom getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) const;
 
 		/**
-		 * Get the name of a RESQML2.0 facet as a string based on the enumerated facet enumerated value
+		 * Get the name of a facet as a string based on the enumerated facet enumerated value
 		 *
-		 * @param 	facet	A RESQML2.0 facet.
+		 * @param 	facet	An enumerated facet.
 		 *
 		 * @returns	A string corresponding to @p facet if successful. The empty string if no
 		 * 			correspondence is found.
 		 */
-		std::string getFacet(gsoap_resqml2_0_1::resqml20__Facet facet) const;
+		std::string getFacet(gsoap_eml2_3::eml23__FacetKind facet) const;
 
 		/**
-		 * Get the RESQML2.0 facet enumerated value from the name of a facet.
+		 * Get the enumerated value from the name of a facet.
 		 *
-		 * @param 	facet	The name of a RESQML2.0 facet.
+		 * @param 	facet	The name of a facet.
 		 *
-		 * @returns	The RESQML2.0 facet enumerated value corresponding to @p facet if successful. The @c
+		 * @returns	The facet enumerated value corresponding to @p facet if successful. The @c
 		 * 			what facet enumerated value if no correspendance is found.
 		 */
-		gsoap_resqml2_0_1::resqml20__Facet getFacet(const std::string & facet) const;
+		gsoap_eml2_3::eml23__FacetKind getFacet(const std::string & facet) const;
 
 		/**
 		 * Get the name of an EML2.1 length unit of measure as a string based on the unit of measure
@@ -4011,7 +4041,7 @@ import java.lang.AutoCloseable;
 		 * @returns	A string corresponding to @p witsmlUom if successful. The empty string if no
 		 * 			correspondence is found.
 		 */
-		std::string lengthUomToString(gsoap_eml2_1::eml21__LengthUom witsmlUom) const;
+		std::string lengthUomToString(gsoap_eml2_3::eml23__LengthUom witsmlUom) const;
 
 		/**
 		 * Get the name of an EML2.1 vertical coordinate unit of measure as a string based on the unit
@@ -4022,7 +4052,7 @@ import java.lang.AutoCloseable;
 		 * @returns	A string corresponding to @p witsmlUom if successful. The empty string if no
 		 * 			correspondence is found.
 		 */
-		std::string verticalCoordinateUomToString(gsoap_eml2_1::eml21__VerticalCoordinateUom witsmlUom) const;
+		std::string verticalCoordinateUomToString(gsoap_eml2_3::eml23__VerticalCoordinateUom witsmlUom) const;
 
 		/**
 		 * Get the name of an EML2.1 plane angle unit of measure as a string based on the unit of
@@ -4033,7 +4063,7 @@ import java.lang.AutoCloseable;
 		 * @returns	A string corresponding to @p witsmlUom if successful. The empty string if no
 		 * 			correspondence is found.
 		 */
-		std::string planeAngleUomToString(gsoap_eml2_1::eml21__PlaneAngleUom witsmlUom) const;
+		std::string planeAngleUomToString(gsoap_eml2_3::eml23__PlaneAngleUom witsmlUom) const;
 	};
 }
 

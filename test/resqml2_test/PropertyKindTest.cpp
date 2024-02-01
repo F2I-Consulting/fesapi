@@ -35,8 +35,8 @@ PropertyKindTest::PropertyKindTest(const string & repoPath)
 }
 
 void PropertyKindTest::initRepo() {
-	auto parentPropertyKind = repo->createPropertyKind("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property", gsoap_eml2_1::eml21__QuantityClassKind::unitless);
-	auto propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure, false, parentPropertyKind);
+	auto parentPropertyKind = repo->createPropertyKind("a48c9c25-1e3a-43c8-be6a-044224cc69cb", "property", gsoap_eml2_3::eml23__QuantityClassKind::unitless);
+	auto propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure, false, parentPropertyKind);
 	REQUIRE(propertyKind != nullptr);
 }
 

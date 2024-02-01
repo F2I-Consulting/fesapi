@@ -23,6 +23,8 @@ under the License.
 #include "resqml2/DiscreteProperty.h"
 #include "resqml2/ContinuousProperty.h"
 
+#include "resqml2_0_1/PropertyKind.h"
+
 using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_test;

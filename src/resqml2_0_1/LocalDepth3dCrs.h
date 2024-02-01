@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	verticalUom   	The vertical uom.
 		 * @param 		  	isUpOriented  	True if is up oriented, false if not.
 		 */
-		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+		void init(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom,
@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The z coordinate offset.
 		 */
-		double getZOffset() const {return getOriginDepthOrElevation();}
+		double getZOffset() const { return getOriginDepthOrElevation(); }
 
 	public:
 
@@ -65,7 +65,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	partialObject	If non-null, the partial object.
 		 *
-		 * 
+		 *
 		 */
 		DLL_IMPORT_OR_EXPORT LocalDepth3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::AbstractLocal3dCrs(partialObject) {}
 
@@ -91,7 +91,7 @@ namespace RESQML2_0_1_NS
 		 * 										local elevation CRS and that the associated vertical CRS is
 		 *										an elevation one as well.
 		 */
-		LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+		LocalDepth3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
@@ -125,11 +125,11 @@ namespace RESQML2_0_1_NS
 		 * 											local elevation CRS and that the associated vertical CRS is
 		 *											an elevation one as well.
 		 */
-		LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+		LocalDepth3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local depth 3d CRS which is identified by an EPSG code for its projected
@@ -159,11 +159,11 @@ namespace RESQML2_0_1_NS
 		 * 											local elevation CRS and that the associated vertical CRS is
 		 *											an elevation one as well.
 		 */
-		LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+		LocalDepth3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local depth 3d CRS which unkown for its projected part and which is
@@ -191,10 +191,10 @@ namespace RESQML2_0_1_NS
 		 * 										local elevation CRS and that the associated vertical CRS is
 		 *										an elevation one as well.
 		 */
-		LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+		LocalDepth3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
 		/**
@@ -202,7 +202,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		LocalDepth3dCrs(gsoap_resqml2_0_1::_resqml20__LocalDepth3dCrs* fromGsoap): EML2_NS::AbstractLocal3dCrs(fromGsoap) {}
+		LocalDepth3dCrs(gsoap_resqml2_0_1::_resqml20__LocalDepth3dCrs* fromGsoap) : EML2_NS::AbstractLocal3dCrs(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~LocalDepth3dCrs() = default;

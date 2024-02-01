@@ -22,6 +22,8 @@ under the License.
 #include "resqml2/DiscreteProperty.h"
 #include "resqml2/ContinuousProperty.h"
 
+#include "resqml2_0_1/PropertyKind.h"
+
 using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_test;
@@ -73,10 +75,10 @@ void BigIjkGridParametricRepresentationTest::initRepo() {
 		propertyKind);
 	std::unique_ptr<unsigned short[]> discretePropertyValues(new unsigned short[iCount * jCount * kCount]);
 	initDiscreteProperty(discretePropertyValues.get());
-	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues.get(), iCount, jCount, kCount, nullptr, -1);
+	discreteProperty->pushBackUInt16Hdf5Array3dOfValues(discretePropertyValues.get(), iCount, jCount, kCount, nullptr, -1);
 
 	// adding a continuous property
-	propertyKind = repo->createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_1::eml21__QuantityClassKind::length);
+	propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
 	RESQML2_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		ijkGrid, continuousPropertyUuid, continuousPropertyTitle,
 		gsoap_eml2_3::eml23__IndexableElement::cells,

@@ -18,43 +18,56 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "witsml2_1/AbstractObject.h"
-
-#include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "../witsml2/WellboreObject.h"
 
 namespace WITSML2_1_NS
 {
-	class WellboreMarkerSet : public WITSML2_1_NS::AbstractObject
+	class WellboreMarkerSet : public WITSML2_NS::WellboreObject
 	{
 	public:
+
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 */
+		DLL_IMPORT_OR_EXPORT WellboreMarkerSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::WellboreObject(partialObject) {}
+
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
 		*/
-		WellboreMarkerSet(class Wellbore* witsmlWellbore,
+		WellboreMarkerSet(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
-			const std::string & mdDatum,
-			const double & mdBaseSample,
-			const double & mdTopSample);
+			double mdBaseSample,
+			double mdTopSample,
+			gsoap_eml2_3::eml23__LengthUom mdUom);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreMarkerSet(gsoap_eml2_2::witsml2__WellboreMarkerSet* fromGsoap) :AbstractObject(fromGsoap) {}
+		WellboreMarkerSet(gsoap_eml2_3::witsml21__WellboreMarkerSet* fromGsoap) : WITSML2_NS::WellboreObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~WellboreMarkerSet() {}
 
-		gsoap_eml2_2::eml22__DataObjectReference* getWellboreDor() const;
-		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
-		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
+		COMMON_NS::DataObjectReference getWellboreDor() const final;
+		DLL_IMPORT_OR_EXPORT void setWellbore(WITSML2_NS::Wellbore* witsmlWellbore) final;
 
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "WellboreMarkerSet";
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		void loadTargetRelationships();
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml21";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

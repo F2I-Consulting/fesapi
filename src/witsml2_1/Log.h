@@ -7,7 +7,7 @@ to you under the Apache License, Version 2.0 (the
 "License"; you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -18,43 +18,101 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include <vector>
-#include <string>
-
-#include "witsml2_1/AbstractObject.h"
-
-#include "resqml2_0_1/WellboreFrameRepresentation.h"
+#include "ChannelMetaDataObject.h"
 
 namespace WITSML2_1_NS
 {
-	class Log : public WITSML2_1_NS::AbstractObject
+	/** Primarily a container for one or more channel sets (ChannelSet). */
+	class Log : public ChannelMetaDataObject<gsoap_eml2_3::witsml21__Log>
 	{
 	public:
+
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
-		*/
-		Log(class Wellbore* witsmlWellbore,
+		 * Constructor for partial transfer
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * 
+		 */
+		DLL_IMPORT_OR_EXPORT Log(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ChannelMetaDataObject(partialObject) {}
+
+		/**
+		 * @brief	Constructor
+		 *
+		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
+		 *
+		 * @param [in]	witsmlWellbore	If non-null, the witsml wellbore.
+		 * @param 	  	guid		  	Unique identifier.
+		 * @param 	  	title		  	The title.
+		 * @param 	  	isActive	  	True if is active, false if not.
+		 */
+		Log(WITSML2_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
-			const std::string & title);
+			const std::string & title,
+			bool isActive);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		Log(gsoap_eml2_2::witsml2__Log* fromGsoap) :AbstractObject(fromGsoap) {}
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		Log(gsoap_eml2_3::witsml21__Log* fromGsoap) : ChannelMetaDataObject(fromGsoap) {}
+
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		~Log() = default;
 
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
+		 * Pushes a back channel set
+		 *
+		 * @param [in,out]	channelSet	If non-null, set the channel belongs to.
+		 */
+		DLL_IMPORT_OR_EXPORT void pushBackChannelSet(class ChannelSet * channelSet);
+
+		/**
+		 * Gets channel sets
+		 *
+		 * @returns	Null if it fails, else the channel sets.
+		 */
+		DLL_IMPORT_OR_EXPORT std::vector<class ChannelSet*> getChannelSets() const;
+
+/**
+ * A macro that defines setter generic optional attribute
+ *
+ * @param 	attributeDatatype	The attribute datatype.
+ * @param 	attributeName	 	Name of the attribute.
+ */
+#define SETTER_GENERIC_OPTIONAL_ATTRIBUTE(attributeDatatype, attributeName)\
+		DLL_IMPORT_OR_EXPORT void set##attributeName(const attributeDatatype & attributeName);
+
+		SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, RunNumber)
+		SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, PassNumber)
+		SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, LoggingToolClassLongName)
+
+		/**
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
+		/** Loads target relationships */
+		void loadTargetRelationships() final;
+
+		/**
+		* The standard XML namespace for serializing this data object.
 		*/
-		~Log() {}
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml21";
 
-		gsoap_eml2_2::eml22__DataObjectReference* getWellboreDor() const;
-		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
-		void setWellbore(class Wellbore* witsmlWellbore);
-
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
-
-		void loadTargetRelationships();
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

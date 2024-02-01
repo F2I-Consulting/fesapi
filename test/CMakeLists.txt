@@ -62,24 +62,8 @@ if (WIN32)
 endif (WITH_RESQML2_2)
 	source_group ("${WITSML2_TEST_PREFIX}" FILES ${FESAPI_WITSML2_TEST_SOURCES} ${FESAPI_WITSML2_TEST_HEADERS})
 endif (WIN32)
-	
-# ============================================================================
-# include directories
-# ============================================================================
 
-target_include_directories(unitTest PRIVATE ${FESAPI_ROOT_DIR}/test/)
-target_include_directories(unitTest PRIVATE ${FESAPI_ROOT_DIR}/src/)
-target_include_directories(unitTest PRIVATE ${HDF5_C_INCLUDE_DIR})
-target_include_directories(unitTest PRIVATE ${ZLIB_INCLUDE_DIR})
-target_include_directories(unitTest PRIVATE ${MINIZIP_INCLUDE_DIR})
-
-if (WITH_SZIP)
-	target_include_directories(unitTest PRIVATE ${SZIP_INCLUDE_DIRS})
-endif (WITH_SZIP)
-
-if (UNIX)
-	target_include_directories(unitTest PRIVATE ${UUID_INCLUDE_DIRS})
-endif (UNIX)	
+target_include_directories(unitTest PRIVATE ${FESAPI_ROOT_DIR}/test ${FESAPI_ROOT_DIR}/src)
 
 # ============================================================================
 # build fesapiTest

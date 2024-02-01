@@ -22,7 +22,8 @@ under the License.
 
 #include "witsml2/Trajectory.h"
 
-#include "witsml2_0/Wellbore.h"
+#include "witsml2_1/Wellbore.h"
+#include "witsml2/Trajectory.h"
 
 using namespace std;
 using namespace witsml2_test;
@@ -36,28 +37,27 @@ Trajectory::Trajectory(const string & epcDocPath)
 }
 
 void Trajectory::initRepo() {
-	WITSML2_NS::Wellbore* wellbore = repo->createPartial<WITSML2_0_NS::Wellbore>("", "");
-	WITSML2_NS::Trajectory* traj = repo->createTrajectory(wellbore, defaultUuid, defaultTitle, gsoap_eml2_1::witsml20__ChannelStatus::inactive);
-	traj->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType::unknown, 250, gsoap_eml2_1::eml21__LengthUom::m, "fake datum");
-	traj->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType::DLS, 500, gsoap_eml2_1::eml21__LengthUom::ft, "fake datum", "my Uid");
-	traj->setTrajectoryStationAzi(1, 15, gsoap_eml2_1::eml21__PlaneAngleUom::dega);
+	WITSML2_NS::Wellbore* wellbore = repo->createPartial<WITSML2_1_NS::Wellbore>("", "");
+	WITSML2_NS::Trajectory* traj = repo->createTrajectory(wellbore, defaultUuid, defaultTitle, false);
+	traj->pushBackTrajectoryStation(gsoap_eml2_3::witsml21__TrajStationType::unknown, 250, gsoap_eml2_3::eml23__LengthUom::m);
+	traj->pushBackTrajectoryStation(gsoap_eml2_3::witsml21__TrajStationType::DLS, 500, gsoap_eml2_3::eml23__LengthUom::ft, "my Uid");
+	traj->setTrajectoryStationAzi(1, 15, gsoap_eml2_3::eml23__PlaneAngleUom::dega);
 }
 
 void Trajectory::readRepo() {
 	WITSML2_NS::Trajectory* traj = repo->getDataObjectByUuid<WITSML2_NS::Trajectory>(defaultUuid);
 	REQUIRE(traj != nullptr);
-	REQUIRE(traj->getGrowingStatus() == gsoap_eml2_1::witsml20__ChannelStatus::inactive);
 	REQUIRE(traj->getTrajectoryStationCount() == 2);
-	REQUIRE(traj->getTrajectoryStationTypeTrajStation(0) == gsoap_eml2_1::witsml20__TrajStationType::unknown);
-	REQUIRE(traj->getTrajectoryStationTypeTrajStation(1) == gsoap_eml2_1::witsml20__TrajStationType::DLS);
+	REQUIRE(traj->getTrajectoryStationTypeTrajStation(0) == gsoap_eml2_3::witsml21__TrajStationType::unknown);
+	REQUIRE(traj->getTrajectoryStationTypeTrajStation(1) == gsoap_eml2_3::witsml21__TrajStationType::DLS);
 	REQUIRE(traj->getTrajectoryStationMdValue(0) == 250);
 	REQUIRE(traj->getTrajectoryStationMdValue(1) == 500);
-	REQUIRE(traj->getTrajectoryStationMdUom(0) == gsoap_eml2_1::eml21__LengthUom::m);
-	REQUIRE(traj->getTrajectoryStationMdUom(1) == gsoap_eml2_1::eml21__LengthUom::ft);
+	REQUIRE(traj->getTrajectoryStationMdUom(0) == gsoap_eml2_3::eml23__LengthUom::m);
+	REQUIRE(traj->getTrajectoryStationMdUom(1) == gsoap_eml2_3::eml23__LengthUom::ft);
 	REQUIRE(traj->getTrajectoryStationuid(0) == "0");
 	REQUIRE(traj->getTrajectoryStationuid(1) == "my Uid");
 	REQUIRE(!traj->hasTrajectoryStationAzi(0));
 	REQUIRE(traj->hasTrajectoryStationAzi(1));
 	REQUIRE(traj->getTrajectoryStationAziValue(1) == 15);
-	REQUIRE(traj->getTrajectoryStationAziUom(1) == gsoap_eml2_1::eml21__PlaneAngleUom::dega);
+	REQUIRE(traj->getTrajectoryStationAziUom(1) == gsoap_eml2_3::eml23__PlaneAngleUom::dega);
 }

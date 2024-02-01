@@ -39,8 +39,8 @@ void AbstractTest::serialize() {
 	repo = new COMMON_NS::DataObjectRepository();
 	repo->setDefaultStandard(defaultEmlVersion);
 	repo->setDefaultStandard(defaultResqmlVersion);
-	repo->setDefaultHdfProxy(repo->createHdfProxy("75f5b460-3ccb-4102-a06e-e9c1019769b2", "Hdf Proxy Test", epcDocument.getStorageDirectory(), epcDocument.getName() + ".h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE));
-	repo->setDefaultCrs(repo->createLocalDepth3dCrs("7b40b49e-b783-4b3f-8380-b3bdc42e8ae7", "Default CRS", 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__LengthUom::ft, "Unknown", false));
+	repo->createHdfProxy("75f5b460-3ccb-4102-a06e-e9c1019769b2", "Hdf Proxy Test", epcDocument.getStorageDirectory(), epcDocument.getName() + ".h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
+	repo->createLocalDepth3dCrs("7b40b49e-b783-4b3f-8380-b3bdc42e8ae7", "Default CRS", 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__LengthUom::ft, "Unknown", false);
 
 	initRepo();
 	

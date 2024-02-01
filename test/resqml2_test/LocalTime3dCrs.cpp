@@ -20,6 +20,8 @@ under the License.
 
 #include "eml2/AbstractLocal3dCrs.h"
 
+#include "eml2/AbstractLocal3dCrs.h"
+
 using namespace resqml2_test;
 using namespace COMMON_NS;
 using namespace std;
@@ -39,11 +41,6 @@ void LocalTime3dCrs::initRepo()
 
 void LocalTime3dCrs::readRepo()
 {
-	size_t timeCrsCount = 0;
-	for (auto* crs : repo->getLocal3dCrsSet()) {
-		if (crs->isATimeCrs()) {
-			++timeCrsCount;
-		}
-	}
-	REQUIRE(timeCrsCount == 1 );
+	REQUIRE(repo->getLocal3dCrsSet().size() == 2);
+	REQUIRE(repo->getLocal3dCrs(0)->isATimeCrs() != repo->getLocal3dCrs(1)->isATimeCrs());
 }

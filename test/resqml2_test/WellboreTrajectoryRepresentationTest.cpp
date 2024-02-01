@@ -52,7 +52,6 @@ void WellboreTrajectoryRepresentationTest::initRepo() {
 	WITSML2_NS::Wellbore* wellbore = repo->createWellbore(well, "", "");
 
 	WellboreFeature* feature = repo->createWellboreFeature("", "");
-	feature->setWitsmlWellbore(wellbore);
 	WellboreInterpretation* interp = repo->createWellboreInterpretation(feature, "", "", true);
 	auto* mdDatum = repo->createReferencePointInALocalEngineeringCompoundCrs("", "", nullptr, gsoap_eml2_3::eml23__ReferencePointKind::mean_x0020sea_x0020level, 275, 75, 0);
 
@@ -92,7 +91,6 @@ void WellboreTrajectoryRepresentationTest::initRepo() {
 void WellboreTrajectoryRepresentationTest::readRepo() {
 	// getting the WellboreTrajectoryRepresentation
 	WellboreTrajectoryRepresentation* traj = repo->getDataObjectByUuid<WellboreTrajectoryRepresentation>(defaultUuid);
-	REQUIRE(dynamic_cast<WellboreFeature*>(traj->getInterpretation()->getInterpretedFeature())->getWitsmlWellbore()->getWell()->getUuid() == "1f885c7b-5262-41ef-bd1c-e06f40c08387");
 
 	REQUIRE(traj->getXyzPointCountOfAllPatches() == 4);
 	REQUIRE(traj->getGeometryKind() == 0);
@@ -108,6 +106,22 @@ void WellboreTrajectoryRepresentationTest::readRepo() {
 	REQUIRE(controlPoints[1] == 75);
 	REQUIRE(controlPoints[2] == 0);
 	REQUIRE(controlPoints[3] == 275);
+	double mdValues[4] = { 0, 325, 400, 600 };
+	std::unique_ptr<double[]> convertedXyz(new double[12]);
+	traj->convertMdValuesToXyzValues(mdValues, 4, convertedXyz.get());
+	REQUIRE(convertedXyz[0] == 275);
+	REQUIRE(convertedXyz[1] == 75);
+	REQUIRE(convertedXyz[2] == 0);
+	REQUIRE(convertedXyz[3] == 275);
+	REQUIRE(convertedXyz[4] == 75);
+	REQUIRE(convertedXyz[5] == 325);
+	REQUIRE(convertedXyz[6] == 275);
+	REQUIRE(convertedXyz[7] == 75);
+	REQUIRE(convertedXyz[8] == 400);
+	REQUIRE(convertedXyz[9] == 275);
+	REQUIRE(convertedXyz[10] == 75);
+	REQUIRE(convertedXyz[11] == 600);
+
 
 	constexpr auto pi = 3.14159265358979323846;
 	constexpr auto epsilon = 0.0001;

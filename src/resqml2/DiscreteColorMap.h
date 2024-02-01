@@ -49,8 +49,8 @@ namespace RESQML2_NS
 		 * 						== nullptr (default value), indices are set from 0 to colorCount - 1.
 		 */
 		DLL_IMPORT_OR_EXPORT void setHsvColors(uint64_t colorCount,
-			double const * hsvColors, double const * alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const * indices = nullptr) final;
+			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
+			double const* indices = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getColorCount() const final;
 

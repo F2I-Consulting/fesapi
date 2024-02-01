@@ -182,7 +182,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	crs	The local CRS to associate with the current property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLocalCrs(EML2_NS::AbstractLocal3dCrs * crs);
+		DLL_IMPORT_OR_EXPORT void setLocalCrs(EML2_NS::AbstractLocal3dCrs* crs);
 
 		/**
 		 * Gets the local CRS which is associated to this property.
@@ -207,7 +207,7 @@ namespace RESQML2_NS
 		/**
 		 * Checks if this property has at least one realization index. Realization index is used if the property is
 		 * the result of a multi-realization process.
-		 * Reamrk : v2.0.1 is constrained to have a maximum of one realisation index
+		 * Remark : v2.0.1 is constrained to have a maximum of one realisation index
 		 *
 		 * @returns	True if the property has at least one realization index, false if not.
 		 */
@@ -217,6 +217,7 @@ namespace RESQML2_NS
 		 * Gets the realization index of this property. Realization index is used if the property is the
 		 * result of a multi-realization process. You should have checked before that this property
 		 * actually has a realization index.
+		 * Remark : v2.0.1 is constrained to have a maximum of one realisation index
 		 *
 		 * @exception	std::invalid_argument	If this property has actually no realization index.
 		 *

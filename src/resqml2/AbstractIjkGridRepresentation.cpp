@@ -1294,7 +1294,7 @@ void AbstractIjkGridRepresentation::setCellGeometryIsDefinedFlags(uint8_t* cellG
 
 		gsoap_eml2_3::eml23__BooleanExternalArray* boolArray = gsoap_eml2_3::soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
 		boolArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(boolArray->soap);
-		boolArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/CellGeometryIsDefined", getCellCount(), proxy));
+		boolArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/CellGeometryIsDefined", getCellCount(), proxy));
 		geom->CellGeometryIsDefined = boolArray;
 	}
 

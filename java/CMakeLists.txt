@@ -18,19 +18,16 @@ file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/commo
 
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/eml2)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/eml2_0)
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/eml2_1)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/eml2_3)
 
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/resqml2)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/resqml2_0_1)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/resqml2_2)
 
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/witsml1_4)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/witsml2)
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/witsml2_0)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/witsml2_1)
 
-file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/prodml2_1)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i_consulting/fesapi/prodml2_2)
 
 # The name of the library is different on Windows because it includes the version
 if (WIN32)

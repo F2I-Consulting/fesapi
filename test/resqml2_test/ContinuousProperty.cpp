@@ -21,6 +21,11 @@ under the License.
 #include "resqml2/AbstractIjkGridRepresentation.h"
 #include "resqml2/ContinuousProperty.h"
 
+#include "resqml2/ContinuousProperty.h"
+
+#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
+#include "resqml2_0_1/PropertyKind.h"
+
 using namespace std;
 using namespace COMMON_NS;
 using namespace EML2_NS;
@@ -35,7 +40,7 @@ void ContinuousProperty::initRepo() {
 	RESQML2_NS::AbstractIjkGridRepresentation * rep = repo->createPartialIjkGridRepresentation("", "");
 
 	// creating Float prop without min max
-	auto propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_1::eml21__QuantityClassKind::pressure);
+	RESQML2_0_1_NS::PropertyKind* propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
 	RESQML2_NS::ContinuousProperty* noMinMaxFltProperty = repo->createContinuousProperty(
 		rep, defaultUuid, "Float prop without min max",
 		gsoap_eml2_3::eml23__IndexableElement::cells,

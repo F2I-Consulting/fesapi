@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "FaultMultiPatchTriangulatedSetRepresentationTest.h"
-
 #include "eml2/AbstractHdfProxy.h"
 
 #include "resqml2/TriangulatedSetRepresentation.h"
@@ -25,7 +24,6 @@ under the License.
 #include "resqml2_0_1/FaultInterpretation.h"
 
 #include "resqml2_test/FaultInterpretationTest.h"
-#include "resqml2_test/LocalDepth3dCrsTest.h"
 
 using namespace std;
 using namespace resqml2_test;

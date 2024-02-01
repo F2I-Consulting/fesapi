@@ -51,7 +51,7 @@ void DiscreteColorMap::setHsvColors(uint64_t colorCount,
 		}
 
 		resqml22__DiscreteColorMapEntry* discreteColorMapEntry = soap_new_resqml22__DiscreteColorMapEntry(gsoapProxy2_3->soap);
-		discreteColorMapEntry->index = indices != nullptr ?  indices[colorIndex] : colorIndex;
+		discreteColorMapEntry->index = indices != nullptr ? indices[colorIndex] : colorIndex;
 		resqml22__HsvColor* color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
 		color->Hue = hsvColors[3 * colorIndex];
 		color->Saturation = hsvColors[3 * colorIndex + 1];

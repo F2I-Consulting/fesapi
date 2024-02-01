@@ -135,7 +135,7 @@ bool CommentProperty::validatePropertyKindAssociation(EML2_NS::PropertyKind* pk)
 			}
 			auto pk201 = dynamic_cast<RESQML2_0_1_NS::PropertyKind*>(pk);
 			if (pk201 != nullptr) {
-				if (!pk201->isChildOf(resqml20__ResqmlPropertyKind::continuous) || pk201->isChildOf(resqml20__ResqmlPropertyKind::discrete) || pk201->isChildOf(resqml20__ResqmlPropertyKind::categorical)) {
+				if (pk201->isChildOf(resqml20__ResqmlPropertyKind::continuous) || pk201->isChildOf(resqml20__ResqmlPropertyKind::discrete) || pk201->isChildOf(resqml20__ResqmlPropertyKind::categorical)) {
 					repository->addWarning("The comment property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is either a continuous, discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 					changeToPartialObject();
 					return false;

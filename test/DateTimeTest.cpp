@@ -50,7 +50,7 @@ void DateTimeTest::initRepo()
 
 void DateTimeTest::readRepo()
 {
-	auto* localCrs = repo->getLocal3dCrs(0);
+	auto* localCrs = repo->getDefaultCrs();
 	time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 	REQUIRE(localCrs->getCreation() > now - 5);
 	REQUIRE(localCrs->getCreation() < now + 5);

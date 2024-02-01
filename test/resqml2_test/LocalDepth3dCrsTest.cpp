@@ -40,7 +40,7 @@ void LocalDepth3dCrsTest::initRepo()
 void LocalDepth3dCrsTest::readRepo()
 {
 	REQUIRE( repo->getLocal3dCrsSet().size() == 2 );
-	AbstractLocal3dCrs* crs = repo->getDataObjectByUuid<AbstractLocal3dCrs>(defaultUuid);
+	auto* crs = repo->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(defaultUuid);
 	REQUIRE(crs->getOriginOrdinal1() == 1000);
 	REQUIRE(crs->getOriginOrdinal2() == 2000);
 	REQUIRE(crs->getOriginDepthOrElevation() == 3000);

@@ -97,7 +97,6 @@ under the License.
 	%nspace RESQML2_2_NS::IjkGridLatticeRepresentation;
 	%nspace RESQML2_2_NS::IjkGridNoGeometryRepresentation;
 	%nspace RESQML2_2_NS::IjkGridParametricRepresentation;
-	%nspace RESQML2_2_NS::MdDatum;
 	%nspace RESQML2_2_NS::Model;
 	%nspace RESQML2_2_NS::NonSealedSurfaceFrameworkRepresentation;
 	%nspace RESQML2_2_NS::PlaneSetRepresentation;
@@ -133,21 +132,28 @@ under the License.
 
 namespace gsoap_eml2_3
 {
-	enum class resqml22__InterpolationDomain {
-		hsv = 0,
-		rgb = 1
-	};
-	enum class resqml22__InterpolationMethod {
-		linear = 0,
-		logarithmic = 1
-	};
-	enum class resqml22__FluidContact {
-		free_x0020water_x0020contact = 0,
-		gas_x0020oil_x0020contact = 1,
-		gas_x0020water_x0020contact = 2,
-		seal = 3,
-		water_x0020oil_x0020contact = 4
-	};
+enum class resqml22__InterpolationDomain {
+	hsv = 0,
+	rgb = 1
+};
+enum class resqml22__InterpolationMethod {
+	linear = 0,
+	logarithmic = 1
+};
+enum class resqml22__FluidContact {
+	free_x0020water_x0020contact = 0,
+	gas_x0020oil_x0020contact = 1,
+	gas_x0020water_x0020contact = 2,
+	seal = 3,
+	water_x0020oil_x0020contact = 4
+};
+enum class resqml22__CulturalFeatureKind {
+	fieldblock = 0,
+	licenses = 1,
+	pipeline = 2,
+	project_x0020boundaries = 3,
+	model_x0020frontier = 4
+};
 }
 
 namespace RESQML2_2_NS

@@ -272,9 +272,6 @@ bool SealedVolumeFrameworkRepresentation::getSideFlagOfExternalShellFace(uint64_
 	loadShell(regionIndex);
 	return faceSide_[faceIndex];
 }
-
-bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(uint64_t regionIndex, uint64_t internalShellIndex, uint64_t faceIndex)
-{
 	loadShell(regionIndex, internalShellIndex);
 	return faceSide_[faceIndex];
 }

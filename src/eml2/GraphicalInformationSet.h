@@ -599,20 +599,20 @@ namespace EML2_NS
 		 * associated data repository.
 		 */
 		void loadTargetRelationships() final;
-	
+
 	protected:
 
 		/**
 		* Default constructor
 		*/
 		GraphicalInformationSet() {}
-	
+
 		/**
 		 * Constructor. Only to be used in partial transfer context
 		 *
 		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
-		GraphicalInformationSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject): COMMON_NS::AbstractObject(partialObject) {}
+		GraphicalInformationSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
@@ -621,7 +621,7 @@ namespace EML2_NS
 		 */
 		GraphicalInformationSet(gsoap_eml2_3::_eml23__GraphicalInformationSet* fromGsoap) :
 			COMMON_NS::AbstractObject(fromGsoap) {}
-	
+
 	private:
 		gsoap_eml2_3::resqml22__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(COMMON_NS::AbstractObject const* targetObject) const;
 		gsoap_eml2_3::resqml22__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(COMMON_NS::AbstractObject const* targetObject) const;

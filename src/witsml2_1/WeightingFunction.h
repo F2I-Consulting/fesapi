@@ -21,12 +21,12 @@ under the License.
 #include <vector>
 #include <string>
 
-#include "witsml2_1/WeightingFunctionDictionary.h"
-#include "witsml2_1/ErrorTerm.h"
+#include "WeightingFunctionDictionary.h"
+#include "ErrorTerm.h"
 
 namespace WITSML2_1_NS
 {
-	class WeightingFunction : public WITSML2_1_NS::AbstractObject
+	class WeightingFunction : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -34,7 +34,7 @@ namespace WITSML2_1_NS
 		* Only to be used in partial transfer context
 		*/
 		WeightingFunction(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			WITSML2_1_NS::AbstractObject(partialObject) {}
+			COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -50,7 +50,7 @@ namespace WITSML2_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WeightingFunction(gsoap_eml2_2::witsml2__WeightingFunction* fromGsoap) :AbstractObject(fromGsoap) {}
+		WeightingFunction(gsoap_eml2_3::witsml21__WeightingFunction* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -59,7 +59,7 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool isTopLevelElement() const;
 
-		DLL_IMPORT_OR_EXPORT void setKind(gsoap_eml2_2::witsml2__ErrorKind errorKind);
+		DLL_IMPORT_OR_EXPORT void setKind(gsoap_eml2_3::witsml21__ErrorKind errorKind);
 		DLL_IMPORT_OR_EXPORT void pushBackSource(const std::string & source);
 		DLL_IMPORT_OR_EXPORT void setSingularityNorthFormula(const std::string & singularityNorthFormula);
 		DLL_IMPORT_OR_EXPORT void setSingularityEastFormula(const std::string & singularityEastFormula);
@@ -69,5 +69,15 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "witsml21";
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 	};
 }

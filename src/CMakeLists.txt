@@ -29,14 +29,10 @@ set (RESQML_PREFIX_2 "resqml2")
 set (RESQML_PREFIX_2_0_1 "resqml2_0_1")
 set (RESQML_PREFIX_2_2 "resqml2_2")
 set (WITSML_PREFIX_2 "witsml2")
-set (WITSML_PREFIX_1_4 "witsml1_4")
-set (WITSML_PREFIX_2_0 "witsml2_0")
 set (WITSML_PREFIX_2_1 "witsml2_1")
-set (PRODML_PREFIX_2_1 "prodml2_1")
+set (PRODML_PREFIX_2_2 "prodml2_2")
 set (EML_PREFIX_2 "eml2")
 set (EML_PREFIX_2_0 "eml2_0")
-set (EML_PREFIX_2_1 "eml2_1")
-set (EML_PREFIX_2_2 "eml2_2")
 set (EML_PREFIX_2_3 "eml2_3")
 
 # Define the compile options according to the compiler
@@ -60,46 +56,26 @@ if (WIN32)
 	endif ()
 endif (WIN32)
 
-target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_DEFINITIONS})
-
 # Linker instructions
 if (WITH_LOCAL_HDF5 OR CMAKE_VERSION VERSION_LESS "3.19")
+	# Do not use target because find_package has not been used
+	target_include_directories(${CPP_LIBRARY_NAME} SYSTEM PRIVATE ${HDF5_INCLUDE_DIRS})
+	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_DEFINITIONS})
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_LIBRARIES})
 else()
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE hdf5::hdf5)
+	# Do not mix with hdf5::hdf5 (lowercase) which does not export HDF5 DEFINITIONS every time on windows
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE HDF5::HDF5)
 endif()
+
+if (TARGET ZLIB::ZLIB)
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ZLIB::ZLIB MINIZIP::MINIZIP)
+else ()
+	target_include_directories(${CPP_LIBRARY_NAME} SYSTEM PRIVATE ${ZLIB_INCLUDE_DIR})
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE MINIZIP::MINIZIP)
+endif ()
+
 if (WIN32)
-	if (EXISTS ${MINIZIP_LIBRARY_DEBUG} AND EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
-		set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo;Debug" CACHE STRING "" FORCE)
-	endif ()
-	if (NOT EXISTS ${MINIZIP_LIBRARY_DEBUG} OR NOT EXISTS ${HDF5_hdf5_LIBRARY_DEBUG})
-		set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo" CACHE STRING "" FORCE)
-	endif ()
-	if (NOT EXISTS ${MINIZIP_LIBRARY_RELEASE} OR NOT EXISTS ${HDF5_hdf5_LIBRARY_RELEASE})
-		set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
-	endif ()
-
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Boost::boost)
-
-	if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${MINIZIP_LIBRARY_RELEASE} debug ${MINIZIP_LIBRARY_DEBUG})
-	elseif (EXISTS ${MINIZIP_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE})
-	elseif (EXISTS ${MINIZIP_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_DEBUG})
-	else ()
-		message(ERROR "No minizip library has been set.")
-	endif ()
-
-# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
-# zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
-	if (EXISTS ${ZLIB_LIBRARY_RELEASE} AND EXISTS ${ZLIB_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${ZLIB_LIBRARY_RELEASE} debug ${ZLIB_LIBRARY_DEBUG})
-	elseif (EXISTS ${ZLIB_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_RELEASE})
-	elseif (EXISTS ${ZLIB_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_DEBUG})
-	endif ()
 
 # szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
 	if (EXISTS ${SZIP_LIBRARY_RELEASE} AND EXISTS ${SZIP_LIBRARY_DEBUG})
@@ -120,12 +96,6 @@ if (WIN32)
 		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}
 	)
 ELSEIF (UNIX)
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE})
-# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
-# zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
-	if (EXISTS ${ZLIB_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_RELEASE})
-	endif ()
 # szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
 	if (EXISTS ${SZIP_LIBRARY_RELEASE})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
@@ -158,21 +128,17 @@ set (WITH_PYTHON_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file fo
 # Namespaces definitions
 set (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
 
-set (FESAPI_PRODML2_1_NS prodml2_1 CACHE STRING "Namespace for prodml2_1 objects")
+set (FESAPI_PRODML2_2_NS prodml2_2 CACHE STRING "Namespace for prodml2_2 objects")
 
 set (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 set (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
 set (FESAPI_RESQML2_2_NS resqml2_2 CACHE STRING "Namespace for resqml2_2 objects")
 
 set (FESAPI_WITSML2_NS witsml2 CACHE STRING "Namespace for witsml2 objects")
-set (FESAPI_WITSML1_4_NS witsml1_4 CACHE STRING "Namespace for witsml1_4 objects")
-set (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml2_0 objects")
 set (FESAPI_WITSML2_1_NS witsml2_1 CACHE STRING "Namespace for witsml2_1 objects")
 
 set (FESAPI_EML2_NS eml2 CACHE STRING "Namespace for eml2 objects")
 set (FESAPI_EML2_0_NS eml2_0 CACHE STRING "Namespace for eml2_0 objects")
-set (FESAPI_EML2_1_NS eml2_1 CACHE STRING "Namespace for eml2_1 objects")
-set (FESAPI_EML2_2_NS eml2_2 CACHE STRING "Namespace for eml2_2 objects")
 set (FESAPI_EML2_3_NS eml2_3 CACHE STRING "Namespace for eml2_3 objects")
 
 configure_file(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
@@ -183,18 +149,17 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/epc/CMakeLists.txt)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/CMakeLists.txt)
 include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_0_1}/CMakeLists.txt)
-include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_2}/CMakeLists.txt)
+if (WITH_RESQML2_2)
+	include(${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_2}/CMakeLists.txt)
+endif (WITH_RESQML2_2)
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_1}/CMakeLists.txt)
+include(${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_2}/CMakeLists.txt)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2}/CMakeLists.txt)
-include(${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_1_4}/CMakeLists.txt)
-include(${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_0}/CMakeLists.txt)
 include(${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/CMakeLists.txt)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2}/CMakeLists.txt)
 include(${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_0}/CMakeLists.txt)
-include(${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_1}/CMakeLists.txt)
 include(${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/CMakeLists.txt)
 
 list(APPEND ALL_SOURCES_AND_HEADERS
@@ -213,39 +178,27 @@ list(APPEND ALL_SOURCES_AND_HEADERS
 	${FESAPI_RESQML_2_0_1_HEADERS}
 	${FESAPI_WITSML_2_SOURCES}
 	${FESAPI_WITSML_2_HEADERS}
-	${FESAPI_WITSML_1_4_SOURCES}
-	${FESAPI_WITSML_1_4_HEADERS}
-	${FESAPI_WITSML_2_0_SOURCES}
-	${FESAPI_WITSML_2_0_HEADERS}
-	${FESAPI_PRODML_2_1_SOURCES}
-	${FESAPI_PRODML_2_1_HEADERS}
+	${FESAPI_WITSML_2_1_SOURCES}
+	${FESAPI_WITSML_2_1_HEADERS}
+	${FESAPI_PRODML_2_2_SOURCES}
+	${FESAPI_PRODML_2_2_HEADERS}
 	${FESAPI_EML_2_SOURCES}
 	${FESAPI_EML_2_HEADERS}
 	${FESAPI_EML_2_0_SOURCES}
 	${FESAPI_EML_2_0_HEADERS}
-	${FESAPI_EML_2_1_SOURCES}
-	${FESAPI_EML_2_1_HEADERS}
 	${FESAPI_PROXIES_SOURCES}
 	${FESAPI_PROXIES_HEADERS}
 )
-if (WITH_RESQML2_2)
-	list(APPEND ALL_SOURCES_AND_HEADERS
-		${FESAPI_RESQML_2_2_SOURCES}
-		${FESAPI_RESQML_2_2_HEADERS}
-		${FESAPI_EML_2_3_SOURCES}
-		${FESAPI_EML_2_3_HEADERS}
-	)
-endif (WITH_RESQML2_2)
-if (WITH_WITSML2_1)
-	list(APPEND ALL_SOURCES_AND_HEADERS
-		${FESAPI_WITSML_2_1_SOURCES}
-		${FESAPI_WITSML_2_1_HEADERS}
-	)
-endif (WITH_WITSML2_1)
+list(APPEND ALL_SOURCES_AND_HEADERS
+	${FESAPI_RESQML_2_2_SOURCES}
+	${FESAPI_RESQML_2_2_HEADERS}
+	${FESAPI_EML_2_3_SOURCES}
+	${FESAPI_EML_2_3_HEADERS}
+)
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_INCLUDE_DIRS} ${MINIZIP_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} SYSTEM PRIVATE ${MINIZIP_INCLUDE_DIR})
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:include>
@@ -263,26 +216,19 @@ if (WIN32)
 	
 	if (WITH_RESQML2_2)
 		source_group ("${RESQML_PREFIX_2_2}" FILES ${FESAPI_RESQML_2_2_SOURCES} ${FESAPI_RESQML_2_2_HEADERS})
-		source_group ("${EML_PREFIX_2_3}" FILES ${FESAPI_EML_2_3_SOURCES} ${FESAPI_EML_2_3_HEADERS})
 	endif (WITH_RESQML2_2)
 	
-	source_group ("${WITSML_PREFIX_2}" FILES ${FESAPI_WITSML_2_SOURCES} ${FESAPI_WITSML_2_HEADERS})
-
-	source_group ("${WITSML_PREFIX_1_4}" FILES ${FESAPI_WITSML_1_4_SOURCES} ${FESAPI_WITSML_1_4_HEADERS})
-
-	source_group ("${WITSML_PREFIX_2_0}" FILES ${FESAPI_WITSML_2_0_SOURCES} ${FESAPI_WITSML_2_0_HEADERS})
+	source_group ("${EML_PREFIX_2_3}" FILES ${FESAPI_EML_2_3_SOURCES} ${FESAPI_EML_2_3_HEADERS})
 	
-	if (WITH_WITSML2_1)
-		source_group ("${WITSML_PREFIX_2_1}" FILES ${FESAPI_WITSML_2_1_SOURCES} ${FESAPI_WITSML_2_1_HEADERS})
-	endif(WITH_WITSML2_1)
+	source_group ("${WITSML_PREFIX_2}" FILES ${FESAPI_WITSML_2_SOURCES} ${FESAPI_WITSML_2_HEADERS})
+	
+	source_group ("${WITSML_PREFIX_2_1}" FILES ${FESAPI_WITSML_2_1_SOURCES} ${FESAPI_WITSML_2_1_HEADERS})
 
-	source_group ("${PRODML_PREFIX_2_1}" FILES ${FESAPI_PRODML_2_1_SOURCES} ${FESAPI_PRODML_2_1_HEADERS})
+	source_group ("${PRODML_PREFIX_2_2}" FILES ${FESAPI_PRODML_2_2_SOURCES} ${FESAPI_PRODML_2_2_HEADERS})
 
 	source_group ("${EML_PREFIX_2}" FILES ${FESAPI_EML_2_SOURCES} ${FESAPI_EML_2_HEADERS})
 	
 	source_group ("${EML_PREFIX_2_0}" FILES ${FESAPI_EML_2_0_SOURCES} ${FESAPI_EML_2_0_HEADERS})
-	
-	source_group ("${EML_PREFIX_2_1}" FILES ${FESAPI_EML_2_1_SOURCES} ${FESAPI_EML_2_1_HEADERS})
 
 	source_group ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
 	
@@ -345,15 +291,6 @@ INSTALL (
 	COMPONENT fesapi_headers
 )
 
-# tools headers
-IF (UNIX) # Methods are not exported  under windows
-	INSTALL (
-		FILES ${FESAPI_TOOLS_HEADERS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/tools/
-		COMPONENT fesapi_headers
-	)
-ENDIF (UNIX)
-
 # EPC headers
 INSTALL (
 	FILES ${FESAPI_EPC_HEADERS}
@@ -380,13 +317,13 @@ if (WITH_RESQML2_2)
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${RESQML_PREFIX_2_2}/
 		COMPONENT fesapi_headers
 	)
-
-	INSTALL (
-		FILES ${FESAPI_EML_2_3_HEADERS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${EML_PREFIX_2_3}/
-		COMPONENT fesapi_headers
-	)
 endif (WITH_RESQML2_2)
+
+INSTALL (
+	FILES ${FESAPI_EML_2_3_HEADERS}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${EML_PREFIX_2_3}/
+	COMPONENT fesapi_headers
+)
 
 # WITSML headers
 INSTALL (
@@ -395,29 +332,15 @@ INSTALL (
 )
 
 INSTALL (
-	FILES ${FESAPI_WITSML_1_4_HEADERS}
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_1_4}/
+	FILES ${FESAPI_WITSML_2_1_HEADERS}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2_1}/
 	COMPONENT fesapi_headers
 )
-
-INSTALL (
-	FILES ${FESAPI_WITSML_2_0_HEADERS}
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2_0}/
-	COMPONENT fesapi_headers
-)
-
-if (WITH_WITSML2_1)
-	INSTALL (
-		FILES ${FESAPI_WITSML2_1_HEADERS}
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2_1}/
-		COMPONENT fesapi_headers
-	)
-endif (WITH_WITSML2_1)
 
 # PRODML headers
 INSTALL (
-	FILES ${FESAPI_PRODML_2_1_HEADERS}
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${PRODML_PREFIX_2_1}/
+	FILES ${FESAPI_PRODML_2_2_HEADERS}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${PRODML_PREFIX_2_2}/
 	COMPONENT fesapi_headers
 )
 
@@ -431,12 +354,6 @@ INSTALL (
 INSTALL (
 	FILES ${FESAPI_EML_2_0_HEADERS}
 	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${EML_PREFIX_2_0}/
-	COMPONENT fesapi_headers
-)
-
-INSTALL (
-	FILES ${FESAPI_EML_2_1_HEADERS}
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${EML_PREFIX_2_1}/
 	COMPONENT fesapi_headers
 )
 
