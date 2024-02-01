@@ -82,6 +82,9 @@ void MultirealPropertyTest::initRepo() {
 	// creating the ContinuousProperty real 15
 	RESQML2_NS::ContinuousProperty* continuousPropertyReal15 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal15, "real15",
+		gsoap_eml2_3::eml23__IndexableElement::cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
+		propertyKind);
 	values[0] = 15;
 	values[1] = 15;
 	continuousPropertyReal15->pushBackDoubleHdf5Array1dOfValues(values, 2, hdfProxy);

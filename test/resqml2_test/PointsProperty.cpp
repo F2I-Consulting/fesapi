@@ -42,7 +42,7 @@ void PointsProperty::initRepo() {
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the PointsProperty
-	auto* propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_1::eml21__QuantityClassKind::length);
+	auto* propertyKind = repo->createPropertyKind("", "Fake prop kind", gsoap_eml2_3::eml23__QuantityClassKind::length);
 	RESQML2_NS::PointsProperty* pointsProperty = repo->createPointsProperty(
 		ijkGrid, defaultUuid, "points prop",
 		gsoap_eml2_3::eml23__IndexableElement::cells,

@@ -51,7 +51,7 @@ void BigIjkGridExplicitRepresentationTest::initRepo() {
 		faultCount * (jCount + 1), pillarOfCoordinateLine.get(), splitCoordinateLineColumnCumulativeCount.get(), splitCoordinateLineColumns.get());
 
 	// adding a discrete property
-	auto* propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+	auto* propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
 	RESQML2_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		ijkGrid, discretePropertyUuid, discretePropertyTitle,
 		gsoap_eml2_3::eml23__IndexableElement::cells,

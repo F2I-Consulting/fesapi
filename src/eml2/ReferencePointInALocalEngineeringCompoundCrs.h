@@ -22,13 +22,8 @@ under the License.
 
 namespace EML2_NS
 {
-	class AbstractLocal3dCrs;
-}
-
-namespace RESQML2_NS
-{
 	/**
-	 * @brief	A reference point which is defined in the context of a compound (2d horizontal + 1D vertical) CRS.
+	 * @brief	A reference point which is defined in the context of a Local Engineering compound (2d horizontal + 1D vertical) CRS.
 	 */
 	class ReferencePointInALocalEngineeringCompoundCrs : public COMMON_NS::AbstractObject
 	{
@@ -44,14 +39,14 @@ namespace RESQML2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~ReferencePointInALocalEngineeringCompoundCrs() = default;
 
-		/** 
+		/**
 		 * Gets the local 3d CRS where the reference point ordinals are given.
 		 *
 		 * @exception	std::invalid_argument	If the local CRS is not set.
-		 * 										
+		 *
 		 * @returns	A pointer to the local CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getLocalCrs() const;
+		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs() const;
 
 		/**
 		 * Gets the data object reference of the local 3d CRS where the reference point ordinals are
@@ -142,7 +137,7 @@ namespace RESQML2_NS
 		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		ReferencePointInALocalEngineeringCompoundCrs(gsoap_eml2_3::_eml23__ReferencePointInALocalEngineeringCompoundCrs* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-		
+
 		/**
 		 * Sets the local CRS where the reference point ordinals are given.
 		 *
@@ -152,6 +147,6 @@ namespace RESQML2_NS
 		 * @param [in]	localCrs	If non-nullptr, the local CRS. If nullptr, the data object repository
 		 * 							default CRS is set.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setLocalCrs(EML2_NS::AbstractLocal3dCrs * localCrs) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setLocalCrs(class AbstractLocal3dCrs* localCrs) = 0;
 	};
 }

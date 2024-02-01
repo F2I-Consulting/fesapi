@@ -1072,8 +1072,8 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new reference point.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum* createMdDatum(const std::string & guid, const std::string & title,
-			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
+		DLL_IMPORT_OR_EXPORT EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* createReferencePointInALocalEngineeringCompoundCrs(const std::string& guid, const std::string& title,
+			EML2_NS::AbstractLocal3dCrs* locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		//************ FEATURE ***************

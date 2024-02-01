@@ -203,18 +203,6 @@ SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(vectorName, Remark, std::
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(vectorName, MassFraction, eml23__MassPerMassUom, soap_new_eml23__MassPerMassMeasure)\
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(vectorName, MoleFraction, eml23__AmountOfSubstancePerAmountOfSubstanceUom, soap_new_eml23__AmountOfSubstancePerAmountOfSubstanceMeasure)
 
-unsigned int FluidCharacterization::getFormationWaterCount() const
-{
-	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
-		return 0;
-	}
-
-	size_t count = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->FormationWater.size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much FormationWater");
-	}
-	return static_cast<unsigned int>(count);
-}
 void FluidCharacterization::pushBackFormationWater(const std::string & uid)
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
@@ -229,18 +217,6 @@ SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES_IMPL(FormationWater)
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(FormationWater, Salinity, gsoap_eml2_3::eml23__MassPerMassUom, gsoap_eml2_3::soap_new_eml23__MassPerMassMeasure)
 SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE_IMPL(FormationWater, SpecificGravity, double, soap_new_double)
 
-unsigned int FluidCharacterization::getPureFluidComponentCount() const
-{
-	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
-		return 0;
-	}
-
-	size_t count = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->PureFluidComponent.size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much PureFluidComponent");
-	}
-	return static_cast<unsigned int>(count);
-}
 void FluidCharacterization::pushBackPureFluidComponent(const std::string & uid, gsoap_eml2_3::prodml22__PureComponentKind kind, bool hydrocarbonFlag)
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
@@ -256,18 +232,6 @@ void FluidCharacterization::pushBackPureFluidComponent(const std::string & uid, 
 SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES_IMPL(PureFluidComponent)
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PureFluidComponent, MolecularWeight, gsoap_eml2_3::eml23__MolecularWeightUom, gsoap_eml2_3::soap_new_eml23__MolecularWeightMeasure)
 
-unsigned int FluidCharacterization::getPlusFluidComponentCount() const
-{
-	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
-		return 0;
-	}
-
-	size_t count = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->PlusFluidComponent.size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much PlusFluidComponent");
-	}
-	return static_cast<unsigned int>(count);
-}
 void FluidCharacterization::pushBackPlusFluidComponent(const std::string & uid, gsoap_eml2_3::prodml22__PlusComponentKind kind)
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
@@ -286,18 +250,6 @@ SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PlusFluidComponent, Starti
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PlusFluidComponent, AvgDensity, std::string, gsoap_eml2_3::soap_new_eml23__MassPerVolumeMeasure)
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PlusFluidComponent, AvgMolecularWeight, gsoap_eml2_3::eml23__MolecularWeightUom, gsoap_eml2_3::soap_new_eml23__MolecularWeightMeasure)
 
-unsigned int FluidCharacterization::getStockTankOilCount() const
-{
-	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
-		return 0;
-	}
-
-	size_t count = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->StockTankOil.size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much StockTankOil");
-	}
-	return static_cast<unsigned int>(count);
-}
 void FluidCharacterization::pushBackStockTankOil(const std::string & uid)
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
@@ -316,18 +268,6 @@ SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, NetEnergyCon
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, GrossEnergyContentPerUnitVolume, gsoap_eml2_3::eml23__EnergyPerVolumeUom, gsoap_eml2_3::soap_new_eml23__EnergyPerVolumeMeasure)
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(StockTankOil, NetEnergyContentPerUnitVolume, gsoap_eml2_3::eml23__EnergyPerVolumeUom, gsoap_eml2_3::soap_new_eml23__EnergyPerVolumeMeasure)
 
-unsigned int FluidCharacterization::getNaturalGasCount() const
-{
-	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
-		return 0;
-	}
-
-	size_t count = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->NaturalGas.size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much NaturalGas");
-	}
-	return static_cast<unsigned int>(count);
-}
 void FluidCharacterization::pushBackNaturalGas(const std::string & uid)
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
@@ -346,18 +286,6 @@ SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, NetEnergyConte
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, GrossEnergyContentPerUnitVolume, gsoap_eml2_3::eml23__EnergyPerVolumeUom, gsoap_eml2_3::soap_new_eml23__EnergyPerVolumeMeasure)
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(NaturalGas, NetEnergyContentPerUnitVolume, gsoap_eml2_3::eml23__EnergyPerVolumeUom, gsoap_eml2_3::soap_new_eml23__EnergyPerVolumeMeasure)
 
-unsigned int FluidCharacterization::getPseudoFluidComponentCount() const
-{
-	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
-		return 0;
-	}
-
-	size_t count = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->PseudoFluidComponent.size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much PseudoFluidComponent");
-	}
-	return static_cast<unsigned int>(count);
-}
 void FluidCharacterization::pushBackPseudoFluidComponent(const std::string & uid, gsoap_eml2_3::prodml22__PseudoComponentKind kind)
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr) {
@@ -379,15 +307,6 @@ SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, AvgB
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, AvgDensity, std::string, gsoap_eml2_3::soap_new_eml23__MassPerVolumeMeasure)
 SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE_IMPL(PseudoFluidComponent, AvgMolecularWeight, gsoap_eml2_3::eml23__MolecularWeightUom, gsoap_eml2_3::soap_new_eml23__MolecularWeightMeasure)
 
-unsigned int FluidCharacterization::getModelCount() const
-{
-	size_t count = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much models.");
-	}
-	return static_cast<unsigned int>(count);
-}
-
 void FluidCharacterization::pushBackModel(const std::string & uid)
 {
 	prodml22__FluidCharacterizationModel* const result = soap_new_prodml22__FluidCharacterizationModel(getGsoapContext());
@@ -399,7 +318,7 @@ void FluidCharacterization::pushBackModel(const std::string & uid)
 	modelSpecifications.push_back(nullptr);
 }
 
-PvtSpecification* FluidCharacterization::initModelSpecification(unsigned int modelIndex, ModelSpecification kind)
+PvtSpecification* FluidCharacterization::initModelSpecification(uint64_t modelIndex, ModelSpecification kind)
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size() <= modelIndex) {
 		throw std::out_of_range("The index of the model is out of range");
@@ -537,15 +456,6 @@ void FluidCharacterization::loadTargetRelationships()
 	}
 }
 
-unsigned int FluidCharacterization::getTableFormatCount() const
-{
-	size_t count = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->TableFormat.size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much FluidCharacterizationTableFormat");
-	}
-	return static_cast<unsigned int>(count);
-}
-
 uint64_t FluidCharacterization::getTableFormatColumnCount(const std::string & tableFormatUid) const
 {
 	for (const auto& tableFormat : static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->TableFormat) {
@@ -609,20 +519,16 @@ void FluidCharacterization::pushBackTableFormatColumn(unsigned int tableFormatIn
 	static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->TableFormat[tableFormatIndex]->TableColumn.push_back(result);
 }
 
-unsigned int FluidCharacterization::getTableCount(unsigned int modelIndex) const
+uint64_t FluidCharacterization::getTableCount(uint64_t modelIndex) const
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size() <= modelIndex) {
 		throw std::out_of_range("The model index is out of range.");
 	}
 
-	size_t count = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationTable.size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much FluidCharacterizationTable in this model");
-	}
-	return static_cast<unsigned int>(count);
+	return static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationTable.size();
 }
 
-std::string FluidCharacterization::getTableName(unsigned int modelIndex, unsigned int tableIndex) const
+std::string FluidCharacterization::getTableName(uint64_t modelIndex, uint64_t tableIndex) const
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size() <= modelIndex) {
 		throw std::out_of_range("The model index is out of range.");
@@ -634,7 +540,7 @@ std::string FluidCharacterization::getTableName(unsigned int modelIndex, unsigne
 	return static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationTable[tableIndex]->name;
 }
 
-std::string FluidCharacterization::getTableFormatUid(unsigned int modelIndex, unsigned int tableIndex) const
+std::string FluidCharacterization::getTableFormatUid(uint64_t modelIndex, uint64_t tableIndex) const
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size() <= modelIndex) {
 		throw std::out_of_range("The model index is out of range.");
@@ -646,7 +552,7 @@ std::string FluidCharacterization::getTableFormatUid(unsigned int modelIndex, un
 	return static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationTable[tableIndex]->tableFormat;
 }
 
-void FluidCharacterization::pushBackTable(unsigned int modelIndex, const std::string & name, const std::string & tableFormatUid, const std::string & uid)
+void FluidCharacterization::pushBackTable(uint64_t modelIndex, const std::string& name, const std::string& tableFormatUid, const std::string& uid)
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size() <= modelIndex) {
 		throw std::out_of_range("The model index is out of range.");
@@ -662,7 +568,7 @@ void FluidCharacterization::pushBackTable(unsigned int modelIndex, const std::st
 	static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationTable.push_back(result);
 }
 
-unsigned int FluidCharacterization::getTableRowCount(unsigned int modelIndex, unsigned int tableIndex) const
+uint64_t FluidCharacterization::getTableRowCount(uint64_t modelIndex, uint64_t tableIndex) const
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size() <= modelIndex) {
 		throw std::out_of_range("The model index is out of range.");
@@ -671,14 +577,10 @@ unsigned int FluidCharacterization::getTableRowCount(unsigned int modelIndex, un
 		throw std::out_of_range("The table index is out of range.");
 	}
 
-	size_t count = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too much row in this table");
-	}
-	return static_cast<unsigned int>(count);
+	return static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.size();
 }
 
-std::string FluidCharacterization::getTableRowContent(unsigned int modelIndex, unsigned int tableIndex, unsigned int rowIndex) const
+std::string FluidCharacterization::getTableRowContent(uint64_t modelIndex, uint64_t tableIndex, uint64_t rowIndex) const
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size() <= modelIndex) {
 		throw std::out_of_range("The model index is out of range.");
@@ -693,7 +595,7 @@ std::string FluidCharacterization::getTableRowContent(unsigned int modelIndex, u
 	return static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow[rowIndex]->__item;
 }
 
-void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::vector<double> & rowContent)
+void FluidCharacterization::pushBackTableRow(uint64_t modelIndex, uint64_t tableIndex, const std::vector<double>& rowContent)
 {
 	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size() <= modelIndex) {
 		throw std::out_of_range("The model index is out of range.");
@@ -713,13 +615,13 @@ void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned i
 
 	std::ostringstream oss;
 	std::copy(rowContent.begin(), rowContent.end() - 1, std::ostream_iterator<double>(oss, " "));
-	oss << rowContent.back();	
+	oss << rowContent.back();
 	result->__item = oss.str();
 
 	static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.push_back(result);
 }
 
-void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned int tableIndex, const std::vector<double> & rowContent, bool isSaturated)
+void FluidCharacterization::pushBackTableRow(uint64_t modelIndex, uint64_t tableIndex, const std::vector<double>& rowContent, bool isSaturated)
 {
 	pushBackTableRow(modelIndex, tableIndex, rowContent);
 	static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationTable[tableIndex]->TableRow.back()->kind = (gsoap_eml2_3::prodml22__SaturationKind*)soap_malloc(getGsoapContext(), sizeof(gsoap_eml2_3::prodml22__SaturationKind));
@@ -728,14 +630,10 @@ void FluidCharacterization::pushBackTableRow(unsigned int modelIndex, unsigned i
 		: prodml22__SaturationKind::undersaturated;
 }
 
-void FluidCharacterization::pushBackParameter(unsigned int modelIndex, double value, gsoap_eml2_3::eml23__UnitOfMeasure uom, gsoap_eml2_3::prodml22__OutputFluidProperty fluidProperty)
+void FluidCharacterization::pushBackParameter(uint64_t modelIndex, double value, gsoap_eml2_3::eml23__UnitOfMeasure uom, gsoap_eml2_3::prodml22__OutputFluidProperty fluidProperty)
 {
-	if (static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size() <= modelIndex) {
-		throw std::out_of_range("The model index is out of range.");
-	}
-
 	// Creates a parameter set if not already present
-	auto* model = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex];
+	auto* model = static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.at(modelIndex);
 	if (model->FluidCharacterizationParameterSet == nullptr) {
 		model->FluidCharacterizationParameterSet = soap_new_prodml22__FluidCharacterizationParameterSet(getGsoapContext());
 	}
@@ -748,7 +646,7 @@ void FluidCharacterization::pushBackParameter(unsigned int modelIndex, double va
 	model->FluidCharacterizationParameterSet->FluidCharacterizationParameter.push_back(param);
 }
 
-void FluidCharacterization::pushBackParameter(unsigned int modelIndex, double value, gsoap_eml2_3::eml23__UnitOfMeasure uom, gsoap_eml2_3::prodml22__OutputFluidProperty fluidProperty, gsoap_eml2_3::prodml22__ThermodynamicPhase phase)
+void FluidCharacterization::pushBackParameter(uint64_t modelIndex, double value, gsoap_eml2_3::eml23__UnitOfMeasure uom, gsoap_eml2_3::prodml22__OutputFluidProperty fluidProperty, gsoap_eml2_3::prodml22__ThermodynamicPhase phase)
 {
 	pushBackParameter(modelIndex, value, uom, fluidProperty);
 	static_cast<prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model[modelIndex]->FluidCharacterizationParameterSet->FluidCharacterizationParameter.back()->Phase = (gsoap_eml2_3::prodml22__ThermodynamicPhase*)soap_malloc(getGsoapContext(), sizeof(gsoap_eml2_3::prodml22__ThermodynamicPhase));

@@ -78,7 +78,7 @@ void TimeSeriesTest::initRepo()
 	prop3->setSingleTimestamp(1441289895);
 
 	ContinuousProperty* prop4 = repo->createContinuousProperty(
-		partialGrid, prop4Uuid, "prop 4", 1,
+		partialGrid, prop4Uuid, "prop 4",
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);

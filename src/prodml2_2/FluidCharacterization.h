@@ -246,9 +246,9 @@ namespace PRODML2_2_NS
 		 * @returns	The formation water count.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getFormationWaterCount() const noexcept {
-			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+			return static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr
 				? 0
-				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->FormationWater.size();
+				: static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->FormationWater.size();
 		}
 
 		/**
@@ -267,9 +267,9 @@ namespace PRODML2_2_NS
 		 * @returns	The pure fluid component count.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getPureFluidComponentCount() const noexcept {
-			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+			return static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr
 				? 0
-				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->PureFluidComponent.size();
+				: static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->PureFluidComponent.size();
 		}
 
 		/**
@@ -291,9 +291,9 @@ namespace PRODML2_2_NS
 		 * @returns	The plus fluid component count.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getPlusFluidComponentCount() const noexcept {
-			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+			return static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr
 				? 0
-				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->PlusFluidComponent.size();
+				: static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->PlusFluidComponent.size();
 		}
 
 		/**
@@ -316,9 +316,9 @@ namespace PRODML2_2_NS
 		 * @returns	The stock tank oil count.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getStockTankOilCount() const noexcept {
-			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+			return static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr
 				? 0
-				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->StockTankOil.size();
+				: static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->StockTankOil.size();
 		}
 
 		/**
@@ -341,9 +341,9 @@ namespace PRODML2_2_NS
 		 * @returns	The natural gas count.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getNaturalGasCount() const noexcept {
-			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+			return static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr
 				? 0
-				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->NaturalGas.size();
+				: static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->NaturalGas.size();
 		}
 
 		/**
@@ -366,9 +366,9 @@ namespace PRODML2_2_NS
 		 * @returns	The pseudo fluid component count.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getPseudoFluidComponentCount() const noexcept {
-			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog == nullptr
+			return static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog == nullptr
 				? 0
-				: static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidComponentCatalog->PseudoFluidComponent.size();
+				: static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->FluidComponentCatalog->PseudoFluidComponent.size();
 		}
 
 		/**
@@ -412,7 +412,7 @@ namespace PRODML2_2_NS
 		 * @returns	The model count.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getModelCount() const noexcept {
-			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationModel.size();
+			return static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->Model.size();
 		}
 
 		/**
@@ -453,7 +453,7 @@ namespace PRODML2_2_NS
 		 * @returns	The table format count.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getTableFormatCount() const noexcept {
-			return static_cast<gsoap_eml2_2::prodml21__FluidCharacterization*>(gsoapProxy2_2)->FluidCharacterizationTableFormat.size();
+			return static_cast<gsoap_eml2_3::prodml22__FluidCharacterization*>(gsoapProxy2_3)->TableFormat.size();
 		}
 
 		/**

@@ -23,7 +23,6 @@ under the License.
 #include "FluidCharacterization.h"
 
 #include "../resqml2/RockFluidOrganizationInterpretation.h"
-#include "../resqml2/StratigraphicOccurrenceInterpretation.h"
 
 using namespace std;
 using namespace PRODML2_2_NS;
@@ -303,24 +302,11 @@ void FluidSystem::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getRockFluidOrganizationDor();
 	if (!dor.isEmpty()) {
-		try {
-			RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
-			if (rockFluidOrg == nullptr) {
-				convertDorIntoRel<RESQML2_NS::RockFluidOrganizationInterpretation>(dor);
-				rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
-			}
-			getRepository()->addRelationship(this, rockFluidOrg);
+		RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
+		if (rockFluidOrg == nullptr) {
+			convertDorIntoRel<RESQML2_NS::RockFluidOrganizationInterpretation>(dor);
+			rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
 		}
-		// See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
-		// A RockFluidOrganizationInterpretation can gather only one RockFluidUnitInterpretation Index/ geologicUnitInterpretation; it should be multiple (i.e., cardinality is 1..1 but should be 1..*).
-		// To address this issue, if more than one RockFluidOrganizationInterpretation is needed, use StratigraphicOccurrenceInterpretations with OrganizationKind attributes set to "fluid".
-		catch (...) {
-			RESQML2_NS::StratigraphicOccurrenceInterpretation* rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::StratigraphicOccurrenceInterpretation>(dor.getUuid());
-			if (rockFluidOrg == nullptr) {
-				convertDorIntoRel<RESQML2_NS::StratigraphicOccurrenceInterpretation>(dor);
-				rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::StratigraphicOccurrenceInterpretation>(dor.getUuid());
-			}
-			getRepository()->addRelationship(this, rockFluidOrg);
-		}
+		getRepository()->addRelationship(this, rockFluidOrg);
 	}
 }

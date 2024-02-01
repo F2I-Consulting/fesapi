@@ -3668,11 +3668,11 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new fluid system.
 		 */
-		PRODML2_1_NS::FluidSystem* createFluidSystem(const std::string & guid,
+		PRODML2_2_NS::FluidSystem* createFluidSystem(const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_2::eml22__ReferenceCondition referenceCondition,
-			gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
-			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
+			gsoap_eml2_3::eml23__ReferenceCondition referenceCondition,
+			gsoap_eml2_3::prodml22__ReservoirFluidKind reservoirFluidKind,
+			double gasOilRatio, gsoap_eml2_3::eml23__VolumePerVolumeUom gasOilRatioUom);
 
 		/**
 		 * Creates a fluid characterization into this repository
@@ -3873,7 +3873,7 @@ import java.lang.AutoCloseable;
 	 * Built on the widely used ZIP file structure and originally created by Microsoft, OPC is now an open standard supported by these standards organizations:
 	 *  - Ecma International (http://www.ecma-international.org/publications/standards/Ecma-376.htm )
 	 *  - ISO/IEC 29500-2:2012, which has 4 parts, which are all freely available at this link (http://standards.iso.org/ittf/PubliclyAvailableStandards/index.html ).
-	 * An EPC file (or package) is a ZIP file, which may be “unzipped” to view its components.
+	 * An EPC file (or package) is a ZIP file, which may be "unzipped" to view its components.
 	 * When implemented as part of an Energistics standard, the zipping/unzipping is done using the OPC libraries (per the EPC Specification).
 	 */
 	class EpcDocument

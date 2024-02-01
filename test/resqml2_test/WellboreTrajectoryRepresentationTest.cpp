@@ -24,9 +24,6 @@ under the License.
 #include "resqml2/WellboreFeature.h"
 #include "resqml2/WellboreTrajectoryRepresentation.h"
 
-#include "witsml2/Well.h"
-#include "witsml2/Wellbore.h"
-
 #include "resqml2_0_1/WellboreInterpretation.h"
 
 using namespace std;
@@ -48,9 +45,6 @@ WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(const
 }
 
 void WellboreTrajectoryRepresentationTest::initRepo() {
-	WITSML2_NS::Well* well = repo->createWell("1f885c7b-5262-41ef-bd1c-e06f40c08387", "");
-	WITSML2_NS::Wellbore* wellbore = repo->createWellbore(well, "", "");
-
 	WellboreFeature* feature = repo->createWellboreFeature("", "");
 	WellboreInterpretation* interp = repo->createWellboreInterpretation(feature, "", "", true);
 	auto* mdDatum = repo->createReferencePointInALocalEngineeringCompoundCrs("", "", nullptr, gsoap_eml2_3::eml23__ReferencePointKind::mean_x0020sea_x0020level, 275, 75, 0);

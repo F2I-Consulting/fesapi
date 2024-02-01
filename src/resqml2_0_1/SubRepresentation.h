@@ -142,7 +142,7 @@ namespace RESQML2_0_1_NS
 		 * 												elements) at the same position in the sub-
 		 * 												representation patch.
 		 */
-		DLL_IMPORT_OR_EXPORT void getSupportingRepresentationIndicesOfPatch(uint64_t patchIndex, short * supportingRepresentationIndices) const;
+		DLL_IMPORT_OR_EXPORT void getSupportingRepresentationIndicesOfPatch(uint64_t patchIndex, int16_t* supportingRepresentationIndices) const;
 
 		/**
 		 * Checks if the element indices of a particular patch are pairwise or not.

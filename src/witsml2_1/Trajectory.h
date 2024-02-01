@@ -157,7 +157,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @returns	the count of trajectory stations in this trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getTrajectoryStationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getTrajectoryStationCount() const noexcept final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

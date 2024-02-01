@@ -131,7 +131,7 @@ namespace PRODML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getBinaryInteractionCoefficientFluidComponent1Reference(uint64_t index) const
 		{
-			if (static_cast<gsoap_eml2_2::prodml21__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet == nullptr) {
+			if (static_cast<gsoap_eml2_3::prodml22__AbstractCompositionalModel*>(gsoapProxy)->BinaryInteractionCoefficientSet == nullptr) {
 				throw std::out_of_range("The index is out of range");
 			}
 

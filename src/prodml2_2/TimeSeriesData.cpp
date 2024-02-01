@@ -123,23 +123,18 @@ std::string TimeSeriesData::getMeasureClassAsString() const
 		: gsoap_eml2_3::soap_eml23__MeasureClass2s(gsoapProxy2_3->soap, *static_cast<prodml22__TimeSeriesData*>(gsoapProxy2_3)->MeasureClass);
 }
 
-uint64_t TimeSeriesData::getValueCount() const
-{
-	return static_cast<prodml22__TimeSeriesData*>(gsoapProxy2_3)->DataValue.size();
-}
-
 bool TimeSeriesData::isDoubleValue(uint64_t index) const
 {
 	prodml22__TimeSeriesData* tsData = static_cast<prodml22__TimeSeriesData*>(gsoapProxy2_3);
 	
-	return tsData->DataValue.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_2_prodml21__DoubleValue;
+	return tsData->DataValue.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_3_prodml22__DoubleValue;
 }
 
 bool TimeSeriesData::isStringValue(uint64_t index) const
 {
 	prodml22__TimeSeriesData* tsData = static_cast<prodml22__TimeSeriesData*>(gsoapProxy2_3);
 
-	return tsData->DataValue.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_2_prodml21__StringValue;
+	return tsData->DataValue.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_3_prodml22__StringValue;
 }
 
 double TimeSeriesData::getDoubleValue(uint64_t index) const
@@ -208,5 +203,5 @@ gsoap_eml2_3::prodml22__TimeSeriesKeyword TimeSeriesData::getKeyword(uint64_t in
 
 std::string TimeSeriesData::getKeywordValue(uint64_t index) const
 {
-	return tsData->Key.at(index)->__item;
+	return static_cast<prodml22__TimeSeriesData*>(gsoapProxy2_3)->Key.at(index)->__item;
 }

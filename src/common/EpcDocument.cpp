@@ -204,7 +204,7 @@ namespace {
 
 		auto* firstRep = repo.getDataObjects<RESQML2_NS::AbstractRepresentation>().at(0);
 		fakeProp = repo.createDiscreteProperty(
-			firstRep, RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID, "Fake Property", 1, gsoap_eml2_3::eml23__IndexableElement::representation, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
+			firstRep, RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID, "Fake Property", gsoap_eml2_3::eml23__IndexableElement::representation, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
 		fakeProp->pushBackIntegerConstantArrayOfValues(-1, 1);
 
 		return fakeProp;

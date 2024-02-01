@@ -51,10 +51,9 @@ import com.f2i_consulting.fesapi.common.DataObjectRepository.EnergisticsStandard
 import com.f2i_consulting.fesapi.common.EpcDocument;
 import com.f2i_consulting.fesapi.eml2.AbstractHdfProxy;
 import com.f2i_consulting.fesapi.eml2.AbstractLocal3dCrs;
-import com.f2i_consulting.fesapi.eml2.PropertyKind;
-import com.f2i_consulting.fesapi.eml2.ReferencePointInALocalEngineeringCompoundCrs;
 import com.f2i_consulting.fesapi.eml2.GraphicalInformationSet;
 import com.f2i_consulting.fesapi.eml2.PropertyKind;
+import com.f2i_consulting.fesapi.eml2.ReferencePointInALocalEngineeringCompoundCrs;
 import com.f2i_consulting.fesapi.eml2_3.Eml23_LocalEngineeringCompoundCrs;
 import com.f2i_consulting.fesapi.resqml2.AbstractIjkGridRepresentation;
 import com.f2i_consulting.fesapi.resqml2.AbstractRepresentation;

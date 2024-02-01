@@ -1296,10 +1296,10 @@ EML2_NS::ReferencePointInALocalEngineeringCompoundCrs* DataObjectRepository::cre
 	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
 {
 	switch (defaultEmlVersion) {
-	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
+	case DataObjectRepository::EnergisticsStandard::EML2_0:
 		return new RESQML2_0_1_NS::MdDatum(this, guid, title, locCrs, originKind, referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
 #ifdef WITH_RESQML2_2
-	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
+	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::ReferencePointInALocalEngineeringCompoundCrs(this, guid, title, locCrs, originKind, referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
 #endif
 	default:
@@ -1847,6 +1847,8 @@ RESQML2_NS::StratigraphicColumnRankInterpretation* DataObjectRepository::createS
 
 RESQML2_NS::GeologicUnitOccurrenceInterpretation* DataObjectRepository::createStratigraphicOccurrenceInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria::age);
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:
@@ -1859,6 +1861,8 @@ RESQML2_NS::GeologicUnitOccurrenceInterpretation* DataObjectRepository::createSt
 
 RESQML2_NS::GeologicUnitOccurrenceInterpretation* DataObjectRepository::createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title)
 {
+	switch (defaultResqmlVersion) {
+	case DataObjectRepository::EnergisticsStandard::RESQML2_0_1:
 		return new RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml20__OrderingCriteria::apparent_x0020depth);
 #ifdef WITH_RESQML2_2
 	case DataObjectRepository::EnergisticsStandard::RESQML2_2:

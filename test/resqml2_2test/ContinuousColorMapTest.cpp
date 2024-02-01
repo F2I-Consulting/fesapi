@@ -72,7 +72,7 @@ void ContinuousColorMapTest::initRepo() {
 		1., 1.);
 
 	// assotiating a Continuous property to the grid 2d representation
-	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
 	ContinuousProperty* continuousProperty = repo->createContinuousProperty(grid2dRepresentation, uuidContinuousProperty, titleContinuousProperty,
 		gsoap_eml2_3::eml23__IndexableElement::nodes, "continuousColorMapIndex", propertyKind);
 	double values[6] = { 0., 1., 0., 1., 0., 1. };

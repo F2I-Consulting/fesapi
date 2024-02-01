@@ -106,7 +106,7 @@ void PropertyBySlab::initRepo() {
 	REQUIRE(propertyNoCompute->getMaximumValue() == 100.0f);
 
 	// Creating the Discrete property using slab without computing min max
-	auto discPropertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+	auto discPropertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
 	RESQML2_NS::DiscreteProperty* discretePropertyNoCompute = repo->createDiscreteProperty(
 		ijkGrid, defaultDiscretePropNoComputeUuid, "testing discrete prop",
 		gsoap_eml2_3::eml23__IndexableElement::cells,

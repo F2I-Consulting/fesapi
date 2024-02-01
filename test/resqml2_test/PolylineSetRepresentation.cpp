@@ -26,13 +26,15 @@ under the License.
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"
 
+#include "resqml2_test/LocalTime3dCrs.h"
+
 using namespace std;
 using namespace resqml2_test;
 using namespace COMMON_NS;
 
 const char* PolylineSetRepresentation::defaultUuid = "60b04722-8608-4e92-8f1d-596372dd309e";
 const char* PolylineSetRepresentation::defaultTitle = "Polyline representation (in time)";
-unsigned int PolylineSetRepresentation::numNodesPerPolylinePerPatch[] = { 3, 2 };
+uint32_t PolylineSetRepresentation::numNodesPerPolylinePerPatch[] = { 3, 2 };
 double PolylineSetRepresentation::polylinePoints[] = { 150, 0, 200, 300, 0, 350, 450, 0, 500, 150, 200, 200, 450, 200, 500 };
 
 PolylineSetRepresentation::PolylineSetRepresentation(const string & repoPath)

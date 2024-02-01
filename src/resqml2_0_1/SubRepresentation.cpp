@@ -398,7 +398,7 @@ int64_t SubRepresentation::getElementIndicesOfPatch(uint64_t patchIndex, unsigne
 	return readArrayNdOfInt64Values(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices, elementIndices);
 }
 
-void SubRepresentation::getSupportingRepresentationIndicesOfPatch(uint64_t patchIndex, short * supportingRepresentationIndices) const
+void SubRepresentation::getSupportingRepresentationIndicesOfPatch(uint64_t patchIndex, int16_t* supportingRepresentationIndices) const
 {
 	const _resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() <= patchIndex) {
@@ -417,7 +417,7 @@ void SubRepresentation::getSupportingRepresentationIndicesOfPatch(uint64_t patch
 	if (prop == nullptr) {
 		throw std::invalid_argument("The subrepresentation patch inde " + std::to_string(patchIndex) + " has not got any supportingRepresentationIndices");
 	}
-	prop->getShortValuesOfPatch(0, supportingRepresentationIndices);
+	prop->getInt16ValuesOfPatch(0, supportingRepresentationIndices);
 }
 
 uint64_t SubRepresentation::getPatchCount() const

@@ -86,8 +86,8 @@ namespace WITSML2_1_NS
 		 *
 		 * @returns	The channel index type.
 		 */
-		gsoap_eml2_1::witsml20__ChannelIndexType getChannelIndexType(uint64_t index) {
-			return static_cast<T*>(this->gsoapProxy2_3)->Index.at(index)->IndexType;
+		gsoap_eml2_3::eml23__DataIndexKind getChannelIndexKind(uint64_t index) {
+			return static_cast<T*>(this->gsoapProxy2_3)->Index.at(index)->IndexKind;
 		}
 
 		/**
@@ -113,7 +113,7 @@ namespace WITSML2_1_NS
 		 * @returns	True if it succeeds, false if it fails.
 		 */
 		bool getChannelIndexIsIncreasing(uint64_t index) {
-			return static_cast<T*>(this->gsoapProxy2_3)->Index.at(index)->Direction == gsoap_eml2_1::witsml20__IndexDirection::increasing;
+			return static_cast<T*>(this->gsoapProxy2_3)->Index.at(index)->Direction == gsoap_eml2_3::eml23__IndexDirection::increasing;
 		}
 
 		/**

@@ -64,23 +64,23 @@ void DiscreteColorMapTest::initRepo() {
 	IjkGridExplicitRepresentation* ijkgrid = repo->createIjkGridExplicitRepresentation(earthModelInterp, uuidIjkGridExplicitRepresentation, titleIjkGridExplicitRepresentation, 2, 1, 1);
 	double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
 		0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
-	unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
-	unsigned int splitCoordinateLineColumnCumulativeCount[2] = { 1, 2 };
-	unsigned int splitCoordinateLineColumns[2] = { 1, 1 };
+	uint32_t pillarOfCoordinateLine[2] = { 1, 4 };
+	uint32_t splitCoordinateLineColumnCumulativeCount[2] = { 1, 2 };
+	uint32_t splitCoordinateLineColumns[2] = { 1, 1 };
 	ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape::vertical, gsoap_resqml2_0_1::resqml20__KDirection::down, false, nodes, hdfProxy,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// assotiating a discrete property to the ijk grid
-	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
 	DiscreteProperty* discreteProperty = repo->createDiscreteProperty(ijkgrid, uuidDiscreteProperty, titleDiscreteProperty,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propertyKind);
-	unsigned short prop1Values[2] = { 0, 1 };
-	discreteProperty->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
+	uint16_t prop1Values[2] = { 0, 1 };
+	discreteProperty->pushBackUInt16Hdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
 
 	// associating a discrete color map to the discrete property kind
 	RESQML2_NS::DiscreteColorMap* discreteColorMap1 = repo->createDiscreteColorMap(uuidPropertyKindDiscreteColorMap, titlePropertyKindDiscreteColorMap);
 	REQUIRE(discreteColorMap1 != nullptr);
-	unsigned int rgbColors1[6] = { 0, 0, 256, 255, 0, 0 };
+	uint32_t rgbColors1[6] = { 0, 0, 256, 255, 0, 0 };
 	double alphas1[2] = { 1., 1. };
 	vector<string> titles1 = { "blue", "red" };
 	REQUIRE_THROWS(discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, titles1));
@@ -94,7 +94,7 @@ void DiscreteColorMapTest::initRepo() {
 	// associating the discrete color map to the discrete property
 	RESQML2_NS::DiscreteColorMap* discreteColorMap2 = repo->createDiscreteColorMap(defaultUuid, defaultTitle);
 	REQUIRE(discreteColorMap2 != nullptr);
-	unsigned int rgbColors2[6] = { 255, 0, 0, 0, 0, 255 };
+	uint32_t rgbColors2[6] = { 255, 0, 0, 0, 0, 255 };
 	double alphas2[2] = { 1., 1. };
 	vector<string> titles2 = { "red", "blue" };
 	discreteColorMap2->setRgbColors(2, rgbColors2, alphas2, titles2);

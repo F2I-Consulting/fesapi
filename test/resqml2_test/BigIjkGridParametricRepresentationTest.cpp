@@ -57,9 +57,9 @@ void BigIjkGridParametricRepresentationTest::initRepo() {
 	REQUIRE(ijkGrid != nullptr);
 	std::unique_ptr<double[]> parameters(new double[initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount)]);
 	std::unique_ptr<double[]> controlPoints(new double[(iCount + 1) * (jCount + 1) * 3]);
-	std::unique_ptr<unsigned int[]> pillarOfCoordinateLine(new unsigned int[faultCount * (jCount + 1)]);
-	std::unique_ptr<unsigned int[]> splitCoordinateLineColumnCumulativeCount(new unsigned int[faultCount * (jCount + 1)]);
-	std::unique_ptr<unsigned int[]> splitCoordinateLineColumns(new unsigned int[(faultCount * (jCount + 1)) + (faultCount * (jCount - 1))]);
+	std::unique_ptr<uint32_t[]> pillarOfCoordinateLine(new uint32_t[faultCount * (jCount + 1)]);
+	std::unique_ptr<uint32_t[]> splitCoordinateLineColumnCumulativeCount(new uint32_t[faultCount * (jCount + 1)]);
+	std::unique_ptr<uint32_t[]> splitCoordinateLineColumns(new uint32_t[(faultCount * (jCount + 1)) + (faultCount * (jCount - 1))]);
 	initNodesIjkGridRepresentation(iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow);
 	initParametersAndControlPoints(parameters.get(), controlPoints.get());
 	initSplitCoordinateLine(pillarOfCoordinateLine.get(), splitCoordinateLineColumnCumulativeCount.get(), splitCoordinateLineColumns.get());
@@ -68,12 +68,12 @@ void BigIjkGridParametricRepresentationTest::initRepo() {
 		faultCount * (jCount + 1), pillarOfCoordinateLine.get(), splitCoordinateLineColumnCumulativeCount.get(), splitCoordinateLineColumns.get());
 
 	// adding a discrete property
-	auto* propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_1::eml21__QuantityClassKind::not_x0020a_x0020measure);
+	auto* propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
 	RESQML2_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		ijkGrid, discretePropertyUuid, discretePropertyTitle,
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
-	std::unique_ptr<unsigned short[]> discretePropertyValues(new unsigned short[iCount * jCount * kCount]);
+	std::unique_ptr<uint16_t[]> discretePropertyValues(new uint16_t[iCount * jCount * kCount]);
 	initDiscreteProperty(discretePropertyValues.get());
 	discreteProperty->pushBackUInt16Hdf5Array3dOfValues(discretePropertyValues.get(), iCount, jCount, kCount, nullptr, -1);
 

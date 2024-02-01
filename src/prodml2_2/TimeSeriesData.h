@@ -152,7 +152,7 @@ namespace PRODML2_2_NS
 		* Get the count of value in this time series
 		*/
 		DLL_IMPORT_OR_EXPORT uint64_t getValueCount() const noexcept {
-			return static_cast<gsoap_eml2_2::prodml21__TimeSeriesData*>(gsoapProxy2_2)->DataValue.size();
+			return static_cast<gsoap_eml2_3::prodml22__TimeSeriesData*>(gsoapProxy2_3)->DataValue.size();
 		}
 
 		/**
@@ -215,7 +215,7 @@ namespace PRODML2_2_NS
 		* Get the count of keywords in this time series
 		*/
 		DLL_IMPORT_OR_EXPORT uint64_t getKeywordCount() const noexcept {
-			return static_cast<gsoap_eml2_2::prodml21__TimeSeriesData*>(gsoapProxy2_2)->Key.size();
+			return static_cast<gsoap_eml2_3::prodml22__TimeSeriesData*>(gsoapProxy2_3)->Key.size();
 		}
 
 		/**

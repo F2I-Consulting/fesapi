@@ -537,10 +537,10 @@ void className::set##vectorName##attributeName(uint64_t index, double value, uom
   * @param 	attributeName	Name of the attribute.
   */
 #define GETTER_AND_SETTER_TIME_T_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
-	void GLUE(,className)::set##vectorName##attributeName(unsigned int index, const time_t & attributeName) {\
+	void GLUE(,className)::set##vectorName##attributeName(uint64_t index, const time_t & attributeName) {\
 		static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName = timeTools::to_calendar_time(timeTools::from_time_t(attributeName));\
 	}\
-	time_t GLUE(,className)::get##vectorName##attributeName(unsigned int index) const {\
+	time_t GLUE(,className)::get##vectorName##attributeName(uint64_t index) const {\
 		return timeTools::timegm(static_cast<witsml21__##className*>(gsoapProxy2_3)->vectorName.at(index)->attributeName);\
 	}
 
