@@ -42,14 +42,13 @@ void SubRepresentation::init(COMMON_NS::DataObjectRepository* repo, const string
 	repo->addDataObject(this);
 }
 
-SubRepresentation::SubRepresentation(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title, gsoap_eml2_3::eml23__IndexableElement elementKind)
+SubRepresentation::SubRepresentation(COMMON_NS::DataObjectRepository* repo, const string& guid, const string& title, gsoap_eml2_3::eml23__IndexableElement elementKind)
 {
 	init(repo, guid, title, elementKind);
-	setInterpretation(repo->createPartial<RESQML2_2_NS::GenericFeatureInterpretation>("", "Unknown interp"));
 }
 
 SubRepresentation::SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-	const string & guid, const string & title, gsoap_eml2_3::eml23__IndexableElement elementKind)
+	const string& guid, const string& title, gsoap_eml2_3::eml23__IndexableElement elementKind)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the subrepresentation cannot be null.");

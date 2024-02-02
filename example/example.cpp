@@ -2419,6 +2419,13 @@ bool serialize(const string & filePath)
 	localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__TimeUom::s, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", false); // CRS translation is just for testing;
 	local3dCrs = repo.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", false);
 	repo.setDefaultCrs(local3dCrs);
+
+	/* Uncomment to avoid partial reference towards PWLS
+	pwls3Length = repo.createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_3::eml23__QuantityClassKind::length);
+	repo.createPropertyKind("323df361-784e-4062-a346-ff4ba80a78f0", "ordinal number", gsoap_eml2_3::eml23__QuantityClassKind::unitless);
+	repo.createPropertyKind("838b1a9b-2fca-4e2e-aae3-323ef1bc59c7", "facies type", gsoap_eml2_3::eml23__QuantityClassKind::unitless);
+	*/
+
 	if (repo.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 		defaultContinuousPropKind = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "continuous prop kind", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 	}
@@ -2528,7 +2535,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				std::cout << "\t\tProperty kind parent is an Energistics one" << std::endl;
 				std::cout << "\t\tProperty kind parent is : " << pk->getParentAsString() << std::endl;
 			}
-			else if (!pk->isPartial()) {
+			else if (!pk->isPartial() && pk->getParentPropertyKind() != nullptr) {
 				std::cout << "\t\tProperty kind parent is not an Energistics one" << std::endl;
 				std::cout << "\t\tProperty kind parent is : " << pk->getParentPropertyKind()->getTitle() << std::endl;
 			}
@@ -5035,7 +5042,14 @@ void deserialize(const string & inputFile)
 		}
 	}
 
-	cout << endl;
+	cout << "PARTIAL dataobjects" << endl;
+	for (auto entry : repo.getDataObjects()) {
+		for (auto* dataobj : entry.second) {
+			if (dataobj->isPartial()) {
+				std::cerr << dataobj->getUuid() << " " << dataobj->getTitle() << std::endl;
+			}
+		}
+	}
 
 	deserializeGeobody(&repo);
 	deserializeFluidBoundary(repo);

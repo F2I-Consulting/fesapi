@@ -48,8 +48,6 @@ GridConnectionSetRepresentation::GridConnectionSetRepresentation(COMMON_NS::Data
 	const std::string & guid, const std::string & title)
 {
 	init(repo, guid, title);
-
-	setInterpretation(repo->createPartial<RESQML2_2_NS::GenericFeatureInterpretation>("", "Unknown interp"));
 }
 
 GridConnectionSetRepresentation::GridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,

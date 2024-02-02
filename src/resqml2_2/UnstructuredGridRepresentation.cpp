@@ -53,8 +53,6 @@ UnstructuredGridRepresentation::UnstructuredGridRepresentation(COMMON_NS::DataOb
 	uint64_t cellCount)
 {
 	init(repo, guid, title, cellCount);
-
-	setInterpretation(repo->createPartial<RESQML2_2_NS::EarthModelInterpretation>("", "Unknown interp"));
 }
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
