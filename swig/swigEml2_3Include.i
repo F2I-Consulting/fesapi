@@ -19,6 +19,7 @@ under the License.
 %{
 #include "../src/eml2_3/Activity.h"
 #include "../src/eml2_3/ActivityTemplate.h"
+#include "../src/eml2_3/BusinessAssociate.h"
 #include "../src/eml2_3/ColumnBasedTable.h"
 #include "../src/eml2_3/GraphicalInformationSet.h"
 #include "../src/eml2_3/LocalEngineering2dCrs.h"
@@ -32,6 +33,7 @@ under the License.
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace EML2_3_NS::Activity;
 	%nspace EML2_3_NS::ActivityTemplate;
+	%nspace EML2_3_NS::BusinessAssociate;
 	%nspace EML2_3_NS::ColumnBasedTable;
 	%nspace EML2_3_NS::GraphicalInformationSet;
 	%nspace EML2_3_NS::LocalEngineering2dCrs;
@@ -2001,6 +2003,14 @@ namespace EML2_3_NS
 	%rename(Eml23_ActivityTemplate) ActivityTemplate;
 #endif
 	class ActivityTemplate : public EML2_NS::ActivityTemplate
+	{
+	public:
+	};
+
+#if defined(SWIGJAVA) || defined(SWIGPYTHON)
+	%rename(Eml23_BusinessAssociate) BusinessAssociate;
+#endif
+	class BusinessAssociate : public COMMON_NS::AbstractObject
 	{
 	public:
 	};

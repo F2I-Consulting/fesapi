@@ -38,6 +38,11 @@ namespace EML2_NS
 	class TimeSeries;
 }
 
+namespace EML2_3_NS
+{
+	class BusinessAssociate;
+}
+
 namespace RESQML2_NS
 {
 	class AbstractFeature;
@@ -552,6 +557,8 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(EML2_NS::PropertyKind, PropertyKind)
 		GETTER_DATAOBJECTS(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs, ReferencePointInALocalEngineeringCompoundCrs)
 		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
+
+		GETTER_DATAOBJECTS(EML2_3_NS::BusinessAssociate, BusinessAssociate)
 
 		GETTER_DATAOBJECTS(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
 		GETTER_DATAOBJECTS(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
@@ -3324,6 +3331,7 @@ namespace COMMON_NS
 		 * @param 	  	mnemonic		  	The mnemonic name to set to this channel.
 		 * @param 	  	uom				  	The underlying unit of measure of the value.
 		 * @param 	  	dataKind		  	The underlying data kind of the value.
+		 * @param 	  	businessAssociate	The business Associate
 		 * @param 	  	isActive	  	True if is active, false if not.
 		 *
 		 * @returns	A pointer to the new channel.
@@ -3331,6 +3339,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::Channel* createChannel(EML2_NS::PropertyKind * propertyKind,
 			const std::string & guid, const std::string & title,
 			const std::string & mnemonic, gsoap_eml2_3::eml23__UnitOfMeasure uom, gsoap_eml2_3::witsml21__ChannelDataKind dataKind,
+			EML2_3_NS::BusinessAssociate* businessAssociate,
 			bool isActive);
 
 		/**
@@ -3478,6 +3487,18 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
 			gsoap_eml2_3::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_3::resqml22__InterpolationMethod interpolationMethod);
+
+		/**
+		 * Creates a BusinessAssociate into this repository
+		 *
+		 * @param 	guid 	The guid to set to the BusinessAssociate. If empty then a new guid will
+		 * 					be generated.
+		 * @param 	title	The title to set to the BusinessAssociate. If empty then \"unknown\"
+		 * 					title will be set.
+		 *
+		 * @returns	A pointer to the new BusinessAssociate.
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_3_NS::BusinessAssociate* createBusinessAssociate(const std::string& guid, const std::string& title);
 
 		//***** STANDARD PROP KIND ***********
 

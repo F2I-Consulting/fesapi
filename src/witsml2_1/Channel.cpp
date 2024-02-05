@@ -20,6 +20,8 @@ under the License.
 
 #include "../eml2/PropertyKind.h"
 
+#include "../eml2_3/BusinessAssociate.h"
+
 #include "Well.h"
 #include "ChannelSet.h"
 
@@ -30,6 +32,7 @@ using namespace gsoap_eml2_3;
 Channel::Channel(EML2_NS::PropertyKind * propertyKind,
 	const std::string & guid, const std::string & title,
 	const std::string & mnemonic, gsoap_eml2_3::eml23__UnitOfMeasure uom, gsoap_eml2_3::witsml21__ChannelDataKind dataType,
+	EML2_3_NS::BusinessAssociate* loggingCompany,
 	bool isActive)
 {
 	if (propertyKind == nullptr) {
@@ -46,16 +49,12 @@ Channel::Channel(EML2_NS::PropertyKind * propertyKind,
 	channel->Mnemonic = mnemonic;
 	channel->Uom = gsoap_eml2_3::soap_eml23__UnitOfMeasure2s(propertyKind->getGsoapContext(), uom);
 	channel->DataKind = dataType;
-
-	channel->LoggingCompany = soap_new_eml23__DataObjectReference(gsoapProxy2_3->soap);
-	channel->LoggingCompany->Uuid.assign("00000000-0000-0000-0000-000000000002");
-	channel->LoggingCompany->QualifiedType.assign("eml23.BusinessAssociate");
-	channel->LoggingCompany->Title.assign("Fake Business Associate");
 	
 	channel->ActiveStatus = isActive ? eml23__ActiveStatusKind::active : eml23__ActiveStatusKind::inactive;
 
 	propertyKind->getRepository()->addDataObject(this);
 	setPropertyKind(propertyKind);
+	setLoggingCompany(loggingCompany);
 }
 
 void Channel::pushBackChannelIndex(gsoap_eml2_3::eml23__DataIndexKind indexKind, gsoap_eml2_3::eml23__UnitOfMeasure uom, const std::string & mnemonic, bool isIncreasing)
@@ -75,6 +74,11 @@ COMMON_NS::DataObjectReference Channel::getPropertyKindDor() const
 	return COMMON_NS::DataObjectReference(static_cast<witsml21__Channel*>(gsoapProxy2_3)->ChannelPropertyKind);
 }
 
+COMMON_NS::DataObjectReference Channel::getLoggingCompanyDor() const
+{
+	return COMMON_NS::DataObjectReference(static_cast<witsml21__Channel*>(gsoapProxy2_3)->LoggingCompany);
+}
+
 std::vector<ChannelSet*> Channel::getChannelSets() const
 {
 	return getRepository()->getSourceObjects<ChannelSet>(this);
@@ -83,6 +87,11 @@ std::vector<ChannelSet*> Channel::getChannelSets() const
 EML2_NS::PropertyKind* Channel::getPropertyKind() const
 {
 	return getRepository()->getDataObjectByUuid<EML2_NS::PropertyKind>(getPropertyKindDor().getUuid());
+}
+
+EML2_3_NS::BusinessAssociate* Channel::getLoggingCompany() const
+{
+	return getRepository()->getDataObjectByUuid<EML2_3_NS::BusinessAssociate>(getLoggingCompanyDor().getUuid());
 }
 
 void Channel::setPropertyKind(EML2_NS::PropertyKind* propKind)
@@ -94,6 +103,17 @@ void Channel::setPropertyKind(EML2_NS::PropertyKind* propKind)
 	static_cast<witsml21__Channel*>(gsoapProxy2_3)->ChannelPropertyKind = propKind->newEml23Reference();
 
 	getRepository()->addRelationship(this, propKind);
+}
+
+void Channel::setLoggingCompany(EML2_3_NS::BusinessAssociate* businessAssociate)
+{
+	if (businessAssociate == nullptr) {
+		throw std::invalid_argument("Cannot set a null witsml businessAssociate to a witsml log/channelset/channel");
+	}
+
+	static_cast<witsml21__Channel*>(gsoapProxy2_3)->LoggingCompany = businessAssociate->newEml23Reference();
+
+	getRepository()->addRelationship(this, businessAssociate);
 }
 
 GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(std::string, Channel, Mnemonic)
@@ -119,4 +139,5 @@ void Channel::loadTargetRelationships()
 	WellboreObject::loadTargetRelationships();
 
 	convertDorIntoRel<EML2_NS::PropertyKind>(getPropertyKindDor());
+	convertDorIntoRel<EML2_3_NS::BusinessAssociate>(getLoggingCompanyDor());
 }

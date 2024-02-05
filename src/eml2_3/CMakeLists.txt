@@ -1,5 +1,6 @@
 set(FESAPI_EML_2_3_SOURCES 	${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/Activity.cpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/ActivityTemplate.cpp
+                            ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/BusinessAssociate.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/ColumnBasedTable.cpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/GraphicalInformationSet.cpp
                             ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/HdfProxy.cpp
@@ -11,6 +12,7 @@ set(FESAPI_EML_2_3_SOURCES 	${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/Activi
                             ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/VerticalCrs.cpp )
 set(FESAPI_EML_2_3_HEADERS 	${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/Activity.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/ActivityTemplate.h
+                            ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/BusinessAssociate.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/ColumnBasedTable.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/GraphicalInformationSet.h
                             ${CMAKE_CURRENT_SOURCE_DIR}/${EML_PREFIX_2_3}/HdfProxy.h

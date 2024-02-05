@@ -22,6 +22,11 @@ under the License.
 
 #include "../MacroDefinitions.h"
 
+namespace EML2_3_NS
+{
+	class BusinessAssociate;
+}
+
 namespace WITSML2_1_NS
 {
 	/** Channels are the fundamental unit of organization for WITSML logs. */
@@ -48,11 +53,13 @@ namespace WITSML2_1_NS
 		 * @param 	  	mnemonic		  	The mnemonic.
 		 * @param 	  	uom				  	The uom.
 		 * @param 	  	dataKind		  	Kind of the data.
+		 * @param 	  	loggingCompany	The loggingCompany
 		 * @param 	  	isActive	  	True if is active, false if not.
 		 */
 		Channel(EML2_NS::PropertyKind * propertyKind, 
 			const std::string & guid, const std::string & title,
 			const std::string & mnemonic, gsoap_eml2_3::eml23__UnitOfMeasure uom, gsoap_eml2_3::witsml21__ChannelDataKind dataKind,
+			EML2_3_NS::BusinessAssociate* loggingCompany,
 			bool isActive);
 
 		/**
@@ -104,6 +111,29 @@ namespace WITSML2_1_NS
 		 * @param [in,out]	propKind	If non-null, the property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT void setPropertyKind(EML2_NS::PropertyKind* propKind);
+
+		/**
+		 * @brief	Gets LoggingCompany DOR
+		 *
+		 * @returns	The LoggingCompany dor.
+		 */
+		COMMON_NS::DataObjectReference getLoggingCompanyDor() const;
+
+		/**
+		 * Gets LoggingCompany
+		 *
+		 * @returns	Null if it fails, else the LoggingCompany.
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_3_NS::BusinessAssociate* getLoggingCompany() const;
+
+		/**
+		 * Set the BusinessAssociate linked with this data object.
+		 *
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param [in,out]	businessAssociate	If non-null, the BusinessAssociate.
+		 */
+		DLL_IMPORT_OR_EXPORT void setLoggingCompany(EML2_3_NS::BusinessAssociate* businessAssociate);
 
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Mnemonic)
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Uom)

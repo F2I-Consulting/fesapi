@@ -28,7 +28,8 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		ACTIVITYTEMPLATE,
 		BLOCKEDWELLBOREREPRESENTATION,
 		BOUNDARYFEATURE,
-		BOUNDARYFEATUREINTERPRETATION,		
+		BOUNDARYFEATUREINTERPRETATION,
+		BUSINESSASSOCIATE,
 		CATEGORICALPROPERTY,
 		CHANNEL,
 		CHANNELSET,
@@ -867,6 +868,7 @@ ${COMMENT_END}
 		case DataObjectName.BLOCKEDWELLBOREREPRESENTATION : return resqml2_instantiateBlockedWellboreRepresentation(cPtr, owner);
 		case DataObjectName.BOUNDARYFEATURE : return resqml2_instantiateBoundaryFeature(cPtr, owner);
 		case DataObjectName.BOUNDARYFEATUREINTERPRETATION : return resqml2_instantiateBoundaryFeatureInterpretation(cPtr, owner);
+		case DataObjectName.BUSINESSASSOCIATE : return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.BusinessAssociate(cPtr, owner);
 		case DataObjectName.CATEGORICALPROPERTY : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.CategoricalProperty(cPtr, owner);
 		case DataObjectName.CHANNEL : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.Channel(cPtr, owner);
 		case DataObjectName.CHANNELSET : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.ChannelSet(cPtr, owner);

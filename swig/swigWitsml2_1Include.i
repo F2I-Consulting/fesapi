@@ -756,8 +756,39 @@ namespace WITSML2_1_NS
 	{
 	public:
 		std::vector<class ChannelSet*> getChannelSets() const;
+		
+		/**
+		 * Gets property kind
+		 *
+		 * @returns	Null if it fails, else the property kind.
+		 */
 		EML2_NS::PropertyKind* getPropertyKind() const;
+		
+		
+		/**
+		 * Set the PropertyKind linked with this data object.
+		 *
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param [in,out]	propKind	If non-null, the property kind.
+		 */
 		void setPropertyKind(EML2_NS::PropertyKind* propKind);
+		
+		/**
+		 * Gets LoggingCompany
+		 *
+		 * @returns	Null if it fails, else the LoggingCompany.
+		 */
+		EML2_3_NS::BusinessAssociate* getLoggingCompany() const;
+
+		/**
+		 * Set the BusinessAssociate linked with this data object.
+		 *
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param [in,out]	businessAssociate	If non-null, the BusinessAssociate.
+		 */
+		void setLoggingCompany(EML2_3_NS::BusinessAssociate* businessAssociate);
 
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Mnemonic)
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(std::string, Uom)

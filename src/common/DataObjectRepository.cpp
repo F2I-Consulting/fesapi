@@ -28,6 +28,7 @@ under the License.
 
 #include "../eml2_3/Activity.h"
 #include "../eml2_3/ActivityTemplate.h"
+#include "../eml2_3/BusinessAssociate.h"
 #include "../eml2_3/ColumnBasedTable.h"
 #include "../eml2_3/GraphicalInformationSet.h"
 #include "../eml2_3/LocalEngineeringCompoundCrs.h"
@@ -170,7 +171,6 @@ under the License.
 #include "../resqml2_2/WellboreTrajectoryRepresentation.h"
 #else
 #include "../eml2/ColumnBasedTable.h"
-#include "../eml2/GraphicalInformationSet.h"
 #include "../resqml2/CmpLineFeature.h"
 #include "../resqml2/Model.h"
 #include "../resqml2/SeismicWellboreFrameRepresentation.h"
@@ -899,6 +899,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if (ns == "eml23") {
 		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::Activity)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::ActivityTemplate)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::BusinessAssociate)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::ColumnBasedTable)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::LocalEngineering2dCrs)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::LocalEngineeringCompoundCrs)
@@ -2782,11 +2783,13 @@ WITSML2_1_NS::ChannelSet* DataObjectRepository::createChannelSet(const std::stri
 WITSML2_1_NS::Channel* DataObjectRepository::createChannel(EML2_NS::PropertyKind * propertyKind,
 	const std::string & guid, const std::string & title,
 	const std::string & mnemonic, gsoap_eml2_3::eml23__UnitOfMeasure uom, gsoap_eml2_3::witsml21__ChannelDataKind dataKind,
+	EML2_3_NS::BusinessAssociate* businessAssociate,
 	bool isActive)
 {
 	return new WITSML2_1_NS::Channel(propertyKind,
 		guid, title,
-		mnemonic, uom, dataKind, isActive);
+		mnemonic, uom, dataKind, businessAssociate,
+		isActive);
 }
 
 WITSML2_1_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(
@@ -2877,6 +2880,12 @@ RESQML2_NS::ContinuousColorMap* DataObjectRepository::createContinuousColorMap(c
 	throw std::logic_error("RESQML2.2 support has not been built in this library.");
 #endif
 }
+
+EML2_3_NS::BusinessAssociate* DataObjectRepository::createBusinessAssociate(const std::string& guid, const std::string& title)
+{
+	return new EML2_3_NS::BusinessAssociate(this, guid, title);
+}
+
 /*
 WITSML2_1_NS::ToolErrorModel* DataObjectRepository::createToolErrorModel(
 	const std::string & guid,
@@ -2938,6 +2947,8 @@ GETTER_DATAOBJECTS_IMPL(EML2_NS::GraphicalInformationSet, GraphicalInformationSe
 GETTER_DATAOBJECTS_IMPL(EML2_NS::PropertyKind, PropertyKind)
 GETTER_DATAOBJECTS_IMPL(EML2_NS::ReferencePointInALocalEngineeringCompoundCrs, ReferencePointInALocalEngineeringCompoundCrs)
 GETTER_DATAOBJECTS_IMPL(EML2_NS::TimeSeries, TimeSeries)
+
+GETTER_DATAOBJECTS_IMPL(EML2_3_NS::BusinessAssociate, BusinessAssociate)
 
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
@@ -3572,6 +3583,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContex
 
 	if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, Activity, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ActivityTemplate, gsoap_eml2_3, eml23)
+	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, BusinessAssociate, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ColumnBasedTable, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, LocalEngineering2dCrs, gsoap_eml2_3, eml23)

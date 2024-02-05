@@ -240,8 +240,9 @@ void serializeWitsmlWells(COMMON_NS::DataObjectRepository * repo)
 	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(1, 0, 99, gsoap_eml2_3::eml23__LengthUom::m);
 
 	// Log
+	EML2_3_NS::BusinessAssociate* loggingCompany = repo->createBusinessAssociate("a93d6f14-24ae-41a6-a452-533dbd87d274", "My BusinessAssociate");
 	WITSML2_1_NS::Channel* channel = repo->createChannel(defaultContinuousPropKind, "c3ff6f85-f111-4603-840a-ae8bdc46e0c8", "My channel",
-		"my mnemo", gsoap_eml2_3::eml23__UnitOfMeasure::K, gsoap_eml2_3::witsml21__ChannelDataKind::double_, false);
+		"my mnemo", gsoap_eml2_3::eml23__UnitOfMeasure::K, gsoap_eml2_3::witsml21__ChannelDataKind::double_, loggingCompany, false);
 	channel->pushBackChannelIndex(gsoap_eml2_3::eml23__DataIndexKind::measured_x0020depth, gsoap_eml2_3::eml23__UnitOfMeasure::m, "MD");
 	WITSML2_1_NS::ChannelSet* channelSet = repo->createChannelSet("00e8ffda-bb07-46db-8c22-8947282d7535", "My channel set", false);
 	channelSet->pushBackChannelIndex(gsoap_eml2_3::eml23__DataIndexKind::measured_x0020depth, gsoap_eml2_3::eml23__UnitOfMeasure::m, "MD");
@@ -496,6 +497,8 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * repo, EML2_NS
 	minimalStratiColumnRank->pushBackStratiUnitInterpretation(stratiUnitB1Interp);
 	stratiColumnRank0->pushBackStratigraphicBinaryContact(stratiUnitAInterp, gsoap_eml2_3::resqml22__ContactMode::conformable, stratiUnitBInterp, gsoap_eml2_3::resqml22__ContactMode::conformable, horizon2Interp1);
 
+#ifndef WITH_RESQML2_2
+
 	// WellboreFeature marker frame
 	if (wellbore1Interp1 != nullptr) {
 		RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wmf = repo->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
@@ -507,7 +510,7 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * repo, EML2_NS
 		RESQML2_0_1_NS::WellboreMarker* marker1 = repo->createWellboreMarker(wmf, "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind::fault);
 		marker1->setBoundaryFeatureInterpretation(fault1Interp1);
 	}
-#ifndef WITH_RESQML2_2
+
 	// ***********************
 	// Sealed volume framework
 	// ***********************
@@ -1058,7 +1061,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	else {
 		// RESQML2.2 encourages to export values for the whole time series in a single property
 
-		pwls3Length = repo->createPartial<EML2_3_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
+		if (pwls3Length == nullptr) {
+			pwls3Length = repo->createPartial<EML2_3_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
+		}
 		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = repo->createContinuousProperty(twoCellsIjkGrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property",
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 
@@ -2420,7 +2425,8 @@ bool serialize(const string & filePath)
 	local3dCrs = repo.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", false);
 	repo.setDefaultCrs(local3dCrs);
 
-	/* Uncomment to avoid partial reference towards PWLS
+	// Uncomment to avoid partial reference towards PWLS
+	/*
 	pwls3Length = repo.createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_3::eml23__QuantityClassKind::length);
 	repo.createPropertyKind("323df361-784e-4062-a346-ff4ba80a78f0", "ordinal number", gsoap_eml2_3::eml23__QuantityClassKind::unitless);
 	repo.createPropertyKind("838b1a9b-2fca-4e2e-aae3-323ef1bc59c7", "facies type", gsoap_eml2_3::eml23__QuantityClassKind::unitless);

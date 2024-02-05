@@ -149,13 +149,13 @@ namespace {
 			}
 		}
 
-		const std::vector<COMMON_NS::AbstractObject *>& targetObj = repo.getTargetObjects(dataObj);
+		const std::vector<COMMON_NS::AbstractObject*>& targetObjs = repo.getTargetObjects(dataObj);
 		if (dynamic_cast<WITSML2_1_NS::Log const *>(dataObj) == nullptr &&
 			dynamic_cast<WITSML2_1_NS::ChannelSet const *>(dataObj) == nullptr) {
-			for (size_t index = 0; index < targetObj.size(); ++index) {
-				if (!targetObj[index]->isPartial()) {
-					if (dynamic_cast<RESQML2_NS::WellboreMarker*>(targetObj[index]) == nullptr) {
-						epc::Relationship relRep("../" + targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+			for (size_t index = 0; index < targetObjs.size(); ++index) {
+				if (!targetObjs[index]->isPartial()) {
+					if (dynamic_cast<RESQML2_NS::WellboreMarker*>(targetObjs[index]) == nullptr) {
+						epc::Relationship relRep("../" + targetObjs[index]->getPartNameInEpcDocument(), "", targetObjs[index]->getUuid());
 						relRep.setDestinationObjectType();
 						result.push_back(relRep);
 					}
@@ -174,13 +174,33 @@ namespace {
 			}
 		}
 		else {
-			for (size_t index = 0; index < targetObj.size(); ++index) {
-				if (!targetObj[index]->isPartial() &&
-					dynamic_cast<WITSML2_1_NS::ChannelSet*>(targetObj[index]) == nullptr &&
-					dynamic_cast<WITSML2_1_NS::Channel*>(targetObj[index]) == nullptr) {
-					epc::Relationship relRep("../" + targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
-					relRep.setDestinationObjectType();
-					result.push_back(relRep);
+			for (COMMON_NS::AbstractObject* targetObj : targetObjs) {
+				if (!targetObj->isPartial()) {
+					if (dynamic_cast<WITSML2_1_NS::ChannelSet*>(targetObj) != nullptr) {
+						for (WITSML2_1_NS::Channel* channel : static_cast<WITSML2_1_NS::ChannelSet*>(targetObj)->getChannels()) {
+							for (COMMON_NS::AbstractObject* channelTarget : repo.getTargetObjects(channel)) {
+								if (!channelTarget->isPartial()) {
+									epc::Relationship relRep("../" + channelTarget->getPartNameInEpcDocument(), "", channelTarget->getUuid());
+									relRep.setDestinationObjectType();
+									result.push_back(relRep);
+								}
+							}
+						}
+					}
+					else if (dynamic_cast<WITSML2_1_NS::Channel*>(targetObj) != nullptr) {
+						for (COMMON_NS::AbstractObject* channelTarget : repo.getTargetObjects(targetObj)) {
+							if (!channelTarget->isPartial()) {
+								epc::Relationship relRep("../" + channelTarget->getPartNameInEpcDocument(), "", channelTarget->getUuid());
+								relRep.setDestinationObjectType();
+								result.push_back(relRep);
+							}
+						}
+					}
+					else if (!targetObj->isPartial()) {
+						epc::Relationship relRep("../" + targetObj->getPartNameInEpcDocument(), "", targetObj->getUuid());
+						relRep.setDestinationObjectType();
+						result.push_back(relRep);
+					}
 				}
 			}
 		}
@@ -195,9 +215,7 @@ namespace {
 
 		return result;
 	}
-}
 
-namespace {
 	RESQML2_0_1_NS::DiscreteProperty* getOrCreateFakeProperty(DataObjectRepository& repo) {
 		RESQML2_0_1_NS::DiscreteProperty* fakeProp = repo.getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID);
 		if (fakeProp != nullptr) { return fakeProp; }
