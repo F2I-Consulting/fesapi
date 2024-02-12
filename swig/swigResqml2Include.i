@@ -7881,6 +7881,13 @@ namespace RESQML2_NS
 		void getTimeAsFloatValues(float* values) const;
 
 		/**
+		* Gets the Local Time CRS of this seismic wellbore frame.
+		 * 
+		 * @returns Local Time CRS of this seismic wellbore frame.
+		*/
+		EML2_NS::AbstractLocal3dCrs* getTimeCrs() const;
+
+		/**
 		* Returns the seismic reference datum
 		*/
 		double getSeismicReferenceDatum() const;

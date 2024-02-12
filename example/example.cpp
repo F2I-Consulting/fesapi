@@ -5471,6 +5471,8 @@ void deserialize(const string & inputFile)
 				else if (seismicWellboreFrame->getTimeHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN) {
 					std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 				}
+				auto* seismicWellboreTimeCrs = seismicWellboreFrame->getTimeCrs();
+				std::cout << "Seismic wellbore time CRS : " << seismicWellboreTimeCrs->getTitle() << std::endl;
 				std::cout << std::endl;
 			}
 #endif

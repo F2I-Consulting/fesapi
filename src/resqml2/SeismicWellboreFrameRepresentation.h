@@ -83,6 +83,20 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getTimeAsFloatValues(float* values) const;
 
 		/**
+		* Gets the data object reference of the Local Time CRS of this seismic wellbore frame.
+		 *
+		 * @returns	The data object reference of the Local Time CRS of this seismic wellbore frame.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getTimeCrsDor() const = 0;
+
+		/**
+		* Gets the Local Time CRS of this seismic wellbore frame.
+		 * 
+		 * @returns Local Time CRS of this seismic wellbore frame.
+		*/
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getTimeCrs() const;
+
+		/**
 		* Returns the seismic reference datum
 		*/
 		DLL_IMPORT_OR_EXPORT double getSeismicReferenceDatum() const;

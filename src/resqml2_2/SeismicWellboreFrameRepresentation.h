@@ -59,6 +59,16 @@ namespace RESQML2_2_NS
 			EML2_NS::AbstractLocal3dCrs* crs);
 
 		/**
+		* Gets the data object reference of the Local Time CRS of this seismic wellbore frame.
+		 *
+		 * @returns	The data object reference of the Local Time CRS of this seismic wellbore frame.
+		*/
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getTimeCrsDor() const final;
+
+		/** Loads target relationships */
+		virtual void loadTargetRelationships() final;
+
+		/**
 		* The standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml22";
