@@ -5283,20 +5283,6 @@ namespace RESQML2_NS
 		double getDoubleConstantValuesOfPatch(uint64_t patchIndex) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be int 64 bits ones.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 *
-		 * @returns	The null value.
-		 */
-		int64_t getInt64ValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
-
-		/**
 		 * Gets the null value of a given patch of this instance. Values are supposed to be integer ones.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -5311,7 +5297,35 @@ namespace RESQML2_NS
 		int64_t getNullValueOfPatch(uint64_t patchIndex) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be integer ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 64 bits integer.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
+		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 *
+		 * @returns	The null value.
+		 */
+		int64_t getInt64ValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
+
+		/**
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 64 bits integer.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
+		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 *
+		 * @returns	The null value.
+		 */
+		uint64_t getUInt64ValuesOfPatch(uint64_t patchIndex, uint64_t* values) const;
+
+		/**
+		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 32 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -5325,8 +5339,7 @@ namespace RESQML2_NS
 		int32_t getInt32ValuesOfPatch(uint64_t patchIndex, int32_t * values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
-		 * integer ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 32 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -5340,7 +5353,7 @@ namespace RESQML2_NS
 		uint32_t getUInt32ValuesOfPatch(uint64_t patchIndex, uint32_t * values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 16 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -5354,8 +5367,7 @@ namespace RESQML2_NS
 		int16_t getInt16ValuesOfPatch(uint64_t patchIndex, int16_t * values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
-		 * short ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 16 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -5369,7 +5381,7 @@ namespace RESQML2_NS
 		uint16_t getUInt16ValuesOfPatch(uint64_t patchIndex, uint16_t * values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 8 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -5383,8 +5395,7 @@ namespace RESQML2_NS
 		int8_t getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
-		 * char ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 8 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
