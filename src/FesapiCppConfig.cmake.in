@@ -1,0 +1,8 @@
+include(CMakeFindDependencyMacro)
+
+find_dependency(Boost REQUIRED)
+find_dependency(ZLIB REQUIRED)
+# find_dependency(MINZIP REQUIRED)
+
+# Include the actual targets
+include("${CMAKE_CURRENT_LIST_DIR}/FesapiCppTargets.cmake")
