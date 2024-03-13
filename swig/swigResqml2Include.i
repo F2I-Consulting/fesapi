@@ -55,7 +55,6 @@ under the License.
 	%nspace RESQML2_NS::ContinuousColorMap;
 	%nspace RESQML2_NS::ContinuousProperty;
 	%nspace RESQML2_NS::CulturalFeature;
-	%nspace RESQML2_NS::DeviationSurveyRepresentation;
 	%nspace RESQML2_NS::DiscreteColorMap;
 	%nspace RESQML2_NS::DiscreteProperty;
 	%nspace RESQML2_NS::DoubleTableLookup;
@@ -7365,7 +7364,6 @@ namespace RESQML2_NS
 	************************************/
 	
 	class WellboreFrameRepresentation;
-	class DeviationSurveyRepresentation;
 #ifdef SWIGPYTHON
 	%rename(Resqml2_WellboreTrajectoryRepresentation) WellboreTrajectoryRepresentation;
 #endif
@@ -7694,9 +7692,6 @@ namespace RESQML2_NS
 		void addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep);
 		WellboreTrajectoryRepresentation* getParentTrajectory() const;
 		double getParentTrajectoryMd() const;
-		
-		void setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey);
-		DeviationSurveyRepresentation* getDeviationSurvey() const;
 	};
 
 #ifdef SWIGPYTHON
@@ -8091,35 +8086,6 @@ namespace RESQML2_NS
 		double getDipDirectionValue() const;
 		gsoap_eml2_3::eml23__PlaneAngleUom getDipDirectionUom() const;
 		std::string getDipDirectionUomAsString() const;
-	};
-
-#ifdef SWIGPYTHON
-	%rename(Resqml2_DeviationSurveyRepresentation) DeviationSurveyRepresentation;
-#endif
-	class DeviationSurveyRepresentation : public AbstractRepresentation
-	{
-	public:
-		void setGeometry(double * firstStationLocation, uint64_t stationCount,
-			gsoap_resqml2_0_1::eml20__LengthUom mdUom, double * mds,
-			gsoap_resqml2_0_1::eml20__PlaneAngleUom angleUom, double * azimuths, double * inclinations,
-			EML2_NS::AbstractHdfProxy* proxy);
-
-		MdDatum * getMdDatum() const;
-
-		bool isFinal() const;
-
-		gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
-		gsoap_resqml2_0_1::eml20__PlaneAngleUom getAngleUom() const;
-
-		void getMdValues(double* values) const;
-		void getInclinations(double* values) const;
-		void getAzimuths(double* values) const;
-
-		unsigned int getWellboreFrameRepresentationCount() const;
-		WellboreFrameRepresentation* getWellboreFrameRepresentation(unsigned int index) const;
-
-		unsigned int getWellboreTrajectoryRepresentationCount() const;
-		WellboreTrajectoryRepresentation* getWellboreTrajectoryRepresentation(unsigned int index) const;
 	};
 }
 

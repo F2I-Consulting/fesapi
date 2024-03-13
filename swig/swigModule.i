@@ -950,8 +950,7 @@ import com.f2i_consulting.fesapi.*;
 		* @return				The count of deleted objects
 		*/
 		uint64_t cascadeDeleteDataObject(COMMON_NS::AbstractObject* proxy);
-		
-		SWIG_GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
+
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractLocal3dCrs, Local3dCrs)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::Activity, Activity)
@@ -971,7 +970,6 @@ import com.f2i_consulting.fesapi.*;
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::CmpLineFeature, CmpLine)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
-		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRepresentation)
@@ -2263,7 +2261,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new wellbore trajectory representation.
 		 */
-		RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey);
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation * deviationSurvey);
 
 		/**
 		 * @brief	Creates a deviation survey representation into this repository
@@ -2284,7 +2282,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new deviation survey representation.
 		 */
-		RESQML2_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
+		RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo);
 
 		/**
 		 * @brief	Creates a wellbore frame representation into this repository

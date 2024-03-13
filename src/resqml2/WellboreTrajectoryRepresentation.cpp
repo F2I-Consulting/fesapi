@@ -23,7 +23,6 @@ under the License.
 
 #include "../eml2/AbstractLocal3dCrs.h"
 
-#include "DeviationSurveyRepresentation.h"
 #include "MdDatum.h"
 #include "WellboreFrameRepresentation.h"
 
@@ -140,11 +139,6 @@ void WellboreTrajectoryRepresentation::loadTargetRelationships()
 	COMMON_NS::DataObjectReference dor = getMdDatumDor();
 	convertDorIntoRel<MdDatum>(dor);
 
-	dor = getDeviationSurveyDor();
-	if (!dor.isEmpty()) {
-		convertDorIntoRel<DeviationSurveyRepresentation>(dor);
-	}
-
 	dor = getParentTrajectoryDor();
 	if (!dor.isEmpty()) {
 		convertDorIntoRel<WellboreTrajectoryRepresentation>(dor);
@@ -237,9 +231,4 @@ RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getW
 	}
 
 	return wfrs[index];
-}
-
-DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSurvey() const
-{
-	return getRepository()->getDataObjectByUuid<DeviationSurveyRepresentation>(getDeviationSurveyDor().getUuid());
 }

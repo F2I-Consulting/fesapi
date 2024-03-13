@@ -986,24 +986,195 @@ namespace RESQML2_0_1_NS
 	{
 	public:
 	};
-	
-	class WellboreFrameRepresentation;
+
+	class DeviationSurveyRepresentation;
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_WellboreTrajectoryRepresentation) WellboreTrajectoryRepresentation;
 #endif
 	class  WellboreTrajectoryRepresentation : public RESQML2_NS::WellboreTrajectoryRepresentation
 	{
 	public:
+		/**
+		 * Sets the deviation survey which is the source of this trajectory.
+		 *
+		 * @exception	std::invalid_argument	If @p deviationSurvey is @c nullptr.
+		 *
+		 * @param [in]	deviationSurvey	The deviation survey to set as a source of this trajectory.
+		 */
+		void setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey);
+
+		/**
+		 * Gets the deviation survey which is the source of this trajectory.
+		 *
+		 * @returns	The deviation survey which is the source of this
+		 * 			trajectory if exists, else @c nullptr.
+		 */
+		DeviationSurveyRepresentation* getDeviationSurvey() const;
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_DeviationSurveyRepresentation) DeviationSurveyRepresentation;
 #endif
-	class DeviationSurveyRepresentation : public RESQML2_NS::DeviationSurveyRepresentation
+	/**
+	 * @brief	A deviation survey representation. It Specifies the station data from a deviation
+	 * 			survey.
+	 *
+	 * 			The deviation survey does not provide a complete specification of the geometry of a
+	 * 			wellbore trajectory. Although a minimum-curvature algorithm is used in most cases,
+	 * 			the implementation varies sufficiently that no single algorithmic specification is
+	 * 			available as a data transfer standard.
+	 *
+	 * 			Instead, the geometry of a RESQML wellbore trajectory is represented by a parametric
+	 * 			line, parameterized by the MD.
+	 *
+	 * 			CRS and units of measure do not need to be consistent with the CRS and units of
+	 * 			measure for wellbore trajectory representation.
+	 */
+	class DeviationSurveyRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
+		/**
+		 * Sets the geometry of this deviation survey representation.
+		 *
+		 * @exception	std::invalid_argument	If @p firstStationLocation, @p mds, @p azimuths or @p
+		 * 										inclinations is @ nullptr.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	firstStationLocation	An array of size 3 containing the coordinates x, y
+		 * 											and z of the first station of this deviation survey in
+		 * 											the local CRS.
+		 * @param 		  	stationCount			The number of stations (including the first station).
+		 * @param 		  	mdUom					The units of measure of the measured depths along
+		 * 											this deviation survey.
+		 * @param 		  	mds						An array containing the MD values of the stations.
+		 * 											The array length equals @p stationCount.
+		 * @param 		  	angleUom				The unit of measure of both @p azimuth and
+		 * 											@p inclination values.
+		 * @param 		  	azimuths				An array of azimuth angles, one for each survey
+		 * 											station. The rotation is relative to the projected CRS
+		 * 											north with a positive value indicating a clockwise
+		 * 											rotation as seen from above. Array length equals @p
+		 * 											stationCount.
+		 * @param 		  	inclinations			Inclination (or dip) angle for each station. Array
+		 * 											length equals @p stationCount.
+		 * @param [in,out]	proxy					The HDF proxy where the numerical values will be
+		 * 											stored. It must be already opened for writing and won't
+		 * 											be closed. If @c nullptr, then the default HDF proxy of
+		 * 											the repository will be used.
+		 */
+		void setGeometry(double const* firstStationLocation, uint64_t stationCount,
+			gsoap_resqml2_0_1::eml20__LengthUom mdUom, double const* mds,
+			gsoap_resqml2_0_1::eml20__PlaneAngleUom angleUom, double const* azimuths, double const* inclinations,
+			EML2_NS::AbstractHdfProxy* proxy);
+
+		/**
+		 * Sets the MD datum of this deviation survey representation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>mdDatum == nullptr</tt>.
+		 *
+		 * @param [in]	mdDatum	The MD datum to set.
+		 */
+		void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
+		
+		/**
+		 * Gets the MD datum of this deviation survey representation.
+		 *
+		 * @returns The MD datum of this deviation survey representation.
+		 */
+		RESQML2_NS::MdDatum* getMdDatum() const;
+
+		/**
+		 * Checks whether this is a final version of the deviation survey, as distinct from the
+		 * interim interpretations.
+		 *
+		 * @returns	True if it is a final version, false if not.
+		 */
+		bool isFinal() const;
+		
+		/**
+		 * Gets the MD double values associated to each trajectory station of this deviation survey
+		 * representation. The uom is given by getMdUom().
+		 *
+		 * @exception	logic_error	If the data structure used to store the MD values cannot be read for
+		 * 							now by fesapi.
+		 *
+		 * @param [out]	values	An array to receive the MD double values. It must preallocated with a
+		 * 						count of <tt>getXyzPointCountOfPatch(0)</tt>.
+		 */
+		void getMdValues(double* values) const;
+
+		/**
+		 * Gets the inclination double values associated to each trajectory station of this deviation
+		 * survey representation. The uom is given by getAngleUom().
+		 *
+		 * @exception	logic_error	If the data structure used to store the inclination values cannot be
+		 * 							read for now by fesapi.
+		 *
+		 * @param [out]	values	An array to receive the inclination double values. It must preallocated
+		 * 						with a count of <tt>getXyzPointCountOfPatch(0)</tt>.
+		 */
+		void getInclinations(double* values) const;
+
+		/**
+		 * Gets the azimuth double values associated to each trajectory station of this deviation survey
+		 * representation. The rotation is relative to the projected CRS north with a positive value
+		 * indicating a clockwise rotation as seen from above. The uom is given by getAngleUom().
+		 *
+		 * @exception	logic_error	If the data structure used to store the azimuth values cannot be read
+		 * 							for now by fesapi.
+		 *
+		 * @param [out]	values	An array to receive the azimuth double values. It must preallocated with
+		 * 						a count of <tt>getXyzPointCountOfPatch(0)</tt>.
+		 */
+		void getAzimuths(double* values) const;
+		
+		/**
+		 * Gets the count of wellbore frame representations of the associated wellbore trajectory which
+		 * share the same MD datum and MD uom than this deviation survey representation.
+		 *
+		 * @returns	The the count of wellbore frame representations of the associated wellbore trajectory
+		 * 			which share the same MD datum and MD uom than this deviation survey representation.
+		 */
+		unsigned int getWellboreFrameRepresentationCount() const;
+
+		/**
+		 * Gets a particular wellbore frame representation according to its position in the set of all
+		 * the wellbore frame representations of the associated wellbore trajectory which share the same
+		 * MD datum and MD uom than this deviation survey representation.
+		 *
+		 * @exception std::invalid_argument If <tt>index >=  getWellboreFrameRepresentationCount()</tt>.
+		 *
+		 * @param index Zero-based index of the wellbore frame representation we look for.
+		 *
+		 * @returns The wellbore frame representation at position @p index in the set of all the wellbore
+		 * 			frame representations of the associated wellbore trajectory which share the same MD
+		 * 			datum and MD uom than this deviation survey representation.
+		 */
+		RESQML2_NS::WellboreFrameRepresentation* getWellboreFrameRepresentation(unsigned int index) const;
+
+		/**
+		 * Get the count of wellbore trajectories which are associated to this deviation survey.
+		 *
+		 * @exception	std::range_error	If the count of wellbore trajectories is strictly greater
+		 * 									than unsigned int max.
+		 *
+		 * @returns	The count of associated wellbore trajectories.
+		 */
+		unsigned int getWellboreTrajectoryRepresentationCount() const;
+
+		/**
+		 * Gets the associated wellbore trajectory at a particular position.
+		 *
+		 * @exception std::out_of_range If <tt>index >= getWellboreTrajectoryRepresentationCount()</tt>.
+		 *
+		 * @param index Zero-based index of the wellbore trajectory we look for.
+		 *
+		 * @returns The associated wellbore trajectory at position @p index.
+		 */
+		RESQML2_NS::WellboreTrajectoryRepresentation* getWellboreTrajectoryRepresentation(unsigned int index) const;
 	};
-	
+
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_WellboreFrameRepresentation) WellboreFrameRepresentation;
 #endif
@@ -1013,7 +1184,7 @@ namespace RESQML2_0_1_NS
 //		void setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet);
 //		WITSML1_4_1_1_NS::Log* getWitsmlLog();
 	};
-	
+
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)
 	%rename(Resqml20_WellboreMarker) WellboreMarker;
 #endif

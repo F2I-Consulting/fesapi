@@ -382,13 +382,3 @@ bool WellboreTrajectoryRepresentation::hasGeometry() const
 {
 	return getSpecializedGsoapProxy()->Geometry != nullptr;
 }
-
-COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getDeviationSurveyDor() const
-{
-	return COMMON_NS::DataObjectReference();
-}
-
-void WellboreTrajectoryRepresentation::setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey)
-{
-	throw logic_error("Not possible in RESQML2.2");
-}

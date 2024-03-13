@@ -1035,7 +1035,6 @@ namespace RESQML2_NS
 #endif
 						ContinuousProperty*,
 						CulturalFeature*,
-						DeviationSurveyRepresentation*,
 #ifdef WITH_RESQML2_2
 						DiscreteColorMap*,
 #endif

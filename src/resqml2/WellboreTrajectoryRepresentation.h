@@ -426,35 +426,6 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 
-		//*****************
-		//***** SURVEY ****
-		//*****************
-
-		/**
-		 * Sets the deviation survey which is the source of this trajectory.
-		 *
-		 * @exception	std::invalid_argument	If @p deviationSurvey is @c nullptr.
-		 *
-		 * @param [in]	deviationSurvey	The deviation survey to set as a source of this trajectory.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual void setDeviationSurvey(class DeviationSurveyRepresentation* deviationSurvey) = 0;
-
-		/**
-		 * Gets the deviation survey which is the source of this trajectory.
-		 *
-		 * @returns	The deviation survey which is the source of this
-		 * 			trajectory if exists, else @c nullptr.
-		 */
-		DLL_IMPORT_OR_EXPORT class DeviationSurveyRepresentation* getDeviationSurvey() const;
-
-		/**
-		 * Gets the data object reference of the deviation survey which is the source of this trajectory.
-		 *
-		 * @returns	The data object reference of the deviation survey which is the source of this
-		 * 			trajectory if exists, else empty data object reference.
-		 */
-		virtual COMMON_NS::DataObjectReference getDeviationSurveyDor() const = 0;
-
 		virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const override = 0;
 
 		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const override = 0;

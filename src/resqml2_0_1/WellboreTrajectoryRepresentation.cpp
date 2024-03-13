@@ -23,12 +23,13 @@ under the License.
 
 #include "H5public.h"
 
+#include "../eml2/AbstractHdfProxy.h"
 #include "../eml2/AbstractLocal3dCrs.h"
-#include "../resqml2/DeviationSurveyRepresentation.h"
+
 #include "../resqml2/MdDatum.h"
 #include "../resqml2/WellboreFrameRepresentation.h"
 #include "../resqml2/WellboreInterpretation.h"
-#include "../eml2/AbstractHdfProxy.h"
+#include "../resqml2_0_1/DeviationSurveyRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -63,7 +64,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	setInterpretation(interp);
 }
 
-WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey)
+WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The represented wellbore interpretation cannot be null.");
@@ -423,9 +424,24 @@ bool WellboreTrajectoryRepresentation::hasGeometry() const
 	return getSpecializedGsoapProxy()->Geometry != nullptr;
 }
 
-void WellboreTrajectoryRepresentation::setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey)
+void WellboreTrajectoryRepresentation::setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey)
 {
 	getRepository()->addRelationship(this, deviationSurvey);
 
 	getSpecializedGsoapProxy()->DeviationSurvey = deviationSurvey->newResqmlReference();
+}
+
+DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSurvey() const
+{
+	return getRepository()->getDataObjectByUuid<DeviationSurveyRepresentation>(getDeviationSurveyDor().getUuid());
+}
+
+void WellboreTrajectoryRepresentation::loadTargetRelationships()
+{
+	RESQML2_NS::WellboreTrajectoryRepresentation::loadTargetRelationships();
+
+	COMMON_NS::DataObjectReference dor = getDeviationSurveyDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel<DeviationSurveyRepresentation>(dor);
+	}
 }

@@ -55,7 +55,6 @@ namespace RESQML2_NS
 	class CulturalFeature;
 	class DiscreteColorMap;
 	class DiscreteProperty;
-	class DeviationSurveyRepresentation;
 	class DoubleTableLookup;
 	class EarthModelInterpretation;
 	class FaultInterpretation;
@@ -113,6 +112,7 @@ namespace RESQML2_0_1_NS
 	class CategoricalProperty;
 	class CommentProperty;
 	class ContinuousProperty;
+	class DeviationSurveyRepresentation;
 	class DiscreteProperty;
 	class FluidBoundaryFeature;
 	class GeneticBoundaryFeature;
@@ -124,6 +124,7 @@ namespace RESQML2_0_1_NS
 	class RockFluidUnitFeature;
 	class SeismicLineFeature;
 	class TectonicBoundaryFeature;
+	class WellboreTrajectoryRepresentation;
 }
 
 namespace WITSML2_NS
@@ -564,7 +565,6 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
 		GETTER_DATAOBJECTS(RESQML2_NS::CmpLineFeature, CmpLine)
 		GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
-		GETTER_DATAOBJECTS(RESQML2_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
 		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRepresentation)
@@ -601,6 +601,7 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFrameRepresentation, WellboreFrameRepresentation)
 
+		GETTER_DATAOBJECTS(RESQML2_0_1_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_0_1_NS::PropertySet, PropertySet)
 
 		GETTER_DATAOBJECTS(WITSML2_NS::Well, WitsmlWell)
@@ -1982,7 +1983,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore trajectory representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::DeviationSurveyRepresentation* deviationSurvey);
 
 		/**
 		 * @brief	Creates a deviation survey representation into this repository
@@ -2003,7 +2004,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new deviation survey representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, const bool& isFinal, RESQML2_NS::MdDatum* mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, bool isFinal, RESQML2_NS::MdDatum* mdInfo);
 
 		/**
 		 * @brief	Creates a wellbore frame representation into this repository

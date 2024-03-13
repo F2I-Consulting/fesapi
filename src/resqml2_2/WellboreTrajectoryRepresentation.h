@@ -110,10 +110,6 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT double getParentTrajectoryMd() const final;
 
-		DLL_IMPORT_OR_EXPORT void setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey) final;
-
-		COMMON_NS::DataObjectReference getDeviationSurveyDor() const final;
-
 		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
