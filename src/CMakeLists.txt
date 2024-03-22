@@ -268,10 +268,10 @@ INSTALL (
 		"${CMAKE_INSTALL_LIBDIR}/cmake/fesapi"
 )
 
-CONFIGURE_FILE(FesapiCppConfig.cmake.in FesapiCppConfig.cmake @ONLY)
+CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/FesapiCppConfig.cmake.in ${FESAPI_BINARY_DIR}/cmake/FesapiCppConfig.cmake @ONLY)
 INSTALL(
   FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/FesapiCppConfig.cmake"
+    "${FESAPI_BINARY_DIR}/cmake/FesapiCppConfig.cmake"
   DESTINATION
     "${CMAKE_INSTALL_LIBDIR}/cmake/fesapi"
   )
