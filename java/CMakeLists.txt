@@ -1,4 +1,4 @@
-# Included in ../src/CmakeLists.txt if java build is selected.
+# Included in ../src/CMakeLists.txt if java build is selected.
 
 find_package(SWIG 3.0 REQUIRED)
 
