@@ -193,14 +193,14 @@ void StreamlinesRepresentation::setGeometry(
 	auto* polyline = soap_new_resqml22__PolylineSetPatch(getGsoapContext());
 	rep->Geometry = polyline;
 
-	uint64_t nodeCount = 0;
+	uint64_t nodeCount[2] = { 0, 3 };
 	uint64_t intervalCount = 0;
 	const uint64_t lineCount = getLineCount();
 	for (size_t lineIndex = 0; lineIndex < lineCount; ++lineIndex) {
-		nodeCount += nodeCountPerPolyline[lineIndex];
-		intervalCount += nodeCount - 1;
+		nodeCount[0] += nodeCountPerPolyline[lineIndex];
+		intervalCount += nodeCount[0] - 1;
 	}
-	polyline->NodeCount = nodeCount;
+	polyline->NodeCount = nodeCount[0];
 	polyline->IntervalCount = intervalCount;
 
 	eml23__BooleanConstantArray* closedPolylines = soap_new_eml23__BooleanConstantArray(getGsoapContext());
@@ -229,7 +229,7 @@ void StreamlinesRepresentation::setGeometry(
 			throw std::invalid_argument("A (default) CRS must be provided.");
 		}
 	}
-	polyline->Geometry = createPointGeometryPatch2_2(0, xyzPoints, localCrs, &nodeCount, 1, hdfProxy);
+	polyline->Geometry = createPointGeometryPatch2_2(0, xyzPoints, localCrs, nodeCount, 2, hdfProxy);
 	getRepository()->addRelationship(this, localCrs);
 }
 

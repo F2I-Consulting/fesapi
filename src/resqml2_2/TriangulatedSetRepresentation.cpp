@@ -110,9 +110,9 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 
 	resqml22__TrianglePatch* patch = soap_new_resqml22__TrianglePatch(gsoapProxy2_3->soap);
 
-	uint64_t pointCountDims = nodeCount;
+	uint64_t pointCountDims[2] = { nodeCount, 3 };
 	patch->NodeCount = nodeCount;
-	patch->Geometry = createPointGeometryPatch2_2(triRep->TrianglePatch.size(), nodes, localCrs, &pointCountDims, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_2(triRep->TrianglePatch.size(), nodes, localCrs, pointCountDims, 2, proxy);
 	getRepository()->addRelationship(this, localCrs);
 
 	getRepository()->addRelationship(this, proxy);

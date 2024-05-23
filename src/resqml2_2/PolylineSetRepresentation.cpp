@@ -108,15 +108,15 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->ClosedPolylines = xmlClosedPolylines;
 
 	// XYZ points
-	uint64_t nodeCount = 0;
+	uint64_t nodeCount[2] = { 0, 3 };
 	uint64_t intervalCount = 0;
 	for (size_t i = 0; i < polylineCount; ++i) {
-		nodeCount += nodeCountPerPolyline[i];
+		nodeCount[0] += nodeCountPerPolyline[i];
 		intervalCount += nodeCountPerPolyline[i] - 1;
 	}
-	patch->NodeCount = nodeCount;
+	patch->NodeCount = nodeCount[0];
 	patch->IntervalCount = intervalCount;
-	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(), nodes, localCrs, &nodeCount, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(), nodes, localCrs, nodeCount, 2, proxy);
 
 	static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.push_back(patch);
 	getRepository()->addRelationship(this, localCrs);
@@ -163,15 +163,15 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->ClosedPolylines = xmlClosedPolylines;
 
 	// XYZ points
-	uint64_t nodeCount = 0;
+	uint64_t nodeCount[2] = { 0, 3 };
 	uint64_t intervalCount = 0;
 	for (size_t i = 0; i < polylineCount; ++i) {
-		nodeCount += nodeCountPerPolyline[i];
+		nodeCount[0] += nodeCountPerPolyline[i];
 		intervalCount += nodeCountPerPolyline[i] - 1;
 	}
-	patch->NodeCount = nodeCount;
+	patch->NodeCount = nodeCount[0];
 	patch->IntervalCount = intervalCount;
-	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(), nodes, localCrs, &nodeCount, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(), nodes, localCrs, nodeCount, 2, proxy);
 
 	static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.push_back(patch);
 	getRepository()->addRelationship(this, localCrs);

@@ -544,15 +544,15 @@ void serializeGeobody(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractH
 	RESQML2_NS::BoundaryFeature* geobodyBoundary = repo->createGeobodyBoundaryFeature("6d3c158c-303f-4b0d-bfc0-9ce4102ea616", "Geobody boundary");
 	RESQML2_NS::GeobodyBoundaryInterpretation* geobodyBoundaryInterp = repo->createGeobodyBoundaryInterpretation(geobodyBoundary, "12c301a4-3e8b-401a-aca3-8d6f02d5d6d5", "Geobody boundary interp");
 	RESQML2_NS::PointSetRepresentation* geobodyBoundaryPointSetRep = repo->createPointSetRepresentation(geobodyBoundaryInterp, "fbc5466c-94cd-46ab-8b48-2ae2162b372f", "Geobody boundary PointSetRep");
-	double geobodyBoundaryPointCoords[18] = { 10, 70, 310, 11, 21, 280, 150, 30, 310, 400, 0, 365, 450, 75, 341, 475, 100, 352 };
-	geobodyBoundaryPointSetRep->pushBackGeometryPatch(6, geobodyBoundaryPointCoords, hdfProxy);
+	double geobodyBoundaryPointCoords[12] = { 10, 70, 11, 21, 150, 30, 400, 0, 450, 75, 475, 100 };
+	geobodyBoundaryPointSetRep->pushBackXyGeometryPatch(6, geobodyBoundaryPointCoords, hdfProxy);
 
 	// 3D
 	RESQML2_NS::RockVolumeFeature* geobody = repo->createGeobodyFeature("e221f9da-ead3-4a9d-8324-fc2e6606cb01", "Geobody");
 	RESQML2_NS::GeobodyInterpretation* geobodyInterp = repo->createGeobodyInterpretation(geobody, "d445041f-6364-44e7-a7f8-ade5a93bfd49", "Geobody interp");
 	RESQML2_NS::PointSetRepresentation* geobodyGraphNode = repo->createPointSetRepresentation(geobodyInterp, "8442a6b7-a97b-431e-abda-f72cf7ef346f", "Geobody graph node");
 	double geobodyPointCoords[18] = { 50, 30, 330, 10, 28, 3000, 100, 50, 350, 300, 100, 400, 400, 20, 400, 400, 300, 400 };
-	geobodyGraphNode->pushBackGeometryPatch(6, geobodyPointCoords, hdfProxy);
+	geobodyGraphNode->pushBackXyzGeometryPatch(6, geobodyPointCoords, hdfProxy);
 	//RESQML2_NS::SubRepresentation* geobodyGraphEdge = repo->createSubRepresentation(geobodyBoundaryInterp, "7e0450aa-c39d-49f8-bee4-62fc42bb849d", "Geobody graph edge");
 }
 
@@ -631,7 +631,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * repo, EML2_NS::Abstra
 
 	RESQML2_NS::PointSetRepresentation* h1i1PointSetRep = repo->createPointSetRepresentation(horizon1Interp1, "", "Horizon1 Interp1 PointSetRep");
 	double pointCoords[18] = { 10, 70, 301, 11, 21, 299, 150, 30, 301, 400, 0, 351, 450, 75, 340, 475, 100, 350 };
-	h1i1PointSetRep->pushBackGeometryPatch(6, pointCoords, hdfProxy);
+	h1i1PointSetRep->pushBackXyzGeometryPatch(6, pointCoords, hdfProxy);
 
 	// Horizon 1 triangulated representation
 	h1i1triRep = repo->createTriangulatedSetRepresentation(horizon1Interp1,
@@ -2496,7 +2496,7 @@ bool serialize(const string & filePath)
 	repo.setHdfProxyFactory(new HdfProxyFactoryExample());
 	auto* exoticHdfPox = repo.createHdfProxy("", "Dummy Exotic HDF proxy", "", "", COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 	double dummyPoints[3] = { 1.0, 2.0, 3.0 };
-	repo.createPointSetRepresentation("", "")->pushBackGeometryPatch(1, dummyPoints, exoticHdfPox);
+	repo.createPointSetRepresentation("", "")->pushBackXyzGeometryPatch(1, dummyPoints, exoticHdfPox);
 
 	return true;
 }
@@ -2897,9 +2897,39 @@ void deserializeGeobody(COMMON_NS::DataObjectRepository * repo)
 {
 	//2d
 	std::vector<RESQML2_NS::BoundaryFeature*> geobodyBoundarySet = repo->getGeobodyBoundarySet();
-	for (size_t i = 0; i < geobodyBoundarySet.size(); ++i) {
-		showAllMetadata(geobodyBoundarySet[i]);
-		cout << "interp count : " << geobodyBoundarySet[i]->getInterpretationCount() << endl;
+	for (RESQML2_NS::BoundaryFeature const* feature : geobodyBoundarySet) {
+		showAllMetadata(feature);
+		const auto interpCount = feature->getInterpretationCount();
+		cout << "interp count : " << interpCount << endl;
+		for (size_t j = 0; j < interpCount; ++j) {
+			const auto* interp = feature->getInterpretation(j);
+			showAllMetadata(interp);
+			const auto repCount = interp->getRepresentationCount();
+			cout << "rep count : " << repCount << endl;
+			for (size_t k = 0; k < repCount; ++k) {
+				auto const* psRep = dynamic_cast<RESQML2_NS::PointSetRepresentation const*>(interp->getRepresentation(k));
+				if (psRep != nullptr) {
+					auto ptCount = psRep->getXyzPointCountOfAllPatches();
+					cout << "point count : " << ptCount << endl;
+					if (psRep->isIn2D(0)) {
+						cout << "Patch 0 in 2d !" << endl;
+					}
+					else {
+						cout << "Patch 0 in 3d !" << endl;
+					}
+					std::unique_ptr<double[]> xyPoints(new double[ptCount * 2]);
+					psRep->getXyPointsOfPatch(0, xyPoints.get());
+					for (size_t ptIdx = 0; ptIdx < ptCount; ++ptIdx) {
+						cout << "pt2D " << ptIdx << ": " << xyPoints[ptIdx * 2] << " " << xyPoints[ptIdx * 2 + 1] << endl;
+					}
+					std::unique_ptr<double[]> allXyzPoints(new double[ptCount * 3]);
+					psRep->getXyzPointsOfAllPatches(allXyzPoints.get());
+					for (size_t ptIdx = 0; ptIdx < ptCount; ++ptIdx) {
+						cout << "pt3D " << ptIdx << ": " << allXyzPoints[ptIdx * 3] << " " << allXyzPoints[ptIdx * 3 + 1] << " " << allXyzPoints[ptIdx * 3 + 2] << endl;
+					}
+				}
+			}
+		}
 	}
 
 	//3d

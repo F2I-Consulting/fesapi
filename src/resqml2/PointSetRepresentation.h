@@ -35,12 +35,12 @@ namespace RESQML2_NS
 		virtual ~PointSetRepresentation() = default;
 
 		/**
-		 * Pushes back a new patch of points.
+		 * Pushes back a new patch of XYZ points.
 		 *
 		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
 		 * 										defined in the repository.
 		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
-		 * 										id defined in the repository.
+		 * 										is defined in the repository.
 		 *
 		 * @param 		  	xyzPointCount	The xyz points count in this patch.
 		 * @param [in]	  	xyzPoints	 	The xyz values of the points of the patch. Ordered by xyz and
@@ -52,9 +52,49 @@ namespace RESQML2_NS
 		 * 									nullptr (default), then the repository default local CRS will
 		 * 									be used.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackGeometryPatch(
-			unsigned int xyzPointCount, double const * xyzPoints,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackXyzGeometryPatch(
+			uint64_t xyzPointCount, double const * xyzPoints,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
+
+		/**
+		 * Pushes back a new patch of XY points.
+		 *
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										is defined in the repository.
+		 *
+		 * @param 		  	xyPointCount	The xy points count in this patch.
+		 * @param [in]	  	xyPoints	 	The xy values of the points of the patch. Ordered by xy and
+		 * 									then by @p xyPointCount. Size is <tt>2 * xyPointCount</tt>.
+		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the xy points
+		 * 									will be stored. If @c nullptr (default), then the repository
+		 * 									default HDF proxy will be used.
+		 * @param [in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
+		 * 									nullptr (default), then the repository default local CRS will
+		 * 									be used.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual void pushBackXyGeometryPatch(
+			uint64_t xyPointCount, double const* xyPoints,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+
+		/**
+		 * Check if a point set representation patch is in 2 dimensions (i.e XY) instead of 3 dimensions (i.e XYZ)
+		 * 
+		 * @param [in]	  	patchIndex	 	The index of the patch 
+		 */
+		DLL_IMPORT_OR_EXPORT virtual bool isIn2D(uint64_t patchIndex) const = 0;
+
+		/**
+		 * Get all the XY points of a particular patch of this representation. XY points are given in
+		 * the local CRS. You probably want to check first if the patch in in 2D using method bool isIn2D(uint64_t patchIndex).
+		 *
+		 * @param 		  	patchIndex	Zero-based index of the patch.
+		 * @param [in,out]	xyPoints 	A linearized 2d array where the first (quickest) dimension is
+		 * 								coordinate dimension (XY) and second dimension is vertex
+		 * 								dimension. It must be pre allocated.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual void getXyPointsOfPatch(uint64_t patchIndex, double* xyPoints) const = 0;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "PointSetRepresentation";

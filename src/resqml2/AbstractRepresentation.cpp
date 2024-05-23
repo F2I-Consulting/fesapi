@@ -105,7 +105,7 @@ gsoap_eml2_3::resqml22__Seismic3dCoordinates* AbstractRepresentation::getSeismic
 }
 
 gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(uint64_t patchIndex,
-	double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const* numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
+	double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const* dimensions, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -126,22 +126,24 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 		geom->LocalCrs = localCrs->newResqmlReference();
 
 		// XML
-		gsoap_resqml2_0_1::resqml20__Point3dHdf5Array* xmlPts = gsoap_resqml2_0_1::soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
-		xmlPts->Coordinates = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
-		xmlPts->Coordinates->HdfProxy = proxy->newResqmlReference();
-		ostringstream oss;
-		oss << "points_patch" << patchIndex;
-		xmlPts->Coordinates->PathInHdfFile = getHdfGroup() + "/" + oss.str();
-		geom->Points = xmlPts;
-
-		// HDF
-		std::unique_ptr<uint64_t[]> numValues(new uint64_t[numDimensionsInArray + 1]);
-		for (size_t i = 0; i < numDimensionsInArray; ++i) {
-			numValues[i] = numPoints[i];
+		auto* xmlCoords = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
+		xmlCoords->HdfProxy = proxy->newResqmlReference();
+		xmlCoords->PathInHdfFile = getHdfGroup() + "/" + "points_patch" + std::to_string(patchIndex);
+		if (dimensions[numDimensionsInArray - 1] == 3) {
+			gsoap_resqml2_0_1::resqml20__Point3dHdf5Array* xmlPts = gsoap_resqml2_0_1::soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
+			xmlPts->Coordinates = xmlCoords;
+			geom->Points = xmlPts;
 		}
-		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
+		else if (dimensions[numDimensionsInArray - 1] == 2) {
+			gsoap_resqml2_0_1::resqml20__Point2dHdf5Array* xmlPts = gsoap_resqml2_0_1::soap_new_resqml20__Point2dHdf5Array(gsoapProxy2_0_1->soap);
+			xmlPts->Coordinates = xmlCoords;
+			geom->Points = xmlPts;
+		}
+		else {
+			throw invalid_argument("Only support PointGeometryPatch2_0_1 2D and 3D");
+		}
 
-		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), points, numValues.get(), numDimensionsInArray + 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "points_patch" + std::to_string(patchIndex), points, dimensions, numDimensionsInArray);
 
 		return geom;
 	}
@@ -151,7 +153,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 }
 
 gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_2(uint64_t patchIndex,
-	double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const* numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
+	double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const* dimensions, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -172,23 +174,27 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 		geom->LocalCrs = localCrs->newEml23Reference();
 
 		// XML
-		size_t valueCount = numPoints[0] * 3;
-		for (size_t dimIndex = 1; dimIndex < numDimensionsInArray; ++dimIndex) {
-			valueCount *= numPoints[dimIndex];
+		size_t valueCount = 1;
+		for (size_t dimIndex = 0; dimIndex < numDimensionsInArray; ++dimIndex) {
+			valueCount *= dimensions[dimIndex];
 		}
-		gsoap_eml2_3::resqml22__Point3dExternalArray* xmlPts = gsoap_eml2_3::soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
-		xmlPts->Coordinates = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-		xmlPts->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/points_patch" + std::to_string(patchIndex), valueCount, proxy));
-		geom->Points = xmlPts;
-
-		// HDF
-		std::unique_ptr<uint64_t[]> numValues(new uint64_t[numDimensionsInArray + 1]);
-		for (uint32_t i = 0; i < numDimensionsInArray; ++i) {
-			numValues[i] = numPoints[i];
+		if (dimensions[numDimensionsInArray - 1] == 3) {
+			gsoap_eml2_3::resqml22__Point3dExternalArray* xmlPts = gsoap_eml2_3::soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
+			xmlPts->Coordinates = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+			xmlPts->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/points_patch" + std::to_string(patchIndex), valueCount, proxy));
+			geom->Points = xmlPts;
 		}
-		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
+		else if (dimensions[numDimensionsInArray - 1] == 2) {
+			gsoap_eml2_3::resqml22__Point2dExternalArray* xmlPts = gsoap_eml2_3::soap_new_resqml22__Point2dExternalArray(gsoapProxy2_3->soap);
+			xmlPts->Coordinates = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+			xmlPts->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/points_patch" + std::to_string(patchIndex), valueCount, proxy));
+			geom->Points = xmlPts;
+		}
+		else {
+			throw invalid_argument("Only support PointGeometryPatch2_2 2D and 3D");
+		}
 
-		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "points_patch" + std::to_string(patchIndex), points, numValues.get(), numDimensionsInArray + 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "points_patch" + std::to_string(patchIndex), points, dimensions, numDimensionsInArray);
 
 		return geom;
 	}

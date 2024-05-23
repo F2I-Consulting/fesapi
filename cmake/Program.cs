@@ -251,7 +251,7 @@ ${COMMENT_END}
                 dummyPoints.setitem(0, 1.0);
                 dummyPoints.setitem(1, 2.0);
                 dummyPoints.setitem(2, 3.0);
-                repo.createPointSetRepresentation("", "").pushBackGeometryPatch(1, dummyPoints.cast());
+                repo.createPointSetRepresentation("", "").pushBackXyzGeometryPatch(1, dummyPoints.cast());
                 dummyPoints.Dispose();
                 // **************************************
                 // **************************************
