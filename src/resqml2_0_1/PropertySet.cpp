@@ -99,7 +99,14 @@ void PropertySet::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getParentDor();
 	if (!dor.isEmpty()) {
-		convertDorIntoRel(dor);
+		if (dor.getUuid() != getUuid()) {
+			convertDorIntoRel(dor);
+		}
+		else {
+			getRepository()->addWarning("The property set " + getUuid() + " cannot be its parent. It will be made as partial.");
+			changeToPartialObject();
+			return;
+		}
 	}
 
 	auto allPropDors = getAllPropertiesDors();
