@@ -80,12 +80,12 @@ void DiscreteColorMapTest::initRepo() {
 	// associating a discrete color map to the discrete property kind
 	RESQML2_NS::DiscreteColorMap* discreteColorMap1 = repo->createDiscreteColorMap(uuidPropertyKindDiscreteColorMap, titlePropertyKindDiscreteColorMap);
 	REQUIRE(discreteColorMap1 != nullptr);
-	unsigned int rgbColors1[6] = { 0, 0, 256, 255, 0, 0 };
-	double alphas1[2] = { 1., 1. };
+	uint8_t rgbColors1[6] = { 0, 0, 255, 255, 0, 0 };
+	double alphas1[2] = { 1.5, 1. };
 	vector<string> titles1 = { "blue", "red" };
-	REQUIRE_THROWS(discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, titles1));
-	rgbColors1[2] = 255;
-	discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, titles1);
+	REQUIRE_THROWS(discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, nullptr, titles1));
+	alphas1[0] = 1.;
+	discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, nullptr, titles1);
 	GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet(uuidGraphicalInformationSet, titleGraphicalInformationSet);
 	graphicalInformationSet->setDiscreteColorMap(propertyKind, discreteColorMap1);
 	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty) == true);
@@ -94,10 +94,10 @@ void DiscreteColorMapTest::initRepo() {
 	// associating the discrete color map to the discrete property
 	RESQML2_NS::DiscreteColorMap* discreteColorMap2 = repo->createDiscreteColorMap(defaultUuid, defaultTitle);
 	REQUIRE(discreteColorMap2 != nullptr);
-	unsigned int rgbColors2[6] = { 255, 0, 0, 0, 0, 255 };
+	uint8_t rgbColors2[6] = { 255, 0, 0, 0, 0, 255 };
 	double alphas2[2] = { 1., 1. };
 	vector<string> titles2 = { "red", "blue" };
-	discreteColorMap2->setRgbColors(2, rgbColors2, alphas2, titles2);
+	discreteColorMap2->setRgbColors(2, rgbColors2, alphas2, nullptr, titles2);
 	graphicalInformationSet->setDiscreteColorMap(discreteProperty, discreteColorMap2);
 	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty) == true);
 	REQUIRE(graphicalInformationSet->getDiscreteColorMapUuid(discreteProperty) == discreteColorMap2->getUuid());

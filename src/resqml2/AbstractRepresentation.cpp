@@ -29,8 +29,8 @@ under the License.
 #include "../eml2/AbstractLocal3dCrs.h"
 #include "../eml2/TimeSeries.h"
 
-#include "AbstractFeatureInterpretation.h"
 #include "AbstractValuesProperty.h"
+#include "FaultInterpretation.h"
 #include "PointsProperty.h"
 #include "RepresentationSetRepresentation.h"
 #include "SubRepresentation.h"
@@ -379,10 +379,9 @@ std::vector<SubRepresentation*> AbstractRepresentation::getFaultSubRepresentatio
 {
 	std::vector<SubRepresentation*> result;
 
-	const std::vector<SubRepresentation*>& subRepresentationSet = getSubRepresentationSet();
-	for (size_t i = 0; i < subRepresentationSet.size(); ++i) {
-		if (subRepresentationSet[i]->getInterpretation() != nullptr && subRepresentationSet[i]->getInterpretation()->getXmlTag() == "FaultInterpretation") {
-			result.push_back(subRepresentationSet[i]);
+	for (SubRepresentation* subrep : getSubRepresentationSet()) {
+		if (subrep != nullptr && dynamic_cast<FaultInterpretation*>(subrep->getInterpretation()) != nullptr) {
+			result.push_back(subrep);
 		}
 	}
 

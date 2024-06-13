@@ -42,17 +42,26 @@ namespace RESQML2_NS
 		 * @param 	alphas	   	(Optional) array (of size colorCount) of numeric values in the range [0,
 		 * 						1] for alpha transparency channel (0 means transparent and 1 means
 		 * 						opaque). If alphas == nullptr (default value), default alpha value is 1.
-		 * @param 	colorTitles	(Optional) vector (of size colorCount) of color titles. Titles are not
-		 * 						set if colorTitles == nullptr (default value)
-		 * @param 	indices	   	(Optional) array (of size solorCount) of color indices.  These indices
+		 * @param 	indices	   	(Optional) array (of size colorCount) of color indices.  These indices
 		 * 						are cast to unsigned int in the case of a discrete color map. If indices
 		 * 						== nullptr (default value), indices are set from 0 to colorCount - 1.
+		 * @param 	colorTitles	(Optional) vector (of size colorCount) of color titles. Titles are not
+		 * 						set if colorTitles is empty (default value)
 		 */
 		DLL_IMPORT_OR_EXPORT void setHsvColors(uint64_t colorCount,
-			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr) final;
+			double const* hsvColors, double const* alphas = nullptr,
+			double const* indices = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>()) final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getColorCount() const final;
+
+		/**
+		 * @brief	Gets the location of a color of the color map
+		 *
+		 * @param 	colorIndex	Zero-based index of the color.
+		 *
+		 * @returns	The color location in the color map.
+		 */
+		DLL_IMPORT_OR_EXPORT int64_t getColorLocationInColorMap(uint64_t colorIndex) const;
 
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.
@@ -68,7 +77,7 @@ namespace RESQML2_NS
 		/**
 		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
 		 */
-		gsoap_eml2_3::resqml22__HsvColor* getColor(double colorIndex) const;
+		gsoap_eml2_3::resqml22__HsvColor* getColor(uint64_t colorIndex) const final;
 
 		/**
 		 * Default constructor

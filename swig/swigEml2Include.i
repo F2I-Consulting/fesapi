@@ -1354,32 +1354,6 @@ namespace EML2_NS
 		double getDefaultAlpha(COMMON_NS::AbstractObject const* targetObject) const;
 
 		/**
-		 * Gets the default RGB color (https://en.wikipedia.org/wiki/RGB_color_space) of a given data
-		 * object. It only looks at direct color association (see {@link hasDirectGraphicalInformation})
-		 *
-		 * @exception	std::invalid_argument	If @p targetObject has no default color.
-		 *
-		 * @param 	   	targetObject	The data object for which we look for the default RGB color.
-		 * @param [out]	red				Red value in the range [0, 1].
-		 * @param [out]	green			Green value in the range [0, 1].
-		 * @param [out]	blue			Blue value in the range [0, 1].
-		 */
-		void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, double& red, double& green, double& blue) const;
-
-		/**
-		 * Gets the default RGB color (https://en.wikipedia.org/wiki/RGB_color_space) of a given data
-		 * object. It only looks at direct color association (see {@link hasDirectGraphicalInformation})
-		 *
-		 * @exception	std::invalid_argument	If @p targetObject has no default color.
-		 *
-		 * @param 	   	targetObject	The data object for which we look for the default RGB color.
-		 * @param [out]	red				Red value in the range [0, 255].
-		 * @param [out]	green			Green value in the range [0, 255].
-		 * @param [out]	blue			Blue value in the range [0, 255].
-		 */
-		void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
-
-		/**
 		 * Query if a given data object has a default color title. It only looks at direct color
 		 * association (see {@link hasDirectGraphicalInformation})
 		 *
@@ -1466,7 +1440,7 @@ namespace EML2_NS
 		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
 		 * 								title is empty (default).
 		 */
-		void setDefaultRgbColor(COMMON_NS::AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
+		void setDefaultRgbColor(COMMON_NS::AbstractObject* targetObject, uint8_t red, uint8_t green, uint8_t blue, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
 		 * Query if a given data object has a discrete color map. If it has not and it is a property, we
@@ -1681,59 +1655,6 @@ namespace EML2_NS
 		 * @param 	valueVectorIndex	The value vector index to set.
 		 */
 		void setValueVectorIndex(COMMON_NS::AbstractObject const* targetObject, int64_t valueVectorIndex);
-
-		/**
-		 * Converts RGB to HSV color (using https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
-		 * algorithm). No range check is done on parameters
-		 *
-		 * @param 	   	red		  	Numeric value in the range [0, 1].
-		 * @param 	   	green	  	Numeric value in the range [0, 1].
-		 * @param 	   	blue	  	Numeric value in the range [0, 1].
-		 * @param [out]	hue		  	Angle in degrees in the range [0, 360].
-		 * @param [out]	saturation	Numeric value in the range [0, 1].
-		 * @param [out]	value	  	Numeric value in the range [0, 1].
-		 */
-		static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
-
-		/**
-		 * Converts RGB to HSV color (using https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
-		 * algorithm). No range check is done on parameters
-		 *
-		 * @param 	   	red		  	Numeric value in the range [0, 255].
-		 * @param 	   	green	  	Numeric value in the range [0, 255].
-		 * @param 	   	blue	  	Numeric value in the range [0, 255].
-		 * @param [out]	hue		  	Angle in degrees in the range [0, 360].
-		 * @param [out]	saturation	Numeric value in the range [0, 1].
-		 * @param [out]	value	  	Numeric value in the range [0, 1].
-		 */
-		static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);
-
-		/**
-		 * Converts HSV to RGB color (using https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
-		 * algorithm). No range check is done on parameters
-		 *
-		 * @param 	   	hue		  	Angle in degrees in the range [0, 360].
-		 * @param 	   	saturation	Numeric value in the range [0, 1].
-		 * @param 	   	value	  	Numeric value in the range [0, 1].
-		 * @param [out]	red		  	Numeric value in the range.
-		 * @param [out]	green	  	Numeric value in the range.
-		 * @param [out]	blue	  	Numeric value in the range.
-		 */
-		static void hsvToRgb(double hue, double saturation, double value, double& red, double& green, double& blue);
-
-		/**
-		 * Converts HSV to RGB color (using
-		 * https://stackoverflow.com/questions/1914115/converting-color-value-from-float-0-1-to-byte-0-255
-		 * algorithm). No range check is done on parameters
-		 *
-		 * @param 	   	hue		  	Angle in degrees in the range [0, 360].
-		 * @param 	   	saturation	Numeric value in the range [0, 1].
-		 * @param 	   	value	  	Numeric value in the range [0, 1].
-		 * @param [out]	red		  	Numeric value in the range.
-		 * @param [out]	green	  	Numeric value in the range.
-		 * @param [out]	blue	  	Numeric value in the range.
-		 */
-		static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
 	};
 	
 	/************ Property **************/

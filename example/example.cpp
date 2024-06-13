@@ -338,19 +338,19 @@ void serializePerforations(COMMON_NS::DataObjectRepository * repo)
 	// WELLBORE COMPLETION
 	WITSML2_1_NS::WellboreCompletion* wellboreCompletion = repo->createWellboreCompletion(witsmlWellbore, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1");
 
-	wellboreCompletion->pushBackConnection(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, gsoap_eml2_3::eml23__LengthUom::m, 1970, 1980, "myId");
-	wellboreCompletion->pushBackConnection(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, gsoap_eml2_3::eml23__LengthUom::m, 1990, 2000, "mySecondId");
+	wellboreCompletion->pushBackConnection(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, gsoap_eml2_3::eml23__LengthUom::m, 970, 980, "myId");
+	wellboreCompletion->pushBackConnection(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, gsoap_eml2_3::eml23__LengthUom::m, 990, 1000, "mySecondId");
 
 	wellboreCompletion->pushBackConnectionExtraMetadata(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, "Testing Key", "Testing Value");
 
 	wellboreCompletion->pushBackConnectionHistory(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0);
 	wellboreCompletion->setConnectionHistoryStatus(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::witsml21__PhysicalStatus::open);
-	wellboreCompletion->setConnectionHistoryMdInterval(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::eml23__LengthUom::m, 1970, 1980);
+	wellboreCompletion->setConnectionHistoryMdInterval(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::eml23__LengthUom::m, 970, 980);
 	wellboreCompletion->setConnectionHistoryStartDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 407568645);
 	wellboreCompletion->setConnectionHistoryEndDate(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 1514764800);
 	wellboreCompletion->pushBackConnectionHistory(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0);
 	wellboreCompletion->setConnectionHistoryStatus(1, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::witsml21__PhysicalStatus::closed);
-	wellboreCompletion->setConnectionHistoryMdInterval(1, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::eml23__LengthUom::m, 1970, 1980);
+	wellboreCompletion->setConnectionHistoryMdInterval(1, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, gsoap_eml2_3::eml23__LengthUom::m, 970, 980);
 	wellboreCompletion->setConnectionHistoryStartDate(1, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 0, 1514764800);
 	wellboreCompletion->pushBackConnectionHistory(WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1);
 	wellboreCompletion->setConnectionHistoryStatus(0, WITSML2_1_NS::WellboreCompletion::WellReservoirConnectionType::PERFORATION, 1, gsoap_eml2_3::witsml21__PhysicalStatus::open);
@@ -392,18 +392,18 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 
 	// associating a discrete color map to property kind propType1
 	RESQML2_NS::DiscreteColorMap* propKindDiscrColMap = repo->createDiscreteColorMap("d808d79c-2cad-4c4f-9712-3b3ab4aa3f4a", "Property kind discrete color map");
-	unsigned int propKindDiscrColMapRgbColors[9] = { 0, 0, 255, 255, 255, 255, 255, 0, 0 };
+	uint8_t propKindDiscrColMapRgbColors[9] = { 0, 0, 255, 255, 255, 255, 255, 0, 0 };
 	double propKindDiscrColMapAlphas[3] = { 1., 1., 1. };
 	vector<string> propKindDiscrColMapTitles = { "blue", "white", "red" };
-	propKindDiscrColMap->setRgbColors(3, propKindDiscrColMapRgbColors, propKindDiscrColMapAlphas, propKindDiscrColMapTitles);
+	propKindDiscrColMap->setRgbColors(3, propKindDiscrColMapRgbColors, propKindDiscrColMapAlphas, nullptr, propKindDiscrColMapTitles);
 	graphicalInformationSet->setDiscreteColorMap(propType1, propKindDiscrColMap);
 
 	// associating a discrete color map to dicreteProp1
 	RESQML2_NS::DiscreteColorMap* discrColMap = repo->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map");
-	unsigned int discrColMapRgbColors[18] = { 255, 0, 0, 0, 255, 0, 0, 0, 255, 169, 84, 27, 0, 0, 0, 255, 255, 255 };
+	uint8_t discrColMapRgbColors[18] = { 255, 0, 0, 0, 255, 0, 0, 0, 255, 169, 84, 27, 0, 0, 0, 255, 255, 255 };
 	double discrColMapAlphas[6] = { 1., 1., 1., 1., 1., 1. };
 	vector<string> discrColMapTitles = { "red", "green", "blue", "orange", "black", "white" };
-	discrColMap->setRgbColors(6, discrColMapRgbColors, discrColMapAlphas, discrColMapTitles);
+	discrColMap->setRgbColors(6, discrColMapRgbColors, discrColMapAlphas, nullptr, discrColMapTitles);
 	graphicalInformationSet->setDiscreteColorMap(discreteProp1, discrColMap);
 
 	// creating a new discrete property of type propType1 without associating it to a discrete color map.
@@ -440,10 +440,10 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values.get(), numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 	RESQML2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_3::resqml22__InterpolationDomain::rgb, gsoap_eml2_3::resqml22__InterpolationMethod::linear);
-	unsigned int contColMapRgbColors[6] = { 0, 255, 0, 255, 0, 0 };
+	uint8_t contColMapRgbColors[6] = { 0, 255, 0, 255, 0, 0 };
 	vector<string> contColMapColTitles = { "green", "red" };
 	double contColMapAlphas[2] = { 1., 1. };
-	contColMap->setRgbColors(2, contColMapRgbColors, contColMapAlphas, contColMapColTitles);
+	contColMap->setRgbColors(2, contColMapRgbColors, contColMapAlphas, nullptr, contColMapColTitles);
 	graphicalInformationSet->setContinuousColorMap(contColMapContProp, contColMap);
 	graphicalInformationSet->setColorMapMinMax(contColMapContProp, 0., 1.);
 	graphicalInformationSet->setValueVectorIndex(contColMapContProp, 1);
@@ -4667,7 +4667,7 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & repo)
 				if (graphicalInformationSet->hasDiscreteColorMap(targetObject)) {
 					RESQML2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
 					std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
-					unsigned int r, g, b;
+					uint8_t r, g, b;
 					for (unsigned int colorIndex = 0; colorIndex < discreteColorMap->getColorCount(); ++colorIndex) {
 						discreteColorMap->getRgbColor(colorIndex, r, g, b);
 						std::cout << colorIndex << ": (" << r << ", " << g << ", " << b << ", ";
@@ -4689,7 +4689,7 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & repo)
 				if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
 					RESQML2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
 					std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
-					unsigned int r, g, b;
+					uint8_t r, g, b;
 					for (unsigned int mapIndex = 0; mapIndex < continuousColorMap->getColorCount(); ++mapIndex) {
 						continuousColorMap->getRgbColor(mapIndex, r, g, b);
 						std::cout << mapIndex << ": (" << r << ", " << g << ", " << b << ", ";
@@ -4715,7 +4715,7 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & repo)
 
 void deserializeGridConnectionSetRepresentation(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid)
 {
-	unsigned int gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
+	uint64_t gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
 	std::cout << "Grid Connection Count is : " << gridConnectionSetCount << std::endl;
 	if (gridConnectionSetCount > 0) {
 		RESQML2_NS::GridConnectionSetRepresentation const * gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);

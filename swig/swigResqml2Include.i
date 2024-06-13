@@ -2034,77 +2034,84 @@ namespace RESQML2_NS
 		* @param colorCount		the size (number of colors) of the color map
 		* @param hsvColors		array (of size colorCount * 3) of HSV colors with hsvColors[3*i] is the hue, hsvColors[3*i + 1] is the saturation and hsvColors[3*i + 2] is the value of the ith color (hue is in range [0, 360] while saturation and value are in range [0, 1])
 		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
-		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param indices		array (of size colorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices 
+		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles is empty (default value)= nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
-		void setHsvColors(unsigned int colorCount,
-			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
+		virtual void setHsvColors(uint64_t colorCount,
+			double const* hsvColors, double const* alphas = nullptr, double const* indices = nullptr,
+			std::vector<std::string> const& colorTitles = std::vector<std::string>()) = 0;
 
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space
 		* @param colorCount		the size (number of colors) of the color map
-		* @param rgbColors		array (of size colorCount * 3) of RGB colors with hsvColors[3*i] is red componant, hsvColors[3*i + 1] is green component and hsvColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 1])
+		* @param rgbColors		array (of size colorCount * 3) of RGB colors with rgbColors[3*i] is red component, rgbColors[3*i + 1] is green component and rgbColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 1])
 		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
-		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param indices		array (of size colorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles is empty (default value)
 		*/
-		void setRgbColors(unsigned int colorCount,
-			double const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
+		void setRgbColors(uint64_t colorCount,
+			double const* rgbColors, double const* alphas = nullptr,
+			double const* indices = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>());
 
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space
 		* @param colorCount		the size (number of colors) of the color map
 		* @param rgbColors		array (of size colorCount * 3) of RGB colors with hsvColors[3*i] is red componant, hsvColors[3*i + 1] is green component and hsvColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 255])
 		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
 		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles is empty (default value)
 		*/
-		void setRgbColors(unsigned int colorCount,
-			unsigned int const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
+		void setRgbColors(uint64_t colorCount,
+			uint8_t const* rgbColors, double const* alphas = nullptr,
+			double const* indices = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>());
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @brief	Gets color count
+		 *
+		 * @returns	The color count.
+		 */
+		uint64_t getColorCount() const;
+		
+		/**
+		 * @param colorIndex	index of a color in the color map.
 		 * @return				hue in the range [0, 360]
 		 */
-		double getHue(double colorIndex) const;
+		double getHue(uint64_t colorIndex) const;
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @param colorIndex	index of a color in the color map.
 		 * @return				saturation in the range [0, 1]
 		 */
-		double getSaturation(double colorIndex) const;
+		double getSaturation(uint64_t colorIndex) const;
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @param colorIndex	index of a color in the color map.
 		 * @return				value in the range [0, 1]
 		 */
-		double getValue(double colorIndex) const;
+		double getValue(uint64_t colorIndex) const;
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @param colorIndex	index of a color in the color map.
 		 * @return				alpha in the range [0, 1] (0 means transparent and 1 means opaque)
 		 */
-		double getAlpha(double colorIndex) const;
+		double getAlpha(uint64_t colorIndex) const;
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @param colorIndex	index of a color in the color map.
 		 * @param red			(output parameter) red value in the range [0, 1]
 		 * @param green			(output parameter) green value in the range [0, 1]
 		 * @param blue			(output parameter) blue value in the range [0, 1]
 		 */
-		void getRgbColor(double colorIndex, double& red, double& green, double& blue) const;
+		void getRgbColor(uint64_t colorIndex, double& red, double& green, double& blue) const;
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
-		 * @param red			(output parameter) red value in the range [0, 1]
-		 * @param green			(output parameter) green value in the range [0, 1]
-		 * @param blue			(output parameter) blue value in the range [0, 1]
+		 * @param colorIndex	index of a color in the color map.
+		 * @param red			(output parameter) red value in the range [0, 255]
+		 * @param green			(output parameter) green value in the range [0, 255]
+		 * @param blue			(output parameter) blue value in the range [0, 255]
 		 */
-		void getRgbColor(double colorIndex, unsigned int& red, unsigned int& green, unsigned int& blue) const;
-		
+		void getRgbColor(uint64_t colorIndex, uint8_t& red, uint8_t& green, uint8_t& blue) const;
+
 		/**
 		 * @brief	Queries if 'colorIndex' has color title
 		 *
@@ -2112,7 +2119,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if color title, false if not.
 		 */
-		bool hasColorTitle(double colorIndex) const;
+		bool hasColorTitle(uint64_t colorIndex) const;
 
 		/**
 		 * @brief	Gets color title
@@ -2121,14 +2128,68 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The color title.
 		 */
-		std::string getColorTitle(double colorIndex) const;
-		
+		std::string getColorTitle(uint64_t colorIndex) const;
+
 		/**
-		 * @brief	Gets color count
+		 * @brief	Sets the NullColor value of a continuous color map
 		 *
-		 * @returns	The color count.
+		 * @param 	hue		  	hue in the range [0, 360].
+		 * @param 	saturation	saturation in the range [0, 1].
+		 * @param 	value	  	value in the range [0, 1].
+		 * @param 	alpha	  	(Optional) alpha in the range [0, 1] (0 means transparent and 1 means
+		 * 						opaque). Default alpha value is 1.
+		 * @param 	colorTitle	(Optional) color title. It is not set if empty string (default value)
 		 */
-		uint64_t getColorCount() const;
+		void setNullHsvColor(double hue, double saturation, double value, double alpha = 1, std::string const& colorTitle = "");
+
+		/**
+		 * @brief	Sets the NullColor value of a continuous color map
+		 *
+		 * @param 	red		  	red value in the range [0, 1].
+		 * @param 	green	  	green value in the range [0, 1].
+		 * @param 	blue	  	blue value in the range [0, 1].
+		 * @param 	alpha	  	(Optional) alpha in the range [0, 1] (0 means transparent and 1 means
+		 * 						opaque). Default alpha value is 1.
+		 * @param 	colorTitle	(Optional) color title. It is not set if empty string (default value)
+		 */
+		void setNullRgbColor(double red, double green, double blue, double alpha = 1, std::string const& colorTitle = "");
+
+		/**
+		 * @brief	Sets the NullColor value of a continuous color map
+		 *
+		 * @param 	red		  	red value in the range [0, 255].
+		 * @param 	green	  	green value in the range [0, 255].
+		 * @param 	blue	  	blue value in the range [0, 255].
+		 * @param 	alpha	  	(Optional) alpha in the range [0, 1] (0 means transparent and 1 means
+		 * 						opaque). Default alpha value is 1.
+		 * @param 	colorTitle	(Optional) color title. It is not set if empty string (default value)
+		 */
+		void setNullRgbColor(uint8_t red, uint8_t green, uint8_t blue, double alpha = 1, std::string const& colorTitle = "");
+
+		/**
+		 * @brief	checks if the color map has a definition for the color of Null values.
+		 */
+		bool hasNullColor() const { return static_cast<gsoap_eml2_3::resqml22__ContinuousColorMap const*>(gsoapProxy2_3)->NullColor != nullptr; }
+
+		/**
+		 * @return				hue in the range [0, 360]
+		 */
+		double getNullHue() const;
+
+		/**
+		 * @return				saturation in the range [0, 1]
+		 */
+		double getNullSaturation() const;
+
+		/**
+		 * @return				value in the range [0, 1]
+		 */
+		double getNullValue() const;
+
+		/**
+		 * @return				alpha in the range [0, 1] (0 means transparent and 1 means opaque)
+		 */
+		double getNullAlpha() const;
 	};
 	
 #if defined(SWIGPYTHON)
@@ -2137,6 +2198,15 @@ namespace RESQML2_NS
 	class DiscreteColorMap : public AbstractColorMap
 	{
 	public:
+
+		/**
+		 * @brief	Gets the location of a color of the color map
+		 *
+		 * @param 	colorIndex	Zero-based index of the color.
+		 *
+		 * @returns	The color location in the color map.
+		 */
+		int64_t getColorLocationInColorMap(uint64_t colorIndex) const;
 	};
 	
 #if defined(SWIGPYTHON)
@@ -2151,9 +2221,14 @@ namespace RESQML2_NS
 		gsoap_eml2_3::resqml22__InterpolationMethod getInterpolationMethod();
 		std::string getInterpolationMethodAsString();
 
-		void setNanHsvColor(double hue, double saturation, double value, double alpha = 1, std::string const& colorTitle = "");
-		void setNanRgbColor(double red, double green, double blue, double alpha = 1, std::string const& colorTitle = "");
-		void setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha = 1, std::string const& colorTitle = "");
+		/**
+		 * @brief	Gets the location of a color of the color map
+		 *
+		 * @param 	colorIndex	Zero-based index of the color.
+		 *
+		 * @returns	The color location in the color map.
+		 */
+		double getColorLocationInColorMap(uint64_t colorIndex) const;
 	};
 
 #ifdef SWIGPYTHON

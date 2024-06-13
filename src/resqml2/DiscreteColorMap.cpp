@@ -24,8 +24,8 @@ using namespace COMMON_NS;
 using namespace RESQML2_NS;
 
 void DiscreteColorMap::setHsvColors(uint64_t colorCount,
-	double const* hsvColors, double const* alphas, vector<string> const& colorTitles,
-	double const* indices)
+	double const* hsvColors, double const* alphas,
+	double const* indices, vector<string> const& colorTitles)
 {
 	if (colorCount == 0) {
 		throw invalid_argument("The color count cannot be 0.");
@@ -74,15 +74,12 @@ uint64_t DiscreteColorMap::getColorCount() const
 	return discreteColorMap->Entry.size();
 }
 
-resqml22__HsvColor* DiscreteColorMap::getColor(double colorIndex) const
+resqml22__HsvColor* DiscreteColorMap::getColor(uint64_t colorIndex) const
 {
-	resqml22__DiscreteColorMap const* const discreteColorMap = static_cast<resqml22__DiscreteColorMap*>(gsoapProxy2_3);
+	return static_cast<resqml22__DiscreteColorMap*>(gsoapProxy2_3)->Entry.at(colorIndex)->Hsv;
+}
 
-	for (auto* entry : discreteColorMap->Entry) {
-		if (entry->index == colorIndex) {
-			return entry->Hsv;
-		}
-	}
-
-	return nullptr;
+int64_t DiscreteColorMap::getColorLocationInColorMap(uint64_t colorIndex) const
+{
+	return static_cast<resqml22__DiscreteColorMap*>(gsoapProxy2_3)->Entry.at(colorIndex)->index;
 }
