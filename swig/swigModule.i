@@ -1052,11 +1052,6 @@ import com.f2i_consulting.fesapi.*;
 		std::vector<std::string> getUuids() const;
 
 		/**
-		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a content type + a version
-		*/
-		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version = "");
-
-		/**
 		 * @brief	Creates a non parallel access to an HDF5 file for writing to it. Resulting HDF5 file
 		 * 			proxy is stored into this repository
 		 *
