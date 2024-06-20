@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "IjkGridParametricRepresentation.h"
 
+#include <cstring>
+
 #include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
