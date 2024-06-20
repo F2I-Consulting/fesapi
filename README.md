@@ -23,7 +23,7 @@ We advise you to install these third party libraries respectively into
 - fesapiEnv/dependencies/minizip-particularVersion
 - fesapiEnv/dependencies/boost-particularVersion
 # Configure the build
-Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. If you want to use cmake in command line, you would find example in [Azure Pipeline file](./azure-pipelines.yml). Follow the below instructions :
+Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. If you want to use cmake in command line, you would find example in [GitHub Actions file](./.github/workflows/github-actions.yml). Follow the below instructions :
 
 - yourPath/fesapiEnv/fesapi defines where is the source code folder
 - yourPath/fesapiEnv/build/theNameYouWant defines where to build the binaries
@@ -66,8 +66,7 @@ You can also find Doxygen generated documentation [here](https://f2i-consulting.
 # Testing
 This software was tested with :
 - Catch2 from [Catch Org](https://github.com/catchorg/Catch2)
-- [GitHub actions](https://github.com/features/actions)
-- [Azure Pipelines](https://azure.microsoft.com/en-us/services/devops/pipelines/)
+- [GitHub Actions](https://github.com/features/actions)
 
 # Credits
 This software was developed with :
