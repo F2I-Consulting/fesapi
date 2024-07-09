@@ -3,6 +3,8 @@
 find_package(SWIG 3.0 REQUIRED)
 find_package(Python3 REQUIRED)
 
+set (Fesapi_PYTHON_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VERSION_PATCH})
+
 set(SWIG_LINKED_TO_RELEASE ON CACHE BOOL "Is your SWIG generated library linked to the release or debug version of FesapiCpp ?")
 # See http://swig.org/Doc4.0/SWIGDocumentation.html#Python_nn28 for more information about SWIG python builtin parameter
 set(SWIG_PYTHON_BUILTIN OFF CACHE BOOL "The use of Python proxy classes has performance implications that may be unacceptable for a high-performance library. The new -builtin option instructs SWIG to forego the use of proxy classes, and instead create wrapped types as new built-in Python types.")
