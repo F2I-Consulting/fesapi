@@ -9,5 +9,6 @@ dist/*
 *.egg-info/*
 example/*.epc
 example/*.h5
+example/.ipynb_checkpoints/*
 
 !example/example.py

@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %module fesapi
+%feature("python:annotations", "c");
 
 %{
 #if defined(__clang__) || defined(_MSC_VER)
