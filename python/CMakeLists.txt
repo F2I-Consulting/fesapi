@@ -27,6 +27,11 @@ else (WIN32)
 	endif (SWIG_LINKED_TO_RELEASE)
 endif (WIN32)
 configure_file(${CMAKE_SOURCE_DIR}/cmake/swigPythonInclude.i.in ${CMAKE_SOURCE_DIR}/swig/swigPythonInclude.i) # Overwrite if different
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	set (EXTRA_COMPILE_ARGS "extra_compile_args=['/DSWIG_TYPE_TABLE=FESTAPI']")
+else ()
+	set (EXTRA_COMPILE_ARGS "extra_compile_args=['-DSWIG_TYPE_TABLE=FESTAPI -std=c++11']")
+endif()
 configure_file(${CMAKE_SOURCE_DIR}/cmake/setup.py.in ${CMAKE_SOURCE_DIR}/python/setup.py) # Overwrite if different
 
 # SWIG execution

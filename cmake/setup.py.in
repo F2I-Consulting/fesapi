@@ -4,7 +4,7 @@ fesapi_module = Extension('_fesapi',
     sources=['swigGeneratedPythonWrapper.cpp'],
     library_dirs=['${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}'],
     libraries=['${ASSEMBLY_NAME}',],
-    extra_compile_args=['-std=c++11'],
+    ${EXTRA_COMPILE_ARGS},
 )
 
 setup (name = 'fesapi',
