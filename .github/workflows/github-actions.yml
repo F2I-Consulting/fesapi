@@ -200,6 +200,10 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
+      - name: Stub `setup.py` check
+        # It will be generated during CMake run
+        # https://github.com/pypa/cibuildwheel/issues/1139
+        run: touch python/setup.py
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.2
         env:
