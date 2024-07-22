@@ -219,7 +219,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.2
         env:
-          CIBW_BUILD: cp313-*
+          CIBW_BUILD: cp312-*
           CIBW_ARCHS: auto64
           CIBW_BEFORE_ALL: >
             yum install minizip-devel gcc-c++ make boost-devel hdf5 &&
