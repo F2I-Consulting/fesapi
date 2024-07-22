@@ -21,7 +21,7 @@ jobs:
           cmake --build . --config Release --target INSTALL
       - name: Boost install
         run: |
-          (New-Object System.Net.WebClient).DownloadFile("https://sourceforge.net/projects/boost/files/boost-binaries/1.78.0//boost_1_78_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
+          (New-Object System.Net.WebClient).DownloadFile("https://sourceforge.net/projects/boost/files/boost-binaries/1.85.0/boost_1_85_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
           Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
       - name: CMake build and install
         run: |
@@ -41,6 +41,10 @@ jobs:
       - name: Run Cpp example
         run: |
           ${{ github.workspace }}\..\build\Release\example.exe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-2019
+          path: ${{ github.workspace }}\..\build\install
   windows-2019-staticLink-cs:
     runs-on: windows-2019
     steps:
@@ -91,7 +95,7 @@ jobs:
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: x64
       - name: Build the C# example
@@ -158,6 +162,10 @@ jobs:
           cd ${{ github.workspace }}/java/src
           javac -cp `find ${{ github.workspace }}/../build/install -name fesapiJava*.jar` com/f2i_consulting/example/FesapiJavaExample.java
           java -Djava.library.path=${{ github.workspace }}/../build/install/lib -cp `find ${{ github.workspace }}/../build/install -name fesapiJava*.jar`:. com.f2i_consulting.example.FesapiJavaExample
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-20.04-${{ matrix.cxx }}
+          path: ${{ github.workspace }}/../build/install
   ubuntu-20-python3:
     runs-on: ubuntu-20.04
     steps:
@@ -192,6 +200,10 @@ jobs:
           export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${{ github.workspace }}/../build/install/lib
           pip3 install ${{ github.workspace }}/python/dist/*.whl
           python3 ${{ github.workspace }}/python/example/example.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-20.04-python3
+          path: ${{ github.workspace }}/python/dist/*.whl
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -207,10 +219,10 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.2
         env:
-          CIBW_SKIP: cp36-* cp37-* pp*
+          CIBW_BUILD: cp313-*
           CIBW_ARCHS: auto64
           CIBW_BEFORE_ALL: >
-            yum install minizip-devel git gcc-c++ make boost-devel hdf5 &&
+            yum install minizip-devel gcc-c++ make boost-devel hdf5 &&
             yum search epel-release &&
             yum info epel-release &&
             yum install -y epel-release &&
