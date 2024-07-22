@@ -1,10 +1,10 @@
 name: github-actions
 on: [push, pull_request]
-env:
-  GITHUB_ROOT_PATH: {{ github.workspace }}/..
 jobs:
   windows-2019-dynamicLink:
     runs-on: windows-2019
+    env:
+      GITHUB_ROOT_PATH: {{ github.workspace }}/..
     steps:
       - uses: actions/checkout@v4
       - name: HDF5 install
@@ -49,6 +49,8 @@ jobs:
           path: $GITHUB_ROOT_PATH/build/install/
   windows-2019-staticLink-cs:
     runs-on: windows-2019
+    env:
+      GITHUB_ROOT_PATH: {{ github.workspace }}/..
     steps:
       - uses: actions/checkout@v4
       - name: zlib install
