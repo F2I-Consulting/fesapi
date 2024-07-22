@@ -1,5 +1,7 @@
 name: github-actions
 on: [push, pull_request]
+env:
+  GITHUB_ROOT_PATH: {{ github.workspace }}/..
 jobs:
   windows-2019-dynamicLink:
     runs-on: windows-2019
@@ -25,7 +27,7 @@ jobs:
           Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
       - name: CMake build and install
         run: |
-          cd ${{ github.workspace }}/..
+          cd $GITHUB_ROOT_PATH
           mkdir build
           cd build
           cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16 -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16 -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_TEST=TRUE ${{ github.workspace }}
@@ -33,18 +35,18 @@ jobs:
           cmake --build . --config Release --target INSTALL
       - name: Copy hdf5 dll
         run: |
-          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\hdf5.dll -Destination ${{ github.workspace }}\..\build\Release
-          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\zlib.dll -Destination ${{ github.workspace }}\..\build\Release
+          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\hdf5.dll -Destination $GITHUB_ROOT_PATH\build\Release
+          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\zlib.dll -Destination $GITHUB_ROOT_PATH\build\Release
       - name: Run Unit tests
         run: |
-          ${{ github.workspace }}\..\build\Release\unitTest
+          $GITHUB_ROOT_PATH\build\Release\unitTest
       - name: Run Cpp example
         run: |
-          ${{ github.workspace }}\..\build\Release\example.exe
+          $GITHUB_ROOT_PATH\build\Release\example.exe
       - uses: actions/upload-artifact@v4
         with:
           name: windows-2019
-          path: ${{ github.workspace }}\..\build\install
+          path: $GITHUB_ROOT_PATH/build/install/
   windows-2019-staticLink-cs:
     runs-on: windows-2019
     steps:
@@ -88,7 +90,7 @@ jobs:
           7z x ${{ runner.temp }}\swigwin-4.2.0.zip -o${{ runner.temp }}
       - name: CMake build and install
         run: |
-          cd ${{ github.workspace }}/..
+          cd $GITHUB_ROOT_PATH
           mkdir build
           cd build
           cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.2.0/swig.exe ${{ github.workspace }}
@@ -102,10 +104,10 @@ jobs:
         run: msbuild ${{ github.workspace }}/cs/example/example.sln -t:rebuild /p:Configuration=Release /p:Platform="x64"
       - name: Run Cpp example
         run: |
-          ${{ github.workspace }}\..\build\Release\example.exe
+          $GITHUB_ROOT_PATH\build\Release\example.exe
       - name: Copy all dlls for C#
         run: |
-          Copy-Item ${{ github.workspace }}\..\build\Release\*.dll -Destination ${{ github.workspace }}\cs\example\bin\x64\Release
+          Copy-Item $GITHUB_ROOT_PATH\build\Release\*.dll -Destination ${{ github.workspace }}\cs\example\bin\x64\Release
       - name: Run C# example
         run: |
           ${{ github.workspace }}\cs\example\bin\x64\Release\example.exe
@@ -160,12 +162,12 @@ jobs:
       - name: Run java example
         run: |
           cd ${{ github.workspace }}/java/src
-          javac -cp `find ${{ github.workspace }}/../build/install -name fesapiJava*.jar` com/f2i_consulting/example/FesapiJavaExample.java
-          java -Djava.library.path=${{ github.workspace }}/../build/install/lib -cp `find ${{ github.workspace }}/../build/install -name fesapiJava*.jar`:. com.f2i_consulting.example.FesapiJavaExample
+          javac -cp `find $GITHUB_ROOT_PATH/build/install -name fesapiJava*.jar` com/f2i_consulting/example/FesapiJavaExample.java
+          java -Djava.library.path=$GITHUB_ROOT_PATH/build/install/lib -cp `find $GITHUB_ROOT_PATH/build/install -name fesapiJava*.jar`:. com.f2i_consulting.example.FesapiJavaExample
       - uses: actions/upload-artifact@v4
         with:
           name: ubuntu-20.04-${{ matrix.cxx }}
-          path: ${{ github.workspace }}/../build/install
+          path: $GITHUB_ROOT_PATH/build/install/
   ubuntu-20-python3:
     runs-on: ubuntu-20.04
     steps:
@@ -197,7 +199,7 @@ jobs:
           cmake --install .
       - name: Run Python example
         run: |
-          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${{ github.workspace }}/../build/install/lib
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$GITHUB_ROOT_PATH/build/install/lib
           pip3 install ${{ github.workspace }}/python/dist/*.whl
           python3 ${{ github.workspace }}/python/example/example.py
       - uses: actions/upload-artifact@v4
@@ -275,10 +277,10 @@ jobs:
           cmake --install .
       - name: Run Valgrind on example
         run: |
-          valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ${{ github.workspace }}/../build/example/exampled
+          valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all $GITHUB_ROOT_PATH/build/example/exampled
       - name: Run Unit tests
         run: |
-          ${{ github.workspace }}/../build/test/unitTest
+          $GITHUB_ROOT_PATH/build/test/unitTest
   webassembly:
     if: false
     runs-on: ubuntu-20.04    
