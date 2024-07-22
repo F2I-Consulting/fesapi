@@ -3,8 +3,6 @@ on: [push, pull_request]
 jobs:
   windows-2019-dynamicLink:
     runs-on: windows-2019
-    env:
-      GITHUB_ROOT_PATH: {{ env.github.workspace }}/..
     steps:
       - uses: actions/checkout@v4
       - name: HDF5 install
@@ -27,30 +25,28 @@ jobs:
           Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
       - name: CMake build and install
         run: |
-          cd $GITHUB_ROOT_PATH
+          cd ${{ github.workspace }}/..
           mkdir build
           cd build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16 -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16 -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_TEST=TRUE ${{ github.workspace }}
+          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16 -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16 -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_TEST=TRUE -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Copy hdf5 dll
         run: |
-          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\hdf5.dll -Destination $GITHUB_ROOT_PATH\build\Release
-          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\zlib.dll -Destination $GITHUB_ROOT_PATH\build\Release
+          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\hdf5.dll -Destination ${{ github.workspace }}\..\build\Release
+          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\zlib.dll -Destination ${{ github.workspace }}\..\build\Release
       - name: Run Unit tests
         run: |
-          $GITHUB_ROOT_PATH\build\Release\unitTest
+          ${{ github.workspace }}\..\build\Release\unitTest
       - name: Run Cpp example
         run: |
-          $GITHUB_ROOT_PATH\build\Release\example.exe
+          ${{ github.workspace }}\..\build\Release\example.exe
       - uses: actions/upload-artifact@v4
         with:
           name: windows-2019
-          path: $GITHUB_ROOT_PATH/build/install/
+          path: ${{ runner.temp }}/fesapi-install
   windows-2019-staticLink-cs:
     runs-on: windows-2019
-    env:
-      GITHUB_ROOT_PATH: {{ env.github.workspace }}/..
     steps:
       - uses: actions/checkout@v4
       - name: zlib install
@@ -92,10 +88,10 @@ jobs:
           7z x ${{ runner.temp }}\swigwin-4.2.0.zip -o${{ runner.temp }}
       - name: CMake build and install
         run: |
-          cd $GITHUB_ROOT_PATH
+          cd ${{ github.workspace }}/..
           mkdir build
           cd build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.2.0/swig.exe ${{ github.workspace }}
+          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.2.0/swig.exe -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Add msbuild to PATH
@@ -106,10 +102,10 @@ jobs:
         run: msbuild ${{ github.workspace }}/cs/example/example.sln -t:rebuild /p:Configuration=Release /p:Platform="x64"
       - name: Run Cpp example
         run: |
-          $GITHUB_ROOT_PATH\build\Release\example.exe
+          ${{ github.workspace }}\..\build\Release\example.exe
       - name: Copy all dlls for C#
         run: |
-          Copy-Item $GITHUB_ROOT_PATH\build\Release\*.dll -Destination ${{ github.workspace }}\cs\example\bin\x64\Release
+          Copy-Item ${{ github.workspace }}\..\build\Release\*.dll -Destination ${{ github.workspace }}\cs\example\bin\x64\Release
       - name: Run C# example
         run: |
           ${{ github.workspace }}\cs\example\bin\x64\Release\example.exe
@@ -158,18 +154,18 @@ jobs:
           cd ..
           mkdir build
           cd build
-          cmake -DHDF5_ROOT=${{ runner.temp }}/install-hdf5-1.12.2 -DHDF5_USE_STATIC_LIBRARIES=TRUE -DCMAKE_BUILD_TYPE=Release -DWITH_JAVA_WRAPPING=TRUE ${{ github.workspace }} -D CMAKE_C_COMPILER=${{ matrix.cc }} -D CMAKE_CXX_COMPILER=${{ matrix.cxx }}
+          cmake -DHDF5_ROOT=${{ runner.temp }}/install-hdf5-1.12.2 -DHDF5_USE_STATIC_LIBRARIES=TRUE -DCMAKE_BUILD_TYPE=Release -DWITH_JAVA_WRAPPING=TRUE ${{ github.workspace }} -DCMAKE_C_COMPILER=${{ matrix.cc }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }} -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install
           cmake --build . -j2
           cmake --install .
       - name: Run java example
         run: |
           cd ${{ github.workspace }}/java/src
-          javac -cp `find $GITHUB_ROOT_PATH/build/install -name fesapiJava*.jar` com/f2i_consulting/example/FesapiJavaExample.java
-          java -Djava.library.path=$GITHUB_ROOT_PATH/build/install/lib -cp `find $GITHUB_ROOT_PATH/build/install -name fesapiJava*.jar`:. com.f2i_consulting.example.FesapiJavaExample
+          javac -cp `find ${{ runner.temp }}/fesapi-install -name fesapiJava*.jar` com/f2i_consulting/example/FesapiJavaExample.java
+          java -Djava.library.path=${{ runner.temp }}/fesapi-install/lib -cp `find ${{ runner.temp }}/fesapi-install -name fesapiJava*.jar`:. com.f2i_consulting.example.FesapiJavaExample
       - uses: actions/upload-artifact@v4
         with:
           name: ubuntu-20.04-${{ matrix.cxx }}
-          path: $GITHUB_ROOT_PATH/build/install/
+          path: ${{ runner.temp }}/fesapi-install
   ubuntu-20-python3:
     runs-on: ubuntu-20.04
     steps:
@@ -196,12 +192,12 @@ jobs:
           cd ..
           mkdir build
           cd build
-          cmake -DHDF5_ROOT=${{ runner.temp }}/install-hdf5-1.14.0 -DHDF5_USE_STATIC_LIBRARIES=TRUE -DCMAKE_BUILD_TYPE=Release -DWITH_PYTHON_WRAPPING=TRUE ${{ github.workspace }}
+          cmake -DHDF5_ROOT=${{ runner.temp }}/install-hdf5-1.14.0 -DHDF5_USE_STATIC_LIBRARIES=TRUE -DCMAKE_BUILD_TYPE=Release -DWITH_PYTHON_WRAPPING=TRUE ${{ github.workspace }} -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install
           cmake --build . -j2
           cmake --install .
       - name: Run Python example
         run: |
-          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$GITHUB_ROOT_PATH/build/install/lib
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${{ runner.temp }}/fesapi-install/lib
           pip3 install ${{ github.workspace }}/python/dist/*.whl
           python3 ${{ github.workspace }}/python/example/example.py
       - uses: actions/upload-artifact@v4
@@ -256,11 +252,11 @@ jobs:
           cd ${{ runner.temp }}
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_C_COMPILER=mpicc -DHDF5_PREFER_PARALLEL:BOOL=TRUE -DWITH_EXAMPLE:BOOL=TRUE ${{ github.workspace }}
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_C_COMPILER=mpicc -DHDF5_PREFER_PARALLEL:BOOL=TRUE -DWITH_EXAMPLE:BOOL=TRUE -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
           cmake --build . -j2
           cmake --install .
       - name: Run example
-        run: mpiexec -n 2 ${{ runner.temp }}/build/install/example
+        run: mpiexec -n 2 ${{ runner.temp }}/fesapi-install/example
   ubuntu-20-valgrind-unitTest:
     runs-on: ubuntu-20.04
     steps:
@@ -274,15 +270,15 @@ jobs:
           cd ..
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_TEST=TRUE ${{ github.workspace }}
+          cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_TEST=TRUE -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
           cmake --build . -j2
           cmake --install .
       - name: Run Valgrind on example
         run: |
-          valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all $GITHUB_ROOT_PATH/build/example/exampled
+          valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ${{ github.workspace }}/../build/example/exampled
       - name: Run Unit tests
         run: |
-          $GITHUB_ROOT_PATH/build/test/unitTest
+          ${{ github.workspace }}/../build/test/unitTest
   webassembly:
     if: false
     runs-on: ubuntu-20.04    
