@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include <boost/uuid/name_generator_sha1.hpp>
+#include <boost/uuid/name_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
 #include "LocalEngineering2dCrs.h"
@@ -53,8 +53,8 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 	eml23__LocalEngineeringCompoundCrs* local3dCrs = static_cast<eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3);
 
 	// Uuid creation
-	boost::uuids::name_generator_sha1 gen(boost::uuids::ns::dns());
-	boost::uuids::name_generator_sha1 finalGen(gen("fesapi.com"));
+	boost::uuids::name_generator gen(boost::uuids::ns::dns());
+	boost::uuids::name_generator finalGen(gen("f2i-consulting.com"));
 
 	// uom conversion
 	std::string str = gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_3->soap, projectedUom);
@@ -70,12 +70,12 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 
 	// 2d crs
 	LocalEngineering2dCrs* local2dCrs = !unknownProjectedReason.empty()
-		? new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(guid + "_ProjectedEpsgCrs")), title + " LocalEngineering2dCrs",
+		? new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(guid + "_ProjectedUnknownCrs")), title + " LocalEngineering2dCrs",
 			unknownProjectedReason,
 			originOrdinal1, originOrdinal2, projectedLengthUom,
 			azimuth, azimuthUom, azimuthReference,
 			axisOrder)
-		: new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(guid + "_ProjectedUnknownCrs")), title + " LocalEngineering2dCrs",
+		: new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(guid + "_ProjectedEpsgCrs")), title + " LocalEngineering2dCrs",
 			projectedEpsgCode,
 			originOrdinal1, originOrdinal2, projectedLengthUom,
 			azimuth, azimuthUom, azimuthReference,
@@ -85,11 +85,11 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 
 	// Vertical CRS
 	VerticalCrs* verticalCrs = !unknwownVerticalReason.empty()
-		? new VerticalCrs(repo, boost::uuids::to_string(finalGen(guid + "_VerticalEpsgCrs")), title + " VerticalCrs",
+		? new VerticalCrs(repo, boost::uuids::to_string(finalGen(guid + "_VerticalUnknownCrs")), title + " VerticalCrs",
 			unknwownVerticalReason,
 			verticalLengthUom,
 			isUpOriented)
-		: new VerticalCrs(repo, boost::uuids::to_string(finalGen(guid + "_VerticalUnknownCrs")), title + " VerticalCrs",
+		: new VerticalCrs(repo, boost::uuids::to_string(finalGen(guid + "_VerticalEpsgCrs")), title + " VerticalCrs",
 			verticalEpsgCode,
 			verticalLengthUom,
 			isUpOriented);
