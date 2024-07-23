@@ -227,12 +227,20 @@ jobs:
             yum info epel-release &&
             yum install -y epel-release &&
             yum --enablerepo=epel install -y cmake3 &&
-            cd .. &&
+            cd {project}/.. &&
+            wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.14/hdf5-1.14.4/src/hdf5-1.14.4.tar.gz &&
+            tar xf hdf5-1.14.4.tar.gz &&
+            mkdir hdf5-build &&
+            cd build &&
+            cmake3 -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING={project}/../hdf5-install .. &&
+            cmake3 --build . -j2 --config Release &&
+            cmake3 --install .
+            cd {project}/.. &&
             mkdir build &&
             cd build &&
-            cmake3 -DCMAKE_BUILD_TYPE=Release -DWITH_PYTHON_WRAPPING=TRUE {project} &&
-            cmake3 --build . -j2 && 
-            cmake --install .
+            cmake3 -DCMAKE_BUILD_TYPE=Release -DHDF5_ROOT={project}/../hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE {project} &&
+            cmake3 --build . -j2 --config Release &&
+            cmake3 --install .
         with:
           package-dir: ./python
           output-dir: wheelhouse
