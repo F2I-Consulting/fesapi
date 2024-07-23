@@ -230,7 +230,7 @@ jobs:
             cd .. &&
             mkdir build &&
             cd build &&
-            cmake3 -DCMAKE_BUILD_TYPE=Release -DWITH_PYTHON_WRAPPING=TRUE ../fesapi &&
+            cmake3 -DCMAKE_BUILD_TYPE=Release -DWITH_PYTHON_WRAPPING=TRUE {project} &&
             cmake3 --build . -j2 && 
             cmake --install .
         with:
