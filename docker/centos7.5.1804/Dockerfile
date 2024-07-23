@@ -49,9 +49,9 @@ RUN yum search epel-release && \
 WORKDIR /fesapiEnv
 RUN mkdir dependencies && \
 	cd dependencies && \
-	wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.6/src/hdf5-1.10.6.tar.gz && \
-	tar xf hdf5-1.10.6.tar.gz && \
-	cd hdf5-1.10.6 && \
+	wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.14/hdf5-1.14.3/src/hdf5-1.14.3.tar.gz && \
+	tar xf hdf5-1.14.3.tar.gz && \
+	cd hdf5-1.14.3 && \
 	mkdir build && \
 	cd build && \
 	cmake3 -G "Unix Makefiles" \
@@ -62,7 +62,7 @@ RUN mkdir dependencies && \
 		-DHDF5_BUILD_EXAMPLES:BOOL=OFF \
 		-DHDF5_BUILD_CPP_LIB:BOOL=OFF \
 		-DHDF5_BUILD_HL_LIB:BOOL=OFF \
-		-DCMAKE_INSTALL_PREFIX:STRING=/fesapiEnv/dependencies/hdf5-1.10.6/hdf5 \
+		-DCMAKE_INSTALL_PREFIX:STRING=/fesapiEnv/dependencies/hdf5-install \
 		.. && \
 	cmake3 --build . --config Release && \	
 	make install 
@@ -76,12 +76,8 @@ RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 	mkdir build && \
 	cd build && \
 	cmake3 \
-		-DHDF5_C_INCLUDE_DIR=/fesapiEnv/dependencies/hdf5-1.10.6/hdf5/include \
-		-DHDF5_C_LIBRARY_RELEASE=/fesapiEnv/dependencies/hdf5-1.10.6/hdf5/lib/libhdf5.a \
-		-DMINIZIP_INCLUDE_DIR=/usr/include/minizip \
-		-DMINIZIP_LIBRARY_RELEASE=/usr/lib64/libminizip.so \
-		-DZLIB_INCLUDE_DIR=/usr/include \
-		-DZLIB_LIBRARY_RELEASE=/usr/lib64/libz.so \
+		-DHDF5_ROOT=/fesapiEnv/dependencies/hdf5-install \
+		-DHDF5_USE_STATIC_LIBRARIES=TRUE \
 		-DWITH_EXAMPLE=TRUE \
 		-DCMAKE_BUILD_TYPE=Release \
 		../fesapi && \
