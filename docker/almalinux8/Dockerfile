@@ -70,7 +70,7 @@ RUN wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.3/sr
 		-DCMAKE_INSTALL_PREFIX:STRING=/fesapiEnv/dependencies/hdf5-install \
 		.. && \
 	cmake3 --build . --config Release && \	
-	make install 
+	cmake3 --install .
 
 ################
 # fesapi install
@@ -87,8 +87,8 @@ RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 		-DWITH_EXAMPLE=TRUE \
 		-DCMAKE_BUILD_TYPE=Release \
 		../fesapi && \
-	make VERBOSE=OFF && \
-	make install
+	cmake3 --build . --config Release && \
+	cmake3 --install .
 
 # generate .epc and .h5 files
 WORKDIR /fesapiEnv/build/install
