@@ -244,6 +244,7 @@ jobs:
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/fesapi-install/lib64 &&
             auditwheel repair -w {dest_dir} {wheel}
+          CIBW_TEST_COMMAND: python {project}/python/example/example.py
         with:
           package-dir: ./python
           output-dir: wheelhouse
