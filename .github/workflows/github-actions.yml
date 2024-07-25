@@ -227,24 +227,24 @@ jobs:
             yum info epel-release &&
             yum install -y epel-release &&
             yum --enablerepo=epel install -y cmake3 &&
-            cd {project}/.. &&
+            cd / &&
             wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.3/src/hdf5-1.12.3.tar.gz &&
             tar xf hdf5-1.12.3.tar.gz &&
             mkdir hdf5-build &&
             cd hdf5-build &&
-            cmake3 -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING={project}/../hdf5-install ../hdf5-1.12.3 &&
+            cmake3 -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=/hdf5-install ../hdf5-1.12.3 &&
             cmake3 --build . -j2 --config Release &&
             cmake3 --install . &&
-            cd {project}/.. &&
+            cd / &&
             mkdir build &&
             cd build &&
-            cmake3 -DCMAKE_BUILD_TYPE=Release -DHDF5_ROOT={project}/../hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING={project}/../fesapi-install {project} &&
+            cmake3 -DCMAKE_BUILD_TYPE=Release -DHDF5_ROOT=/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING=/fesapi-install {project} &&
             cmake3 --build . -j2 --config Release &&
             cmake3 --install .
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
-            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:{project}/../fesapi-install/lib64 &&
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/fesapi-install/lib64 &&
             env | grep '^LD_LIBRARY_PATH' &&
-            ls {project}/../fesapi-install/lib64 &&
+            ls /fesapi-install/lib64 &&
             auditwheel repair -w {dest_dir} {wheel}
         with:
           package-dir: ./python
