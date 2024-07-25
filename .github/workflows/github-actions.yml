@@ -219,7 +219,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.2
         env:
-          CIBW_BUILD: cp312-*
+          CIBW_BUILD: cp38-manylinux_*
           CIBW_ARCHS: auto64
           CIBW_BEFORE_ALL: >
             yum install -y wget minizip-devel gcc-c++ boost-devel &&
@@ -243,8 +243,6 @@ jobs:
             cmake3 --install .
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/fesapi-install/lib64 &&
-            env | grep '^LD_LIBRARY_PATH' &&
-            ls /fesapi-install/lib64 &&
             auditwheel repair -w {dest_dir} {wheel}
         with:
           package-dir: ./python
