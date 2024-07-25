@@ -219,7 +219,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.2
         env:
-          CIBW_BUILD: cp38-manylinux_*
+          CIBW_BUILD: cp38-manylinux_* cp39-manylinux_* cp310-manylinux_* cp311-manylinux_* cp312-manylinux_* cp313-manylinux_*
           CIBW_ARCHS: auto64
           CIBW_BEFORE_ALL: >
             yum install -y wget minizip-devel gcc-c++ boost-devel &&
