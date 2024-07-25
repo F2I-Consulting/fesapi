@@ -221,7 +221,6 @@ jobs:
         env:
           CIBW_BUILD: cp312-*
           CIBW_ARCHS: auto64
-          CIBW_ENVIRONMENT: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:{project}/../fesapi-install/lib64
           CIBW_BEFORE_ALL: >
             yum install -y wget minizip-devel gcc-c++ boost-devel &&
             yum search epel-release &&
@@ -242,6 +241,11 @@ jobs:
             cmake3 -DCMAKE_BUILD_TYPE=Release -DHDF5_ROOT={project}/../hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING={project}/../fesapi-install {project} &&
             cmake3 --build . -j2 --config Release &&
             cmake3 --install .
+          CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:{project}/../fesapi-install/lib64 &&
+            env | grep '^LD_LIBRARY_PATH' &&
+            ls {project}/../fesapi-install/lib64 &&
+            auditwheel repair -w {dest_dir} {wheel}
         with:
           package-dir: ./python
           output-dir: wheelhouse
