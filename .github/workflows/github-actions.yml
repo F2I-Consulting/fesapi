@@ -109,7 +109,7 @@ jobs:
       - name: Run C# example
         run: |
           ${{ github.workspace }}\cs\example\bin\x64\Release\example.exe
-  ubuntu-20-java8-${{ matrix.cxx }}:
+  ubuntu-20-java11:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false  # 'false' means Don't stop matrix workflows even if some matrix failed.
@@ -131,7 +131,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '8'
+          java-version: '11'
       - name: APT install
         run: |
           sudo apt update
