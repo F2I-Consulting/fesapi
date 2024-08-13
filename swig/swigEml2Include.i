@@ -1688,6 +1688,15 @@ namespace EML2_NS
 		PropertyKind* getParentPropertyKind() const;
 
 		/**
+		 * Sets the parent property kind of this property kind
+		 *
+		 * @exception	std::invalid_argument	If @c parentPropertyKind is null.
+		 *
+		 * @param [in]	parentPropertyKind	The parent property kind to set to this property kind.
+		 */
+		void setParentPropertyKind(PropertyKind* parentPropertyKind);
+
+		/**
 		 * Checks if this property kind is abstract or not
 		 *
 		 * @returns	True if abstract, false if not.
