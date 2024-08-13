@@ -24,15 +24,15 @@ using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
 
-PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-	gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
+void PropertyKind::init(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
+	const std::string& quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
 	}
 
 	gsoapProxy2_3 = soap_new_eml23__PropertyKind(repo->getGsoapContext());
-	static_cast<eml23__PropertyKind*>(gsoapProxy2_3)->QuantityClass = soap_eml23__QuantityClassKind2s(repo->getGsoapContext(), quantityClass);
+	static_cast<eml23__PropertyKind*>(gsoapProxy2_3)->QuantityClass = quantityClass;
 	static_cast<eml23__PropertyKind*>(gsoapProxy2_3)->IsAbstract = isAbstract;
 
 	initMandatoryMetadata();
@@ -47,6 +47,18 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::st
 	}
 
 	setParentPropertyKind(parentPropertyKind);
+}
+
+PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+	gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
+{
+	init(repo, guid, title, soap_eml23__QuantityClassKind2s(repo->getGsoapContext(), quantityClass), isAbstract, parentPropertyKind);
+}
+
+PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
+	const std::string& quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
+{
+	init(repo, guid, title, quantityClass, isAbstract, parentPropertyKind);
 }
 
 void PropertyKind::setXmlParentPropertyKind(EML2_NS::PropertyKind* parentPropertyKind)

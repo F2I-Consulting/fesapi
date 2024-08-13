@@ -2439,13 +2439,19 @@ RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std
 	return new RESQML2_0_1_NS::PropertyKind(this, guid, title, namingSystem, nonStandardUom, parentEnergisticsPropertyKind);
 }
 
-RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
-	const std::string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType)
+RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string& guid, const std::string& title,
+	const std::string& namingSystem, const std::string& nonStandardUom, EML2_NS::PropertyKind * parentPropType)
 {
 	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, nonStandardUom, parentPropType);
 }
 
-EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string& guid, const std::string& title,
+	const std::string& quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
+{
+	return new EML2_3_NS::PropertyKind(this, guid, title, quantityClass, isAbstract, parentPropertyKind);
+}
+
+EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string& guid, const std::string& title,
 	gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract, EML2_NS::PropertyKind* parentPropertyKind)
 {
 	return new EML2_3_NS::PropertyKind(this, guid, title, quantityClass, isAbstract, parentPropertyKind);

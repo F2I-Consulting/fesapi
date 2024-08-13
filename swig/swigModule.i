@@ -2987,6 +2987,28 @@ import com.f2i_consulting.fesapi.*;
 			gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
 
 		/**
+		 * @brief	Creates a property kind starting with EML2.1 version into this repository.
+		 *			Don't use it at all if you want a full RESQML2.0.1 EPC!!! Use other same name methods instead please.
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	  	guid			  	The guid to set to the property kind. If empty then a new
+		 * 									guid will be generated.
+		 * @param 	  	title			  	The title to set to the property kind. If empty then
+		 * 									\"unknown\" title will be set.
+		 * @param 	  	quantityClass	  	A reference to the name of a quantity class in the
+		 * 									Energistics units of measure dictionary or in another dictionary.
+		 * @param 	  	isAbstract		  	(Optional) Indicates whether the property kind should be used
+		 * 									as a real (default) property or not.
+		 * @param [in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
+		 * 									default partial parent property kind will be created.
+		 *
+		 * @returns	A pointer to the new property kind.
+		 */
+		EML2_NS::PropertyKind* createPropertyKind(const std::string& guid, const std::string& title,
+			const std::string& quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
+
+		/**
 		 * @brief	Creates a property set into this repository.
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
