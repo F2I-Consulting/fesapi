@@ -20,7 +20,12 @@ under the License.
 
 #include <stdexcept>
 
+#include <boost/version.hpp>
+#if BOOST_VERSION < 106600
+#include <boost/uuid/name_generator.hpp>
+#else
 #include <boost/uuid/name_generator_sha1.hpp>
+#endif
 #include <boost/uuid/uuid_io.hpp>
 
 #include "LocalEngineering2dCrs.h"
@@ -53,8 +58,18 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 	eml23__LocalEngineeringCompoundCrs* local3dCrs = static_cast<eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3);
 
 	// Uuid creation
+#if BOOST_VERSION < 106600
+	// According to https://datatracker.ietf.org/doc/html/rfc4122#appendix-C the DNS uuid is 6ba7b810-9dad-11d1-80b4-00c04fd430c8
+	boost::uuids::uuid dnsUuid = { {
+		0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1 ,
+		0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8
+	}};
+	boost::uuids::name_generator gen(dnsUuid);
+	boost::uuids::name_generator finalGen(gen("f2i-consulting.com"));
+#else
 	boost::uuids::name_generator_sha1 gen(boost::uuids::ns::dns());
-	boost::uuids::name_generator_sha1 finalGen(gen("fesapi.com"));
+	boost::uuids::name_generator_sha1 finalGen(gen("f2i-consulting.com"));
+#endif
 
 	// uom conversion
 	std::string str = gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_3->soap, projectedUom);
@@ -70,12 +85,12 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 
 	// 2d crs
 	LocalEngineering2dCrs* local2dCrs = !unknownProjectedReason.empty()
-		? new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(guid + "_ProjectedEpsgCrs")), title + " LocalEngineering2dCrs",
+		? new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(guid + "_ProjectedUnknownCrs")), title + " LocalEngineering2dCrs",
 			unknownProjectedReason,
 			originOrdinal1, originOrdinal2, projectedLengthUom,
 			azimuth, azimuthUom, azimuthReference,
 			axisOrder)
-		: new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(guid + "_ProjectedUnknownCrs")), title + " LocalEngineering2dCrs",
+		: new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(guid + "_ProjectedEpsgCrs")), title + " LocalEngineering2dCrs",
 			projectedEpsgCode,
 			originOrdinal1, originOrdinal2, projectedLengthUom,
 			azimuth, azimuthUom, azimuthReference,
@@ -85,11 +100,11 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 
 	// Vertical CRS
 	VerticalCrs* verticalCrs = !unknwownVerticalReason.empty()
-		? new VerticalCrs(repo, boost::uuids::to_string(finalGen(guid + "_VerticalEpsgCrs")), title + " VerticalCrs",
+		? new VerticalCrs(repo, boost::uuids::to_string(finalGen(guid + "_VerticalUnknownCrs")), title + " VerticalCrs",
 			unknwownVerticalReason,
 			verticalLengthUom,
 			isUpOriented)
-		: new VerticalCrs(repo, boost::uuids::to_string(finalGen(guid + "_VerticalUnknownCrs")), title + " VerticalCrs",
+		: new VerticalCrs(repo, boost::uuids::to_string(finalGen(guid + "_VerticalEpsgCrs")), title + " VerticalCrs",
 			verticalEpsgCode,
 			verticalLengthUom,
 			isUpOriented);
