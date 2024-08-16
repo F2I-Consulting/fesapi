@@ -48,7 +48,7 @@ namespace EML2_3_NS
 		 * @param 		  	quantityClass	  	The quantity class of this property kind. It wil
 		 * 										constrain its allowed uom collection. The enum comes from
 		 * 										Energistics Unit Of Measure.
-		 * @param 		  	isAbstract		  	(Optional) Inidcates if this property kind can be used
+		 * @param 		  	isAbstract		  	(Optional) Indicates if this property kind can be used
 		 * 										directly by a property or not.
 		 * @param [in,out]	parentPropertyKind	(Optional) The parent property kind if this property
 		 * 										kind. By default, it is the Energistics root property
@@ -69,7 +69,7 @@ namespace EML2_3_NS
 		 * @param 		  	quantityClass	  	The quantity class of this property kind. It wil
 		 * 										constrain its allowed uom collection. The enum comes from
 		 * 										Energistics Unit Of Measure or another dictionary.
-		 * @param 		  	isAbstract		  	(Optional) Inidcates if this property kind can be used
+		 * @param 		  	isAbstract		  	(Optional) Indicates if this property kind can be used
 		 * 										directly by a property or not.
 		 * @param [in,out]	parentPropertyKind	(Optional) The parent property kind if this property
 		 * 										kind. By default, it is the Energistics root property

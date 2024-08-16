@@ -140,6 +140,7 @@ list(APPEND FESAPI_PROXIES_SOURCES
 	${FESAPI_ROOT_DIR}/src/proxies/envC.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_resqml2_0_1C.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_3C.cpp
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_uom1_0C.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/namespace.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/stdsoap2.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/struct_tm.cpp
@@ -151,6 +152,8 @@ list(APPEND FESAPI_PROXIES_HEADERS
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_resqml2_0_1Stub.h
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_3H.h
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_3Stub.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_uom1_0H.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_uom1_0Stub.h
 	${FESAPI_ROOT_DIR}/src/proxies/stdsoap2.h
 )
 

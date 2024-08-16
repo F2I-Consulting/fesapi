@@ -816,6 +816,14 @@ import com.f2i_consulting.fesapi.*;
     delete();
   }
 %}
+	/**
+	 * @brief	A DataObjectRepository stores in memory all dataObjects.
+	 *			This is the in-memory container which holds deserialized (EPC) files and fetched ETP dataobjects.
+	 *			On the other direction, it is also used to store dataobjets which you want either to serialize in (EPC) files or pushed to an ETP store.
+	 *			It is not a database (it is much more a simple container). For instance, in most cases, you are not supposed to delete anything neither update relationships.
+	 *			It also controls the creation and the deletion of all contained dataobjects meaning that when you delete it, it also deletes all contained dataobjects.
+	 *			It does not store numerical values of the dataobjects but only their XML definitions.
+	 */
 	class DataObjectRepository
 	{
 	public:
@@ -837,16 +845,18 @@ import com.f2i_consulting.fesapi.*;
 			RESQML2_2 = 4,
 			WITSML2_1 = 5
 		};
-		
+
+		/** Default constructor */
 		DataObjectRepository();
 
 		/**
-		 * Constructor
+		 * Constructor initializing the datobject repository based on a resource directory.
 		 *
-		 * @param 	propertyKindMappingFilesDirectory	Pathname of the property kind mapping files
-		 * 												directory.
+		 * @param 	resourceDirectory	Pathname of the resource directory.
+		 *								For now it supports reading Energistics UOM 1.0 XML file
+		 *								and a proprietary PropertyKindMapping.xml file waiting for PWLS support. 
 		 */
-		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
+		DataObjectRepository(const std::string& resourceDirectory);
 
 		/**
 		* Set the used standard when creating a new dataobject
@@ -2885,7 +2895,7 @@ import com.f2i_consulting.fesapi.*;
 		 RESQML2_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates a RESQML2.0.1 only property kind into this repository
+		 * Creates a property kind into this repository
 		 *
 		 * @param 	guid						 	The guid to set to the property kind. If empty then a
 		 * 											new guid will be generated.
@@ -2897,16 +2907,18 @@ import com.f2i_consulting.fesapi.*;
 		 * 											resqml:domainOrEmail:dictionaryName</tt>.
 		 * @param 	uom							 	The property kind unit of measure taken from the
 		 * 											standard RESQML units of measure catalog.
+		 * @param 	isAbstract						Indicates whether the property kind should be used
+		 * 											as a real (default) property or not.
 		 * @param 	parentEnergisticsPropertyKind	The parent property kind taken from the standard set
 		 * 											of RESQML property kinds.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
+			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
-		 * @brief	Creates a RESQML2.0.1 only property kind into this repository
+		 * @brief	Creates a property kind into this repository
 		 *
 		 * @exception	std::invalid_argument	If <tt>parentPropType == nullptr</tt>.
 		 *
@@ -2919,15 +2931,17 @@ import com.f2i_consulting.fesapi.*;
 		 * 								URN of the form \"urn:x- resqml:domainOrEmail:dictionaryName\".
 		 * @param 	  	uom			  	The property kind unit of measure taken from the standard RESQML
 		 * 								units of measure catalog.
+		 * @param 	  	isAbstract		Indicates whether the property kind should be used
+		 * 								as a real (default) property or not.
 		 * @param [in]	parentPropType	The parent property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType);
+			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, EML2_NS::PropertyKind * parentPropType);
 
 		/**
-		 * Creates a RESQML2.0.1 only property kind into this repository.
+		 * Creates a property kind into this repository.
 		 *
 		 * @param 	guid						 	The guid to set to the property kind. If empty then a
 		 * 											new guid will be generated.
@@ -2938,16 +2952,18 @@ import com.f2i_consulting.fesapi.*;
 		 * 											controlling authority. Use a URN of the form \"urn:x-
 		 * 											resqml:domainOrEmail:dictionaryName\".
 		 * @param 	nonStandardUom				 	The property kind unit of measure.
+		 * @param 	isAbstract						Indicates whether the property kind should be used
+		 * 											as a real (default) property or not.
 		 * @param 	parentEnergisticsPropertyKind	The parent property kind taken from the standard set
 		 * 											of RESQML property kinds.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
+			const std::string & namingSystem, const std::string & nonStandardUom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
-		 * Creates a RESQML2.0.1 only property kind into this repository
+		 * Creates a property kind into this repository
 		 *
 		 * @param 	  	guid		  	The guid to set to the property kind. If empty then a new guid
 		 * 								will be generated.
@@ -2957,12 +2973,14 @@ import com.f2i_consulting.fesapi.*;
 		 * 								This also defines the name of the controlling authority. Use a
 		 * 								URN of the form \"urn:x- resqml:domainOrEmail:dictionaryName\".
 		 * @param 	  	nonStandardUom	The property kind unit of measure.
+		 * @param 	  	isAbstract		Indicates whether the property kind should be used
+		 * 								as a real (default) property or not.
 		 * @param [in]	parentPropType	The parent property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType);
+			const std::string & namingSystem, const std::string & nonStandardUom, bool isAbstract, EML2_NS::PropertyKind * parentPropType);
 
 		/**
 		 * @brief	Creates a property kind starting with EML2.1 version into this repository.
@@ -2977,7 +2995,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @param 	  	quantityClass	  	A reference to the name of a quantity class in the
 		 * 									Energistics units of measure dictionary.
 		 * @param 	  	isAbstract		  	(Optional) Indicates whether the property kind should be used
-		 * 									as a real (default) property or not.
+		 * 									as a real (default) property or not. False by default.
 		 * @param [in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
 		 * 									default partial parent property kind will be created.
 		 *
@@ -2999,7 +3017,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @param 	  	quantityClass	  	A reference to the name of a quantity class in the
 		 * 									Energistics units of measure dictionary or in another dictionary.
 		 * @param 	  	isAbstract		  	(Optional) Indicates whether the property kind should be used
-		 * 									as a real (default) property or not.
+		 * 									as a real (default) property or not. False by default.
 		 * @param [in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
 		 * 									default partial parent property kind will be created.
 		 *

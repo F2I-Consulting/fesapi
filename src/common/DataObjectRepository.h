@@ -24,6 +24,7 @@ under the License.
 #include <unordered_map>
 
 #include "DataObjectReference.h"
+#include "../proxies/gsoap_uom1_0H.h"
 
 namespace EML2_NS
 {
@@ -159,8 +160,12 @@ namespace COMMON_NS
 	class HdfProxyFactory;
 
 	/**
-	 * @brief	This abstract class acts as a buffer between the RESQML (business) classes and the
-	 * 			persisted data.
+	 * @brief	A DataObjectRepository stores in memory all dataObjects.
+	 *			This is the in-memory container which holds deserialized (EPC) files and fetched ETP dataobjects.
+	 *			On the other direction, it is also used to store dataobjets which you want either to serialize in (EPC) files or pushed to an ETP store.
+	 *			It is not a database (it is much more a simple container). For instance, in most cases, you are not supposed to delete anything neither update relationships.
+	 *			It also controls the creation and the deletion of all contained dataobjects meaning that when you delete it, it also deletes all contained dataobjects.
+	 *			It does not store numerical values of the dataobjects but only their XML definitions.
 	 */
 	class DataObjectRepository
 	{
@@ -170,12 +175,13 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT DataObjectRepository();
 
 		/**
-		 * Constructor
+		 * Constructor initializing the datobject repository based on a resource directory.
 		 *
-		 * @param 	propertyKindMappingFilesDirectory	Pathname of the property kind mapping files
-		 * 												directory.
+		 * @param 	resourceDirectory	Pathname of the resource directory.
+		 *								For now it supports reading Energistics UOM 1.0 XML file
+		 *								and a proprietary PropertyKindMapping.xml file waiting for PWLS support. 
 		 */
-		DLL_IMPORT_OR_EXPORT explicit DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
+		DLL_IMPORT_OR_EXPORT explicit DataObjectRepository(const std::string& resourceDirectory);
 
 		/** Destructor */
 		DLL_IMPORT_OR_EXPORT virtual ~DataObjectRepository();
@@ -2625,13 +2631,15 @@ namespace COMMON_NS
 		 * 											resqml:domainOrEmail:dictionaryName</tt>.
 		 * @param 	uom							 	The property kind unit of measure taken from the
 		 * 											standard RESQML units of measure catalog.
+		 * @param 	isAbstract						Indicates whether the property kind should be used
+		 * 											as a real (default) property or not.
 		 * @param 	parentEnergisticsPropertyKind	The parent property kind taken from the standard set
 		 * 											of RESQML property kinds.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
+			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
 		 * @brief	Creates a property kind into this repository
@@ -2647,12 +2655,14 @@ namespace COMMON_NS
 		 * 								URN of the form \"urn:x- resqml:domainOrEmail:dictionaryName\".
 		 * @param 	  	uom			  	The property kind unit of measure taken from the standard RESQML
 		 * 								units of measure catalog.
+		 * @param 	  	isAbstract		Indicates whether the property kind should be used
+		 * 								as a real (default) property or not.
 		 * @param [in]	parentPropType	The parent property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType);
+			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, EML2_NS::PropertyKind * parentPropType);
 
 		/**
 		 * Creates a property kind into this repository.
@@ -2666,13 +2676,15 @@ namespace COMMON_NS
 		 * 											controlling authority. Use a URN of the form \"urn:x-
 		 * 											resqml:domainOrEmail:dictionaryName\".
 		 * @param 	nonStandardUom				 	The property kind unit of measure.
+		 * @param 	isAbstract						Indicates whether the property kind should be used
+		 * 											as a real (default) property or not.
 		 * @param 	parentEnergisticsPropertyKind	The parent property kind taken from the standard set
 		 * 											of RESQML property kinds.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
+			const std::string & namingSystem, const std::string & nonStandardUom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
 		 * Creates a property kind into this repository
@@ -2685,12 +2697,14 @@ namespace COMMON_NS
 		 * 								This also defines the name of the controlling authority. Use a
 		 * 								URN of the form \"urn:x- resqml:domainOrEmail:dictionaryName\".
 		 * @param 	  	nonStandardUom	The property kind unit of measure.
+		 * @param 	  	isAbstract		Indicates whether the property kind should be used
+		 * 								as a real (default) property or not.
 		 * @param [in]	parentPropType	The parent property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType);
+			const std::string & namingSystem, const std::string & nonStandardUom, bool isAbstract, EML2_NS::PropertyKind * parentPropType);
 
 		/**
 		 * @brief	Creates a property kind starting with EML2.1 version into this repository.
@@ -2705,7 +2719,7 @@ namespace COMMON_NS
 		 * @param 	  	quantityClass	  	A reference to the name of a quantity class in the
 		 * 									Energistics units of measure dictionary.
 		 * @param 	  	isAbstract		  	(Optional) Indicates whether the property kind should be used
-		 * 									as a real (default) property or not.
+		 * 									as a real (default) property or not. False by default.
 		 * @param [in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
 		 * 									default partial parent property kind will be created.
 		 *
@@ -2727,7 +2741,7 @@ namespace COMMON_NS
 		 * @param 	  	quantityClass	  	A reference to the name of a quantity class in the
 		 * 									Energistics units of measure dictionary or in another dictionary.
 		 * @param 	  	isAbstract		  	(Optional) Indicates whether the property kind should be used
-		 * 									as a real (default) property or not.
+		 * 									as a real (default) property or not. False by default.
 		 * @param [in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
 		 * 									default partial parent property kind will be created.
 		 *
@@ -3591,6 +3605,8 @@ namespace COMMON_NS
 		*/
 		void commitTransactionRepo(DataObjectRepository* transactionRepo);
 
+		gsoap_uom1_0::uom10__uomDictionary const* getUomDictionary() const { return uomDictionary; }
+
 	private:
 
 		/**
@@ -3606,6 +3622,7 @@ namespace COMMON_NS
 		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > backwardRels;
 
 		soap* gsoapContext = soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING);
+		gsoap_uom1_0::uom10__uomDictionary const* const uomDictionary;
 
 		std::vector<std::string> warnings;
 
@@ -3669,5 +3686,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
 
 		void replaceDataObjectInRels(COMMON_NS::AbstractObject* dataObjToReplace, COMMON_NS::AbstractObject* newDataObj);
+
+		gsoap_uom1_0::uom10__uomDictionary* initUomDictionary(const std::string& resourceDirectory);
 	};
 }

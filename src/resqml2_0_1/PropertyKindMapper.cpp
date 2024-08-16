@@ -39,13 +39,12 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 	WIN32_FIND_DATA search_data;
 	HANDLE handle = FindFirstFile((directory+"\\*").c_str(), &search_data);
 
-	vector<string> files;
 	if (handle == INVALID_HANDLE_VALUE){
 		throw invalid_argument("Cannot open the directory where the property kind mapper is located : " + directory);
 	}
 
 	do {
-		string fileName(search_data.cFileName);
+		const string fileName(search_data.cFileName);
 #else
 	DIR* rep = opendir(directory.c_str());
 	if (rep == nullptr) {
@@ -54,7 +53,7 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 
 	struct dirent* currentFile = readdir(rep); // first file
 	do {
-		string fileName = currentFile->d_name;
+		const string fileName = currentFile->d_name;
 #endif
 		const size_t pos = fileName.find_last_of('.');
 		if (pos < fileName.size()) {

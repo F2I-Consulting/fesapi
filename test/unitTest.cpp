@@ -179,7 +179,7 @@ TEST_CASE("Cascade Delete", "[CRUD]")
 	auto* discreteProp = repo.createDiscreteProperty(ijkGrid, "b9c65ec4-3d44-4a7b-a064-b1299fa654d3", "", 1, gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
 
 	// Independant prop which does point to a prop kind
-	auto* propKind = repo.createPropertyKind("f8f21808-68f1-4219-aeac-0379097948c8", "", "testing", gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::quantity);
+	auto* propKind = repo.createPropertyKind("f8f21808-68f1-4219-aeac-0379097948c8", "", "testing", gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, false, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::quantity);
 	auto* continuousProp = repo.createContinuousProperty(ijkGrid, "0cb055ae-61cd-4cc3-ba7d-7c7496b58c17", "", 1, gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, propKind);
 
 	// Prop in a propertyset

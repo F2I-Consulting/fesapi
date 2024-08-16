@@ -85,7 +85,22 @@ bool PropertyKind::isParentPartial() const
 
 std::string PropertyKind::getBaseUomAsString() const
 {
-	throw logic_error("Not yet implemented.");
+	auto const* const uomDict = repository->getUomDictionary();
+	if (uomDict == nullptr) {
+		return "Energistics Uom XML file not loaded as a resource of the DataObjectRepository";
+	}
+	// unitless quantity appeared in PWLS3.0 which is after UOM1.0 which has not been incremented yet
+	if (static_cast<eml23__PropertyKind*>(this->gsoapProxy2_3)->QuantityClass == "unitless")
+		return "Euc";
+
+	auto it = std::find_if(
+		uomDict->quantityClassSet->quantityClass.begin(), uomDict->quantityClassSet->quantityClass.end(),
+		[this](gsoap_uom1_0::uom10__quantityClass const* const quantityClass)
+			{return static_cast<eml23__PropertyKind*>(this->gsoapProxy2_3)->QuantityClass == quantityClass->name; });
+
+	return it == uomDict->quantityClassSet->quantityClass.end()
+		? "Unknown"
+		: (*it)->baseForConversion;
 }
 
 std::string PropertyKind::getParentAsString() const

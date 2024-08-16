@@ -348,7 +348,7 @@ ${COMMENT_END}
 			fesapi.delete_DoubleArray(seismicLineAbscissa);
 		}
 		
-		PropertyKind commentPropType = repo.createPropertyKind("0845ad74-2673-408e-b125-8dabc26ae552", "comment prop type", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, resqml20__ResqmlPropertyKind.RESQML_x0020root_x0020property);
+		PropertyKind commentPropType = repo.createPropertyKind("0845ad74-2673-408e-b125-8dabc26ae552", "comment prop type", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, false, resqml20__ResqmlPropertyKind.RESQML_x0020root_x0020property);
 		CommentProperty commentProperty = repo.createCommentProperty(h1i1SinglePolylineRep, "ab70d9ca-7745-474a-8b43-f2cf7ed11838", "My comment property", 1, eml23__IndexableElement.nodes, commentPropType);
 		StringVector myComments = new StringVector();
 		myComments.add("Comment0");
@@ -454,7 +454,7 @@ ${COMMENT_END}
 		//
 		// Properties
 		//
-		PropertyKind  propType1 = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, resqml20__ResqmlPropertyKind.continuous);
+		PropertyKind  propType1 = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, false, resqml20__ResqmlPropertyKind.continuous);
 		ContinuousProperty contProp1 = repo.createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
 				eml23__IndexableElement.nodes, "exoticMeter", propType1);
 		SWIGTYPE_p_double prop1Values = fesapi.new_DoubleArray(16);
@@ -485,7 +485,7 @@ ${COMMENT_END}
 	
 	private static void serializeIjkGrid(DataObjectRepository repo, AbstractHdfProxy hdfProxy)
 	{
-		cellIndexPropKind = repo.createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", resqml20__ResqmlUom.Euc, resqml20__ResqmlPropertyKind.discrete);
+		cellIndexPropKind = repo.createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", resqml20__ResqmlUom.Euc, false, resqml20__ResqmlPropertyKind.discrete);
 		Model earthModel = repo.createEarthModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid");
 		EarthModelInterpretation earthModelInterp = repo.createEarthModelInterpretation(earthModel, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp");
 		ijkgrid = repo.createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);

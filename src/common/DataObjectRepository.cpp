@@ -18,9 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "DataObjectRepository.h"
 
+#if defined(_WIN32)
+#include <windows.h>
+#else
+#include <dirent.h>
+#include <sys/types.h>
+#endif
+
 #include <algorithm>
 #include <array>
 #include <ctime>
+#include <fstream>
 #include <functional>
 
 #include "../common/DataFeeder.h"
@@ -299,15 +307,74 @@ namespace {
 		GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace);\
 	}
 
+gsoap_uom1_0::uom10__uomDictionary* DataObjectRepository::initUomDictionary(const std::string& resourceDirectory)
+{
+	gsoap_uom1_0::uom10__uomDictionary* result = nullptr;
+	if (resourceDirectory.empty()) return result;
+
+#if defined(_WIN32)
+	WIN32_FIND_DATA search_data;
+	HANDLE handle = FindFirstFile((resourceDirectory + "\\*").c_str(), &search_data);
+
+	if (handle == INVALID_HANDLE_VALUE) {
+		throw invalid_argument("Cannot open the resource directory : " + resourceDirectory);
+	}
+
+	do {
+		const string fileName(search_data.cFileName);
+#else
+	DIR* rep = opendir(resourceDirectory.c_str());
+	if (rep == nullptr) {
+		throw invalid_argument("Cannot open the resource directory : " + resourceDirectory);
+	}
+
+	struct dirent* currentFile = readdir(rep); // first file
+	do {
+		const string fileName = currentFile->d_name;
+#endif
+		if (fileName.compare("Energistics_Unit_of_Measure_Dictionary_V1.0.xml") == 0) {
+			std::ifstream file((resourceDirectory + "/Energistics_Unit_of_Measure_Dictionary_V1.0.xml").c_str());
+			if (file) {
+				setGsoapStream(&file);
+				result = gsoap_uom1_0::soap_new_uom10__uomDictionary(gsoapContext);
+				soap_read_uom10__uomDictionary(gsoapContext, result);
+				file.close();
+			}
+			else {
+				throw domain_error("The Energistics_Unit_of_Measure_Dictionary_V1.0.xml file cannot be opened");
+			}
+		}
+	}
+#if defined(_WIN32)
+	while (FindNextFile(handle, &search_data) != 0);
+
+	//Close the handle after use or memory/resource leak
+	FindClose(handle);
+	return result;
+#else
+	while ((currentFile = readdir(rep)) != nullptr);
+
+	if (closedir(rep) == -1) {
+		throw invalid_argument("Cannot close the resource directory.");
+	}
+
+	return result;
+#endif
+}
+
 DataObjectRepository::DataObjectRepository() :
+	uomDictionary(initUomDictionary("")),
 	propertyKindMapper(),
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()) {}
 
-DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappingFilesDirectory) :
+DataObjectRepository::DataObjectRepository(const std::string& resourceDirectory) :
+	uomDictionary(initUomDictionary(resourceDirectory)),
 	propertyKindMapper(new PropertyKindMapper(this)),
 	hdfProxyFactory(new COMMON_NS::HdfProxyFactory())
 {
-	const string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);
+	// Property Kind mapping files.
+	// It has to be replaced by PWLS longer term.
+	const string error = propertyKindMapper->loadMappingFilesFromDirectory(resourceDirectory);
 	if (!error.empty()) {
 		propertyKindMapper.reset();
 		throw invalid_argument("Could not import property kind mappers : " + error);
@@ -2422,27 +2489,27 @@ RESQML2_NS::StringTableLookup* DataObjectRepository::createStringTableLookup(con
 }
 
 RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
-	const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
+	const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
 {
-	return new RESQML2_0_1_NS::PropertyKind(this, guid, title, namingSystem, uom, parentEnergisticsPropertyKind);
+	return new RESQML2_0_1_NS::PropertyKind(this, guid, title, namingSystem, uom, isAbstract, parentEnergisticsPropertyKind);
 }
 
 RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
-	const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType)
+	const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, EML2_NS::PropertyKind * parentPropType)
 {
-	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, uom, parentPropType);
+	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, uom, isAbstract, parentPropType);
 }
 
 RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
-	const std::string & namingSystem, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
+	const std::string & namingSystem, const std::string & nonStandardUom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
 {
-	return new RESQML2_0_1_NS::PropertyKind(this, guid, title, namingSystem, nonStandardUom, parentEnergisticsPropertyKind);
+	return new RESQML2_0_1_NS::PropertyKind(this, guid, title, namingSystem, nonStandardUom, isAbstract, parentEnergisticsPropertyKind);
 }
 
 RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string& guid, const std::string& title,
-	const std::string& namingSystem, const std::string& nonStandardUom, EML2_NS::PropertyKind * parentPropType)
+	const std::string& namingSystem, const std::string& nonStandardUom, bool isAbstract, EML2_NS::PropertyKind * parentPropType)
 {
-	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, nonStandardUom, parentPropType);
+	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, nonStandardUom, isAbstract, parentPropType);
 }
 
 EML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string& guid, const std::string& title,

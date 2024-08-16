@@ -293,7 +293,8 @@ void serializeWells(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdf
 
 	EML2_NS::PropertyKind* unitNumberPropType = nullptr;
 	if (repo->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		unitNumberPropType = repo->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::discrete);
+		unitNumberPropType = repo->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, false,
+			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::discrete);
 	}
 #if WITH_RESQML2_2
 	else {
@@ -731,7 +732,8 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * repo, EML2_NS::Abstra
 	//**************
 
 	if (repo->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		propType1 = repo->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		propType1 = repo->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::m, false,
+			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 	}
 #if WITH_RESQML2_2
 	else {
@@ -745,7 +747,8 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * repo, EML2_NS::Abstra
 
 	EML2_NS::PropertyKind * propType2 = nullptr;
 	if (repo->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		propType2 = repo->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::K, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::thermodynamic_x0020temperature);
+		propType2 = repo->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::K, false,
+			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::thermodynamic_x0020temperature);
 	}
 #if WITH_RESQML2_2
 	else {
@@ -1004,7 +1007,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	 Discrete Properties
 	***************/
 	if (repo->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-		propType1 = repo->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::discrete);
+		propType1 = repo->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, false,
+			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::discrete);
 	}
 #if WITH_RESQML2_2
 	else {
