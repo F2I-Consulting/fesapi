@@ -59,7 +59,7 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PlaneSetRepresentation() = default;
 
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
+		COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 

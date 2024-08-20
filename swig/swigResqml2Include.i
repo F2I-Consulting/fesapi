@@ -2815,7 +2815,7 @@ namespace RESQML2_NS
 		 * 						
 		 * @returns Null if it fails, else the local CRS associated to the @p patchIndex patch.
 		 */
-		EML2_NS::AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
+		EML2_NS::AbstractLocal3dCrs * getLocalCrs(uint64_t patchIndex);
 		
 		/**
 		 * Set a time index in a time series for all point geometries of all existing patches of this representation.

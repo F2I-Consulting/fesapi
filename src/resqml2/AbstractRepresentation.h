@@ -51,7 +51,7 @@ namespace RESQML2_NS
 		 * 						
 		 * @returns Null if it fails, else the local CRS associated to the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getLocalCrs(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getLocalCrs(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the data object reference of the local 3d CRS associated to a given patch of this
@@ -64,7 +64,7 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference if it fails, else the data object reference of the local
 		 * 			CRS associated to the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const;
 
 		/**
 		 * @brief Gets the data object reference of the HDF proxy which is used for storing the numerical

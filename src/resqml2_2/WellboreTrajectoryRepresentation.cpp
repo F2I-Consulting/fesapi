@@ -366,7 +366,7 @@ gsoap_eml2_3::_resqml22__WellboreTrajectoryRepresentation* WellboreTrajectoryRep
 	return static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3);
 }
 
-COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	if (patchIndex > 0) {
 		throw out_of_range("There is no more than one patch in a wellbore trajectory.");

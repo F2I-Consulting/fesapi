@@ -110,7 +110,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT double getParentTrajectoryMd() const final;
 
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
+		COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const final;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

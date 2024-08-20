@@ -165,7 +165,7 @@ namespace RESQML2_0_1_NS
 		 */
 		COMMON_NS::DataObjectReference getDeviationSurveyDor() const;
 
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
+		COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const final;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 

@@ -180,7 +180,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const override;
+		COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const override;
 
 		/**
 		 * @copybrief AbstractRepresentation::getHdfProxyDor()

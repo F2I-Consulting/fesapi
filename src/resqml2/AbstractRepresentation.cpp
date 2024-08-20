@@ -203,13 +203,13 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 	}
 }
 
-EML2_NS::AbstractLocal3dCrs* AbstractRepresentation::getLocalCrs(unsigned int patchIndex) const
+EML2_NS::AbstractLocal3dCrs* AbstractRepresentation::getLocalCrs(uint64_t patchIndex) const
 {
 	const auto dor = getLocalCrsDor(patchIndex);
 	return dor.isEmpty() ? nullptr : getRepository()->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(dor.getUuid());
 }
 
-COMMON_NS::DataObjectReference AbstractRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference AbstractRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);

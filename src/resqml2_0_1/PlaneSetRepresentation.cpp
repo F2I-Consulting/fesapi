@@ -48,7 +48,7 @@ PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	setInterpretation(interp);
 }
 
-COMMON_NS::DataObjectReference PlaneSetRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference PlaneSetRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	_resqml20__PlaneSetRepresentation* rep = static_cast<_resqml20__PlaneSetRepresentation*>(gsoapProxy2_0_1);
 	gsoap_resqml2_0_1::eml20__DataObjectReference* result = rep->Planes[patchIndex]->LocalCrs;

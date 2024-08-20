@@ -426,7 +426,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 
-		virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const override = 0;
+		virtual COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const override = 0;
 
 		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const override = 0;
 
