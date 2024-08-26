@@ -13,13 +13,28 @@ setup (name = 'fesapi',
     maintainer  = 'F2I-CONSULTING',
     url         = 'https://github.com/F2I-Consulting/fesapi',
     description = 'An API for the Energistics standards',
+    long_description = '''**FESAPI** is an API for Energistics data standards (mainly RESQML™)
+
+### Examples
+
+A Python script and a Jupyter Notebook are available [here](https://github.com/F2I-Consulting/fesapi/tree/dev/python/example).
+
+### Credits
+This software was developed with :
+- the gSOAP toolkit from Genivia Inc
+- the date library from Howard Hinnant
+
+FESAPI Product incorporates RESQML™, WITSML™ and PRODML™ technology/standards provided by the Energistics Consortium, Inc.
+
+RESQML, WITSML and PRODML are trademarks or registered trademarks of Energistics Consortium, Inc.''',
+    long_description_content_type = 'text/markdown',
     license     = 'Apache 2.0',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: Microsoft :: Windows',
-        'Operating System :: POSIX',
+        'Operating System :: POSIX :: Linux',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',

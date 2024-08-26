@@ -1,7 +1,3 @@
-"""
-Please first install the wheel built in fesapi/python/dist
-"""
-
 from datetime import datetime
 import fesapi
 

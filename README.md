@@ -1,5 +1,5 @@
 # If you just want some precompiled binaries (just to test for example)
- - Please first look in the [assets](https://github.com/F2I-Consulting/fesapi/releases) of the releases if it as already provided
+ - Please first check in the [assets](https://github.com/F2I-Consulting/fesapi/releases) of the releases if your version has already been provided? For a Python version, just look at [PyPI](https://pypi.org/project/fesapi/).
  - If not, create an [issue](https://github.com/F2I-Consulting/fesapi/issues/new?assignees=&labels=&projects=&template=feature_request.md) and ask for the version you would want.
 # Prepare your build environment
  - Create a folder called fesapiEnv.
@@ -23,7 +23,7 @@ We advise you to install these third party libraries respectively into
 - fesapiEnv/dependencies/minizip-particularVersion
 - fesapiEnv/dependencies/boost-particularVersion
 # Configure the build
-Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. If you want to use cmake in command line, you would find example in [GitHub Actions file](./.github/workflows/github-actions.yml). Follow the below instructions :
+FESAPI uses cmake as its build tool. A 3.12 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. If you want to use cmake in command line, you would find example in [GitHub Actions file](./.github/workflows/github-actions.yml). Follow the below instructions :
 
 - yourPath/fesapiEnv/fesapi defines where is the source code folder
 - yourPath/fesapiEnv/build/theNameYouWant defines where to build the binaries
