@@ -1,0 +1,29 @@
+name: Actions to run when releasing
+
+on:
+  release:
+    types: [published]
+
+env:
+  GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+  GITHUB_REF_NAME: ${{ github.ref_name }}
+
+jobs:
+  # Remark : https://github.com/orgs/community/discussions/46034
+  add-checksum:
+    runs-on: ubuntu-latest
+    steps:
+      # It is necessary to checkout the repository for GitHub CLI to know which repository to target
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: ZIP checksum
+        run: |
+          gh release download --archive=zip
+          shasum -a 256 *.zip > fesapi-${GITHUB_REF_NAME#v}.zip.sha256.txt
+          gh release upload ${{ github.ref_name }} fesapi-${GITHUB_REF_NAME#v}.zip.sha256.txt
+      - name: TAR.GZ checksum
+        run: |
+          gh release download --archive=tar.gz
+          shasum -a 256 *.tar.gz > fesapi-${GITHUB_REF_NAME#v}.tar.gz.sha256.txt
+          gh release upload ${{ github.ref_name }} fesapi-${GITHUB_REF_NAME#v}.tar.gz.sha256.txt
+      
