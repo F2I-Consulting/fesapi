@@ -397,20 +397,20 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
-		const uint64_t jIndexOrigin = getIndexOriginOnSupportingRepresentation(0);
-		const uint64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
+		const int jIndexOrigin = getIndexOriginOnSupportingRepresentation(0);
+		const int64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
 		std::unique_ptr<double[]> jSpacingsOnSupportingRep(new double[jSpacingCount]);
 		getSupportingRepresentation()->getJSpacing(jSpacingsOnSupportingRep.get());
 		
 		for (uint64_t j = 0; j < jSpacingCount; ++j) {
 			jSpacings[j] = .0;
 			if (jIndexOffset > 0) {
-				for (int tmp = 0; tmp < jIndexOffset; ++tmp) {
+				for (int64_t tmp = 0; tmp < jIndexOffset; ++tmp) {
 					jSpacings[j] += jSpacingsOnSupportingRep[jIndexOrigin + j * jIndexOffset + tmp];
 				}
 			}
 			else if (jIndexOffset < 0) {
-				for (int tmp = 0; tmp > jIndexOffset; --tmp) {
+				for (int64_t tmp = 0; tmp > jIndexOffset; --tmp) {
 					jSpacings[j] += jSpacingsOnSupportingRep[jIndexOrigin - 1 + j * jIndexOffset + tmp];
 				}
 			}
@@ -452,20 +452,20 @@ void Grid2dRepresentation::getISpacing(double* iSpacings) const
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
-		const uint64_t iIndexOrigin = getIndexOriginOnSupportingRepresentation(1);
-		const uint64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
+		const int iIndexOrigin = getIndexOriginOnSupportingRepresentation(1);
+		const int64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
 		std::unique_ptr<double[]> iSpacingsOnSupportingRep(new double[iSpacingCount]);
 		getSupportingRepresentation()->getISpacing(iSpacingsOnSupportingRep.get());
 
 		for (uint64_t i = 0; i < iSpacingCount; ++i) {
 			iSpacings[i] = .0;
 			if (iIndexOffset > 0) {
-				for (int tmp = 0; tmp < iIndexOffset; ++tmp) {
+				for (int64_t tmp = 0; tmp < iIndexOffset; ++tmp) {
 					iSpacings[i] += iSpacingsOnSupportingRep[iIndexOrigin + i * iIndexOffset + tmp];
 				}
 			}
 			else if (iIndexOffset < 0) {
-				for (int tmp = 0; tmp > iIndexOffset; --tmp) {
+				for (int64_t tmp = 0; tmp > iIndexOffset; --tmp) {
 					iSpacings[i] += iSpacingsOnSupportingRep[iIndexOrigin - 1 + i * iIndexOffset + tmp];
 				}
 			}
