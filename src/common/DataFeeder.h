@@ -29,6 +29,8 @@ namespace COMMON_NS
 	{		
 	public:
 
+		virtual ~DataFeeder() = default;
+
 		/**
 		* Ask this feeder to resolve a partial object to a non partial one.
 		*

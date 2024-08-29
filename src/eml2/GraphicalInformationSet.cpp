@@ -231,7 +231,7 @@ void GraphicalInformationSet::getDefaultRgbColor(AbstractObject const* targetObj
 	hsvToRgb(getDefaultHue(targetObject), getDefaultSaturation(targetObject), getDefaultValue(targetObject), red, green, blue);
 }
 
-void GraphicalInformationSet::getDefaultRgbColor(AbstractObject const* targetObject, unsigned int & red, unsigned int & green, unsigned int & blue) const
+void GraphicalInformationSet::getDefaultRgbColor(AbstractObject const* targetObject, uint8_t& red, uint8_t& green, uint8_t& blue) const
 {
 	hsvToRgb(getDefaultHue(targetObject), getDefaultSaturation(targetObject), getDefaultValue(targetObject), red, green, blue);
 }
@@ -375,22 +375,10 @@ void GraphicalInformationSet::setDefaultRgbColor(AbstractObject* targetObject, d
 * @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
 * @param colorTitle		title for the given HSV color
 */
-void GraphicalInformationSet::setDefaultRgbColor(AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha, std::string const& colorTitle)
+void GraphicalInformationSet::setDefaultRgbColor(AbstractObject* targetObject, uint8_t red, uint8_t green, uint8_t blue, double alpha, std::string const& colorTitle)
 {
 	if (targetObject == nullptr) {
 		throw invalid_argument("The target object cannot be null");
-	}
-
-	if (red > 255) {
-		throw invalid_argument("red must be in range [0, 255]");
-	}
-
-	if (green > 255) {
-		throw invalid_argument("green must be in range [0, 255]");
-	}
-
-	if (blue > 255) {
-		throw invalid_argument("blue must be in range [0, 255]");
 	}
 
 	double hue, saturation, value;
@@ -695,7 +683,7 @@ void GraphicalInformationSet::rgbToHsv(double red, double green, double blue, do
 	value = max;
 }
 
-void GraphicalInformationSet::rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double & hue, double & saturation, double & value)
+void GraphicalInformationSet::rgbToHsv(uint8_t red, uint8_t green, uint8_t blue, double & hue, double & saturation, double & value)
 {
 	rgbToHsv(red / 255., green / 255., blue / 255., hue, saturation, value);
 }
@@ -743,7 +731,7 @@ void GraphicalInformationSet::hsvToRgb(double hue, double saturation, double val
 	blue = blue + m;
 }
 
-void GraphicalInformationSet::hsvToRgb(double hue, double saturation, double value, unsigned int & red, unsigned int & green, unsigned int & blue)
+void GraphicalInformationSet::hsvToRgb(double hue, double saturation, double value, uint8_t& red, uint8_t& green, uint8_t& blue)
 {
 	double r, g, b;
 	hsvToRgb(hue, saturation, value, r, g, b);

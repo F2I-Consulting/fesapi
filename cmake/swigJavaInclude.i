@@ -61,6 +61,8 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		HORIZONINTERPRETATION,
 		IJKGRIDREPRESENTATION,
 		LOCALDEPTH3DCRS,
+		LOCALENGINEERING2DCRS,
+		LOCALENGINEERINGCOMPOUNDCRS,
 		LOCALTIME3DCRS,
 		LOG,
 		MDDATUM,
@@ -103,6 +105,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		TRIANGULATEDSETREPRESENTATION,
 		TRUNCATEDIJKGRIDREPRESENTATION,
 		UNSTRUCTUREDGRIDREPRESENTATION,
+		VERTICALCRS,
 		WELL,
 		WELLBORE,
 		WELLBORECOMPLETION,
@@ -897,14 +900,14 @@ ${COMMENT_END}
 		case GENERICFEATUREINTERPRETATION : return resqml2_instantiateGenericFeatureInterpretation(cPtr, owner);
 		case GEOLOGICUNITFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_GeologicUnitFeature(cPtr, owner);
 		case STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
-${COMMENT_START}
 		case GRAPHICALINFORMATIONSET : return new com.f2i_consulting.fesapi.${FESAPI_EML2_3_NS}.Eml23_GraphicalInformationSet(cPtr, owner);
-${COMMENT_END}
 		case GRID2DREPRESENTATION : return resqml2_instantiateGrid2dRepresentation(cPtr, owner);
 		case GRIDCONNECTIONSETREPRESENTATION : return resqml2_instantiateGridConnectionSetRepresentation(cPtr, owner);
 		case HORIZONINTERPRETATION : return resqml2_instantiateHorizonInterpretation(cPtr, owner);
 		case IJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);
 		case LOCALDEPTH3DCRS : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_LocalDepth3dCrs(cPtr, owner);
+		case LOCALENGINEERING2DCRS : return new com.f2i_consulting.fesapi.${FESAPI_EML2_3_NS}.Eml23_LocalEngineering2dCrs(cPtr, owner);
+		case LOCALENGINEERINGCOMPOUNDCRS : return new com.f2i_consulting.fesapi.${FESAPI_EML2_3_NS}.Eml23_LocalEngineeringCompoundCrs(cPtr, owner);
 		case LOCALTIME3DCRS : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_LocalTime3dCrs(cPtr, owner);
 		case LOG : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_1_NS}.Witsml21_Log(cPtr, owner);
 		case MDDATUM : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_MdDatum(cPtr, owner);
@@ -952,6 +955,7 @@ ${COMMENT_END}
 		case TRIANGULATEDSETREPRESENTATION : return resqml2_instantiateTriangulatedSetRepresentation(cPtr, owner);
 		case TRUNCATEDIJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);
 		case UNSTRUCTUREDGRIDREPRESENTATION : return resqml2_instantiateUnstructuredGridRepresentation(cPtr, owner);
+		case VERTICALCRS : return new com.f2i_consulting.fesapi.${FESAPI_EML2_3_NS}.Eml23_VerticalCrs(cPtr, owner);
 		case WELL : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_1_NS}.Witsml21_Well(cPtr, owner);
 		case WELLBORE : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_1_NS}.Witsml21_Wellbore(cPtr, owner);
 		case WELLBORECOMPLETION : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_1_NS}.Witsml21_WellboreCompletion(cPtr, owner);
@@ -983,10 +987,8 @@ namespace COMMON_NS
 
 namespace EML2_NS
 {
-	%typemap(javaout) Activity*, ActivityTemplate*, EpcExternalPartReference*, PropertyKind*, TimeSeries* 
-#ifdef WITH_RESQML2_2
+	%typemap(javaout) Activity*, ActivityTemplate*, EpcExternalPartReference*, PropertyKind*, TimeSeries*, AbstractLocal3dCrs*
 										,GraphicalInformationSet*
-#endif
 	{
 		long cPtr = $jnicall;
 		$javaclassname ret = ($javaclassname) fesapiJNI.eml2_instantiateConcreteObject(cPtr, $owner);
@@ -1014,7 +1016,7 @@ namespace WITSML2_NS
 
 namespace RESQML2_NS
 {		
-	%typemap(javaout) 	AbstractFeature*, AbstractFeatureInterpretation*, AbstractRepresentation*, AbstractGridRepresentation*, AbstractLocal3dCrs*,
+	%typemap(javaout) 	AbstractFeature*, AbstractFeatureInterpretation*, AbstractRepresentation*, AbstractGridRepresentation*,
 						AbstractProperty*, AbstractValuesProperty*,
 						AbstractIjkGridRepresentation*, AbstractStratigraphicOrganizationInterpretation*,
 #ifdef WITH_RESQML2_2
@@ -1033,7 +1035,6 @@ namespace RESQML2_NS
 #endif
 						ContinuousProperty*,
 						CulturalFeature*,
-						DeviationSurveyRepresentation*,
 #ifdef WITH_RESQML2_2
 						DiscreteColorMap*,
 #endif
@@ -1054,8 +1055,6 @@ namespace RESQML2_NS
 						IjkGridLatticeRepresentation*,
 						IjkGridNoGeometryRepresentation*,
 						IjkGridParametricRepresentation*,
-						LocalDepth3dCrs*,
-						LocalTime3dCrs*,
 						MdDatum*,
 						Model*,
 						NonSealedSurfaceFrameworkRepresentation*,

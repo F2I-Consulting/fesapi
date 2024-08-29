@@ -24,10 +24,12 @@ under the License.
 #include <unordered_map>
 
 #include "DataObjectReference.h"
+#include "../proxies/gsoap_uom1_0H.h"
 
 namespace EML2_NS
 {
 	class AbstractHdfProxy;
+	class AbstractLocal3dCrs;
 	class Activity;
 	class ActivityTemplate;
 	class GraphicalInformationSet;
@@ -40,7 +42,6 @@ namespace RESQML2_NS
 	class AbstractFeature;
 	class AbstractFeatureInterpretation;
 	class AbstractIjkGridRepresentation;
-	class AbstractLocal3dCrs;
 	class AbstractOrganizationInterpretation;
 	class AbstractRepresentation;
 	class AbstractSeismicLineFeature;
@@ -55,7 +56,6 @@ namespace RESQML2_NS
 	class CulturalFeature;
 	class DiscreteColorMap;
 	class DiscreteProperty;
-	class DeviationSurveyRepresentation;
 	class DoubleTableLookup;
 	class EarthModelInterpretation;
 	class FaultInterpretation;
@@ -70,8 +70,6 @@ namespace RESQML2_NS
 	class IjkGridLatticeRepresentation;
 	class IjkGridNoGeometryRepresentation;
 	class IjkGridParametricRepresentation;
-	class LocalDepth3dCrs;
-	class LocalTime3dCrs;
 	class MdDatum;
 	class Model;
 	class NonSealedSurfaceFrameworkRepresentation;
@@ -115,6 +113,7 @@ namespace RESQML2_0_1_NS
 	class CategoricalProperty;
 	class CommentProperty;
 	class ContinuousProperty;
+	class DeviationSurveyRepresentation;
 	class DiscreteProperty;
 	class FluidBoundaryFeature;
 	class GeneticBoundaryFeature;
@@ -126,6 +125,7 @@ namespace RESQML2_0_1_NS
 	class RockFluidUnitFeature;
 	class SeismicLineFeature;
 	class TectonicBoundaryFeature;
+	class WellboreTrajectoryRepresentation;
 }
 
 namespace WITSML2_NS
@@ -160,8 +160,12 @@ namespace COMMON_NS
 	class HdfProxyFactory;
 
 	/**
-	 * @brief	This abstract class acts as a buffer between the RESQML (business) classes and the
-	 * 			persisted data.
+	 * @brief	A DataObjectRepository stores in memory all dataObjects.
+	 *			This is the in-memory container which holds deserialized (EPC) files and fetched ETP dataobjects.
+	 *			On the other direction, it is also used to store dataobjets which you want either to serialize in (EPC) files or pushed to an ETP store.
+	 *			It is not a database (it is much more a simple container). For instance, in most cases, you are not supposed to delete anything neither update relationships.
+	 *			It also controls the creation and the deletion of all contained dataobjects meaning that when you delete it, it also deletes all contained dataobjects.
+	 *			It does not store numerical values of the dataobjects but only their XML definitions.
 	 */
 	class DataObjectRepository
 	{
@@ -171,12 +175,13 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT DataObjectRepository();
 
 		/**
-		 * Constructor
+		 * Constructor initializing the datobject repository based on a resource directory.
 		 *
-		 * @param 	propertyKindMappingFilesDirectory	Pathname of the property kind mapping files
-		 * 												directory.
+		 * @param 	resourceDirectory	Pathname of the resource directory.
+		 *								For now it supports reading Energistics UOM 1.0 XML file
+		 *								and a proprietary PropertyKindMapping.xml file waiting for PWLS support. 
 		 */
-		DLL_IMPORT_OR_EXPORT explicit DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
+		DLL_IMPORT_OR_EXPORT explicit DataObjectRepository(const std::string& resourceDirectory);
 
 		/** Destructor */
 		DLL_IMPORT_OR_EXPORT virtual ~DataObjectRepository();
@@ -435,6 +440,18 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType, const std::string& uriSource);
 
 		/**
+		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobejct ot delte has got backward relationships.
+		* It also goes on every forward related dataobject and delete them if they have no more backward relationships.
+		* It does that recursively.
+		* Remark : it is mainly used to delete properties because usually no dataobject points to them.
+		* For now, this method only deletes the XML part of the dataobject, not the HDF5 part.
+		*
+		* @param [in]	proxy	The data object to delete.
+		* @return				The count of deleted objects
+		*/
+		DLL_IMPORT_OR_EXPORT uint64_t cascadeDeleteDataObject(COMMON_NS::AbstractObject* proxy);
+
+		/**
 		 * Gets all the data objects which are part of this repository
 		 *
 		 * @returns	A map where the key is the UUID of a data object and the value is a vector of
@@ -495,7 +512,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the default CRS if it is defined, else null.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractLocal3dCrs* getDefaultCrs() const { return defaultCrs; }
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getDefaultCrs() const { return defaultCrs; }
 
 		/**
 		 * Sets a default CRS for writing. It will be used in all writing methods if no explicit CRS is
@@ -503,7 +520,7 @@ namespace COMMON_NS
 		 *
 		 * @param [in]	crs	If non-null, the default CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT void setDefaultCrs(RESQML2_NS::AbstractLocal3dCrs* crs) { defaultCrs = crs; }
+		DLL_IMPORT_OR_EXPORT void setDefaultCrs(EML2_NS::AbstractLocal3dCrs* crs) { defaultCrs = crs; }
 
 		/**
 		 * Gets the default HDF5 file proxy for writing. It is used in all writing methods if no
@@ -537,8 +554,13 @@ namespace COMMON_NS
 			return all[index];\
 		}
 
-		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 		GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)
+		GETTER_DATAOBJECTS(EML2_NS::AbstractLocal3dCrs, Local3dCrs)
+		GETTER_DATAOBJECTS(EML2_NS::Activity, Activity)
+		GETTER_DATAOBJECTS(EML2_NS::ActivityTemplate, ActivityTemplate)
+		GETTER_DATAOBJECTS(EML2_NS::GraphicalInformationSet, GraphicalInformationSet)
+		GETTER_DATAOBJECTS(EML2_NS::PropertyKind, PropertyKind)
+		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
 
 		GETTER_DATAOBJECTS(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
 		GETTER_DATAOBJECTS(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
@@ -549,15 +571,12 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
 		GETTER_DATAOBJECTS(RESQML2_NS::CmpLineFeature, CmpLine)
 		GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
-		GETTER_DATAOBJECTS(RESQML2_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
 		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridParametricRepresentation, IjkGridParametricRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridExplicitRepresentation, IjkGridExplicitRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::IjkGridLatticeRepresentation, IjkSeismicCubeGridRepresentation)
-		GETTER_DATAOBJECTS(RESQML2_NS::LocalDepth3dCrs, LocalDepth3dCrs)
-		GETTER_DATAOBJECTS(RESQML2_NS::LocalTime3dCrs, LocalTime3dCrs)
 		GETTER_DATAOBJECTS(RESQML2_NS::Model, Model)
 		GETTER_DATAOBJECTS(RESQML2_NS::PointSetRepresentation, PointSetRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::PolylineRepresentation, AllPolylineRepresentation)
@@ -588,6 +607,7 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::WellboreTrajectoryRepresentation, WellboreTrajectoryRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::WellboreFrameRepresentation, WellboreFrameRepresentation)
 
+		GETTER_DATAOBJECTS(RESQML2_0_1_NS::DeviationSurveyRepresentation, DeviationSurveyRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_0_1_NS::PropertySet, PropertySet)
 
 		GETTER_DATAOBJECTS(WITSML2_NS::Well, WitsmlWell)
@@ -793,7 +813,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
@@ -825,11 +845,11 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local depth 3d CRS which is identified by an EPSG code for its projected
@@ -858,11 +878,11 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local depth 3d CRS which is unknown for its projected part and which is
@@ -891,10 +911,10 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local depth 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
 		/**
@@ -924,7 +944,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
@@ -958,12 +978,12 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local time 3d CRS which is identified by an EPSG code for its projected
@@ -993,12 +1013,12 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local time 3d CRS which unknown for its projected part and which is
@@ -1028,10 +1048,10 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new local time 3d CRS.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
 
@@ -1057,7 +1077,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new MD datum.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum* createMdDatum(const std::string & guid, const std::string & title,
-			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
+			EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		//************ FEATURE ***************
@@ -1969,7 +1989,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new wellbore trajectory representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::DeviationSurveyRepresentation* deviationSurvey);
 
 		/**
 		 * @brief	Creates a deviation survey representation into this repository
@@ -1990,7 +2010,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new deviation survey representation.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, const bool& isFinal, RESQML2_NS::MdDatum* mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, bool isFinal, RESQML2_NS::MdDatum* mdInfo);
 
 		/**
 		 * @brief	Creates a wellbore frame representation into this repository
@@ -2039,7 +2059,7 @@ namespace COMMON_NS
 			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
-			RESQML2_NS::LocalTime3dCrs* crs);
+			EML2_NS::AbstractLocal3dCrs* crs);
 
 		/**
 		 * Creates a wellbore marker frame representation into this repository
@@ -2611,13 +2631,15 @@ namespace COMMON_NS
 		 * 											resqml:domainOrEmail:dictionaryName</tt>.
 		 * @param 	uom							 	The property kind unit of measure taken from the
 		 * 											standard RESQML units of measure catalog.
+		 * @param 	isAbstract						Indicates whether the property kind should be used
+		 * 											as a real (default) property or not.
 		 * @param 	parentEnergisticsPropertyKind	The parent property kind taken from the standard set
 		 * 											of RESQML property kinds.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
+			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
 		 * @brief	Creates a property kind into this repository
@@ -2633,12 +2655,14 @@ namespace COMMON_NS
 		 * 								URN of the form \"urn:x- resqml:domainOrEmail:dictionaryName\".
 		 * @param 	  	uom			  	The property kind unit of measure taken from the standard RESQML
 		 * 								units of measure catalog.
+		 * @param 	  	isAbstract		Indicates whether the property kind should be used
+		 * 								as a real (default) property or not.
 		 * @param [in]	parentPropType	The parent property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType);
+			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, EML2_NS::PropertyKind * parentPropType);
 
 		/**
 		 * Creates a property kind into this repository.
@@ -2652,13 +2676,15 @@ namespace COMMON_NS
 		 * 											controlling authority. Use a URN of the form \"urn:x-
 		 * 											resqml:domainOrEmail:dictionaryName\".
 		 * @param 	nonStandardUom				 	The property kind unit of measure.
+		 * @param 	isAbstract						Indicates whether the property kind should be used
+		 * 											as a real (default) property or not.
 		 * @param 	parentEnergisticsPropertyKind	The parent property kind taken from the standard set
 		 * 											of RESQML property kinds.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
+			const std::string & namingSystem, const std::string & nonStandardUom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
 		 * Creates a property kind into this repository
@@ -2671,12 +2697,14 @@ namespace COMMON_NS
 		 * 								This also defines the name of the controlling authority. Use a
 		 * 								URN of the form \"urn:x- resqml:domainOrEmail:dictionaryName\".
 		 * @param 	  	nonStandardUom	The property kind unit of measure.
+		 * @param 	  	isAbstract		Indicates whether the property kind should be used
+		 * 								as a real (default) property or not.
 		 * @param [in]	parentPropType	The parent property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType);
+			const std::string & namingSystem, const std::string & nonStandardUom, bool isAbstract, EML2_NS::PropertyKind * parentPropType);
 
 		/**
 		 * @brief	Creates a property kind starting with EML2.1 version into this repository.
@@ -2691,7 +2719,7 @@ namespace COMMON_NS
 		 * @param 	  	quantityClass	  	A reference to the name of a quantity class in the
 		 * 									Energistics units of measure dictionary.
 		 * @param 	  	isAbstract		  	(Optional) Indicates whether the property kind should be used
-		 * 									as a real (default) property or not.
+		 * 									as a real (default) property or not. False by default.
 		 * @param [in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
 		 * 									default partial parent property kind will be created.
 		 *
@@ -2699,6 +2727,28 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
+
+		/**
+		 * @brief	Creates a property kind starting with EML2.1 version into this repository.
+		 *			Don't use it at all if you want a full RESQML2.0.1 EPC!!! Use other same name methods instead please.
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	  	guid			  	The guid to set to the property kind. If empty then a new
+		 * 									guid will be generated.
+		 * @param 	  	title			  	The title to set to the property kind. If empty then
+		 * 									\"unknown\" title will be set.
+		 * @param 	  	quantityClass	  	A reference to the name of a quantity class in the
+		 * 									Energistics units of measure dictionary or in another dictionary.
+		 * @param 	  	isAbstract		  	(Optional) Indicates whether the property kind should be used
+		 * 									as a real (default) property or not. False by default.
+		 * @param [in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
+		 * 									default partial parent property kind will be created.
+		 *
+		 * @returns	A pointer to the new property kind.
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_NS::PropertyKind* createPropertyKind(const std::string& guid, const std::string& title,
+			const std::string& quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
 
 		/**
 		 * @brief	Creates a property set into this repository.
@@ -3068,7 +3118,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new points property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::AbstractLocal3dCrs* localCrs,
 			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind = gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 
 		/**
@@ -3093,7 +3143,7 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new points property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PointsProperty* createPointsProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, RESQML2_NS::AbstractLocal3dCrs* localCrs,
+			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind, EML2_NS::AbstractLocal3dCrs* localCrs,
 			EML2_NS::PropertyKind * localPropType);
 
 		//************* ACTIVITIES ***********
@@ -3546,7 +3596,7 @@ namespace COMMON_NS
 
 		/**
 		* Creates a transaction.
-		* The transactionis actually a child dataobject repository which will be merged into this master dataobject repository.
+		* The transaction is actually a child dataobject repository which will be merged into this master dataobject repository.
 		*/
 		DataObjectRepository* newTransactionRepo();
 
@@ -3554,6 +3604,8 @@ namespace COMMON_NS
 		* Commit a transaction into this master repository.
 		*/
 		void commitTransactionRepo(DataObjectRepository* transactionRepo);
+
+		gsoap_uom1_0::uom10__uomDictionary const* getUomDictionary() const { return uomDictionary; }
 
 	private:
 
@@ -3570,13 +3622,14 @@ namespace COMMON_NS
 		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > backwardRels;
 
 		soap* gsoapContext = soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING);
+		gsoap_uom1_0::uom10__uomDictionary const* const uomDictionary;
 
 		std::vector<std::string> warnings;
 
 		std::unique_ptr<RESQML2_0_1_NS::PropertyKindMapper> propertyKindMapper;
 
 		EML2_NS::AbstractHdfProxy* defaultHdfProxy = nullptr;
-		RESQML2_NS::AbstractLocal3dCrs* defaultCrs = nullptr;
+		EML2_NS::AbstractLocal3dCrs* defaultCrs = nullptr;
 
 		std::vector<COMMON_NS::DataFeeder*> dataFeeders;
 
@@ -3633,5 +3686,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
 
 		void replaceDataObjectInRels(COMMON_NS::AbstractObject* dataObjToReplace, COMMON_NS::AbstractObject* newDataObj);
+
+		gsoap_uom1_0::uom10__uomDictionary* initUomDictionary(const std::string& resourceDirectory);
 	};
 }

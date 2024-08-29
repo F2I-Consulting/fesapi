@@ -130,7 +130,7 @@ namespace RESQML2_2_NS
 			double originX, double originY, double originZ,
 			double directionIX, double directionIY, double directionIZ, double spacingI,
 			double directionJX, double directionJY, double directionJZ, double spacingJ,
-			double directionKX, double directionKY, double directionKZ, double spacingK, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
+			double directionKX, double directionKY, double directionKZ, double spacingK, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(
 			unsigned int patchIndex,

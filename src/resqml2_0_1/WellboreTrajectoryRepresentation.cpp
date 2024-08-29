@@ -23,12 +23,13 @@ under the License.
 
 #include "H5public.h"
 
-#include "../resqml2/AbstractLocal3dCrs.h"
-#include "../resqml2/DeviationSurveyRepresentation.h"
+#include "../eml2/AbstractHdfProxy.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+
 #include "../resqml2/MdDatum.h"
 #include "../resqml2/WellboreFrameRepresentation.h"
 #include "../resqml2/WellboreInterpretation.h"
-#include "../eml2/AbstractHdfProxy.h"
+#include "../resqml2_0_1/DeviationSurveyRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -63,7 +64,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	setInterpretation(interp);
 }
 
-WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey)
+WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The represented wellbore interpretation cannot be null.");
@@ -102,7 +103,7 @@ void WellboreTrajectoryRepresentation::setMinimalGeometry(double startMd, double
 	rep->FinishMd = endMd;
 }
 
-void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (controlPoints == nullptr) {
 		throw invalid_argument("The control points are missing.");
@@ -152,7 +153,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (controlPointParameters == nullptr) {
 		throw invalid_argument("The control points parameters are missing.");
@@ -184,7 +185,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 	double const* tangentVectors, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (tangentVectors == nullptr) {
 		throw invalid_argument("The tangent vectors parameter is missing.");
@@ -399,7 +400,7 @@ gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* WellboreTrajecto
 	return static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 }
 
-COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	if (patchIndex > 0) {
 		throw out_of_range("There is no more than one patch in a wellbore trajectory.");
@@ -423,9 +424,24 @@ bool WellboreTrajectoryRepresentation::hasGeometry() const
 	return getSpecializedGsoapProxy()->Geometry != nullptr;
 }
 
-void WellboreTrajectoryRepresentation::setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey)
+void WellboreTrajectoryRepresentation::setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey)
 {
 	getRepository()->addRelationship(this, deviationSurvey);
 
 	getSpecializedGsoapProxy()->DeviationSurvey = deviationSurvey->newResqmlReference();
+}
+
+DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSurvey() const
+{
+	return getRepository()->getDataObjectByUuid<DeviationSurveyRepresentation>(getDeviationSurveyDor().getUuid());
+}
+
+void WellboreTrajectoryRepresentation::loadTargetRelationships()
+{
+	RESQML2_NS::WellboreTrajectoryRepresentation::loadTargetRelationships();
+
+	COMMON_NS::DataObjectReference dor = getDeviationSurveyDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel<DeviationSurveyRepresentation>(dor);
+	}
 }

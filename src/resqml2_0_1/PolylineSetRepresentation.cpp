@@ -24,7 +24,7 @@ under the License.
 #include <stdexcept>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
@@ -81,7 +81,7 @@ PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeature
 void PolylineSetRepresentation::pushBackGeometryPatch(
 	unsigned int const* nodeCountPerPolyline, double const* nodes,
 	uint64_t polylineCount, bool allPolylinesClosedFlag,
-	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -123,11 +123,11 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->ClosedPolylines = xmlClosedPolylines;
 
 	// XYZ points
-	uint64_t nodeCount = 0;
+	uint64_t nodeCount[2] = { 0, 3 };
 	for (uint64_t i = 0; i < polylineCount; ++i) {
-		nodeCount += nodeCountPerPolyline[i];
+		nodeCount[0] += nodeCountPerPolyline[i];
 	}
-	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &nodeCount, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, nodeCount, 2, proxy);
 
 	static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.push_back(patch);
 	getRepository()->addRelationship(this, localCrs);
@@ -136,7 +136,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 void PolylineSetRepresentation::pushBackGeometryPatch(
 	unsigned int const* nodeCountPerPolyline, double const* nodes,
 	uint64_t polylineCount, bool * polylineClosedFlags,
-	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -187,11 +187,12 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 		&polylineCount, 1);
 
 	// XYZ points
-	uint64_t xyzPtDim = 0;
+	uint64_t xyzPtDim[2] = { 0, 3 };
 	for (uint64_t i = 0; i < polylineCount; ++i) {
-		xyzPtDim += nodeCountPerPolyline[i];
+		xyzPtDim[0] += nodeCountPerPolyline[i];
 	}
-	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, &xyzPtDim, 1, proxy);
+
+	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, xyzPtDim, 2, proxy);
 
 	static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.push_back(patch);
 	getRepository()->addRelationship(this, localCrs);

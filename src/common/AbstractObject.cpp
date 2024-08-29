@@ -713,12 +713,14 @@ void AbstractObject::addAlias(const std::string & authority, const std::string &
 	}
 }
 
-unsigned int AbstractObject::getAliasCount() const
+uint64_t AbstractObject::getAliasCount() const
 {
-	cannotBePartial();
+	if (isPartial()) {
+		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
 
 	size_t count = 0;
-	
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		count = gsoapProxy2_0_1->Aliases.size();
 	}
@@ -726,73 +728,54 @@ unsigned int AbstractObject::getAliasCount() const
 		count = gsoapProxy2_3->Aliases.size();
 	}
 
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("There is too much aliases for fesapi.");
-	}
-
-	return static_cast<unsigned int>(count);
+	return count;
 }
 
-std::string AbstractObject::getAliasAuthorityAtIndex(unsigned int index) const
+std::string AbstractObject::getAliasAuthorityAtIndex(uint64_t index) const
 {
-	cannotBePartial();
-
-	if (getAliasCount() <= index) {
-		throw out_of_range("The index is out of range.");
-	}
+	if (isPartial())
+		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return (gsoapProxy2_0_1->Aliases)[index]->authority? *((gsoapProxy2_0_1->Aliases)[index]->authority): std::string();
+		return (gsoapProxy2_0_1->Aliases).at(index)->authority
+			? *((gsoapProxy2_0_1->Aliases).at(index)->authority)
+			: "";
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return gsoapProxy2_3->Aliases[index]->authority;
+		return gsoapProxy2_3->Aliases.at(index)->authority;
 	}
 
 	throw invalid_argument("No underlying gsoap proxy.");
 }
 
-std::string AbstractObject::getAliasTitleAtIndex(unsigned int index) const
+std::string AbstractObject::getAliasTitleAtIndex(uint64_t index) const
 {
-	cannotBePartial();
-
-	if (getAliasCount() <= index)
-		throw out_of_range("The index is out of range.");
+	if (isPartial())
+		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return (gsoapProxy2_0_1->Aliases)[index]->Identifier;
+		return (gsoapProxy2_0_1->Aliases).at(index)->Identifier;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return gsoapProxy2_3->Aliases[index]->Identifier;
+		return gsoapProxy2_3->Aliases.at(index)->Identifier;
 	}
 
 	throw invalid_argument("No underlying gsoap proxy.");
 }
 
-std::vector<EML2_NS::Activity *> AbstractObject::getActivitySet() const
+std::vector<EML2_NS::Activity*> AbstractObject::getActivitySet() const
 {
 	return getRepository()->getSourceObjects<EML2_NS::Activity>(this);
 }
 
-unsigned int AbstractObject::getActivityCount() const
+uint64_t AbstractObject::getActivityCount() const
 {
-	const size_t result = getActivitySet().size();
-
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too many associated activities.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return getActivitySet().size();
 }
 
-EML2_NS::Activity * AbstractObject::getActivity(unsigned int index) const
+EML2_NS::Activity* AbstractObject::getActivity(uint64_t index) const
 {
-	cannotBePartial();
-
-	const std::vector<EML2_NS::Activity *>& activites = getActivitySet();
-	if (index >= activites.size())
-		throw out_of_range("The index is out of range.");
-
-	return activites[index];
+	return getActivitySet().at(index);
 }
 
 void AbstractObject::pushBackExtraMetadata(const std::string & key, const std::string & value)
@@ -1750,6 +1733,7 @@ EML2_NS::AbstractHdfProxy* AbstractObject::getOrCreateHdfProxyFromDataArrayPart(
 #if WITH_RESQML2_2
 	if (hdfProxy == nullptr) {
 		hdfProxy = new EML2_3_NS::HdfProxy(getRepository(), "", "Fake eml23 HDF Proxy", getEpcSourceFolder(), dataArrayPart->URI);
+		hdfProxy->setUriSource(getUriSource());
 		getRepository()->addDataObject(hdfProxy);
 	}
 #endif

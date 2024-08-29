@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "EpcDocument.h"
 
-#include <sstream>
 #include <stdexcept>
 
 #include "H5Epublic.h"
@@ -32,8 +31,11 @@ under the License.
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/AbstractProperty.h"
+#include "../resqml2/AbstractRepresentation.h"
 #include "../resqml2/WellboreMarkerFrameRepresentation.h"
 
+#include "../resqml2_0_1/DiscreteProperty.h"
+#include "../resqml2_0_1/PropertySet.h"
 #include "../resqml2_0_1/WellboreMarker.h"
 
 #include "../witsml2_1/Log.h"
@@ -196,32 +198,53 @@ namespace {
 	}
 }
 
-void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64)
+namespace {
+	RESQML2_0_1_NS::DiscreteProperty* getOrCreateFakeProperty(DataObjectRepository& repo) {
+		RESQML2_0_1_NS::DiscreteProperty* fakeProp = repo.getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID);
+		if (fakeProp != nullptr) { return fakeProp; }
+
+		auto* firstRep = repo.getDataObjects<RESQML2_NS::AbstractRepresentation>().at(0);
+		fakeProp = repo.createDiscreteProperty(
+			firstRep, RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID, "Fake Property", 1, gsoap_eml2_3::eml23__IndexableElement::representation, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
+		fakeProp->pushBackIntegerConstantArrayOfValues(-1, 1);
+
+		return fakeProp;
+	}
+
+	void addFakePropertyToEmptyPropertySet(DataObjectRepository& repo) {
+		for (auto* propSet : repo.getDataObjects<RESQML2_0_1_NS::PropertySet>()) {
+			if (propSet->getProperties().empty()) {
+				//Add a fake property since the RESQML2.0.1 does not allow empty property set
+				propSet->pushBackProperty(getOrCreateFakeProperty(repo));
+			}
+		}
+	}
+}
+
+void EpcDocument::serializeFrom(DataObjectRepository& repo, bool useZip64)
 {
+	addFakePropertyToEmptyPropertySet(repo);
+
 	// Cannot include zip.h for some macro conflict reasons with beast which also includes a port of zlib. Consequently cannot use macros below.
 	// 0 means APPEND_STATUS_CREATE
 	package->openForWriting(filePath, 0, useZip64);
 
-	const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects = repo.getDataObjects();
-	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
-	{
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (!it->second[i]->isPartial() &&
-				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
-				(dynamic_cast<WITSML2_1_NS::ChannelSet*>(it->second[i]) == nullptr || static_cast<WITSML2_1_NS::ChannelSet*>(it->second[i])->getLogs().empty()) &&
-				(dynamic_cast<WITSML2_1_NS::Channel*>(it->second[i]) == nullptr || static_cast<WITSML2_1_NS::Channel*>(it->second[i])->getChannelSets().empty())) {
+	for (auto const& uuidDataobjectPair : repo.getDataObjects()) {
+		for (auto* dataobject : uuidDataobjectPair.second) {
+			if (!dataobject->isPartial() &&
+				dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(dataobject) == nullptr &&
+				(dynamic_cast<WITSML2_1_NS::ChannelSet*>(dataobject) == nullptr || static_cast<WITSML2_1_NS::ChannelSet*>(dataobject)->getLogs().empty()) &&
+				(dynamic_cast<WITSML2_1_NS::Channel*>(dataobject) == nullptr || static_cast<WITSML2_1_NS::Channel*>(dataobject)->getChannelSets().empty())) {
 				// Dataobject
-				const string str = it->second[i]->serializeIntoString();
-				epc::FilePart* const fp = package->createPart(str, it->second[i]->getPartNameInEpcDocument());
+				epc::FilePart* const fp = package->createPart(dataobject->serializeIntoString(), dataobject->getPartNameInEpcDocument());
 
 				// Relationships
-				const std::vector<epc::Relationship>& relSet = getAllEpcRelationships(repo, it->second[i]);
-				for (size_t relIndex = 0; relIndex < relSet.size(); ++relIndex) {
-					fp->addRelationship(relSet[relIndex]);
+				for (const auto& rel : getAllEpcRelationships(repo, dataobject)) {
+					fp->addRelationship(rel);
 				}
 
 				// Content Type entry
-				package->addContentType(epc::ContentType(false, it->second[i]->getContentType(), it->second[i]->getPartNameInEpcDocument()));
+				package->addContentType(epc::ContentType(false, dataobject->getContentType(), dataobject->getPartNameInEpcDocument()));
 			}
 		}
 	}
@@ -236,9 +259,13 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 		result += warning + '\n';
 	}
 
-	// 14 equals "application/x-".size()
-	for (auto it : package->getFileContentType().getAllContentType()) {
-		std::string contentType = it.second.getContentTypeString();
+	for (const auto& contentTypeEntry : package->getFileContentType().getAllContentType()) {
+		if (contentTypeEntry.second.getExtensionOrPartName().find(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) != std::string::npos) {
+			result += "The FESAPI fake property " + std::string(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) + " has been detected and will be ignored.";
+			continue;
+		}
+		std::string contentType = contentTypeEntry.second.getContentTypeString();
+		// 14 equals "application/x-".size()
 		if (contentType.find("resqml", 14) != std::string::npos ||
 			contentType.find("eml", 14) != std::string::npos ||
 			contentType.find("witsml", 14) != std::string::npos ||
@@ -247,31 +274,29 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				result += "The content type " + contentType + " should belong to EML20 and not to RESQML20 since obj_EpcExternalPartReference is part of COMMON 2.0 and not part of RESQML 2.0.\n";
 				contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
 			}
-			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference" ||
-				contentType == "application/x-eml+xml;version=2.3;type=EpcExternalPartReference") {
+			COMMON_NS::AbstractObject* wrapper = nullptr;
+			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
 				// Look for the relative path of the HDF file
 				string relFilePath = "";
-				const size_t slashPos = it.second.getExtensionOrPartName().substr(1).find_last_of("/\\");
+				const size_t slashPos = contentTypeEntry.second.getExtensionOrPartName().substr(1).find_last_of("/\\");
 				if (slashPos != string::npos) {
-					relFilePath = it.second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
+					relFilePath = contentTypeEntry.second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
 				}
-				relFilePath += "_rels" + it.second.getExtensionOrPartName().substr(it.second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
+				relFilePath += "_rels" + contentTypeEntry.second.getExtensionOrPartName().substr(contentTypeEntry.second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
 				if (!package->fileExists(relFilePath)) {
-					result += "The EpcExternalPartReference (aka HDF proxy) " + it.second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
+					result += "The EpcExternalPartReference (aka HDF proxy) " + contentTypeEntry.second.getExtensionOrPartName() + " does not look to be associated to any HDF file : there is no rel file for this object. It is going to be withdrawn.\n";
 					continue;
 				}
 				epc::FileRelationship relFile;
 				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
-				COMMON_NS::AbstractObject* wrapper = nullptr;
 				std::string target;
-				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
-					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
-						target = allRels[relIndex].getTarget();
+				for (const auto& rel : relFile.getAllRelationship()) {
+					if (rel.getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
+						target = rel.getTarget();
 						if (target.find("http://") == 0 || target.find("https://") == 0) {
 							repo.setHdfProxyFactory(new HdfProxyROS3Factory());
 						}
-						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it.second.getExtensionOrPartName().substr(1)), contentType, filePath);
+						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 						break;
 					}
 				}
@@ -282,20 +307,23 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 					static_cast<EML2_NS::AbstractHdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
 				}
 				else {
-					result += "The EpcExternalPartReference (aka HDF proxy) " + it.second.getExtensionOrPartName() + " is either not XML valid or it does not contain any EPC external relationship entry towards an HDF5 file.\n";
+					result += "The EpcExternalPartReference (aka HDF proxy) " + contentTypeEntry.second.getExtensionOrPartName() + " is either not XML valid or it does not contain any EPC external relationship entry towards an HDF5 file.\n";
 				}
 			}
 			else {
-				repo.addOrReplaceGsoapProxy(package->extractFile(it.second.getExtensionOrPartName().substr(1)), contentType, filePath);
+				wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 			}
+		}
+		else if (contentType.find("application/vnd.openxmlformats-package") == std::string::npos &&
+			contentType != "application/x-extended-core-properties+xml") {
+			result += "The content type " + contentType + " is not recognized by FESAPI and will be ignored.";
 		}
 	}
 
 	repo.updateAllRelationships();
 
 	// Validate properties
-	const vector<RESQML2_NS::AbstractProperty*> allprops = repo.getDataObjects<RESQML2_NS::AbstractProperty>();
-	for (auto* prop : allprops) {
+	for (auto* prop : repo.getDataObjects<RESQML2_NS::AbstractProperty>()) {
 		if (!prop->isPartial()) {
 			prop->validate();
 		}

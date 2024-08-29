@@ -196,7 +196,7 @@ namespace EML2_NS
 		 * @param [out]	green			Green value in the range [0, 255].
 		 * @param [out]	blue			Blue value in the range [0, 255].
 		 */
-		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
+		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, uint8_t& red, uint8_t& green, uint8_t& blue) const;
 
 		/**
 		 * Query if a given data object has a default color title. It only looks at direct color
@@ -285,7 +285,7 @@ namespace EML2_NS
 		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
 		 * 								title is empty (default).
 		 */
-		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(COMMON_NS::AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
+		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(COMMON_NS::AbstractObject* targetObject, uint8_t red, uint8_t green, uint8_t blue, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
 		 * Query if a given data object has a discrete color map. If it has not and it is a property, we
@@ -555,7 +555,7 @@ namespace EML2_NS
 		 * @param [out]	saturation	Numeric value in the range [0, 1].
 		 * @param [out]	value	  	Numeric value in the range [0, 1].
 		 */
-		DLL_IMPORT_OR_EXPORT static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);
+		DLL_IMPORT_OR_EXPORT static void rgbToHsv(uint8_t red, uint8_t green, uint8_t blue, double& hue, double& saturation, double& value);
 
 		/**
 		 * Converts HSV to RGB color (using https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
@@ -564,9 +564,9 @@ namespace EML2_NS
 		 * @param 	   	hue		  	Angle in degrees in the range [0, 360].
 		 * @param 	   	saturation	Numeric value in the range [0, 1].
 		 * @param 	   	value	  	Numeric value in the range [0, 1].
-		 * @param [out]	red		  	Numeric value in the range.
-		 * @param [out]	green	  	Numeric value in the range.
-		 * @param [out]	blue	  	Numeric value in the range.
+		 * @param [out]	red		  	Numeric value in the range [0, 1].
+		 * @param [out]	green	  	Numeric value in the range [0, 1].
+		 * @param [out]	blue	  	Numeric value in the range [0, 1].
 		 */
 		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, double& red, double& green, double& blue);
 
@@ -578,11 +578,11 @@ namespace EML2_NS
 		 * @param 	   	hue		  	Angle in degrees in the range [0, 360].
 		 * @param 	   	saturation	Numeric value in the range [0, 1].
 		 * @param 	   	value	  	Numeric value in the range [0, 1].
-		 * @param [out]	red		  	Numeric value in the range.
-		 * @param [out]	green	  	Numeric value in the range.
-		 * @param [out]	blue	  	Numeric value in the range.
+		 * @param [out]	red		  	Numeric value in the range [0, 255].
+		 * @param [out]	green	  	Numeric value in the range [0, 255].
+		 * @param [out]	blue	  	Numeric value in the range [0, 255].
 		 */
-		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
+		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, uint8_t& red, uint8_t& green, uint8_t& blue);
 
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "GraphicalInformationSet";

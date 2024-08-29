@@ -24,6 +24,7 @@ under the License.
 
 namespace EML2_NS
 {
+	class AbstractLocal3dCrs;
 	class TimeSeries;
 }
 
@@ -50,7 +51,7 @@ namespace RESQML2_NS
 		 * 						
 		 * @returns Null if it fails, else the local CRS associated to the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getLocalCrs(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the data object reference of the local 3d CRS associated to a given patch of this
@@ -63,7 +64,7 @@ namespace RESQML2_NS
 		 * @returns	Empty data object reference if it fails, else the data object reference of the local
 		 * 			CRS associated to the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const;
 
 		/**
 		 * @brief Gets the data object reference of the HDF proxy which is used for storing the numerical
@@ -446,18 +447,18 @@ namespace RESQML2_NS
 		 * 											geometry.
 		 * @param [in,out]	points					All the points to set ordered according the topology
 		 * 											of the representation it is based on. It should be 3 *
-		 * 											numPoints sized.
+		 * 											numPoints sized if 3d and 2 * numPoints sized if 2d, etc...
 		 * @param [in,out]	localCrs				The local CRS where the points lie on.
-		 * @param [in,out]	numPoints				The number of points for each dimension of the array
-		 * 											to write.
+		 * @param [in,out]	dimensions				The dimensions of the array to write.
 		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
 		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
 		 * 											already opened for writing and won't be closed in this
 		 * 											method.
 		 *
-		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
+		 * @returns	Null if it fails, else the new 2.0.1 point geometry patch.
 		 */
-		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(uint64_t patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(uint64_t patchIndex,
+			double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const * dimensions, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Creates a v2.2 point geometry patch.
@@ -466,10 +467,9 @@ namespace RESQML2_NS
 		 * 											geometry.
 		 * @param [in,out]	points					All the points to set ordered according the topology
 		 * 											of the representation it is based on. It should be 3 *
-		 * 											numPoints sized.
+		 * 											numPoints sized if 3d and 2 * numPoints sized if 2d, etc...
 		 * @param [in,out]	localCrs				The local CRS where the points lie on.
-		 * @param [in,out]	numPoints				The number of points for each dimension of the array
-		 * 											to write.
+		 * @param [in,out]	dimensions				The dimensions of the array to write.
 		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
 		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
 		 * 											already opened for writing and won't be closed in this
@@ -477,7 +477,8 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the new point geometry patch 2 0 1.
 		 */
-		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(uint64_t patchIndex, double const * points, class AbstractLocal3dCrs const* localCrs, uint64_t const * numPoints, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
+		gsoap_eml2_3::resqml22__PointGeometry* createPointGeometryPatch2_2(uint64_t patchIndex,
+			double const * points, EML2_NS::AbstractLocal3dCrs const* localCrs, uint64_t const * dimensions, uint32_t numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Gets hdf proxy dor from point geometry patch

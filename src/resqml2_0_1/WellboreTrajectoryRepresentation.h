@@ -72,7 +72,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in]	deviationSurvey	The deviation survey on which this wellbore trajectory relies on.
 		 * 								MD data will be retrieve from it. It cannot be null.
 		 */
-		WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey);
+		WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, DeviationSurveyRepresentation* deviationSurvey);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
@@ -89,14 +89,14 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints,
 			double startMd, double endMd,
 			uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 		
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT int getGeometryKind() const final;
 
@@ -136,11 +136,36 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT double getParentTrajectoryMd() const final;
 
-		DLL_IMPORT_OR_EXPORT void setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey) final;
+		//*****************
+		//***** SURVEY ****
+		//*****************
 
-		COMMON_NS::DataObjectReference getDeviationSurveyDor() const final;
+		/**
+		 * Sets the deviation survey which is the source of this trajectory.
+		 *
+		 * @exception	std::invalid_argument	If @p deviationSurvey is @c nullptr.
+		 *
+		 * @param [in]	deviationSurvey	The deviation survey to set as a source of this trajectory.
+		 */
+		DLL_IMPORT_OR_EXPORT void setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey);
 
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
+		/**
+		 * Gets the deviation survey which is the source of this trajectory.
+		 *
+		 * @returns	The deviation survey which is the source of this
+		 * 			trajectory if exists, else @c nullptr.
+		 */
+		DLL_IMPORT_OR_EXPORT DeviationSurveyRepresentation* getDeviationSurvey() const;
+
+		/**
+		 * Gets the data object reference of the deviation survey which is the source of this trajectory.
+		 *
+		 * @returns	The data object reference of the deviation survey which is the source of this
+		 * 			trajectory if exists, else empty data object reference.
+		 */
+		COMMON_NS::DataObjectReference getDeviationSurveyDor() const;
+
+		COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const final;
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
@@ -155,5 +180,9 @@ namespace RESQML2_0_1_NS
 		* Get the standard XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
+
+	private:
+
+		void loadTargetRelationships() final;
 	};
 }

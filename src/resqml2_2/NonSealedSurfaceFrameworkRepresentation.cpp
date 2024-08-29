@@ -24,7 +24,7 @@ under the License.
 
 #include "../eml2/AbstractHdfProxy.h"
 
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../resqml2/StructuralOrganizationInterpretation.h"
 
 using namespace std;
@@ -55,7 +55,7 @@ NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation
 	setInterpretation(interp);
 }
 
-void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresentation(unsigned int pointCount, double const* points, EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresentation(unsigned int pointCount, double const* points, EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (pointCount == 0)
 		throw invalid_argument("Contact point count cannot be zero.");

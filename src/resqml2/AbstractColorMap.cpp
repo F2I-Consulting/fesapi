@@ -24,9 +24,9 @@ using namespace std;
 using namespace gsoap_eml2_3;
 using namespace RESQML2_NS;
 
-void AbstractColorMap::setRgbColors(unsigned int colorCount,
-	double const* rgbColors, double const* alphas, vector<string> const& colorTitles,
-	double const* indices)
+void AbstractColorMap::setRgbColors(uint64_t colorCount,
+	double const* rgbColors, double const* alphas,
+	double const* indices, vector<string> const& colorTitles)
 {
 	std::unique_ptr<double[]> hsvColors(new double[colorCount * 3]);
 	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
@@ -46,97 +46,85 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 			hsvColors[3 * colorIndex], hsvColors[3 * colorIndex + 1], hsvColors[3 * colorIndex + 2]);
 	}
 
-	setHsvColors(colorCount, hsvColors.get(), alphas, colorTitles, indices);
+	setHsvColors(colorCount, hsvColors.get(), alphas, indices, colorTitles);
 }
 
-void AbstractColorMap::setRgbColors(unsigned int colorCount,
-	unsigned int const* rgbColors, double const* alphas, vector<string> const& colorTitles,
-	double const* indices)
+void AbstractColorMap::setRgbColors(uint64_t colorCount,
+	uint8_t const* rgbColors, double const* alphas,
+	double const* indices, vector<string> const& colorTitles)
 {
 	std::unique_ptr<double[]> hsvColors(new double[colorCount * 3]);
 	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
-		if (rgbColors[3 * colorIndex] > 255) {
-			throw invalid_argument("red must be in range [0, 255]");
-		}
-
-		if (rgbColors[3 * colorIndex + 1] > 255) {
-			throw invalid_argument("green must be in range [0, 255]");
-		}
-
-		if (rgbColors[3 * colorIndex + 2] > 255) {
-			throw invalid_argument("blue must be in range [0, 255]");
-		}
-
 		EML2_NS::GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
 			hsvColors[3 * colorIndex], hsvColors[3 * colorIndex + 1], hsvColors[3 * colorIndex + 2]);
 	}
 
-	setHsvColors(colorCount, hsvColors.get(), alphas, colorTitles, indices);
+	setHsvColors(colorCount, hsvColors.get(), alphas, indices, colorTitles);
 }
 
-double AbstractColorMap::getHue(double colorIndex) const
+double AbstractColorMap::getHue(uint64_t colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw out_of_range("There is no such color index");
+		throw out_of_range("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 
 	return color->Hue;
 }
 
-double AbstractColorMap::getSaturation(double colorIndex) const
+double AbstractColorMap::getSaturation(uint64_t colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw invalid_argument("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 	return color->Saturation;
 }
 
-double AbstractColorMap::getValue(double colorIndex) const
+double AbstractColorMap::getValue(uint64_t colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw invalid_argument("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 
 	return color->Value;
 }
 
-double AbstractColorMap::getAlpha(double colorIndex) const
+double AbstractColorMap::getAlpha(uint64_t colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw invalid_argument("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 
 	return color->Alpha;
 }
 
-void AbstractColorMap::getRgbColor(double colorIndex, double& red, double& green, double& blue) const
+void AbstractColorMap::getRgbColor(uint64_t colorIndex, double& red, double& green, double& blue) const
 {
 	EML2_NS::GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
 }
 
-void AbstractColorMap::getRgbColor(double colorIndex, unsigned int& red, unsigned int& green, unsigned int& blue) const
+void AbstractColorMap::getRgbColor(uint64_t colorIndex, uint8_t& red, uint8_t& green, uint8_t& blue) const
 {
 	EML2_NS::GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
 }
 
-bool AbstractColorMap::hasColorTitle(double colorIndex) const
+bool AbstractColorMap::hasColorTitle(uint64_t colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw invalid_argument("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 
 	return color->Title != nullptr;
 }
-std::string AbstractColorMap::getColorTitle(double colorIndex) const
+std::string AbstractColorMap::getColorTitle(uint64_t colorIndex) const
 {
 	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw invalid_argument("There is no color index \"" + std::to_string(colorIndex) + "\" in this color map");
 	}
 
 	if (!hasColorTitle(colorIndex)) {
@@ -144,4 +132,116 @@ std::string AbstractColorMap::getColorTitle(double colorIndex) const
 	}
 
 	return *color->Title;
+}
+
+void AbstractColorMap::setNullHsvColor(double hue, double saturation, double value, double alpha, std::string const& colorTitle)
+{
+	if (hue < 0 || hue > 360) {
+		throw invalid_argument("hue must be in range [0, 360]");
+	}
+
+	if (saturation < 0 || saturation > 1) {
+		throw invalid_argument("saturation must be in range [0, 1]");
+	}
+
+	if (value < 0 || value > 1) {
+		throw invalid_argument("value must be in range [0, 1]");
+	}
+
+	if (alpha < 0 || alpha > 1) {
+		throw invalid_argument("alpha must be in range [0, 1]");
+	}
+
+	resqml22__AbstractColorMap* const colorMap = static_cast<resqml22__AbstractColorMap*>(gsoapProxy2_3);
+
+	if (colorMap->NullColor == nullptr) {
+		colorMap->NullColor = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
+	}
+
+	colorMap->NullColor->Hue = hue;
+	colorMap->NullColor->Saturation = saturation;
+	colorMap->NullColor->Value = value;
+	colorMap->NullColor->Alpha = alpha;
+	if (!colorTitle.empty()) {
+		colorMap->NullColor->Title = soap_new_std__string(gsoapProxy2_3->soap);
+		*colorMap->NullColor->Title = colorTitle;
+	}
+}
+
+void AbstractColorMap::setNullRgbColor(double red, double green, double blue, double alpha, std::string const& colorTitle)
+{
+	if (red < 0 || red > 1) {
+		throw invalid_argument("red must be in range [0, 1]");
+	}
+
+	if (green < 0 || green > 1) {
+		throw invalid_argument("green must be in range [0, 1]");
+	}
+
+	if (blue < 0 || blue > 1) {
+		throw invalid_argument("blue must be in range [0, 1]");
+	}
+
+	if (alpha < 0 || alpha > 1) {
+		throw invalid_argument("alpha must be in range [0, 1]");
+	}
+
+	double hue, saturation, value;
+	EML2_NS::GraphicalInformationSet::rgbToHsv(red, green, blue, hue, saturation, value);
+
+	setNullHsvColor(hue, saturation, value, alpha, colorTitle);
+}
+
+void AbstractColorMap::setNullRgbColor(uint8_t red, uint8_t green, uint8_t blue, double alpha, std::string const& colorTitle)
+{
+	if (alpha < 0 || alpha > 1) {
+		throw invalid_argument("alpha must be in range [0, 1]");
+	}
+
+	double hue, saturation, value;
+	EML2_NS::GraphicalInformationSet::rgbToHsv(red, green, blue, hue, saturation, value);
+
+	setNullHsvColor(hue, saturation, value, alpha, colorTitle);
+}
+
+double AbstractColorMap::getNullHue() const
+{
+	if (!hasNullColor()) {
+		throw out_of_range("There is no Null color in this color map");
+	}
+	return static_cast<gsoap_eml2_3::resqml22__AbstractColorMap const*>(gsoapProxy2_3)->NullColor->Hue;
+}
+
+double AbstractColorMap::getNullSaturation() const
+{
+	if (!hasNullColor()) {
+		throw out_of_range("There is no Null color in this color map");
+	}
+	return static_cast<gsoap_eml2_3::resqml22__AbstractColorMap const*>(gsoapProxy2_3)->NullColor->Saturation;
+}
+
+double AbstractColorMap::getNullValue() const
+{
+	if (!hasNullColor()) {
+		throw out_of_range("There is no Null color in this color map");
+	}
+	return static_cast<gsoap_eml2_3::resqml22__AbstractColorMap const*>(gsoapProxy2_3)->NullColor->Value;
+}
+
+double AbstractColorMap::getNullAlpha() const
+{
+	if (!hasNullColor()) {
+		throw out_of_range("There is no Null color in this color map");
+	}
+	return static_cast<gsoap_eml2_3::resqml22__AbstractColorMap const*>(gsoapProxy2_3)->NullColor->Alpha;
+}
+
+void AbstractColorMap::getNullRgbColor(double& red, double& green, double& blue) const
+{
+	EML2_NS::GraphicalInformationSet::hsvToRgb(getNullHue(), getNullSaturation(), getNullValue(), red, green, blue);
+}
+
+void AbstractColorMap::getNullRgbColor(uint8_t& red, uint8_t& green, uint8_t& blue) const
+{
+	EML2_NS::GraphicalInformationSet::hsvToRgb(getNullHue(), getNullSaturation(), getNullValue(), red, green, blue);
 }

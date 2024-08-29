@@ -356,7 +356,7 @@ namespace RESQML2_NS
 			double originX, double originY, double originZ,
 			double directionIX, double directionIY, double directionIZ, double spacingI,
 			double directionJX, double directionJY, double directionJZ, double spacingJ,
-			double directionKX, double directionKY, double directionKZ, double spacingK, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
+			double directionKX, double directionKY, double directionKZ, double spacingK, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
 		 * Pushes back a patch of seismic 3D coordinates.

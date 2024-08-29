@@ -19,12 +19,14 @@ under the License.
 #include "Streamlines.h"
 
 #include "../catch.hpp"
-#include "resqml2_0_1/TimeSeries.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
-#include "resqml2/StreamlinesFeature.h"
-#include "resqml2_2/StreamlinesRepresentation.h"
+
 #include "resqml2/AbstractIjkGridRepresentation.h"
 #include "resqml2/GenericFeatureInterpretation.h"
+#include "resqml2/StreamlinesFeature.h"
+
+#include "resqml2_0_1/StreamlinesRepresentation.h"
+#include "resqml2_0_1/TimeSeries.h"
+#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -113,7 +115,11 @@ void Streamlines::readRepo()
 	REQUIRE(intervalCountPerLine[0] == 1);
 	REQUIRE(intervalCountPerLine[1] == 2);
 	REQUIRE(streamlinesRep->getIntervalCount() == 3);
-	if (dynamic_cast<RESQML2_2_NS::StreamlinesRepresentation*>(streamlinesRep) != nullptr) {
+	if (dynamic_cast<RESQML2_0_1_NS::StreamlinesRepresentation*>(streamlinesRep) != nullptr) {
+		double xyzPoints[15];
+		REQUIRE_THROWS(streamlinesRep->getXyzPointsOfAllPatches(xyzPoints));
+	}
+	else {
 		REQUIRE(streamlinesRep->getXyzPointCountOfAllPatches() == 5);
 		double xyzPoints[15];
 		streamlinesRep->getXyzPointsOfAllPatches(xyzPoints);
@@ -122,10 +128,6 @@ void Streamlines::readRepo()
 		REQUIRE(xyzPoints[2] == .0);
 		REQUIRE(xyzPoints[3] == 1.0);
 		REQUIRE(xyzPoints[14] == 4.0);
-	}
-	else {
-		double xyzPoints[15];
-		REQUIRE_THROWS(streamlinesRep->getXyzPointsOfAllPatches(xyzPoints));
 	}
 
 	// Grid

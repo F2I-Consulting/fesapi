@@ -505,12 +505,10 @@ namespace COMMON_NS
 		 * Gets the count of aliases in this instance
 		 *
 		 * @exception	std::invalid_argument	If this instance is actually a partial object.
-		 * @exception	std::range_error	 	If the count of aliases is strictly greater than unsigned
-		 * 										int max.
 		 *
 		 * @returns	The alias count of this instance.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getAliasCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getAliasCount() const;
 
 		/**
 		 * Gets the alias authority at a particular index in the aliases set
@@ -523,7 +521,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The alias authority at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getAliasAuthorityAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getAliasAuthorityAtIndex(uint64_t index) const;
 
 		/**
 		 * Gets the alias title at a particular index in the aliases set
@@ -536,7 +534,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The alias title at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getAliasTitleAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getAliasTitleAtIndex(uint64_t index) const;
 
 		/**
 		 * Gets all the activities where this instance is involved
@@ -553,7 +551,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The count of all activities involving this instance.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getActivityCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getActivityCount() const;
 
 		/**
 		 * Gets an associated activity at a particular index
@@ -566,7 +564,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The associated activity at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT EML2_NS::Activity* getActivity(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::Activity* getActivity(uint64_t index) const;
 
 		/**
 		 * Pushes back an extra metadata (not a standard one) onto this instance

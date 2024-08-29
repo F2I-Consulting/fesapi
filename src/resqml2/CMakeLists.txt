@@ -4,7 +4,6 @@ set(FESAPI_RESQML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractFeatureInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractGridRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractIjkGridRepresentation.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractLocal3dCrs.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractOrganizationInterpretation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractProperty.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractRepresentation.cpp
@@ -19,7 +18,6 @@ set(FESAPI_RESQML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/CommentProperty.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/ContinuousColorMap.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/ContinuousProperty.cpp
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DeviationSurveyRepresentation.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DiscreteColorMap.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DiscreteProperty.cpp
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/EarthModelInterpretation.cpp
@@ -58,7 +56,6 @@ set(FESAPI_RESQML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractFeatureInterpretation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractGridRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractIjkGridRepresentation.h
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractLocal3dCrs.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractOrganizationInterpretation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractProperty.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/AbstractRepresentation.h
@@ -77,7 +74,6 @@ set(FESAPI_RESQML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/ContinuousColorMap.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/ContinuousProperty.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/CulturalFeature.h
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DeviationSurveyRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DiscreteColorMap.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DiscreteProperty.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/DoubleTableLookup.h
@@ -94,8 +90,6 @@ set(FESAPI_RESQML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridLatticeRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridNoGeometryRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/IjkGridParametricRepresentation.h
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/LocalDepth3dCrs.h
-							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/LocalTime3dCrs.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/MdDatum.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Model.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/NonSealedSurfaceFrameworkRepresentation.h

@@ -23,6 +23,7 @@ under the License.
 namespace EML2_NS
 {
 	class AbstractHdfProxy;
+	class AbstractLocal3dCrs;
 	class PropertyKind;
 	class TimeSeries;
 }
@@ -181,7 +182,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	crs	The local CRS to associate with the current property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setLocalCrs(class AbstractLocal3dCrs * crs);
+		DLL_IMPORT_OR_EXPORT void setLocalCrs(EML2_NS::AbstractLocal3dCrs* crs);
 
 		/**
 		 * Gets the local CRS which is associated to this property.
@@ -189,7 +190,7 @@ namespace RESQML2_NS
 		 * @returns The local CRS which is associated to the current property if exists, null if not 
 		 * 			(usually for a property which is not CRS related).
 		 */
-		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs() const;
+		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* getLocalCrs() const;
 
 		/**
 		 * Gets the data object reference of the local CRS which is associated to this property

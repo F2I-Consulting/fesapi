@@ -21,7 +21,7 @@ under the License.
 #include <algorithm>
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../eml2/AbstractHdfProxy.h"
 
 using namespace std;
@@ -73,7 +73,7 @@ PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeature
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int const* nodeCountPerPolyline, double const* nodes,
 				uint64_t polylineCount, bool allPolylinesClosedFlag,
-				EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+				EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -108,15 +108,15 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->ClosedPolylines = xmlClosedPolylines;
 
 	// XYZ points
-	uint64_t nodeCount = 0;
+	uint64_t nodeCount[2] = { 0, 3 };
 	uint64_t intervalCount = 0;
 	for (size_t i = 0; i < polylineCount; ++i) {
-		nodeCount += nodeCountPerPolyline[i];
+		nodeCount[0] += nodeCountPerPolyline[i];
 		intervalCount += nodeCountPerPolyline[i] - 1;
 	}
-	patch->NodeCount = nodeCount;
+	patch->NodeCount = nodeCount[0];
 	patch->IntervalCount = intervalCount;
-	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(), nodes, localCrs, &nodeCount, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(), nodes, localCrs, nodeCount, 2, proxy);
 
 	static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.push_back(patch);
 	getRepository()->addRelationship(this, localCrs);
@@ -125,7 +125,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int const* nodeCountPerPolyline, double const* nodes,
 				uint64_t polylineCount, bool * polylineClosedFlags,
-				EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+				EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -163,15 +163,15 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->ClosedPolylines = xmlClosedPolylines;
 
 	// XYZ points
-	uint64_t nodeCount = 0;
+	uint64_t nodeCount[2] = { 0, 3 };
 	uint64_t intervalCount = 0;
 	for (size_t i = 0; i < polylineCount; ++i) {
-		nodeCount += nodeCountPerPolyline[i];
+		nodeCount[0] += nodeCountPerPolyline[i];
 		intervalCount += nodeCountPerPolyline[i] - 1;
 	}
-	patch->NodeCount = nodeCount;
+	patch->NodeCount = nodeCount[0];
 	patch->IntervalCount = intervalCount;
-	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(), nodes, localCrs, &nodeCount, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(), nodes, localCrs, nodeCount, 2, proxy);
 
 	static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.push_back(patch);
 	getRepository()->addRelationship(this, localCrs);

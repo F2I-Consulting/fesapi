@@ -69,7 +69,7 @@ namespace EML2_3_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string & title,
 			bool isInput, bool isOutput,
-			unsigned int minOccurs, int maxOccurs) final;
+			uint64_t minOccurs, int64_t maxOccurs) final;
 
 		/**
 		 * Push back a parameter in the activity template instance. This parameter must not be of a data
@@ -85,7 +85,7 @@ namespace EML2_3_NS
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string & title,
 			gsoap_resqml2_0_1::resqml20__ParameterKind kind,
 			bool isInput, bool isOutput,
-			unsigned int minOccurs, int maxOccurs);
+			uint64_t minOccurs, int64_t maxOccurs);
 
 		/**
 		 * Push back a parameter in the activity template instance. This parameter must be of a data
@@ -101,7 +101,7 @@ namespace EML2_3_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string & title,
 			bool isInput, bool isOutput,
-			unsigned int minOccurs, int maxOccurs,
+			uint64_t minOccurs, int64_t maxOccurs,
 			std::string resqmlObjectContentType) final;
 
 		/**
@@ -127,7 +127,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter title.
 		 */
-		DLL_IMPORT_OR_EXPORT const std::string & getParameterTitle(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT std::string getParameterTitle(uint64_t index) const final;
 
 		/**
 		 * Gets parameter allowed kinds
@@ -136,7 +136,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter allowed kinds.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<gsoap_resqml2_0_1::resqml20__ParameterKind> getParameterAllowedKinds(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT std::vector<gsoap_resqml2_0_1::resqml20__ParameterKind> getParameterAllowedKinds(uint64_t index) const final;
 
 		/**
 		 * Gets parameter allowed kinds
@@ -154,7 +154,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter is input.
 		 */
-		DLL_IMPORT_OR_EXPORT bool getParameterIsInput(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT bool getParameterIsInput(uint64_t index) const final;
 
 		/**
 		 * Gets parameter is input
@@ -172,7 +172,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter is output.
 		 */
-		DLL_IMPORT_OR_EXPORT bool getParameterIsOutput(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT bool getParameterIsOutput(uint64_t index) const final;
 
 		/**
 		 * Gets parameter is output
@@ -190,7 +190,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter minimum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getParameterMinOccurences(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getParameterMinOccurences(uint64_t index) const;
 
 		/**
 		 * Gets parameter minimum occurences
@@ -199,7 +199,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter minimum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getParameterMinOccurences(const std::string & paramTitle) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getParameterMinOccurences(const std::string & paramTitle) const final;
 
 		/**
 		 * Gets parameter maximum occurences
@@ -208,7 +208,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter maximum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getParameterMaxOccurences(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getParameterMaxOccurences(uint64_t index) const final;
 
 		/**
 		 * Gets parameter maximum occurences
@@ -217,7 +217,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The parameter maximum occurences.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getParameterMaxOccurences(const std::string & paramTitle) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getParameterMaxOccurences(const std::string & paramTitle) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

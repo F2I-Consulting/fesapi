@@ -12,9 +12,9 @@ set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
 set (Fesapi_VERSION_MAJOR 2)
-set (Fesapi_VERSION_MINOR 9)
+set (Fesapi_VERSION_MINOR 10)
 set (Fesapi_VERSION_PATCH 0)
-set (Fesapi_VERSION_TWEAK 1)
+set (Fesapi_VERSION_TWEAK 0)
 
 set (Fesapi_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VERSION_PATCH}.${Fesapi_VERSION_TWEAK})
 
@@ -140,6 +140,7 @@ list(APPEND FESAPI_PROXIES_SOURCES
 	${FESAPI_ROOT_DIR}/src/proxies/envC.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_resqml2_0_1C.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_3C.cpp
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_uom1_0C.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/namespace.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/stdsoap2.cpp
 	${FESAPI_ROOT_DIR}/src/proxies/struct_tm.cpp
@@ -151,6 +152,8 @@ list(APPEND FESAPI_PROXIES_HEADERS
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_resqml2_0_1Stub.h
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_3H.h
 	${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_3Stub.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_uom1_0H.h
+	${FESAPI_ROOT_DIR}/src/proxies/gsoap_uom1_0Stub.h
 	${FESAPI_ROOT_DIR}/src/proxies/stdsoap2.h
 )
 

@@ -23,10 +23,10 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
+#include "../eml2/AbstractLocal3dCrs.h"
+
 #include "AbstractFeature.h"
 #include "GridConnectionSetRepresentation.h"
-#include "LocalDepth3dCrs.h"
-#include "LocalTime3dCrs.h"
 
 using namespace RESQML2_NS;
 using namespace std;
@@ -104,12 +104,12 @@ gsoap_resqml2_0_1::resqml20__Domain AbstractFeatureInterpretation::initDomain(gs
 		}
 		const uint64_t patchCount = rep->getPatchCount();
 		for (uint64_t patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
-			AbstractLocal3dCrs* local3dCrs = rep->getLocalCrs(patchIndex);
-			if (local3dCrs != nullptr) {
-				if (dynamic_cast<LocalTime3dCrs*>(local3dCrs) != nullptr) {
+			EML2_NS::AbstractLocal3dCrs* local3dCrs = rep->getLocalCrs(patchIndex);
+			if (local3dCrs != nullptr && (!local3dCrs->isPartial() || local3dCrs->getXmlNamespaceVersion() == "2.0")) {
+				if (local3dCrs->isATimeCrs()) {
 					isTimeDomain = true;
 				}
-				else if (dynamic_cast<LocalDepth3dCrs*>(local3dCrs) != nullptr) {
+				else {
 					isDepthDomain = true;
 				}
 			}

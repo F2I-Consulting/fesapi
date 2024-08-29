@@ -346,10 +346,11 @@ namespace WITSML2_NS
 		*
 		* @exception	std::invalid_argument	If @p value is undefined.
 		*
-		* @param 	value	The elevation value.
-		* @param 	uom  	The elevation unit of measure.
+		* @param 	value		The elevation value.
+		* @param 	uom  		The elevation unit of measure.
+		* @param	verticalCrs	The vertical CRS which is used as the datum for the ground elevation
 		*/
-		virtual void setGroundElevation(double value, gsoap_eml2_3::eml23__LengthUom uom) = 0;
+		virtual void setGroundElevation(double value, gsoap_eml2_3::eml23__LengthUom uom, EML2_3_NS::VerticalCrs* verticalCrs) = 0;
 
 		/**
 		 * @brief	Gets the ground level elevation value
@@ -368,6 +369,49 @@ namespace WITSML2_NS
 		 * @returns	The ground level elevation unit of measure.
 		 */
 		virtual gsoap_eml2_3::eml23__LengthUom getGroundElevationUom() const = 0;
+
+		/**
+		 * Gets the vertical CRS which acts as the datum of this ground elevation.
+		 *
+		 * @returns	The vertical CRS which acts as the datum of this ground elevation..
+		 */
+		EML2_3_NS::VerticalCrs* getGroundElevationDatum() const;
+
+		/**
+		* @brief	Sets the well head elevation
+		*
+		* @exception	std::invalid_argument	If @p value is undefined.
+		*
+		* @param 	value		The elevation value.
+		* @param 	uom  		The elevation unit of measure.
+		* @param	verticalCrs	The vertical CRS which is used as the datum for the well head elevation
+		*/
+		virtual void setWellheadElevation(double value, gsoap_eml2_3::eml23__LengthUom uom, EML2_3_NS::VerticalCrs* verticalCrs) = 0;
+
+		/**
+		 * @brief	Gets the well head elevation value
+		 *
+		 * @exception	std::invalid_argument	If the well head elevation does not exist.
+		 *
+		 * @returns	The well head elevation value.
+		 */
+		virtual double getWellheadElevationValue() const = 0;
+
+		/**
+		 * @brief	Gets the well head elevation unit of measure
+		 *
+		 * @exception	std::invalid_argument	If the well head elevation does not exist.
+		 *
+		 * @returns	The well head elevation unit of measure.
+		 */
+		virtual gsoap_eml2_3::eml23__LengthUom getWellheadElevationUom() const = 0;
+
+		/**
+		 * Gets the vertical CRS which acts as the datum of this well head elevation.
+		 *
+		 * @returns	The vertical CRS which acts as the datum of this well head elevation..
+		 */
+		EML2_3_NS::VerticalCrs* getWellheadElevationDatum() const;
 
 		/**
 		* Set the time zone in which the well is located.It is the deviation in hours and minutes from
@@ -413,7 +457,7 @@ namespace WITSML2_NS
 			*
 			* @returns	The location projected x coordinate.
 			*/
-		double getLocationProjectedX(unsigned int locationIndex);
+		double getLocationProjectedX(uint64_t locationIndex);
 
 		/**
 		 * Gets location projected y coordinate
@@ -422,23 +466,23 @@ namespace WITSML2_NS
 		 *
 		 * @returns	The location projected y coordinate.
 		 */
-		double getLocationProjectedY(unsigned int locationIndex);
+		double getLocationProjectedY(uint64_t locationIndex);
 
 		/**
 		 * Pushes a back location
 		 *
-		 * @param 	projectedX				The projected x coordinate.
-		 * @param 	projectedY				The projected y coordinate.
+		 * @param 	projectedX		The projected x coordinate.
+		 * @param 	projectedY		The projected y coordinate.
+		 * @param 	crs				The CRS of the X and Y coordinates.
 		 */
-		void pushBackLocation(
-			double projectedX,
-			double projectedY);
+		void pushBackLocation(double projectedX, double projectedY, EML2_3_NS::LocalEngineering2dCrs* crs);
 
 		/**
 		 * Get location count
 		 *
 		 * @returns	An int.
-		 */unsigned int geLocationCount() const;
+		 */
+		uint64_t geLocationCount() const;
 		
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::WellboreFeature, ResqmlWellboreFeature)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_NS::Wellbore, Wellbore)

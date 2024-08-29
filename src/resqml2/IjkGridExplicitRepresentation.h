@@ -144,7 +144,7 @@ namespace RESQML2_NS
 			double const* points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t splitCoordinateLineCount = 0, unsigned int const* pillarOfCoordinateLine = nullptr,
 			unsigned int const* splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int const* splitCoordinateLineColumns = nullptr,
-			int8_t const* definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
+			int8_t const* definedPillars = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		/**
 		* @copybrief setGeometryAsCoordinateLineNodes
@@ -157,7 +157,7 @@ namespace RESQML2_NS
 			const std::string & points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
-			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
+			const std::string & definedPillars = "", EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
 
 		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const final;
 

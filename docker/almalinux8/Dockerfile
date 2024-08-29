@@ -13,45 +13,50 @@
 # specific language governing permissions and limitations
 # under the License.
 
-FROM centos:7.5.1804
+FROM almalinux:8
 
 LABEL maintainer="philippe.verney@f2i-consulting.com"
 
 ENV CFLAGS="-fPIC -O2"
 ENV CXXFLAGS="-fPIC -O2"
 
-RUN	yum install -y \
-	# minizip is a dependence of fesapi \ 
-	minizip-devel \ 	
+RUN	dnf install -y \
 	# git is used to clone fesapi repository from GitHub \	
-	git \				
+	git \
 	# C and C++ compilers
-	gcc-c++ \		
+	gcc-c++ \
 	# make is used to process Unix Makefiles
-	make \				
+	make \
+	# cmake is used to generate Makefiles
+	cmake \
 	# boost is used for UUID management
 	boost-devel \
 	# wget is used to download ressources. We use it instead of ADD in order to
 	# minimize the size of the docker image by limitating the number of layers
-	wget 
-	
-# epel repository is used to get cmake3 packages
-RUN yum search epel-release && \
-	yum info epel-release && \
-	yum install -y epel-release && \
-	yum --enablerepo=epel install -y \
-		# cmake3 is used to automatize building configuration
-		cmake3
+	wget \
+	# zlib is used to build minizip
+	zlib-devel
 
 ##############
-# hdf5 install
-# hdf5 is a dependence of fesapi
+# minizip is a dependency of fesapi
+##############
 WORKDIR /fesapiEnv
 RUN mkdir dependencies && \
 	cd dependencies && \
-	wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.6/src/hdf5-1.10.6.tar.gz && \
-	tar xf hdf5-1.10.6.tar.gz && \
-	cd hdf5-1.10.6 && \
+	git clone https://github.com/F2I-Consulting/Minizip.git && \
+	mkdir -p minizip-build && \
+	cd minizip-build && \
+	cmake3 -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX:STRING=/fesapiEnv/dependencies/minizip-install ../Minizip && \
+	cmake3 --build . --config Release && \
+	cmake3 --install .
+
+##############
+# hdf5 is a dependency of fesapi
+##############
+WORKDIR /fesapiEnv/dependencies
+RUN wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.3/src/hdf5-1.12.3.tar.gz && \
+	tar xf hdf5-1.12.3.tar.gz && \
+	cd hdf5-1.12.3 && \
 	mkdir build && \
 	cd build && \
 	cmake3 -G "Unix Makefiles" \
@@ -62,10 +67,10 @@ RUN mkdir dependencies && \
 		-DHDF5_BUILD_EXAMPLES:BOOL=OFF \
 		-DHDF5_BUILD_CPP_LIB:BOOL=OFF \
 		-DHDF5_BUILD_HL_LIB:BOOL=OFF \
-		-DCMAKE_INSTALL_PREFIX:STRING=/fesapiEnv/dependencies/hdf5-1.10.6/hdf5 \
+		-DCMAKE_INSTALL_PREFIX:STRING=/fesapiEnv/dependencies/hdf5-install \
 		.. && \
 	cmake3 --build . --config Release && \	
-	make install 
+	cmake3 --install .
 
 ################
 # fesapi install
@@ -76,17 +81,14 @@ RUN git clone https://github.com/F2I-Consulting/fesapi.git && \
 	mkdir build && \
 	cd build && \
 	cmake3 \
-		-DHDF5_C_INCLUDE_DIR=/fesapiEnv/dependencies/hdf5-1.10.6/hdf5/include \
-		-DHDF5_C_LIBRARY_RELEASE=/fesapiEnv/dependencies/hdf5-1.10.6/hdf5/lib/libhdf5.a \
-		-DMINIZIP_INCLUDE_DIR=/usr/include/minizip \
-		-DMINIZIP_LIBRARY_RELEASE=/usr/lib64/libminizip.so \
-		-DZLIB_INCLUDE_DIR=/usr/include \
-		-DZLIB_LIBRARY_RELEASE=/usr/lib64/libz.so \
+		-DHDF5_ROOT=/fesapiEnv/dependencies/hdf5-install \
+		-DHDF5_USE_STATIC_LIBRARIES=TRUE \
+		-DMINIZIP_ROOT=/fesapiEnv/dependencies/minizip-install \
 		-DWITH_EXAMPLE=TRUE \
 		-DCMAKE_BUILD_TYPE=Release \
 		../fesapi && \
-	make VERBOSE=OFF && \
-	make install
+	cmake3 --build . --config Release && \
+	cmake3 --install .
 
 # generate .epc and .h5 files
 WORKDIR /fesapiEnv/build/install

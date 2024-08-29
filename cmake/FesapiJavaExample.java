@@ -50,8 +50,10 @@ import com.f2i_consulting.fesapi.common.DataObjectRepository;
 import com.f2i_consulting.fesapi.common.DataObjectRepository.EnergisticsStandard;
 import com.f2i_consulting.fesapi.common.EpcDocument;
 import com.f2i_consulting.fesapi.eml2.AbstractHdfProxy;
+import com.f2i_consulting.fesapi.eml2.AbstractLocal3dCrs;
 import com.f2i_consulting.fesapi.eml2.GraphicalInformationSet;
 import com.f2i_consulting.fesapi.eml2.PropertyKind;
+import com.f2i_consulting.fesapi.eml2_3.Eml23_LocalEngineeringCompoundCrs;
 import com.f2i_consulting.fesapi.resqml2.AbstractIjkGridRepresentation;
 import com.f2i_consulting.fesapi.resqml2.AbstractRepresentation;
 import com.f2i_consulting.fesapi.resqml2.AbstractSeismicLineFeature;
@@ -67,8 +69,6 @@ import com.f2i_consulting.fesapi.resqml2.GenericFeatureInterpretation;
 import com.f2i_consulting.fesapi.resqml2.Grid2dRepresentation;
 import com.f2i_consulting.fesapi.resqml2.HorizonInterpretation;
 import com.f2i_consulting.fesapi.resqml2.IjkGridExplicitRepresentation;
-import com.f2i_consulting.fesapi.resqml2.LocalDepth3dCrs;
-import com.f2i_consulting.fesapi.resqml2.LocalTime3dCrs;
 import com.f2i_consulting.fesapi.resqml2.MdDatum;
 import com.f2i_consulting.fesapi.resqml2.Model;
 import com.f2i_consulting.fesapi.resqml2.PolylineRepresentation;
@@ -108,13 +108,25 @@ public class FesapiJavaExample {
 
 	private static void serializeWells(DataObjectRepository repo)
 	{
+		Eml23_LocalEngineeringCompoundCrs eml23Crs = null;
+		if (repo.getDefaultCrs() instanceof Eml23_LocalEngineeringCompoundCrs) {
+			eml23Crs = (Eml23_LocalEngineeringCompoundCrs)(repo.getDefaultCrs());
+		}
+		else {
+			repo.setDefaultStandard(EnergisticsStandard.EML2_3);
+			eml23Crs = (Eml23_LocalEngineeringCompoundCrs)(repo.createLocalDepth3dCrs(UUID.randomUUID().toString(), "UTF8 Crs title", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false));
+			repo.setDefaultStandard(EnergisticsStandard.EML2_0);
+		}
+
 		// WELL
 		Well witsmlWell = repo.createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1", false);
 		witsmlWell.setNameLegal("Legal Name");
 		witsmlWell.setWaterDepth(0.0, eml23__LengthUom.ft);
 		witsmlWell.setTimeZone(true, 0, 0);
-		witsmlWell.pushBackLocation(275, 75);
-	
+		witsmlWell.pushBackLocation(275, 75, eml23Crs.getLocalEngineering2dCrs());
+		witsmlWell.setWellheadElevation(15, eml23__LengthUom.m, eml23Crs.getVerticalCrs());
+		witsmlWell.setGroundElevation(.0, eml23__LengthUom.m, eml23Crs.getVerticalCrs());
+
 		// WELLBORE
 		Wellbore witsmlWellbore = repo.createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1", false);
 		witsmlWellbore.setNumber("Wb1");
@@ -193,7 +205,7 @@ public class FesapiJavaExample {
 			fesapi.delete_DoubleArray(trajectoryTangentVectors);
 			fesapi.delete_DoubleArray(trajectoryMds);
 		}
-		
+
 		// WellboreFeature frame
 		WellboreFrameRepresentation w1i1FrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
 		SWIGTYPE_p_double logMds = fesapi.new_DoubleArray(5);
@@ -208,13 +220,13 @@ public class FesapiJavaExample {
 		finally {
 			fesapi.delete_DoubleArray(logMds);
 		}
-	
+
 		WellboreFrameRepresentation w1i1RegularFrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
 		w1i1RegularFrameRep.setMdValues(0, 200, 6);
 ${COMMENT_START}
 		// SeismicWellboreFrameRepresentation
-		LocalTime3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.m, 23031, eml20__TimeUom.s, eml20__LengthUom.m, "Unknown", false);
-				
+		AbstractLocal3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.m, 23031, eml20__TimeUom.s, eml20__LengthUom.m, "Unknown", false);
+
 		SeismicWellboreFrameRepresentation w1i1SeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
 			wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",
 			w1i1TrajRep,
@@ -234,7 +246,7 @@ ${COMMENT_START}
 		finally {
 			fesapi.delete_DoubleArray(logTimes);
 		}
-		
+
 		SeismicWellboreFrameRepresentation w1i1RegularSeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
 			wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
 			w1i1TrajRep,
@@ -336,7 +348,7 @@ ${COMMENT_END}
 			fesapi.delete_DoubleArray(seismicLineAbscissa);
 		}
 		
-		PropertyKind commentPropType = repo.createPropertyKind("0845ad74-2673-408e-b125-8dabc26ae552", "comment prop type", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, resqml20__ResqmlPropertyKind.RESQML_x0020root_x0020property);
+		PropertyKind commentPropType = repo.createPropertyKind("0845ad74-2673-408e-b125-8dabc26ae552", "comment prop type", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, false, resqml20__ResqmlPropertyKind.RESQML_x0020root_x0020property);
 		CommentProperty commentProperty = repo.createCommentProperty(h1i1SinglePolylineRep, "ab70d9ca-7745-474a-8b43-f2cf7ed11838", "My comment property", 1, eml23__IndexableElement.nodes, commentPropType);
 		StringVector myComments = new StringVector();
 		myComments.add("Comment0");
@@ -442,7 +454,7 @@ ${COMMENT_END}
 		//
 		// Properties
 		//
-		PropertyKind  propType1 = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, resqml20__ResqmlPropertyKind.continuous);
+		PropertyKind  propType1 = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.Euc, false, resqml20__ResqmlPropertyKind.continuous);
 		ContinuousProperty contProp1 = repo.createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
 				eml23__IndexableElement.nodes, "exoticMeter", propType1);
 		SWIGTYPE_p_double prop1Values = fesapi.new_DoubleArray(16);
@@ -473,7 +485,7 @@ ${COMMENT_END}
 	
 	private static void serializeIjkGrid(DataObjectRepository repo, AbstractHdfProxy hdfProxy)
 	{
-		cellIndexPropKind = repo.createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", resqml20__ResqmlUom.Euc, resqml20__ResqmlPropertyKind.discrete);
+		cellIndexPropKind = repo.createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", resqml20__ResqmlUom.Euc, false, resqml20__ResqmlPropertyKind.discrete);
 		Model earthModel = repo.createEarthModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid");
 		EarthModelInterpretation earthModelInterp = repo.createEarthModelInterpretation(earthModel, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp");
 		ijkgrid = repo.createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
@@ -575,7 +587,7 @@ ${COMMENT_START}
 		try {
 			fesapi.UInt16Array_setitem(propValues, 0, 10);
 			fesapi.UInt16Array_setitem(propValues, 1, 11);
-			discreteProp2.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+			discreteProp2.pushBackUInt16Hdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
 			fesapi.delete_UInt16Array(propValues);
@@ -645,7 +657,7 @@ ${COMMENT_END}
 	private static void serialize()
 	{		
 		try (DataObjectRepository repo = new DataObjectRepository()) {
-			LocalDepth3dCrs crs = repo.createLocalDepth3dCrs(UUID.randomUUID().toString(), "UTF8 Crs title", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
+			AbstractLocal3dCrs crs = repo.createLocalDepth3dCrs(UUID.randomUUID().toString(), "UTF8 Crs title", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.m, 5215, eml20__LengthUom.m, "Unknown", false);
 			repo.setDefaultCrs(crs);
 			AbstractHdfProxy hdfProxy = repo.createHdfProxy("", "Hdf Proxy", storageDirectory, epcName + ".h5", DataObjectRepository.openingMode.OVERWRITE);
 			repo.setDefaultHdfProxy(hdfProxy);
@@ -676,7 +688,7 @@ ${COMMENT_END}
 				}
 			}
 
-			LongStream.range(0, repo.getLocalDepth3dCrsCount()).forEach(index -> System.out.println("CRS title is " + repo.getLocalDepth3dCrs(index).getTitle()));
+			LongStream.range(0, repo.getLocal3dCrsCount()).forEach(index -> System.out.println("CRS title is " + repo.getLocal3dCrs(index).getTitle()));
 
 			System.out.println("HORIZONS GRID 2D REP");
 			for (long i = 0; i < repo.getHorizonGrid2dRepresentationCount(); i++) {

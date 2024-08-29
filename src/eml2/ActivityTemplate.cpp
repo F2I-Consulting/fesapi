@@ -22,7 +22,7 @@ under the License.
 
 using namespace EML2_NS;
 
-std::vector<Activity *> ActivityTemplate::getActivityInstanceSet() const
+std::vector<Activity*> ActivityTemplate::getActivityInstanceSet() const
 {
 	return getRepository()->getSourceObjects<EML2_NS::Activity>(this);
 }

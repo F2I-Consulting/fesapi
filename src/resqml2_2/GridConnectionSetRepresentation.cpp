@@ -221,9 +221,6 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 			auto const* daPart = static_cast<eml23__IntegerExternalArray*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values->ExternalDataArrayPart[0];
 			auto hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
 			const uint64_t faultIndexCount = getOrCreateHdfProxyFromDataArrayPart(daPart)->getElementCount(daPart->PathInExternalFile);
-			if (faultIndexCount < 0) {
-				throw invalid_argument("The HDF5 library could not read the element count of this dataset.");
-			}
 			std::unique_ptr<int64_t[]> faultIndices(new int64_t[faultIndexCount]);
 
 			hdfProxy->readArrayNdOfInt64Values(daPart->PathInExternalFile, faultIndices.get());

@@ -19,12 +19,10 @@ under the License.
 #include "WellboreTrajectoryRepresentation.h"
 
 #include <array>
-#include <stdexcept>
-#include <limits>
 #include <math.h>
 
-#include "AbstractLocal3dCrs.h"
-#include "DeviationSurveyRepresentation.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+
 #include "MdDatum.h"
 #include "WellboreFrameRepresentation.h"
 
@@ -35,7 +33,7 @@ using namespace COMMON_NS;
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 	double const* inclinations, double const* azimuths, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-	EML2_NS::AbstractHdfProxy* proxy, AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy* proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -43,7 +41,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 			throw std::invalid_argument("A (default) CRS must be provided.");
 		}
 	}
-	if (localCrs->getAxisOrder() != gsoap_resqml2_0_1::eml20__AxisOrder2d::easting_x0020northing) {
+	if (localCrs->getAxisOrder() != gsoap_eml2_3::eml23__AxisOrder2d::easting_x0020northing) {
 		throw std::invalid_argument("Cannot compute inclinations and azimuths if the local CRS is not an easting northing one.");
 	}
 
@@ -84,7 +82,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 void WellboreTrajectoryRepresentation::getInclinationsAndAzimuths(double * inclinations, double * azimuths)
 {
 	auto* localCrs = getLocalCrs(0);
-	if (localCrs->getAxisOrder() != gsoap_resqml2_0_1::eml20__AxisOrder2d::easting_x0020northing) {
+	if (localCrs->getAxisOrder() != gsoap_eml2_3::eml23__AxisOrder2d::easting_x0020northing) {
 		throw std::invalid_argument("Cannot compute inclinations and azimuths if the local CRS is not an easting northing one.");
 	}
 
@@ -140,11 +138,6 @@ void WellboreTrajectoryRepresentation::loadTargetRelationships()
 
 	COMMON_NS::DataObjectReference dor = getMdDatumDor();
 	convertDorIntoRel<MdDatum>(dor);
-
-	dor = getDeviationSurveyDor();
-	if (!dor.isEmpty()) {
-		convertDorIntoRel<DeviationSurveyRepresentation>(dor);
-	}
 
 	dor = getParentTrajectoryDor();
 	if (!dor.isEmpty()) {
@@ -238,9 +231,4 @@ RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getW
 	}
 
 	return wfrs[index];
-}
-
-DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSurvey() const
-{
-	return getRepository()->getDataObjectByUuid<DeviationSurveyRepresentation>(getDeviationSurveyDor().getUuid());
 }

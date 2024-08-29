@@ -50,12 +50,6 @@ if (WITH_RESQML2_2)
 	target_compile_definitions(${CPP_LIBRARY_NAME} PUBLIC "-DWITH_RESQML2_2")
 endif(WITH_RESQML2_2)
 
-if (WIN32)
-	if (NOT BUILD_SHARED_LIBS)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE FESAPI_STATIC)
-	endif ()
-endif (WIN32)
-
 # Linker instructions
 if (WITH_LOCAL_HDF5 OR CMAKE_VERSION VERSION_LESS "3.19")
 	# Do not use target because find_package has not been used
@@ -75,6 +69,12 @@ else ()
 endif ()
 
 if (WIN32)
+	if (NOT BUILD_SHARED_LIBS)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE FESAPI_STATIC)
+	endif ()
+	# It is necessary for Boost(.Uuid) 1.86 to define NOMINMAX on Windows
+	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "NOMINMAX")
+
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Boost::boost)
 
 # szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
@@ -231,7 +231,6 @@ if (WIN32)
 	source_group ("${EML_PREFIX_2_0}" FILES ${FESAPI_EML_2_0_SOURCES} ${FESAPI_EML_2_0_HEADERS})
 
 	source_group ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
-	
 endif (WIN32)
 
 # ${FESAPI_ROOT_DIR}/java/CMakeLists.txt uses GNUInstallDirs in its install command
@@ -255,10 +254,26 @@ endif (WITH_PYTHON_WRAPPING)
 
 INSTALL (
 	TARGETS ${CPP_LIBRARY_NAME}
+	EXPORT FESAPI_TARGETS
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
+
+INSTALL (
+	EXPORT FESAPI_TARGETS
+	FILE FesapiCppTargets.cmake
+	DESTINATION
+		"${CMAKE_INSTALL_LIBDIR}/cmake/fesapi"
+)
+
+CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/FesapiCppConfig.cmake.in ${FESAPI_BINARY_DIR}/cmake/FesapiCppConfig.cmake @ONLY)
+INSTALL(
+  FILES
+    "${FESAPI_BINARY_DIR}/cmake/FesapiCppConfig.cmake"
+  DESTINATION
+    "${CMAKE_INSTALL_LIBDIR}/cmake/fesapi"
+  )
 
 IF (WIN32)
 	#PDB for debug
@@ -369,11 +384,6 @@ if (WITH_PYTHON_WRAPPING)
 		INSTALL (
 			TARGETS ${CPP_LIBRARY_NAME}
 			RUNTIME DESTINATION ${FESAPI_ROOT_DIR}/python/fesapi/
-		)
-	ELSE ()
-		INSTALL (
-			TARGETS ${CPP_LIBRARY_NAME}
-			LIBRARY DESTINATION ${FESAPI_ROOT_DIR}/python/fesapi/
 		)
 	ENDIF (WIN32)
 	INSTALL(CODE "execute_process(COMMAND	${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/python/setup.py bdist_wheel

@@ -786,6 +786,31 @@ int64_t AbstractValuesProperty::getInt64ValuesOfPatch(uint64_t patchIndex, int64
 	}
 }
 
+uint64_t AbstractValuesProperty::getUInt64ValuesOfPatch(uint64_t patchIndex, uint64_t* values) const
+{
+	cannotBePartial();
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		return readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
+		if (xmlArray != nullptr) {
+			return readArrayNdOfUInt64Values(xmlArray, values);
+		}
+		else {
+			throw logic_error("Reading integer values from a non integer array is not supported.");
+		}
+	}
+	else {
+		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+	}
+}
+
 int64_t AbstractValuesProperty::getNullValueOfPatch(uint64_t patchIndex) const
 {
 	cannotBePartial();

@@ -82,15 +82,15 @@ void GraphicalInformationSetTest::readRepo() {
 	REQUIRE(saturation == 1.);
 	REQUIRE(value == 1.);
 
-	GraphicalInformationSet::rgbToHsv((unsigned int)255, (unsigned int)0, (unsigned int)0, hue, saturation, value); // red
+	GraphicalInformationSet::rgbToHsv((uint8_t)255, (uint8_t)0, (uint8_t)0, hue, saturation, value); // red
 	REQUIRE(hue == 0.);
 	REQUIRE(saturation == 1.);
 	REQUIRE(value == 1.);
-	GraphicalInformationSet::rgbToHsv((unsigned int)0, (unsigned int)255, (unsigned int)0, hue, saturation, value); // green
+	GraphicalInformationSet::rgbToHsv((uint8_t)0, (uint8_t)255, (uint8_t)0, hue, saturation, value); // green
 	REQUIRE(hue == 120.);
 	REQUIRE(saturation == 1.);
 	REQUIRE(value == 1.);
-	GraphicalInformationSet::rgbToHsv((unsigned int)0, (unsigned int)0, (unsigned int)255, hue, saturation, value); // blue
+	GraphicalInformationSet::rgbToHsv((uint8_t)0, (uint8_t)0, (uint8_t)255, hue, saturation, value); // blue
 	REQUIRE(hue == 240.);
 	REQUIRE(saturation == 1.);
 	REQUIRE(value == 1.);
@@ -109,7 +109,7 @@ void GraphicalInformationSetTest::readRepo() {
 	REQUIRE(green == 0.);
 	REQUIRE(blue == 1.);
 
-	unsigned int r, g, b;
+	uint8_t r, g, b;
 	GraphicalInformationSet::hsvToRgb(0., 1., 1., r, g, b); // red
 	REQUIRE(r == 255);
 	REQUIRE(g == 0);

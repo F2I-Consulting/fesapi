@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "Well.h"
 
+#include "../eml2_3/VerticalCrs.h"
+
 #include "../resqml2/WellboreFeature.h"
 
 #include "../witsml2_1/WellCompletion.h"
@@ -39,4 +41,26 @@ std::vector<Wellbore *> Well::getWellboreSet() const
 std::vector<WITSML2_1_NS::WellCompletion *> Well::getWellcompletionSet() const
 {
 	return getRepository()->getSourceObjects<WITSML2_1_NS::WellCompletion>(this);
+}
+
+EML2_3_NS::VerticalCrs* Well::getGroundElevationDatum() const
+{
+	return dynamic_cast<EML2_3_NS::VerticalCrs*>(getRepository()->getDataObjectByUuid(getGroundElevationDatumDor().getUuid()));
+}
+
+EML2_3_NS::VerticalCrs* Well::getWellheadElevationDatum() const
+{
+	return dynamic_cast<EML2_3_NS::VerticalCrs*>(getRepository()->getDataObjectByUuid(getWellheadElevationDatumDor().getUuid()));
+}
+
+void Well::loadTargetRelationships()
+{
+	COMMON_NS::DataObjectReference dor = getGroundElevationDatumDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel(dor);
+	}
+	dor = getWellheadElevationDatumDor();
+	if (!dor.isEmpty()) {
+		convertDorIntoRel(dor);
+	}
 }

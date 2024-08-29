@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "IjkGridParametricRepresentation.h"
 
-#include <limits>
-#include <stdexcept>
+#include <cstring>
+
+#include <hdf5.h>
 
 #include "../eml2/AbstractHdfProxy.h"
-
-#include "AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
@@ -148,8 +148,8 @@ size_t IjkGridParametricRepresentation::BSpline::getSplineIndexFromParameter(dou
 
 double IjkGridParametricRepresentation::BSpline::getValueFromParameter(double param) const
 {
-	if (param != param) {
-		throw invalid_argument("Cannot return a value for a NaN parameter.");
+	if (std::isnan(param)) {
+		return std::numeric_limits<double>::quiet_NaN();
 	}
 
 	const size_t splineIndex = getSplineIndexFromParameter(param);
@@ -287,7 +287,7 @@ void IjkGridParametricRepresentation::getControlPointParameters(double * control
 	}
 }
 
-void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, bool reverseIAxis, bool reverseJAxis) const
+void IjkGridParametricRepresentation::getParametricLineKind(int16_t* pillarKind, bool reverseIAxis, bool reverseJAxis) const
 {
 	getRawParametricLineKind(pillarKind);
 
@@ -297,8 +297,8 @@ void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, 
 		const unsigned int arrayCount = iPillarCount * jPillarCount;
 
 		// Copy in order not to modify the controlPoints pointer
-		std::unique_ptr<double[]> initialPillarKind(new double [arrayCount]);
-		for (unsigned int index = 0; index < arrayCount; ++index) {
+		std::unique_ptr<int16_t[]> initialPillarKind(new int16_t[arrayCount]);
+		for (size_t index = 0; index < arrayCount; ++index) {
 			initialPillarKind[index] = pillarKind[index];
 		}
 
@@ -411,6 +411,138 @@ void IjkGridParametricRepresentation::getParametersOfNodesOfKInterfaceSequence(u
 	}
 }
 
+void IjkGridParametricRepresentation::getXyzPointsAlongACoordinateLine(uint64_t pillarIndex, uint64_t coordLineIndex, uint64_t ijNodeCount, uint64_t kNodeCount, double const* parameters, double* xyzPoints) const
+{
+	// Compute Control point count on this line
+	size_t controlPointCount = 0;
+	while (controlPointCount < pillarInformation->maxControlPointCount &&
+		!std::isnan(pillarInformation->controlPoints[(pillarIndex + controlPointCount * pillarInformation->parametricLineCount) * 3]) &&
+		!std::isnan(pillarInformation->controlPoints[(pillarIndex + controlPointCount * pillarInformation->parametricLineCount) * 3 + 1]) &&
+		!std::isnan(pillarInformation->controlPoints[(pillarIndex + controlPointCount * pillarInformation->parametricLineCount) * 3 + 2])) {
+		controlPointCount++;
+	}
+
+	int16_t pillarKind = pillarInformation->pillarKind[pillarIndex];
+	if (pillarKind == -1 || controlPointCount == 0) { // not defined line
+		// Set NaN to X, Y and Z coordinates of all points along this undefined line
+		for (size_t k = 0; k < kNodeCount; ++k) {
+			std::fill_n(xyzPoints + (k * ijNodeCount + coordLineIndex) * 3, 3, std::numeric_limits<double>::quiet_NaN());
+		}
+	}
+	else if (pillarKind == 0 || controlPointCount == 1) { // vertical line
+		const size_t pillarXIndex = pillarIndex * 3;
+		// XY comes from control points, Z comes from parameters
+		for (size_t k = 0; k < kNodeCount; ++k) {
+			const size_t nodeIndex = k * ijNodeCount + coordLineIndex;
+			const size_t xPointIndex = nodeIndex * 3;
+			std::memcpy(xyzPoints + xPointIndex, pillarInformation->controlPoints.get() + pillarXIndex, 2 * sizeof(double));
+			xyzPoints[xPointIndex + 2] = parameters[nodeIndex];
+		}
+	}
+	else if (pillarKind == 1) { // linear interpolation
+		if (controlPointCount == 2) { // straight
+			double* firstControlPointX = pillarInformation->controlPoints.get() + pillarIndex * 3;
+			double* firstControlPointY = firstControlPointX + 1;
+			double* firstControlPointZ = firstControlPointY + 1;
+			const size_t secondControlPointIndex = pillarIndex + pillarInformation->parametricLineCount;
+			double* secondControlPointX = pillarInformation->controlPoints.get() + secondControlPointIndex * 3;
+			double* secondControlPointY = secondControlPointX + 1;
+			double* secondControlPointZ = secondControlPointY + 1;
+
+			// Parameter distance from top to bottom.
+			const double parameterDistance = pillarInformation->controlPointParameters != nullptr
+				? pillarInformation->controlPointParameters[secondControlPointIndex] - pillarInformation->controlPointParameters[pillarIndex]
+				// Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
+				: *secondControlPointZ - *firstControlPointZ;
+
+			const double xDist = *secondControlPointX - *firstControlPointX;
+			const double yDist = *secondControlPointY - *firstControlPointY;
+			const double zDist = *secondControlPointZ - *firstControlPointZ;
+			for (size_t k = 0; k < kNodeCount; ++k)
+			{
+				const size_t nodeIndex = k * ijNodeCount + coordLineIndex;
+				const size_t xPointIndex = nodeIndex * 3;
+
+				const double ratioFromFirstControlPoint = parameterDistance == .0
+					? .0
+					: (pillarInformation->controlPointParameters != nullptr
+						? (parameters[nodeIndex] - pillarInformation->controlPointParameters[pillarIndex]) / parameterDistance
+						// Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
+						: (parameters[nodeIndex] - *firstControlPointZ) / parameterDistance);
+
+				xyzPoints[xPointIndex] = *firstControlPointX + ratioFromFirstControlPoint * xDist;
+				xyzPoints[xPointIndex + 1] = *firstControlPointY + ratioFromFirstControlPoint * yDist;
+				xyzPoints[xPointIndex + 2] = *firstControlPointZ + ratioFromFirstControlPoint * zDist;
+			}
+		}
+		else { // piecewise linear
+
+			//unsigned int previousControlPoint = 0;
+			//if (pillarInformation->controlPointParameters != nullptr) {
+			//	while ((parameters[paramIndex] < pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint] && parameters[paramIndex] < pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)]) ||
+			//		(parameters[paramIndex] > pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint] && parameters[paramIndex] > pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)]) &&
+			//		previousControlPoint < controlPointCount - 1) {
+			//		++previousControlPoint;
+			//	}
+			//}
+			//else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
+			//	while ((parameters[paramIndex] < pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2] && parameters[paramIndex] < pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2]) ||
+			//		(parameters[paramIndex] > pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2] && parameters[paramIndex] > pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2]) &&
+			//		previousControlPoint < controlPointCount - 1) {
+			//		++previousControlPoint;
+			//	}
+			//}
+
+			//if (previousControlPoint == controlPointCount - 1) {
+			//	throw invalid_argument("Cannot extrapolate piecewiselinear pillar for now to explicit a grid node.");
+			//}
+
+			//double ratioFromPreviousControlPoint = .0;
+			//double parameterDistance = .0;
+			//if (pillarInformation->controlPointParameters != nullptr) {
+			//	parameterDistance = pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)] - pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint]; // Parameter distance from top to bottom.
+			//	if (parameterDistance != .0)
+			//		ratioFromPreviousControlPoint = (parameters[paramIndex] - pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint]) / parameterDistance;
+			//}
+			//else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
+			//	parameterDistance = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2]; // Parameter distance from top to bottom.
+			//	if (parameterDistance != .0) {
+			//		ratioFromPreviousControlPoint = (parameters[paramIndex] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2]) / parameterDistance;
+			//	}
+			//}
+			//xyzPoints[paramIndex * 3] = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3] + ratioFromPreviousControlPoint * (pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount) * 3] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3]);
+			//xyzPoints[paramIndex * 3 + 1] = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 1] + ratioFromPreviousControlPoint * (pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 1] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 1]);
+			//xyzPoints[paramIndex * 3 + 2] = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2] + ratioFromPreviousControlPoint * (pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2]);
+
+			//// TODO AND TO VERIFY ABOVE (MERGE PIECEWISE AND LINEAR (only 2 control points) IF POSSIBLE)
+
+			//delete[] parameters;
+			throw logic_error("XYZ points computation from piecewise linear pillars are not implemented yet");
+		}
+	}
+	else if (pillarInformation->pillarKind[pillarIndex] == 2) { // XY Natural cubic spline, Z natural cubic spline
+		for (size_t k = 0; k < kNodeCount; ++k) {
+			const size_t nodeIndex = k * ijNodeCount + coordLineIndex;
+			const size_t xPointIndex = nodeIndex * 3;
+			xyzPoints[xPointIndex] = pillarInformation->splines[pillarIndex][0].getValueFromParameter(parameters[nodeIndex]);
+			xyzPoints[xPointIndex + 1] = pillarInformation->splines[pillarIndex][1].getValueFromParameter(parameters[nodeIndex]);
+			xyzPoints[xPointIndex + 2] = pillarInformation->splines[pillarIndex][2].getValueFromParameter(parameters[nodeIndex]);
+		}
+	}
+	else if (pillarInformation->pillarKind[pillarIndex] == 4) { // XY Natural cubic spline, Z linear cubic spline
+		for (size_t k = 0; k < kNodeCount; ++k) {
+			const size_t nodeIndex = k * ijNodeCount + coordLineIndex;
+			const size_t xPointIndex = nodeIndex * 3;
+			xyzPoints[xPointIndex] = pillarInformation->splines[pillarIndex][0].getValueFromParameter(parameters[nodeIndex]);
+			xyzPoints[xPointIndex + 1] = pillarInformation->splines[pillarIndex][1].getValueFromParameter(parameters[nodeIndex]);
+			xyzPoints[xPointIndex + 2] = parameters[nodeIndex];
+		}
+	}
+	else {
+		throw logic_error("Computing XYZ from parameters on a non natural cubic spline or on a minimum curvature spline is not implemented yet.");
+	}
+}
+
 void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints)
 {
 	if (xyzPoints == nullptr) {
@@ -424,206 +556,26 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequence(unsigned 
 	}
 
 	// Get the parameters
-	const uint64_t xyzPointCount = getXyzPointCountOfKInterface();
-	std::unique_ptr<double[]> parameters(new double[xyzPointCount * (kInterfaceEnd - kInterfaceStart + 1)]);
+	const uint64_t ijNodeCount = getXyzPointCountOfKInterface();
+	const uint64_t kNodeCount = kInterfaceEnd - kInterfaceStart + 1;
+	std::unique_ptr<double[]> parameters(new double[ijNodeCount * kNodeCount]);
 	getParametersOfNodesOfKInterfaceSequence(kInterfaceStart, kInterfaceEnd, parameters.get());
 
 	// Convert the parameters into XYZ points
-	if (pillarInformation == nullptr) {
-		pillarInformation = new PillarInformation();
-		loadPillarInformation(*pillarInformation);
+	if (pillarInformation->parametricLineCount == 0) {
+		loadPillarInformation();
 	}
 
 	//Mapping
-	size_t paramIndex = 0;
-	for (unsigned int pillarIndex = 0; pillarIndex < pillarInformation->parametricLineCount; ++pillarIndex) {
-		if (pillarInformation->pillarKind[pillarIndex] == -1 || parameters[paramIndex] != parameters[paramIndex]) { // not defined line
-			for (unsigned int k = 0; k <= kInterfaceEnd - kInterfaceStart; ++k) {
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3] = std::numeric_limits<double>::quiet_NaN();
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = std::numeric_limits<double>::quiet_NaN();
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = std::numeric_limits<double>::quiet_NaN();
-			}
-		}
-		else if (pillarInformation->pillarKind[pillarIndex] == 0) { // vertical (parameter must be the Z value)
-			for (unsigned int k = 0; k <= kInterfaceEnd - kInterfaceStart; ++k) {
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->controlPoints[pillarIndex * 3];
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->controlPoints[pillarIndex * 3 + 1];
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = parameters[(k * xyzPointCount) + paramIndex];
-			}
-		}
-		else if (pillarInformation->pillarKind[pillarIndex] == 1) { // linear interpolation
-			unsigned int controlPointCount = 0;
-			while (controlPointCount < pillarInformation->maxControlPointCount &&
-				pillarInformation->controlPoints[(pillarIndex + controlPointCount*pillarInformation->parametricLineCount) * 3] == 
-				pillarInformation->controlPoints[(pillarIndex + controlPointCount*pillarInformation->parametricLineCount) * 3]) {
-				controlPointCount++;
-			}
-
-			// Control point count on this line
-			if (controlPointCount == 2) { // straight
-				double parameterDistance = .0;
-				if (pillarInformation->controlPointParameters != nullptr)
-					parameterDistance = pillarInformation->controlPointParameters[pillarIndex + pillarInformation->parametricLineCount] - 
-										pillarInformation->controlPointParameters[pillarIndex]; // Parameter distance from top to bottom.
-				else // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-					parameterDistance = pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 2] - pillarInformation->controlPoints[pillarIndex * 3 + 2]; // Parameter distance from top to bottom.
-
-				const double xDist = (pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3] - pillarInformation->controlPoints[pillarIndex * 3]);
-				const double yDist = (pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 1] - pillarInformation->controlPoints[pillarIndex * 3 + 1]);
-				const double zDist = (pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 2] - pillarInformation->controlPoints[pillarIndex * 3 + 2]);
-
-				double ratioFromFirstControlPoint = .0;
-				for (unsigned int k = 0; k <= kInterfaceEnd - kInterfaceStart; ++k)
-				{
-					if (parameterDistance != .0)
-						if (pillarInformation->controlPointParameters != nullptr)
-							ratioFromFirstControlPoint = (parameters[(k * xyzPointCount) + paramIndex] - pillarInformation->controlPointParameters[pillarIndex]) / parameterDistance;
-						else
-							ratioFromFirstControlPoint = (parameters[(k * xyzPointCount) + paramIndex] - pillarInformation->controlPoints[pillarIndex * 3 + 2]) / parameterDistance;
-					else
-						ratioFromFirstControlPoint = .0;
-
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->controlPoints[pillarIndex * 3] + ratioFromFirstControlPoint * xDist;
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->controlPoints[pillarIndex * 3 + 1] + ratioFromFirstControlPoint * yDist;
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = pillarInformation->controlPoints[pillarIndex * 3 + 2] + ratioFromFirstControlPoint * zDist;
-				}
-			}
-			else { // piecewise linear
-
-				//unsigned int previousControlPoint = 0;
-				//if (pillarInformation->controlPointParameters != nullptr) {
-				//	while ((parameters[paramIndex] < pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint] && parameters[paramIndex] < pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)]) ||
-				//		(parameters[paramIndex] > pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint] && parameters[paramIndex] > pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)]) &&
-				//		previousControlPoint < controlPointCount - 1) {
-				//		++previousControlPoint;
-				//	}
-				//}
-				//else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-				//	while ((parameters[paramIndex] < pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2] && parameters[paramIndex] < pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2]) ||
-				//		(parameters[paramIndex] > pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2] && parameters[paramIndex] > pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2]) &&
-				//		previousControlPoint < controlPointCount - 1) {
-				//		++previousControlPoint;
-				//	}
-				//}
-
-				//if (previousControlPoint == controlPointCount - 1) {
-				//	throw invalid_argument("Cannot extrapolate piecewiselinear pillar for now to explicit a grid node.");
-				//}
-
-				//double ratioFromPreviousControlPoint = .0;
-				//double parameterDistance = .0;
-				//if (pillarInformation->controlPointParameters != nullptr) {
-				//	parameterDistance = pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)] - pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint]; // Parameter distance from top to bottom.
-				//	if (parameterDistance != .0)
-				//		ratioFromPreviousControlPoint = (parameters[paramIndex] - pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint]) / parameterDistance;
-				//}
-				//else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-				//	parameterDistance = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2]; // Parameter distance from top to bottom.
-				//	if (parameterDistance != .0) {
-				//		ratioFromPreviousControlPoint = (parameters[paramIndex] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2]) / parameterDistance;
-				//	}
-				//}
-				//xyzPoints[paramIndex * 3] = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3] + ratioFromPreviousControlPoint * (pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount) * 3] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3]);
-				//xyzPoints[paramIndex * 3 + 1] = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 1] + ratioFromPreviousControlPoint * (pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 1] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 1]);
-				//xyzPoints[paramIndex * 3 + 2] = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2] + ratioFromPreviousControlPoint * (pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2]);
-
-				//// TODO AND TO VERIFY ABOVE (MERGE PIECEWISE AND LINEAR (only 2 control points) IF POSSIBLE)
-
-				//delete[] parameters;
-				throw logic_error("Piecewise linear pillars are not implemented yet");
-			}
-		}
-		else if (pillarInformation->pillarKind[pillarIndex] == 2 || pillarInformation->pillarKind[pillarIndex] == 4) { // XY Natural cubic spline
-			for (unsigned int k = 0; k <= kInterfaceEnd - kInterfaceStart; ++k) {
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->splines[pillarIndex][0].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->splines[pillarIndex][1].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-				if (pillarInformation->pillarKind[pillarIndex] == 2) { //  Z natural cubic spline
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = pillarInformation->splines[pillarIndex][2].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-				}
-				else { // Z linear cubic spline
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = parameters[k * xyzPointCount + paramIndex];
-				}
-			}
-		}
-		else {
-			throw logic_error("Computing XYZ from parameters on a non natural cubic spline or on a minimum curvature spline is not implemented yet.");
-		}
-		++paramIndex;
+	for (uint64_t pillarIndex = 0; pillarIndex < pillarInformation->parametricLineCount; ++pillarIndex) {
+		getXyzPointsAlongACoordinateLine(pillarIndex, pillarIndex,
+			ijNodeCount, kNodeCount, parameters.get(), xyzPoints);
 	}
 
-	for (unsigned int splitLineIndex = 0; splitLineIndex < pillarInformation->splitLineCount; ++splitLineIndex)
+	for (uint64_t splitLineIndex = 0; splitLineIndex < pillarInformation->splitLineCount; ++splitLineIndex)
 	{
-		const unsigned int pillarIndex = pillarInformation->pillarOfSplitCoordLines[splitLineIndex];
-		if (pillarInformation->pillarKind[pillarIndex] == -1 || parameters[paramIndex] != parameters[paramIndex]) { // not defined line
-			for (unsigned int k = 0; k <= kInterfaceEnd - kInterfaceStart; ++k) {
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3] = std::numeric_limits<double>::quiet_NaN();
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = std::numeric_limits<double>::quiet_NaN();
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = std::numeric_limits<double>::quiet_NaN();
-			}
-		}
-		else if (pillarInformation->pillarKind[pillarIndex] == 0) { // vertical (parameter must be the Z value)
-			for (unsigned int k = 0; k <= kInterfaceEnd - kInterfaceStart; ++k) {
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->controlPoints[pillarIndex * 3];
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->controlPoints[pillarIndex * 3 + 1];
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = parameters[k * xyzPointCount + paramIndex];
-			}
-		}
-		else if (pillarInformation->pillarKind[pillarIndex] == 1) { // Linear interpolation
-			unsigned int controlPointCount = 0;
-			while (controlPointCount < pillarInformation->maxControlPointCount &&
-				pillarInformation->controlPoints[(pillarIndex + controlPointCount*pillarInformation->parametricLineCount) * 3] == pillarInformation->controlPoints[(pillarIndex + controlPointCount*pillarInformation->parametricLineCount) * 3]) {
-				controlPointCount++;
-			}
-
-			// Control point count on this line
-			if (controlPointCount == 2) { // straight
-				double parameterDistance = .0;
-				if (pillarInformation->controlPointParameters != nullptr)
-					parameterDistance = pillarInformation->controlPointParameters[pillarIndex + pillarInformation->parametricLineCount] - pillarInformation->controlPointParameters[pillarIndex]; // Parameter distance from top to bottom.
-				else // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-					parameterDistance = pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 2] - pillarInformation->controlPoints[pillarIndex * 3 + 2]; // Parameter distance from top to bottom.
-
-				double xDist = pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3] - pillarInformation->controlPoints[pillarIndex * 3];
-				double yDist = pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 1] - pillarInformation->controlPoints[pillarIndex * 3 + 1];
-				double zDist = pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 2] - pillarInformation->controlPoints[pillarIndex * 3 + 2];
-
-				double ratioFromFirstControlPoint = .0;
-				for (unsigned int k = 0; k <= kInterfaceEnd - kInterfaceStart; ++k) {
-					if (parameterDistance != .0) {
-						if (pillarInformation->controlPointParameters != nullptr)
-							ratioFromFirstControlPoint = (parameters[(k * xyzPointCount) + paramIndex] - pillarInformation->controlPointParameters[pillarIndex]) / parameterDistance;
-						else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-							ratioFromFirstControlPoint = (parameters[(k * xyzPointCount) + paramIndex] - pillarInformation->controlPoints[pillarIndex * 3 + 2]) / parameterDistance;
-						}
-					}
-					else
-						ratioFromFirstControlPoint = .0;
-
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->controlPoints[pillarIndex * 3] + ratioFromFirstControlPoint * xDist;
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->controlPoints[pillarIndex * 3 + 1] + ratioFromFirstControlPoint * yDist;
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = pillarInformation->controlPoints[pillarIndex * 3 + 2] + ratioFromFirstControlPoint * zDist;
-				}
-			}
-			else { // piecewise linear
-				throw logic_error("Piecewise linear pillars are not implemented yet");
-			}
-		}
-		else if (pillarInformation->pillarKind[pillarIndex] == 2 || pillarInformation->pillarKind[pillarIndex] == 4) { // XY Natural cubic spline
-			for (unsigned int k = 0; k <= kInterfaceEnd - kInterfaceStart; ++k) {
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->splines[pillarIndex][0].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-				xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->splines[pillarIndex][1].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-				if (pillarInformation->pillarKind[pillarIndex] == 2) { //  Z natural cubic spline
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = pillarInformation->splines[pillarIndex][2].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-				}
-				else { // Z linear cubic spline
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = parameters[k * xyzPointCount + paramIndex];
-				}
-			}
-		}
-		else {
-			throw logic_error("Computing XYZ from parameters on a non natural cubic spline or on a minimum curvature spline is not implemented yet.");
-		}
-		++paramIndex;
+		getXyzPointsAlongACoordinateLine(pillarInformation->pillarOfSplitCoordLines[splitLineIndex], pillarInformation->parametricLineCount + splitLineIndex,
+			ijNodeCount, kNodeCount, parameters.get(), xyzPoints);
 	}
 }
 
@@ -632,44 +584,31 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	if (!blockInformation) {
 		throw logic_error("The block information must have been loaded first.");
 	}
-
 	if (xyzPoints == nullptr) {
 		throw invalid_argument("xyzPoints must be allocated.");
 	}
 
-	if (pillarInformation == nullptr) {
-		pillarInformation = new PillarInformation();
-		loadPillarInformation(*pillarInformation);
+	if (pillarInformation->parametricLineCount == 0) {
+		loadPillarInformation();
 	}
-
-	// following lines for time testing
-	//if (pillarInformation != nullptr)
-	//	delete pillarInformation;
-	//pillarInformation = new PillarInformation();
-	//loadPillarInformation(*pillarInformation);
 
 	std::unique_ptr<double[]> parameters(new double[getXyzPointCountOfBlock()]);
 	std::string datasetPathInExternalFile;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
 	hdf5_hid_t dataset, filespace;
 
+	const uint64_t iPillarcount = getICellCount() + 1;
+	const uint64_t kBlockNodeCount = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
 	if (getSplitCoordinateLineCount() == 0)
 	{
-		uint64_t blockCountPerDimension[3] = { 1, 1, 1 };
-		uint64_t offsetPerDimension[3] = { blockInformation->kInterfaceStart, blockInformation->jInterfaceStart, blockInformation->iInterfaceStart };
-		uint64_t strideInEachDimension[3] = { 1, 1, 1 };
-		uint64_t blockSizeInEachDimension[3] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1,	blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
+		const uint64_t blockCountPerDimension[3] = { 1, 1, 1 };
+		const uint64_t offsetPerDimension[3] = { blockInformation->kInterfaceStart, blockInformation->jInterfaceStart, blockInformation->iInterfaceStart };
+		const uint64_t strideInEachDimension[3] = { 1, 1, 1 };
+		const uint64_t blockSizeInEachDimension[3] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1,	blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
 		
-		hdfProxy->selectArrayNdOfValues(
-			datasetPathInExternalFile,
-			blockCountPerDimension,
-			offsetPerDimension,
-			strideInEachDimension,
-			blockSizeInEachDimension,
-			3,
-			true,
-			dataset,
-			filespace);
+		hdfProxy->selectArrayNdOfValues(datasetPathInExternalFile,
+			blockCountPerDimension, offsetPerDimension, strideInEachDimension, blockSizeInEachDimension, 3,
+			true, dataset, filespace);
 
 		uint64_t slab_size = 1;
 		for (size_t h = 0; h < 3; ++h) {
@@ -683,20 +622,13 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	{
 		// parameters : ordered
 		uint64_t blockCountPerDimension[2] = { 1, blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1 };
-		uint64_t offsetPerDimension[2] = { blockInformation->kInterfaceStart , blockInformation->jInterfaceStart * (getICellCount() + 1) + blockInformation->iInterfaceStart };
-		uint64_t strideInEachDimension[2] = { 1, (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) + ((getICellCount() + 1) - (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1)) };
+		uint64_t offsetPerDimension[2] = { blockInformation->kInterfaceStart , blockInformation->jInterfaceStart * iPillarcount + blockInformation->iInterfaceStart };
+		uint64_t strideInEachDimension[2] = { 1, (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) + (iPillarcount - (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1)) };
 		uint64_t blockSizeInEachDimension[2] = { blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1, blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1 };
 
-		hdfProxy->selectArrayNdOfValues(
-			datasetPathInExternalFile,
-			blockCountPerDimension,
-			offsetPerDimension,
-			strideInEachDimension,
-			blockSizeInEachDimension,
-			2,
-			true,
-			dataset,
-			filespace);
+		hdfProxy->selectArrayNdOfValues(datasetPathInExternalFile,
+			blockCountPerDimension, offsetPerDimension, strideInEachDimension, blockSizeInEachDimension, 2,
+			true, dataset, filespace);
 
 		uint64_t slab_size = 1;
 		for (size_t h = 0; h < 2; ++h) {
@@ -709,49 +641,36 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 		// Adding block split coordinate lines to the selected regions
 		// traversing all bloc pillars in direction i and then in direction j
 		for (unsigned int jPillarIndex = blockInformation->jInterfaceStart; jPillarIndex <= blockInformation->jInterfaceEnd; ++jPillarIndex) {
-			for (unsigned int iPillarIndex = blockInformation->iInterfaceStart; iPillarIndex <= blockInformation->iInterfaceEnd; iPillarIndex++) {
-				unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
+			for (unsigned int iPillarIndex = blockInformation->iInterfaceStart; iPillarIndex <= blockInformation->iInterfaceEnd; ++iPillarIndex) {				
+				// traversing all split coordinate lines corresponding to the current splitted pillar
+				for (const auto& splitCoordinateLine : splitInformation[getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex)]) {
+					// traversing adjacent columns, it current column is in the bloc, corresponding coordinate line is added to the selected region
+					for (unsigned int columnIndex : splitCoordinateLine.second) {
+						const unsigned int iColumnIndex = getIColumnFromGlobalIndex(columnIndex);
+						const unsigned int jColumnIndex = getJColumnFromGlobalIndex(columnIndex);
 
-				if (!splitInformation[pillarIndex].empty()) {
-					// here is a split pillar
+						if ((iColumnIndex >= blockInformation->iInterfaceStart && iColumnIndex < blockInformation->iInterfaceEnd) &&
+							(jColumnIndex >= blockInformation->jInterfaceStart && jColumnIndex < blockInformation->jInterfaceEnd)) {
+							// here is a split coordinate line impacting the bloc
+							unsigned int splitCoordinateLineHdfIndex = getPillarCount() + splitCoordinateLine.first;
 
-					// traversing all split coordinate lines corresponding to the current splitted pillar
-					for (size_t splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex) {
-						// traversing adjacent columns, it current column is in the bloc, corresponding coordinate line is added to the selected region
-						for (size_t columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex) {
-							const unsigned int iColumnIndex = getIColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
-							const unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
+							// the split coordinate line is added to the selected region
+							blockCountPerDimension[0] = 1;
+							blockCountPerDimension[1] = 1;
+							offsetPerDimension[0] = blockInformation->kInterfaceStart;
+							offsetPerDimension[1] = splitCoordinateLineHdfIndex;
+							strideInEachDimension[0] = 1;
+							strideInEachDimension[1] = 1;
+							blockSizeInEachDimension[0] = kBlockNodeCount;
+							blockSizeInEachDimension[1] = 1;
 
-							if ((iColumnIndex >= blockInformation->iInterfaceStart && iColumnIndex < blockInformation->iInterfaceEnd) &&
-								(jColumnIndex >= blockInformation->jInterfaceStart && jColumnIndex < blockInformation->jInterfaceEnd)) {
-								// here is a split coordinate line impacting the bloc
-								unsigned int splitCoordinateLineHdfIndex = (getICellCount() + 1) * (getJCellCount() + 1) + splitInformation[pillarIndex][splitCoordinateLineIndex].first;
+							hdfProxy->selectArrayNdOfValues(datasetPathInExternalFile,
+								blockCountPerDimension, offsetPerDimension, strideInEachDimension, blockSizeInEachDimension, 2,
+								false, dataset, filespace);
 
-								// the split coordinate line is added to the selected region
-								blockCountPerDimension[0] = 1;
-								blockCountPerDimension[1] = 1;
-								offsetPerDimension[0] = blockInformation->kInterfaceStart;
-								offsetPerDimension[1] = splitCoordinateLineHdfIndex;
-								strideInEachDimension[0] = 1;
-								strideInEachDimension[1] = 1;
-								blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
-								blockSizeInEachDimension[1] = 1;
+							slab_size += kBlockNodeCount;
 
-								hdfProxy->selectArrayNdOfValues(
-									datasetPathInExternalFile,
-									blockCountPerDimension,
-									offsetPerDimension,
-									strideInEachDimension,
-									blockSizeInEachDimension,
-									2,
-									false,
-									dataset,
-									filespace);
-
-								slab_size += (blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1);
-
-								break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the bloc
-							}
+							break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the bloc
 						}
 					}
 				}
@@ -763,200 +682,19 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 	}
 
 	//Mapping
-	uint64_t xyzPointCount = (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) + getBlockSplitCoordinateLineCount();
-	size_t paramIndex = 0;
-	for (unsigned int j = blockInformation->jInterfaceStart; j <= blockInformation->jInterfaceEnd; ++j) {
-		for (unsigned int i = blockInformation->iInterfaceStart; i <= blockInformation->iInterfaceEnd; ++i) {
-		//for (unsigned int pillarIndex = 0; pillarIndex < pillarInformation->parametricLineCount; ++pillarIndex) {
-			const unsigned int pillarIndex = i + j * (getICellCount()+1);
-			if (pillarInformation->pillarKind[pillarIndex] == -1 || parameters[paramIndex] != parameters[paramIndex]) { // not defined line
-				for (unsigned int k = 0; k <= blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart; ++k) {
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3] = std::numeric_limits<double>::quiet_NaN();
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = std::numeric_limits<double>::quiet_NaN();
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = std::numeric_limits<double>::quiet_NaN();
-				}
-			}
-			else if (pillarInformation->pillarKind[pillarIndex] == 0) { // vertical (parameter must be the Z value)
-				for (unsigned int k = 0; k <= blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart; ++k) {
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->controlPoints[pillarIndex * 3];
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->controlPoints[pillarIndex * 3 + 1];
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = parameters[(k * xyzPointCount) + paramIndex];
-				}
-			}
-			else if (pillarInformation->pillarKind[pillarIndex] == 1) { // linear interpolation
-				unsigned int controlPointCount = 0;
-				while (controlPointCount < pillarInformation->maxControlPointCount &&
-					pillarInformation->controlPoints[(pillarIndex + controlPointCount*pillarInformation->parametricLineCount) * 3] ==
-					pillarInformation->controlPoints[(pillarIndex + controlPointCount*pillarInformation->parametricLineCount) * 3]) {
-					controlPointCount++;
-				}
-
-				// Control point count on this line
-				if (controlPointCount == 2) { // straight
-					double parameterDistance = .0;
-					if (pillarInformation->controlPointParameters != nullptr)
-						parameterDistance = pillarInformation->controlPointParameters[pillarIndex + pillarInformation->parametricLineCount] -
-						pillarInformation->controlPointParameters[pillarIndex]; // Parameter distance from top to bottom.
-					else // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-						parameterDistance = pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 2] - pillarInformation->controlPoints[pillarIndex * 3 + 2]; // Parameter distance from top to bottom.
-
-					const double xDist = (pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3] - pillarInformation->controlPoints[pillarIndex * 3]);
-					const double yDist = (pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 1] - pillarInformation->controlPoints[pillarIndex * 3 + 1]);
-					const double zDist = (pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 2] - pillarInformation->controlPoints[pillarIndex * 3 + 2]);
-
-					double ratioFromFirstControlPoint = .0;
-					for (unsigned int k = 0; k <= blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart; ++k)
-					{
-						if (parameterDistance != .0)
-							if (pillarInformation->controlPointParameters != nullptr)
-								ratioFromFirstControlPoint = (parameters[(k * xyzPointCount) + paramIndex] - pillarInformation->controlPointParameters[pillarIndex]) / parameterDistance;
-							else
-								ratioFromFirstControlPoint = (parameters[(k * xyzPointCount) + paramIndex] - pillarInformation->controlPoints[pillarIndex * 3 + 2]) / parameterDistance;
-						else
-							ratioFromFirstControlPoint = .0;
-
-						xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->controlPoints[pillarIndex * 3] + ratioFromFirstControlPoint * xDist;
-						xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->controlPoints[pillarIndex * 3 + 1] + ratioFromFirstControlPoint * yDist;
-						xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = pillarInformation->controlPoints[pillarIndex * 3 + 2] + ratioFromFirstControlPoint * zDist;
-					}
-				}
-				else { // piecewise linear
-
-						//unsigned int previousControlPoint = 0;
-						//if (pillarInformation->controlPointParameters != nullptr) {
-						//	while ((parameters[paramIndex] < pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint] && parameters[paramIndex] < pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)]) ||
-						//		(parameters[paramIndex] > pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint] && parameters[paramIndex] > pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)]) &&
-						//		previousControlPoint < controlPointCount - 1) {
-						//		++previousControlPoint;
-						//	}
-						//}
-						//else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-						//	while ((parameters[paramIndex] < pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2] && parameters[paramIndex] < pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2]) ||
-						//		(parameters[paramIndex] > pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2] && parameters[paramIndex] > pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2]) &&
-						//		previousControlPoint < controlPointCount - 1) {
-						//		++previousControlPoint;
-						//	}
-						//}
-
-						//if (previousControlPoint == controlPointCount - 1) {
-						//	throw invalid_argument("Cannot extrapolate piecewiselinear pillar for now to explicit a grid node.");
-						//}
-
-						//double ratioFromPreviousControlPoint = .0;
-						//double parameterDistance = .0;
-						//if (pillarInformation->controlPointParameters != nullptr) {
-						//	parameterDistance = pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)] - pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint]; // Parameter distance from top to bottom.
-						//	if (parameterDistance != .0)
-						//		ratioFromPreviousControlPoint = (parameters[paramIndex] - pillarInformation->controlPointParameters[coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint]) / parameterDistance;
-						//}
-						//else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-						//	parameterDistance = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2]; // Parameter distance from top to bottom.
-						//	if (parameterDistance != .0) {
-						//		ratioFromPreviousControlPoint = (parameters[paramIndex] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2]) / parameterDistance;
-						//	}
-						//}
-						//xyzPoints[paramIndex * 3] = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3] + ratioFromPreviousControlPoint * (pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount) * 3] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3]);
-						//xyzPoints[paramIndex * 3 + 1] = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 1] + ratioFromPreviousControlPoint * (pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 1] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 1]);
-						//xyzPoints[paramIndex * 3 + 2] = pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2] + ratioFromPreviousControlPoint * (pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*(previousControlPoint + 1)) * 3 + 2] - pillarInformation->controlPoints[(coordLineIndex + pillarInformation->parametricLineCount*previousControlPoint) * 3 + 2]);
-
-						//// TODO AND TO VERIFY ABOVE (MERGE PIECEWISE AND LINEAR (only 2 control points) IF POSSIBLE)
-
-						//delete[] parameters;
-					throw logic_error("Piecewise linear pillars are not implemented yet");
-				}
-			}
-			else if (pillarInformation->pillarKind[pillarIndex] == 2 || pillarInformation->pillarKind[pillarIndex] == 4) { // XY Natural cubic spline
-				for (unsigned int k = 0; k <= blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart; ++k) {
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->splines[pillarIndex][0].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->splines[pillarIndex][1].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-					if (pillarInformation->pillarKind[pillarIndex] == 2) { //  Z natural cubic spline
-						xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = pillarInformation->splines[pillarIndex][2].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-					}
-					else { // Z linear cubic spline
-						xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = parameters[k * xyzPointCount + paramIndex];
-					}
-				}
-			}
-			else {
-				throw logic_error("Computing XYZ from parameters on a non natural cubic spline or on a minimum curvature spline is not implemented yet.");
-			}
-			++paramIndex;
+	uint64_t ijBlockNodeCount = (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) + getBlockSplitCoordinateLineCount();
+	size_t coordLineBlockIndex = 0;
+	for (uint64_t j = blockInformation->jInterfaceStart; j <= blockInformation->jInterfaceEnd; ++j) {
+		for (uint64_t i = blockInformation->iInterfaceStart; i <= blockInformation->iInterfaceEnd; ++i) {
+			getXyzPointsAlongACoordinateLine(i + j * iPillarcount, coordLineBlockIndex++,
+				ijBlockNodeCount, kBlockNodeCount, parameters.get(), xyzPoints);
 		}
 	}
 
-	for (unsigned int splitLineIndex = 0; splitLineIndex < pillarInformation->splitLineCount; ++splitLineIndex) {
+	for (uint32_t splitLineIndex = 0; splitLineIndex < pillarInformation->splitLineCount; ++splitLineIndex) {
 		if (blockInformation->globalToLocalSplitCoordinateLinesIndex.find(splitLineIndex) != blockInformation->globalToLocalSplitCoordinateLinesIndex.end()) {
-			paramIndex = blockInformation->globalToLocalSplitCoordinateLinesIndex[splitLineIndex];
-			unsigned int pillarIndex = pillarInformation->pillarOfSplitCoordLines[splitLineIndex];
-			if (pillarInformation->pillarKind[pillarIndex] == -1 || parameters[paramIndex] != parameters[paramIndex]) { // not defined line
-				for (unsigned int k = 0; k <= blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart; ++k) {
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3] = std::numeric_limits<double>::quiet_NaN();
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = std::numeric_limits<double>::quiet_NaN();
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = std::numeric_limits<double>::quiet_NaN();
-				}
-			}
-			else if (pillarInformation->pillarKind[pillarIndex] == 0) { // vertical (parameter must be the Z value)
-				for (unsigned int k = 0; k <= blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart; ++k) {
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->controlPoints[pillarIndex * 3];
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->controlPoints[pillarIndex * 3 + 1];
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = parameters[k * xyzPointCount + paramIndex];
-				}
-			}
-			else if (pillarInformation->pillarKind[pillarIndex] == 1) { // Linear interpolation
-				unsigned int controlPointCount = 0;
-				while (controlPointCount < pillarInformation->maxControlPointCount &&
-					pillarInformation->controlPoints[(pillarIndex + controlPointCount*pillarInformation->parametricLineCount) * 3] == pillarInformation->controlPoints[(pillarIndex + controlPointCount*pillarInformation->parametricLineCount) * 3]) {
-					controlPointCount++;
-				}
-
-				// Control point count on this line
-				if (controlPointCount == 2) { // straight
-					double parameterDistance = .0;
-					if (pillarInformation->controlPointParameters != nullptr)
-						parameterDistance = pillarInformation->controlPointParameters[pillarIndex + pillarInformation->parametricLineCount] - pillarInformation->controlPointParameters[pillarIndex]; // Parameter distance from top to bottom.
-					else // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-						parameterDistance = pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 2] - pillarInformation->controlPoints[pillarIndex * 3 + 2]; // Parameter distance from top to bottom.
-
-					double xDist = pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3] - pillarInformation->controlPoints[pillarIndex * 3];
-					double yDist = pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 1] - pillarInformation->controlPoints[pillarIndex * 3 + 1];
-					double zDist = pillarInformation->controlPoints[(pillarIndex + pillarInformation->parametricLineCount) * 3 + 2] - pillarInformation->controlPoints[pillarIndex * 3 + 2];
-
-					double ratioFromFirstControlPoint = .0;
-					for (unsigned int k = 0; k <= blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart; ++k) {
-						if (parameterDistance != .0) {
-							if (pillarInformation->controlPointParameters != nullptr)
-								ratioFromFirstControlPoint = (parameters[k * xyzPointCount + paramIndex] - pillarInformation->controlPointParameters[pillarIndex]) / parameterDistance;
-							else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-								ratioFromFirstControlPoint = (parameters[k * xyzPointCount + paramIndex] - pillarInformation->controlPoints[pillarIndex * 3 + 2]) / parameterDistance;
-							}
-						}
-						else
-							ratioFromFirstControlPoint = .0;
-
-						xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->controlPoints[pillarIndex * 3] + ratioFromFirstControlPoint * xDist;
-						xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->controlPoints[pillarIndex * 3 + 1] + ratioFromFirstControlPoint * yDist;
-						xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = pillarInformation->controlPoints[pillarIndex * 3 + 2] + ratioFromFirstControlPoint * zDist;
-					}
-				}
-				else { // piecewise linear
-					throw logic_error("Piecewise linear pillars are not implemented yet");
-				}
-			}
-			else if (pillarInformation->pillarKind[pillarIndex] == 2 || pillarInformation->pillarKind[pillarIndex] == 4) { // XY Natural cubic spline
-				for (unsigned int k = 0; k <= blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart; ++k) {
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3] = pillarInformation->splines[pillarIndex][0].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-					xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 1] = pillarInformation->splines[pillarIndex][1].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-					if (pillarInformation->pillarKind[pillarIndex] == 2) { //  Z natural cubic spline
-						xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = pillarInformation->splines[pillarIndex][2].getValueFromParameter(parameters[k * xyzPointCount + paramIndex]);
-					}
-					else { // Z linear cubic spline
-						xyzPoints[(k * xyzPointCount + paramIndex) * 3 + 2] = parameters[k * xyzPointCount + paramIndex];
-					}
-				}
-			}
-			else {
-				throw logic_error("Computing XYZ from parameters on a non natural cubic spline or on a minimum curvature spline is not implemented yet.");
-			}
+			getXyzPointsAlongACoordinateLine(pillarInformation->pillarOfSplitCoordLines[splitLineIndex], blockInformation->globalToLocalSplitCoordinateLinesIndex[splitLineIndex],
+				ijBlockNodeCount, kBlockNodeCount, parameters.get(), xyzPoints);
 		}
 	}
 }
@@ -964,7 +702,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlock(double * xyzPoints)
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodes(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 	double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short const * pillarKind,
-	EML2_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	EML2_NS::AbstractHdfProxy* proxy, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodes(mostComplexPillarGeometry, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, proxy,
 		0, nullptr, nullptr, nullptr, localCrs);
@@ -972,7 +710,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNo
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(mostComplexPillarGeometry, kDirectionKind, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, definedPillars, proxy,
 		0, "", "", "", localCrs);
@@ -1020,7 +758,7 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 	double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy * proxy,
 	uint64_t splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
-	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
+	unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs)
 {
 
 	if (parameters == nullptr) {
@@ -1061,62 +799,60 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, localCrs);
 }
 
-void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRepresentation::PillarInformation & pillarInfo) const
+void IjkGridParametricRepresentation::loadPillarInformation() const
 {
-	pillarInfo.cleanMemory();
-
-	pillarInfo.maxControlPointCount = getControlPointMaxCountPerPillar();
-	pillarInfo.parametricLineCount = getPillarCount();
-	pillarInfo.splitLineCount = getSplitCoordinateLineCount();
+	pillarInformation->maxControlPointCount = getControlPointMaxCountPerPillar();
+	pillarInformation->parametricLineCount = getPillarCount();
+	pillarInformation->splitLineCount = getSplitCoordinateLineCount();
 
 	// Control points
-	pillarInfo.controlPoints = new double[pillarInfo.parametricLineCount*pillarInfo.maxControlPointCount * 3];
-	getControlPoints(pillarInfo.controlPoints);
+	pillarInformation->controlPoints.reset(new double[pillarInformation->parametricLineCount * pillarInformation->maxControlPointCount * 3]);
+	getControlPoints(pillarInformation->controlPoints.get());
 
 	// Control points parameters
 	if (hasControlPointParameters()) {
-		pillarInfo.controlPointParameters = new double[pillarInfo.parametricLineCount*pillarInfo.maxControlPointCount];
-		getControlPointParameters(pillarInfo.controlPointParameters);
+		pillarInformation->controlPointParameters.reset(new double[pillarInformation->parametricLineCount * pillarInformation->maxControlPointCount]);
+		getControlPointParameters(pillarInformation->controlPointParameters.get());
 	}
 
 	// Line kind indices
-	pillarInfo.pillarKind = new short[pillarInfo.parametricLineCount];
-	getParametricLineKind(pillarInfo.pillarKind);
+	pillarInformation->pillarKind.reset(new int16_t[pillarInformation->parametricLineCount]);
+	getParametricLineKind(pillarInformation->pillarKind.get());
 	// Pillar geometry definition overrides the kind information : https://discourse.f2i-consulting.com/t/ijkparametricgrid-xyz-points/148
-	std::unique_ptr<bool[]> pillarGeomIsDefined(new bool[pillarInfo.parametricLineCount]);
+	std::unique_ptr<bool[]> pillarGeomIsDefined(new bool[pillarInformation->parametricLineCount]);
 	getPillarGeometryIsDefined(pillarGeomIsDefined.get());
-	for (unsigned int parametricLineIndex = 0; parametricLineIndex < pillarInfo.parametricLineCount; ++parametricLineIndex) {
+	for (unsigned int parametricLineIndex = 0; parametricLineIndex < pillarInformation->parametricLineCount; ++parametricLineIndex) {
 		if (!pillarGeomIsDefined[parametricLineIndex]) {
-			pillarInfo.pillarKind[parametricLineIndex] = -1;
+			pillarInformation->pillarKind[parametricLineIndex] = -1;
 		}
 	}
 
 	// Pillars of split line
-	if (pillarInfo.splitLineCount > 0) {
-		pillarInfo.pillarOfSplitCoordLines = new unsigned int[pillarInfo.splitLineCount];
-		getPillarsOfSplitCoordinateLines(pillarInfo.pillarOfSplitCoordLines);
+	if (pillarInformation->splitLineCount > 0) {
+		pillarInformation->pillarOfSplitCoordLines.reset(new unsigned int[pillarInformation->splitLineCount]);
+		getPillarsOfSplitCoordinateLines(pillarInformation->pillarOfSplitCoordLines.get());
 	}
 
 	// Spline creation
 	BSpline spline;
-	for (unsigned int parametricLineIndex = 0; parametricLineIndex < pillarInfo.parametricLineCount; ++parametricLineIndex) {
+	for (unsigned int parametricLineIndex = 0; parametricLineIndex < pillarInformation->parametricLineCount; ++parametricLineIndex) {
 		vector<BSpline> xyzSplines;
-		if (pillarInfo.pillarKind[parametricLineIndex] == 2 || pillarInfo.pillarKind[parametricLineIndex] == 4) { // X and Y natural cubic spline
+		if (pillarInformation->pillarKind[parametricLineIndex] == 2 || pillarInformation->pillarKind[parametricLineIndex] == 4) { // X and Y natural cubic spline
 			vector<double> parameters;
 			vector<double> xValues;
 			vector<double> yValues;
-			for (unsigned int cpIndex = 0; cpIndex < pillarInfo.maxControlPointCount; ++cpIndex) {
-				unsigned int globalCpIndex = parametricLineIndex + cpIndex * pillarInfo.parametricLineCount;
-				if (pillarInfo.controlPointParameters != nullptr && pillarInfo.controlPointParameters[globalCpIndex] == pillarInfo.controlPointParameters[globalCpIndex]) {
-					parameters.push_back(pillarInfo.controlPointParameters[globalCpIndex]);
-					xValues.push_back(pillarInfo.controlPoints[globalCpIndex * 3]);
-					yValues.push_back(pillarInfo.controlPoints[globalCpIndex * 3 + 1]);
+			for (unsigned int cpIndex = 0; cpIndex < pillarInformation->maxControlPointCount; ++cpIndex) {
+				unsigned int globalCpIndex = parametricLineIndex + cpIndex * pillarInformation->parametricLineCount;
+				if (pillarInformation->controlPointParameters != nullptr && pillarInformation->controlPointParameters[globalCpIndex] == pillarInformation->controlPointParameters[globalCpIndex]) {
+					parameters.push_back(pillarInformation->controlPointParameters[globalCpIndex]);
+					xValues.push_back(pillarInformation->controlPoints[globalCpIndex * 3]);
+					yValues.push_back(pillarInformation->controlPoints[globalCpIndex * 3 + 1]);
 				}
 				// A variant in v2.0.1 when the KIL about presency of control point parameters was not existing yet.
-				else if (pillarInfo.pillarKind[parametricLineIndex] == 4 && pillarInfo.controlPoints[globalCpIndex * 3] == pillarInfo.controlPoints[globalCpIndex * 3]) {
-					parameters.push_back(pillarInfo.controlPoints[globalCpIndex * 3 + 2]);
-					xValues.push_back(pillarInfo.controlPoints[globalCpIndex * 3]);
-					yValues.push_back(pillarInfo.controlPoints[globalCpIndex * 3 + 1]);
+				else if (pillarInformation->pillarKind[parametricLineIndex] == 4 && pillarInformation->controlPoints[globalCpIndex * 3] == pillarInformation->controlPoints[globalCpIndex * 3]) {
+					parameters.push_back(pillarInformation->controlPoints[globalCpIndex * 3 + 2]);
+					xValues.push_back(pillarInformation->controlPoints[globalCpIndex * 3]);
+					yValues.push_back(pillarInformation->controlPoints[globalCpIndex * 3 + 1]);
 				}
 			}
 			// X
@@ -1126,10 +862,10 @@ void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRep
 			spline.setParameterAndValueAtControlPoint(parameters, yValues);
 			xyzSplines.push_back(spline);
 			// Z
-			if (pillarInfo.pillarKind[parametricLineIndex] == 2) { // Z Natural cubic spline
+			if (pillarInformation->pillarKind[parametricLineIndex] == 2) { // Z Natural cubic spline
 				vector<double> zValues;
-				for (unsigned int cpIndex = 0; cpIndex < pillarInfo.maxControlPointCount; ++cpIndex) {
-					double zvalue = pillarInfo.controlPoints[parametricLineIndex + cpIndex * pillarInfo.parametricLineCount * 3 + 2];
+				for (unsigned int cpIndex = 0; cpIndex < pillarInformation->maxControlPointCount; ++cpIndex) {
+					double zvalue = pillarInformation->controlPoints[parametricLineIndex + cpIndex * pillarInformation->parametricLineCount * 3 + 2];
 					if (zvalue == zvalue) {
 						zValues.push_back(zvalue);
 					}
@@ -1138,179 +874,31 @@ void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRep
 				xyzSplines.push_back(spline);
 			}
 		}
-		pillarInfo.splines.push_back(xyzSplines);
+		pillarInformation->splines.push_back(xyzSplines);
 	}
 }
 
-void IjkGridParametricRepresentation::getXyzPointsFromParametricPoints(double * xyzPoints) const
+void IjkGridParametricRepresentation::getXyzPointsFromParametricPoints(double* xyzPoints) const
 {
 	std::string datasetPathInExternalFile;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getParameterDatasetPath(datasetPathInExternalFile);
 	std::unique_ptr<double[]> parameters(new double[getXyzPointCountOfPatch(0)]);
 	hdfProxy->readArrayNdOfDoubleValues(datasetPathInExternalFile, parameters.get());
+	const uint64_t ijNodeCount = getXyzPointCountOfKInterface();
+	const uint64_t kNodeCount = getKCellCount() + getKGapsCount() + 1;
 
-	IjkGridParametricRepresentation::PillarInformation pillarInfo;
-	loadPillarInformation(pillarInfo);
+	if (pillarInformation->parametricLineCount == 0) {
+		loadPillarInformation();
+	}
 
 	//Mapping
-	size_t paramIndex = 0;
-	for (unsigned int kInterface = 0; kInterface < getKCellCount() + getKGapsCount() + 1; ++kInterface) {
-		for (unsigned int coordLineIndex = 0; coordLineIndex < pillarInfo.parametricLineCount; ++coordLineIndex) {
-			if (pillarInfo.pillarKind[coordLineIndex] == -1 || parameters[paramIndex] != parameters[paramIndex]) { // not defined line
-				xyzPoints[paramIndex*3] = std::numeric_limits<double>::quiet_NaN();
-				xyzPoints[paramIndex*3+1] = std::numeric_limits<double>::quiet_NaN();
-				xyzPoints[paramIndex*3+2] = std::numeric_limits<double>::quiet_NaN();
-			}
-			else if (pillarInfo.pillarKind[coordLineIndex] == 0) { // vertical (parameter must be the Z value)
-				xyzPoints[paramIndex*3] = pillarInfo.controlPoints[coordLineIndex*3];
-				xyzPoints[paramIndex*3+1] = pillarInfo.controlPoints[coordLineIndex*3+1];
-				xyzPoints[paramIndex*3+2] = parameters[paramIndex];
-			}
-			else if (pillarInfo.pillarKind[coordLineIndex] == 1) { // linear interpolation
-				unsigned int controlPointCount = 0;
-				while (controlPointCount < pillarInfo.maxControlPointCount &&
-						pillarInfo.controlPoints[(coordLineIndex + controlPointCount*pillarInfo.parametricLineCount)*3] == 
-						pillarInfo.controlPoints[(coordLineIndex + controlPointCount*pillarInfo.parametricLineCount)*3]) {
-					controlPointCount++;
-				}
-
-				// Control point count on this line
-				if (controlPointCount == 2) { // straight
-					double ratioFromFirstControlPoint = .0;
-					double parameterDistance = .0;
-					if (pillarInfo.controlPointParameters != nullptr) {
-						parameterDistance = pillarInfo.controlPointParameters[coordLineIndex + pillarInfo.parametricLineCount] - pillarInfo.controlPointParameters[coordLineIndex]; // Parameter distance from top to bottom.
-						if (parameterDistance != .0)
-							ratioFromFirstControlPoint = (parameters[paramIndex] - pillarInfo.controlPointParameters[coordLineIndex]) / parameterDistance;
-					}
-					else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-						parameterDistance = pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount)*3+2] - pillarInfo.controlPoints[coordLineIndex*3+2]; // Parameter distance from top to bottom.
-						if (parameterDistance != .0) {
-							ratioFromFirstControlPoint = (parameters[paramIndex] - pillarInfo.controlPoints[coordLineIndex * 3 + 2]) / parameterDistance;
-						}
-					}
-					xyzPoints[paramIndex*3] = pillarInfo.controlPoints[coordLineIndex*3] + ratioFromFirstControlPoint * (pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount)*3] - pillarInfo.controlPoints[coordLineIndex*3]);
-					xyzPoints[paramIndex*3 + 1] = pillarInfo.controlPoints[coordLineIndex*3 + 1] + ratioFromFirstControlPoint * (pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount)*3 + 1] - pillarInfo.controlPoints[coordLineIndex*3 + 1]);
-					xyzPoints[paramIndex*3 + 2] = pillarInfo.controlPoints[coordLineIndex*3 + 2] + ratioFromFirstControlPoint * (pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount)*3 + 2] - pillarInfo.controlPoints[coordLineIndex*3 + 2]);
-				}
-				else { // piecewise linear
-
-					unsigned int previousControlPoint = 0;
-					if (pillarInfo.controlPointParameters != nullptr) {
-						while (((parameters[paramIndex] < pillarInfo.controlPointParameters[coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint] && parameters[paramIndex] < pillarInfo.controlPointParameters[coordLineIndex + pillarInfo.parametricLineCount*(previousControlPoint + 1)]) ||
-							(parameters[paramIndex] > pillarInfo.controlPointParameters[coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint] && parameters[paramIndex] > pillarInfo.controlPointParameters[coordLineIndex + pillarInfo.parametricLineCount*(previousControlPoint + 1)])) &&
-							previousControlPoint < controlPointCount - 1) {
-							++previousControlPoint;
-						}
-					}
-					else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-						while (((parameters[paramIndex] < pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint) * 3 + 2] && parameters[paramIndex] < pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*(previousControlPoint + 1)) * 3 + 2]) ||
-							(parameters[paramIndex] > pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint) * 3 + 2] && parameters[paramIndex] > pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*(previousControlPoint + 1)) * 3 + 2])) &&
-							previousControlPoint < controlPointCount - 1) {
-							++previousControlPoint;
-						}
-					}
-
-					if (previousControlPoint == controlPointCount - 1) {
-						throw logic_error("Cannot extrapolate piecewiselinear pillar for now to explicit a grid node.");
-					}
-
-					double ratioFromPreviousControlPoint = .0;
-					double parameterDistance = .0;
-					if (pillarInfo.controlPointParameters != nullptr) {
-						parameterDistance = pillarInfo.controlPointParameters[coordLineIndex + pillarInfo.parametricLineCount*(previousControlPoint + 1)] - pillarInfo.controlPointParameters[coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint]; // Parameter distance from top to bottom.
-						if (parameterDistance != .0)
-							ratioFromPreviousControlPoint = (parameters[paramIndex] - pillarInfo.controlPointParameters[coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint]) / parameterDistance;
-					}
-					else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-						parameterDistance = pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*(previousControlPoint + 1)) * 3 + 2] - pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint) * 3 + 2]; // Parameter distance from top to bottom.
-						if (parameterDistance != .0) {
-							ratioFromPreviousControlPoint = (parameters[paramIndex] - pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint) * 3 + 2]) / parameterDistance;
-						}
-					}
-					xyzPoints[paramIndex * 3] = pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint) * 3] + ratioFromPreviousControlPoint * (pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount) * 3] - pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint) * 3]);
-					xyzPoints[paramIndex * 3 + 1] = pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint) * 3 + 1] + ratioFromPreviousControlPoint * (pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*(previousControlPoint + 1)) * 3 + 1] - pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint) * 3 + 1]);
-					xyzPoints[paramIndex * 3 + 2] = pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint) * 3 + 2] + ratioFromPreviousControlPoint * (pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*(previousControlPoint + 1)) * 3 + 2] - pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount*previousControlPoint) * 3 + 2]);
-
-					// TODO AND TO VERIFY ABOVE (MERGE PIECEWISE AND LINEAR (only 2 control points) IF POSSIBLE)
-
-					throw logic_error("Piecewise linear pillars are not implemented yet");
-				}
-			}
-			else if (pillarInfo.pillarKind[coordLineIndex] == 2 || pillarInfo.pillarKind[coordLineIndex] == 4) { // XY Natural cubic spline
-				xyzPoints[paramIndex * 3] = pillarInfo.splines[coordLineIndex][0].getValueFromParameter(parameters[paramIndex]);
-				xyzPoints[paramIndex * 3 + 1] = pillarInfo.splines[coordLineIndex][1].getValueFromParameter(parameters[paramIndex]);
-				if (pillarInfo.pillarKind[coordLineIndex] == 2) { //  Z natural cubic spline
-					xyzPoints[paramIndex * 3 + 2] = pillarInfo.splines[coordLineIndex][2].getValueFromParameter(parameters[paramIndex]);
-				}
-				else { // Z linear cubic spline
-					xyzPoints[paramIndex * 3 + 2] = parameters[paramIndex];
-				}
-			}
-			else {
-				throw logic_error("Computing XYZ from parameters on a non natural cubic spline or on a minimum curvature spline is not implemented yet.");
-			}
-			++paramIndex;
-		}
-		for (unsigned int splitLineIndex = 0; splitLineIndex < pillarInfo.splitLineCount; ++splitLineIndex)
-		{
-			unsigned int coordLineIndex = pillarInfo.pillarOfSplitCoordLines[splitLineIndex];
-			if (pillarInfo.pillarKind[coordLineIndex] == -1 || parameters[paramIndex] != parameters[paramIndex]) { // not defined line
-				xyzPoints[paramIndex*3] = std::numeric_limits<double>::quiet_NaN();
-				xyzPoints[paramIndex*3+1] = std::numeric_limits<double>::quiet_NaN();
-				xyzPoints[paramIndex*3+2] = std::numeric_limits<double>::quiet_NaN();
-			}
-			else if (pillarInfo.pillarKind[coordLineIndex] == 0) { // vertical (parameter must be the Z value)
-				xyzPoints[paramIndex*3] = pillarInfo.controlPoints[coordLineIndex*3];
-				xyzPoints[paramIndex*3+1] = pillarInfo.controlPoints[coordLineIndex*3+1];
-				xyzPoints[paramIndex*3+2] = parameters[paramIndex];
-			}
-			else if (pillarInfo.pillarKind[coordLineIndex] == 1) { // Linear interpolation
-				unsigned int controlPointCount = 0;
-				while (controlPointCount < pillarInfo.maxControlPointCount &&
-						pillarInfo.controlPoints[(coordLineIndex + controlPointCount*pillarInfo.parametricLineCount)*3] == pillarInfo.controlPoints[(coordLineIndex + controlPointCount*pillarInfo.parametricLineCount)*3]) {
-					controlPointCount++;
-				}
-
-				// Control point count on this line
-				if (controlPointCount == 2) { // straight
-					double ratioFromFirstControlPoint = .0;
-					double parameterDistance = .0;
-					if (pillarInfo.controlPointParameters != nullptr) {
-						parameterDistance = pillarInfo.controlPointParameters[coordLineIndex + pillarInfo.parametricLineCount] - pillarInfo.controlPointParameters[coordLineIndex]; // Parameter distance from top to bottom.
-						if (parameterDistance != .0) {
-							ratioFromFirstControlPoint = (parameters[paramIndex] - pillarInfo.controlPointParameters[coordLineIndex]) / parameterDistance;
-						}
-					}
-					else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-						parameterDistance = pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount)*3+2] - pillarInfo.controlPoints[coordLineIndex*3+2]; // Parameter distance from top to bottom.
-						if (parameterDistance != .0)
-							ratioFromFirstControlPoint = (parameters[paramIndex] - pillarInfo.controlPoints[coordLineIndex*3+2]) / parameterDistance;
-					}
-
-					xyzPoints[paramIndex*3] = pillarInfo.controlPoints[coordLineIndex*3] + ratioFromFirstControlPoint * (pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount)*3] - pillarInfo.controlPoints[coordLineIndex*3]);
-					xyzPoints[paramIndex*3 + 1] = pillarInfo.controlPoints[coordLineIndex*3 + 1] + ratioFromFirstControlPoint * (pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount)*3 + 1] - pillarInfo.controlPoints[coordLineIndex*3 + 1]);
-					xyzPoints[paramIndex*3 + 2] = pillarInfo.controlPoints[coordLineIndex*3 + 2] + ratioFromFirstControlPoint * (pillarInfo.controlPoints[(coordLineIndex + pillarInfo.parametricLineCount)*3 + 2] - pillarInfo.controlPoints[coordLineIndex*3 + 2]);
-				}
-				else { // piecewise linear
-					throw logic_error("Piecewise linear pillars are not implemented yet");
-				}
-			}
-			else if (pillarInfo.pillarKind[coordLineIndex] == 2 || pillarInfo.pillarKind[coordLineIndex] == 4) { // XY Natural cubic spline
-				xyzPoints[paramIndex * 3] = pillarInfo.splines[coordLineIndex][0].getValueFromParameter(parameters[paramIndex]);
-				xyzPoints[paramIndex * 3 + 1] = pillarInfo.splines[coordLineIndex][1].getValueFromParameter(parameters[paramIndex]);
-				if (pillarInfo.pillarKind[coordLineIndex] == 2) { // Z natural cubic spline
-					xyzPoints[paramIndex * 3 + 2] = pillarInfo.splines[coordLineIndex][2].getValueFromParameter(parameters[paramIndex]);
-				}
-				else { // Z linear cubic spline
-					xyzPoints[paramIndex * 3 + 2] = parameters[paramIndex];
-				}
-			}
-			else {
-				throw logic_error("Computing XYZ from parameters on a non natural cubic spline or on a minimum curvature spline is not implemented yet.");
-			}
-			++paramIndex;
-		}
+	for (uint64_t pillarIndex = 0; pillarIndex < pillarInformation->parametricLineCount; ++pillarIndex) {
+		getXyzPointsAlongACoordinateLine(pillarIndex, pillarIndex,
+			ijNodeCount, kNodeCount, parameters.get(), xyzPoints);
+	}
+	for (uint64_t splitLineIndex = 0; splitLineIndex < pillarInformation->splitLineCount; ++splitLineIndex) {
+		getXyzPointsAlongACoordinateLine(pillarInformation->pillarOfSplitCoordLines[splitLineIndex], pillarInformation->parametricLineCount + splitLineIndex,
+			ijNodeCount, kNodeCount, parameters.get(), xyzPoints);
 	}
 }
 
@@ -1325,7 +913,7 @@ namespace {
 
 		size_t controlPointIndex = pillarIndex * 3 + 2;
 		double firstZ = controlPoints[controlPointIndex];
-		if (firstZ != firstZ) { // The pillar is undefined
+		if (std::isnan(firstZ)) { // The pillar is undefined
 			return -1;
 		}
 		unsigned int pillarCountTimes3 = pillarCount * 3; // optim
@@ -1363,7 +951,7 @@ namespace {
 	}
 }
 
-gsoap_resqml2_0_1::resqml20__KDirection IjkGridParametricRepresentation::computeKDirection(double const * controlPoints, unsigned int controlPointCountPerPillar, short const * pillarKind, RESQML2_NS::AbstractLocal3dCrs const * localCrs) {
+gsoap_resqml2_0_1::resqml20__KDirection IjkGridParametricRepresentation::computeKDirection(double const * controlPoints, unsigned int controlPointCountPerPillar, short const * pillarKind, EML2_NS::AbstractLocal3dCrs const * localCrs) {
 	if (controlPoints == nullptr) {
 		throw invalid_argument("The control points cannot be null.");
 	}

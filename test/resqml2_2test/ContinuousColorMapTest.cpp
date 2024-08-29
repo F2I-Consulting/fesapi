@@ -17,17 +17,20 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "ContinuousColorMapTest.h"
+
 #include "catch.hpp"
+
 #include "eml2/AbstractHdfProxy.h"
 #include "eml2/GraphicalInformationSet.h"
 #include "eml2/PropertyKind.h"
+
 #include "resqml2/BoundaryFeature.h"
+#include "resqml2/ContinuousProperty.h"
+#include "resqml2/EarthModelInterpretation.h"
 #include "resqml2/HorizonInterpretation.h"
 #include "resqml2/Grid2dRepresentation.h"
 #include "resqml2/Model.h"
-#include "resqml2/EarthModelInterpretation.h"
-#include "resqml2/LocalDepth3dCrs.h"
-#include "resqml2/ContinuousProperty.h"
+
 #include "resqml2_2/ContinuousColorMap.h"
 
 using namespace std;
@@ -51,8 +54,6 @@ char const* ContinuousColorMapTest::uuidOrganizationFeature = "ceefeac1-21b1-4a3
 char const* ContinuousColorMapTest::titleOrganizationFeature = "Organization Feature";
 char const* ContinuousColorMapTest::uuidEarthModelInterpretation = "8f6afd90-71e1-4a1e-891f-9c628feeb980";
 char const* ContinuousColorMapTest::titleEarthModelInterpretation = "Earth Model Interpretation";
-char const* ContinuousColorMapTest::uuidLocalDepth3dCrs = "69aa7e50-1538-4818-93a4-11fcfdc2292e";
-char const* ContinuousColorMapTest::titleLocalDepth3dCrs = "Loacl Depth 3d Crs";
 char const* ContinuousColorMapTest::uuidGraphicalInformationSet = "3b5c1be9-d2a0-4bd3-806f-883d928d1a7d";
 char const* ContinuousColorMapTest::titleGraphicalInformationSet = "Graphical Information Set";
 
@@ -74,8 +75,8 @@ void ContinuousColorMapTest::initRepo() {
 		0., 1., 0.,
 		1., 1.);
 
-	// assotiating a Continuous property to the grid 2d representation
-	auto propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
+	// associating a Continuous property to the grid 2d representation
+	auto* propertyKind = repo->createPropertyKind("5f78f66a-ed1b-4827-a868-beb989febb31", "code", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
 	ContinuousProperty* continuousProperty = repo->createContinuousProperty(grid2dRepresentation, uuidContinuousProperty, titleContinuousProperty, 2,
 		gsoap_eml2_3::eml23__IndexableElement::nodes, "continuousColorMapIndex", propertyKind);
 	double values[2] = { 0., 1. };
@@ -84,12 +85,12 @@ void ContinuousColorMapTest::initRepo() {
 	// creating the continuous color map
 	RESQML2_NS::ContinuousColorMap* continuousColorMap = repo->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_3::resqml22__InterpolationDomain::rgb, gsoap_eml2_3::resqml22__InterpolationMethod::linear);
 	REQUIRE(continuousColorMap != nullptr);
-	unsigned int rgbColors[6] = { 0, 256, 0, 255, 0, 0 };
+	uint8_t rgbColors[6] = { 0, 255, 0, 255, 0, 0 };
 	vector<string> titles = { "green", "red" };
-	double alphas[2] = { 1., 1. };
-	REQUIRE_THROWS(continuousColorMap->setRgbColors(2, rgbColors, alphas, titles));
-	rgbColors[1] = 255;
-	continuousColorMap->setRgbColors(2, rgbColors, alphas, titles);
+	double alphas[2] = { 1.5, 1. };
+	REQUIRE_THROWS(continuousColorMap->setRgbColors(2, rgbColors, alphas, nullptr, titles));
+	alphas[0] = 1.;
+	continuousColorMap->setRgbColors(2, rgbColors, alphas, nullptr, titles);
 
 	// associating the Continuous color map to the Continuous property
 	GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet(uuidGraphicalInformationSet, titleGraphicalInformationSet);

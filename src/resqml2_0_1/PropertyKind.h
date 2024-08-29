@@ -49,11 +49,13 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	namingSystem				 	The name of the dictionary within which the
 		 * 													property is unique.
 		 * @param 		  	uom							 	The unit of measure of the property type.
+		 * @param 			isAbstract						Indicates whether the property kind should be used
+		 * 													as a real (default) property or not.
 		 * @param 		  	parentEnergisticsPropertyKind	The name of the parent property type in the
 		 * 													Energistics property dictionary.
 		 */
 		PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
+			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
 		 * @brief	Creates a local property type which uses a standard uom and which derives from
@@ -67,10 +69,12 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	namingSystem  	The name of the dictionary within which the property is
 		 * 									unique.
 		 * @param 		  	uom			  	The unit of measure of the property type.
+		 * @param 			isAbstract		Indicates whether the property kind should be used
+		 * 									as a real (default) property or not.
 		 * @param [in,out]	parentPropType	The local parent property type in the EPC document.
 		 */
 		PropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType);
+			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, EML2_NS::PropertyKind * parentPropType);
 
 		/**
 		 * @brief	Creates a local property type which uses a non standard uom and which derives from a
@@ -84,11 +88,13 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	namingSystem				 	The name of the dictionary within which the
 		 * 													property is unique.
 		 * @param 		  	nonStandardUom				 	The non standard uom of the values.
+		 * @param 		 	isAbstract						Indicates whether the property kind should be used
+		 * 													as a real (default) property or not.
 		 * @param 		  	parentEnergisticsPropertyKind	The name of the parent property type in the
 		 * 													Energistics property dictionary.
 		 */
 		PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
+			const std::string & namingSystem, const std::string & nonStandardUom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind);
 
 		/**
 		 * @brief	Creates a local property type which uses a non standard uom which derives from
@@ -100,10 +106,12 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	namingSystem  	The name of the dictionary within which the property is
 		 * 									unique.
 		 * @param 		  	nonStandardUom	The non standard uom of the values.
+		 * @param 	  		isAbstract		Indicates whether the property kind should be used
+		 * 									as a real (default) property or not.
 		 * @param [in,out]	parentPropType	The local parent property type in the EPC document.
 		 */
 		PropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType);
+			const std::string & namingSystem, const std::string & nonStandardUom, bool isAbstract, EML2_NS::PropertyKind * parentPropType);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
@@ -229,6 +237,6 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	title			The title.
 		 * @param 		  	namingSystem	The naming system.
 		 */
-		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & namingSystem);
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & namingSystem, bool isAbstract);
 	};
 }

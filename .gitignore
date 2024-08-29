@@ -3,10 +3,6 @@
 /cs/example/Program.cs
 /cs/example/HdfProxyFactoryExample.cs
 /cs/example/HdfProxyExample.cs
-/cs/EtpClientExample/EtpClientExample.cs
-/cs/EtpClientExample/MyOwnClientCoreHandlers.cs
-/cs/EtpClientExample/MyOwnDiscoveryProtocolHandlers.cs
-/cs/EtpClientExample/MyOwnStoreProtocolHandlers.cs
 /swig/swigCsInclude.i
 /swig/swigJavaInclude.i
 /swig/swigPythonInclude.i

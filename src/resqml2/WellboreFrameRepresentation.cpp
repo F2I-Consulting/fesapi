@@ -385,7 +385,7 @@ COMMON_NS::DataObjectReference WellboreFrameRepresentation::getWellboreTrajector
 	throw invalid_argument("Not implemented yet");
 }
 
-COMMON_NS::DataObjectReference WellboreFrameRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference WellboreFrameRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	auto* traj = getWellboreTrajectory();
 	return traj->isPartial() ? COMMON_NS::DataObjectReference() : getWellboreTrajectory()->getLocalCrsDor(patchIndex);

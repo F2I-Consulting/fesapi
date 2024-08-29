@@ -19,8 +19,7 @@ under the License.
 #include "PointsProperty.h"
 
 #include "../eml2/AbstractHdfProxy.h"
-
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace RESQML2_NS;
 using namespace std;

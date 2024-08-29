@@ -87,9 +87,20 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
-		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
-			unsigned int xyzPointCount, double const * xyzPoints,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr) final;
+		DLL_IMPORT_OR_EXPORT void pushBackXyzGeometryPatch(
+			uint64_t xyzPointCount, double const* xyzPoints,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+
+		DLL_IMPORT_OR_EXPORT void pushBackXyGeometryPatch(
+			uint64_t xyPointCount, double const* xyPoints,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+
+		DLL_IMPORT_OR_EXPORT bool isIn2D(uint64_t patchIndex) const final {
+			gsoap_eml2_3::resqml22__PointGeometry* pointGeom = getPointGeometry2_2(patchIndex);
+			return (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point2dExternalArray);
+		}
+
+		DLL_IMPORT_OR_EXPORT void getXyPointsOfPatch(uint64_t patchIndex, double* xyPoints) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

@@ -48,7 +48,7 @@ namespace EML2_3_NS
 		 * @param 		  	quantityClass	  	The quantity class of this property kind. It wil
 		 * 										constrain its allowed uom collection. The enum comes from
 		 * 										Energistics Unit Of Measure.
-		 * @param 		  	isAbstract		  	(Optional) Inidcates if this property kind can be used
+		 * @param 		  	isAbstract		  	(Optional) Indicates if this property kind can be used
 		 * 										directly by a property or not.
 		 * @param [in,out]	parentPropertyKind	(Optional) The parent property kind if this property
 		 * 										kind. By default, it is the Energistics root property
@@ -56,6 +56,27 @@ namespace EML2_3_NS
 		 */
 		PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
 			gsoap_eml2_3::eml23__QuantityClassKind quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
+
+		/**
+		 * Creates a local property type which uses a standard uom and which derives from a standard
+		 * Energistics property type.
+		 *
+		 * @param [in,out]	repo			  	The repo where the underlying gsoap proxy is going to be
+		 * 										created.
+		 * @param 		  	guid			  	The guid to set to the local 3d crs. If empty then a new
+		 * 										guid will be generated.
+		 * @param 		  	title			  	The title of the instance.
+		 * @param 		  	quantityClass	  	The quantity class of this property kind. It wil
+		 * 										constrain its allowed uom collection. The enum comes from
+		 * 										Energistics Unit Of Measure or another dictionary.
+		 * @param 		  	isAbstract		  	(Optional) Indicates if this property kind can be used
+		 * 										directly by a property or not.
+		 * @param [in,out]	parentPropertyKind	(Optional) The parent property kind if this property
+		 * 										kind. By default, it is the Energistics root property
+		 * 										kind called "property".
+		 */
+		PropertyKind(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
+			const std::string& quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
@@ -124,5 +145,8 @@ namespace EML2_3_NS
 		 * @param [in,out]	parentPropertyKind	If non-null, the parent property kind.
 		 */
 		void setXmlParentPropertyKind(EML2_NS::PropertyKind* parentPropertyKind);
+
+		void init(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
+			const std::string& quantityClass, bool isAbstract = false, EML2_NS::PropertyKind* parentPropertyKind = nullptr);
 	};
 }

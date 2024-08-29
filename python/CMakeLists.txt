@@ -3,6 +3,8 @@
 find_package(SWIG 3.0 REQUIRED)
 find_package(Python3 REQUIRED)
 
+set (Fesapi_PYTHON_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VERSION_PATCH})
+
 set(SWIG_LINKED_TO_RELEASE ON CACHE BOOL "Is your SWIG generated library linked to the release or debug version of FesapiCpp ?")
 # See http://swig.org/Doc4.0/SWIGDocumentation.html#Python_nn28 for more information about SWIG python builtin parameter
 set(SWIG_PYTHON_BUILTIN OFF CACHE BOOL "The use of Python proxy classes has performance implications that may be unacceptable for a high-performance library. The new -builtin option instructs SWIG to forego the use of proxy classes, and instead create wrapped types as new built-in Python types.")
@@ -25,6 +27,11 @@ else (WIN32)
 	endif (SWIG_LINKED_TO_RELEASE)
 endif (WIN32)
 configure_file(${CMAKE_SOURCE_DIR}/cmake/swigPythonInclude.i.in ${CMAKE_SOURCE_DIR}/swig/swigPythonInclude.i) # Overwrite if different
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	set (EXTRA_COMPILE_ARGS "extra_compile_args=['/DSWIG_TYPE_TABLE=FESTAPI']")
+else ()
+	set (EXTRA_COMPILE_ARGS "extra_compile_args=['-DSWIG_TYPE_TABLE=FESTAPI -std=c++11']")
+endif()
 configure_file(${CMAKE_SOURCE_DIR}/cmake/setup.py.in ${CMAKE_SOURCE_DIR}/python/setup.py) # Overwrite if different
 
 # SWIG execution
@@ -39,10 +46,16 @@ endif (UNIX)
 list (APPEND EXECUTE_COMMAND -v)
 list (APPEND EXECUTE_COMMAND -c++)
 list (APPEND EXECUTE_COMMAND -python)
+list (APPEND EXECUTE_COMMAND -extranative)
+if("${SWIG_VERSION}" VERSION_GREATER_EQUAL "4.0.0")
+	list (APPEND EXECUTE_COMMAND -doxygen)
+endif()
 if (SWIG_PYTHON_BUILTIN)
 	list (APPEND EXECUTE_COMMAND -builtin)
 endif (SWIG_PYTHON_BUILTIN)
-list (APPEND EXECUTE_COMMAND -py3)
+if("${SWIG_VERSION}" VERSION_LESS "4.1.0")
+	list (APPEND EXECUTE_COMMAND -py3)
+endif()
 list (APPEND EXECUTE_COMMAND -o)
 list (APPEND EXECUTE_COMMAND ${CMAKE_SOURCE_DIR}/python/swigGeneratedPythonWrapper.cpp)
 list (APPEND EXECUTE_COMMAND -outdir)

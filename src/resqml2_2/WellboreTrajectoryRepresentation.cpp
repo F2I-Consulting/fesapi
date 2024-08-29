@@ -21,7 +21,7 @@ under the License.
 #include "H5public.h"
 
 #include "../eml2/AbstractHdfProxy.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 #include "../resqml2/MdDatum.h"
 
 #include "../resqml2/WellboreFrameRepresentation.h"
@@ -65,7 +65,7 @@ void WellboreTrajectoryRepresentation::setMinimalGeometry(double startMd, double
 	rep->MdInterval->MdMax = endMd;
 }
 
-void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (controlPoints == nullptr) {
 		throw invalid_argument("The control points are missing.");
@@ -114,7 +114,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (controlPointParameters == nullptr) {
 		throw invalid_argument("The control points parameters are missing.");
@@ -145,7 +145,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 	double const* tangentVectors, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-	EML2_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractHdfProxy * proxy, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (tangentVectors == nullptr) {
 		throw invalid_argument("The tangent vectors parameter is missing.");
@@ -366,7 +366,7 @@ gsoap_eml2_3::_resqml22__WellboreTrajectoryRepresentation* WellboreTrajectoryRep
 	return static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3);
 }
 
-COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	if (patchIndex > 0) {
 		throw out_of_range("There is no more than one patch in a wellbore trajectory.");
@@ -381,14 +381,4 @@ COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(
 bool WellboreTrajectoryRepresentation::hasGeometry() const
 {
 	return getSpecializedGsoapProxy()->Geometry != nullptr;
-}
-
-COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getDeviationSurveyDor() const
-{
-	return COMMON_NS::DataObjectReference();
-}
-
-void WellboreTrajectoryRepresentation::setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey)
-{
-	throw logic_error("Not possible in RESQML2.2");
 }

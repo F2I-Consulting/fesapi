@@ -30,7 +30,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* PropertyKind::XML_NS = "resqml20";
 
-void PropertyKind::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & namingSystem)
+void PropertyKind::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & namingSystem, bool isAbstract)
 {
 	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
@@ -39,17 +39,18 @@ void PropertyKind::init(COMMON_NS::DataObjectRepository * repo, const std::strin
 	_resqml20__PropertyKind* propType = getSpecializedGsoapProxy();
 
 	propType->NamingSystem = namingSystem;
+	propType->IsAbstract = isAbstract;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 }
 
 PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
-	const string & namingSystem, resqml20__ResqmlUom uom, resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
+	const string & namingSystem, resqml20__ResqmlUom uom, bool isAbstract, resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
 {
-	init(repo, guid, title, namingSystem);
+	init(repo, guid, title, namingSystem, isAbstract);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
 
 	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
@@ -58,22 +59,22 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string 
 }
 
 PropertyKind::PropertyKind(const string & guid, const string & title,
-	const string & namingSystem, resqml20__ResqmlUom uom, EML2_NS::PropertyKind * parentPropType)
+	const string & namingSystem, resqml20__ResqmlUom uom, bool isAbstract, EML2_NS::PropertyKind * parentPropType)
 {
 	if (parentPropType == nullptr) {
 		throw invalid_argument("The parent property kind cannot be null.");
 	}
 
-	init(parentPropType->getRepository(), guid, title, namingSystem);
+	init(parentPropType->getRepository(), guid, title, namingSystem, isAbstract);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
 
 	setParentPropertyKind(parentPropType);
 }
 
 PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
-	const string & namingSystem, const std::string & nonStandardUom, resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
+	const string & namingSystem, const std::string & nonStandardUom, bool isAbstract, resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
 {
-	init(repo, guid, title, namingSystem);
+	init(repo, guid, title, namingSystem, isAbstract);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
@@ -83,9 +84,9 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string 
 }
 
 PropertyKind::PropertyKind(const string & guid, const string & title,
-	const string & namingSystem, const std::string & nonStandardUom, EML2_NS::PropertyKind * parentPropType)
+	const string & namingSystem, const std::string & nonStandardUom, bool isAbstract, EML2_NS::PropertyKind * parentPropType)
 {
-	init(parentPropType->getRepository(), guid, title, namingSystem);
+	init(parentPropType->getRepository(), guid, title, namingSystem, isAbstract);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 

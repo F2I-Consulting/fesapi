@@ -18,7 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "SeismicWellboreFrameRepresentation.h"
 
-#include "../resqml2/LocalTime3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+
 #include "../resqml2/WellboreInterpretation.h"
 #include "../resqml2/WellboreTrajectoryRepresentation.h"
 
@@ -26,15 +27,13 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
-const char* SeismicWellboreFrameRepresentation::XML_NS = "resqml22";
-
 SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 	RESQML2_NS::WellboreInterpretation* interp,
 	const std::string& guid, const std::string& title,
 	RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 	double seismicReferenceDatum,
 	double weatheringVelocity,
-	RESQML2_NS::LocalTime3dCrs* crs)
+	EML2_NS::AbstractLocal3dCrs* crs)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The wellbore interpretation cannot be null.");
@@ -42,7 +41,7 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 	if (traj == nullptr) {
 		throw invalid_argument("The trajectory cannot be null.");
 	}
-	if (crs == nullptr) {
+	if (crs == nullptr || !crs->isATimeCrs()) {
 		throw invalid_argument("The local 3d crs cannot be null and must be a time one.");
 	}
 
@@ -50,7 +49,7 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	interp->getRepository()->addDataObject(this);
 	setInterpretation(interp);
@@ -64,4 +63,25 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 
 	frame->LocalTime3dCrs = crs->newEml23Reference();
 	getRepository()->addRelationship(this, crs);
+}
+
+COMMON_NS::DataObjectReference SeismicWellboreFrameRepresentation::getTimeCrsDor() const
+{
+	return COMMON_NS::DataObjectReference(static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3)->LocalTime3dCrs);
+}
+
+void SeismicWellboreFrameRepresentation::loadTargetRelationships()
+{
+	COMMON_NS::DataObjectReference dor = getTimeCrsDor();
+	EML2_NS::AbstractLocal3dCrs* crs = getRepository()->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(dor.getUuid());
+	if (crs == nullptr) { // partial transfer
+		getRepository()->createPartial(dor);
+		crs = getRepository()->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(dor.getUuid());
+	}
+	if (crs == nullptr) {
+		throw invalid_argument("The DOR looks invalid.");
+	}
+	repository->addRelationship(this, crs);
+
+	RESQML2_NS::SeismicWellboreFrameRepresentation::loadTargetRelationships();
 }

@@ -171,22 +171,31 @@ void HdfProxy::open()
 		? packageDirectoryAbsolutePath
 		: packageDirectoryAbsolutePath + '/') + relativeFilePath;
 	if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY || openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE) {
-		if (H5Fis_hdf5(fullName.c_str()) > 0) {
-			hdfFile = H5Fopen(fullName.c_str(),
-				openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY ? H5F_ACC_RDONLY : H5F_ACC_RDWR,
-				H5P_DEFAULT);
-			if (hdfFile < 0) {
-				throw invalid_argument("HDF5 library recognizes the HDF5 file but can not open it : " + fullName);
+		string replacedName = fullName;
+		if (H5Fis_hdf5(fullName.c_str()) <= 0) {
+			// Try to open an HDF5 named as the EPC file in the same folder (in case it would have been renamed)
+			replacedName = std::regex_replace(getUriSource(), std::regex("(.epc)$"), ".h5");
+			if (H5Fis_hdf5(replacedName.c_str()) <= 0) {
+				replacedName = std::regex_replace(getUriSource(), std::regex("(.epc)$"), ".hdf5");
+				if (H5Fis_hdf5(replacedName.c_str()) <= 0) {
+					throw invalid_argument("The HDF5 file " + fullName + " does not exist or is not a valid HDF5 file or is not accessible. Neither "
+						+ std::regex_replace(getUriSource(), std::regex("(.epc)$"), ".h5") + " nor " + std::regex_replace(getUriSource(), std::regex("(.epc)$"), ".hdf5"));
+				}
 			}
-
-			// Check the uuid
-			const string hdfUuid = readStringAttribute(".", "uuid");
-			if (getUuid() != hdfUuid) {
-				getRepository()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
-			}
+			repository->addWarning("Could not found HDF5 file " + fullName + " but could found " + replacedName);
 		}
-		else {
-			throw invalid_argument("The HDF5 file " + fullName + " does not exist or is not a valid HDF5 file or is not accessible.");
+
+		hdfFile = H5Fopen(replacedName.c_str(),
+			openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY ? H5F_ACC_RDONLY : H5F_ACC_RDWR,
+			H5P_DEFAULT);
+		if (hdfFile < 0) {
+			throw invalid_argument("HDF5 library recognizes the HDF5 file but can not open it : " + replacedName);
+		}
+
+		// Check the uuid
+		const string hdfUuid = readStringAttribute(".", "uuid");
+		if (getUuid().size() == 36 && getUuid() != hdfUuid) {
+			getRepository()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the XML EpcExternalPartReference.");
 		}
 	}
 	else if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE) {

@@ -27,6 +27,13 @@ under the License.
 #include "common/DataObjectRepository.h"
 #include "eml2/AbstractHdfProxy.h"
 
+#include "resqml2/ContinuousProperty.h"
+#include "resqml2/IjkGridExplicitRepresentation.h"
+
+#include "resqml2_0_1/DiscreteProperty.h"
+#include "resqml2_0_1/PropertyKind.h"
+#include "resqml2_0_1/PropertySet.h"
+
 #include "EpcDocumentTest.h"
 #include "DateTimeTest.h"
 
@@ -161,6 +168,36 @@ TEST_CASE("Test hdf5 opening mode", "[hdf]")
 	hdfProxy->setOpeningMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 	REQUIRE_NOTHROW(hdfProxy->open());
 	hdfProxy->close();
+}
+
+TEST_CASE("Cascade Delete", "[CRUD]")
+{
+	COMMON_NS::DataObjectRepository repo;
+	auto* ijkGrid = repo.createIjkGridExplicitRepresentation("0c05eda0-ccbc-41b7-90b7-8ea003ae2be1", "", 2, 3, 4);
+
+	// Independant prop which does not point to anything
+	auto* discreteProp = repo.createDiscreteProperty(ijkGrid, "b9c65ec4-3d44-4a7b-a064-b1299fa654d3", "", 1, gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
+
+	// Independant prop which does point to a prop kind
+	auto* propKind = repo.createPropertyKind("f8f21808-68f1-4219-aeac-0379097948c8", "", "testing", gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, false, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::quantity);
+	auto* continuousProp = repo.createContinuousProperty(ijkGrid, "0cb055ae-61cd-4cc3-ba7d-7c7496b58c17", "", 1, gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc, propKind);
+
+	// Prop in a propertyset
+	auto* propSet = repo.createPropertySet("cc6abfd6-6e04-491f-b6bb-d600ebc1f763", "", false, false, gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
+	auto* discretePropInPropSet = repo.createDiscreteProperty(ijkGrid, "51bab97e-d3c0-47fb-9281-75ff98de4d1d", "", 1, gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
+	propSet->pushBackProperty(discretePropInPropSet);
+
+	REQUIRE(repo.cascadeDeleteDataObject(discreteProp) == 1);
+	REQUIRE(repo.getDataObjectByUuid("b9c65ec4-3d44-4a7b-a064-b1299fa654d3") == nullptr);
+
+	REQUIRE(repo.cascadeDeleteDataObject(continuousProp) == 2);
+	REQUIRE(repo.getDataObjectByUuid("f8f21808-68f1-4219-aeac-0379097948c8") == nullptr);
+	REQUIRE(repo.getDataObjectByUuid("0cb055ae-61cd-4cc3-ba7d-7c7496b58c17") == nullptr);
+
+	REQUIRE(repo.cascadeDeleteDataObject(discretePropInPropSet) == 0);
+	REQUIRE(repo.getDataObjectByUuid("51bab97e-d3c0-47fb-9281-75ff98de4d1d") != nullptr);
+	REQUIRE(repo.getDataObjectByUuid("cc6abfd6-6e04-491f-b6bb-d600ebc1f763") != nullptr);
+	REQUIRE(repo.getDataObjectByUuid("0c05eda0-ccbc-41b7-90b7-8ea003ae2be1") != nullptr);
 }
 
 FESAPI_TEST("Export and import of date time", "[datetime]", DateTimeTest)

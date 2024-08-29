@@ -36,7 +36,7 @@ namespace RESQML2_2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		SeismicWellboreFrameRepresentation(gsoap_eml2_3::resqml22__SeismicWellboreFrameRepresentation * fromGsoap) :
+		SeismicWellboreFrameRepresentation(gsoap_eml2_3::resqml22__SeismicWellboreFrameRepresentation* fromGsoap) :
 			RESQML2_NS::SeismicWellboreFrameRepresentation(fromGsoap) {}
 
 		~SeismicWellboreFrameRepresentation() = default;
@@ -56,12 +56,22 @@ namespace RESQML2_2_NS
 			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
-			RESQML2_NS::LocalTime3dCrs* crs);
+			EML2_NS::AbstractLocal3dCrs* crs);
+
+		/**
+		* Gets the data object reference of the Local Time CRS of this seismic wellbore frame.
+		 *
+		 * @returns	The data object reference of the Local Time CRS of this seismic wellbore frame.
+		*/
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getTimeCrsDor() const final;
+
+		/** Loads target relationships */
+		virtual void loadTargetRelationships() final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml22";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

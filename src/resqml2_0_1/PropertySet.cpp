@@ -92,19 +92,30 @@ uint64_t PropertySet::getPropertyCount() const noexcept
 
 RESQML2_NS::AbstractProperty* PropertySet::getProperty(uint64_t index) const
 {
-	const std::vector<RESQML2_NS::AbstractProperty *> & props = getProperties();
-	return props.at(index);
+	return getProperties().at(index);
 }
 
 void PropertySet::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getParentDor();
 	if (!dor.isEmpty()) {
-		convertDorIntoRel(dor);
+		if (dor.getUuid() != getUuid()) {
+			convertDorIntoRel(dor);
+		}
+		else {
+			getRepository()->addWarning("The property set " + getUuid() + " cannot be its parent. It will be made as partial.");
+			changeToPartialObject();
+			return;
+		}
+	}
+
+	auto allPropDors = getAllPropertiesDors();
+	if (allPropDors.size() == 1 && allPropDors[0].getUuid() == FAKE_PROP_UUID) {
+		static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties.clear();
 	}
 
 	for (auto dor2 : getAllPropertiesDors()) {
-		if (!dor2.isEmpty()) {
+		if (!dor2.isEmpty() && dor2.getUuid() != FAKE_PROP_UUID) {
 			convertDorIntoRel(dor2);
 		}
 	}

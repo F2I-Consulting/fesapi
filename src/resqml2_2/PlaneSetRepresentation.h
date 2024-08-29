@@ -59,7 +59,7 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~PlaneSetRepresentation() = default;
 
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const final;
+		COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
 
@@ -81,13 +81,13 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const final;
 
-		DLL_IMPORT_OR_EXPORT void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+		DLL_IMPORT_OR_EXPORT void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackTiltedPlaneGeometryPatch(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
 			double x3, double y3, double z3,
-			RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
+			EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

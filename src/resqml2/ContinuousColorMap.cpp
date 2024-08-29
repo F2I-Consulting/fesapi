@@ -24,9 +24,9 @@ using namespace std;
 using namespace gsoap_eml2_3;
 using namespace RESQML2_NS;
 
-void ContinuousColorMap::setHsvColors(unsigned int colorCount,
-	double const* hsvColors, double const* alphas, vector<string> const& colorTitles,
-	double const* indices)
+void ContinuousColorMap::setHsvColors(uint64_t colorCount,
+	double const* hsvColors, double const* alphas,
+	double const* indices, vector<string> const& colorTitles)
 {
 	if (colorCount < 2) {
 		throw invalid_argument("At least 2 color must be set.");
@@ -51,16 +51,16 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 			throw invalid_argument("alpha must be in range [0, 1]");
 		}
 
-		resqml22__ContinuousColorMapEntry* continuousColorMapEntry = soap_new_resqml22__ContinuousColorMapEntry(gsoapProxy2_3->soap, 1);
+		resqml22__ContinuousColorMapEntry* continuousColorMapEntry = soap_new_resqml22__ContinuousColorMapEntry(gsoapProxy2_3->soap);
 		continuousColorMapEntry->Index = indices != nullptr ? indices[colorIndex] : colorIndex;
-		resqml22__HsvColor* color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap, 1);
+		resqml22__HsvColor* color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
 		color->Hue = hsvColors[3 * colorIndex];
 		color->Saturation = hsvColors[3 * colorIndex + 1];
 		color->Value = hsvColors[3 * colorIndex + 2];
 		color->Alpha = alphas != nullptr ? alphas[colorIndex] : 1.0;
 
 		if (!colorTitles.empty()) {
-			color->Title = soap_new_std__string(gsoapProxy2_3->soap, 1);
+			color->Title = soap_new_std__string(gsoapProxy2_3->soap);
 			*color->Title = colorTitles[colorIndex];
 		}
 
@@ -97,15 +97,12 @@ std::string ContinuousColorMap::getInterpolationMethodAsString()
 	return soap_resqml22__InterpolationMethod2s(gsoapProxy2_3->soap, getInterpolationMethod());
 }
 
-resqml22__HsvColor* ContinuousColorMap::getColor(double colorIndex) const
+resqml22__HsvColor* ContinuousColorMap::getColor(uint64_t colorIndex) const
 {
-	resqml22__ContinuousColorMap const* const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_3);
+	return static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_3)->Entry.at(colorIndex)->Hsv;
+}
 
-	for (size_t i = 0; i < continuousColorMap->Entry.size(); ++i) {
-		if (continuousColorMap->Entry[i]->Index == colorIndex) {
-			return continuousColorMap->Entry[i]->Hsv;
-		}
-	}
-
-	return nullptr;
+double ContinuousColorMap::getColorLocationInColorMap(uint64_t colorIndex) const
+{
+	return static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_3)->Entry.at(colorIndex)->Index;
 }

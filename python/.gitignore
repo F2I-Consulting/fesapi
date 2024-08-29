@@ -7,6 +7,8 @@ swigGeneratedPythonWrapper.h
 build/*
 dist/*
 *.egg-info/*
-example/*
+example/*.epc
+example/*.h5
+example/.ipynb_checkpoints/*
 
 !example/example.py

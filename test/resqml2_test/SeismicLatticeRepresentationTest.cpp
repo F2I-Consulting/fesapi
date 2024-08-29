@@ -23,7 +23,6 @@ under the License.
 #include "resqml2/GenericFeatureInterpretation.h"
 #include "resqml2/Grid2dRepresentation.h"
 #include "resqml2/IjkGridLatticeRepresentation.h"
-#include "resqml2/LocalDepth3dCrs.h"
 #include "resqml2/SeismicLatticeFeature.h"
 
 using namespace std;

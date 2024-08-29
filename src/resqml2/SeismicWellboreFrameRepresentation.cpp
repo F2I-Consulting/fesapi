@@ -19,9 +19,9 @@ under the License.
 #include "SeismicWellboreFrameRepresentation.h"
 
 #include "../eml2/AbstractHdfProxy.h"
-#include "../resqml2/LocalTime3dCrs.h"
-#include "../resqml2/WellboreInterpretation.h"
-#include "../resqml2/WellboreTrajectoryRepresentation.h"
+#include "../eml2/AbstractLocal3dCrs.h"
+
+#include "AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -174,6 +174,11 @@ void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) con
 	else {
 		throw logic_error("The array structure of time values is not supported?");
 	}
+}
+
+EML2_NS::AbstractLocal3dCrs* SeismicWellboreFrameRepresentation::getTimeCrs() const
+{
+	return getRepository()->getDataObjectByUuid<EML2_NS::AbstractLocal3dCrs>(getTimeCrsDor().getUuid());
 }
 
 double SeismicWellboreFrameRepresentation::getSeismicReferenceDatum() const

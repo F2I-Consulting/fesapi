@@ -33,7 +33,7 @@ using namespace resqml2_test;
 using namespace COMMON_NS;
 
 const char* PolylineSetRepresentation::defaultUuid = "60b04722-8608-4e92-8f1d-596372dd309e";
-const char* PolylineSetRepresentation::defaultTitle = "Polyline represenation (in time)";
+const char* PolylineSetRepresentation::defaultTitle = "Polyline representation (in time)";
 unsigned int PolylineSetRepresentation::numNodesPerPolylinePerPatch[] = { 3, 2 };
 double PolylineSetRepresentation::polylinePoints[] = { 150, 0, 200, 300, 0, 350, 450, 0, 500, 150, 200, 200, 450, 200, 500 };
 
@@ -47,10 +47,7 @@ void PolylineSetRepresentation::initRepo() {
 		interp = repo->createPartial<RESQML2_0_1_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid, "");
 	}
 
-	RESQML2_NS::LocalTime3dCrs * crs = repo->getDataObjectByUuid<RESQML2_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid);
-	if (crs == nullptr) {
-		crs = repo->createPartial<RESQML2_0_1_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid, "");
-	}
+	auto* crs = repo->createPartial<RESQML2_0_1_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid, "");
 
 	RESQML2_NS::PolylineSetRepresentation* rep = repo->createPolylineSetRepresentation(interp, defaultUuid, defaultTitle);
 	REQUIRE(rep != nullptr);

@@ -20,7 +20,7 @@ under the License.
 
 #include <algorithm>
 
-#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 
@@ -46,7 +46,7 @@ PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	setInterpretation(interp);
 }
 
-COMMON_NS::DataObjectReference PlaneSetRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference PlaneSetRepresentation::getLocalCrsDor(uint64_t patchIndex) const
 {
 	_resqml22__PlaneSetRepresentation* rep = static_cast<_resqml22__PlaneSetRepresentation*>(gsoapProxy2_3);
 	eml23__DataObjectReference* result = rep->Planes[patchIndex]->LocalCrs;
@@ -58,7 +58,7 @@ COMMON_NS::DataObjectReference PlaneSetRepresentation::getLocalCrsDor(unsigned i
 	return COMMON_NS::DataObjectReference(result);
 }
 
-void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(double zCoordinate, EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -80,7 +80,7 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 	double x1, double y1, double z1,
 	double x2, double y2, double z2,
 	double x3, double y3, double z3,
-	RESQML2_NS::AbstractLocal3dCrs* localCrs)
+	EML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

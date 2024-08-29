@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MdDatum.h"
 
-#include "AbstractLocal3dCrs.h"
+#include "../eml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -51,14 +51,14 @@ double MdDatum::getYInGlobalCrs() const
 double MdDatum::getZInGlobalCrs() const
 {
 	double originOrdinal3 = .0;
-	RESQML2_NS::AbstractLocal3dCrs* localCrs = getLocalCrs();
+	EML2_NS::AbstractLocal3dCrs* localCrs = getLocalCrs();
 	if (localCrs->getGsoapType() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORELocalTime3dCrs)
 		originOrdinal3 = localCrs->getOriginDepthOrElevation();
 	return getZ() + originOrdinal3;
 }
 
-AbstractLocal3dCrs * MdDatum::getLocalCrs() const
+EML2_NS::AbstractLocal3dCrs * MdDatum::getLocalCrs() const
 {
 	const string uuidLocalCrs = getLocalCrsDor().getUuid();
-	return static_cast<AbstractLocal3dCrs*>(repository->getDataObjectByUuid(uuidLocalCrs));
+	return static_cast<EML2_NS::AbstractLocal3dCrs*>(repository->getDataObjectByUuid(uuidLocalCrs));
 }

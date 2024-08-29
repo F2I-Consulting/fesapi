@@ -37,7 +37,6 @@ under the License.
 	%nspace RESQML2_NS::AbstractFeatureInterpretation;
 	%nspace RESQML2_NS::AbstractGridRepresentation;
 	%nspace RESQML2_NS::AbstractIjkGridRepresentation;
-	%nspace RESQML2_NS::AbstractLocal3dCrs;
 	%nspace RESQML2_NS::AbstractOrganizationInterpretation;
 	%nspace RESQML2_NS::AbstractProperty;
 	%nspace RESQML2_NS::AbstractRepresentation;
@@ -56,7 +55,6 @@ under the License.
 	%nspace RESQML2_NS::ContinuousColorMap;
 	%nspace RESQML2_NS::ContinuousProperty;
 	%nspace RESQML2_NS::CulturalFeature;
-	%nspace RESQML2_NS::DeviationSurveyRepresentation;
 	%nspace RESQML2_NS::DiscreteColorMap;
 	%nspace RESQML2_NS::DiscreteProperty;
 	%nspace RESQML2_NS::DoubleTableLookup;
@@ -73,8 +71,6 @@ under the License.
 	%nspace RESQML2_NS::IjkGridLatticeRepresentation;
 	%nspace RESQML2_NS::IjkGridNoGeometryRepresentation;
 	%nspace RESQML2_NS::IjkGridParametricRepresentation;
-	%nspace RESQML2_NS::LocalDepth3dCrs;
-	%nspace RESQML2_NS::LocalTime3dCrs;
 	%nspace RESQML2_NS::MdDatum;
 	%nspace RESQML2_NS::Model;
 	%nspace RESQML2_NS::NonSealedSurfaceFrameworkRepresentation;
@@ -1967,59 +1963,59 @@ namespace gsoap_resqml2_0_1
 }
 namespace gsoap_eml2_3
 {
-enum class resqml22__Shape3d {
-	sheet = 0,
-	dyke = 1,
-	dome = 2,
-	mushroom = 3,
-	channel = 4,
-	delta = 5,
-	dune = 6,
-	fan = 7,
-	reef = 8,
-	wedge = 9
-};
-enum class resqml22__ContactVerb {
-	stops = 0,
-	splits = 1,
-	crosses = 2
-};
-enum class resqml22__ContactMode {
-	conformable = 0,
-	extended = 1,
-	unconformable = 2
-};
-enum class resqml22__Phase {
-	aquifer = 0,
-	gas_x0020cap = 1,
-	oil_x0020column = 2,
-	seal = 3
-};
-enum class resqml22__LineRole {
-	fault_x0020center_x0020line = 0,
-	pick = 1,
-	inner_x0020ring = 2,
-	outer_x0020ring = 3,
-	trajectory = 4,
-	interpretation_x0020line = 5,
-	contact = 6,
-	depositional_x0020line = 7,
-	erosion_x0020line = 8,
-	contour = 9,
-	pillar = 10,
-	break_x0020line = 11,
-	structural_x0020closure = 12,
-	culture = 13
-};
-enum class eml23__FacetKind {
-	conditions = 0,
-	side = 1,
-	direction = 2,
-	netgross = 3,
-	qualifier = 4,
-	statistics = 5,
-	what = 6
-};
+	enum class resqml22__Shape3d {
+		sheet = 0,
+		dyke = 1,
+		dome = 2,
+		mushroom = 3,
+		channel = 4,
+		delta = 5,
+		dune = 6,
+		fan = 7,
+		reef = 8,
+		wedge = 9
+	};
+	enum class resqml22__ContactVerb {
+		stops = 0,
+		splits = 1,
+		crosses = 2
+	};
+	enum class resqml22__ContactMode {
+		conformable = 0,
+		extended = 1,
+		unconformable = 2
+	};
+	enum class resqml22__Phase {
+		aquifer = 0,
+		gas_x0020cap = 1,
+		oil_x0020column = 2,
+		seal = 3
+	};
+	enum class resqml22__LineRole {
+		fault_x0020center_x0020line = 0,
+		pick = 1,
+		inner_x0020ring = 2,
+		outer_x0020ring = 3,
+		trajectory = 4,
+		interpretation_x0020line = 5,
+		contact = 6,
+		depositional_x0020line = 7,
+		erosion_x0020line = 8,
+		contour = 9,
+		pillar = 10,
+		break_x0020line = 11,
+		structural_x0020closure = 12,
+		culture = 13
+	};
+	enum class eml23__FacetKind {
+		conditions = 0,
+		side = 1,
+		direction = 2,
+		netgross = 3,
+		qualifier = 4,
+		statistics = 5,
+		what = 6
+	};
 }
 
 namespace RESQML2_NS
@@ -2038,77 +2034,84 @@ namespace RESQML2_NS
 		* @param colorCount		the size (number of colors) of the color map
 		* @param hsvColors		array (of size colorCount * 3) of HSV colors with hsvColors[3*i] is the hue, hsvColors[3*i + 1] is the saturation and hsvColors[3*i + 2] is the value of the ith color (hue is in range [0, 360] while saturation and value are in range [0, 1])
 		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
-		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param indices		array (of size colorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices 
+		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles is empty (default value)= nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
-		void setHsvColors(unsigned int colorCount,
-			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
+		virtual void setHsvColors(uint64_t colorCount,
+			double const* hsvColors, double const* alphas = nullptr, double const* indices = nullptr,
+			std::vector<std::string> const& colorTitles = std::vector<std::string>()) = 0;
 
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space
 		* @param colorCount		the size (number of colors) of the color map
-		* @param rgbColors		array (of size colorCount * 3) of RGB colors with hsvColors[3*i] is red componant, hsvColors[3*i + 1] is green component and hsvColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 1])
+		* @param rgbColors		array (of size colorCount * 3) of RGB colors with rgbColors[3*i] is red component, rgbColors[3*i + 1] is green component and rgbColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 1])
 		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
-		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param indices		array (of size colorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles is empty (default value)
 		*/
-		void setRgbColors(unsigned int colorCount,
-			double const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
+		void setRgbColors(uint64_t colorCount,
+			double const* rgbColors, double const* alphas = nullptr,
+			double const* indices = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>());
 
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space
 		* @param colorCount		the size (number of colors) of the color map
 		* @param rgbColors		array (of size colorCount * 3) of RGB colors with hsvColors[3*i] is red componant, hsvColors[3*i + 1] is green component and hsvColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 255])
 		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
 		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles is empty (default value)
 		*/
-		void setRgbColors(unsigned int colorCount,
-			unsigned int const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr);
+		void setRgbColors(uint64_t colorCount,
+			uint8_t const* rgbColors, double const* alphas = nullptr,
+			double const* indices = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>());
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @brief	Gets color count
+		 *
+		 * @returns	The color count.
+		 */
+		uint64_t getColorCount() const;
+		
+		/**
+		 * @param colorIndex	index of a color in the color map.
 		 * @return				hue in the range [0, 360]
 		 */
-		double getHue(double colorIndex) const;
+		double getHue(uint64_t colorIndex) const;
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @param colorIndex	index of a color in the color map.
 		 * @return				saturation in the range [0, 1]
 		 */
-		double getSaturation(double colorIndex) const;
+		double getSaturation(uint64_t colorIndex) const;
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @param colorIndex	index of a color in the color map.
 		 * @return				value in the range [0, 1]
 		 */
-		double getValue(double colorIndex) const;
+		double getValue(uint64_t colorIndex) const;
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @param colorIndex	index of a color in the color map.
 		 * @return				alpha in the range [0, 1] (0 means transparent and 1 means opaque)
 		 */
-		double getAlpha(double colorIndex) const;
+		double getAlpha(uint64_t colorIndex) const;
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
+		 * @param colorIndex	index of a color in the color map.
 		 * @param red			(output parameter) red value in the range [0, 1]
 		 * @param green			(output parameter) green value in the range [0, 1]
 		 * @param blue			(output parameter) blue value in the range [0, 1]
 		 */
-		void getRgbColor(double colorIndex, double& red, double& green, double& blue) const;
+		void getRgbColor(uint64_t colorIndex, double& red, double& green, double& blue) const;
 
 		/**
-		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map
-		 * @param red			(output parameter) red value in the range [0, 1]
-		 * @param green			(output parameter) green value in the range [0, 1]
-		 * @param blue			(output parameter) blue value in the range [0, 1]
+		 * @param colorIndex	index of a color in the color map.
+		 * @param red			(output parameter) red value in the range [0, 255]
+		 * @param green			(output parameter) green value in the range [0, 255]
+		 * @param blue			(output parameter) blue value in the range [0, 255]
 		 */
-		void getRgbColor(double colorIndex, unsigned int& red, unsigned int& green, unsigned int& blue) const;
-		
+		void getRgbColor(uint64_t colorIndex, uint8_t& red, uint8_t& green, uint8_t& blue) const;
+
 		/**
 		 * @brief	Queries if 'colorIndex' has color title
 		 *
@@ -2116,7 +2119,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if color title, false if not.
 		 */
-		bool hasColorTitle(double colorIndex) const;
+		bool hasColorTitle(uint64_t colorIndex) const;
 
 		/**
 		 * @brief	Gets color title
@@ -2125,14 +2128,68 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The color title.
 		 */
-		std::string getColorTitle(double colorIndex) const;
-		
+		std::string getColorTitle(uint64_t colorIndex) const;
+
 		/**
-		 * @brief	Gets color count
+		 * @brief	Sets the NullColor value of a continuous color map
 		 *
-		 * @returns	The color count.
+		 * @param 	hue		  	hue in the range [0, 360].
+		 * @param 	saturation	saturation in the range [0, 1].
+		 * @param 	value	  	value in the range [0, 1].
+		 * @param 	alpha	  	(Optional) alpha in the range [0, 1] (0 means transparent and 1 means
+		 * 						opaque). Default alpha value is 1.
+		 * @param 	colorTitle	(Optional) color title. It is not set if empty string (default value)
 		 */
-		uint64_t getColorCount() const;
+		void setNullHsvColor(double hue, double saturation, double value, double alpha = 1, std::string const& colorTitle = "");
+
+		/**
+		 * @brief	Sets the NullColor value of a continuous color map
+		 *
+		 * @param 	red		  	red value in the range [0, 1].
+		 * @param 	green	  	green value in the range [0, 1].
+		 * @param 	blue	  	blue value in the range [0, 1].
+		 * @param 	alpha	  	(Optional) alpha in the range [0, 1] (0 means transparent and 1 means
+		 * 						opaque). Default alpha value is 1.
+		 * @param 	colorTitle	(Optional) color title. It is not set if empty string (default value)
+		 */
+		void setNullRgbColor(double red, double green, double blue, double alpha = 1, std::string const& colorTitle = "");
+
+		/**
+		 * @brief	Sets the NullColor value of a continuous color map
+		 *
+		 * @param 	red		  	red value in the range [0, 255].
+		 * @param 	green	  	green value in the range [0, 255].
+		 * @param 	blue	  	blue value in the range [0, 255].
+		 * @param 	alpha	  	(Optional) alpha in the range [0, 1] (0 means transparent and 1 means
+		 * 						opaque). Default alpha value is 1.
+		 * @param 	colorTitle	(Optional) color title. It is not set if empty string (default value)
+		 */
+		void setNullRgbColor(uint8_t red, uint8_t green, uint8_t blue, double alpha = 1, std::string const& colorTitle = "");
+
+		/**
+		 * @brief	checks if the color map has a definition for the color of Null values.
+		 */
+		bool hasNullColor() const { return static_cast<gsoap_eml2_3::resqml22__ContinuousColorMap const*>(gsoapProxy2_3)->NullColor != nullptr; }
+
+		/**
+		 * @return				hue in the range [0, 360]
+		 */
+		double getNullHue() const;
+
+		/**
+		 * @return				saturation in the range [0, 1]
+		 */
+		double getNullSaturation() const;
+
+		/**
+		 * @return				value in the range [0, 1]
+		 */
+		double getNullValue() const;
+
+		/**
+		 * @return				alpha in the range [0, 1] (0 means transparent and 1 means opaque)
+		 */
+		double getNullAlpha() const;
 	};
 	
 #if defined(SWIGPYTHON)
@@ -2141,6 +2198,15 @@ namespace RESQML2_NS
 	class DiscreteColorMap : public AbstractColorMap
 	{
 	public:
+
+		/**
+		 * @brief	Gets the location of a color of the color map
+		 *
+		 * @param 	colorIndex	Zero-based index of the color.
+		 *
+		 * @returns	The color location in the color map.
+		 */
+		int64_t getColorLocationInColorMap(uint64_t colorIndex) const;
 	};
 	
 #if defined(SWIGPYTHON)
@@ -2154,64 +2220,24 @@ namespace RESQML2_NS
 
 		gsoap_eml2_3::resqml22__InterpolationMethod getInterpolationMethod();
 		std::string getInterpolationMethodAsString();
-	};
-	
-#if defined(SWIGPYTHON)
-	%rename(Resqml2_AbstractLocal3dCrs) AbstractLocal3dCrs;
-#endif	
-	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
-	{
-	public:
-		double getOriginOrdinal1() const;
-		double getOriginOrdinal2() const;
-		double getOriginDepthOrElevation() const;
-		double getArealRotation() const;
-		bool isDepthOriented() const;
-		
-		bool isProjectedCrsDefinedWithEpsg() const;
-		bool isProjectedCrsUnknown() const;
-		const std::string & getProjectedCrsUnknownReason() const;
-		uint64_t getProjectedCrsEpsgCode() const;
-		
-		bool isVerticalCrsDefinedWithEpsg() const;
-		bool isVerticalCrsUnknown() const;
-		const std::string & getVerticalCrsUnknownReason() const;
-		uint64_t getVerticalCrsEpsgCode() const;
 
-		gsoap_resqml2_0_1::eml20__LengthUom getProjectedCrsUnit() const;
-		std::string getProjectedCrsUnitAsString() const;
-		gsoap_resqml2_0_1::eml20__LengthUom getVerticalCrsUnit() const;
-		std::string getVerticalCrsUnitAsString() const;
-		
-		gsoap_resqml2_0_1::eml20__AxisOrder2d getAxisOrder() const;
-		void setAxisOrder(gsoap_resqml2_0_1::eml20__AxisOrder2d axisOrder) const;
-	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_LocalDepth3dCrs) LocalDepth3dCrs;
-#endif
-	class LocalDepth3dCrs : public AbstractLocal3dCrs
-	{
-	public:
+		/**
+		 * @brief	Gets the location of a color of the color map
+		 *
+		 * @param 	colorIndex	Zero-based index of the color.
+		 *
+		 * @returns	The color location in the color map.
+		 */
+		double getColorLocationInColorMap(uint64_t colorIndex) const;
 	};
 
 #ifdef SWIGPYTHON
-	%rename(Resqml2_LocalTime3dCrs) LocalTime3dCrs;
-#endif
-	class LocalTime3dCrs : public AbstractLocal3dCrs
-	{
-	public:
-		gsoap_resqml2_0_1::eml20__TimeUom getUnit() const;
-		std::string getUnitAsString() const;
-	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_MdDatum) LocalTime3dCrs;
+	%rename(Resqml2_MdDatum) MdDatum;
 #endif
 	class MdDatum : public COMMON_NS::AbstractObject
 	{
 	public:
-		AbstractLocal3dCrs * getLocalCrs() const;
+		EML2_NS::AbstractLocal3dCrs * getLocalCrs() const;
 
 		double getX() const;
 		double getXInGlobalCrs() const;
@@ -2789,7 +2815,7 @@ namespace RESQML2_NS
 		 * 						
 		 * @returns Null if it fails, else the local CRS associated to the @p patchIndex patch.
 		 */
-		AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
+		EML2_NS::AbstractLocal3dCrs * getLocalCrs(uint64_t patchIndex);
 		
 		/**
 		 * Set a time index in a time series for all point geometries of all existing patches of this representation.
@@ -3158,12 +3184,12 @@ namespace RESQML2_NS
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-			double spacingInFastestDirection, double spacingInSlowestDirection, AbstractLocal3dCrs * localCrs = nullptr);
+			double spacingInFastestDirection, double spacingInSlowestDirection, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
-			Grid2dRepresentation * supportingGrid2dRepresentation, AbstractLocal3dCrs * localCrs = nullptr,
+			Grid2dRepresentation * supportingGrid2dRepresentation, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr,
 			unsigned int startIndexI = 0, unsigned int startIndexJ = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1);
 
@@ -3172,7 +3198,7 @@ namespace RESQML2_NS
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
-			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, AbstractLocal3dCrs * localCrs = nullptr);
+			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 		
 		Grid2dRepresentation*  getSupportingRepresentation();
 	};
@@ -3190,12 +3216,12 @@ namespace RESQML2_NS
 		void pushBackGeometryPatch(
 			unsigned int * nodeCountPerPolyline, double * nodes,
 			uint64_t polylineCount, bool allPolylinesClosedFlag,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		void pushBackGeometryPatch(
 			unsigned int * nodeCountPerPolyline, double * nodes,
 			uint64_t polylineCount, bool * polylineClosedFlags,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 				
 		bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const;
 		bool areAllPolylinesClosedOfAllPatches() const;
@@ -3214,9 +3240,67 @@ namespace RESQML2_NS
 	class PointSetRepresentation : public AbstractRepresentation
 	{
 	public:
-		void pushBackGeometryPatch(
-			unsigned int xyzPointCount, double * xyzPoints,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+		/**
+		 * Pushes back a new patch of XYZ points.
+		 *
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										is defined in the repository.
+		 *
+		 * @param 		  	xyzPointCount	The xyz points count in this patch.
+		 * @param [in]	  	xyzPoints	 	The xyz values of the points of the patch. Ordered by xyz and
+		 * 									then by @p xyzPointCount. Size is <tt>3 * xyzPointCount</tt>.
+		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the xyz points
+		 * 									will be stored. If @c nullptr (default), then the repository
+		 * 									default HDF proxy will be used.
+		 * @param [in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
+		 * 									nullptr (default), then the repository default local CRS will
+		 * 									be used.
+		 */
+		virtual void pushBackXyzGeometryPatch(
+			uint64_t xyzPointCount, double const * xyzPoints,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
+
+		/**
+		 * Pushes back a new patch of XY points.
+		 *
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										is defined in the repository.
+		 *
+		 * @param 		  	xyPointCount	The xy points count in this patch.
+		 * @param [in]	  	xyPoints	 	The xy values of the points of the patch. Ordered by xy and
+		 * 									then by @p xyPointCount. Size is <tt>2 * xyPointCount</tt>.
+		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the xy points
+		 * 									will be stored. If @c nullptr (default), then the repository
+		 * 									default HDF proxy will be used.
+		 * @param [in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
+		 * 									nullptr (default), then the repository default local CRS will
+		 * 									be used.
+		 */
+		virtual void pushBackXyGeometryPatch(
+			uint64_t xyPointCount, double const* xyPoints,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+
+		/**
+		 * Check if a point set representation patch is in 2 dimensions (i.e XY) instead of 3 dimensions (i.e XYZ)
+		 * 
+		 * @param [in]	  	patchIndex	 	The index of the patch 
+		 */
+		virtual bool isIn2D(uint64_t patchIndex) const = 0;
+		
+		/**
+		 * Get all the XY points of a particular patch of this representation. XY points are given in
+		 * the local CRS. You probably want to check first if the patch in in 2D using method bool isIn2D(uint64_t patchIndex).
+		 *
+		 * @param 		  	patchIndex	Zero-based index of the patch.
+		 * @param [in,out]	xyPoints 	A linearized 2d array where the first (quickest) dimension is
+		 * 								coordinate dimension (XY) and second dimension is vertex
+		 * 								dimension. It must be pre allocated.
+		 */
+		virtual void getXyPointsOfPatch(uint64_t patchIndex, double* xyPoints) const = 0;
 	};
 	
 #ifdef SWIGPYTHON
@@ -3225,13 +3309,13 @@ namespace RESQML2_NS
 	class PlaneSetRepresentation : public AbstractRepresentation
 	{
 	public:
-		void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, AbstractLocal3dCrs* localCrs = nullptr);
+		void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		void pushBackTiltedPlaneGeometryPatch(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
 			double x3, double y3, double z3,
-			AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
 
 #ifdef SWIGPYTHON
@@ -3240,7 +3324,7 @@ namespace RESQML2_NS
 	class PolylineRepresentation : public AbstractRepresentation
 	{
 	public:
-		void setGeometry(double * points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void setGeometry(double * points, unsigned int pointCount, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 		bool isClosed() const;
 		bool hasALineRole() const;
 		gsoap_eml2_3::resqml22__LineRole getLineRole() const;
@@ -3257,7 +3341,7 @@ namespace RESQML2_NS
 		uint64_t getTriangleCountOfAllPatches() const;
 		void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const;
 		void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
-		void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
 
 #ifdef SWIGPYTHON
@@ -3285,7 +3369,7 @@ namespace RESQML2_NS
 	class NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
 	public:
-		void pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -3549,28 +3633,28 @@ namespace RESQML2_NS
 		void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml20__CellShape cellShape, AbstractLocal3dCrs * localCrs = nullptr);
+			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, uint64_t * nodeIndicesPerFace, uint64_t * nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml20__CellShape cellShape, AbstractLocal3dCrs * localCrs = nullptr);
+			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setTetrahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setHexahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
-			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, AbstractLocal3dCrs * localCrs = nullptr);
+			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -4155,7 +4239,7 @@ namespace RESQML2_NS
 			double originX, double originY, double originZ,
 			double directionIX, double directionIY, double directionIZ, double spacingI,
 			double directionJX, double directionJY, double directionJZ, double spacingJ,
-			double directionKX, double directionKY, double directionKZ, double spacingK, AbstractLocal3dCrs * localCrs = nullptr);
+			double directionKX, double directionKY, double directionKZ, double spacingK, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void addSeismic3dCoordinatesToPatch(
 			unsigned int patchIndex,
@@ -4261,14 +4345,14 @@ namespace RESQML2_NS
 			double const* points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t splitCoordinateLineCount = 0, unsigned int const* pillarOfCoordinateLine = nullptr,
 			unsigned int const* splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int const* splitCoordinateLineColumns = nullptr,
-			int8_t const* definedPillars = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			int8_t const* definedPillars = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsCoordinateLineNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & points, EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
-			const std::string & definedPillars = "", AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string & definedPillars = "", EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 
 #ifdef SWIGPYTHON
@@ -4287,35 +4371,35 @@ namespace RESQML2_NS
 		void setGeometryAsParametricNonSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs * localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, AbstractLocal3dCrs * localCrs = nullptr);
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -4844,7 +4928,7 @@ namespace RESQML2_NS
 		 */
 		void setGeometry(
 			uint32_t const * nodeCountPerPolyline, double const * xyzPoints,
-			EML2_NS::AbstractHdfProxy* hdfProxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* hdfProxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * For each interval of the lines of the representation, gets the index of the grid it is associated to.
@@ -5331,20 +5415,6 @@ namespace RESQML2_NS
 		double getDoubleConstantValuesOfPatch(uint64_t patchIndex) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be int 64 bits ones.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 *
-		 * @returns	The null value.
-		 */
-		int64_t getInt64ValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
-
-		/**
 		 * Gets the null value of a given patch of this instance. Values are supposed to be integer ones.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -5359,7 +5429,35 @@ namespace RESQML2_NS
 		int64_t getNullValueOfPatch(uint64_t patchIndex) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be integer ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 64 bits integer.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
+		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 *
+		 * @returns	The null value.
+		 */
+		int64_t getInt64ValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
+
+		/**
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 64 bits integer.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
+		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 *
+		 * @returns	The null value.
+		 */
+		uint64_t getUInt64ValuesOfPatch(uint64_t patchIndex, uint64_t* values) const;
+
+		/**
+		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 32 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -5373,8 +5471,7 @@ namespace RESQML2_NS
 		int32_t getInt32ValuesOfPatch(uint64_t patchIndex, int32_t * values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
-		 * integer ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 32 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -5388,7 +5485,7 @@ namespace RESQML2_NS
 		uint32_t getUInt32ValuesOfPatch(uint64_t patchIndex, uint32_t * values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 16 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -5402,8 +5499,7 @@ namespace RESQML2_NS
 		int16_t getInt16ValuesOfPatch(uint64_t patchIndex, int16_t * values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
-		 * short ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 16 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -5417,7 +5513,7 @@ namespace RESQML2_NS
 		uint16_t getUInt16ValuesOfPatch(uint64_t patchIndex, uint16_t * values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 8 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -5431,8 +5527,7 @@ namespace RESQML2_NS
 		int8_t getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const;
 
 		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
-		 * char ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 8 bits integer.
 		 *
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
@@ -7402,7 +7497,6 @@ namespace RESQML2_NS
 	************************************/
 	
 	class WellboreFrameRepresentation;
-	class DeviationSurveyRepresentation;
 #ifdef SWIGPYTHON
 	%rename(Resqml2_WellboreTrajectoryRepresentation) WellboreTrajectoryRepresentation;
 #endif
@@ -7457,7 +7551,7 @@ namespace RESQML2_NS
 		 * 										CRS of the data object repository will be arbitrarily
 		 * 										selected.
 		 */
-		void setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+		void setGeometry(double const* controlPoints, double startMd, double endMd, uint64_t controlPointCount, int lineKind, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD information.
@@ -7498,7 +7592,7 @@ namespace RESQML2_NS
 		 * 											arbitrarily selected.
 		 */
 		void setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
@@ -7548,7 +7642,7 @@ namespace RESQML2_NS
 		 */
 		void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
@@ -7598,7 +7692,7 @@ namespace RESQML2_NS
 		 */
 		void setGeometry(double const* controlPoints,
 			double const* inclinations, double const* azimuths, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr);
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 			
 		/**
 		 * Sets the MD datum of this trajectory.
@@ -7731,9 +7825,6 @@ namespace RESQML2_NS
 		void addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep);
 		WellboreTrajectoryRepresentation* getParentTrajectory() const;
 		double getParentTrajectoryMd() const;
-		
-		void setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey);
-		DeviationSurveyRepresentation* getDeviationSurvey() const;
 	};
 
 #ifdef SWIGPYTHON
@@ -7929,6 +8020,13 @@ namespace RESQML2_NS
 		void getTimeAsFloatValues(float* values) const;
 
 		/**
+		* Gets the Local Time CRS of this seismic wellbore frame.
+		 * 
+		 * @returns Local Time CRS of this seismic wellbore frame.
+		*/
+		EML2_NS::AbstractLocal3dCrs* getTimeCrs() const;
+
+		/**
 		* Returns the seismic reference datum
 		*/
 		double getSeismicReferenceDatum() const;
@@ -8121,35 +8219,6 @@ namespace RESQML2_NS
 		double getDipDirectionValue() const;
 		gsoap_eml2_3::eml23__PlaneAngleUom getDipDirectionUom() const;
 		std::string getDipDirectionUomAsString() const;
-	};
-
-#ifdef SWIGPYTHON
-	%rename(Resqml2_DeviationSurveyRepresentation) DeviationSurveyRepresentation;
-#endif
-	class DeviationSurveyRepresentation : public AbstractRepresentation
-	{
-	public:
-		void setGeometry(double * firstStationLocation, uint64_t stationCount,
-			gsoap_resqml2_0_1::eml20__LengthUom mdUom, double * mds,
-			gsoap_resqml2_0_1::eml20__PlaneAngleUom angleUom, double * azimuths, double * inclinations,
-			EML2_NS::AbstractHdfProxy* proxy);
-
-		MdDatum * getMdDatum() const;
-
-		bool isFinal() const;
-
-		gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
-		gsoap_resqml2_0_1::eml20__PlaneAngleUom getAngleUom() const;
-
-		void getMdValues(double* values) const;
-		void getInclinations(double* values) const;
-		void getAzimuths(double* values) const;
-
-		unsigned int getWellboreFrameRepresentationCount() const;
-		WellboreFrameRepresentation* getWellboreFrameRepresentation(unsigned int index) const;
-
-		unsigned int getWellboreTrajectoryRepresentationCount() const;
-		WellboreTrajectoryRepresentation* getWellboreTrajectoryRepresentation(unsigned int index) const;
 	};
 }
 

@@ -36,12 +36,12 @@ namespace RESQML2_NS
 		* @param colorCount		the size (number of colors) of the continuous color map
 		* @param hsvColors		array (of size colorCount * 3) of HSV colors with hsvColors[3*i] is the hue, hsvColors[3*i + 1] is the saturation and hsvColors[3*i + 2] is the value of the ith color (hue is in range [0, 360] while saturation and value are in range [0, 1])
 		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
-		* @param indices		array (of size solorCount) of color indices. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param indices		array (of size colorCount) of color indices. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles is empty (default value)
 		*/
-		DLL_IMPORT_OR_EXPORT void setHsvColors(unsigned int colorCount,
-			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
-			double const* indices = nullptr) final;
+		DLL_IMPORT_OR_EXPORT void setHsvColors(uint64_t colorCount,
+			double const* hsvColors, double const* alphas = nullptr,
+			double const* indices = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>()) final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getColorCount() const final;
 
@@ -73,6 +73,15 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getInterpolationMethodAsString();
 
+		/**
+		 * @brief	Gets the location of a color of the color map
+		 *
+		 * @param 	colorIndex	Zero-based index of the color.
+		 *
+		 * @returns	The color location in the color map.
+		 */
+		DLL_IMPORT_OR_EXPORT double getColorLocationInColorMap(uint64_t colorIndex) const;
+
 		/** @brief	The XML tag */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "ContinuousColorMap";
 
@@ -85,7 +94,7 @@ namespace RESQML2_NS
 		/**
 		 * @param colorIndex	index of a color in the color map
 		 */
-		gsoap_eml2_3::resqml22__HsvColor* getColor(double colorIndex) const;
+		gsoap_eml2_3::resqml22__HsvColor* getColor(uint64_t colorIndex) const final;
 
 		/**
 		 * Default constructor

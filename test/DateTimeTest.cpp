@@ -22,9 +22,9 @@ under the License.
 
 #include "common/DataObjectRepository.h"
 
-#include "resqml2/BoundaryFeature.h"
+#include "eml2/AbstractLocal3dCrs.h"
 
-#include "resqml2/LocalDepth3dCrs.h"
+#include "resqml2/BoundaryFeature.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -53,7 +53,7 @@ void DateTimeTest::initRepo()
 
 void DateTimeTest::readRepo()
 {
-	auto* localCrs = repo->getLocalDepth3dCrs(0);
+	auto* localCrs = repo->getDefaultCrs();
 	time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 	REQUIRE(localCrs->getCreation() > now - 5);
 	REQUIRE(localCrs->getCreation() < now + 5);
