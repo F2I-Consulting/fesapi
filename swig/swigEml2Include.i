@@ -39,6 +39,19 @@ under the License.
 %module(directors="1") fesapi
 %feature("director") EML2_NS::AbstractHdfProxy;
 
+namespace gsoap_eml2_3 {
+	enum class eml23__AxisOrder2d {
+		easting_x0020northing = 0,
+		easting_x0020southing = 1,
+		southing_x0020easting = 2,
+		northing_x0020easting = 3,
+		westing_x0020southing = 4,
+		southing_x0020westing = 5,
+		northing_x0020westing = 6,
+		westing_x0020northing = 7
+	};
+}
+
 namespace EML2_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
