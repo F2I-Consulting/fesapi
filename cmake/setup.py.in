@@ -12,7 +12,7 @@ setup (name = 'fesapi',
     author      = 'F2I-CONSULTING',
     maintainer  = 'F2I-CONSULTING',
     url         = 'https://github.com/F2I-Consulting/fesapi',
-    description = 'An API for the Energistics standards',
+    description = 'An API for the Energistics data standards',
     long_description = '''**FESAPI** is an API for Energistics data standards (mainly RESQML™)
 
 ### Examples
