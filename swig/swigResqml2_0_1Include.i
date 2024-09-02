@@ -1091,6 +1091,20 @@ namespace RESQML2_0_1_NS
 		 * @returns	True if it is a final version, false if not.
 		 */
 		bool isFinal() const;
+
+		/**
+		 * Gets the unit of measure of the MDs along this deviation survey.
+		 *
+		 * @returns	The unit of measure of the MDs.
+		 */
+		gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
+
+		/**
+		 * Gets the unit of measure of the azimuth and inclination angle values of this deviation survey.
+		 *
+		 * @returns	The unit of measure of the azimuth and inclination angle values.
+		 */
+		gsoap_resqml2_0_1::eml20__PlaneAngleUom getAngleUom() const;
 		
 		/**
 		 * Gets the MD double values associated to each trajectory station of this deviation survey

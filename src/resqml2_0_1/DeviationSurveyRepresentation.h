@@ -156,7 +156,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	The unit of measure of the azimuth and inclination angle values.
 		 */
-		gsoap_resqml2_0_1::eml20__PlaneAngleUom getAngleUom() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__PlaneAngleUom getAngleUom() const;
 
 		/**
 		 * Gets the MD double values associated to each trajectory station of this deviation survey
