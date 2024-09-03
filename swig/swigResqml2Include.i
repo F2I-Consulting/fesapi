@@ -7503,8 +7503,23 @@ namespace RESQML2_NS
 	class  WellboreTrajectoryRepresentation : public AbstractRepresentation
 	{
 	public:
-		unsigned int getWellboreFrameRepresentationCount() const;
-		WellboreFrameRepresentation* getWellboreFrameRepresentation(unsigned int index) const;
+		/**
+		 * Gets the count of wellbore frame representations which are associated with this wellbore
+		 * trajectory.
+		 *
+		 * @returns	The count of associated wellbore frame representations.
+		 */
+		uint64_t getWellboreFrameRepresentationCount() const;
+		
+		/**
+		 * Gets a particular wellbore frame representation of this wellbore trajectory representation
+		 * according to its position in the repository.
+		 * 
+		 * @exception std::out_of_range If <tt>index >=</tt> getWellboreFrameRepresentationCount().
+		 * 								
+		 * @returns The associated wellbore frame representation at position @p index.
+		 */
+		WellboreFrameRepresentation* getWellboreFrameRepresentation(uint64_t index) const;
 		
 		/**
 		 * Sets the minimal geometry of the representation by means of start and end MDs.

@@ -414,7 +414,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of associated wellbore frame representations.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getWellboreFrameRepresentationCount() const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
+		DLL_IMPORT_OR_EXPORT uint64_t getWellboreFrameRepresentationCount() const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 
 		/**
 		 * Gets a particular wellbore frame representation of this wellbore trajectory representation
@@ -424,7 +424,7 @@ namespace RESQML2_NS
 		 * 								
 		 * @returns The associated wellbore frame representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
+		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(uint64_t index) const; // Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 
 		virtual COMMON_NS::DataObjectReference getLocalCrsDor(uint64_t patchIndex) const override = 0;
 
