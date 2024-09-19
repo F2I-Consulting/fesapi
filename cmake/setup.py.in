@@ -17,7 +17,7 @@ setup (name = 'fesapi',
 
 ### Examples
 
-A Python script and a Jupyter Notebook are available [here](https://github.com/F2I-Consulting/fesapi/tree/dev/python/example).
+A Python script and a Jupyter Notebook are available [here](https://github.com/F2I-Consulting/fesapi/tree/master/python/example).
 
 ### Credits
 This software was developed with :

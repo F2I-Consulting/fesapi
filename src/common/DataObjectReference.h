@@ -70,7 +70,7 @@ namespace COMMON_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	dor	If non-nullptr, the Energistics DataObject to wrap.
+		 * @param [in,out]	dataObj	If non-nullptr, the Energistics DataObject to wrap.
 		 */
 		explicit DataObjectReference(AbstractObject const * dataObj);
 

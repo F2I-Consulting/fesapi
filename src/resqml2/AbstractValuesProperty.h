@@ -529,7 +529,7 @@ namespace RESQML2_NS
 		 * 										array to write.  It is ordered from slowest dimension to
 		 * 										fastest dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param 			nullvalue			The integer null value in case we create an integer array.
+		 * @param 			nullValue			The integer null value in case we create an integer array.
 		 * 										It is ignored if the @p datatype is a floating point one.
 		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
@@ -554,7 +554,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 			datatype			The datatype of the values
 		 * @param 		  	valueCount			The number of values to write).
-		 * @param 			nullvalue			The integer null value in case we create an integer array.
+		 * @param 			nullValue			The integer null value in case we create an integer array.
 		 * 										It is ignored if the @p datatype is a floating point one.
 		 * @param [in,out]	proxy				(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and
@@ -580,7 +580,7 @@ namespace RESQML2_NS
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly K dimension).
-		 * @param 			nullvalue				The integer null value in case we create an integer array.
+		 * @param 			nullValue				The integer null value in case we create an integer array.
 		 * 											It is ignored if the @p datatype is a floating point one.
 		 * @param [in,out]	proxy					(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
@@ -591,7 +591,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackHdf5Array2dOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
 			int64_t nullValue = (std::numeric_limits<int64_t>::max)(),
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
 		);
@@ -610,8 +610,8 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly K dimension).
-		 * @param 			nullvalue			The integer null value in case we create an integer array.
-		 * 										It is ignored if the @p datatype is a floating point one.
+		 * @param 			nullValue				The integer null value in case we create an integer array.
+		 * 											It is ignored if the @p datatype is a floating point one.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr

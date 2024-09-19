@@ -193,7 +193,8 @@ namespace COMMON_NS
 			READ_WRITE_DO_NOT_CREATE = 2, // It is meant to open an existing file in read and write mode. It throws an exception if the file does not exist.
 			OVERWRITE = 3 // It is meant to open an existing file in read and write mode. It deletes the content of the file if the later does already exist.
 		};
-		enum CUD { CREATED = 0, UPDATED = 1, DELETED = 2 };
+		/** Values that represent an event which occured on dataobject */
+		enum class CUD { CREATED = 0, UPDATED = 1, DELETED = 2 };
 
 		/**
 		* Enumeration for the various Energistics standards.
@@ -284,7 +285,7 @@ namespace COMMON_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void registerDataFeeder(COMMON_NS::DataFeeder * dataFeeder);
 
-		/*
+		/**
 		 * Delete a relationship between two objects. Source and target of the relationship are defined
 		 * by Energistics data model. Usually, the simplest is to look at Energistics UML diagrams. 
 		 * Another way is to rely on XSD/XML: explicit relationships are contained by the source objects
@@ -437,7 +438,7 @@ namespace COMMON_NS
 		 * @returns	Null if the content type of the data object cannot be wrapped by fesapi, else a
 		 * 			pointer the added or replaced data object.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType, const std::string& uriSource);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentOrDataType, const std::string& uriSource);
 
 		/**
 		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobejct ot delte has got backward relationships.

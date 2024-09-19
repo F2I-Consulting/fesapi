@@ -66,7 +66,6 @@ namespace RESQML2_NS
 		 * @param 	  	datasetName	(Optional) If not provided during the method call, the dataset will
 		 * 							be named the same as the dataset naming convention of fesapi:
 		 * 							<tt>"/RESQML/" + prop-&gt;uuid + "/values_patch" + patchIndex</tt>
-		 * @param 	  	nullValue  	(Optional) Not used for comment properties.
 		 *
 		 * @returns	The name of the HDF5 dataset.
 		 */

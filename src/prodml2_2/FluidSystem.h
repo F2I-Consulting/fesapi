@@ -283,7 +283,7 @@ namespace PRODML2_2_NS
 		/**
 		* Sets the associated Rock fluid organization
 		*
-		* @param [in,out]	rockFluidUnit	If non-null, the rock fluid unit.
+		* @param [in,out]	rockFluidOrg	If non-null, the rock fluid organization interpretation to set.
 		*/
 		DLL_IMPORT_OR_EXPORT void setRockFluidOrganization(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrg);
 
