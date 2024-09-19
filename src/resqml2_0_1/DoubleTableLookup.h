@@ -58,11 +58,11 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool containsKey(double key) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getItemCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getItemCount() const final;
 
-		DLL_IMPORT_OR_EXPORT double getKeyAtIndex(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT double getKeyAtIndex(uint64_t index) const final;
 
-		DLL_IMPORT_OR_EXPORT double getValueAtIndex(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT double getValueAtIndex(uint64_t index) const final;
 
 		DLL_IMPORT_OR_EXPORT double getValueAtKey(double key) final;
 
@@ -79,7 +79,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml20";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

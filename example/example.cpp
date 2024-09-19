@@ -2668,9 +2668,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 					cout << "\tPress enter to continue..." << endl;
 					cin.get();
 				}
-				const unsigned int itemCount = stl->getItemCount();
+				const uint64_t itemCount = stl->getItemCount();
 				std::cout << "\tAssociated Double Table lookup" << endl;
-				for (unsigned int itemIndex = 0; itemIndex < itemCount; ++itemIndex) {
+				for (uint64_t itemIndex = 0; itemIndex < itemCount; ++itemIndex) {
 					std::cout << stl->getKeyAtIndex(itemIndex) << "->" << stl->getValueAtIndex(itemIndex) << endl;
 				}
 				std::unique_ptr<double[]> values(new double[valueCount]);

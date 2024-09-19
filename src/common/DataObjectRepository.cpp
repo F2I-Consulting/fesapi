@@ -582,7 +582,7 @@ bool DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy)
 		backwardRels.emplace(proxy, std::vector<COMMON_NS::AbstractObject*>());
 
 		auto now = std::chrono::system_clock::now();
-		journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CREATED));
+		journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CUD::CREATED));
 		on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 
 		auto* crs = dynamic_cast<EML2_NS::AbstractLocal3dCrs*>(proxy);
@@ -634,7 +634,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 			// New version of an existing UUID
 			dataObjects[proxy->getUuid()].push_back(proxy);
 			auto now = std::chrono::system_clock::now();
-			journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CREATED));
+			journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CUD::CREATED));
 			on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 		}
 		else {
@@ -648,7 +648,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 
 				if (!(*same)->isPartial()) {
 					auto now = std::chrono::system_clock::now();
-					journal.push_back(std::make_tuple(now, DataObjectReference(proxy), UPDATED));
+					journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CUD::UPDATED));
 					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 				}
 
@@ -658,7 +658,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 			else {
 				if (!(*same)->isPartial()) {
 					auto now = std::chrono::system_clock::now();
-					journal.push_back(std::make_tuple(now, DataObjectReference(*same), UPDATED));
+					journal.push_back(std::make_tuple(now, DataObjectReference(*same), CUD::UPDATED));
 					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 				}
 

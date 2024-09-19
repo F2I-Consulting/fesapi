@@ -6917,30 +6917,201 @@ namespace RESQML2_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_DiscreteProperty) DiscreteProperty;
 #endif
+	/**
+	 * Proxy class for a discrete  property. Such property contains discrete integer values;
+	 * typically used to store any type of index. So that the value range can be known before
+	 * accessing all values, it also optionally stores the minimum and maximum value in the range.
+	 */
 	class DiscreteProperty : public AbstractValuesProperty
 	{
 	public:
+		/**
+		 * @brief Adds a 1d array of explicit int 64 bits values to the property values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values			All the property values to set ordered according to the
+		 * 									topology of the representation it is based on.
+		 * @param 		  	valueCount  	The number of values to write.
+		 * @param [in,out]	proxy			The HDF proxy where to write the property values. It must be
+		 * 									already opened for writing and won't be closed in this method. If
+		 * 									@c nullptr, then a default HDF proxy must be defined in the
+		 * 									repository.
+		 * @param 		  	nullValue   	The null value.
+		 * @param 		  	minimumValue	The minimum value of the values to add.
+		 * @param 		  	maximumValue	The maximum value of the values to add.
+		 */
 		void pushBackInt64Hdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
+
+		/**
+		 * Adds a 1d array of explicit integer values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array1dOfValues
+		 */
 		void pushBackInt32Hdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+
+		/**
+		 * Adds a 1d array of explicit short values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array1dOfValues
+		 */
 		void pushBackInt16Hdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+
+		/**
+		 * Adds a 1d array of explicit int8_t values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array1dOfValues
+		 */
 		void pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 
+		/**
+		 * @brief Adds a 2d array of explicit int 64 bits values to the property values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according to
+		 * 											the topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly J dimension).
+		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * 											must be already opened for writing and won't be
+		 * 											closed in this method. If @c nullptr, then a default
+		 * 											HDF proxy must be defined in the repository.
+		 * @param 		  	nullValue			  	The null value.
+		 * @param 		  	minimumValue		  	The minimum value of the values to add.
+		 * @param 		  	maximumValue		  	The maximum value of the values to add.
+		 */
 		void pushBackInt64Hdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
+		
+		/**
+		 * Adds a 2d array of explicit integer values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
+		 */
 		void pushBackInt32Hdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		
+		/**
+		 * Adds a 2d array of explicit short values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
+		 */
 		void pushBackInt16Hdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		
+		/**
+		 * Adds a 2d array of explicit unsigned short values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
+		 */
 		void pushBackUInt16Hdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		
+		/**
+		 * Adds a 2d array of explicit int8_t values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array2dOfValues
+		 */
 		void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 
+		/**
+		 * @brief Adds a 3d array of explicit int 64 bits values to the property values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according the
+		 * 											topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * 											must be already opened for writing and won't be
+		 * 											closed in this method. If @c nullptr, then a default
+		 * 											HDF proxy must be defined in the repository.
+		 * @param 		  	nullValue			  	The null value.
+		 * @param 		  	minimumValue		  	The minimum value of the values to add.
+		 * @param 		  	maximumValue		  	The maximum value of the values to add.
+		 */
 		void pushBackInt64Hdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
+		
+		/**
+		 * Adds a 3d array of explicit integer values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
+		 */
 		void pushBackInt32Hdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		
+		/**
+		 * Adds a 3d array of explicit short values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
+		 */
 		void pushBackInt16Hdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		
+		/**
+		 * Adds a 3d array of explicit unsigned short values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
+		 */
 		void pushBackUInt16Hdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		
+		/**
+		 * Adds a 3d array of explicit int8_t values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5Array3dOfValues
+		 */
 		void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 
-		void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
+		/**
+		 * @brief Adds an nd array of explicit int 64 bits values to the property values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values					All the property values to set ordered according the
+		 * 											topology of the representation it is based on.
+		 * @param [in]	  	numValues				The number of property values ordered by dimension of
+		 * 											the array to write.
+		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
+		 * @param [in,out]	proxy					The HDF proxy where to write the property values. It
+		 * 											must be already opened for writing and won't be closed in
+		 * 											this method. If @c nullptr, then a default HDF proxy must
+		 * 											be defined in the repository.
+		 * @param 		  	nullValue				The null value.
+		 */
+		 void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue, int64_t minimumValue, int64_t maximumValue);
+		
+		/**
+		 * Adds an nd array of explicit integer values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
+		 */
 		void pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		
+		/**
+		 * Adds an nd array of explicit short values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
+		 */
 		void pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		
+		/**
+		 * Adds an nd array of explicit unsigned short values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
+		 */
 		void pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		
+		/**
+		 * Adds an nd array of explicit int8_t values to the property values.
+		 *
+		 * @copydetails pushBackInt64Hdf5ArrayOfValues
+		 */
 		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue, int8_t minimumValue, int8_t maximumValue);
 		
 		/**
@@ -7074,6 +7245,44 @@ namespace RESQML2_NS
 			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		using AbstractValuesProperty::pushBackHdf5Array3dOfValues;
 
+		/**
+		 * Adds a 3d array of explicit int 64 bits values into the property values. Since this methods
+		 * only pushes back values into an existing array, it is to be used along with
+		 * pushBackInt64Hdf5Array3dOfValues().
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param [in]	  	values				  	All the property values to set ordered according to
+		 * 											the topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param 		  	offsetInFastestDim	  	The offset value for writing in the fastest dimension
+		 * 											(mainly I dimension).
+		 * @param 		  	offsetInMiddleDim	  	The offset value for writing in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
+		 * 											(mainly K dimension).
+		 * @param 		  	computeMinMax		  	True if FESAPI needs to compute the min and  max from
+		 * 											the given @p values in order to set them.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
+		 * 											write the property values. If not provided, its
+		 * 											default value is by convention set to unsigned int
+		 * 											maximum value and the property values will be written
+		 * 											in the last property values patch (the one with the
+		 * 											greatest index).
+		 */
 		void setValuesOfInt64Hdf5Array3dOfValues(
 			int64_t* values,
 			uint64_t valueCountInFastestDim,
@@ -7098,6 +7307,37 @@ namespace RESQML2_NS
 			uint64_t patchIndex = std::numeric_limits<uint64_t >::max());
 		using AbstractValuesProperty::setValuesOfInt32Hdf5Array3dOfValues;
 
+		/**
+		 * Adds an nd array of explicit int 64 bits values into to the property values. Since this
+		 * methods only pushes back values into an existing array, it is to be used along with
+		 * pushBackInt64Hdf5ArrayOfValues().
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is null and no default HDF proxy is defined
+		 * 										into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param [in]	  	values			  	All the property values to set ordered according to the
+		 * 										topology of the representation it is based on.
+		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
+		 * 										array to write. It is ordered from slowest dimension to
+		 * 										fastest dimension.
+		 * @param 		  	offsetValues	  	The offset values ordered by dimension of the array to
+		 * 										write. It is ordered from slowest dimension to fastest
+		 * 										dimension.
+		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
+		 * @param 		  	computeMinMax	  	True to compute and to set minimum and maximum values.
+		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and won't
+		 * 										be closed in this method. If null (default value), a
+		 * 										default HDF proxy must be defined into the data object
+		 * 										repository.
+		 * @param 		  	patchIndex		  	(Optional) Zero-based index of the patch where to write
+		 * 										the property values. If not provided, its default value
+		 * 										is by convention set to unsigned int maximum value and
+		 * 										the property values will be written in the last property
+		 * 										values patch (the one with the greatest index).
+		 */
 		void setValuesOfInt64Hdf5ArrayOfValues(
 			int64_t* values,
 			uint64_t const * numValues,
@@ -7196,27 +7436,102 @@ namespace RESQML2_NS
 		 */
 		void setMaximumValue(int64_t value, uint64_t index = 0) const;
 	};
-	
+
 #ifdef SWIGPYTHON
 	%rename(Resqml2_DoubleTableLookup) DoubleTableLookup;
 #endif	
+	/**
+	 * @brief	Defines a function for table lookups. For example, used for linear interpolation, such as PVT.
+	 * 			
+	 * 			Used for categorical properties, which also may use a double table lookup.
+	 */
 	class DoubleTableLookup : public COMMON_NS::AbstractObject
 	{
 	public:
+		/**
+		 * Checks whether a key is contained within this double table lookup.
+		 *
+		 * @param 	key	A key.
+		 *
+		 * @returns	True if @p key is a key of this double table lookup, false if not.
+		 */
 		bool containsKey(double key);
-	
-		unsigned int getItemCount() const;
-		double getKeyAtIndex(unsigned int index) const;
-		double getValueAtIndex(unsigned int index) const;
+
+		/**
+		 * Gets the count of items in the double table lookup (in its map).
+		 *
+		 * @returns	The count of items.
+		 */
+		uint64_t getItemCount() const;
+
+		/**
+		 * Gets the key of a key/value pair at a particular index of this double table lookup (in its
+		 * map).
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getItemCount().
+		 *
+		 * @param 	index	Zero-based index of the key/value pair.
+		 *
+		 * @returns	The key of the key/value pair at position @p index.
+		 */
+		double getKeyAtIndex(uint64_t index) const;
+
+		/**
+		 * Gets the value of a key/value pair at a particular index of this double table lookup
+		 * (in its map).
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getItemCount().
+		 *
+		 * @param 	index	Zero-based index of the key/value pair.
+		 *
+		 * @returns	The value of the key/value pair at position @p index.
+		 */
+		 double getValueAtIndex(uint64_t index) const;
+
+		/**
+		 * Gets a value from its associated key.
+		 *
+		 * @param 	longValue	A key.
+		 *
+		 * @returns	The value corresponding to the key @p longValue if it exists, NaN if
+		 * 			not.
+		 */
 		double getValueAtKey(double key);
-		
+
+		/**
+		 * Adds a key/value pair to this double table lookup. No verification that the key already exists is done.
+		 *
+		 * @param 	key		A key.
+		 * @param 	value	Teh associated value.
+		 */
 		void addValue(double key, double longValue);
+
+		/**
+		 * Modifies the value associated to a key. If the key does not exist, nothing is
+		 * done.
+		 *
+		 * @param 	key		A key.
+		 * @param 	value	Teh associated value.
+		 */
 		void setValue(double key, double longValue);
-		
+
+		/**
+		 * Gets the minimum key in this double table lookup. It reads it from file.
+		 *
+		 * @returns	The minimum key if some key/value pairs exists in this double table lookup, otherwise
+		 * 			the double maximum value.
+		 */
 		double getMinimumValue();
+
+		/**
+		 * Gets the maximum key in this double table lookup. It reads it from file.
+		 *
+		 * @returns	The maximum key if some key/value pairs exists in this double table lookup, otherwise
+		 * 			the double lowest value.
+		 */
 		double getMaximumValue();
 	};
-	
+
 #ifdef SWIGPYTHON
 	%rename(Resqml2_StringTableLookup) StringTableLookup;
 #endif	

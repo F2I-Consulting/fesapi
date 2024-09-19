@@ -335,10 +335,15 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 		{
 			auto const* dla = static_cast<resqml20__DoubleLatticeArray*>(frame->NodeMd);
-			values[0] = dla->StartValue;
-			resqml20__DoubleConstantArray* constantArray = dla->Offset[0];
-			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc) {
-				values[inc] = values[inc - 1] + constantArray->Value;
+			if (dla->StartValue < (std::numeric_limits<float>::min)() || dla->StartValue >(std::numeric_limits<float>::max)()) {
+				throw out_of_range("The double start value of the NodeMd array " + std::to_string(dla->StartValue) + " is out of float range value");
+			}
+			values[0] = static_cast<float>(dla->StartValue);
+			if (dla->Offset[0]->Value < (std::numeric_limits<float>::min)() || dla->Offset[0]->Value >(std::numeric_limits<float>::max)()) {
+				throw out_of_range("The double offset value of the NodeMd array " + std::to_string(dla->Offset[0]->Value) + " is out of float range value");
+			}
+			for (uint64_t inc = 1; inc <= dla->Offset[0]->Count; ++inc) {
+				values[inc] = values[inc - 1] + static_cast<float>(dla->Offset[0]->Value);
 			}
 		}
 		else {
@@ -358,10 +363,15 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 		{
 			auto const* fla = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd);
-			values[0] = fla->StartValue;
-			eml23__FloatingPointConstantArray* constantArray = fla->Offset[0];
-			for (int64_t inc = 1; inc <= constantArray->Count; ++inc) {
-				values[inc] = values[inc - 1] + constantArray->Value;
+			if (fla->StartValue < (std::numeric_limits<float>::min)() || fla->StartValue >(std::numeric_limits<float>::max)()) {
+				throw out_of_range("The double start value of the NodeMd array " + std::to_string(fla->StartValue) + " is out of float range value");
+			}
+			values[0] = static_cast<float>(fla->StartValue);
+			if (fla->Offset[0]->Value < (std::numeric_limits<float>::min)() || fla->Offset[0]->Value >(std::numeric_limits<float>::max)()) {
+				throw out_of_range("The double offset value of the NodeMd array " + std::to_string(fla->Offset[0]->Value) + " is out of float range value");
+			}
+			for (int64_t inc = 1; inc <= fla->Offset[0]->Count; ++inc) {
+				values[inc] = values[inc - 1] + static_cast<float>(fla->Offset[0]->Value);
 			}
 		}
 		else {

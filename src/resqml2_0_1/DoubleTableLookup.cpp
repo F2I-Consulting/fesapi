@@ -25,9 +25,7 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* DoubleTableLookup::XML_NS = "resqml20";
-
-DoubleTableLookup::DoubleTableLookup(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
+DoubleTableLookup::DoubleTableLookup(COMMON_NS::DataObjectRepository* repo, const string& guid, const string& title)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
@@ -36,58 +34,43 @@ DoubleTableLookup::DoubleTableLookup(COMMON_NS::DataObjectRepository* repo, cons
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDoubleTableLookup(repo->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(this);
 }
 
-unsigned int DoubleTableLookup::getItemCount() const
+uint64_t DoubleTableLookup::getItemCount() const
 {
 	return static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value.size();
 }
 
-double DoubleTableLookup::getKeyAtIndex(unsigned int index) const
+double DoubleTableLookup::getKeyAtIndex(uint64_t index) const
 {
-	if (getItemCount() <= index) {
-		throw out_of_range("The index is out of range.");
-	}
-
-	return (static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value)[index]->Key;
+	return (static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value).at(index)->Key;
 }
 
-double DoubleTableLookup::getValueAtIndex(unsigned int index) const
+double DoubleTableLookup::getValueAtIndex(uint64_t index) const
 {
-	if (getItemCount() <= index) {
-		throw out_of_range("The index is out of range.");
-	}
-
-	return (static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value)[index]->Value;
+	return (static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value).at(index)->Value;
 }
 
 bool DoubleTableLookup::containsKey(double key)
 {
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
+	const auto dblLookups = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value;
 
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == key) {
-			return true;
-		}
-	}
-
-	return false;
+	return std::find_if(dblLookups.begin(), dblLookups.end(),
+		[key](resqml20__DoubleLookup const* element) {return element->Key == key; })
+		!= dblLookups.end();
 }
 
 double DoubleTableLookup::getValueAtKey(double key)
 {
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
+	const auto dblLookups = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value;
 
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == key) {
-			return stringLookup->Value[i]->Value;
-		}
-	}
+	auto it = std::find_if(dblLookups.begin(), dblLookups.end(),
+		[key](resqml20__DoubleLookup const* element) {return element->Key == key; });
 
-	return std::numeric_limits<double>::quiet_NaN();
+	return it == dblLookups.end() ? std::numeric_limits<double>::quiet_NaN() : (*it)->Value;
 }
 
 void DoubleTableLookup::addValue(double key, double value)
@@ -102,14 +85,11 @@ void DoubleTableLookup::addValue(double key, double value)
 
 void DoubleTableLookup::setValue(double key, double value)
 {
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
+	auto dblLookups = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1)->Value;
+	auto it = std::find_if(dblLookups.begin(), dblLookups.end(),
+		[key](resqml20__DoubleLookup const* element) {return element->Key == key; });
 
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		if (stringLookup->Value[i]->Key == key) {
-			stringLookup->Value[i]->Value = value;
-			return;
-		}
-	}
+	if (it != dblLookups.end()) (*it)->Value = value;
 }
 
 namespace {
@@ -137,10 +117,8 @@ std::map<double, double> DoubleTableLookup::getMap() const
 {
 	map<double, double> result;
 
-	_resqml20__DoubleTableLookup* stringLookup = static_cast<_resqml20__DoubleTableLookup*>(gsoapProxy2_0_1);
-
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
-		result[stringLookup->Value[i]->Key] = stringLookup->Value[i]->Value;
+	for (auto const* dblLookup : static_cast<_resqml20__DoubleTableLookup const*>(gsoapProxy2_0_1)->Value) {
+		result[dblLookup->Key] = dblLookup->Value;
 	}
 
 	return result;

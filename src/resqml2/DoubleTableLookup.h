@@ -57,7 +57,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of items.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getItemCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getItemCount() const = 0;
 
 		/**
 		 * Gets the key of a key/value pair at a particular index of this double table lookup (in its
@@ -69,7 +69,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The key of the key/value pair at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual double getKeyAtIndex(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getKeyAtIndex(uint64_t index) const = 0;
 
 		/**
 		 * Gets the value of a key/value pair at a particular index of this double table lookup
@@ -81,7 +81,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The value of the key/value pair at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual double getValueAtIndex(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getValueAtIndex(uint64_t index) const = 0;
 
 		/**
 		 * Gets a value from its associated key.
