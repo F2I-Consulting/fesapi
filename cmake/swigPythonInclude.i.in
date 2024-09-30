@@ -26,18 +26,21 @@ namespace COMMON_NS
 		swig_type_info * const outtype = [&] {
 			if (result != nullptr)
 			{
-				const std::string cppNs = [&] {
+				const std::string xmlTag = result->getXmlTag();
+				if (xmlTag == "EpcExternalPartReference") {
+					return SWIG_TypeQuery("eml2::EpcExternalPartReference *");
+				}
+				const std::string cppNs = [&result] {
 					const std::string xmlNs(result->getXmlNamespace());
-					if (xmlNs == "eml20") return "${FESAPI_EML2_0_NS}";
-					else if (xmlNs == "eml23") return "${FESAPI_EML2_3_NS}";
-					else if (xmlNs == "resqml20") return "${FESAPI_RESQML2_0_1_NS}";
+					if (xmlNs == "resqml20") return "${FESAPI_RESQML2_0_1_NS}";
 					else if (xmlNs == "resqml22") return "${FESAPI_RESQML2_2_NS}";
 					else if (xmlNs == "witsml21") return "${FESAPI_WITSML2_1_NS}";
 					else if (xmlNs == "prodml22") return "${FESAPI_PRODML2_2_NS}";
+					else if (xmlNs == "eml23") return "${FESAPI_EML2_3_NS}";
 				}();
 
 				// Check potential downcasting
-				return SWIG_TypeQuery((cppNs + "::" + result->getXmlTag() + " *").c_str());
+				return SWIG_TypeQuery((cppNs + "::" + xmlTag + " *").c_str());
 			}
 			else {
 				return $descriptor;
@@ -49,7 +52,18 @@ namespace COMMON_NS
 
 namespace EML2_NS
 {
-	%typemap(out) 	Activity*, ActivityTemplate*, EpcExternalPartReference*, PropertyKind*, TimeSeries*
+	%typemap(out) 	EpcExternalPartReference*
+	{
+		swig_type_info * const outtype = [&] {
+			return result != nullptr
+				? SWIG_TypeQuery("eml2::EpcExternalPartReference *")
+				: $descriptor;
+		}();
+
+		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
+	}
+
+	%typemap(out) 	Activity*, ActivityTemplate*, PropertyKind*, TimeSeries*
 #ifdef WITH_RESQML2_2
 										,GraphicalInformationSet*
 #endif
@@ -57,14 +71,13 @@ namespace EML2_NS
 		swig_type_info * const outtype = [&] {
 			if (result != nullptr)
 			{
-				const std::string cppNs = [&] {
+				const std::string cppNs = [&result] {
 					const std::string xmlNs(result->getXmlNamespace());
-					if (xmlNs == "eml20") return "${FESAPI_EML2_0_NS}";
-					else if (xmlNs == "eml23") return "${FESAPI_EML2_3_NS}";
-					else if (xmlNs == "resqml20") return "${FESAPI_RESQML2_0_1_NS}";
+					if (xmlNs == "resqml20") return "${FESAPI_RESQML2_0_1_NS}";
 					else if (xmlNs == "resqml22") return "${FESAPI_RESQML2_2_NS}";
 					else if (xmlNs == "witsml21") return "${FESAPI_WITSML2_1_NS}";
 					else if (xmlNs == "prodml22") return "${FESAPI_PRODML2_2_NS}";
+					else if (xmlNs == "eml23") return "${FESAPI_EML2_3_NS}";
 				}();
 
 				// Check potential downcasting
@@ -80,7 +93,7 @@ namespace EML2_NS
 }
 
 namespace RESQML2_NS
-{		
+{
 	%typemap(out)						AbstractFeature*, AbstractFeatureInterpretation*, AbstractRepresentation*, AbstractGridRepresentation*, AbstractLocal3dCrs*,
 										AbstractProperty*, AbstractValuesProperty*,
 										AbstractStratigraphicOrganizationInterpretation*,
@@ -155,14 +168,10 @@ namespace RESQML2_NS
 		swig_type_info * const outtype = [&] {
 			if (result != nullptr)
 			{
-				const std::string cppNs = [&] {
+				const std::string cppNs = [&result] {
 					const std::string xmlNs(result->getXmlNamespace());
-					if (xmlNs == "eml20") return "${FESAPI_EML2_0_NS}";
-					else if (xmlNs == "eml23") return "${FESAPI_EML2_3_NS}";
-					else if (xmlNs == "resqml20") return "${FESAPI_RESQML2_0_1_NS}";
+					if (xmlNs == "resqml20") return "${FESAPI_RESQML2_0_1_NS}";
 					else if (xmlNs == "resqml22") return "${FESAPI_RESQML2_2_NS}";
-					else if (xmlNs == "witsml21") return "${FESAPI_WITSML2_1_NS}";
-					else if (xmlNs == "prodml22") return "${FESAPI_PRODML2_2_NS}";
 				}();
 
 				// Check potential downcasting
@@ -186,12 +195,8 @@ namespace RESQML2_NS
 			{
 				std::string cppNs;
 				const std::string xmlNs(result->getXmlNamespace());
-				if (xmlNs == "eml20") cppNs = "${FESAPI_EML2_0_NS}";
-				else if (xmlNs == "eml23") cppNs = "${FESAPI_EML2_3_NS}";
-				else if (xmlNs == "resqml20") cppNs = "${FESAPI_RESQML2_0_1_NS}";
+				if (xmlNs == "resqml20") cppNs = "${FESAPI_RESQML2_0_1_NS}";
 				else if (xmlNs == "resqml22") cppNs = "${FESAPI_RESQML2_2_NS}";
-				else if (xmlNs == "witsml21") cppNs = "${FESAPI_WITSML2_1_NS}";
-				else if (xmlNs == "prodml22") cppNs = "${FESAPI_PRODML2_2_NS}";
 
 				std::string cppClass;
 				auto geomKind = result->getGeometryKind();
