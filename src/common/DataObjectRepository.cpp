@@ -175,6 +175,8 @@ under the License.
 #include "../resqml2_2/WellboreTrajectoryRepresentation.h"
 #else
 #include "../resqml2/CmpLineFeature.h"
+#include "../resqml2/ContinuousColorMap.h"
+#include "../resqml2/DiscreteColorMap.h"
 #include "../resqml2/Model.h"
 #include "../resqml2/SeismicWellboreFrameRepresentation.h"
 #include "../resqml2/ShotPointLineFeature.h"
@@ -2936,7 +2938,9 @@ GETTER_DATAOBJECTS_IMPL(RESQML2_NS::AbstractSeismicLineFeature, SeismicLine)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::AbstractIjkGridRepresentation, IjkGridRepresentation)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::BlockedWellboreRepresentation, BlockedWellboreRepresentation)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::CmpLineFeature, CmpLine)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::ContinuousColorMap, ContinuousColorMap)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::CulturalFeature, Cultural)
+GETTER_DATAOBJECTS_IMPL(RESQML2_NS::DiscreteColorMap, DiscreteColorMap)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
 GETTER_DATAOBJECTS_IMPL(RESQML2_NS::IjkGridParametricRepresentation, IjkGridParametricRepresentation)
