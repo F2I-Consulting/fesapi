@@ -610,6 +610,11 @@ bool DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy)
 
 COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent)
 {
+	if (proxy->getUuid() == RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) {
+		addWarning("The FESAPI fake property " + std::string(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) + " has been detected and will be ignored.");
+		return nullptr;
+	}
+
 	if (!addDataObject(proxy)) {
 		std::vector< COMMON_NS::AbstractObject* >& versions = dataObjects[proxy->getUuid()];
 		std::vector< COMMON_NS::AbstractObject* >::iterator same = std::find_if(versions.begin(), versions.end(), SameVersion(proxy->getVersion()));

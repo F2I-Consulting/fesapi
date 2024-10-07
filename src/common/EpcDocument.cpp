@@ -260,10 +260,6 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 	}
 
 	for (const auto& contentTypeEntry : package->getFileContentType().getAllContentType()) {
-		if (contentTypeEntry.second.getExtensionOrPartName().find(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) != std::string::npos) {
-			result += "The FESAPI fake property " + std::string(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) + " has been detected and will be ignored.";
-			continue;
-		}
 		std::string contentType = contentTypeEntry.second.getContentTypeString();
 		// 14 equals "application/x-".size()
 		if (contentType.find("resqml", 14) != std::string::npos ||
