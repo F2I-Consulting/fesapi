@@ -395,9 +395,9 @@ DataObjectRepository::~DataObjectRepository()
 
 void DataObjectRepository::clear()
 {
-	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			delete it->second[i];
+	for (const auto& kv : dataObjects) {
+		for (auto* dataObject : kv.second) {
+			delete dataObject;
 		}
 	}
 	dataObjects.clear();
@@ -533,23 +533,23 @@ void DataObjectRepository::updateAllRelationships()
 {
 	// Tansform the map values into a vector because we are going to potentially insert new elements in the map when looping.
 	vector<COMMON_NS::AbstractObject*> nonPartialObjects;
-	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (!it->second[i]->isPartial()) {
-				nonPartialObjects.push_back(it->second[i]);
+	for (const auto& kv : dataObjects) {
+		for (auto* dataObject : kv.second) {
+			if (!dataObject->isPartial()) {
+				nonPartialObjects.push_back(dataObject);
 			}
 		}
 	}
 
 	std::for_each(forwardRels.begin(), forwardRels.end(), clearVectorOfMapEntry);
 	std::for_each(backwardRels.begin(), backwardRels.end(), clearVectorOfMapEntry);
-	for (size_t nonPartialObjIndex = 0; nonPartialObjIndex < nonPartialObjects.size(); ++nonPartialObjIndex) {
+	for (auto* nonPartialObject : nonPartialObjects) {
 		try {
-			nonPartialObjects[nonPartialObjIndex]->loadTargetRelationships();
+			nonPartialObject->loadTargetRelationships();
 		}
 		catch (const std::exception& ex) {
-			addWarning("The dataobject UUID=\"" + nonPartialObjects[nonPartialObjIndex]->getUuid() + "\" has got a relationship towards an unrecognized datatype, it will be considered as a partial (i.e empty) dataobject : " + ex.what());
-			nonPartialObjects[nonPartialObjIndex]->changeToPartialObject();
+			addWarning("The dataobject UUID=\"" + nonPartialObject->getUuid() + "\" has got a relationship towards an unrecognized datatype, it will be considered as a partial (i.e empty) dataobject : " + ex.what());
+			nonPartialObject->changeToPartialObject();
 		}
 	}
 }
@@ -761,7 +761,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		if (gsoapContext->error != SOAP_OK) {
 			ostringstream oss;
 			soap_stream_fault(gsoapContext, oss);
-			size_t formatPos = xml.find("Format>");
+			const size_t formatPos = xml.find("Format>");
 			if (formatPos != std::string::npos) {
 				addWarning(oss.str() + "\n" + xml.substr(0, formatPos));
 			}
@@ -780,18 +780,22 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	return nullptr;
 }
 
+void DataObjectRepository::setUriSource(const std::string& uriSource) {
+	for (auto& kv : dataObjects) {
+		for (auto* dataObject : kv.second) {
+			dataObject->setUriSource(uriSource);
+		}
+	}
+}
+
 uint64_t DataObjectRepository::cascadeDeleteDataObject(COMMON_NS::AbstractObject* proxy)
 {
-	uint64_t result = 0;
-
 	if (!getSourceObjects(proxy).empty()) {
-		return result;
-	}
-	else {
-		++result;
+		return 0;
 	}
 	backwardRels.erase(proxy);
 
+	uint64_t result = 1;
 	for (COMMON_NS::AbstractObject* targetDataobject : getTargetObjects(proxy)) {
 		std::vector< COMMON_NS::AbstractObject*>& srcObjs = backwardRels.at(targetDataobject);
 		srcObjs.erase(std::remove(srcObjs.begin(), srcObjs.end(), proxy), srcObjs.end());
@@ -807,9 +811,9 @@ uint64_t DataObjectRepository::cascadeDeleteDataObject(COMMON_NS::AbstractObject
 std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByDataType() const
 {
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
-	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			result[it->second[i]->getQualifiedType()].push_back(it->second[i]);
+	for (const auto& kv : dataObjects) {
+		for (auto* dataObject : kv.second) {
+			result[dataObject->getQualifiedType()].push_back(dataObject);
 		}
 	}
 
@@ -819,11 +823,11 @@ std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataO
 std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByDataType(const std::string & filter) const
 {
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
-	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			std::string datatype = it->second[i]->getQualifiedType();
+	for (const auto& kv : dataObjects) {
+		for (auto* dataObject : kv.second) {
+			const std::string datatype = dataObject->getQualifiedType();
 			if (datatype.find(filter) != std::string::npos) {
-				result[datatype].push_back(it->second[i]);
+				result[datatype].push_back(dataObject);
 			}
 		}
 	}
@@ -831,15 +835,14 @@ std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataO
 	return result;
 }
 
-
 std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getDataObjectsByContentType(const std::string & contentType) const
 {
 	std::vector<COMMON_NS::AbstractObject*> result;
 
-	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (it->second[i]->getContentType() == contentType) {
-				result.push_back(it->second[i]);
+	for (const auto& kv : dataObjects) {
+		for (auto* dataObject : kv.second) {
+			if (dataObject->getContentType() == contentType) {
+				result.push_back(dataObject);
 			}
 		}
 	}
@@ -892,7 +895,7 @@ std::vector<std::string> DataObjectRepository::getUuids() const
 	std::vector<std::string> keys;
 	keys.reserve(dataObjects.size());
 	
-	for (auto kv : dataObjects) {
+	for (const auto& kv : dataObjects) {
 		keys.push_back(kv.first);
 	}
 
@@ -2982,12 +2985,10 @@ GETTER_DATAOBJECTS_IMPL(PRODML2_2_NS::FluidCharacterization, FluidCharacterizati
 
 std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFaultSet() const
 {
-	std::vector<RESQML2_NS::FaultInterpretation*> faultInterps = getDataObjects<RESQML2_NS::FaultInterpretation>();
-
 	std::vector<RESQML2_NS::BoundaryFeature*> result;
 
-	for (auto faultinterp : faultInterps) {
-		auto feature = faultinterp->getInterpretedFeature();
+	for (auto const* faultinterp : getDataObjects<RESQML2_NS::FaultInterpretation>()) {
+		auto* feature = faultinterp->getInterpretedFeature();
 		if (std::find(result.begin(), result.end(), feature) == result.end()) {
 			result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
 		}
@@ -2998,13 +2999,11 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFaultSet() co
 
 std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFractureSet() const
 {
-	std::vector<RESQML2_NS::BoundaryFeatureInterpretation*> interps = getDataObjects<RESQML2_NS::BoundaryFeatureInterpretation>();
-
 	std::vector<RESQML2_NS::BoundaryFeature*> result;
 
-	for (auto interp : interps) {
-		if (interp->getXmlTag() == "BoundaryFeatureInterpretation") {
-			auto feature = interp->getInterpretedFeature();
+	for (auto const* interp : getDataObjects<RESQML2_NS::BoundaryFeatureInterpretation>()) {
+		if (interp->getXmlTag() == RESQML2_NS::BoundaryFeatureInterpretation::XML_TAG) {
+			auto* feature = interp->getInterpretedFeature();
 			if (std::find(result.begin(), result.end(), feature) == result.end()) {
 				result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
 			}
@@ -3016,17 +3015,13 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFractureSet()
 
 vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFaultPolylineSetRepresentationSet() const
 {
-	const std::vector<RESQML2_NS::BoundaryFeature*> faultSet = getFaultSet();
-
 	vector<RESQML2_NS::PolylineSetRepresentation *> result;
 
-	for (size_t featureIndex = 0; featureIndex < faultSet.size(); ++featureIndex) {
-		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = faultSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]));
+	for (auto const* fault : getFaultSet()) {
+		for (auto const* interp : fault->getInterpretationSet()) {
+			for (auto* rep : interp->getRepresentationSet()) {
+				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(rep) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(rep));
 				}
 			}
 		}
@@ -3037,17 +3032,13 @@ vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFaultPo
 
 vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFracturePolylineSetRepresentationSet() const
 {
-	const std::vector<RESQML2_NS::BoundaryFeature*> fractureSet = getFractureSet();
-
 	vector<RESQML2_NS::PolylineSetRepresentation *> result;
 
-	for (size_t featureIndex = 0; featureIndex < fractureSet.size(); ++featureIndex) {
-		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = fractureSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]));
+	for (auto const* fracture : getFractureSet()) {
+		for (auto const* interp : fracture->getInterpretationSet()) {
+			for (auto* rep : interp->getRepresentationSet()) {
+				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(rep) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(rep));
 				}
 			}
 		}
@@ -3058,17 +3049,13 @@ vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getFractur
 
 vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getCulturalPolylineSetRepresentationSet() const
 {
-	const std::vector<RESQML2_NS::CulturalFeature*> frontierSet = getCulturalSet();
-
 	vector<RESQML2_NS::PolylineSetRepresentation *> result;
 
-	for (size_t featureIndex = 0; featureIndex < frontierSet.size(); ++featureIndex) {
-		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = frontierSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]));
+	for (auto const* cultural : getCulturalSet()) {
+		for (auto const* interp : cultural->getInterpretationSet()) {
+			for (auto* rep : interp->getRepresentationSet()) {
+				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(rep) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(rep));
 				}
 			}
 		}
@@ -3079,16 +3066,13 @@ vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getCultura
 
 vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getFaultTriangulatedSetRepresentationSet() const
 {
-	const std::vector<RESQML2_NS::BoundaryFeature*> faultSet = getFaultSet();
 	vector<RESQML2_NS::TriangulatedSetRepresentation *> result;
 
-	for (size_t featureIndex = 0; featureIndex < faultSet.size(); ++featureIndex) {
-		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = faultSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::TriangulatedSetRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::TriangulatedSetRepresentation*>(repSet[repIndex]));
+	for (auto const* fault : getFaultSet()) {
+		for (auto const* interp : fault->getInterpretationSet()) {
+			for (auto* rep : interp->getRepresentationSet()) {
+				if (dynamic_cast<RESQML2_NS::TriangulatedSetRepresentation*>(rep) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::TriangulatedSetRepresentation*>(rep));
 				}
 			}
 		}
@@ -3099,17 +3083,13 @@ vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getFau
 
 vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getFractureTriangulatedSetRepresentationSet() const
 {
-	const std::vector<RESQML2_NS::BoundaryFeature*> fractureSet = getFractureSet();
-
 	vector<RESQML2_NS::TriangulatedSetRepresentation *> result;
 
-	for (size_t featureIndex = 0; featureIndex < fractureSet.size(); ++featureIndex) {
-		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = fractureSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::TriangulatedSetRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::TriangulatedSetRepresentation*>(repSet[repIndex]));
+	for (auto const* fracture : getFractureSet()) {
+		for (auto const* interp : fracture->getInterpretationSet()) {
+			for (auto* rep : interp->getRepresentationSet()) {
+				if (dynamic_cast<RESQML2_NS::TriangulatedSetRepresentation*>(rep) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::TriangulatedSetRepresentation*>(rep));
 				}
 			}
 		}
@@ -3120,12 +3100,10 @@ vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getFra
 
 std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getHorizonSet() const
 {
-	std::vector<RESQML2_NS::HorizonInterpretation*> horizonInterps = getDataObjects<RESQML2_NS::HorizonInterpretation>();
-
 	std::vector<RESQML2_NS::BoundaryFeature*> result;
 
-	for (auto horizonInterp : horizonInterps) {
-		auto feature = horizonInterp->getInterpretedFeature();
+	for (auto const* horizonInterp : getDataObjects<RESQML2_NS::HorizonInterpretation>()) {
+		auto* feature = horizonInterp->getInterpretedFeature();
 		if (std::find(result.begin(), result.end(), feature) == result.end()) {
 			result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
 		}
@@ -3136,12 +3114,10 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getHorizonSet() 
 
 std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getGeobodyBoundarySet() const
 {
-	std::vector<RESQML2_NS::GeobodyBoundaryInterpretation*> horizonInterps = getDataObjects<RESQML2_NS::GeobodyBoundaryInterpretation>();
-
 	std::vector<RESQML2_NS::BoundaryFeature*> result;
 
-	for (auto horizonInterp : horizonInterps) {
-		auto feature = horizonInterp->getInterpretedFeature();
+	for (auto const* horizonInterp : getDataObjects<RESQML2_NS::GeobodyBoundaryInterpretation>()) {
+		auto* feature = horizonInterp->getInterpretedFeature();
 		if (std::find(result.begin(), result.end(), feature) == result.end()) {
 			result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
 		}
@@ -3151,10 +3127,10 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getGeobodyBounda
 }
 
 std::vector<RESQML2_NS::RockVolumeFeature*> DataObjectRepository::getGeobodySet() const { 
-	auto interps = getDataObjects<RESQML2_NS::GeobodyInterpretation>();
 	std::vector<RESQML2_NS::RockVolumeFeature*> result;
-	for (auto interp : interps) {
-		auto feature = interp->getInterpretedFeature();
+
+	for (auto const* interp : getDataObjects<RESQML2_NS::GeobodyInterpretation>()) {
+		auto* feature = interp->getInterpretedFeature();
 		if (std::find(result.begin(), result.end(), feature) == result.end()) {
 			result.push_back(static_cast<RESQML2_NS::RockVolumeFeature*>(feature));
 		}
@@ -3167,14 +3143,11 @@ vector<RESQML2_NS::Grid2dRepresentation *> DataObjectRepository::getHorizonGrid2
 {
 	vector<RESQML2_NS::Grid2dRepresentation *> result;
 
-	const vector<RESQML2_NS::BoundaryFeature*> horizonSet = getHorizonSet();
-	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
-		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = horizonSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::Grid2dRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::Grid2dRepresentation*>(repSet[repIndex]));
+	for (auto const* horizon : getHorizonSet()) {
+		for (auto const* interp : horizon->getInterpretationSet()) {
+			for (auto* rep : interp->getRepresentationSet()) {
+				if (dynamic_cast<RESQML2_NS::Grid2dRepresentation*>(rep) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::Grid2dRepresentation*>(rep));
 				}
 			}
 		}
@@ -3187,14 +3160,11 @@ std::vector<RESQML2_NS::PolylineRepresentation *> DataObjectRepository::getHoriz
 {
 	vector<RESQML2_NS::PolylineRepresentation *> result;
 
-	const vector<RESQML2_NS::BoundaryFeature*> horizonSet = getHorizonSet();
-	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
-		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = horizonSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::PolylineRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::PolylineRepresentation*>(repSet[repIndex]));
+	for (auto const* horizon : getHorizonSet()) {
+		for (auto const* interp : horizon->getInterpretationSet()) {
+			for (auto* rep : interp->getRepresentationSet()) {
+				if (dynamic_cast<RESQML2_NS::PolylineRepresentation*>(rep) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::PolylineRepresentation*>(rep));
 				}
 			}
 		}
@@ -3207,14 +3177,11 @@ std::vector<RESQML2_NS::PolylineSetRepresentation *> DataObjectRepository::getHo
 {
 	vector<RESQML2_NS::PolylineSetRepresentation *> result;
 
-	const vector<RESQML2_NS::BoundaryFeature*> horizonSet = getHorizonSet();
-	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
-		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = horizonSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(repSet[repIndex]));
+	for (auto const* horizon : getHorizonSet()) {
+		for (auto const* interp : horizon->getInterpretationSet()) {
+			for (auto* rep : interp->getRepresentationSet()) {
+				if (dynamic_cast<RESQML2_NS::PolylineSetRepresentation*>(rep) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::PolylineSetRepresentation*>(rep));
 				}
 			}
 		}
@@ -3227,14 +3194,11 @@ vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getHor
 {
 	vector<RESQML2_NS::TriangulatedSetRepresentation *> result;
 
-	const vector<RESQML2_NS::BoundaryFeature*> horizonSet = getHorizonSet();
-	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
-		const vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = horizonSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			const vector<RESQML2_NS::AbstractRepresentation *> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (dynamic_cast<RESQML2_NS::TriangulatedSetRepresentation*>(repSet[repIndex]) != nullptr) {
-					result.push_back(static_cast<RESQML2_NS::TriangulatedSetRepresentation*>(repSet[repIndex]));
+	for (auto const* horizon : getHorizonSet()) {
+		for (auto const* interp : horizon->getInterpretationSet()) {
+			for (auto* rep : interp->getRepresentationSet()) {
+				if (dynamic_cast<RESQML2_NS::TriangulatedSetRepresentation*>(rep) != nullptr) {
+					result.push_back(static_cast<RESQML2_NS::TriangulatedSetRepresentation*>(rep));
 				}
 			}
 		}

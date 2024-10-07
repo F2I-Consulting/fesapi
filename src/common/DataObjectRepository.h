@@ -441,6 +441,14 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentOrDataType, const std::string& uriSource);
 
 		/**
+		 * Sets the URI Source of all dataobjects of this repository.
+		 * It is particularly useful to map a repository to an ETP dataspace.
+		 *
+		 * @param	uriSource			The EPC document absolute path or the ETP dataspace URI associated to all dataobjects of this repository
+		 */
+		DLL_IMPORT_OR_EXPORT void setUriSource(const std::string& uriSource);
+
+		/**
 		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobejct ot delte has got backward relationships.
 		* It also goes on every forward related dataobject and delete them if they have no more backward relationships.
 		* It does that recursively.

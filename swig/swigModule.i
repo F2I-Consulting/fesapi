@@ -932,7 +932,7 @@ import com.f2i_consulting.fesapi.*;
 		* @param [in]	factory	If non-null, the factory.
 		*/
 		void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
-		
+
 		/**
 		 * Adds or replaces (based on Energistics XML definition) a data object in the repository. It
 		 * does not update the relationships of the added or replaced data object
@@ -949,7 +949,15 @@ import com.f2i_consulting.fesapi.*;
 		 * 			pointer the added or replaced data object.
 		 */
 		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string& xml, const std::string& contentType, const std::string& uriSource);
-		
+
+		/**
+		 * Sets the URI Source of all dataobjects of this repository.
+		 * It is particularly useful to map a repository to an ETP dataspace.
+		 *
+		 * @param	uriSource			The EPC document absolute path or the ETP dataspace URI associated to all dataobjects of this repository
+		 */
+		void setUriSource(const std::string& uriSource);
+
 		/**
 		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobejct ot delte has got backward relationships.
 		* It also goes on every forward related dataobject and delete them if they have no more backward relationships.
