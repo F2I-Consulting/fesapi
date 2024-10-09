@@ -153,17 +153,20 @@ under the License.
     try {
         $action
     }
-    catch (std::invalid_argument & e) {
+    catch (std::invalid_argument& e) {
         SWIG_exception(SWIG_TypeError,const_cast<char*>(e.what()));
     } 
     catch (std::out_of_range& e) {
         SWIG_exception(SWIG_IndexError,const_cast<char*>(e.what()));
     }
-    catch (std::logic_error & e) {
+    catch (std::logic_error& e) {
         SWIG_exception(SWIG_SyntaxError,const_cast<char*>(e.what()));
+    }
+    catch (std::exception& e) {
+        SWIG_exception(SWIG_RuntimeError,const_cast<char*>(e.what()));
     } 
     catch(...) {
-        SWIG_exception(SWIG_RuntimeError,"Unknown exception at F2I C++ API level");
+        SWIG_exception(SWIG_UnknownError,"Unknown exception at FESAPI C++ API level");
     }
 }
 
