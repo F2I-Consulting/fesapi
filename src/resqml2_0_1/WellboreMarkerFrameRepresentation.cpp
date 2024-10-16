@@ -20,8 +20,6 @@ under the License.
 
 #include <stdexcept>
 
-#include <H5Tpublic.h>
-
 #include "../eml2/AbstractHdfProxy.h"
 
 #include "../resqml2/WellboreInterpretation.h"
@@ -52,7 +50,7 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(RESQML2_NS:
 	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	interp->getRepository()->addDataObject(this);
 	setInterpretation(interp);
@@ -63,6 +61,7 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(RESQML2_NS:
 
 void WellboreMarkerFrameRepresentation::pushBackNewWellboreMarker(RESQML2_0_1_NS::WellboreMarker * marker)
 {
+	cannotBePartial();
 	getRepository()->addRelationship(marker, this);
 
 	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
@@ -73,12 +72,14 @@ void WellboreMarkerFrameRepresentation::pushBackNewWellboreMarker(RESQML2_0_1_NS
 
 COMMON_NS::DataObjectReference WellboreMarkerFrameRepresentation::getStratigraphicOccurrenceInterpretationDor() const
 {
+	cannotBePartial();
 	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 	return frame->IntervalStratigraphiUnits != nullptr ? COMMON_NS::DataObjectReference(frame->IntervalStratigraphiUnits->StratigraphicOrganization) : COMMON_NS::DataObjectReference();
 }
 
 void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp)
 {
+	cannotBePartial();
 	getRepository()->addRelationship(this, stratiOccurrenceInterp);
 
 	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
@@ -88,6 +89,7 @@ void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation
 
 void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, RESQML2_NS::StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy)
 {
+	cannotBePartial();
 	if (stratiUnitIndices == nullptr) {
 		throw invalid_argument("The strati unit indices cannot be null.");
 	}
@@ -111,6 +113,7 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 
 void WellboreMarkerFrameRepresentation::loadTargetRelationships()
 {
+	cannotBePartial();
 	RESQML2_NS::WellboreMarkerFrameRepresentation::loadTargetRelationships();
 
 	_resqml20__WellboreMarkerFrameRepresentation* rep = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
