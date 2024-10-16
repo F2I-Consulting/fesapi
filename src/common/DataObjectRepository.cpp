@@ -3306,7 +3306,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 	{
 		GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(StratigraphicOccurrenceInterpretation)
 		if (!read->GeologicUnitIndex.empty() &&
-			read->GeologicUnitIndex.front()->Unit->ContentType.find("RockFluidUnitInterpretation")) {
+			read->GeologicUnitIndex.front()->Unit->ContentType.find("RockFluidUnitInterpretation") != std::string::npos) {
 			wrapper = new RESQML2_0_1_NS::RockFluidOrganizationInterpretation(read);
 		}
 		else {
