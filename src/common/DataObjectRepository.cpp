@@ -210,20 +210,6 @@ using namespace RESQML2_0_1_NS;
 using namespace WITSML2_1_NS;
 using namespace PRODML2_2_NS;
 
-namespace {
-	class SameVersion {
-	private:
-		std::string version;
-	public:
-		explicit SameVersion(const std::string & version_) : version(version_) {}
-
-		bool operator()(COMMON_NS::AbstractObject const * dataObj) const
-		{
-			return dataObj->getVersion() == version;
-		}
-	};
-}
-
 // Create a fesapi partial wrapper based on a data type and its version
 #define CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(className)\
 	(dataType.compare(className::XML_TAG) == 0) {\
@@ -523,12 +509,6 @@ std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getSourceObjects(C
 	return result;
 }
 
-namespace {
-	void clearVectorOfMapEntry(std::pair< COMMON_NS::AbstractObject const * const, std::vector< COMMON_NS::AbstractObject * > > & entry) {
-		entry.second.clear();
-	}
-}
-
 void DataObjectRepository::updateAllRelationships()
 {
 	// Tansform the map values into a vector because we are going to potentially insert new elements in the map when looping.
@@ -541,8 +521,12 @@ void DataObjectRepository::updateAllRelationships()
 		}
 	}
 
-	std::for_each(forwardRels.begin(), forwardRels.end(), clearVectorOfMapEntry);
-	std::for_each(backwardRels.begin(), backwardRels.end(), clearVectorOfMapEntry);
+	for (auto& kv : forwardRels) {
+		kv.second.clear();
+	}
+	for (auto& kv : backwardRels) {
+		kv.second.clear();
+	}
 	for (auto* nonPartialObject : nonPartialObjects) {
 		try {
 			nonPartialObject->loadTargetRelationships();
@@ -617,7 +601,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 
 	if (!addDataObject(proxy)) {
 		std::vector< COMMON_NS::AbstractObject* >& versions = dataObjects[proxy->getUuid()];
-		std::vector< COMMON_NS::AbstractObject* >::iterator same = std::find_if(versions.begin(), versions.end(), SameVersion(proxy->getVersion()));
+		std::vector< COMMON_NS::AbstractObject* >::iterator same = std::find_if(versions.begin(), versions.end(),
+			[proxy](COMMON_NS::AbstractObject const* dataObj) { return dataObj->getVersion() == proxy->getVersion(); });
 
 		// Assume "no version" means current latest version in the repository
 		if (same == versions.end()) {
@@ -633,7 +618,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 			}
 			else {
 				// replace repository unversionned version by the versioned version which are consequently both the current latest version in the repository
-				same = std::find_if(versions.begin(), versions.end(), SameVersion(""));
+				same = std::find_if(versions.begin(), versions.end(),
+					[](COMMON_NS::AbstractObject const* dataObj) { return dataObj->getVersion().empty(); });
 			}
 		}
 
@@ -862,7 +848,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuid(const strin
 	return it == dataObjects.end() || it->second.empty() ? nullptr : it->second.back();
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(const string & uuid, const std::string & version) const
+COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(const std::string& uuid, const std::string& version) const
 {
 	std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
 
@@ -871,7 +857,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(c
 	}
 	
 	if (!version.empty()) {
-		std::vector< COMMON_NS::AbstractObject* >::const_iterator vectIt = std::find_if(it->second.begin(), it->second.end(), SameVersion(version));
+		std::vector< COMMON_NS::AbstractObject* >::const_iterator vectIt = std::find_if(it->second.begin(), it->second.end(),
+			[&version](COMMON_NS::AbstractObject const* dataObj) { return dataObj->getVersion() == version; });
 		return vectIt == it->second.end() ? nullptr : *vectIt;
 	}
 	else {
@@ -879,7 +866,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(c
 	}
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(const std::array<uint8_t, 16> & uuid, const std::string & version) const
+COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(const std::array<uint8_t, 16>& uuid, const std::string& version) const
 {
 	boost::uuids::uuid const* boostUuid = reinterpret_cast<boost::uuids::uuid const*>(uuid.data());
 	return getDataObjectByUuidAndVersion(boost::uuids::to_string(*boostUuid), version);
@@ -3212,66 +3199,68 @@ vector<RESQML2_NS::TriangulatedSetRepresentation *> DataObjectRepository::getHor
 	return result;
 }
 
-namespace {
-	bool isClassified(RESQML2_NS::TriangulatedSetRepresentation* tsr) {
-		RESQML2_NS::AbstractFeatureInterpretation const * const interp = tsr->getInterpretation();
-		if (interp == nullptr) {
-			return false;
-		}
-
-		if (!interp->isPartial()) {
-			if (dynamic_cast<RESQML2_NS::FaultInterpretation const*>(interp) == nullptr &&
-				dynamic_cast<RESQML2_NS::HorizonInterpretation const*>(interp) == nullptr) {
-				return false;
-			}
-		}
-		else {
-			const std::string contentType = tsr->getInterpretationDor().getContentType();
-			if (contentType.find("Horizon") == string::npos &&
-				contentType.find("Fault") == string::npos) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-}
-
 std::vector<RESQML2_NS::TriangulatedSetRepresentation*> DataObjectRepository::getUnclassifiedTriangulatedSetRepresentationSet() const
 {
 	std::vector<RESQML2_NS::TriangulatedSetRepresentation*> result = getDataObjects<RESQML2_NS::TriangulatedSetRepresentation>();
 
-	result.erase(std::remove_if(result.begin(), result.end(), isClassified), result.end());
+	result.erase(
+		std::remove_if(
+			result.begin(), result.end(),
+			[](RESQML2_NS::TriangulatedSetRepresentation const* tsr) {
+				RESQML2_NS::AbstractFeatureInterpretation const* const interp = tsr->getInterpretation();
+				if (interp == nullptr) {
+					return false;
+				}
+
+				if (!interp->isPartial()) {
+					if (dynamic_cast<RESQML2_NS::FaultInterpretation const*>(interp) == nullptr &&
+						dynamic_cast<RESQML2_NS::HorizonInterpretation const*>(interp) == nullptr) {
+						return false;
+					}
+				}
+				else {
+					const std::string contentType = tsr->getInterpretationDor().getContentType();
+					if (contentType.find("Horizon") == string::npos &&
+						contentType.find("Fault") == string::npos) {
+						return false;
+					}
+				}
+
+				return true;
+			}
+		),
+		result.end()
+	);
 
 	return result;
-}
-
-namespace {
-	bool isSeismicOrFaciesLine(RESQML2_NS::PolylineRepresentation* pr) {
-		return pr->isASeismicLine() || pr->isAFaciesLine();
-	}
 }
 
 std::vector<RESQML2_NS::PolylineRepresentation*> DataObjectRepository::getSeismicLinePolylineRepresentationSet() const
 {
 	std::vector<RESQML2_NS::PolylineRepresentation*> result = getDataObjects<RESQML2_NS::PolylineRepresentation>();
 
-	result.erase(std::remove_if(result.begin(), result.end(), std::not1(std::ptr_fun(isSeismicOrFaciesLine))), result.end());
+	result.erase(
+		std::remove_if(
+			result.begin(), result.end(),
+			[](RESQML2_NS::PolylineRepresentation const* pr) {return !pr->isASeismicLine() && !pr->isAFaciesLine(); }
+		),
+		result.end()
+	);
 
 	return result;
-}
-
-namespace {
-	bool isSeismicOrFaciesCube(RESQML2_NS::IjkGridLatticeRepresentation* Ijkglr) {
-		return Ijkglr->isASeismicCube() || Ijkglr->isAFaciesCube();
-	}
 }
 
 vector<RESQML2_NS::IjkGridLatticeRepresentation*> DataObjectRepository::getIjkSeismicCubeGridRepresentationSet() const
 {
 	std::vector<RESQML2_NS::IjkGridLatticeRepresentation*> result = getDataObjects<RESQML2_NS::IjkGridLatticeRepresentation>();
 
-	result.erase(std::remove_if(result.begin(), result.end(), std::not1(std::ptr_fun(isSeismicOrFaciesCube))), result.end());
+	result.erase(
+		std::remove_if(
+			result.begin(), result.end(),
+			[](RESQML2_NS::IjkGridLatticeRepresentation const* ijkGrid) {return !ijkGrid->isASeismicCube() && !ijkGrid->isAFaciesCube(); }
+		),
+		result.end()
+	);
 
 	return result;
 }
