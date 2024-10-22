@@ -155,7 +155,7 @@ under the License.
     }
     catch (std::invalid_argument& e) {
         SWIG_exception(SWIG_TypeError,const_cast<char*>(e.what()));
-    } 
+    }
     catch (std::out_of_range& e) {
         SWIG_exception(SWIG_IndexError,const_cast<char*>(e.what()));
     }
@@ -164,7 +164,7 @@ under the License.
     }
     catch (std::exception& e) {
         SWIG_exception(SWIG_RuntimeError,const_cast<char*>(e.what()));
-    } 
+    }
     catch(...) {
         SWIG_exception(SWIG_UnknownError,"Unknown exception at FESAPI C++ API level");
     }
