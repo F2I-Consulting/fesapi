@@ -150,10 +150,11 @@ namespace EML2_NS
 		* Pushes back a new column in this table and fill in its header
 		*
 		* @param isAKeyColumn		Indicate if the column to push back is a key one or not
+		* @param title				Indicate the name of the column
 		* @param propKind			The property kind associated to the value of this column
 		* @param valueCountPerRow	The count of values in each row of this column
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void pushBackColumnHeader(bool isAKeyColumn, PropertyKind* propKind, uint64_t valueCountPerRow = 1) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackColumnHeader(bool isAKeyColumn, const std::string& title, PropertyKind* propKind, uint64_t valueCountPerRow = 1) = 0;
 
 	protected:
 

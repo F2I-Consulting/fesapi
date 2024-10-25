@@ -28,7 +28,7 @@ under the License.
 #include "../epc/Relationship.h"
 #include "../epc/FilePart.h"
 
-#include "../eml2/AbstractHdfProxy.h"
+#include "../eml2_3/HdfProxy.h"
 
 #include "../resqml2/AbstractProperty.h"
 #include "../resqml2/AbstractRepresentation.h"
@@ -152,23 +152,30 @@ namespace {
 		const std::vector<COMMON_NS::AbstractObject*>& targetObjs = repo.getTargetObjects(dataObj);
 		if (dynamic_cast<WITSML2_1_NS::Log const *>(dataObj) == nullptr &&
 			dynamic_cast<WITSML2_1_NS::ChannelSet const *>(dataObj) == nullptr) {
-			for (size_t index = 0; index < targetObjs.size(); ++index) {
-				if (!targetObjs[index]->isPartial()) {
-					if (dynamic_cast<RESQML2_NS::WellboreMarker*>(targetObjs[index]) == nullptr) {
-						epc::Relationship relRep("../" + targetObjs[index]->getPartNameInEpcDocument(), "", targetObjs[index]->getUuid());
+			for (COMMON_NS::AbstractObject* targetObj : targetObjs) {
+				if (!targetObj->isPartial()) {
+					if (dynamic_cast<RESQML2_NS::WellboreMarker*>(targetObj) == nullptr) {
+						epc::Relationship relRep("../" + targetObj->getPartNameInEpcDocument(), "", targetObj->getUuid());
 						relRep.setDestinationObjectType();
 						result.push_back(relRep);
 					}
 					else {
-						const std::vector<COMMON_NS::AbstractObject *>& targetMarkers = repo.getTargetObjects(srcObj[index]);
-						for (size_t index2 = 0; index2 < targetMarkers.size(); ++index2) {
-							if (!targetMarkers[index2]->isPartial() &&
-								dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(targetMarkers[index2]) == nullptr) {
-								epc::Relationship relRep("../" + targetMarkers[index2]->getPartNameInEpcDocument(), "", targetMarkers[index2]->getUuid());
+						for (COMMON_NS::AbstractObject* markerTarget : repo.getTargetObjects(targetObj)) {
+							if (!markerTarget->isPartial() &&
+								dynamic_cast<RESQML2_NS::WellboreMarkerFrameRepresentation*>(markerTarget) == nullptr) {
+								epc::Relationship relRep("../" + markerTarget->getPartNameInEpcDocument(), "", markerTarget->getUuid());
 								relRep.setDestinationObjectType();
 								result.push_back(relRep);
 							}
 						}
+					}
+				}
+				else {
+					EML2_3_NS::HdfProxy const* eml23_hdfProxy = dynamic_cast<EML2_3_NS::HdfProxy const*>(targetObj);
+					if (eml23_hdfProxy != nullptr) {
+						epc::Relationship relExt(eml23_hdfProxy->getRelativePath(), "", "Hdf5File", false);
+						relExt.setExternalResourceType();
+						result.push_back(relExt);
 					}
 				}
 			}

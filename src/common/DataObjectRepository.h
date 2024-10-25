@@ -41,6 +41,7 @@ namespace EML2_NS
 namespace EML2_3_NS
 {
 	class BusinessAssociate;
+	class ColumnBasedTable;
 }
 
 namespace RESQML2_NS
@@ -2624,6 +2625,26 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new facies table.
 		 */
 		DLL_IMPORT_OR_EXPORT EML2_NS::ColumnBasedTable* createFaciesTable(const std::string & guid, const std::string & title);
+
+#ifdef WITH_RESQML2_2
+		/**
+		 * @brief	Creates a facies table into this repository
+		 *			A facies table is a column based table which already has got two column headers :
+		 *				column 0 is a key column (ordinal number prop kind) and must contain integer
+		 *				column 1 is a normal column (facies prop kind) and must contain string
+		 *			You need to set the values of the column after creation
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the facies table. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the facies table. If empty then \"unknown\" title
+		 * 					will be set.
+		 *
+		 * @returns	A pointer to the new facies table.
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_3_NS::ColumnBasedTable* createColumnBasedTable(const std::string& guid, const std::string& title);
+#endif
 
 		/**
 		 * Creates a RESQML2.0.1 only property kind into this repository

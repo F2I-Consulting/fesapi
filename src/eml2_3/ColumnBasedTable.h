@@ -135,6 +135,16 @@ namespace EML2_3_NS
 		DLL_IMPORT_OR_EXPORT void setDoubleValues(uint64_t columnIndex, const std::vector<double>& values) final;
 
 		/**
+		 * Sets the values of a column as XML double values into the HDF proxy.
+		 *
+		 * @param columnIndex	The index of the column which we want to set the values
+		 * @param values		The values to set
+		 * @param valueCount	The count of values/rows.
+		 * @param proxy			The hdf proxy which indicates the support where the values will be stored.
+		 */
+		DLL_IMPORT_OR_EXPORT void setDoubleValues(uint64_t columnIndex, double const* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
 		 * Gets the values of a column as int64 values
 		 *
 		 * @param columnIndex	The index of the column which we want the values from
@@ -155,10 +165,11 @@ namespace EML2_3_NS
 		* Pushes back a new column in this table and fill in its header
 		*
 		* @param isAKeyColumn		Indicate if the column to push back is a key one or not
+		* @param title				Indicate the name of the column
 		* @param propKind			The property kind associated to the value of this column
 		* @param valueCountPerRow	The count of values in each row of this column
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackColumnHeader(bool isAKeyColumn, EML2_NS::PropertyKind* propKind, uint64_t valueCountPerRow = 1) final;
+		DLL_IMPORT_OR_EXPORT void pushBackColumnHeader(bool isAKeyColumn, const std::string& title, EML2_NS::PropertyKind* propKind, uint64_t valueCountPerRow = 1) final;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "ColumnBasedTable";

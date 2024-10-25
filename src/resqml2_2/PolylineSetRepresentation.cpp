@@ -90,8 +90,6 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 
 	resqml22__PolylineSetPatch* patch = soap_new_resqml22__PolylineSetPatch(gsoapProxy2_3->soap);
 
-	getRepository()->addRelationship(this, proxy);
-
 	// node count
 	eml23__IntegerXmlArray* xmlNodeCountPerPolyline = soap_new_eml23__IntegerXmlArray(gsoapProxy2_3->soap);
 	xmlNodeCountPerPolyline->CountPerValue = 1;
@@ -141,8 +139,6 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	}
 
 	resqml22__PolylineSetPatch* patch = soap_new_resqml22__PolylineSetPatch(gsoapProxy2_3->soap);
-
-	getRepository()->addRelationship(this, proxy);
 
 	// node count
 	eml23__IntegerXmlArray* xmlNodeCountPerPolyline = soap_new_eml23__IntegerXmlArray(gsoapProxy2_3->soap);

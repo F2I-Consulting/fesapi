@@ -134,7 +134,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setInt64Values(uint64_t, const std::vector<int64_t>&) final
 			{ throw std::logic_error("The column does not contain integer values"); }
 
-		DLL_IMPORT_OR_EXPORT void pushBackColumnHeader(bool, EML2_NS::PropertyKind*, uint64_t = 1) final
+		DLL_IMPORT_OR_EXPORT void pushBackColumnHeader(bool, const std::string&, EML2_NS::PropertyKind*, uint64_t = 1) final
 			{ throw std::logic_error("You cannot push back new column to a double table lookup."); }
 
 		/** The standard XML tag without XML namespace for serializing this data object. */

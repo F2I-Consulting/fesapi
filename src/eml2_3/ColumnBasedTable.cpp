@@ -154,6 +154,36 @@ void ColumnBasedTable::setDoubleValues(uint64_t columnIndex, const std::vector<d
 	column->Values = xmlArray;
 }
 
+void ColumnBasedTable::setDoubleValues(uint64_t columnIndex, double const* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy)
+{
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+	getRepository()->addRelationship(this, proxy);
+
+	auto* column = getColumn(columnIndex);
+	auto* externalArray = soap_new_eml23__FloatingPointExternalArray(column->soap);
+	externalArray->CountPerValue = column->ValueCountPerRow;
+
+	// Column datatype
+	int64_t n = 1; // Endianess check https://stackoverflow.com/questions/4181951/how-to-check-whether-a-system-is-big-endian-or-little-endian
+	externalArray->ArrayFloatingPointType = (*(char*)&n == 1) ? eml23__FloatingPointType::arrayOfFloat32LE : eml23__FloatingPointType::arrayOfFloat32BE;
+
+	// Column Values
+	externalArray->Values = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+	externalArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/column" + std::to_string(columnIndex), valueCount, proxy));
+
+	// HDF
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
+		"column" + std::to_string(columnIndex),
+		values, &valueCount, 1);
+
+	column->Values = externalArray;
+}
+
 std::vector<int64_t> ColumnBasedTable::getInt64Values(uint64_t columnIndex) const
 {
 	std::vector<int64_t> result;
@@ -188,7 +218,7 @@ void ColumnBasedTable::setInt64Values(uint64_t columnIndex, const std::vector<in
 	column->Values = xmlArray;
 }
 
-void ColumnBasedTable::pushBackColumnHeader(bool isAKeyColumn, EML2_NS::PropertyKind* propKind, uint64_t valueCountPerRow)
+void ColumnBasedTable::pushBackColumnHeader(bool isAKeyColumn, const std::string& title, EML2_NS::PropertyKind* propKind, uint64_t valueCountPerRow)
 {
 	auto* cbt = static_cast<_eml23__ColumnBasedTable*>(gsoapProxy2_3);
 	
@@ -198,6 +228,11 @@ void ColumnBasedTable::pushBackColumnHeader(bool isAKeyColumn, EML2_NS::Property
 	}
 	else {
 		cbt->Column.push_back(column);
+	}
+
+	if (!title.empty()) {
+		column->Title = soap_new_std__string(gsoapProxy2_3->soap);
+		column->Title->assign(title);
 	}
 
 	column->ValueCountPerRow = valueCountPerRow;

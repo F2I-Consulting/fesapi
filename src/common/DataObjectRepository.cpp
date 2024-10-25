@@ -2484,18 +2484,25 @@ EML2_NS::ColumnBasedTable* DataObjectRepository::createFaciesTable(const std::st
 		if (pwlsPropKind == nullptr) {
 			pwlsPropKind = createPartial<EML2_3_NS::PropertyKind>("323df361-784e-4062-a346-ff4ba80a78f0", "ordinal number");
 		}
-		result->pushBackColumnHeader(true, pwlsPropKind);
+		result->pushBackColumnHeader(true, "", pwlsPropKind);
 		pwlsPropKind = getDataObjectByUuid<EML2_NS::PropertyKind>("838b1a9b-2fca-4e2e-aae3-323ef1bc59c7");
 		if (pwlsPropKind == nullptr) {
 			pwlsPropKind = createPartial<EML2_3_NS::PropertyKind>("838b1a9b-2fca-4e2e-aae3-323ef1bc59c7", "facies type");
 		}
-		result->pushBackColumnHeader(false, pwlsPropKind);
+		result->pushBackColumnHeader(false, "", pwlsPropKind);
 		return result;
 	}
 #endif
 	default: throw std::logic_error("The RESQML version is not supported.");
 	}
 }
+
+#ifdef WITH_RESQML2_2
+EML2_3_NS::ColumnBasedTable* DataObjectRepository::createColumnBasedTable(const std::string& guid, const std::string& title)
+{
+	return new EML2_3_NS::ColumnBasedTable(this, guid, title);
+}
+#endif
 
 RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
 	const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)

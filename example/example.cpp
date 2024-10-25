@@ -89,6 +89,7 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 #if WITH_RESQML2_2
+#include "eml2_3/ColumnBasedTable.h"
 #include "eml2_3/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
@@ -259,6 +260,29 @@ void serializeWitsmlWells(COMMON_NS::DataObjectRepository * repo)
 	witsmlWellboreMarker = repo->createWellboreMarker(witsmlWellbore, "08b18514-e0c8-4667-850b-4ddd1cb785b5", "WITSML marker", 350, gsoap_eml2_3::eml23__LengthUom::m);
 	witsmlWellboreMarker->setDipAngle(5, gsoap_eml2_3::eml23__PlaneAngleUom::dega);
 	witsmlWellboreMarker->setDipDirection(10, gsoap_eml2_3::eml23__PlaneAngleUom::dega);
+}
+
+void serializeColumnBasedTable(COMMON_NS::DataObjectRepository* repo, EML2_NS::AbstractHdfProxy* hdfProxy)
+{
+	auto* cbt = repo->createColumnBasedTable("866841eb-0c56-4b7d-96d6-f15f385deaf9", "KrPc");
+
+	auto* pwls3Saturation = repo->createPropertyKind("cfe9293f-d5a9-486d-815a-a957cace90b6", "saturation", gsoap_eml2_3::eml23__QuantityClassKind::dimensionless);
+	auto* pwls3RelPerm = repo->createPropertyKind("8e3c5579-7efd-40d0-ab03-bc79452dd2db", "relative permeability", gsoap_eml2_3::eml23__QuantityClassKind::unitless);
+	auto* pwls3CapPressure = repo->createPropertyKind("a816a113-1544-4f58-bc6d-7c030b65627b", "capillary pressure", gsoap_eml2_3::eml23__QuantityClassKind::pressure);
+
+	cbt->pushBackColumnHeader(true, "Water Saturation", pwls3Saturation);
+	cbt->pushBackColumnHeader(false, "Water Relative Permeability", pwls3RelPerm);
+	cbt->pushBackColumnHeader(false, "Oil Relative Permeability", pwls3RelPerm);
+	cbt->pushBackColumnHeader(false, "Oil Water Capillary Pressure", pwls3CapPressure);
+
+	double watSat[] = {0, 0.157, 0.173, 0.174325, 0.19, 0.19165, 0.207};
+	cbt->setDoubleValues(0, watSat, 7);
+	double watRelPerm[] = { 0, 0, 0.000356, 0.0004392, 0.0014241, 0.0015969, 0.0032041 };
+	cbt->setDoubleValues(1, watRelPerm, 7);
+	double oilRelPerm[] = { 1, 0.99, 0.886131, 0.8767012, 0.7764308, 0.765876, 0.6778755 };
+	cbt->setDoubleValues(2, oilRelPerm, 7);
+	double capPressure[] = { 0, 0, 0, 0, 0, 0, 0 };
+	cbt->setDoubleValues(3, capPressure, 7);
 }
 
 void serializeWells(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfProxy* hdfProxy)
@@ -1080,8 +1104,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	***************/
 
 	EML2_NS::ColumnBasedTable* stringTableLookup = repo->createFaciesTable("62245eb4-dbf4-4871-97de-de9e4f4597be", "My String Table Lookup");
-	stringTableLookup->setInt64Values(0, { 0, 1 });
-	stringTableLookup->setStringValues(1, { "Cell index 0", "Cell index 1" });
+	stringTableLookup->setInt64Values(0, { 1, 2, 3 });
+	stringTableLookup->setStringValues(1, { "sandstone", "clay", "limestone" });
 	RESQML2_NS::DiscreteProperty* categoricalProp = repo->createCategoricalProperty(twoCellsIjkGrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)",
 		gsoap_eml2_3::eml23__IndexableElement::cells, stringTableLookup, defaultDiscretePropKind);
 	categoricalProp->pushBackUInt16Hdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
@@ -2419,6 +2443,7 @@ bool serialize(const string & filePath)
 	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "FESAPI Example", FESAPI_VERSION_STR);
 
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", epcDoc.getStorageDirectory(), epcDoc.getName() + ".h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
+	repo.setDefaultHdfProxy(hdfProxy);
 	//hdfProxy->setCompressionLevel(6);
 
 	localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__TimeUom::s, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", false); // CRS translation is just for testing;
@@ -2426,12 +2451,10 @@ bool serialize(const string & filePath)
 	repo.setDefaultCrs(local3dCrs);
 
 	// Uncomment to avoid partial reference towards PWLS
-	/*
 	pwls3Length = repo.createPropertyKind("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length", gsoap_eml2_3::eml23__QuantityClassKind::length);
 	repo.createPropertyKind("323df361-784e-4062-a346-ff4ba80a78f0", "ordinal number", gsoap_eml2_3::eml23__QuantityClassKind::unitless);
 	repo.createPropertyKind("838b1a9b-2fca-4e2e-aae3-323ef1bc59c7", "facies type", gsoap_eml2_3::eml23__QuantityClassKind::unitless);
-	*/
-
+	
 	if (repo.getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 		defaultContinuousPropKind = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "continuous prop kind", "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 	}
@@ -2450,6 +2473,7 @@ bool serialize(const string & filePath)
 #endif
 
 	// Comment or uncomment below domains/lines you want wether to test or not
+	serializeColumnBasedTable(&repo, hdfProxy);
 	serializeWells(&repo, hdfProxy);
 	serializePerforations(&repo);
 	serializeBoundaries(&repo, hdfProxy);
@@ -2841,6 +2865,24 @@ void deserializeSealedVolumeFramework(const COMMON_NS::DataObjectRepository & re
 			for (uint64_t faceIdx = 0; faceIdx < faceCount; ++faceIdx) {
 				std::cout << "\t\tFace index " << faceIdx << " is the patch " << svf->getRepPatchIndexOfExternalShellFace(regionIdx, faceIdx) << " with side " << svf->getSideFlagOfExternalShellFace(regionIdx, faceIdx) << " of surface representation" << std::endl;
 				showAllMetadata(svf->getRepOfExternalShellFace(regionIdx, faceIdx));
+			}
+		}
+	}
+}
+
+void deserializeColumnBasedTable(COMMON_NS::DataObjectRepository* repo)
+{
+	for (auto const* cbt : repo->getColumnBasedTableSet()) {
+		cout << "COLUMN BASED TABLE : " << cbt->getTitle() << endl;
+		for (size_t columnIdx = 0; columnIdx < cbt->getColumnCount(); ++columnIdx) {
+			cout << "PropKind : " << cbt->getPropertyKind(columnIdx)->getTitle() << endl;
+			auto datatype = cbt->getDatatype(columnIdx);
+			cout << "Datatype : " << (int)datatype << endl;
+			if (datatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE) {
+				for (double dbl : cbt->getDoubleValues(columnIdx)) {
+					cout << dbl << " ";
+				}
+				cout << endl;
 			}
 		}
 	}
@@ -5057,6 +5099,7 @@ void deserialize(const string & inputFile)
 		}
 	}
 
+	deserializeColumnBasedTable(&repo);
 	deserializeGeobody(&repo);
 	deserializeFluidBoundary(repo);
 	deserializeRockFluidOrganization(repo);
