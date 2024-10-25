@@ -44,7 +44,7 @@ EarthModelInterpretation::EarthModelInterpretation(RESQML2_NS::Model * orgFeat, 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	orgFeat->getRepository()->addDataObject(this);
+	orgFeat->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(orgFeat);
 }
 

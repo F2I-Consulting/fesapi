@@ -59,7 +59,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
 	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
 
-	interp->getRepository()->addDataObject(this);
+	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setMdDatum(mdInfo);
 	setInterpretation(interp);
 }
@@ -78,7 +78,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
-	interp->getRepository()->addDataObject(this);
+	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 
 	RESQML2_NS::MdDatum * mdInfo = deviationSurvey->getMdDatum();
 	setMdDatum(mdInfo);

@@ -44,7 +44,7 @@ void PropertyKind::init(COMMON_NS::DataObjectRepository * repo, const std::strin
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,

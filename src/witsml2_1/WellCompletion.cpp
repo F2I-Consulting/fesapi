@@ -42,7 +42,7 @@ WellCompletion::WellCompletion(WITSML2_NS::Well* witsmlWell,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	witsmlWell->getRepository()->addDataObject(this);
+	witsmlWell->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWell(witsmlWell);
 }
 

@@ -41,6 +41,6 @@ HorizonInterpretation::HorizonInterpretation(RESQML2_NS::BoundaryFeature * horiz
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	horizon->getRepository()->addDataObject(this);
+	horizon->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(horizon);
 }

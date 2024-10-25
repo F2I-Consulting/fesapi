@@ -39,6 +39,6 @@ FluidBoundaryInterpretation::FluidBoundaryInterpretation(RESQML2_NS::BoundaryFea
 
 	static_cast<resqml22__FluidBoundaryInterpretation*>(gsoapProxy2_3)->FluidContact = fluidContact;
 
-	feature->getRepository()->addDataObject(this);
+	feature->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(feature);
 }

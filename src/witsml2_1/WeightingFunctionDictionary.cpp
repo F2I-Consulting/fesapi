@@ -26,8 +26,6 @@ using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_3;
 
-const char* WeightingFunctionDictionary::XML_TAG = "WeightingFunctionDictionary";
-
 WeightingFunctionDictionary::WeightingFunctionDictionary(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid,
 	const std::string & title)
@@ -39,26 +37,16 @@ WeightingFunctionDictionary::WeightingFunctionDictionary(COMMON_NS::DataObjectRe
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
-std::string WeightingFunctionDictionary::getWeightingFunctionUuid(unsigned long index) const
+std::string WeightingFunctionDictionary::getWeightingFunctionUuid(uint64_t index) const
 {
-	if (gsoapProxy2_3 != nullptr) {
-		witsml21__WeightingFunctionDictionary* dict = static_cast<witsml21__WeightingFunctionDictionary*>(gsoapProxy2_3);
-		if (index < dict->WeightingFunction.size()) {
-			return dict->WeightingFunction[index]->uuid;
-		}
-		else{
-			throw range_error("The index of Weighting Function is out of range");
-		}
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+	cannotBePartial();
+	return static_cast<witsml21__WeightingFunctionDictionary*>(gsoapProxy2_3)->WeightingFunction.at(index)->uuid;
 }
 
-WeightingFunction* WeightingFunctionDictionary::getWeightingFunction(unsigned long index) const {
+WeightingFunction* WeightingFunctionDictionary::getWeightingFunction(uint64_t index) const {
 	witsml21__WeightingFunctionDictionary* dict = static_cast<witsml21__WeightingFunctionDictionary*>(gsoapProxy2_3);
 
 	WeightingFunction* wf = getRepository()->getDataObjectByUuid<WeightingFunction>(dict->WeightingFunction[index]->uuid);
@@ -88,12 +76,11 @@ void WeightingFunctionDictionary::loadTargetRelationships()
 {
 	witsml21__WeightingFunctionDictionary* dict = static_cast<witsml21__WeightingFunctionDictionary*>(gsoapProxy2_3);
 
-	for (size_t index = 0; index < dict->WeightingFunction.size(); ++index) {
-		WeightingFunction* wf = getRepository()->getDataObjectByUuid<WeightingFunction>(dict->WeightingFunction[index]->uuid);
-		if (wf == nullptr) {
-			wf = new WeightingFunction(dict->WeightingFunction[index]);
-			getRepository()->addOrReplaceDataObject(wf);
+	for (auto wf : dict->WeightingFunction) {
+		COMMON_NS::AbstractObject* wfWrapper = getRepository()->getDataObjectByUuid<WeightingFunction>(wf->uuid);
+		if (wfWrapper == nullptr) {
+			 wfWrapper = getRepository()->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>(new WeightingFunction(wf)));
 		}
-		getRepository()->addRelationship(this, wf);
+		getRepository()->addRelationship(this, wfWrapper);
 	}
 }

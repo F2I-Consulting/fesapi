@@ -44,7 +44,7 @@ SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, co
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 int64_t SeismicLineFeature::getTraceIndexIncrement() const

@@ -74,18 +74,18 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is manged by the gsoap context. */
 		~SeismicLatticeFeature() = default;
 
-		DLL_IMPORT_OR_EXPORT int getCrosslineIncrement() const final;
+		DLL_IMPORT_OR_EXPORT int64_t getCrosslineIncrement() const final;
 
-		DLL_IMPORT_OR_EXPORT int getInlineIncrement() const final;
+		DLL_IMPORT_OR_EXPORT int64_t getInlineIncrement() const final;
 
-		DLL_IMPORT_OR_EXPORT int getOriginCrossline() const final;
+		DLL_IMPORT_OR_EXPORT int64_t getCrosslineOrigin() const final;
 
-		DLL_IMPORT_OR_EXPORT int getOriginInline() const final;
+		DLL_IMPORT_OR_EXPORT int64_t getInlineOrigin() const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_NS = "resqml22";
 
 		/**
 		* Get the standard XML namespace for serializing this data object.

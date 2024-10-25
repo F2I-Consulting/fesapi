@@ -29,48 +29,6 @@ under the License.
 #include "../src/witsml2_1/WellCompletion.h"
 %}
 
-#define GETTER_AND_SETTER_GENERIC_ATTRIBUTE(attributeDatatype, attributeName)\
-	void set##attributeName(const attributeDatatype & value);\
-	attributeDatatype get##attributeName() const;
-#define GETTER_PRESENCE_ATTRIBUTE(attributeName) bool has##attributeName() const;
-#define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(attributeDatatype, attributeName)\
-	GETTER_AND_SETTER_GENERIC_ATTRIBUTE(attributeDatatype, attributeName)\
-	GETTER_PRESENCE_ATTRIBUTE(attributeName)
-
-#define GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
-	void set##attributeName(double value, uomDatatype uom);\
-	double get##attributeName##Value() const;\
-	uomDatatype get##attributeName##Uom() const;
-#define GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(attributeName, uomDatatype)\
-	GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
-	GETTER_PRESENCE_ATTRIBUTE(attributeName)
-
-#define GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
-	void set##attributeName(double value, uomDatatype uom);\
-	double get##attributeName##Value() const;\
-	uomDatatype get##attributeName##Uom() const;
-#define GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(attributeName, uomDatatype)\
-	GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
-	GETTER_PRESENCE_ATTRIBUTE(attributeName)
-
-#define GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
-	void set##vectorName##attributeName(unsigned int index, const attributeDatatype & value);\
-	attributeDatatype get##vectorName##attributeName(unsigned int index) const;	
-	
-#define GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
-	void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom);\
-	double get##vectorName##attributeName##Value(unsigned int index) const;\
-	uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const;
-
-#define GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName) bool has##vectorName##attributeName(unsigned int index) const;	
-#define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
-	GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
-	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)	
-	
-#define GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
-	GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
-	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
-
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)	
 	%nspace WITSML2_1_NS::Channel;
 	%nspace WITSML2_1_NS::ChannelSet;

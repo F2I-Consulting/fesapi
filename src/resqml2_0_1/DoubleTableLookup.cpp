@@ -36,7 +36,7 @@ DoubleTableLookup::DoubleTableLookup(COMMON_NS::DataObjectRepository* repo, cons
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 uint64_t DoubleTableLookup::getItemCount() const

@@ -50,7 +50,7 @@ void LocalTime3dCrs::init(COMMON_NS::DataObjectRepository* repo, const std::stri
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,

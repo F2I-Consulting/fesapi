@@ -42,7 +42,7 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	traj->getRepository()->addDataObject(this);
+	traj->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 
 	frame->Trajectory = traj->newResqmlReference();
 	getRepository()->addRelationship(this, traj);

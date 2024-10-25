@@ -41,7 +41,7 @@ WellboreMarker::WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	wellboreMarkerFrame->pushBackNewWellboreMarker(this);
+	wellboreMarkerFrame->pushBackNewWellboreMarker(std::unique_ptr<RESQML2_0_1_NS::WellboreMarker>{this});
 }
 
 WellboreMarker::WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind)
@@ -59,7 +59,7 @@ WellboreMarker::WellboreMarker(RESQML2_0_1_NS::WellboreMarkerFrameRepresentation
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	wellboreMarkerFrame->pushBackNewWellboreMarker(this);
+	wellboreMarkerFrame->pushBackNewWellboreMarker(std::unique_ptr<RESQML2_0_1_NS::WellboreMarker>{this});
 }
 
 bool WellboreMarker::hasAGeologicBoundaryKind() const

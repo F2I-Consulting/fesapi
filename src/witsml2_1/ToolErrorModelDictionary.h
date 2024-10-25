@@ -46,8 +46,8 @@ namespace WITSML2_1_NS
 		*/
 		~ToolErrorModelDictionary() {}
 
-		DLL_IMPORT_OR_EXPORT std::string getToolErrorModelUuid(unsigned long index) const;
-		DLL_IMPORT_OR_EXPORT class ToolErrorModel* getToolErrorModel(unsigned long index) const;
+		DLL_IMPORT_OR_EXPORT std::string getToolErrorModelUuid(uint64_t index) const;
+		DLL_IMPORT_OR_EXPORT class ToolErrorModel* getToolErrorModel(uint64_t index) const;
 		DLL_IMPORT_OR_EXPORT std::vector<class ToolErrorModel*> getToolErrorModels() const;
 		DLL_IMPORT_OR_EXPORT void pushBackToolErrorModel(class ToolErrorModel* tem);
 
@@ -56,7 +56,7 @@ namespace WITSML2_1_NS
 		*/
 		void loadTargetRelationships();
 
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "ToolErrorModelDictionary";
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**

@@ -47,7 +47,7 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setLocalCrs(locCrs);
 }
 

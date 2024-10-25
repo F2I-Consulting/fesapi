@@ -1746,7 +1746,7 @@ EML2_NS::AbstractHdfProxy* AbstractObject::getOrCreateHdfProxyFromDataArrayPart(
 	if (hdfProxy == nullptr) {
 		hdfProxy = new EML2_3_NS::HdfProxy(getRepository(), "", "Fake eml23 HDF Proxy", getEpcSourceFolder(), dataArrayPart->URI);
 		hdfProxy->setUriSource(getUriSource());
-		getRepository()->addDataObject(hdfProxy);
+		getRepository()->addDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{hdfProxy});
 	}
 #endif
 

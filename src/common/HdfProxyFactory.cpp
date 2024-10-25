@@ -49,7 +49,7 @@ EML2_NS::AbstractHdfProxy* HdfProxyFactory::make(COMMON_NS::DataObjectRepository
 	case COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3:
 	{
 		auto* result = new EML2_3_NS::HdfProxy(repo, "", title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
-		repo->addDataObject(result);
+		repo->addDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{result});
 		return result;
 	}
 #endif

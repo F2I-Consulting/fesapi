@@ -44,7 +44,7 @@ WellboreMarker::WellboreMarker(COMMON_NS::DataObjectRepository * repo,
 	static_cast<witsml21__WellboreMarker*>(gsoapProxy2_3)->Md->MeasuredDepth->__item = md;
 	static_cast<witsml21__WellboreMarker*>(gsoapProxy2_3)->Md->MeasuredDepth->uom = soap_eml23__LengthUom2s(repo->getGsoapContext(), mdUom);
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 WellboreMarker::WellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
@@ -62,7 +62,7 @@ WellboreMarker::WellboreMarker(WITSML2_NS::Wellbore* witsmlWellbore,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	witsmlWellbore->getRepository()->addDataObject(this);
+	witsmlWellbore->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWellbore(witsmlWellbore);
 
 	static_cast<witsml21__WellboreMarker*>(gsoapProxy2_3)->Md = soap_new_eml23__MeasuredDepth(soapCtx);

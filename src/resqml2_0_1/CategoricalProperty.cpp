@@ -57,7 +57,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(this);
+	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 
 	prop->Lookup = strLookup->newResqmlReference();
@@ -87,7 +87,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(this);
+	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 
 	prop->Lookup = dblLookup->newResqmlReference();
@@ -113,7 +113,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(this);
+	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 
 	setPropertyKind(localPropKind);
@@ -141,7 +141,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(this);
+	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 
 	setPropertyKind(localPropKind);

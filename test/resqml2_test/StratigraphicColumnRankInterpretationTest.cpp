@@ -34,13 +34,13 @@ using namespace RESQML2_NS;
 const char* StratigraphicColumnRankInterpretationTest::defaultUuid = "51f39ab2-3b1f-4da3-8541-324632357dd7";
 const char* StratigraphicColumnRankInterpretationTest::defaultTitle = "Strati Column Rank";
 
-const char* StratigraphicColumnRankInterpretationTest::defaultOverburdenInterpUuid = "80ba46c8-86e7-42ef-ab30-4718958f3707";
+const char* StratigraphicColumnRankInterpretationTest::defaultOverburdenInterpUuid = "60bcecbd-91ea-4417-b619-c9e6e3e1da79";
 const char* StratigraphicColumnRankInterpretationTest::defaultOverburdenInterpTitle = "Overburden Interp";
 
-const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpUuid = "1914478a-e50b-4808-ad62-11201992024d";
+const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpUuid = "56f1485a-7987-4a9a-b6e8-b553cdd50a1a";
 const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpTitle = "Underburden Interp";
 
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(const string & repoPath)
+StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(const string& repoPath)
 	: commontest::AbstractTest(repoPath) {
 }
 

@@ -54,7 +54,7 @@ NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(this);
+	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 }
 

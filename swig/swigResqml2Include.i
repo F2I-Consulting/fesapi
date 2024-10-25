@@ -2302,10 +2302,34 @@ namespace RESQML2_NS
 	class SeismicLatticeFeature : public AbstractTechnicalFeature
 	{
 	public:
-		int getCrosslineIncrement() const;
-		int getInlineIncrement() const;
-		int getOriginCrossline() const;
-		int getOriginInline() const;
+
+		/**
+		 * Gets the crossline annotated index increment between two consecutive crosslines.
+		 *
+		 * @returns	The crossline increment.
+		 */
+		int64_t getCrosslineIncrement() const;
+
+		/**
+		 * Gets the inline annotated index increment between two consecutive inlines.
+		 *
+		 * @returns	The inline increment.
+		 */
+		int64_t getInlineIncrement() const;
+
+		/**
+		 * Gets the annotated index of the first crossline.
+		 *
+		 * @returns	The origin crossline.
+		 */
+		int64_t getCrosslineOrigin() const;
+
+		/**
+		 * Gets the annotated index of the first inline.
+		 *
+		 * @returns	The origin inline.
+		 */
+		int64_t getInlineOrigin() const;
 	};
 
 #ifdef SWIGPYTHON

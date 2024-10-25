@@ -37,6 +37,6 @@ GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(RESQML2_NS::Boundar
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	geobodyBoundary->getRepository()->addDataObject(this);
+	geobodyBoundary->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(geobodyBoundary);
 }

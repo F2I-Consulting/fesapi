@@ -2454,7 +2454,7 @@ void deserializeActivity(COMMON_NS::AbstractObject const * resqmlObject)
 	}
 }
 
-bool serialize(const string & filePath)
+bool serialize(const string& filePath)
 {
 	COMMON_NS::EpcDocument epcDoc(filePath);
 	COMMON_NS::DataObjectRepository repo;
@@ -5426,14 +5426,16 @@ void deserialize(const string & inputFile)
 	deserializeLog(repo);
 
 	std::cout << endl << "WELLBORES CUBIC TRAJ" << endl;
-	for (auto* wellboreCubicTraj : wellboreCubicTrajSet)
+	for (auto const* wellboreCubicTraj : wellboreCubicTrajSet)
 	{
 		showAllMetadata(wellboreCubicTraj);
-		auto const* wbtr201 = dynamic_cast<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*>(wellboreCubicTraj);
+		auto const* wbtr201 = dynamic_cast<RESQML2_0_1_NS::WellboreTrajectoryRepresentation const*>(wellboreCubicTraj);
 		if (wbtr201) {
 			auto const* devSurvey = wbtr201->getDeviationSurvey();
-			std::cout << "It contains a Deviation Survey (2.0.1 only option)" << std::endl;
-			auto angle = devSurvey->getAngleUom();
+			if (devSurvey != nullptr) {
+				std::cout << "It contains a Deviation Survey (2.0.1 only option)" << std::endl;
+				auto angle = devSurvey->getAngleUom();
+			}
 		}
 		std::cout << "MD Datum is : " << wellboreCubicTraj->getMdDatum()->getTitle() << std::endl;
 		std::cout << "--------------------------------------------------" << std::endl;
@@ -5593,7 +5595,7 @@ void deserialize(const string & inputFile)
 	showAllSubRepresentations(onlyPartialSubReps);
 
 	std::cout << endl << "TIME SERIES" << endl;
-	for (auto* timeSeries : timeSeriesSet) {
+	for (auto const* timeSeries : timeSeriesSet) {
 		showAllMetadata(timeSeries);
 		for (unsigned int j = 0; j < timeSeries->getTimestampCount(); ++j) {
 			time_t creation = timeSeries->getTimestamp(j);

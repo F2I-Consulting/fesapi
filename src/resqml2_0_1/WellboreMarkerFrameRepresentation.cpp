@@ -35,8 +35,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* WellboreMarkerFrameRepresentation::XML_NS = "resqml20";
-
 WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj)
 {
 	if (interp == nullptr) {
@@ -52,22 +50,22 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(RESQML2_NS:
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(this);
+	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 
 	frame->Trajectory = traj->newResqmlReference();
 	getRepository()->addRelationship(this, traj);
 }
 
-void WellboreMarkerFrameRepresentation::pushBackNewWellboreMarker(RESQML2_0_1_NS::WellboreMarker * marker)
+void WellboreMarkerFrameRepresentation::pushBackNewWellboreMarker(unique_ptr<RESQML2_0_1_NS::WellboreMarker> marker)
 {
 	cannotBePartial();
-	getRepository()->addRelationship(marker, this);
+	getRepository()->addRelationship(marker.get(), this);
 
 	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 	frame->WellboreMarker.push_back(static_cast<resqml20__WellboreMarker*>(marker->getEml20GsoapProxy()));
 
-	getRepository()->addOrReplaceDataObject(marker);
+	getRepository()->addOrReplaceDataObject(std::move(marker));
 }
 
 COMMON_NS::DataObjectReference WellboreMarkerFrameRepresentation::getStratigraphicOccurrenceInterpretationDor() const
@@ -119,17 +117,16 @@ void WellboreMarkerFrameRepresentation::loadTargetRelationships()
 	_resqml20__WellboreMarkerFrameRepresentation* rep = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 
 	for (auto* gsoapMarker : rep->WellboreMarker) {
-		WellboreMarker* marker = getRepository()->getDataObjectByUuid<WellboreMarker>(gsoapMarker->uuid);
-		if (marker == nullptr) {
-			marker = new WellboreMarker(gsoapMarker);
-			getRepository()->addOrReplaceDataObject(marker);
+		COMMON_NS::AbstractObject* markerWrapper = getRepository()->getDataObjectByUuid<WellboreMarker>(gsoapMarker->uuid);
+		if (markerWrapper == nullptr) {
+			markerWrapper = getRepository()->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>(new WellboreMarker(gsoapMarker)));
 			if (gsoapMarker->Interpretation != nullptr) {
-				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<RESQML2_NS::BoundaryFeatureInterpretation>(gsoapMarker->Interpretation->UUID));
+				getRepository()->addRelationship(markerWrapper, getRepository()->getDataObjectByUuid<RESQML2_NS::BoundaryFeatureInterpretation>(gsoapMarker->Interpretation->UUID));
 			}
 			if (gsoapMarker->WitsmlFormationMarker != nullptr) {
-				getRepository()->addRelationship(marker, getRepository()->getDataObjectByUuid<WITSML2_1_NS::WellboreMarker>(gsoapMarker->WitsmlFormationMarker->UUID));
+				getRepository()->addRelationship(markerWrapper, getRepository()->getDataObjectByUuid<WITSML2_1_NS::WellboreMarker>(gsoapMarker->WitsmlFormationMarker->UUID));
 			}
 		}
-		getRepository()->addRelationship(marker, this);
+		getRepository()->addRelationship(markerWrapper, this);
 	}
 }

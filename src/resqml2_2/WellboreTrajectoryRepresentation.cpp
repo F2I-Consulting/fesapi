@@ -53,7 +53,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	rep->MdInterval->MdMin = std::numeric_limits<double>::quiet_NaN();
 	rep->MdInterval->MdMax = std::numeric_limits<double>::quiet_NaN();
 
-	interp->getRepository()->addDataObject(this);
+	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setMdDatum(mdInfo);
 	setInterpretation(interp);
 }

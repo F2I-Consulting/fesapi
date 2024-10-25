@@ -740,9 +740,8 @@ namespace COMMON_NS
 			gsoapProxy2_3(proxy),
 			repository(nullptr) {}
 
-		
-		friend bool COMMON_NS::DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy);
-		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy, bool replaceOnlyContent);
+		friend bool COMMON_NS::DataObjectRepository::addDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy);
+		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy, bool replaceOnlyContent);
 
 		/**
 		 * Initialize all mandatory attributes of an AbstractObject (not the attributes of a

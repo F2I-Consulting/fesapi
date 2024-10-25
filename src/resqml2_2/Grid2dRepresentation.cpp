@@ -51,7 +51,7 @@ Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpreta
 		singleGrid2dRep->SurfaceRole = resqml22__SurfaceRole::pick;
 	}
 
-	interp->getRepository()->addDataObject(this);
+	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 }
 

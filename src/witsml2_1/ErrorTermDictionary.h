@@ -46,14 +46,14 @@ namespace WITSML2_1_NS
 		*/
 		~ErrorTermDictionary() {}
 
-		DLL_IMPORT_OR_EXPORT std::string getErrorTermUuid(unsigned long index) const;
-		DLL_IMPORT_OR_EXPORT class ErrorTerm* getErrorTerm(unsigned long index) const;
+		DLL_IMPORT_OR_EXPORT std::string getErrorTermUuid(uint64_t index) const;
+		DLL_IMPORT_OR_EXPORT class ErrorTerm* getErrorTerm(uint64_t index) const;
 		DLL_IMPORT_OR_EXPORT std::vector<class ErrorTerm*> getErrorTerms() const;
 		DLL_IMPORT_OR_EXPORT void pushBackErrorTerm(class ErrorTerm* tem);
 
 		void loadTargetRelationships();
 
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "ErrorTermDictionary";
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 		/**

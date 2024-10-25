@@ -45,7 +45,7 @@ FluidCharacterization::FluidCharacterization(COMMON_NS::DataObjectRepository * r
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidCharacterization, prodml22__FluidCharacterization, gsoapProxy2_3, Kind, std::string, soap_new_std__string)

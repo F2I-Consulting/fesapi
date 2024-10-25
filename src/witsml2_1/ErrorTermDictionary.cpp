@@ -28,39 +28,31 @@ using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_3;
 
-const char* ErrorTermDictionary::XML_TAG = "ErrorTermDictionary";
-
-ErrorTermDictionary::ErrorTermDictionary(COMMON_NS::DataObjectRepository * repo,
-	const std::string & guid,
-	const std::string & title)
+ErrorTermDictionary::ErrorTermDictionary(COMMON_NS::DataObjectRepository* repo,
+	const std::string& guid,
+	const std::string& title)
 {
-	if (repo == nullptr) throw invalid_argument("A ErrorTermDictionary must be associated to a repo.");
+	if (repo == nullptr) {
+		throw invalid_argument("A ErrorTermDictionary must be associated to a repo.");
+	}
 
 	gsoapProxy2_3 = soap_new_witsml21__ErrorTermDictionary(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
-std::string ErrorTermDictionary::getErrorTermUuid(unsigned long index) const
+std::string ErrorTermDictionary::getErrorTermUuid(uint64_t index) const
 {
-	if (gsoapProxy2_3 != nullptr) {
-		witsml21__ErrorTermDictionary* dict = static_cast<witsml21__ErrorTermDictionary*>(gsoapProxy2_3);
-		if (index < dict->ErrorTerm.size()) {
-			return dict->ErrorTerm[index]->uuid;
-		}
-		else{
-			throw range_error("The index of ErrorTerm is out of range");
-		}
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+	cannotBePartial();
+	
+	witsml21__ErrorTermDictionary* dict = static_cast<witsml21__ErrorTermDictionary*>(gsoapProxy2_3);
+	return dict->ErrorTerm.at(index)->uuid;
 }
 
-ErrorTerm* ErrorTermDictionary::getErrorTerm(unsigned long index) const {
+ErrorTerm* ErrorTermDictionary::getErrorTerm(uint64_t index) const {
 	witsml21__ErrorTermDictionary* dict = static_cast<witsml21__ErrorTermDictionary*>(gsoapProxy2_3);
 
 	ErrorTerm* et = getRepository()->getDataObjectByUuid<ErrorTerm>(dict->ErrorTerm[index]->uuid);
@@ -90,12 +82,11 @@ void ErrorTermDictionary::loadTargetRelationships()
 {
 	witsml21__ErrorTermDictionary* dict = static_cast<witsml21__ErrorTermDictionary*>(gsoapProxy2_3);
 
-	for (size_t index = 0; index < dict->ErrorTerm.size(); ++index) {
-		ErrorTerm* et = getRepository()->getDataObjectByUuid<ErrorTerm>(dict->ErrorTerm[index]->uuid);
-		if (et == nullptr) {
-			et = new ErrorTerm(dict->ErrorTerm[index]);
-			getRepository()->addOrReplaceDataObject(et);
+	for (auto* et : dict->ErrorTerm) {
+		COMMON_NS::AbstractObject* etWrapper = getRepository()->getDataObjectByUuid<ErrorTerm>(et->uuid);
+		if (etWrapper == nullptr) {
+			etWrapper = getRepository()->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>(new ErrorTerm(et)));
 		}
-		getRepository()->addRelationship(this, et);
+		getRepository()->addRelationship(this, etWrapper);
 	}
 }

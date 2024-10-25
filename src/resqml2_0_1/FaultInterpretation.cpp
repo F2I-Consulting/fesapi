@@ -45,7 +45,7 @@ FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, co
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	fault->getRepository()->addDataObject(this);
+	fault->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(fault);
 }
 
@@ -70,7 +70,7 @@ FaultInterpretation::FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, co
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	fault->getRepository()->addDataObject(this);
+	fault->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(fault);
 }
 

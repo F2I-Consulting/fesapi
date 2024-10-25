@@ -226,7 +226,7 @@ using namespace PRODML2_2_NS;
 
 #define GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
 	GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	wrapper = new RESQML2_0_1_NS::className(read);
+	wrapper.reset(new RESQML2_0_1_NS::className(read));
 
 #define CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
 	(resqmlContentType.compare(RESQML2_0_1_NS::className::XML_TAG) == 0) {\
@@ -242,7 +242,7 @@ using namespace PRODML2_2_NS;
 
 #define GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
 	GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	wrapper = new RESQML2_2_NS::className(read);
+	wrapper.reset(new RESQML2_2_NS::className(read));
 
 #define CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
 	(resqmlContentType.compare(RESQML2_2_NS::className::XML_TAG) == 0) {\
@@ -258,7 +258,7 @@ using namespace PRODML2_2_NS;
 
 #define GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
 	GET_WITSML_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
-	wrapper = new classNamespace::className(read);
+	wrapper.reset(new classNamespace::className(read));
 
 #define CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
 	(datatype.compare(classNamespace::className::XML_TAG) == 0) {\
@@ -274,7 +274,7 @@ using namespace PRODML2_2_NS;
 
 #define GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
 	GET_PRODML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
-	wrapper = new classNamespace::className(read);
+	wrapper.reset(new classNamespace::className(read));
 
 #define CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
 	(datatype.compare(classNamespace::className::XML_TAG) == 0) {\
@@ -289,7 +289,7 @@ using namespace PRODML2_2_NS;
 	gsoapNameSpace::soap_read_##xmlNamespace ##__##className(gsoapContext, read);
 #define GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace)\
 	GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace, xmlNamespace)\
-	wrapper = new classNamespace::className(read);
+	wrapper.reset(new classNamespace::className(read));
 #define CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace)\
 	(datatype.compare(classNamespace::className::XML_TAG) == 0) {\
 		GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace, xmlNamespace);\
@@ -381,11 +381,6 @@ DataObjectRepository::~DataObjectRepository()
 
 void DataObjectRepository::clear()
 {
-	for (const auto& kv : dataObjects) {
-		for (auto* dataObject : kv.second) {
-			delete dataObject;
-		}
-	}
 	dataObjects.clear();
 	forwardRels.clear();
 	backwardRels.clear();
@@ -513,10 +508,10 @@ void DataObjectRepository::updateAllRelationships()
 {
 	// Tansform the map values into a vector because we are going to potentially insert new elements in the map when looping.
 	vector<COMMON_NS::AbstractObject*> nonPartialObjects;
-	for (const auto& kv : dataObjects) {
-		for (auto* dataObject : kv.second) {
+	for (auto const& kv : dataObjects) {
+		for (auto const& dataObject : kv.second) {
 			if (!dataObject->isPartial()) {
-				nonPartialObjects.push_back(dataObject);
+				nonPartialObjects.push_back(dataObject.get());
 			}
 		}
 	}
@@ -558,51 +553,59 @@ void DataObjectRepository::replaceDataObjectInRels(COMMON_NS::AbstractObject* da
 	replaceDataObjectInARelMap(dataObjToReplace, newDataObj, backwardRels);
 }
 
-bool DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy)
+bool DataObjectRepository::addDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy)
 {
 	proxy->repository = this;
 
-	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
-		dataObjects[proxy->getUuid()].push_back(proxy);
-		forwardRels.emplace(proxy, std::vector<COMMON_NS::AbstractObject*>());
-		backwardRels.emplace(proxy, std::vector<COMMON_NS::AbstractObject*>());
-
-		auto now = std::chrono::system_clock::now();
-		journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CUD::CREATED));
-		on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
-
-		auto* crs = dynamic_cast<EML2_NS::AbstractLocal3dCrs*>(proxy);
-		if (crs != nullptr) {
-			if (getDataObjects<EML2_NS::AbstractLocal3dCrs>().size() == 1) {
-				setDefaultCrs(crs);
-			}
-		}
-		else {
-			auto* hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy*>(proxy);
-			if (hdfProxy != nullptr) {
-				if (getDataObjects<EML2_NS::AbstractHdfProxy>().size() == 1) {
-					setDefaultHdfProxy(hdfProxy);
-				}
-			}
-		}
-
-		return true;
+	if (getDataObjectByUuid(proxy->getUuid()) != nullptr) {
+		return false;
 	}
 
-	return false;
+	COMMON_NS::AbstractObject* rawProxyPtr = proxy.get();
+	dataObjects[proxy->getUuid()].emplace_back(std::move(proxy));
+	forwardRels.emplace(rawProxyPtr, std::vector<COMMON_NS::AbstractObject*>());
+	backwardRels.emplace(rawProxyPtr, std::vector<COMMON_NS::AbstractObject*>());
+
+	auto now = std::chrono::system_clock::now();
+	journal.push_back(std::make_tuple(now, DataObjectReference(rawProxyPtr), CUD::CREATED));
+	on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, rawProxyPtr) });
+
+	auto* crs = dynamic_cast<EML2_NS::AbstractLocal3dCrs*>(rawProxyPtr);
+	if (crs != nullptr) {
+		if (getDataObjects<EML2_NS::AbstractLocal3dCrs>().size() == 1) {
+			setDefaultCrs(crs);
+		}
+	}
+	else {
+		auto* hdfProxy = dynamic_cast<EML2_NS::AbstractHdfProxy*>(rawProxyPtr);
+		if (hdfProxy != nullptr) {
+			if (getDataObjects<EML2_NS::AbstractHdfProxy>().size() == 1) {
+				setDefaultHdfProxy(hdfProxy);
+			}
+		}
+	}
+
+	return true;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent)
+COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy, bool replaceOnlyContent)
 {
 	if (proxy->getUuid() == RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) {
 		addWarning("The FESAPI fake property " + std::string(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) + " has been detected and will be ignored.");
 		return nullptr;
 	}
 
-	if (!addDataObject(proxy)) {
-		std::vector< COMMON_NS::AbstractObject* >& versions = dataObjects[proxy->getUuid()];
-		std::vector< COMMON_NS::AbstractObject* >::iterator same = std::find_if(versions.begin(), versions.end(),
-			[proxy](COMMON_NS::AbstractObject const* dataObj) { return dataObj->getVersion() == proxy->getVersion(); });
+	COMMON_NS::AbstractObject* rawProxyPtr = proxy.get();
+	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
+		// ADD
+		addDataObject(std::move(proxy));
+	}
+	else {
+		// Replace
+		proxy->repository = this;
+		std::vector< std::unique_ptr< COMMON_NS::AbstractObject > >& versions = dataObjects[proxy->getUuid()];
+		std::vector< std::unique_ptr< COMMON_NS::AbstractObject > >::iterator same = std::find_if(versions.begin(), versions.end(),
+			[rawProxyPtr](std::unique_ptr< COMMON_NS::AbstractObject >& dataObj) { return dataObj->getVersion() == rawProxyPtr->getVersion(); });
 
 		// Assume "no version" means current latest version in the repository
 		if (same == versions.end()) {
@@ -619,16 +622,16 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 			else {
 				// replace repository unversionned version by the versioned version which are consequently both the current latest version in the repository
 				same = std::find_if(versions.begin(), versions.end(),
-					[](COMMON_NS::AbstractObject const* dataObj) { return dataObj->getVersion().empty(); });
+					[](std::unique_ptr< COMMON_NS::AbstractObject >& dataObj) { return dataObj->getVersion().empty(); });
 			}
 		}
 
 		if (same == versions.end()) {
 			// New version of an existing UUID
-			dataObjects[proxy->getUuid()].push_back(proxy);
+			dataObjects[proxy->getUuid()].emplace_back(std::move(proxy));
 			auto now = std::chrono::system_clock::now();
-			journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CUD::CREATED));
-			on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
+			journal.push_back(std::make_tuple(now, DataObjectReference(rawProxyPtr), CUD::CREATED));
+			on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, rawProxyPtr) });
 		}
 		else {
 			// Replacement
@@ -636,23 +639,23 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 				throw invalid_argument("Cannot replace " + proxy->getUuid() + " with a different content type : " + proxy->getContentType() + " vs " + (*same)->getContentType());
 			}
 
-			if (!replaceOnlyContent || dynamic_cast<RESQML2_NS::AbstractIjkGridRepresentation*>(*same) != nullptr) {
-				replaceDataObjectInRels(*same, proxy);
+			if (!replaceOnlyContent || dynamic_cast<RESQML2_NS::AbstractIjkGridRepresentation*>(same->get()) != nullptr) {
+				replaceDataObjectInRels(same->get(), rawProxyPtr);
 
 				if (!(*same)->isPartial()) {
 					auto now = std::chrono::system_clock::now();
-					journal.push_back(std::make_tuple(now, DataObjectReference(proxy), CUD::UPDATED));
-					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
+					journal.push_back(std::make_tuple(now, DataObjectReference(rawProxyPtr), CUD::UPDATED));
+					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, rawProxyPtr) });
 				}
 
-				delete *same;
-				*same = proxy;
+				(*same).swap(proxy);
+				rawProxyPtr = proxy.get();
 			}
 			else {
 				if (!(*same)->isPartial()) {
 					auto now = std::chrono::system_clock::now();
-					journal.push_back(std::make_tuple(now, DataObjectReference(*same), CUD::UPDATED));
-					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
+					journal.push_back(std::make_tuple(now, DataObjectReference(same->get()), CUD::UPDATED));
+					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, rawProxyPtr) });
 				}
 
 				const std::string xmlNs = proxy->getXmlNamespace();
@@ -667,7 +670,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 					(*same)->setGsoapProxy(proxy->getEml23GsoapProxy());
 				}
 				(*same)->setUriSource(proxy->getUriSource());
-				delete proxy;
 				if (!(*same)->isPartial()) {
 					try {
 						(*same)->loadTargetRelationships();
@@ -677,21 +679,22 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 						(*same)->changeToPartialObject();
 					}
 				}
-				return *same;
+				return same->get();
 			}
 		}
 	}
 
-	if (!proxy->isPartial()) {
+	if (!rawProxyPtr->isPartial()) {
 		try {
-			proxy->loadTargetRelationships();
+			rawProxyPtr->loadTargetRelationships();
 		}
 		catch (const std::exception& ex) {
-			addWarning("The " + proxy->getXmlTag() + " UUID=\"" + proxy->getUuid() + "\" has got a relationship towards an unrecognized datatype, it will be considered as a partial (i.e empty) dataobject : " + ex.what());
-			proxy->changeToPartialObject();
+			addWarning("The " + rawProxyPtr->getXmlTag() + " UUID=\"" + rawProxyPtr->getUuid() + "\" has got a relationship towards an unrecognized datatype, it will be considered as a partial (i.e empty) dataobject : " + ex.what());
+			rawProxyPtr->changeToPartialObject();
 		}
 	}
-	return proxy;
+
+	return rawProxyPtr;
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const std::string & xml, const string & contentOrDataType, const std::string& uriSource)
@@ -726,11 +729,11 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	}
 	const string datatype = contentOrDataType.substr(dataTypeCharPos + 1);
 
-	COMMON_NS::AbstractObject* wrapper = nullptr;
+	std::unique_ptr< COMMON_NS::AbstractObject > wrapper;
 	if (ns == "eml20" && datatype == "EpcExternalPartReference") {
 		gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(gsoapContext);
 		soap_read_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, read);
-		wrapper = hdfProxyFactory->make(read);
+		wrapper.reset(hdfProxyFactory->make(read));
 	}
 	else if (ns == "resqml20") {
 		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
@@ -748,7 +751,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		wrapper = getEml2_3WrapperFromGsoapContext(datatype);
 	}
 
-	if (wrapper != nullptr) {
+	if (wrapper) {
 		if (gsoapContext->error != SOAP_OK) {
 			ostringstream oss;
 			soap_stream_fault(gsoapContext, oss);
@@ -759,11 +762,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 			else {
 				addWarning(oss.str());
 			}
-			delete wrapper;
 		}
 		else {
 			wrapper->setUriSource(uriSource);
-			return addOrReplaceDataObject(wrapper, true);
+			return addOrReplaceDataObject(std::move(wrapper), true);
 		}
 	}
 
@@ -773,7 +775,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 
 void DataObjectRepository::setUriSource(const std::string& uriSource) {
 	for (auto& kv : dataObjects) {
-		for (auto* dataObject : kv.second) {
+		for (auto& dataObject : kv.second) {
 			dataObject->setUriSource(uriSource);
 		}
 	}
@@ -803,8 +805,8 @@ std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataO
 {
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
 	for (const auto& kv : dataObjects) {
-		for (auto* dataObject : kv.second) {
-			result[dataObject->getQualifiedType()].push_back(dataObject);
+		for (const auto& dataObject : kv.second) {
+			result[dataObject->getQualifiedType()].push_back(dataObject.get());
 		}
 	}
 
@@ -815,10 +817,10 @@ std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataO
 {
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
 	for (const auto& kv : dataObjects) {
-		for (auto* dataObject : kv.second) {
+		for (const auto& dataObject : kv.second) {
 			const std::string datatype = dataObject->getQualifiedType();
 			if (datatype.find(filter) != std::string::npos) {
-				result[datatype].push_back(dataObject);
+				result[datatype].push_back(dataObject.get());
 			}
 		}
 	}
@@ -831,9 +833,9 @@ std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getDataObjectsByCo
 	std::vector<COMMON_NS::AbstractObject*> result;
 
 	for (const auto& kv : dataObjects) {
-		for (auto* dataObject : kv.second) {
+		for (const auto& dataObject : kv.second) {
 			if (dataObject->getContentType() == contentType) {
-				result.push_back(dataObject);
+				result.push_back(dataObject.get());
 			}
 		}
 	}
@@ -841,28 +843,28 @@ std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getDataObjectsByCo
 	return result;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuid(const string & uuid) const
+COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuid(const string& uuid) const
 {
-	std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
+	auto it = dataObjects.find(uuid);
 
-	return it == dataObjects.end() || it->second.empty() ? nullptr : it->second.back();
+	return it == dataObjects.end() || it->second.empty() ? nullptr : it->second.back().get();
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(const std::string& uuid, const std::string& version) const
 {
-	std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
+	auto it = dataObjects.find(uuid);
 
 	if (it == dataObjects.end() || it->second.empty()) {
 		return nullptr;
 	}
 	
 	if (!version.empty()) {
-		std::vector< COMMON_NS::AbstractObject* >::const_iterator vectIt = std::find_if(it->second.begin(), it->second.end(),
-			[&version](COMMON_NS::AbstractObject const* dataObj) { return dataObj->getVersion() == version; });
-		return vectIt == it->second.end() ? nullptr : *vectIt;
+		auto vectIt = std::find_if(it->second.begin(), it->second.end(),
+			[&version](const std::unique_ptr< COMMON_NS::AbstractObject >& dataObj) { return dataObj->getVersion() == version; });
+		return vectIt == it->second.end() ? nullptr : vectIt->get();
 	}
 	else {
-		return it->second.empty() ? nullptr : it->second.back();
+		return it->second.empty() ? nullptr : it->second.back().get();
 	}
 }
 
@@ -872,12 +874,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(c
 	return getDataObjectByUuidAndVersion(boost::uuids::to_string(*boostUuid), version);
 }
 
-void DataObjectRepository::addWarning(const std::string & warning)
+void DataObjectRepository::addWarning(const std::string& warning)
 {
 	warnings.push_back(warning);
 }
 
-const std::vector<std::string> & DataObjectRepository::getWarnings() const
+const std::vector<std::string>& DataObjectRepository::getWarnings() const
 {
 	return warnings;
 }
@@ -945,7 +947,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
 			dor->ContentType = contentType;
 			COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
-			addOrReplaceDataObject(result);
+			addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{result});
 			return result;
 		}
 	}
@@ -1043,7 +1045,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 			}
 			dor->ContentType = contentType;
 			RESQML2_NS::AbstractIjkGridRepresentation* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0);
-			addOrReplaceDataObject(result);
+			addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{result});
 			return result;
 		}
 		else if (dataType.compare(EML2_NS::EpcExternalPartReference::XML_TAG) == 0)
@@ -1051,7 +1053,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
 			dor->ContentType = contentType;
 			COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
-			addOrReplaceDataObject(result);
+			addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{result});
 			return result;
 		}
 	}
@@ -1117,7 +1119,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 			}
 			dor->ContentType = contentType;
 			RESQML2_NS::AbstractIjkGridRepresentation* result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, dataType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0);
-			addOrReplaceDataObject(result);
+			addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{result});
 			return result;
 		}
 	}
@@ -2251,7 +2253,7 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialIj
 		? "application/x-resqml+xml;version=2.2;type=obj_IjkGridRepresentation"
 		: "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation";
 	auto result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, false);
-	addOrReplaceDataObject(result);
+	addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{result});
 	return result;
 }
 
@@ -2262,7 +2264,7 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialTr
 		? "application/x-resqml+xml;version=2.2;type=obj_TruncatedIjkGridRepresentation"
 		: "application/x-resqml+xml;version=2.0;type=obj_TruncatedIjkGridRepresentation";
 	auto result = new RESQML2_NS::AbstractIjkGridRepresentation(dor, true);
-	addOrReplaceDataObject(result);
+	addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{result});
 	return result;
 }
 
@@ -3265,9 +3267,9 @@ vector<RESQML2_NS::IjkGridLatticeRepresentation*> DataObjectRepository::getIjkSe
 	return result;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType)
+std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType)
 {
-	COMMON_NS::AbstractObject* wrapper = nullptr;
+	std::unique_ptr< COMMON_NS::AbstractObject > wrapper;
 
 	if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(MdDatum)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Activity)
@@ -3296,10 +3298,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 		GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(StratigraphicOccurrenceInterpretation)
 		if (!read->GeologicUnitIndex.empty() &&
 			read->GeologicUnitIndex.front()->Unit->ContentType.find("RockFluidUnitInterpretation") != std::string::npos) {
-			wrapper = new RESQML2_0_1_NS::RockFluidOrganizationInterpretation(read);
+			wrapper.reset(new RESQML2_0_1_NS::RockFluidOrganizationInterpretation(read));
 		}
 		else {
-			wrapper = new RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation(read);
+			wrapper.reset(new RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation(read));
 		}
 	}
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFrameRepresentation)
@@ -3320,15 +3322,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 			if (read->Geometry != nullptr) {
 				switch (read->Geometry->Points->soap_type()) {
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array:
-					wrapper = new RESQML2_0_1_NS::IjkGridExplicitRepresentation(read); break;
+					wrapper.reset(new RESQML2_0_1_NS::IjkGridExplicitRepresentation(read)); break;
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dParametricArray:
-					wrapper = new RESQML2_0_1_NS::IjkGridParametricRepresentation(read); break;
+					wrapper.reset(new RESQML2_0_1_NS::IjkGridParametricRepresentation(read)); break;
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
-					wrapper = new RESQML2_0_1_NS::IjkGridLatticeRepresentation(read); break;
+					wrapper.reset(new RESQML2_0_1_NS::IjkGridLatticeRepresentation(read)); break;
 				}
 			}
 			else {
-				wrapper = new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(read);
+				wrapper.reset(new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(read));
 			}
 	}
 	else if (resqmlContentType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0)
@@ -3338,15 +3340,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 			if (read->Geometry != nullptr) {
 				switch (read->Geometry->Points->soap_type()) {
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array:
-					wrapper = new RESQML2_0_1_NS::IjkGridExplicitRepresentation(read); break;
+					wrapper.reset(new RESQML2_0_1_NS::IjkGridExplicitRepresentation(read)); break;
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dParametricArray:
-					wrapper = new RESQML2_0_1_NS::IjkGridParametricRepresentation(read); break;
+					wrapper.reset(new RESQML2_0_1_NS::IjkGridParametricRepresentation(read)); break;
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
-					wrapper = new RESQML2_0_1_NS::IjkGridLatticeRepresentation(read); break;
+					wrapper.reset(new RESQML2_0_1_NS::IjkGridLatticeRepresentation(read)); break;
 				}
 			}
 			else {
-				wrapper = new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(read);
+				wrapper.reset(new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(read));
 			}
 	}
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(UnstructuredGridRepresentation)
@@ -3385,9 +3387,9 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 	return wrapper;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_1WrapperFromGsoapContext(const std::string & datatype)
+std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getWitsml2_1WrapperFromGsoapContext(const std::string & datatype)
 {
-	COMMON_NS::AbstractObject* wrapper = nullptr;
+	std::unique_ptr< COMMON_NS::AbstractObject > wrapper;
 
 	if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, Channel, gsoap_eml2_3)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ChannelSet, gsoap_eml2_3)
@@ -3410,9 +3412,9 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_1WrapperFromGsoapCon
 	return wrapper;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::getProdml2_2WrapperFromGsoapContext(const std::string & datatype)
+std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getProdml2_2WrapperFromGsoapContext(const std::string & datatype)
 {
-	COMMON_NS::AbstractObject* wrapper = nullptr;
+	std::unique_ptr< COMMON_NS::AbstractObject > wrapper;
 
 	if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_2_NS, FluidSystem, gsoap_eml2_3)
 	else if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_2_NS, FluidCharacterization, gsoap_eml2_3)
@@ -3422,9 +3424,9 @@ COMMON_NS::AbstractObject* DataObjectRepository::getProdml2_2WrapperFromGsoapCon
 }
 
 #if WITH_RESQML2_2
-COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType)
+std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType)
 {
-	COMMON_NS::AbstractObject* wrapper = nullptr;
+	std::unique_ptr< COMMON_NS::AbstractObject > wrapper;
 
 	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BlockedWellboreRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeature)
@@ -3452,15 +3454,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 			if (read->Geometry != nullptr) {
 				switch (read->Geometry->Points->soap_type()) {
 				case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray:
-					wrapper = new RESQML2_2_NS::IjkGridExplicitRepresentation(read); break;
+					wrapper.reset(new RESQML2_2_NS::IjkGridExplicitRepresentation(read)); break;
 				case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dParametricArray:
-					wrapper = new RESQML2_2_NS::IjkGridParametricRepresentation(read); break;
+					wrapper.reset(new RESQML2_2_NS::IjkGridParametricRepresentation(read)); break;
 				case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dLatticeArray:
-					wrapper = new RESQML2_2_NS::IjkGridLatticeRepresentation(read); break;
+					wrapper.reset(new RESQML2_2_NS::IjkGridLatticeRepresentation(read)); break;
 				}
 			}
 			else {
-				wrapper = new RESQML2_2_NS::IjkGridNoGeometryRepresentation(read);
+				wrapper.reset(new RESQML2_2_NS::IjkGridNoGeometryRepresentation(read));
 			}
 	}
 	else if (resqmlContentType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0)
@@ -3470,15 +3472,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 			if (read->Geometry != nullptr) {
 				switch (read->Geometry->Points->soap_type()) {
 				case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dExternalArray:
-					wrapper = new RESQML2_2_NS::IjkGridExplicitRepresentation(read); break;
+					wrapper.reset(new RESQML2_2_NS::IjkGridExplicitRepresentation(read)); break;
 				case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dParametricArray:
-					wrapper = new RESQML2_2_NS::IjkGridParametricRepresentation(read); break;
+					wrapper.reset(new RESQML2_2_NS::IjkGridParametricRepresentation(read)); break;
 				case SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dLatticeArray:
-					wrapper = new RESQML2_2_NS::IjkGridLatticeRepresentation(read); break;
+					wrapper.reset(new RESQML2_2_NS::IjkGridLatticeRepresentation(read)); break;
 				}
 			}
 			else {
-				wrapper = new RESQML2_2_NS::IjkGridNoGeometryRepresentation(read);
+				wrapper.reset(new RESQML2_2_NS::IjkGridNoGeometryRepresentation(read));
 			}
 	}
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Model)
@@ -3515,15 +3517,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	return wrapper;
 }
 #else
-COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string&)
+std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string&)
 {
-	return nullptr;
+	return std::unique_ptr< COMMON_NS::AbstractObject >{};
 }
 #endif
 
-COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContext(const std::string & datatype)
+std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getEml2_3WrapperFromGsoapContext(const std::string & datatype)
 {
-	COMMON_NS::AbstractObject* wrapper = nullptr;
+	std::unique_ptr< COMMON_NS::AbstractObject > wrapper;
 
 	if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, Activity, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ActivityTemplate, gsoap_eml2_3, eml23)
@@ -3534,25 +3536,23 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_3WrapperFromGsoapContex
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, TimeSeries, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, VerticalCrs, gsoap_eml2_3, eml23)
 	else if (datatype.compare("PropertyKindDictionary") == 0) {
+		// We don't want to support PropertyKindDictionary but only its content
 		GET_EML_GSOAP_PROXY_FROM_GSOAP_CONTEXT(PropertyKindDictionary, gsoap_eml2_3, eml23)
 
 		for (auto* propKind : read->PropertyKind) {
-			wrapper = new EML2_3_NS::PropertyKind(propKind);
+			std::unique_ptr< COMMON_NS::AbstractObject > innerWrapper(new EML2_3_NS::PropertyKind(propKind));
 
-			if (wrapper != nullptr) {
+			if (innerWrapper) {
 				if (gsoapContext->error != SOAP_OK) {
 					ostringstream oss;
 					soap_stream_fault(gsoapContext, oss);
 					addWarning(oss.str());
-					delete wrapper;
 				}
 				else {
-					return addOrReplaceDataObject(wrapper, true);
+					addOrReplaceDataObject(std::move(innerWrapper), true);
 				}
 			}
 		}
-
-		return nullptr; // We don't want to support PropertyKindDictionary
 	}
 
 	return wrapper;

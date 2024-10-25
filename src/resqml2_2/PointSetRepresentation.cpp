@@ -42,7 +42,7 @@ PointSetRepresentation::PointSetRepresentation(COMMON_NS::DataObjectRepository* 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -57,7 +57,7 @@ PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(this);
+	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 }
 

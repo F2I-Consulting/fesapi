@@ -43,9 +43,9 @@ namespace WITSML2_1_NS
 		* Creates an instance of this class in a gsoap context.
 		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
 		*/
-		ToolErrorModel(COMMON_NS::DataObjectRepository * repo,
-			const std::string & guid,
-			const std::string & title,
+		ToolErrorModel(COMMON_NS::DataObjectRepository* repo,
+			const std::string& guid,
+			const std::string& title,
 			gsoap_eml2_3::witsml21__MisalignmentMode misalignmentMode);
 
 		/**
@@ -60,13 +60,13 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool isTopLevelElement() const;
 
-		gsoap_eml2_3::eml23__DataObjectReference* getErrorTermDor(unsigned long index) const;
-		DLL_IMPORT_OR_EXPORT std::string getErrorTermUuid(unsigned long index) const;
+		gsoap_eml2_3::eml23__DataObjectReference* getErrorTermDor(uint64_t index) const;
+		DLL_IMPORT_OR_EXPORT std::string getErrorTermUuid(uint64_t index) const;
 		DLL_IMPORT_OR_EXPORT std::vector<class ErrorTerm*> getErrorTermSet() const;
 		DLL_IMPORT_OR_EXPORT void pushBackErrorTerm(class ErrorTerm* errorTerm, double magnitude, gsoap_eml2_3::eml23__UomEnum uom);
 
-		DLL_IMPORT_OR_EXPORT void setApplication(const std::string & application);
-		DLL_IMPORT_OR_EXPORT void setSource(const std::string & source);
+		DLL_IMPORT_OR_EXPORT void setApplication(const std::string& application);
+		DLL_IMPORT_OR_EXPORT void setSource(const std::string& source);
 		DLL_IMPORT_OR_EXPORT void setToolKind(gsoap_eml2_3::witsml21__ToolKind toolKind);
 		DLL_IMPORT_OR_EXPORT void pushBackToolSubKind(gsoap_eml2_3::witsml21__ToolSubKind toolSubKind);
 		DLL_IMPORT_OR_EXPORT void pushBackOperatingCondition(gsoap_eml2_3::witsml21__OperatingCondition operatingCondition);
@@ -82,13 +82,13 @@ namespace WITSML2_1_NS
 		* @param approvalAuthority	Must no be empty.
 		* @param status				Can be nullptr. If not null, a copy of the pointed object will be done into the WITSML Authorization History.
 		*/
-		DLL_IMPORT_OR_EXPORT void setAuthorization(const std::string & approvalAuthority,
-			const std::string & approvedBy, time_t approvedOn,
-			const std::string & checkedBy, time_t checkedOn,
-			const std::string & revisionComment, time_t revisionDate,
+		DLL_IMPORT_OR_EXPORT void setAuthorization(const std::string& approvalAuthority,
+			const std::string& approvedBy, time_t approvedOn,
+			const std::string& checkedBy, time_t checkedOn,
+			const std::string& revisionComment, time_t revisionDate,
 			gsoap_eml2_3::witsml21__AuthorizationStatus* status);
 
-		DLL_IMPORT_OR_EXPORT void pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_3::eml23__PlaneAngleUom uom, const std::string & comment = std::string());
+		DLL_IMPORT_OR_EXPORT void pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_3::eml23__PlaneAngleUom uom, const std::string& comment = std::string());
 		DLL_IMPORT_OR_EXPORT void pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_3::eml23__PlaneAngleUom uom, double horizontalEastWestMaxValue, gsoap_eml2_3::eml23__PlaneAngleUom horizontalEastWestMaxValueUom, const std::string & comment = std::string());
 
 		DLL_IMPORT_OR_EXPORT void setXyzAccelerometer();
@@ -107,7 +107,7 @@ namespace WITSML2_1_NS
 
 		void loadTargetRelationships();
 
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "ToolErrorModel";
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**

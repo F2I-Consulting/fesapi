@@ -27,11 +27,9 @@ using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_3;
 
-const char* ToolErrorModel::XML_TAG = "ToolErrorModel";
-
-ToolErrorModel::ToolErrorModel(COMMON_NS::DataObjectRepository * repo,
-	const std::string & guid,
-	const std::string & title,
+ToolErrorModel::ToolErrorModel(COMMON_NS::DataObjectRepository* repo,
+	const std::string& guid,
+	const std::string& title,
 	gsoap_eml2_3::witsml21__MisalignmentMode misalignmentMode)
 {
 	if (repo == nullptr) throw invalid_argument("A Tool Error Model must be associated to a repo.");
@@ -42,7 +40,7 @@ ToolErrorModel::ToolErrorModel(COMMON_NS::DataObjectRepository * repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 bool ToolErrorModel::isTopLevelElement() const
@@ -50,33 +48,22 @@ bool ToolErrorModel::isTopLevelElement() const
 	return getRepository()->getSourceObjects<ToolErrorModelDictionary>(this).empty();
 }
 
-gsoap_eml2_3::eml23__DataObjectReference* ToolErrorModel::getErrorTermDor(unsigned long index) const
+gsoap_eml2_3::eml23__DataObjectReference* ToolErrorModel::getErrorTermDor(uint64_t index) const
 {
-	if (gsoapProxy2_3 != nullptr) {
-		witsml21__ToolErrorModel* tem = static_cast<witsml21__ToolErrorModel*>(gsoapProxy2_3);
-		if (index < tem->ErrorTermValue.size()) {
-			return tem->ErrorTermValue[index]->ErrorTerm;
-		}
-		else {
-			throw range_error("The index of error term is out of range");
-		}
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+	cannotBePartial();
+	return static_cast<witsml21__ToolErrorModel*>(gsoapProxy2_3)->ErrorTermValue.at(index)->ErrorTerm;
 }
 
-std::string ToolErrorModel::getErrorTermUuid(unsigned long index) const
+std::string ToolErrorModel::getErrorTermUuid(uint64_t index) const
 {
 	return getErrorTermDor(index)->Uuid;
 }
 
 std::vector<ErrorTerm*> ToolErrorModel::getErrorTermSet() const
 {
-	witsml21__ToolErrorModel* tem = static_cast<witsml21__ToolErrorModel*>(gsoapProxy2_3);
 	std::vector<ErrorTerm*> result;
 
-	for (size_t index = 0; index < tem->ErrorTermValue.size(); ++index) {
+	for (size_t index = 0; index < static_cast<witsml21__ToolErrorModel*>(gsoapProxy2_3)->ErrorTermValue.size(); ++index) {
 		result.push_back(getRepository()->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index)));
 	}
 

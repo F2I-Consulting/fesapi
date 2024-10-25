@@ -37,6 +37,6 @@ BoundaryFeatureInterpretation::BoundaryFeatureInterpretation(RESQML2_NS::Boundar
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	feature->getRepository()->addDataObject(this);
+	feature->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(feature);
 }

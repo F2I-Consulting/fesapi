@@ -28,11 +28,9 @@ using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_3;
 
-const char* ToolErrorModelDictionary::XML_TAG = "ToolErrorModelDictionary";
-
-ToolErrorModelDictionary::ToolErrorModelDictionary(COMMON_NS::DataObjectRepository * repo,
-	const std::string & guid,
-	const std::string & title)
+ToolErrorModelDictionary::ToolErrorModelDictionary(COMMON_NS::DataObjectRepository* repo,
+	const std::string& guid,
+	const std::string& title)
 {
 	if (repo == nullptr) throw invalid_argument("A Tool Error Model Dictionary must be associated to a repo.");
 
@@ -41,26 +39,16 @@ ToolErrorModelDictionary::ToolErrorModelDictionary(COMMON_NS::DataObjectReposito
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
-std::string ToolErrorModelDictionary::getToolErrorModelUuid(unsigned long index) const
+std::string ToolErrorModelDictionary::getToolErrorModelUuid(uint64_t index) const
 {
-	if (gsoapProxy2_3 != nullptr) {
-		witsml21__ToolErrorModelDictionary* dict = static_cast<witsml21__ToolErrorModelDictionary*>(gsoapProxy2_3);
-		if (index < dict->ToolErrorModel.size()) {
-			return dict->ToolErrorModel[index]->uuid;
-		}
-		else{
-			throw range_error("The index of tool error model is out of range");
-		}
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+	cannotBePartial();
+	return static_cast<witsml21__ToolErrorModelDictionary*>(gsoapProxy2_3)->ToolErrorModel.at(index)->uuid;
 }
 
-ToolErrorModel* ToolErrorModelDictionary::getToolErrorModel(unsigned long index) const {
+ToolErrorModel* ToolErrorModelDictionary::getToolErrorModel(uint64_t index) const {
 	witsml21__ToolErrorModelDictionary* dict = static_cast<witsml21__ToolErrorModelDictionary*>(gsoapProxy2_3);
 
 	ToolErrorModel* tem = getRepository()->getDataObjectByUuid<ToolErrorModel>(dict->ToolErrorModel[index]->uuid);
@@ -70,8 +58,7 @@ ToolErrorModel* ToolErrorModelDictionary::getToolErrorModel(unsigned long index)
 std::vector<ToolErrorModel*> ToolErrorModelDictionary::getToolErrorModels() const {
 	std::vector<ToolErrorModel*> result;
 
-	witsml21__ToolErrorModelDictionary* dict = static_cast<witsml21__ToolErrorModelDictionary*>(gsoapProxy2_3);
-	for (size_t index = 0; index < dict->ToolErrorModel.size(); ++index) {
+	for (size_t index = 0; index < static_cast<witsml21__ToolErrorModelDictionary*>(gsoapProxy2_3)->ToolErrorModel.size(); ++index) {
 		result.push_back(getToolErrorModel(index));
 	}
 
@@ -90,12 +77,11 @@ void ToolErrorModelDictionary::loadTargetRelationships()
 {
 	witsml21__ToolErrorModelDictionary* dict = static_cast<witsml21__ToolErrorModelDictionary*>(gsoapProxy2_3);
 
-	for (size_t index = 0; index < dict->ToolErrorModel.size(); ++index) {
-		ToolErrorModel* tem = getRepository()->getDataObjectByUuid<ToolErrorModel>(dict->ToolErrorModel[index]->uuid);
-		if (tem == nullptr) {
-			tem = new ToolErrorModel(dict->ToolErrorModel[index]);
-			getRepository()->addOrReplaceDataObject(tem);
+	for (auto* tem : dict->ToolErrorModel) {
+		COMMON_NS::AbstractObject* temWrapper = getRepository()->getDataObjectByUuid<ToolErrorModel>(tem->uuid);
+		if (temWrapper == nullptr) {
+			temWrapper = getRepository()->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{new ToolErrorModel(tem)});
 		}
-		getRepository()->addRelationship(this, tem);
+		getRepository()->addRelationship(this, temWrapper);
 	}
 }
