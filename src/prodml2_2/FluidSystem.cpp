@@ -63,7 +63,7 @@ FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
 	fs->SolutionGOR->__item = gasOilRatio;
 	fs->SolutionGOR->uom = gsoap_eml2_3::soap_eml23__VolumePerVolumeUom2s(repo->getGsoapContext(), gasOilRatioUom);
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
@@ -93,7 +93,7 @@ FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
 	fs->SolutionGOR->__item = gasOilRatio;
 	fs->SolutionGOR->uom = gsoap_eml2_3::soap_eml23__VolumePerVolumeUom2s(repo->getGsoapContext(), gasOilRatioUom);
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidSystem, gsoap_eml2_3::prodml22__FluidSystem, gsoapProxy2_3, PhasesPresent, gsoap_eml2_3::prodml22__PhasePresent, soap_new_prodml22__PhasePresent)

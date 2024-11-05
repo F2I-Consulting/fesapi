@@ -182,7 +182,7 @@ namespace EML2_NS
 		 * 										must be directly contained in RESQML group.
 		 * @param 	name						The name of the nd array HDF5 dataset. It must not
 		 * 										already exist.
-		 * @param 	floatValues					1d array of float values ordered firstly by fastest
+		 * @param 	values						1d array of float values ordered firstly by fastest
 		 * 										direction.
 		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
 		 * 										write. They are ordered from fastest index to slowest index.
@@ -190,8 +190,8 @@ namespace EML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfFloatValues(const std::string & groupName,
 			const std::string & name,
-			const float * values,
-			const uint64_t * numValuesInEachDimension,
+			const float* values,
+			const uint64_t* numValuesInEachDimension,
 			unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT, values, numValuesInEachDimension, numDimensions);
 		}
@@ -204,7 +204,7 @@ namespace EML2_NS
 		 * 										must be directly contained in RESQML group.
 		 * @param 	name						The name of the nd array HDF5 dataset. It must not
 		 * 										already exist.
-		 * @param 	dblValues					1d array of double values ordered firstly by fastest
+		 * @param 	values						1d array of double values ordered firstly by fastest
 		 * 										direction.
 		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
 		 * 										write. They are ordered from fastest index to slowest index.
@@ -212,8 +212,8 @@ namespace EML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfDoubleValues(const std::string & groupName,
 		  const std::string & name,
-		  const double * values,
-		  const uint64_t * numValuesInEachDimension,
+		  const double* values,
+		  const uint64_t* numValuesInEachDimension,
 		  unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, values, numValuesInEachDimension, numDimensions);
 		}
@@ -226,7 +226,7 @@ namespace EML2_NS
 		 * 										directly contained in RESQML group.
 		 * @param 	name						The name of the nd array HDF5 dataset. It must not
 		 * 										already exist.
-		 * @param 	intValues					1d array of int 8 bits values ordered firstly by fastest
+		 * @param 	values						1d array of int 8 bits values ordered firstly by fastest
 		 * 										direction.
 		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
 		 * 										write. They are ordered from fastest index to slowest index.
@@ -234,8 +234,8 @@ namespace EML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfInt8Values(const std::string & groupName,
 			const std::string & name,
-			const int8_t * values,
-			const uint64_t * numValuesInEachDimension,
+			const int8_t* values,
+			const uint64_t* numValuesInEachDimension,
 			unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8, values, numValuesInEachDimension, numDimensions);
 		}
@@ -248,7 +248,7 @@ namespace EML2_NS
 		 * 										directly contained in RESQML group.
 		 * @param 	name						The name of the nd array HDF5 dataset. It must not
 		 * 										already exist.
-		 * @param 	intValues					1d array of int values ordered firstly by fastest
+		 * @param 	values						1d array of int values ordered firstly by fastest
 		 * 										direction.
 		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
 		 * 										write. They are ordered from fastest index to slowest index.
@@ -256,8 +256,8 @@ namespace EML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfIntValues(const std::string & groupName,
 		  const std::string & name,
-		  const int * values,
-		  const uint64_t * numValuesInEachDimension,
+		  const int* values,
+		  const uint64_t* numValuesInEachDimension,
 		  unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32, values, numValuesInEachDimension, numDimensions);
 		}
@@ -279,8 +279,8 @@ namespace EML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void writeArrayNdOfInt64Values(const std::string & groupName,
 			const std::string & name,
-			const int64_t * values,
-			const uint64_t * numValuesInEachDimension,
+			const int64_t* values,
+			const uint64_t* numValuesInEachDimension,
 			unsigned int numDimensions) {
 			writeArrayNd(groupName, name, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, values, numValuesInEachDimension, numDimensions);
 		}

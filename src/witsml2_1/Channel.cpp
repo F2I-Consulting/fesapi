@@ -58,7 +58,7 @@ Channel::Channel(EML2_NS::PropertyKind * propertyKind,
 	
 	channel->ActiveStatus = isActive ? eml23__ActiveStatusKind::active : eml23__ActiveStatusKind::inactive;
 
-	propertyKind->getRepository()->addDataObject(this);
+	propertyKind->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setPropertyKind(propertyKind);
 }
 

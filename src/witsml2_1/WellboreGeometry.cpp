@@ -31,8 +31,8 @@ using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_3;
 
 WellboreGeometry::WellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
-	const std::string & guid,
-	const std::string & title,
+	const std::string& guid,
+	const std::string& title,
 	bool isActive)
 {
 	if (witsmlWellbore == nullptr) {
@@ -42,7 +42,7 @@ WellboreGeometry::WellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 	gsoapProxy2_3 = soap_new_witsml21__WellboreGeometry(witsmlWellbore->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->ActiveStatus = isActive ? eml23__ActiveStatusKind::active : eml23__ActiveStatusKind::inactive;
 
@@ -52,7 +52,7 @@ WellboreGeometry::WellboreGeometry(WITSML2_NS::Wellbore* witsmlWellbore,
 	static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->Index->Direction = eml23__IndexDirection::increasing;
 	static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->Index->Uom = "Euc"; //TODO
 
-	witsmlWellbore->getRepository()->addDataObject(this);
+	witsmlWellbore->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWellbore(witsmlWellbore);
 }
 
@@ -147,12 +147,10 @@ double WellboreGeometry::getWellboreGeometrySectionTvdIntervalBase(uint64_t inde
 
 bool WellboreGeometry::hasWellboreGeometrySectionTvdInterval(uint64_t index) const
 {
-	if (index >= static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->WellboreGeometrySection.size()) { throw std::range_error("The index is out of range"); }
-
-	return static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->WellboreGeometrySection[index]->SectionTvdInterval != nullptr;
+	return static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->WellboreGeometrySection.at(index)->SectionTvdInterval != nullptr;
 }
 
-void WellboreGeometry::pushBackSection(double top, double base, gsoap_eml2_3::eml23__LengthUom uom, const std::string & uid)
+void WellboreGeometry::pushBackSection(double top, double base, gsoap_eml2_3::eml23__LengthUom uom, const std::string& uid)
 {
 	static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->WellboreGeometrySection.push_back(gsoap_eml2_3::soap_new_witsml21__WellboreGeometrySection(gsoapProxy2_3->soap));
 	uint64_t index = getSectionCount() - 1;

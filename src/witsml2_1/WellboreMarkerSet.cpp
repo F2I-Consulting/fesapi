@@ -58,13 +58,10 @@ void WellboreMarkerSet::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 		throw invalid_argument("Cannot set a null witsml Wellbore to a witsml wellbore marker set");
 	}
 	if (getRepository() == nullptr) {
-		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
+		witsmlWellbore->getRepository()->addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	}
-
-	// EPC
 	getRepository()->addRelationship(this, witsmlWellbore);
 
-	// XML
 	witsml21__WellboreMarkerSet* wms = static_cast<witsml21__WellboreMarkerSet*>(gsoapProxy2_3);
 	wms->Wellbore = witsmlWellbore->newEml23Reference();
 }

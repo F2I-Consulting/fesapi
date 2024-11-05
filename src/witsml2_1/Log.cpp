@@ -45,7 +45,7 @@ Log::Log(WITSML2_NS::Wellbore* witsmlWellbore,
 
 	static_cast<witsml21__Log*>(gsoapProxy2_3)->ActiveStatus = isActive ? eml23__ActiveStatusKind::active : eml23__ActiveStatusKind::inactive;
 
-	witsmlWellbore->getRepository()->addDataObject(this);
+	witsmlWellbore->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWellbore(witsmlWellbore);
 }
 
@@ -80,13 +80,12 @@ void Log::loadTargetRelationships()
 
 	const std::vector<witsml21__ChannelSet *>& channelSets = static_cast<witsml21__Log*>(gsoapProxy2_3)->ChannelSet;
 
-	for (size_t i = 0; i < channelSets.size(); ++i) {
-		ChannelSet* channelSet = getRepository()->getDataObjectByUuid<ChannelSet>(channelSets[i]->uuid);
-		if (channelSet == nullptr) {
-			channelSet = new ChannelSet(channelSets[i]);
-			getRepository()->addOrReplaceDataObject(channelSet);
-			channelSet->loadTargetRelationships();
+	for (witsml21__ChannelSet* channelSet : channelSets) {
+		COMMON_NS::AbstractObject* channelSetWrapper = getRepository()->getDataObjectByUuid<ChannelSet>(channelSet->uuid);
+		if (channelSetWrapper == nullptr) {
+			channelSetWrapper = getRepository()->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>(new ChannelSet(channelSet)));
+			channelSetWrapper->loadTargetRelationships();
 		}
-		getRepository()->addRelationship(this, channelSet);
+		getRepository()->addRelationship(this, channelSetWrapper);
 	}
 }

@@ -48,7 +48,7 @@ namespace RESQML2_NS
 		 * @returns	A vector of pointers to all the grid representations associated to this stratigraphic
 		 * 			organization interpretation.
 		 */
-		std::vector<AbstractGridRepresentation*> getGridRepresentations() const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractGridRepresentation*> getGridRepresentations() const;
 
 		/**
 		 * Gets the count of grid representations associated to this stratigraphic organization

@@ -21,7 +21,7 @@ jobs:
           cmake --build . --config Release --target INSTALL
       - name: Boost install
         run: |
-          (New-Object System.Net.WebClient).DownloadFile("https://sourceforge.net/projects/boost/files/boost-binaries/1.85.0/boost_1_85_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
+          (New-Object System.Net.WebClient).DownloadFile("https://boostorg.jfrog.io/artifactory/main/release/1.86.0/binaries/boost_1_86_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
           Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
       - name: CMake build and install
         run: |
@@ -70,28 +70,28 @@ jobs:
           cmake --build . --config Release --target INSTALL
       - name: HDF5 install
         run: |
-          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.14/hdf5-1.14.3/src/hdf5-1.14.3.zip -OutFile ${{ runner.temp }}\hdf5-1.14.3.zip
+          Invoke-WebRequest https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/hdf5-1.14.5.zip -OutFile ${{ runner.temp }}\hdf5-1.14.5.zip
           cd ${{ runner.temp }}
-          Expand-Archive ${{ runner.temp }}\hdf5-1.14.3.zip -DestinationPath ${{ runner.temp }}
+          Expand-Archive ${{ runner.temp }}\hdf5-1.14.5.zip -DestinationPath ${{ runner.temp }}
           mkdir hdf5-build
           cd hdf5-build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON -DZLIB_INCLUDE_DIR:PATH=${{ runner.temp }}/zlib-install/include -DZLIB_LIBRARY:PATH=${{ runner.temp }}/zlib-install/lib/zlibstatic.lib -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/hdf5-install ${{ runner.temp }}/hdf5-1.14.3
+          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON -DZLIB_INCLUDE_DIR:PATH=${{ runner.temp }}/zlib-install/include -DZLIB_LIBRARY:PATH=${{ runner.temp }}/zlib-install/lib/zlibstatic.lib -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/hdf5-install ${{ runner.temp }}/hdf5-1.14.5
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Boost install
         run: |
-          (New-Object System.Net.WebClient).DownloadFile("https://sourceforge.net/projects/boost/files/boost-binaries/1.84.0//boost_1_84_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
+          (New-Object System.Net.WebClient).DownloadFile("https://boostorg.jfrog.io/artifactory/main/release/1.86.0/binaries/boost_1_86_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
           Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
       - name: Swig install
         run: |
-          (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.2.0.zip", "${{ runner.temp }}\swigwin-4.2.0.zip")
-          7z x ${{ runner.temp }}\swigwin-4.2.0.zip -o${{ runner.temp }}
+          (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.3.0.zip", "${{ runner.temp }}\swigwin-4.3.0.zip")
+          7z x ${{ runner.temp }}\swigwin-4.3.0.zip -o${{ runner.temp }}
       - name: CMake build and install
         run: |
           cd ${{ github.workspace }}/..
           mkdir build
           cd build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.2.0/swig.exe -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
+          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.3.0/swig.exe -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Add msbuild to PATH
@@ -166,12 +166,9 @@ jobs:
         with:
           name: ubuntu-20.04-${{ matrix.cxx }}
           path: ${{ runner.temp }}/fesapi-install
-  build_wheels:
-    name: Build wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+  build_wheels_linux:
+    name: Build wheels on ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Stub `setup.py` check
@@ -212,7 +209,54 @@ jobs:
           output-dir: wheelhouse
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          name: cibw-wheels-ubuntu-latest
+          path: ./wheelhouse/*.whl
+  build_wheels_mac:
+    name: Build wheels on macos-14
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stub `setup.py` check
+        # It will be generated during CMake run
+        # https://github.com/pypa/cibuildwheel/issues/1139
+        run: touch python/setup.py
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.19.2
+        env:
+          CIBW_BUILD: cp38-macosx_* cp39-macosx_* cp310-macosx_* cp311-macosx_* cp312-macosx_* cp313-macosx_*
+          CIBW_ARCHS: auto64
+          CIBW_BEFORE_ALL: >
+            brew install boost swig &&
+            git clone https://github.com/F2I-Consulting/Minizip.git ${{ github.workspace }}/../minizip &&
+            cd ${{ github.workspace }}/.. &&
+            mkdir minizip-build &&
+            cd minizip-build &&
+            cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/../minizip-install ${{ github.workspace }}/../minizip &&
+            cmake --build . -j2 --config Release &&
+            cmake --install . &&
+            cd ${{ github.workspace }}/.. &&
+            wget https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.5/hdf5-1.14.5.tar.gz &&
+            tar xf hdf5-1.14.5.tar.gz &&
+            mkdir hdf5-build &&
+            cd hdf5-build &&
+            cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../hdf5-install ../hdf5-1.14.5 &&
+            cmake --build . -j2 --config Release &&
+            cmake --install . &&
+            mkdir ${{ github.workspace }}/../build &&
+            cd ${{ github.workspace }}/../build &&
+            cmake -DCMAKE_BUILD_TYPE=Release -DMINIZIP_ROOT=${{ github.workspace }}/../minizip-install -DHDF5_ROOT=${{ github.workspace }}/../hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../fesapi-install ${{ github.workspace }} &&
+            cmake --build . -j2 --config Release &&
+            cmake --install .
+          # See https://cibuildwheel.pypa.io/en/stable/faq/#macos-passing-dyld_library_path-to-delocate
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: >
+            DYLD_LIBRARY_PATH=${{ github.workspace }}/../fesapi-install/lib delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}
+          CIBW_TEST_COMMAND: python ${{ github.workspace }}/python/example/example.py
+        with:
+          package-dir: ./python
+          output-dir: wheelhouse
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-macos-14
           path: ./wheelhouse/*.whl
   ubuntu-20-mpi:
     runs-on: ubuntu-20.04    
@@ -235,8 +279,8 @@ jobs:
           cmake --install .
       - name: Run example
         run: mpiexec -n 2 ${{ runner.temp }}/fesapi-install/example
-  ubuntu-20-valgrind-unitTest:
-    runs-on: ubuntu-20.04
+  ubuntu-latest-valgrind-unitTest:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: APT install
@@ -249,7 +293,7 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Debug -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_TEST=TRUE -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
-          cmake --build . -j2
+          cmake --build . -j2 --config Debug
           cmake --install .
       - name: Run Valgrind on example
         run: |

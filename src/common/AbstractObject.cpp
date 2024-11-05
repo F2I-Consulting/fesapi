@@ -906,8 +906,14 @@ void AbstractObject::readArrayNdOfFloatValues(gsoap_resqml2_0_1::resqml20__Abstr
 		if (latticeArray->Offset.size() > 1) {
 			throw invalid_argument("The integer lattice array contains more than one offset.");
 		}
+		if (latticeArray->StartValue < (std::numeric_limits<float>::min)() || latticeArray->StartValue > (std::numeric_limits<float>::max)()) {
+			throw out_of_range("The double start value of the lattice array " + std::to_string(latticeArray->StartValue) + " is out of float range value");
+		}
+		if (latticeArray->Offset[0]->Value < (std::numeric_limits<float>::min)() || latticeArray->Offset[0]->Value >(std::numeric_limits<float>::max)()) {
+			throw out_of_range("The double offset value of the lattice array " + std::to_string(latticeArray->Offset[0]->Value) + " is out of float range value");
+		}
 		for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
-			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+			arrayOutput[i] = static_cast<float>(latticeArray->StartValue) + (i * static_cast<float>(latticeArray->Offset[0]->Value));
 		}
 	}
 	else
@@ -942,8 +948,14 @@ void AbstractObject::readArrayNdOfFloatValues(gsoap_eml2_3::eml23__AbstractFloat
 		if (latticeArray->Offset[0]->Count < 0) {
 			throw invalid_argument("The count of the floating point lattice array of UUID " + getUuid() + " is negative which is not valid.");
 		}
+		if (latticeArray->StartValue < (std::numeric_limits<float>::min)() || latticeArray->StartValue >(std::numeric_limits<float>::max)()) {
+			throw out_of_range("The double start value of the lattice array " + std::to_string(latticeArray->StartValue) + " is out of float range value");
+		}
+		if (latticeArray->Offset[0]->Value < (std::numeric_limits<float>::min)() || latticeArray->Offset[0]->Value >(std::numeric_limits<float>::max)()) {
+			throw out_of_range("The double offset value of the lattice array " + std::to_string(latticeArray->Offset[0]->Value) + " is out of float range value");
+		}
 		for (size_t i = 0; i <= static_cast<size_t>(latticeArray->Offset[0]->Count); ++i) {
-			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+			arrayOutput[i] = static_cast<float>(latticeArray->StartValue) + (i * static_cast<float>(latticeArray->Offset[0]->Value));
 		}
 		break;
 	}
@@ -1734,7 +1746,7 @@ EML2_NS::AbstractHdfProxy* AbstractObject::getOrCreateHdfProxyFromDataArrayPart(
 	if (hdfProxy == nullptr) {
 		hdfProxy = new EML2_3_NS::HdfProxy(getRepository(), "", "Fake eml23 HDF Proxy", getEpcSourceFolder(), dataArrayPart->URI);
 		hdfProxy->setUriSource(getUriSource());
-		getRepository()->addDataObject(hdfProxy);
+		getRepository()->addDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{hdfProxy});
 	}
 #endif
 

@@ -361,7 +361,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackHdf5Array2dOfValues(
 			COMMON_NS::AbstractObject::numericalDatatypeEnum datatype,
 			uint64_t valueCountInFastestDim,
-			uint64_t valueCountInMiddleDim,
+			uint64_t valueCountInSlowestDim,
 			double minimumValue, double maximumValue,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr
 		);

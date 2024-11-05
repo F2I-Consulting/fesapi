@@ -55,7 +55,7 @@ VerticalCrs::VerticalCrs(COMMON_NS::DataObjectRepository* repo, const std::strin
 	epsgCrs->EpsgCode = verticalEpsgCode;
 	verticalCrs->AbstractVerticalCrs = epsgCrs;
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 VerticalCrs::VerticalCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
@@ -75,7 +75,7 @@ VerticalCrs::VerticalCrs(COMMON_NS::DataObjectRepository* repo, const std::strin
 	unknownCrs->Unknown = unknownReason;
 	verticalCrs->AbstractVerticalCrs = unknownCrs;
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 bool VerticalCrs::isVerticalCrsDefinedWithEpsg() const

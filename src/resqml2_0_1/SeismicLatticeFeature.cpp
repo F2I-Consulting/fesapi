@@ -22,8 +22,6 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* SeismicLatticeFeature::XML_NS = "resqml20";
-
 SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
 	int inlineIncrement, int crosslineIncrement,
 	unsigned int originInline, unsigned int originCrossline,
@@ -45,25 +43,25 @@ SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* re
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
-int SeismicLatticeFeature::getCrosslineIncrement() const
+int64_t SeismicLatticeFeature::getCrosslineIncrement() const
 {
 	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->CrosslineIndexIncrement;
 }
 		
-int SeismicLatticeFeature::getInlineIncrement() const
+int64_t SeismicLatticeFeature::getInlineIncrement() const
 {
 	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->InlineIndexIncrement;
 }
 		
-int SeismicLatticeFeature::getOriginCrossline() const
+int64_t SeismicLatticeFeature::getCrosslineOrigin() const
 {
 	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->FirstCrosslineIndex;
 }
 		
-int SeismicLatticeFeature::getOriginInline() const
+int64_t SeismicLatticeFeature::getInlineOrigin() const
 {
 	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->FirstInlineIndex;
 }

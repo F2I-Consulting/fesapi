@@ -71,7 +71,7 @@ void IjkGridParametricRepresentation::BSpline::setParameterAndValueAtControlPoin
 	c[c.size() - 1] = 0;
 	b.resize(h.size());
 	d.resize(h.size());
-	for (int i = h.size() - 1; i >= 0; --i) {
+	for (int64_t i = h.size() - 1; i >= 0; --i) {
 		c[i] = z[i] - mu[i] * c[i + 1];
 		b[i] = (valuesAtControlPoint[i + 1] - valuesAtControlPoint[i]) / h[i] - h[i] * (c[i + 1] + 2 * c[i]) / 3;
 		d[i] = (c[i + 1] - c[i]) / (3 * h[i]);

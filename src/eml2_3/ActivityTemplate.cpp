@@ -29,7 +29,7 @@ ActivityTemplate::ActivityTemplate(COMMON_NS::DataObjectRepository * repo, const
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 void ActivityTemplate::pushBackParameter(const std::string & title,

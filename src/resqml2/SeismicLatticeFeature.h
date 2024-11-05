@@ -37,32 +37,32 @@ namespace RESQML2_NS
 		virtual ~SeismicLatticeFeature() = default;
 
 		/**
-		 * Gets the crossline index increment between two consecutive crosslines.
+		 * Gets the crossline annotated index increment between two consecutive crosslines.
 		 *
 		 * @returns	The crossline increment.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getCrosslineIncrement() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getCrosslineIncrement() const = 0;
 
 		/**
-		 * Gets the inline index increment between two consecutive inlines.
+		 * Gets the inline annotated index increment between two consecutive inlines.
 		 *
 		 * @returns	The inline increment.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getInlineIncrement() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getInlineIncrement() const = 0;
 
 		/**
-		 * Gets the index of the first crossline.
+		 * Gets the annotated index of the first crossline.
 		 *
 		 * @returns	The origin crossline.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getOriginCrossline() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getCrosslineOrigin() const = 0;
 
 		/**
-		 * Gets the index of the first inline.
+		 * Gets the annotated index of the first inline.
 		 *
 		 * @returns	The origin inline.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getOriginInline() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getInlineOrigin() const = 0;
 
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "SeismicLatticeFeature";

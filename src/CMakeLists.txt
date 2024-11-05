@@ -1,4 +1,8 @@
-cmake_minimum_required (VERSION 3.12)
+if (WIN32)
+	cmake_minimum_required(VERSION 3.27)
+else ()
+	cmake_minimum_required(VERSION 3.12)
+endif (WIN32)
 
 project (Fesapi_SRC)
 
@@ -85,17 +89,16 @@ if (WIN32)
 	elseif (EXISTS ${SZIP_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_DEBUG})
 	endif ()
-
+	
 	set_target_properties(${CPP_LIBRARY_NAME} PROPERTIES
-		PDB_NAME ${CPP_LIBRARY_NAME}.${Fesapi_VERSION}
-		PDB_NAME_DEBUG ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}.${Fesapi_VERSION}
 		LINK_FLAGS "/INCREMENTAL:NO /OPT:REF"
 		RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR}
-		SUFFIX .${Fesapi_VERSION}.dll
-		IMPORT_SUFFIX .${Fesapi_VERSION}.lib
-		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}
+		IMPORT_SUFFIX -${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.lib
+		DLL_NAME_WITH_SOVERSION TRUE
+		VERSION ${Fesapi_VERSION}
+		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}
 	)
-ELSEIF (UNIX)
+elseif (UNIX)
 # szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
 	if (EXISTS ${SZIP_LIBRARY_RELEASE})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})

@@ -261,15 +261,14 @@ PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApp
 			}
 
 			std::vector<PropertyKind*> added;
-			for (size_t toAddIndex = 0; toAddIndex < toAdd.size(); toAddIndex++)
+			for (auto* propKindToAdd : toAdd)
 			{
-				PropertyKind* wrappedPropType = new PropertyKind(toAdd[toAddIndex]);
-				dataObjRepo->addOrReplaceDataObject(wrappedPropType);
-				added.push_back(wrappedPropType);
+				COMMON_NS::AbstractObject* wrappedPropType = dataObjRepo->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{new PropertyKind(propKindToAdd)});
+				added.push_back(static_cast<PropertyKind*>(wrappedPropType));
 			}
-			for (size_t addedIndex = 0; addedIndex < added.size(); addedIndex++)
+			for (auto* addedPropKind : added)
 			{
-				added[addedIndex]->loadTargetRelationships();
+				addedPropKind->loadTargetRelationships();
 			}
 			return added[0];
 		}
@@ -309,12 +308,9 @@ bool PropertyKindMapper::isAbstract(gsoap_resqml2_0_1::resqml20__ResqmlPropertyK
 	auto cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find(resqmlStandardPropertyKindName);
 
 	if (cit != resqmlStandardPropertyKindNameToApplicationPropertyKindName.end()) {
-		if (cit->second->isAbstract != nullptr) {
-			return *(cit->second->isAbstract);
-		}
-		else {
-			return false;
-		}
+		return cit->second->isAbstract
+			? *(cit->second->isAbstract)
+			: false;
 	}
 
 	return true;

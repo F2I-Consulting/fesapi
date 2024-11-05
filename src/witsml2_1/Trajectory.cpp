@@ -52,7 +52,7 @@ Trajectory::Trajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 	static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->Index->Direction = eml23__IndexDirection::increasing;
 	static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->Index->Uom = "Euc"; //TODO
 
-	witsmlWellbore->getRepository()->addDataObject(this);
+	witsmlWellbore->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWellbore(witsmlWellbore);
 }
 
@@ -129,7 +129,7 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_3::witsml
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_3::witsml21__TrajStationStatus, Trajectory, TrajectoryStation, StatusTrajStation, gsoap_eml2_3::soap_new_witsml21__TrajStationStatus)
 
 // Optional Length Measure
-void Trajectory::setTrajectoryStationTvd(unsigned int index, double value, gsoap_eml2_3::eml23__LengthUom uom) {
+void Trajectory::setTrajectoryStationTvd(uint64_t index, double value, gsoap_eml2_3::eml23__LengthUom uom) {
 	if (value != value) { throw invalid_argument("You cannot set an undefined measured depth coord"); }
 	CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(Trajectory, TrajectoryStation, Tvd, gsoap_eml2_3::soap_new_eml23__DatumVerticalDepth)
 		if (static_cast<witsml21__Trajectory*>(gsoapProxy2_3)->TrajectoryStation[index]->Tvd->VerticalDepth == nullptr) {
@@ -138,11 +138,11 @@ void Trajectory::setTrajectoryStationTvd(unsigned int index, double value, gsoap
 	static_cast<witsml21__Trajectory*>(gsoapProxy2_3)->TrajectoryStation[index]->Tvd->VerticalDepth->__item = value; \
 		static_cast<witsml21__Trajectory*>(gsoapProxy2_3)->TrajectoryStation[index]->Tvd->VerticalDepth->uom = gsoap_eml2_3::soap_eml23__LengthUom2s(gsoapProxy2_3->soap, uom); \
 }
-double Trajectory::getTrajectoryStationTvdValue(unsigned int index) const {
+double Trajectory::getTrajectoryStationTvdValue(uint64_t index) const {
 	CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(Trajectory, TrajectoryStation, Tvd)
 		return static_cast<witsml21__Trajectory*>(gsoapProxy2_3)->TrajectoryStation[index]->Tvd->VerticalDepth->__item;
 }
-eml23__LengthUom Trajectory::getTrajectoryStationTvdUom(unsigned int index) const {
+eml23__LengthUom Trajectory::getTrajectoryStationTvdUom(uint64_t index) const {
 	CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(Trajectory, TrajectoryStation, Tvd)
 		eml23__LengthUom result;
 	gsoap_eml2_3::soap_s2eml23__LengthUom(gsoapProxy2_3->soap, static_cast<witsml21__Trajectory*>(gsoapProxy2_3)->TrajectoryStation[index]->Tvd->VerticalDepth->uom.c_str(), &result);

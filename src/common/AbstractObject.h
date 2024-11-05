@@ -33,6 +33,9 @@ namespace COMMON_NS
 	{
 	public:
 
+		/**
+		* All different numerical datatypes which can be stored in DataArrays
+		*/
 		enum class numericalDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, INT64 = 3, UINT64 = 4, INT32 = 5, UINT32 = 6, INT16 = 7, UINT16 = 8, INT8 = 9, UINT8 = 10};
 
 		DLL_IMPORT_OR_EXPORT virtual ~AbstractObject() = default;
@@ -46,6 +49,9 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT bool isPartial() const;
 
+		/**
+		* Indicates if this object is a top level one (i.e.) not contained in any other) or not.
+		*/
 		DLL_IMPORT_OR_EXPORT virtual bool isTopLevelElement() const { return true; }
 
 		/**
@@ -734,9 +740,8 @@ namespace COMMON_NS
 			gsoapProxy2_3(proxy),
 			repository(nullptr) {}
 
-		
-		friend bool COMMON_NS::DataObjectRepository::addDataObject(COMMON_NS::AbstractObject* proxy);
-		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy, bool replaceOnlyContent);
+		friend bool COMMON_NS::DataObjectRepository::addDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy);
+		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy, bool replaceOnlyContent);
 
 		/**
 		 * Initialize all mandatory attributes of an AbstractObject (not the attributes of a

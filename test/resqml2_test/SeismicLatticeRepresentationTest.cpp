@@ -57,9 +57,9 @@ void SeismicLatticeRepresentationTest::readRepo()
 	// Feature
 	RESQML2_NS::SeismicLatticeFeature* feature = repo->getDataObjectByUuid<RESQML2_NS::SeismicLatticeFeature>(defaultUuidFeature);
 	REQUIRE(feature->getCrosslineIncrement() == 2);
-	REQUIRE(feature->getOriginCrossline() == 152);
+	REQUIRE(feature->getCrosslineOrigin() == 152);
 	REQUIRE(feature->getInlineIncrement() == 2);
-	REQUIRE(feature->getOriginInline() == 150);
+	REQUIRE(feature->getInlineOrigin() == 150);
 
 	// Grid 2D
 	RESQML2_NS::Grid2dRepresentation* rep = repo->getDataObjectByUuid<RESQML2_NS::Grid2dRepresentation>(defaultUuid);

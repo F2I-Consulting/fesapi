@@ -37,7 +37,7 @@ Activity::Activity(EML2_NS::ActivityTemplate* activityTemplate, const string & g
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	activityTemplate->getRepository()->addDataObject(this);
+	activityTemplate->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setActivityTemplate(activityTemplate);
 }
 

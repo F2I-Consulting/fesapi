@@ -193,7 +193,8 @@ namespace COMMON_NS
 			READ_WRITE_DO_NOT_CREATE = 2, // It is meant to open an existing file in read and write mode. It throws an exception if the file does not exist.
 			OVERWRITE = 3 // It is meant to open an existing file in read and write mode. It deletes the content of the file if the later does already exist.
 		};
-		enum CUD { CREATED = 0, UPDATED = 1, DELETED = 2 };
+		/** Values that represent an event which occured on dataobject */
+		enum class CUD { CREATED = 0, UPDATED = 1, DELETED = 2 };
 
 		/**
 		* Enumeration for the various Energistics standards.
@@ -284,7 +285,7 @@ namespace COMMON_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void registerDataFeeder(COMMON_NS::DataFeeder * dataFeeder);
 
-		/*
+		/**
 		 * Delete a relationship between two objects. Source and target of the relationship are defined
 		 * by Energistics data model. Usually, the simplest is to look at Energistics UML diagrams. 
 		 * Another way is to rely on XSD/XML: explicit relationships are contained by the source objects
@@ -408,7 +409,7 @@ namespace COMMON_NS
 		* @param [in]	proxy		The data object to add.
 		* @return True if the addition has been done, false if it already exists a same UUID in the repository
 		*/
-		bool addDataObject(COMMON_NS::AbstractObject* proxy);
+		bool addDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy);
 
 		/**
 		 * Adds or replaces (based on UUID and version) a data object in the repository. It does also
@@ -420,7 +421,7 @@ namespace COMMON_NS
 		 * @param [in]	proxy			The data object to add or to replace.
 		 * @param replaceOnlyContent	If true, it does not replace the full object(not the pointer) but only replace the content of the object.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent = false);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy, bool replaceOnlyContent = false);
 
 		/**
 		 * Adds or replaces (based on Energistics XML definition) a data object in the repository. It
@@ -437,7 +438,15 @@ namespace COMMON_NS
 		 * @returns	Null if the content type of the data object cannot be wrapped by fesapi, else a
 		 * 			pointer the added or replaced data object.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType, const std::string& uriSource);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentOrDataType, const std::string& uriSource);
+
+		/**
+		 * Sets the URI Source of all dataobjects of this repository.
+		 * It is particularly useful to map a repository to an ETP dataspace.
+		 *
+		 * @param	uriSource			The EPC document absolute path or the ETP dataspace URI associated to all dataobjects of this repository
+		 */
+		DLL_IMPORT_OR_EXPORT void setUriSource(const std::string& uriSource);
 
 		/**
 		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobejct ot delte has got backward relationships.
@@ -457,7 +466,7 @@ namespace COMMON_NS
 		 * @returns	A map where the key is the UUID of a data object and the value is a vector of
 		 * 			pointers to all different versions of this data object.
 		 */
-		const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > & getDataObjects() const { return dataObjects; }
+		const std::unordered_map< std::string, std::vector< std::unique_ptr<COMMON_NS::AbstractObject> > >& getDataObjects() const { return dataObjects; }
 
 		/**
 		 * Gets all the data object and groups them by datatype
@@ -495,10 +504,10 @@ namespace COMMON_NS
 		{
 			std::vector<valueType*> result;
 
-			for (std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-				for (size_t i = 0; i < it->second.size(); ++i) {
-					if (dynamic_cast<valueType*>(it->second[i]) != nullptr) {
-						result.push_back(static_cast<valueType*>(it->second[i]));
+			for (auto const& uuidDataobjectPair : dataObjects) {
+				for (auto const& dataobject : uuidDataobjectPair.second) {
+					if (dynamic_cast<valueType*>(dataobject.get()) != nullptr) {
+						result.push_back(static_cast<valueType*>(dataobject.get()));
 					}
 				}
 			}
@@ -570,7 +579,9 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, GeobodyBoundary)
 		GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
 		GETTER_DATAOBJECTS(RESQML2_NS::CmpLineFeature, CmpLine)
+		GETTER_DATAOBJECTS(RESQML2_NS::ContinuousColorMap, ContinuousColorMap)
 		GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
+		GETTER_DATAOBJECTS(RESQML2_NS::DiscreteColorMap, DiscreteColorMap)
 		GETTER_DATAOBJECTS(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
 		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
 		GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRepresentation)
@@ -650,7 +661,7 @@ namespace COMMON_NS
 		 * 			there exists no such data object.
 		 */
 		template <class valueType>
-		valueType* getDataObjectByUuid(const std::string & uuid) const
+		valueType* getDataObjectByUuid(const std::string& uuid) const
 		{
 			COMMON_NS::AbstractObject* const result = getDataObjectByUuid(uuid);
 
@@ -699,7 +710,7 @@ namespace COMMON_NS
 		 * 			@p valueType, @c nullptr if there exists no such data object.
 		 */
 		template <class valueType>
-		valueType* getDataObjectByUuidAndVersion(const std::string & uuid, const std::string & version) const
+		valueType* getDataObjectByUuidAndVersion(const std::string& uuid, const std::string& version) const
 		{
 			COMMON_NS::AbstractObject* const result = getDataObjectByUuidAndVersion(uuid, version);
 
@@ -757,7 +768,7 @@ namespace COMMON_NS
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(guid, title, version);
 			valueType* result = new valueType(dor);
 			dor->ContentType = result->getContentType();
-			addOrReplaceDataObject(result);
+			addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{result});
 			return result;
 		}
 
@@ -3613,7 +3624,7 @@ namespace COMMON_NS
 		* The key is the UUID.
 		* The value is a vector storing all various versions of this data object
 		*/
-		std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
+		std::unordered_map< std::string, std::vector< std::unique_ptr<COMMON_NS::AbstractObject> > > dataObjects;
 
 		// Forward relationships
 		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > forwardRels;
@@ -3652,13 +3663,13 @@ namespace COMMON_NS
 		* It does not add this fesapi wrapper to the current instance.
 		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
 		*/
-		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
+		std::unique_ptr< COMMON_NS::AbstractObject > getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
 
-		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
-		COMMON_NS::AbstractObject* getEml2_3WrapperFromGsoapContext(const std::string & datatype);
+		std::unique_ptr< COMMON_NS::AbstractObject > getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
+		std::unique_ptr< COMMON_NS::AbstractObject > getEml2_3WrapperFromGsoapContext(const std::string & datatype);
 
-		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
-		COMMON_NS::AbstractObject* getProdml2_2WrapperFromGsoapContext(const std::string & datatype);
+		std::unique_ptr< COMMON_NS::AbstractObject > getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
+		std::unique_ptr< COMMON_NS::AbstractObject > getProdml2_2WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
 		* Get the error code of the current gsoap context.
@@ -3671,11 +3682,11 @@ namespace COMMON_NS
 		std::string getGsoapErrorMessage() const;
 
 		template <class valueType>
-		std::vector<valueType *> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject * >& objs) const
+		std::vector<valueType*> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject* >& objs) const
 		{
-			std::vector<valueType *> result;
-			for (size_t i = 0; i < objs.size(); ++i) {
-				valueType * castedObj = dynamic_cast<valueType *>(objs[i]);
+			std::vector<valueType*> result;
+			for (auto* obj : objs) {
+				valueType* castedObj = dynamic_cast<valueType*>(obj);
 				if (castedObj != nullptr) {
 					result.push_back(castedObj);
 				}

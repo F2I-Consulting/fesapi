@@ -48,15 +48,15 @@ under the License.
 	GETTER_PRESENCE_ATTRIBUTE(attributeName)
 
 #define GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
-	void set##vectorName##attributeName(unsigned int index, const attributeDatatype & value);\
-	attributeDatatype get##vectorName##attributeName(unsigned int index) const;	
+	void set##vectorName##attributeName(uint64_t index, const attributeDatatype & value);\
+	attributeDatatype get##vectorName##attributeName(uint64_t index) const;	
 	
 #define GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
-	void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom);\
-	double get##vectorName##attributeName##Value(unsigned int index) const;\
-	uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const;
+	void set##vectorName##attributeName(uint64_t index, double value, uomDatatype uom);\
+	double get##vectorName##attributeName##Value(uint64_t index) const;\
+	uomDatatype get##vectorName##attributeName##Uom(uint64_t index) const;
 
-#define GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName) bool has##vectorName##attributeName(unsigned int index) const;	
+#define GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName) bool has##vectorName##attributeName(uint64_t index) const;	
 #define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
 	GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)	
@@ -66,9 +66,9 @@ under the License.
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
 	
 #define GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
-	void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom);\
-	double get##vectorName##attributeName##Value(unsigned int index) const;\
-	uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const;
+	void set##vectorName##attributeName(uint64_t index, double value, uomDatatype uom);\
+	double get##vectorName##attributeName##Value(uint64_t index) const;\
+	uomDatatype get##vectorName##attributeName##Uom(uint64_t index) const;
 #define GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
 	GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)

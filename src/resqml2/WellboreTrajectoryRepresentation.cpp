@@ -212,23 +212,12 @@ std::vector<RESQML2_NS::WellboreFrameRepresentation *> WellboreTrajectoryReprese
 	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFrameRepresentation>(this);
 }
 
-unsigned int WellboreTrajectoryRepresentation::getWellboreFrameRepresentationCount() const
+uint64_t WellboreTrajectoryRepresentation::getWellboreFrameRepresentationCount() const
 {
-	const size_t result = getWellboreFrameRepresentationSet().size();
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too much associated WellboreFrameRepresentation.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return getWellboreFrameRepresentationSet().size();
 }
 
-RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getWellboreFrameRepresentation(unsigned int index) const
+RESQML2_NS::WellboreFrameRepresentation* WellboreTrajectoryRepresentation::getWellboreFrameRepresentation(uint64_t index) const
 {
-	const std::vector<RESQML2_NS::WellboreFrameRepresentation *>& wfrs = getWellboreFrameRepresentationSet();
-
-	if (index >= wfrs.size()) {
-		throw out_of_range("The index if out of range");
-	}
-
-	return wfrs[index];
+	return getWellboreFrameRepresentationSet().at(index);
 }

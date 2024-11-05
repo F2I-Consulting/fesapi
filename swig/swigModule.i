@@ -153,17 +153,20 @@ under the License.
     try {
         $action
     }
-    catch (std::invalid_argument & e) {
+    catch (std::invalid_argument& e) {
         SWIG_exception(SWIG_TypeError,const_cast<char*>(e.what()));
-    } 
+    }
     catch (std::out_of_range& e) {
         SWIG_exception(SWIG_IndexError,const_cast<char*>(e.what()));
     }
-    catch (std::logic_error & e) {
+    catch (std::logic_error& e) {
         SWIG_exception(SWIG_SyntaxError,const_cast<char*>(e.what()));
-    } 
+    }
+    catch (std::exception& e) {
+        SWIG_exception(SWIG_RuntimeError,const_cast<char*>(e.what()));
+    }
     catch(...) {
-        SWIG_exception(SWIG_RuntimeError,"Unknown exception at F2I C++ API level");
+        SWIG_exception(SWIG_UnknownError,"Unknown exception at FESAPI C++ API level");
     }
 }
 
@@ -932,7 +935,7 @@ import com.f2i_consulting.fesapi.*;
 		* @param [in]	factory	If non-null, the factory.
 		*/
 		void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
-		
+
 		/**
 		 * Adds or replaces (based on Energistics XML definition) a data object in the repository. It
 		 * does not update the relationships of the added or replaced data object
@@ -949,7 +952,15 @@ import com.f2i_consulting.fesapi.*;
 		 * 			pointer the added or replaced data object.
 		 */
 		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string& xml, const std::string& contentType, const std::string& uriSource);
-		
+
+		/**
+		 * Sets the URI Source of all dataobjects of this repository.
+		 * It is particularly useful to map a repository to an ETP dataspace.
+		 *
+		 * @param	uriSource			The EPC document absolute path or the ETP dataspace URI associated to all dataobjects of this repository
+		 */
+		void setUriSource(const std::string& uriSource);
+
 		/**
 		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobejct ot delte has got backward relationships.
 		* It also goes on every forward related dataobject and delete them if they have no more backward relationships.
@@ -980,7 +991,9 @@ import com.f2i_consulting.fesapi.*;
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, GeobodyBoundary)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::BoundaryFeature, Horizon)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::CmpLineFeature, CmpLine)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::ContinuousColorMap, ContinuousColorMap)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::CulturalFeature, Cultural)
+		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::DiscreteColorMap, DiscreteColorMap)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::DoubleTableLookup, DoubleTableLookup)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, AllGrid2dRepresentation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::Grid2dRepresentation, HorizonGrid2dRepresentation)

@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include "../nsDefinitions.h"
+
 namespace COMMON_NS
 {
 	class AbstractObject;
@@ -34,7 +36,7 @@ namespace COMMON_NS
 		/**
 		* Ask this feeder to resolve a partial object to a non partial one.
 		*
-		* @param	The partial dataobject
+		* @param	partialObj	The partial dataobject
 		* @return	The full XML content of the partial dataobject or empty string if the feeder could not resolve it.
 		*/
 		virtual std::string resolvePartial(AbstractObject const * partialObj) const = 0;

@@ -232,7 +232,6 @@ namespace epc
 		 * Extract the content of a given file from the zip file
 		 *
 		 * @param 	filename	Filename of the file.
-		 * @param 	password	(Optional) The password.
 		 *
 		 * @returns	The extracted file.
 		 */

@@ -83,14 +83,17 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 		throw invalid_argument("Cannot recognize the uom \"" + verticalUomStr + "\"");
 	}
 
+	initMandatoryMetadata();
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+
 	// 2d crs
 	LocalEngineering2dCrs* local2dCrs = !unknownProjectedReason.empty()
-		? new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(guid + "_ProjectedUnknownCrs")), title + " LocalEngineering2dCrs",
+		? new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_ProjectedUnknownCrs")), title + " LocalEngineering2dCrs",
 			unknownProjectedReason,
 			originOrdinal1, originOrdinal2, projectedLengthUom,
 			azimuth, azimuthUom, azimuthReference,
 			axisOrder)
-		: new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(guid + "_ProjectedEpsgCrs")), title + " LocalEngineering2dCrs",
+		: new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_ProjectedEpsgCrs")), title + " LocalEngineering2dCrs",
 			projectedEpsgCode,
 			originOrdinal1, originOrdinal2, projectedLengthUom,
 			azimuth, azimuthUom, azimuthReference,
@@ -100,11 +103,11 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 
 	// Vertical CRS
 	VerticalCrs* verticalCrs = !unknwownVerticalReason.empty()
-		? new VerticalCrs(repo, boost::uuids::to_string(finalGen(guid + "_VerticalUnknownCrs")), title + " VerticalCrs",
+		? new VerticalCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_VerticalUnknownCrs")), title + " VerticalCrs",
 			unknwownVerticalReason,
 			verticalLengthUom,
 			isUpOriented)
-		: new VerticalCrs(repo, boost::uuids::to_string(finalGen(guid + "_VerticalEpsgCrs")), title + " VerticalCrs",
+		: new VerticalCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_VerticalEpsgCrs")), title + " VerticalCrs",
 			verticalEpsgCode,
 			verticalLengthUom,
 			isUpOriented);
@@ -116,10 +119,7 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 	local3dCrs->VerticalAxis->Uom = verticalUomStr;
 	local3dCrs->VerticalAxis->Direction = isUpOriented ? eml23__VerticalDirection::up : eml23__VerticalDirection::down;
 
-	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "");
-
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,

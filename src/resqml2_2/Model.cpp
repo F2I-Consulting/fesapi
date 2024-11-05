@@ -36,5 +36,5 @@ Model::Model(COMMON_NS::DataObjectRepository * repo, const std::string & guid, c
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }

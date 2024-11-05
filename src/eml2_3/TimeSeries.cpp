@@ -37,7 +37,7 @@ TimeSeries::TimeSeries(COMMON_NS::DataObjectRepository* repo, const string & gui
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 void TimeSeries::pushBackTimestamp(const tm & timestamp)

@@ -34,5 +34,5 @@ DiscreteColorMap::DiscreteColorMap(COMMON_NS::DataObjectRepository* repo, string
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }

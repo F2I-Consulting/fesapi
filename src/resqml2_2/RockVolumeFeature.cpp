@@ -36,5 +36,5 @@ RockVolumeFeature::RockVolumeFeature(COMMON_NS::DataObjectRepository* repo, cons
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addDataObject(this);
+	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }

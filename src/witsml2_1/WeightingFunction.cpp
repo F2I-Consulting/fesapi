@@ -49,7 +49,7 @@ WeightingFunction::WeightingFunction(COMMON_NS::DataObjectRepository * repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addOrReplaceDataObject(this);
+	repo->addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 bool WeightingFunction::isTopLevelElement() const

@@ -165,10 +165,16 @@ void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) con
 	}
 	else if (frame->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
-		values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
-		eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->Offset[0];
-		for (int64_t inc = 1; inc <= constantArray->Count; ++inc) {
-			values[inc] = values[0] + (inc * constantArray->Value);
+		auto const* nodeTimeValues = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues);
+		if (nodeTimeValues->StartValue < (std::numeric_limits<float>::min)() || nodeTimeValues->StartValue >(std::numeric_limits<float>::max)()) {
+			throw out_of_range("The double start value of the nodeTimeValues array " + std::to_string(nodeTimeValues->StartValue) + " is out of float range value");
+		}
+		values[0] = static_cast<float>(nodeTimeValues->StartValue);
+		if (nodeTimeValues->Offset[0]->Value < (std::numeric_limits<float>::min)() || nodeTimeValues->Offset[0]->Value >(std::numeric_limits<float>::max)()) {
+			throw out_of_range("The double offset value of the nodeTimeValues array " + std::to_string(nodeTimeValues->Offset[0]->Value) + " is out of float range value");
+		}
+		for (int64_t inc = 1; inc <= nodeTimeValues->Offset[0]->Count; ++inc) {
+			values[inc] = values[0] + (inc * static_cast<float>(nodeTimeValues->Offset[0]->Value));
 		}
 	}
 	else {

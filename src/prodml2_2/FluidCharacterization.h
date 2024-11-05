@@ -220,9 +220,9 @@ namespace PRODML2_2_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidUnitInterpretation* getRockFluidUnit() const;
 
 		/**
-		 * Sets the assocaited fluid system
+		 * Sets the associated fluid system
 		 *
-		 * @param [in,out]	rockFluidUnit	If non-null, the rock fluid unit.
+		 * @param [in,out]	fluidSystem	If non-null, the fluidSystem to set.
 		 */
 		DLL_IMPORT_OR_EXPORT void setFluidSystem(class FluidSystem* fluidSystem);
 
@@ -439,7 +439,6 @@ namespace PRODML2_2_NS
 		 * Gets the count of a table format column
 		 *
 		 * @param	tableFormatUid	The uid of the table format.
-		 * @param	columnIndex		The zero-based index of the column.
 		 * @returns	The uom of a table format column
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getTableFormatColumnCount(const std::string & tableFormatUid) const;
