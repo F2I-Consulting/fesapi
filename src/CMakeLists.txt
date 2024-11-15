@@ -389,7 +389,7 @@ if (WITH_PYTHON_WRAPPING)
 			RUNTIME DESTINATION ${FESAPI_ROOT_DIR}/python/fesapi/
 		)
 	ENDIF (WIN32)
-	INSTALL(CODE "execute_process(COMMAND	${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/python/setup.py bdist_wheel
+	INSTALL(CODE "execute_process(COMMAND	\"${Python3_EXECUTABLE}\" -m build --wheel
 											WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/python)")
 endif (WITH_PYTHON_WRAPPING)
 

@@ -1,3 +1,15 @@
-Enable CMake boolean variable SWIG_PYTHON_BUILTIN if you want more performance : read [SWIG documentation](http://swig.org/Doc4.0/SWIGDocumentation.html#Python_nn28) for more information about this "builtin" parameter. The main drawback of using such a parameter is that it will be harder/impossible for your Python IDE to enable autocompletion for your FESAPI python extension. The recommendation is to use SWIG_PYTHON_BUILTIN only in production.
 
-Please disable the SWIG_LINKED_TO_RELEASE cmake variable if you build FESAPI in Debug mode.
+**FESAPI** is a library for Energistics data standards (mainly RESQML™)
+
+### Examples
+
+A Python script and a Jupyter Notebook are available [here](https://github.com/F2I-Consulting/fesapi/tree/master/python/example).
+
+### Credits
+This software was developed with :
+- the gSOAP toolkit from Genivia Inc
+- the date library from Howard Hinnant
+
+FESAPI Product incorporates RESQML™, WITSML™ and PRODML™ technology/standards provided by the Energistics Consortium, Inc.
+
+RESQML, WITSML and PRODML are trademarks or registered trademarks of Energistics Consortium, Inc.

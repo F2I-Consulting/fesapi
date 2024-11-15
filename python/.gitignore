@@ -1,5 +1,5 @@
 # ignore cmake and swig auto generated files
-setup.py
+pyproject.toml
 swigGeneratedPythonWrapper.cpp
 swigGeneratedPythonWrapper.h
 
