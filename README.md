@@ -7,9 +7,9 @@
 	 - build
 	 - fesapi (Git clone this repository into this folder "fesapi". You should then have a path fesapiEnv/fesapi/src)
 	 - dependencies 
-  - The following compilers are known to work (used in CI)
-    - gcc from version 4.8
-	- visual studio from version 2017
+  - The following compilers are known to work
+    - gcc from version 8
+	- visual studio from version 2019
 	- clang from version 5.0
 
 # Prepare the dependencies
