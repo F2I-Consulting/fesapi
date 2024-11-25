@@ -166,6 +166,40 @@ jobs:
         with:
           name: ubuntu-20.04-${{ matrix.cxx }}
           path: ${{ runner.temp }}/fesapi-install
+  build_wheels_windows:
+    name: Build wheels on windows-latest
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stub `setup.py` check
+        # It will be generated during CMake run
+        # https://github.com/pypa/cibuildwheel/issues/1139
+        run: touch python/setup.py
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.21.3
+        env:
+          CIBW_BUILD: cp38-win_amd64 cp39-win_amd64 cp310-win_amd64 cp311-win_amd64 cp312-win_amd64 cp313-win_amd64
+          CIBW_ARCHS: auto64
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+          CIBW_BEFORE_ALL: >
+            %VCPKG_INSTALLATION_ROOT%\vcpkg install boost-uuid minizip hdf5[zlib] &&
+            cd ${{ runner.temp }} &&
+            mkdir fesapi-build &&
+            cd fesapi-build &&
+            cmake -DCMAKE_TOOLCHAIN_FILE=%VCPKG_INSTALLATION_ROOT%\scripts\buildsystems\vcpkg.cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }} &&
+            cmake --build . --config Release -j2 &&
+            cmake --build . --config Release --target INSTALL &&
+            pip install delvewheel
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
+            delvewheel repair --add-path ${{ runner.temp }}\fesapi-build\Release --namespace-pkg fesapi -w {dest_dir} {wheel}
+          CIBW_TEST_COMMAND: python ${{github.workspace}}\python\example\example.py
+        with:
+          package-dir: ./python
+          output-dir: wheelhouse
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-windows
+          path: ./wheelhouse/*.whl
   build_wheels_linux:
     name: Build wheels on ubuntu-latest
     runs-on: ubuntu-latest
