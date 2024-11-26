@@ -627,6 +627,13 @@ namespace EML2_NS
 		bool isProjectedCrsDefinedWithEpsg() const;
 
 		/**
+		 * Indicates either the associated projected CRS is given in a WKT format or not.
+		 *
+		 * @returns	True if the projected CRS is given in a WKT format, false if not.
+		 */
+		bool isProjectedCrsDefinedWithWkt() const;
+
+		/**
 		 * Indicates either the associated projected CRS is unknown or not.
 		 *
 		 * @returns	True if projected CRS is unknown, false if not.
@@ -641,6 +648,15 @@ namespace EML2_NS
 		 * @returns	The projected CRS unknown reason.
 		 */
 		std::string getProjectedCrsUnknownReason() const;
+
+		/**
+		 * Gets the WKT of the projected CRS
+		 *
+		 * @exception	std::invalid_argument	If the associated projected CRS is not a WKT one.
+		 *
+		 * @returns	The projected CRS WKT.
+		 */
+		std::string getProjectedCrsWkt() const;
 
 		/**
 		 * Gets the EPSG code of the projected CRS
@@ -659,6 +675,13 @@ namespace EML2_NS
 		bool isVerticalCrsDefinedWithEpsg() const;
 
 		/**
+		 * Indicates either the associated vertical CRS is given in a WKT format or not.
+		 *
+		 * @returns	True if the vertical CRS is given in a WKT format, false if not.
+		 */
+		bool isVerticalCrsDefinedWithWkt() const;
+
+		/**
 		 * Indicates either the associated vertical CRS is unknown or not.
 		 *
 		 * @returns	True if vertical CRS is unknown, false if not.
@@ -673,6 +696,15 @@ namespace EML2_NS
 		 * @returns	The vertical CRS unknown reason.
 		 */
 		std::string getVerticalCrsUnknownReason() const;
+
+		/**
+		 * Gets the WKT of the vertical CRS
+		 *
+		 * @exception	std::invalid_argument	If the associated projected CRS is not a WKT one.
+		 *
+		 * @returns	The vertical CRS WKT.
+		 */
+		std::string getVerticalCrsWkt() const;
 
 		/**
 		 * Gets the EPSG code of the vertical CRS

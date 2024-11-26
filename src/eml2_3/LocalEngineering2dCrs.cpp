@@ -126,7 +126,7 @@ LocalEngineering2dCrs::LocalEngineering2dCrs(COMMON_NS::DataObjectRepository* re
 }
 
 LocalEngineering2dCrs::LocalEngineering2dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
-	std::string unknownReason,
+	std::string projectedDefinition,
 	double originOrdinal1, double originOrdinal2, gsoap_eml2_3::eml23__LengthUom projectedUom,
 	double azimuth, gsoap_eml2_3::eml23__PlaneAngleUom azimuthUom, eml23__NorthReferenceKind azimuthReference,
 	eml23__AxisOrder2d axisOrder)
@@ -142,9 +142,16 @@ LocalEngineering2dCrs::LocalEngineering2dCrs(COMMON_NS::DataObjectRepository* re
 		azimuth, azimuthUom, azimuthReference,
 		axisOrder);
 
-	auto* unknownCrs = soap_new_eml23__ProjectedUnknownCrs(gsoapProxy2_3->soap);
-	unknownCrs->Unknown = unknownReason;
-	local2dCrs->OriginProjectedCrs->AbstractProjectedCrs = unknownCrs;
+	if (projectedDefinition.size() < 5 || projectedDefinition.substr(0, 5) != "PROJC") { // Either PROJCRS or alias PROJCS
+		auto* unknownCrs = soap_new_eml23__ProjectedUnknownCrs(gsoapProxy2_3->soap);
+		unknownCrs->Unknown = projectedDefinition;
+		local2dCrs->OriginProjectedCrs->AbstractProjectedCrs = unknownCrs;
+	}
+	else {
+		auto* wktCrs = soap_new_eml23__ProjectedWktCrs(gsoapProxy2_3->soap);
+		wktCrs->WellKnownText = projectedDefinition;
+		local2dCrs->OriginProjectedCrs->AbstractProjectedCrs = wktCrs;
+	}
 
 	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
@@ -174,6 +181,11 @@ bool LocalEngineering2dCrs::isProjectedCrsDefinedWithEpsg() const
 	return static_cast<gsoap_eml2_3::eml23__LocalEngineering2dCrs*>(gsoapProxy2_3)->OriginProjectedCrs->AbstractProjectedCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__ProjectedEpsgCrs;
 }
 
+bool LocalEngineering2dCrs::isProjectedCrsDefinedWithWkt() const
+{
+	return static_cast<gsoap_eml2_3::eml23__LocalEngineering2dCrs*>(gsoapProxy2_3)->OriginProjectedCrs->AbstractProjectedCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__ProjectedWktCrs;
+}
+
 bool LocalEngineering2dCrs::isProjectedCrsUnknown() const
 {
 	return static_cast<gsoap_eml2_3::eml23__LocalEngineering2dCrs*>(gsoapProxy2_3)->OriginProjectedCrs->AbstractProjectedCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__ProjectedUnknownCrs;
@@ -182,6 +194,11 @@ bool LocalEngineering2dCrs::isProjectedCrsUnknown() const
 std::string LocalEngineering2dCrs::getProjectedCrsUnknownReason() const
 {
 	return static_cast<gsoap_eml2_3::eml23__ProjectedUnknownCrs*>(static_cast<gsoap_eml2_3::eml23__LocalEngineering2dCrs*>(gsoapProxy2_3)->OriginProjectedCrs->AbstractProjectedCrs)->Unknown;
+}
+
+std::string LocalEngineering2dCrs::getProjectedCrsWkt() const
+{
+	return static_cast<gsoap_eml2_3::eml23__ProjectedWktCrs*>(static_cast<gsoap_eml2_3::eml23__LocalEngineering2dCrs*>(gsoapProxy2_3)->OriginProjectedCrs->AbstractProjectedCrs)->WellKnownText;
 }
 
 int64_t LocalEngineering2dCrs::getProjectedCrsEpsgCode() const

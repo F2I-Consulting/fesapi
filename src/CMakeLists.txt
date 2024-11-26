@@ -72,6 +72,8 @@ else ()
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE MINIZIP::MINIZIP)
 endif ()
 
+target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Boost::boost)
+
 if (WIN32)
 	if (NOT BUILD_SHARED_LIBS)
 		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE FESAPI_STATIC)
@@ -79,9 +81,7 @@ if (WIN32)
 	# It is necessary for Boost(.Uuid) 1.86 to define NOMINMAX on Windows
 	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "NOMINMAX")
 
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE Boost::boost)
-
-# szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
+	# szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
 	if (EXISTS ${SZIP_LIBRARY_RELEASE} AND EXISTS ${SZIP_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${SZIP_LIBRARY_RELEASE} debug ${SZIP_LIBRARY_DEBUG})
 	elseif (EXISTS ${SZIP_LIBRARY_RELEASE})
@@ -112,12 +112,6 @@ elseif (UNIX)
 		VERSION ${Fesapi_VERSION}
 		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
 
-	# We need to use Boost regex instead of std regex for gcc < 4.9
-	if (NOT CAN_USE_STD_REGEX)
-		target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE Boost::regex)
-	else  ()
-		target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE Boost::boost)
-	endif()
 endif (WIN32)
 
 # ============================================================================

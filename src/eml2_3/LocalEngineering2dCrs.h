@@ -63,7 +63,8 @@ namespace EML2_3_NS
 		 * @param [in,out]	repo		  		If non-null, the repo.
 		 * @param 		  	guid		  		Unique identifier.
 		 * @param 		  	title		  		The title.
-		 * @param 		  	unknownReason		The reason why this CRS is unknown.
+		 * @param 			projectedDefinition	If starting with "PROJCRS" or "PROJCS" then it gives the WKT definition of the projected CRS.
+		 *										Otherwise, it defines why this projected CRS should be considered as unknown.
 		 * @param 		  	originOrdinal1		The first origin ordinal.
 		 * @param 		  	originOrdinal2		The second origin ordinal.
 		 * @param 		  	projectedUom  		The projected uom.
@@ -73,7 +74,7 @@ namespace EML2_3_NS
 		 * @param			axisOrder			The axis order of the projected CRS.
 		 */
 		LocalEngineering2dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
-			std::string unknownReason,
+			std::string projectedDefinition,
 			double originOrdinal1, double originOrdinal2, gsoap_eml2_3::eml23__LengthUom projectedUom,
 			double azimuth, gsoap_eml2_3::eml23__PlaneAngleUom azimuthUom, gsoap_eml2_3::eml23__NorthReferenceKind azimuthReference,
 			gsoap_eml2_3::eml23__AxisOrder2d axisOrder);
@@ -126,6 +127,13 @@ namespace EML2_3_NS
 		 * @returns	True if the projected CRS is defined with an EPSG code, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isProjectedCrsDefinedWithEpsg() const;
+
+		/**
+		 * Indicates either the associated projected CRS is given in a WKT format or not.
+		 *
+		 * @returns	True if the projected CRS is given in a WKT format, false if not.
+		 */
+		DLL_IMPORT_OR_EXPORT bool isProjectedCrsDefinedWithWkt() const;
 		
 		/**
 		 * Indicates either the associated projected CRS is unknown or not.
@@ -142,6 +150,15 @@ namespace EML2_3_NS
 		 * @returns	The projected CRS unknown reason.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getProjectedCrsUnknownReason() const;
+
+		/**
+		 * Gets the WKT of the projected CRS
+		 *
+		 * @exception	std::invalid_argument	If the associated projected CRS is not a WKT one.
+		 *
+		 * @returns	The projected CRS WKT.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getProjectedCrsWkt() const;
 
 		/**
 		 * Gets the EPSG code of the projected CRS

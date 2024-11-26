@@ -55,12 +55,13 @@ namespace EML2_3_NS
 		 * @param [in,out]	repo		  		If non-null, the repo.
 		 * @param 		  	guid		  		Unique identifier.
 		 * @param 		  	title		  		The title.
-		 * @param 		  	unknownReason		The reason why this CRS is unknown.
+		 * @param 			verticalDefinition 	If starting with "VERT" then it gives the WKT definition of the vertical CRS.
+		 *										Otherwise, it defines why this vertical CRS should be considered as unknown.
 		 * @param 		  	verticalUom  		The projected uom.
 		 * @param 		  	isUpOriented		Defines if the vertical CRS axis is up oreinted or not.
 		 */
 		VerticalCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
-			std::string unknownReason,
+			std::string verticalDefinition,
 			gsoap_eml2_3::eml23__LengthUom verticalUom,
 			bool isUpOriented);
 
@@ -82,6 +83,13 @@ namespace EML2_3_NS
 		DLL_IMPORT_OR_EXPORT bool isVerticalCrsDefinedWithEpsg() const;
 
 		/**
+		 * Indicates either the associated vertical CRS is given in a WKT format or not.
+		 *
+		 * @returns	True if the vertical CRS is given in a WKT format, false if not.
+		 */
+		DLL_IMPORT_OR_EXPORT bool isVerticalCrsDefinedWithWkt() const;
+
+		/**
 		 * Indicates either the associated vertical CRS is unknown or not.
 		 *
 		 * @returns	True if vertical CRS is unknown, false if not.
@@ -96,6 +104,15 @@ namespace EML2_3_NS
 		 * @returns	The vertical CRS unknown reason.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getVerticalCrsUnknownReason() const;
+
+		/**
+		 * Gets the WKT of the vertical CRS
+		 *
+		 * @exception	std::invalid_argument	If the associated projected CRS is not a WKT one.
+		 *
+		 * @returns	The vertical CRS WKT.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getVerticalCrsWkt() const;
 
 		/**
 		 * Gets the EPSG code of the vertical CRS
