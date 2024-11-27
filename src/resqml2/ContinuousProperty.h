@@ -583,7 +583,7 @@ namespace RESQML2_NS
 			unsigned int numArrayDimensions,
 			T * minimumValue = nullptr, T * maximumValue = nullptr)
 		{
-			const unsigned int elementCount = getElementCountPerValue();
+			const uint64_t elementCount = getElementCountPerValue();
 
 			// Some minimum and maximum values are given : No need to compute them.
 			if (minimumValue != nullptr) {

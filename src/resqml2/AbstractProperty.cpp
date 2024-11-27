@@ -233,7 +233,7 @@ bool AbstractProperty::useInterval() const
 	throw logic_error("Not implemented yet");
 }
 
-unsigned int AbstractProperty::getElementCountPerValue() const
+uint64_t AbstractProperty::getElementCountPerValue() const
 {
 	uint64_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -249,11 +249,7 @@ unsigned int AbstractProperty::getElementCountPerValue() const
 		throw logic_error("Not implemented yet");
 	}
 
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much Element Count Per Value");
-	}
-
-	return static_cast<unsigned int>(result);
+	return result;
 }
 
 gsoap_eml2_3::eml23__IndexableElement AbstractProperty::getAttachmentKind() const
