@@ -251,6 +251,8 @@ jobs:
         env:
           CIBW_BUILD: cp38-macosx_* cp39-macosx_* cp310-macosx_* cp311-macosx_* cp312-macosx_* cp313-macosx_*
           CIBW_ARCHS: auto64
+          # See https://cibuildwheel.pypa.io/en/stable/cpp_standards/#macos-and-deployment-target-versions
+          MACOSX_DEPLOYMENT_TARGET: 10.14
           CIBW_BEFORE_ALL: >
             brew install boost swig &&
             git clone https://github.com/F2I-Consulting/Minizip.git ${{ github.workspace }}/../minizip &&
