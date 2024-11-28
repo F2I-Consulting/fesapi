@@ -382,6 +382,17 @@ if (WITH_PYTHON_WRAPPING)
 			TARGETS ${CPP_LIBRARY_NAME}
 			RUNTIME DESTINATION ${FESAPI_ROOT_DIR}/python/fesapi/
 		)
+		install(
+			TARGETS ${CPP_LIBRARY_NAME}
+			RUNTIME_DEPENDENCY_SET dep-set
+		)
+		install(
+			RUNTIME_DEPENDENCY_SET dep-set
+			PRE_EXCLUDE_REGEXES "api-ms-.*" "ext-ms-.*"
+			POST_EXCLUDE_REGEXES ".*system32/.*\\.dll"
+			DIRECTORIES ${CMAKE_BINARY_DIR}
+			RUNTIME DESTINATION ${FESAPI_ROOT_DIR}/python/fesapi/
+		)
 	ENDIF (WIN32)
 	INSTALL(CODE "execute_process(COMMAND	\"${Python3_EXECUTABLE}\" -m build --wheel
 											WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/python)")
