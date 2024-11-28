@@ -35,22 +35,22 @@ using namespace std;
 using namespace EML2_3_NS;
 using namespace gsoap_eml2_3;
 
-void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-	uint64_t projectedEpsgCode, std::string unknownProjectedReason,
+void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
+	uint64_t projectedEpsgCode, std::string projectedDefinition,
 	double originOrdinal1, double originOrdinal2, gsoap_resqml2_0_1::eml20__LengthUom projectedUom,
 	double azimuth, gsoap_eml2_3::eml23__PlaneAngleUom azimuthUom, gsoap_eml2_3::eml23__NorthReferenceKind azimuthReference,
 	gsoap_eml2_3::eml23__AxisOrder2d axisOrder,
-	uint64_t verticalEpsgCode, std::string unknwownVerticalReason,
+	uint64_t verticalEpsgCode, std::string verticalDefinition,
 	double originOrdinal3, gsoap_resqml2_0_1::eml20__LengthUom verticalUom,
 	bool isUpOriented)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The soap context where the local CRS will be instantiated must exist.");
 	}
-	if (unknownProjectedReason.empty() && projectedEpsgCode == 0) {
+	if (projectedDefinition.empty() && projectedEpsgCode == 0) {
 		throw invalid_argument("The projected CRS must either have a non null EPSG code or a reason why it is unkown.");
 	}
-	if (unknwownVerticalReason.empty() && verticalEpsgCode == 0) {
+	if (verticalDefinition.empty() && verticalEpsgCode == 0) {
 		throw invalid_argument("The vertical CRS must either have a non null EPSG code or a reason why it is unkown.");
 	}
 
@@ -87,9 +87,9 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	// 2d crs
-	LocalEngineering2dCrs* local2dCrs = !unknownProjectedReason.empty()
-		? new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_ProjectedUnknownCrs")), title + " LocalEngineering2dCrs",
-			unknownProjectedReason,
+	LocalEngineering2dCrs* local2dCrs = !projectedDefinition.empty()
+		? new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_ProjectedStringRepresentedCrs")), title + " LocalEngineering2dCrs",
+			projectedDefinition,
 			originOrdinal1, originOrdinal2, projectedLengthUom,
 			azimuth, azimuthUom, azimuthReference,
 			axisOrder)
@@ -102,9 +102,9 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 	repo->addRelationship(this, local2dCrs);
 
 	// Vertical CRS
-	VerticalCrs* verticalCrs = !unknwownVerticalReason.empty()
-		? new VerticalCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_VerticalUnknownCrs")), title + " VerticalCrs",
-			unknwownVerticalReason,
+	VerticalCrs* verticalCrs = !verticalDefinition.empty()
+		? new VerticalCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_VerticalStringRepresentedCrs")), title + " VerticalCrs",
+			verticalDefinition,
 			verticalLengthUom,
 			isUpOriented)
 		: new VerticalCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_VerticalEpsgCrs")), title + " VerticalCrs",
@@ -122,33 +122,33 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, c
 	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
-void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-	uint64_t projectedEpsgCode, std::string unknownProjectedReason,
+void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
+	uint64_t projectedEpsgCode, std::string projectedDefinition,
 	double originOrdinal1, double originOrdinal2, gsoap_resqml2_0_1::eml20__LengthUom projectedUom,
 	double azimuth, gsoap_eml2_3::eml23__PlaneAngleUom azimuthUom, gsoap_eml2_3::eml23__NorthReferenceKind azimuthReference,
 	gsoap_eml2_3::eml23__AxisOrder2d axisOrder,
-	uint64_t verticalEpsgCode, std::string unknwownVerticalReason,
+	uint64_t verticalEpsgCode, std::string verticalDefinition,
 	double originOrdinal3, gsoap_resqml2_0_1::eml20__LengthUom verticalUom,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
 	bool isUpOriented)
 {
 	init(repo, guid, title,
-		projectedEpsgCode, unknownProjectedReason,
+		projectedEpsgCode, projectedDefinition,
 		originOrdinal1, originOrdinal2, projectedUom,
 		azimuth, azimuthUom, azimuthReference,
 		axisOrder,
-		verticalEpsgCode, unknwownVerticalReason,
+		verticalEpsgCode, verticalDefinition,
 		originOrdinal3, verticalUom,
 		isUpOriented);
 	static_cast<eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalAxis->IsTime = true;
 	static_cast<eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalAxis->Uom = gsoap_resqml2_0_1::soap_eml20__TimeUom2s(gsoapProxy2_3->soap, timeUom);
 }
 
-LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented)
 {
 	init(repo, guid, title,
 		projectedEpsgCode, "",
@@ -160,46 +160,46 @@ LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRe
 		isUpOriented);
 }
 
-LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented)
 {
 	init(repo, guid, title,
-		0, projectedUnknownReason,
+		0, projectedDefinition,
 		originOrdinal1, originOrdinal2, projectedUom,
 		arealRotation, gsoap_eml2_3::eml23__PlaneAngleUom::rad, gsoap_eml2_3::eml23__NorthReferenceKind::grid_x0020north,
 		gsoap_eml2_3::eml23__AxisOrder2d::easting_x0020northing,
-		0, verticalUnknownReason,
+		0, verticalDefinition,
 		originOrdinal3, verticalUom,
 		isUpOriented);
 }
 
-LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented)
 {
 	init(repo, guid, title,
 		projectedEpsgCode, "",
 		originOrdinal1, originOrdinal2, projectedUom,
 		arealRotation, gsoap_eml2_3::eml23__PlaneAngleUom::rad, gsoap_eml2_3::eml23__NorthReferenceKind::grid_x0020north,
 		gsoap_eml2_3::eml23__AxisOrder2d::easting_x0020northing,
-		0, verticalUnknownReason,
+		0, verticalDefinition,
 		originOrdinal3, verticalUom,
 		isUpOriented);
 }
 
-LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented)
 {
 	init(repo, guid, title,
-		0, projectedUnknownReason,
+		0, projectedDefinition,
 		originOrdinal1, originOrdinal2, projectedUom,
 		arealRotation, gsoap_eml2_3::eml23__PlaneAngleUom::rad, gsoap_eml2_3::eml23__NorthReferenceKind::grid_x0020north,
 		gsoap_eml2_3::eml23__AxisOrder2d::easting_x0020northing,
@@ -208,12 +208,12 @@ LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRe
 		isUpOriented);
 }
 
-LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented)
 {
 	init(repo, guid, title,
 		projectedEpsgCode, "",
@@ -225,49 +225,49 @@ LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRe
 		isUpOriented);
 }
 
-LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented)
 {
 	init(repo, guid, title,
-		0, projectedUnknownReason,
+		0, projectedDefinition,
 		originOrdinal1, originOrdinal2, projectedUom,
 		arealRotation, gsoap_eml2_3::eml23__PlaneAngleUom::rad, gsoap_eml2_3::eml23__NorthReferenceKind::grid_x0020north,
 		gsoap_eml2_3::eml23__AxisOrder2d::easting_x0020northing,
-		0, verticalUnknownReason,
+		0, verticalDefinition,
 		originOrdinal3, verticalUom, timeUom,
 		isUpOriented);
 }
 
-LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string & verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented)
 {
 	init(repo, guid, title,
 		projectedEpsgCode, "",
 		originOrdinal1, originOrdinal2, projectedUom,
 		arealRotation, gsoap_eml2_3::eml23__PlaneAngleUom::rad, gsoap_eml2_3::eml23__NorthReferenceKind::grid_x0020north,
 		gsoap_eml2_3::eml23__AxisOrder2d::easting_x0020northing,
-		0, verticalUnknownReason,
+		0, verticalDefinition,
 		originOrdinal3, verticalUom, timeUom,
 		isUpOriented);
 }
 
-LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
+LocalEngineeringCompoundCrs::LocalEngineeringCompoundCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string & projectedUnknownReason,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented)
 {
 	init(repo, guid, title,
-		0, projectedUnknownReason,
+		0, projectedDefinition,
 		originOrdinal1, originOrdinal2, projectedUom,
 		arealRotation, gsoap_eml2_3::eml23__PlaneAngleUom::rad, gsoap_eml2_3::eml23__NorthReferenceKind::grid_x0020north,
 		gsoap_eml2_3::eml23__AxisOrder2d::easting_x0020northing,

@@ -317,7 +317,7 @@ void DiscreteProperty::pushBackHdf5ArrayOfValues(
 	AbstractValuesProperty::pushBackHdf5ArrayOfValues(datatype, numValues, numArrayDimensions, nullValue, proxy);
 
 	if (minimumValue != nullptr && maximumValue != nullptr) {
-		const unsigned int elementCount = getElementCountPerValue();
+		const uint64_t elementCount = getElementCountPerValue();
 		for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
 			setMinimumValue(getMinimumValueSize() > propIndex 
 					? (getMinimumValue(propIndex) > minimumValue[propIndex] ? minimumValue[propIndex] : getMinimumValue(propIndex))
@@ -379,7 +379,7 @@ void DiscreteProperty::setValuesOfInt64Hdf5ArrayOfValues(
 		offsetValues, numArrayDimensions, proxy, patchIndex);
 
 	if (computeMinMax) {
-		const unsigned int elementCount = getElementCountPerValue();
+		const uint64_t elementCount = getElementCountPerValue();
 		uint64_t nValues = numValues[0];
 		//If count > 1, the last (fastest) dimension has the number of properties per indexable element of the representation.
 		for (unsigned int dim = 1; dim < (elementCount == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {
@@ -422,7 +422,7 @@ void DiscreteProperty::setValuesOfInt32Hdf5ArrayOfValues(
 		offsetValues, numArrayDimensions, proxy, patchIndex);
 
 	if (computeMinMax) {
-		const unsigned int elementCount = getElementCountPerValue();
+		const uint64_t elementCount = getElementCountPerValue();
 		uint64_t nValues = numValues[0];
 		//If count > 1, the last (fastest) dimension has the number of properties per indexable element of the representation.
 		for (unsigned int dim = 1; dim < (elementCount == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {

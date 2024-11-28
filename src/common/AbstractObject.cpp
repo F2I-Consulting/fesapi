@@ -23,11 +23,6 @@ under the License.
 #include <string>
 #include <sstream>
 
-#if !defined(__GLIBCXX__) || __GLIBCXX__ > 20150623 || __GLIBCXX__ == 20140422 || __GLIBCXX__ == 20140716 || __GLIBCXX__ == 20141030
-#include <regex>
-#else
-#include <boost/regex.hpp>
-#endif
 #include <algorithm>
 
 #include <boost/uuid/random_generator.hpp>
@@ -276,16 +271,9 @@ void AbstractObject::setUuid(const std::string & uuid)
 	}
 	else
 	{
-		// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
-#if !defined(__GLIBCXX__) || __GLIBCXX__ > 20150623 || __GLIBCXX__ == 20140422 || __GLIBCXX__ == 20140716 || __GLIBCXX__ == 20141030
 		if (!regex_match(uuid, regex("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"))) {
 			throw invalid_argument("The uuid does not match the official uuid regular expression : " + uuid);
 		}
-#else
-		if (!boost::regex_match(uuid, boost::regex("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"))) {
-			throw invalid_argument("The uuid does not match the official uuid regular expression : " + uuid);
-		}
-#endif
 		if (gsoapProxy2_0_1 != nullptr) { gsoapProxy2_0_1->uuid = uuid; }
 		else if (gsoapProxy2_3 != nullptr) { gsoapProxy2_3->uuid = uuid; }
 	}
@@ -805,8 +793,8 @@ std::unordered_map< std::string, std::string > AbstractObject::getExtraMetadataS
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		std::unordered_map< std::string, std::string > result;
-		for (size_t i = 0; i < static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size(); ++i) {
-			result[static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Name] = static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Value;
+		for (gsoap_resqml2_0_1::resqml20__NameValuePair const* em : static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata) {
+			result[em->Name] = em->Value;
 		}
 
 		return result;
@@ -815,13 +803,20 @@ std::unordered_map< std::string, std::string > AbstractObject::getExtraMetadataS
 	throw logic_error("Not implemented yet.");
 }
 
-vector<string> AbstractObject::getExtraMetadata(const std::string & key) const
+vector<string> AbstractObject::getExtraMetadata(const std::string& key) const
 {
 	vector<string> result;
 	if (gsoapProxy2_0_1 != nullptr) {
-		for (size_t i = 0; i < static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size(); ++i) {
-			if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Name.compare(key) == 0) {
-				result.push_back(static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Value);
+		for (gsoap_resqml2_0_1::resqml20__NameValuePair const* em : static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata) {
+			if (em->Name.compare(key) == 0) {
+				result.push_back(em->Value);
+			}
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		for (gsoap_eml2_3::eml23__ExtensionNameValue const* em : static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue) {
+			if (em->Name.compare(key) == 0) {
+				result.push_back(em->Value->__item);
 			}
 		}
 	}
@@ -829,53 +824,43 @@ vector<string> AbstractObject::getExtraMetadata(const std::string & key) const
 	return result;
 }
 
-unsigned int AbstractObject::getExtraMetadataCount() const
+uint64_t AbstractObject::getExtraMetadataCount() const
 {
-	size_t result = 0;
+	cannotBePartial();
+
 	if (gsoapProxy2_0_1 != nullptr) {
-		result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size();
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size();
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		result = static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue.size();
-	}
-	else {
-		throw logic_error("Not implemented yet.");
+		return static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue.size();
 	}
 
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too much extra metadata.");
-	}
-
-	return static_cast<unsigned int>(result);
+	throw logic_error("Not implemented yet.");
 }
 
-std::string AbstractObject::getExtraMetadataKeyAtIndex(unsigned int index) const
+std::string AbstractObject::getExtraMetadataKeyAtIndex(uint64_t index) const
 {
-	if (getExtraMetadataCount() <= index) {
-		throw out_of_range("The index is out of range.");
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata)[index]->Name;
+		return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata).at(index)->Name;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return (static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue)[index]->Name;
+		return (static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue).at(index)->Name;
 	}
 	
 	throw logic_error("Not implemented yet.");
 }
 
-std::string AbstractObject::getExtraMetadataStringValueAtIndex(unsigned int index) const
+std::string AbstractObject::getExtraMetadataStringValueAtIndex(uint64_t index) const
 {
 	if (getExtraMetadataCount() <= index) {
 		throw out_of_range("The index is out of range.");
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata)[index]->Value;
+		return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata).at(index)->Value;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		return (static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue)[index]->Value->__item;
+		return (static_cast<gsoap_eml2_3::eml23__AbstractObject*>(gsoapProxy2_3)->ExtensionNameValue).at(index)->Value->__item;
 	}
 
 	throw logic_error("Not implemented yet.");
@@ -1046,15 +1031,10 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloa
 	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointXmlArray:
 	{
 		gsoap_eml2_3::eml23__FloatingPointXmlArray const* xmlArray = static_cast<gsoap_eml2_3::eml23__FloatingPointXmlArray const*>(arrayInput);
-#if !defined(__GLIBCXX__) || __GLIBCXX__ > 20150623 || __GLIBCXX__ == 20140422 || __GLIBCXX__ == 20140716 || __GLIBCXX__ == 20141030
 		const std::regex ws_re("\\s+"); // whitespace
 		std::sregex_token_iterator it(xmlArray->Values.begin(), xmlArray->Values.end(), ws_re, -1);
 		std::sregex_token_iterator endToken;
-#else
-		const boost::regex ws_re("\\s+"); // whitespace
-		boost::sregex_token_iterator it(xmlArray->Values.begin(), xmlArray->Values.end(), ws_re, -1);
-		boost::sregex_token_iterator endToken;
-#endif
+
 		size_t index = 0;
 		while (it != endToken) {
 			arrayOutput[index++] = std::stod(*it++);

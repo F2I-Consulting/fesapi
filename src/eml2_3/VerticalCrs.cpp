@@ -59,7 +59,7 @@ VerticalCrs::VerticalCrs(COMMON_NS::DataObjectRepository* repo, const std::strin
 }
 
 VerticalCrs::VerticalCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
-	std::string unknownReason,
+	std::string verticalDefinition,
 	gsoap_eml2_3::eml23__LengthUom verticalUom,
 	bool isUpOriented)
 {
@@ -71,9 +71,16 @@ VerticalCrs::VerticalCrs(COMMON_NS::DataObjectRepository* repo, const std::strin
 	eml23__VerticalCrs* verticalCrs = static_cast<eml23__VerticalCrs*>(gsoapProxy2_3);
 	init(verticalCrs, guid, title, verticalUom, isUpOriented);
 
-	auto* unknownCrs = soap_new_eml23__VerticalUnknownCrs(gsoapProxy2_3->soap);
-	unknownCrs->Unknown = unknownReason;
-	verticalCrs->AbstractVerticalCrs = unknownCrs;
+	if (verticalDefinition.size() < 4 || verticalDefinition.substr(0, 4) != "VERT") { // Either VERTCRS or VERTICALCRS or VERT_CS
+		auto* unknownCrs = soap_new_eml23__VerticalUnknownCrs(gsoapProxy2_3->soap);
+		unknownCrs->Unknown = verticalDefinition;
+		verticalCrs->AbstractVerticalCrs = unknownCrs;
+	}
+	else {
+		auto* wktCrs = soap_new_eml23__VerticalWktCrs(gsoapProxy2_3->soap);
+		wktCrs->WellKnownText = verticalDefinition;
+		verticalCrs->AbstractVerticalCrs = wktCrs;
+	}
 
 	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
@@ -81,6 +88,11 @@ VerticalCrs::VerticalCrs(COMMON_NS::DataObjectRepository* repo, const std::strin
 bool VerticalCrs::isVerticalCrsDefinedWithEpsg() const
 {
 	return static_cast<gsoap_eml2_3::eml23__VerticalCrs*>(gsoapProxy2_3)->AbstractVerticalCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__VerticalEpsgCrs;
+}
+
+bool VerticalCrs::isVerticalCrsDefinedWithWkt() const
+{
+	return static_cast<gsoap_eml2_3::eml23__VerticalCrs*>(gsoapProxy2_3)->AbstractVerticalCrs->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__VerticalWktCrs;
 }
 
 bool VerticalCrs::isVerticalCrsUnknown() const
@@ -91,6 +103,11 @@ bool VerticalCrs::isVerticalCrsUnknown() const
 std::string VerticalCrs::getVerticalCrsUnknownReason() const
 {
 	return static_cast<gsoap_eml2_3::eml23__VerticalUnknownCrs*>(static_cast<gsoap_eml2_3::eml23__VerticalCrs*>(gsoapProxy2_3)->AbstractVerticalCrs)->Unknown;
+}
+
+std::string VerticalCrs::getVerticalCrsWkt() const
+{
+	return static_cast<gsoap_eml2_3::eml23__VerticalWktCrs*>(static_cast<gsoap_eml2_3::eml23__VerticalCrs*>(gsoapProxy2_3)->AbstractVerticalCrs)->WellKnownText;
 }
 
 int64_t VerticalCrs::getVerticalCrsEpsgCode() const

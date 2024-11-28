@@ -12,7 +12,7 @@ set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
 set (Fesapi_VERSION_MAJOR 2)
-set (Fesapi_VERSION_MINOR 11)
+set (Fesapi_VERSION_MINOR 12)
 set (Fesapi_VERSION_PATCH 0)
 set (Fesapi_VERSION_TWEAK 0)
 
@@ -31,7 +31,7 @@ IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 ENDIF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 if (NOT DEFINED CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 11)
+    set(CMAKE_CXX_STANDARD 17)
 endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -94,33 +94,8 @@ IF (NOT EXISTS ${SZIP_LIBRARY_DEBUG} AND WIN32 AND NOT ${HDF5_BUILT_AS_DYNAMIC_L
 	MESSAGE(WARNING "The Szip library (SZIP_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
 ENDIF ()
 
-# Boost DEPENDENCY : Uuid (and potentially regex)
-unset(CAN_USE_STD_REGEX CACHE)
-include(CheckCXXSourceCompiles)
-check_cxx_source_compiles(
-   "#include <iostream>
-
-	//https://gcc.gnu.org/develop.html#timeline
-	int a =
-	#if !defined(__GLIBCXX__) || __GLIBCXX__ > 20150623 || __GLIBCXX__ == 20140422 || __GLIBCXX__ == 20140716 || __GLIBCXX__ == 20141030
-		1;
-	#else
-		fgsfds;
-	#endif
-
-    int main ()
-    {
-      return 0;
-
-    }"
-
-	CAN_USE_STD_REGEX
-)
-if (NOT CAN_USE_STD_REGEX)
-	find_package(Boost 1.44.0 REQUIRED regex) # 1.44 because we want boost::uuids::to_string method
-else ()
-	find_package(Boost 1.44.0 REQUIRED) # 1.44 because we want boost::uuids::to_string method
-endif()
+# Boost DEPENDENCY
+find_package(Boost 1.44.0 REQUIRED) # 1.44 because we want boost::uuids::to_string method
 
 # ============================================================================
 # some useful variables

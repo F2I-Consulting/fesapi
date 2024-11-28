@@ -2468,7 +2468,26 @@ bool serialize(const string& filePath)
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", epcDoc.getStorageDirectory(), epcDoc.getName() + ".h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
 	//hdfProxy->setCompressionLevel(6);
 
-	localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__TimeUom::s, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", false); // CRS translation is just for testing;
+	localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 
+		"PROJCRS[\"ETRS89 Lambert Azimuthal Equal Area CRS\",  BASEGEODCRS[\"ETRS89\","
+			"DATUM[\"ETRS89\","
+			"ELLIPSOID[\"GRS 80\", 6378137, 298.257222101, LENGTHUNIT[\"metre\", 1.0]]]],"
+			"CONVERSION[\"LAEA\","
+			"METHOD[\"Lambert Azimuthal Equal Area\", ID[\"EPSG\", 9820]],"
+			"PARAMETER[\"Latitude of origin\", 52.0,"
+			"ANGLEUNIT[\"degree\", 0.0174532925199433]],"
+			"PARAMETER[\"Longitude of origin\", 10.0,"
+			"ANGLEUNIT[\"degree\", 0.0174532925199433]],"
+			"PARAMETER[\"False easting\", 4321000.0, LENGTHUNIT[\"metre\", 1.0]],"
+			"PARAMETER[\"False northing\", 3210000.0, LENGTHUNIT[\"metre\", 1.0]]],"
+			"CS[Cartesian, 2],"
+			"AXIS[\"(Y)\", north, ORDER[1]],"
+			"AXIS[\"(X)\", east, ORDER[2]],"
+			"LENGTHUNIT[\"metre\", 1.0],"
+			"SCOPE[\"Description of a purpose\"],"
+			"AREA[\"An area description\"],"
+			"ID[\"EuroGeographics\", \"ETRS-LAEA\"]]",
+		gsoap_resqml2_0_1::eml20__TimeUom::s, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", false); // CRS translation is just for testing;
 	local3dCrs = repo.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom::m, 23031, gsoap_resqml2_0_1::eml20__LengthUom::m, "Unknown", false);
 	repo.setDefaultCrs(local3dCrs);
 
@@ -5114,11 +5133,15 @@ void deserialize(const string & inputFile)
 		cout << "Title is : " << crs->getTitle() << endl;
 		if (crs->isProjectedCrsDefinedWithEpsg())
 			cout << "Projected : EPSG " << crs->getProjectedCrsEpsgCode() << endl;
+		else if (crs->isProjectedCrsDefinedWithWkt())
+			cout << "Projected : WKT " << crs->getProjectedCrsWkt() << endl;
 		else if (crs->isProjectedCrsUnknown())
 			cout << "Projected : Unknown." << "Reason is:" << crs->getProjectedCrsUnknownReason() << endl;
 
 		if (crs->isVerticalCrsDefinedWithEpsg())
 			cout << "Vertical : EPSG one" << endl;
+		else if (crs->isVerticalCrsDefinedWithWkt())
+			cout << "Vertical : WKT " << crs->getVerticalCrsWkt() << endl;
 		else if (crs->isVerticalCrsUnknown())
 			cout << "Vertical : Unknown." << "Reason is:" << crs->getVerticalCrsUnknownReason() << endl;
 

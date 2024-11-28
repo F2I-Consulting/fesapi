@@ -166,6 +166,40 @@ jobs:
         with:
           name: ubuntu-20.04-${{ matrix.cxx }}
           path: ${{ runner.temp }}/fesapi-install
+  build_wheels_windows:
+    name: Build wheels on windows-latest
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stub `setup.py` check
+        # It will be generated during CMake run
+        # https://github.com/pypa/cibuildwheel/issues/1139
+        run: touch python/setup.py
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.21.3
+        env:
+          CIBW_BUILD: cp38-win_amd64 cp39-win_amd64 cp310-win_amd64 cp311-win_amd64 cp312-win_amd64 cp313-win_amd64
+          CIBW_ARCHS: auto64
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+          CIBW_BEFORE_ALL: >
+            %VCPKG_INSTALLATION_ROOT%\vcpkg install boost-uuid minizip hdf5[zlib] &&
+            cd ${{ runner.temp }} &&
+            mkdir fesapi-build &&
+            cd fesapi-build &&
+            cmake -DCMAKE_TOOLCHAIN_FILE=%VCPKG_INSTALLATION_ROOT%\scripts\buildsystems\vcpkg.cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }} &&
+            cmake --build . --config Release -j2 &&
+            cmake --build . --config Release --target INSTALL &&
+            pip install delvewheel
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
+            delvewheel repair --add-path ${{ runner.temp }}\fesapi-build\Release --namespace-pkg fesapi -w {dest_dir} {wheel}
+          CIBW_TEST_COMMAND: python ${{github.workspace}}\python\example\example.py
+        with:
+          package-dir: ./python
+          output-dir: wheelhouse
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-windows
+          path: ./wheelhouse/*.whl
   build_wheels_linux:
     name: Build wheels on ubuntu-latest
     runs-on: ubuntu-latest
@@ -176,28 +210,20 @@ jobs:
         # https://github.com/pypa/cibuildwheel/issues/1139
         run: touch python/setup.py
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.19.2
+        uses: pypa/cibuildwheel@v2.21.3
         env:
           CIBW_BUILD: cp38-manylinux_* cp39-manylinux_* cp310-manylinux_* cp311-manylinux_* cp312-manylinux_* cp313-manylinux_*
           CIBW_ARCHS: auto64
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
           CIBW_BEFORE_ALL: >
-            yum install -y wget minizip-devel gcc-c++ boost-devel &&
+            yum install -y wget gcc-c++ boost-devel &&
             yum search epel-release &&
             yum info epel-release &&
             yum install -y epel-release &&
-            yum --enablerepo=epel install -y cmake3 &&
-            cd / &&
-            wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.3/src/hdf5-1.12.3.tar.gz &&
-            tar xf hdf5-1.12.3.tar.gz &&
-            mkdir hdf5-build &&
-            cd hdf5-build &&
-            cmake3 -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=/hdf5-install ../hdf5-1.12.3 &&
-            cmake3 --build . -j2 --config Release &&
-            cmake3 --install . &&
-            cd / &&
+            yum --enablerepo=epel install -y minizip1.2-devel hdf5-devel cmake3 &&
             mkdir build &&
             cd build &&
-            cmake3 -DCMAKE_BUILD_TYPE=Release -DHDF5_ROOT=/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING=/fesapi-install {project} &&
+            cmake3 -DCMAKE_BUILD_TYPE=Release -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING=/fesapi-install {project} &&
             cmake3 --build . -j2 --config Release &&
             cmake3 --install .
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
@@ -209,7 +235,7 @@ jobs:
           output-dir: wheelhouse
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-ubuntu-latest
+          name: cibw-wheels-manylinux_2_28
           path: ./wheelhouse/*.whl
   build_wheels_mac:
     name: Build wheels on macos-14
@@ -221,10 +247,12 @@ jobs:
         # https://github.com/pypa/cibuildwheel/issues/1139
         run: touch python/setup.py
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.19.2
+        uses: pypa/cibuildwheel@v2.21.3
         env:
           CIBW_BUILD: cp38-macosx_* cp39-macosx_* cp310-macosx_* cp311-macosx_* cp312-macosx_* cp313-macosx_*
           CIBW_ARCHS: auto64
+          # See https://cibuildwheel.pypa.io/en/stable/cpp_standards/#macos-and-deployment-target-versions
+          MACOSX_DEPLOYMENT_TARGET: 10.14
           CIBW_BEFORE_ALL: >
             brew install boost swig &&
             git clone https://github.com/F2I-Consulting/Minizip.git ${{ github.workspace }}/../minizip &&
@@ -256,7 +284,7 @@ jobs:
           output-dir: wheelhouse
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-macos-14
+          name: cibw-wheels-macosx_arm64
           path: ./wheelhouse/*.whl
   ubuntu-20-mpi:
     runs-on: ubuntu-20.04    

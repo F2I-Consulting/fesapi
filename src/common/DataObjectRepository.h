@@ -828,11 +828,11 @@ namespace COMMON_NS
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented);
 
 		/**
-		 * @brief	Creates a local depth 3d CRS which is fully unknown. Resulting local depth 3d CRS is
-		 * 			stored into this repository
+		 * @brief	Creates a local depth 3d CRS which is fully defined by a string representation.
+         *			Resulting local depth 3d CRS is	stored into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
@@ -846,11 +846,11 @@ namespace COMMON_NS
 		 * 									origin of the vertical CRS.
 		 * @param 	arealRotation		  	The areal rotation in radians regarding the projected CRS.
 		 * @param 	projectedUom		  	The unit of measure of the projected axis of this instance.
-		 * @param 	projectedUnknownReason	Indicates why the projected CRS cannot be provided using EPSG
-		 * 									or GML.
+		 * @param 	projectedDefinition		If starting with "PROJCRS" or "PROJCS" then it gives the WKT definition of the projected CRS.
+		 *									Otherwise, it defines why this projected CRS should be considered as unknown.
 		 * @param 	verticalUom			  	The unit of measure of the vertical axis of this instance.
-		 * @param 	verticalUnknownReason 	Indicates why the vertical CRS cannot be provided using EPSG
-		 * 									or GML.
+		 * @param 	verticalDefinition	 	If starting with "VERT" then it gives the WKT definition of the vertical CRS.
+		 *									Otherwise, it defines why this vertical CRS should be considered as unknown.
 		 * @param 	isUpOriented		  	If true, indicates that this depth CRS is actually an
 		 * 									elevation CRS.
 		 *
@@ -859,13 +859,13 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local depth 3d CRS which is identified by an EPSG code for its projected
-		 * 			part and which is unknown for its vertical part. Resulting local depth 3d CRS is
-		 * 			stored into this repository
+		 * 			part and which is defined by a string representation for its vertical part.
+         *			Resulting local depth 3d CRS is	stored into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0</tt>.
@@ -882,8 +882,8 @@ namespace COMMON_NS
 		 * @param 	projectedUom		 	The unit of measure of the projected axis of this instance.
 		 * @param 	projectedEpsgCode	 	The EPSG code of the associated projected CRS.
 		 * @param 	verticalUom			 	The unit of measure of the vertical axis of this instance.
-		 * @param 	verticalUnknownReason	Indicates why the vertical CRS cannot be provided using EPSG
-		 * 									or GML.
+		 * @param 	verticalDefinition	 	If starting with "VERT" then it gives the WKT definition of the vertical CRS.
+		 *									Otherwise, it defines why this vertical CRS should be considered as unknown.
 		 * @param 	isUpOriented		 	If true, indicates that this depth CRS is actually an
 		 * 									elevation CRS.
 		 *
@@ -893,12 +893,12 @@ namespace COMMON_NS
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented);
 
 		/**
-		 * @brief	Creates a local depth 3d CRS which is unknown for its projected part and which is
-		 * 			identified by an EPSG code for its vertical part. Resulting local depth 3d CRS is
-		 * 			stored into this repository
+		 * @brief	Creates a local depth 3d CRS which is defined by a string representation for its projected part
+		 *			and which is identified by an EPSG code for its vertical part.
+         *			Resulting local depth 3d CRS is	stored into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>verticalEpsgCode == 0</tt>.
@@ -913,8 +913,8 @@ namespace COMMON_NS
 		 * 									origin of the vertical CRS.
 		 * @param 	arealRotation		  	The areal rotation in radians regarding the projected CRS.
 		 * @param 	projectedUom		  	The unit of measure of the projected axis of this instance.
-		 * @param 	projectedUnknownReason	Indicates why the projected CRS cannot be provided using EPSG
-		 * 									or GML.
+		 * @param 	projectedDefinition		If starting with "PROJCRS" or "PROJCS" then it gives the WKT definition of the projected CRS.
+		 *									Otherwise, it defines why this projected CRS should be considered as unknown.
 		 * @param 	verticalUom			  	The unit of measure of the vertical axis of this instance.
 		 * @param 	verticalEpsgCode	  	The EPSG code of the associated vertical CRS.
 		 * @param 	isUpOriented		  	If true, indicates that this depth CRS is actually an
@@ -925,8 +925,8 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local time 3d CRS which is fully identified by means of EPSG code.
@@ -960,11 +960,11 @@ namespace COMMON_NS
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented);
 
 		/**
-		 * @brief	Creates a local time 3d CRS which is fully unknown. Resulting local time 3d CRS is
-		 * 			stored into this repository
+		 * @brief	Creates a local time 3d CRS which is fully defined by a string representation.
+		 * 			Resulting local time 3d CRS is stored into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
@@ -978,12 +978,12 @@ namespace COMMON_NS
 		 * 									origin of the vertical CRS.
 		 * @param 	arealRotation		  	The areal rotation in radians regarding the projected CRS.
 		 * @param 	projectedUom		  	The unit of measure of the projected axis of this instance.
-		 * @param 	projectedUnknownReason	Indicates why the projected CRS cannot be provided using EPSG
-		 * 									or GML.
+		 * @param 	projectedDefinition		If starting with "PROJCRS" or "PROJCS" then it gives the WKT definition of the projected CRS.
+		 *									Otherwise, it defines why this projected CRS should be considered as unknown.
 		 * @param 	timeUom				  	The unit of measure of the Z offset of this instance.
 		 * @param 	verticalUom			  	The unit of measure of the vertical axis of this instance.
-		 * @param 	verticalUnknownReason 	Indicates why the vertical CRS cannot be provided using EPSG
-		 * 									or GML.
+		 * @param 	verticalDefinition	 	If starting with "VERT" then it gives the WKT definition of the vertical CRS.
+		 *									Otherwise, it defines why this vertical CRS should be considered as unknown.
 		 * @param 	isUpOriented		  	If true, indicates that the Z offset if an elevation when
 		 * 									positive. If false, the Z offset if a depth when positive.
 		 *
@@ -992,14 +992,14 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a local time 3d CRS which is identified by an EPSG code for its projected
-		 * 			part and which is unknown for its vertical part. Resulting local time 3d CRS is
-		 * 			stored into this repository
+		 * 			part and which is defined by a string representation for its vertical part.
+		 * 			Resulting local time 3d CRS is stored into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0</tt>.
@@ -1017,8 +1017,8 @@ namespace COMMON_NS
 		 * @param 	projectedEpsgCode	 	The EPSG code of the associated projected CRS.
 		 * @param 	timeUom				 	The unit of measure of the Z offset of this instance.
 		 * @param 	verticalUom			 	The unit of measure of the vertical axis of this instance.
-		 * @param 	verticalUnknownReason	Indicates why the vertical CRS cannot be provided using EPSG
-		 * 									or GML.
+		 * @param 	verticalDefinition	 	If starting with "VERT" then it gives the WKT definition of the vertical CRS.
+		 *									Otherwise, it defines why this vertical CRS should be considered as unknown.
 		 * @param 	isUpOriented		 	If true, indicates that the Z offset if an elevation when
 		 * 									positive. If false, the Z offset if a depth when positive.
 		 *
@@ -1029,12 +1029,12 @@ namespace COMMON_NS
 			double arealRotation,
 			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented);
 
 		/**
-		 * @brief	Creates a local time 3d CRS which unknown for its projected part and which is
-		 * 			identified by an EPSG code for its vertical part. Resulting local time 3d CRS is
-		 * 			stored into this repository
+		 * @brief	Creates a local time 3d CRS which is defined by a string representation for its projected part
+		 *			and which is identified by an EPSG code for its vertical part.
+		 * 			Resulting local time 3d CRS is stored into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>verticalEpsgCode == 0</tt>.
@@ -1049,8 +1049,8 @@ namespace COMMON_NS
 		 * 									origin of the vertical CRS.
 		 * @param 	arealRotation		  	The areal rotation in radians regarding the projected CRS.
 		 * @param 	projectedUom		  	The unit of measure of the projected axis of this instance.
-		 * @param 	projectedUnknownReason	Indicates why the projected CRS cannot be provided using EPSG
-		 * 									or GML.
+		 * @param 	projectedDefinition		If starting with "PROJCRS" or "PROJCS" then it gives the WKT definition of the projected CRS.
+		 *									Otherwise, it defines why this projected CRS should be considered as unknown.
 		 * @param 	timeUom				  	The unit of measure of the Z offset of this instance.
 		 * @param 	verticalUom			  	The unit of measure of the vertical axis of this instance.
 		 * @param 	verticalEpsgCode	  	The EPSG code of the associated vertical CRS.
@@ -1062,9 +1062,9 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT EML2_NS::AbstractLocal3dCrs* createLocalTime3dCrs(const std::string& guid, const std::string& title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
-			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
+			gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
 			gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented);
+			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented);
 
 		/**
 		 * @brief	Creates a measured depth (MD) datum into this repository

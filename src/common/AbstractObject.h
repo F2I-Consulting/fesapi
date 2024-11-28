@@ -609,7 +609,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The extra metadata count of this instance.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getExtraMetadataCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getExtraMetadataCount() const;
 
 		/**
 		 * Get the key of a key value pair at a particular index in the extra metadata set of this
@@ -621,7 +621,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The extra metadata key at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataKeyAtIndex(uint64_t index) const;
 
 		/**
 		 * Get the value of a key value pair at a particular index in the extra metadata set of this
@@ -633,7 +633,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The extra metadata value at @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(uint64_t index) const;
 		
 		/**
 		* Build and return an ETP1.2 URI from an Energistics dataobject.
@@ -889,13 +889,8 @@ namespace COMMON_NS
 			{
 				gsoap_eml2_3::eml23__IntegerXmlArray const * xmlArray = static_cast<gsoap_eml2_3::eml23__IntegerXmlArray const*>(arrayInput);
 				const std::regex ws_re("\\s+"); // whitespace
-#if !defined(__GLIBCXX__) || __GLIBCXX__ > 20150623 || __GLIBCXX__ == 20140422 || __GLIBCXX__ == 20140716 || __GLIBCXX__ == 20141030
 				std::sregex_token_iterator it(xmlArray->Values.begin(), xmlArray->Values.end(), ws_re, -1);
 				std::sregex_token_iterator endToken;
-#else
-				boost::sregex_token_iterator it(xmlArray->Values.begin(), xmlArray->Values.end(), ws_re, -1);
-				boost::sregex_token_iterator endToken;
-#endif
 				size_t index = 0;
 				while (it != endToken) {
 					arrayOutput[index++] = std::stoll(*it++);

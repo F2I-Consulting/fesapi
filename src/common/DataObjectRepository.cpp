@@ -1166,7 +1166,7 @@ EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalDepth3dCrs(const s
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented)
 {
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
@@ -1185,18 +1185,18 @@ EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalDepth3dCrs(const s
 EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented)
 {
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
 		return new RESQML2_0_1_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
-			projectedUom, projectedUnknownReason,
-			verticalUom, verticalUnknownReason, isUpOriented);
+			projectedUom, projectedDefinition,
+			verticalUom, verticalDefinition, isUpOriented);
 	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
-			projectedUom, projectedUnknownReason,
-			verticalUom, verticalUnknownReason, isUpOriented);
+			projectedUom, projectedDefinition,
+			verticalUom, verticalDefinition, isUpOriented);
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1206,17 +1206,17 @@ EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalDepth3dCrs(const s
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented)
 {
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
 		return new RESQML2_0_1_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
-			verticalUom, verticalUnknownReason, isUpOriented);
+			verticalUom, verticalDefinition, isUpOriented);
 	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
-			verticalUom, verticalUnknownReason, isUpOriented);
+			verticalUom, verticalDefinition, isUpOriented);
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1225,17 +1225,17 @@ EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalDepth3dCrs(const s
 EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented)
 {
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
 		return new RESQML2_0_1_NS::LocalDepth3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
-			projectedUom, projectedUnknownReason,
+			projectedUom, projectedDefinition,
 			verticalUom, verticalEpsgCode, isUpOriented);
 	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
-			projectedUom, projectedUnknownReason,
+			projectedUom, projectedDefinition,
 			verticalUom, verticalEpsgCode, isUpOriented);
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
@@ -1247,7 +1247,7 @@ EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const st
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented)
 {
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
@@ -1268,21 +1268,21 @@ EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const st
 EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented)
 {
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
 		return new RESQML2_0_1_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
-			projectedUom, projectedUnknownReason,
+			projectedUom, projectedDefinition,
 			timeUom,
-			verticalUom, verticalUnknownReason, isUpOriented);
+			verticalUom, verticalDefinition, isUpOriented);
 	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
-			projectedUom, projectedUnknownReason,
+			projectedUom, projectedDefinition,
 			timeUom,
-			verticalUom, verticalUnknownReason, isUpOriented);
+			verticalUom, verticalDefinition, isUpOriented);
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1293,19 +1293,19 @@ EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const st
 	double arealRotation,
 	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, uint64_t projectedEpsgCode,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalUnknownReason, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, const std::string& verticalDefinition, bool isUpOriented)
 {
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
 		return new RESQML2_0_1_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			timeUom,
-			verticalUom, verticalUnknownReason, isUpOriented);
+			verticalUom, verticalDefinition, isUpOriented);
 	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
 			projectedUom, projectedEpsgCode,
 			timeUom,
-			verticalUom, verticalUnknownReason, isUpOriented);
+			verticalUom, verticalDefinition, isUpOriented);
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
@@ -1314,19 +1314,19 @@ EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const st
 EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string& guid, const std::string& title,
 	double originOrdinal1, double originOrdinal2, double originOrdinal3,
 	double arealRotation,
-	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedUnknownReason,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, const std::string& projectedDefinition,
 	gsoap_resqml2_0_1::eml20__TimeUom timeUom,
-	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented)
 {
 	switch (defaultEmlVersion) {
 	case DataObjectRepository::EnergisticsStandard::EML2_0:
 		return new RESQML2_0_1_NS::LocalTime3dCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
-			projectedUom, projectedUnknownReason,
+			projectedUom, projectedDefinition,
 			timeUom,
 			verticalUom, verticalEpsgCode, isUpOriented);
 	case DataObjectRepository::EnergisticsStandard::EML2_3:
 		return new EML2_3_NS::LocalEngineeringCompoundCrs(this, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
-			projectedUom, projectedUnknownReason,
+			projectedUom, projectedDefinition,
 			timeUom,
 			verticalUom, verticalEpsgCode, isUpOriented);
 	default:

@@ -25,58 +25,6 @@ namespace RESQML2_NS
 	/** @brief	Proxy class for an abstract grid representation. */
 	class AbstractGridRepresentation : public AbstractRepresentation
 	{
-	private:
-
-		/**
-		* @param	 forceConstantCellCountPerInterval	If true, will assume that the child and parent cell count per interval are constant. Then it will use constant xml array instead of hdf5 array for storage.
-		*												The method will consequently only consider the first cell count per interval value in childCellCountPerInterval and parentCellCountPerInterval as the constant ones.
-		**/
-		gsoap_resqml2_0_1::resqml20__Regrid* createRegrid2_0_1(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, uint64_t intervalCount, double * childCellWeights,
-			const std::string & dimension, EML2_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
-		gsoap_eml2_3::resqml22__Regrid* createRegrid2_2(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, uint64_t intervalCount, double * childCellWeights,
-			const std::string & dimension, EML2_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
-
-		/*
-		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
-		* @param	childVsParentCellCount		If true return the child cell count per interval. If false return the parent cell count per interval.
-		*/
-		gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* getCellCountPerInterval2_0_1(char dimension, bool childVsParentCellCount) const;
-		gsoap_eml2_3::eml23__AbstractIntegerArray* getCellCountPerInterval2_2(char dimension, bool childVsParentCellCount) const;
-
-		/**
-		 * Gets the parent window 2 0 1
-		 *
-		 * @returns	Null if it fails, else the parent window 2 0 1.
-		 */
-		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* getParentWindow2_0_1() const;
-		gsoap_eml2_3::resqml22__AbstractParentWindow* getParentWindow2_2() const;
-
-	protected:
-
-		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject			If non-null, the partial object.
-		 * @param 		  	withTruncatedPillars	True to with truncated pillars.
-		 */
-		AbstractGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :AbstractRepresentation(partialObject), withTruncatedPillars(withTruncatedPillars)  {}
-
-		/**
-		 * Default constructor
-		 *
-		 * @param 	withTruncatedPillars	True to with truncated pillars.
-		 */
-		AbstractGridRepresentation(bool withTruncatedPillars) : withTruncatedPillars(withTruncatedPillars){}
-
-		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
-		 *
-		 * @param [in,out]	fromGsoap				If non-null, from gsoap.
-		 * @param 		  	withTruncatedPillars	True to with truncated pillars.
-		 */
-		AbstractGridRepresentation(gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
-		AbstractGridRepresentation(gsoap_eml2_3::resqml22__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
-
 	public:
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
@@ -84,9 +32,6 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets the count of (volumetric) cells in the grid.
-		 *
-		 * @exception	std::range_error	If the cell count is strictly greater than unsigned int max.
-		 * @exception	std::logic_error	If this grid is partial.
 		 *
 		 * @returns	The cell count.
 		 */
@@ -105,9 +50,6 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets the count of grid connection set representations associated to this grid instance.
-		 *
-		 * @exception	std::range_error	If the count of grid connection set representations is
-		 * 									strictly greater than unsigned int max.
 		 *
 		 * @returns	The count of grid connection set representations associated to this grid instance.
 		 */
@@ -161,9 +103,6 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets the count of child grids of this grid.
-		 *
-		 * @exception	std::range_error	If the count of child grids is strictly greater than unsigned
-		 * 									int max.
 		 *
 		 * @returns	The count of child grids of this grid.
 		 */
@@ -247,7 +186,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setParentWindow(unsigned int * columnIndices, uint64_t columnIndexCount,
 			unsigned int kLayerIndexRegridStart,
-			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  unsigned int intervalCount,
+			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, uint64_t intervalCount,
 			class AbstractColumnLayerGridRepresentation* parentGrid,
 			EML2_NS::AbstractHdfProxy * proxy = nullptr, double * childCellWeights = nullptr);
 
@@ -326,9 +265,9 @@ namespace RESQML2_NS
 		 * 												per interval). Default value is nullptr.
 		 */
 		DLL_IMPORT_OR_EXPORT void setParentWindow(
-			unsigned int iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  unsigned int iIntervalCount,
-			unsigned int jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  unsigned int jIntervalCount,
-			unsigned int kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  unsigned int kIntervalCount,
+			unsigned int iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval, uint64_t iIntervalCount,
+			unsigned int jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval, uint64_t jIntervalCount,
+			unsigned int kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval, uint64_t kIntervalCount,
 			class AbstractIjkGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
@@ -422,9 +361,9 @@ namespace RESQML2_NS
 		 * 														<tt>* kIntervalCount</tt>).
 		 */
 		DLL_IMPORT_OR_EXPORT void setParentWindow(
-			unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, unsigned int iIntervalCount,
-			unsigned int jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, unsigned int jIntervalCount,
-			unsigned int kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, unsigned int kIntervalCount,
+			unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, uint64_t iIntervalCount,
+			unsigned int jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, uint64_t jIntervalCount,
+			unsigned int kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, uint64_t kIntervalCount,
 			class AbstractIjkGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
@@ -547,7 +486,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of parent grid cells which are regridded.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getParentCellIndexCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getParentCellIndexCount() const;
 
 		/**
 		 * Gets the indices of the parent grid cells which are regridded. Please only run this method
@@ -577,7 +516,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of parent grid columns which are regridded.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getParentColumnIndexCount() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getParentColumnIndexCount() const;
 
 		/**
 		 * Gets the indices of the parent grid columns which are regridded. Please only run this method
@@ -1171,7 +1110,57 @@ namespace RESQML2_NS
 
 	protected:
 
-		/** True to with truncated pillars */
+		/**
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject			If non-null, the partial object.
+		 * @param 		  	withTruncatedPillars	True to with truncated pillars.
+		 */
+		AbstractGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :AbstractRepresentation(partialObject), withTruncatedPillars(withTruncatedPillars) {}
+
+		/**
+		 * Default constructor
+		 *
+		 * @param 	withTruncatedPillars	True to with truncated pillars.
+		 */
+		AbstractGridRepresentation(bool withTruncatedPillars) : withTruncatedPillars(withTruncatedPillars) {}
+
+		/**
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap				If non-null, from gsoap.
+		 * @param 		  	withTruncatedPillars	True to with truncated pillars.
+		 */
+		AbstractGridRepresentation(gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
+		AbstractGridRepresentation(gsoap_eml2_3::resqml22__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
+
+		/** True with truncated pillars */
 		bool withTruncatedPillars;
+
+	private:
+
+		/**
+		* @param	 forceConstantCellCountPerInterval	If true, will assume that the child and parent cell count per interval are constant. Then it will use constant xml array instead of hdf5 array for storage.
+		*												The method will consequently only consider the first cell count per interval value in childCellCountPerInterval and parentCellCountPerInterval as the constant ones.
+		**/
+		gsoap_resqml2_0_1::resqml20__Regrid* createRegrid2_0_1(uint32_t indexRegridStart, uint32_t* childCellCountPerInterval, uint32_t* parentCellCountPerInterval, uint64_t intervalCount, double* childCellWeights,
+			const std::string& dimension, EML2_NS::AbstractHdfProxy* proxy, bool forceConstantCellCountPerInterval = false);
+		gsoap_eml2_3::resqml22__Regrid* createRegrid2_2(uint32_t indexRegridStart, uint32_t* childCellCountPerInterval, uint32_t* parentCellCountPerInterval, uint64_t intervalCount, double* childCellWeights,
+			const std::string& dimension, EML2_NS::AbstractHdfProxy* proxy, bool forceConstantCellCountPerInterval = false);
+
+		/*
+		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
+		* @param	childVsParentCellCount		If true return the child cell count per interval. If false return the parent cell count per interval.
+		*/
+		gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* getCellCountPerInterval2_0_1(char dimension, bool childVsParentCellCount) const;
+		gsoap_eml2_3::eml23__AbstractIntegerArray* getCellCountPerInterval2_2(char dimension, bool childVsParentCellCount) const;
+
+		/**
+		 * Gets the parent window 2 0 1
+		 *
+		 * @returns	Null if it fails, else the parent window 2 0 1.
+		 */
+		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* getParentWindow2_0_1() const;
+		gsoap_eml2_3::resqml22__AbstractParentWindow* getParentWindow2_2() const;
 	};
 }

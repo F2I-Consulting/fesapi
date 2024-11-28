@@ -43,8 +43,7 @@ uint64_t AbstractGridRepresentation::getGridConnectionSetRepresentationCount() c
 
 RESQML2_NS::GridConnectionSetRepresentation * AbstractGridRepresentation::getGridConnectionSetRepresentation(uint64_t index) const
 {
-	const std::vector<RESQML2_NS::GridConnectionSetRepresentation *>& gridConnectionSetRepresentationSet = getGridConnectionSetRepresentationSet();
-	return gridConnectionSetRepresentationSet.at(index);
+	return getGridConnectionSetRepresentationSet().at(index);
 }
 
 gsoap_resqml2_0_1::resqml20__AbstractParentWindow* AbstractGridRepresentation::getParentWindow2_0_1() const
@@ -80,7 +79,7 @@ COMMON_NS::DataObjectReference AbstractGridRepresentation::getParentGridDor() co
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr) {
 			switch (parentWindow->soap_type()) {
@@ -100,13 +99,7 @@ COMMON_NS::DataObjectReference AbstractGridRepresentation::getParentGridDor() co
 
 AbstractGridRepresentation* AbstractGridRepresentation::getParentGrid() const
 {
-	const string parentGridUuid = getParentGridDor().getUuid();
-
-	if (!parentGridUuid.empty()) {
-		return static_cast<AbstractGridRepresentation*>(getRepository()->getDataObjectByUuid(parentGridUuid));
-	}
-
-	return nullptr;
+	return static_cast<AbstractGridRepresentation*>(getRepository()->getDataObjectByUuid(getParentGridDor().getUuid()));
 }
 
 std::vector<RESQML2_NS::AbstractGridRepresentation *> AbstractGridRepresentation::getChildGridSet() const
@@ -120,12 +113,11 @@ uint64_t AbstractGridRepresentation::getChildGridCount() const {
 
 AbstractGridRepresentation * AbstractGridRepresentation::getChildGrid(uint64_t index) const
 {
-	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& childGridSet = getChildGridSet();
-	return childGridSet.at(index);
+	return getChildGridSet().at(index);
 }
 
-gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0_1(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, uint64_t intervalCount, double * childCellWeights,
-	const std::string & dimension, EML2_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval)
+gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0_1(uint32_t indexRegridStart, uint32_t* childCellCountPerInterval, uint32_t* parentCellCountPerInterval, uint64_t intervalCount, double* childCellWeights,
+	const std::string& dimension, EML2_NS::AbstractHdfProxy* proxy, bool forceConstantCellCountPerInterval)
 {
 	gsoap_resqml2_0_1::resqml20__Regrid* regrid = gsoap_resqml2_0_1::soap_new_resqml20__Regrid(gsoapProxy2_0_1->soap);
 	regrid->InitialIndexOnParentGrid = indexRegridStart;
@@ -135,7 +127,7 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 	if (intervalCount == 0) {
 		throw invalid_argument("Cannot regrid an empty list of intervals.");
 	}
-	else if (intervalCount == 1 || forceConstantCellCountPerInterval) {
+	else if (forceConstantCellCountPerInterval) {
 		gsoap_resqml2_0_1::resqml20__IntegerConstantArray* xmlChildCountPerInterval = gsoap_resqml2_0_1::soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
 		xmlChildCountPerInterval->Value = *childCellCountPerInterval;
 		xmlChildCountPerInterval->Count = intervalCount;
@@ -191,11 +183,11 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 
 		// HDF
 		uint64_t numValues = *childCellCountPerInterval;
-		if (forceConstantCellCountPerInterval) {
+		if (intervalCount > 1 && forceConstantCellCountPerInterval) {
 			numValues *= intervalCount - 1;
 		}
 		else {
-			for (unsigned int i = 1; i < intervalCount; ++i) {
+			for (uint64_t i = 1; i < intervalCount; ++i) {
 				numValues += childCellCountPerInterval[i];
 			}
 		}
@@ -205,8 +197,8 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 	return regrid;
 }
 
-gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, uint64_t intervalCount, double * childCellWeights,
-	const std::string & dimension, EML2_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval)
+gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(uint32_t indexRegridStart, uint32_t* childCellCountPerInterval, uint32_t* parentCellCountPerInterval, uint64_t intervalCount, double* childCellWeights,
+	const std::string& dimension, EML2_NS::AbstractHdfProxy* proxy, bool forceConstantCellCountPerInterval)
 {
 	gsoap_eml2_3::resqml22__Regrid* regrid = gsoap_eml2_3::soap_new_resqml22__Regrid(gsoapProxy2_3->soap);
 	regrid->InitialIndexOnParentGrid = indexRegridStart;
@@ -216,7 +208,7 @@ gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsi
 	if (intervalCount == 0) {
 		throw invalid_argument("Cannot regrid an empty list of intervals.");
 	}
-	else if (intervalCount == 1 || forceConstantCellCountPerInterval) {
+	else if (forceConstantCellCountPerInterval) {
 		gsoap_eml2_3::eml23__IntegerConstantArray* xmlChildCountPerInterval = gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap);
 		xmlChildCountPerInterval->Value = *childCellCountPerInterval;
 		xmlChildCountPerInterval->Count = intervalCount;
@@ -265,9 +257,14 @@ gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(unsi
 		gsoap_eml2_3::eml23__FloatingPointExternalArray* hdf5ChildCellWeights = gsoap_eml2_3::soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 		regrid->Intervals->ChildCellWeights = hdf5ChildCellWeights;
 		hdf5ChildCellWeights->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
-		uint64_t numValues = 0;
-		for (uint64_t i = 0; i < intervalCount; ++i) {
-			numValues += childCellCountPerInterval[i];
+		uint64_t numValues = *childCellCountPerInterval;
+		if (intervalCount > 1 && forceConstantCellCountPerInterval) {
+			numValues *= intervalCount - 1;
+		}
+		else {
+			for (uint64_t i = 1; i < intervalCount; ++i) {
+				numValues += childCellCountPerInterval[i];
+			}
 		}
 		hdf5ChildCellWeights->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/ParentWindow_" + dimension + "Regrid_ChildCellWeights", numValues, proxy));
 
@@ -291,65 +288,49 @@ void AbstractGridRepresentation::setParentWindow(uint64_t * cellIndices, uint64_
 		rep->ParentWindow = cpw;
 
 		cpw->ParentGrid = parentGrid->newResqmlReference();
-		if (cellIndexCount > 1) {
+		if (proxy == nullptr) {
+			proxy = getRepository()->getDefaultHdfProxy();
 			if (proxy == nullptr) {
-				proxy = getRepository()->getDefaultHdfProxy();
-				if (proxy == nullptr) {
-					throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-				}
+				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
-			getRepository()->addRelationship(this, proxy);
-
-			gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5CellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(rep->soap);
-			cpw->CellIndices = hdf5CellIndices;
-
-			hdf5CellIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
-			hdf5CellIndices->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(rep->soap);
-			hdf5CellIndices->Values->HdfProxy = proxy->newResqmlReference();
-			hdf5CellIndices->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_CellIndices";
-
-			// HDF
-			proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &cellIndexCount, 1);
 		}
-		else { // cellIndexCount == 1
-			gsoap_resqml2_0_1::resqml20__IntegerConstantArray* xmlCellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerConstantArray(rep->soap);
-			xmlCellIndices->Value = *cellIndices;
-			xmlCellIndices->Count = 1;
-			cpw->CellIndices = xmlCellIndices;
-		}
+		getRepository()->addRelationship(this, proxy);
+
+		gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5CellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(rep->soap);
+		cpw->CellIndices = hdf5CellIndices;
+
+		hdf5CellIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
+		hdf5CellIndices->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(rep->soap);
+		hdf5CellIndices->Values->HdfProxy = proxy->newResqmlReference();
+		hdf5CellIndices->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_CellIndices";
+
+		// HDF
+		proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &cellIndexCount, 1);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto rep = static_cast<gsoap_eml2_3::resqml22__AbstractGridRepresentation*>(gsoapProxy2_3);
+		auto* rep = static_cast<gsoap_eml2_3::resqml22__AbstractGridRepresentation*>(gsoapProxy2_3);
 
 		gsoap_eml2_3::resqml22__CellParentWindow* cpw = gsoap_eml2_3::soap_new_resqml22__CellParentWindow(rep->soap);
 		rep->ParentWindow = cpw;
 
 		cpw->ParentGridRepresentation = parentGrid->newEml23Reference();
-		if (cellIndexCount > 1) {
+		if (proxy == nullptr) {
+			proxy = getRepository()->getDefaultHdfProxy();
 			if (proxy == nullptr) {
-				proxy = getRepository()->getDefaultHdfProxy();
-				if (proxy == nullptr) {
-					throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-				}
+				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
-			getRepository()->addRelationship(this, proxy);
-
-			auto hdf5CellIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
-			cpw->CellIndices = hdf5CellIndices;
-
-			hdf5CellIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
-			hdf5CellIndices->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(rep->soap);
-			hdf5CellIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/ParentWindow_CellIndices", cellIndexCount, proxy));
-
-			// HDF
-			proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &cellIndexCount, 1);
 		}
-		else { // cellIndexCount == 1
-			auto xmlCellIndices = gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(rep->soap);
-			xmlCellIndices->Value = *cellIndices;
-			xmlCellIndices->Count = 1;
-			cpw->CellIndices = xmlCellIndices;
-		}
+		getRepository()->addRelationship(this, proxy);
+
+		auto* hdf5CellIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
+		cpw->CellIndices = hdf5CellIndices;
+
+		hdf5CellIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
+		hdf5CellIndices->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(rep->soap);
+		hdf5CellIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/ParentWindow_CellIndices", cellIndexCount, proxy));
+
+		// HDF
+		proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &cellIndexCount, 1);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -360,7 +341,7 @@ void AbstractGridRepresentation::setParentWindow(uint64_t * cellIndices, uint64_
 
 void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, uint64_t columnIndexCount,
 	unsigned int kLayerIndexRegridStart,
-	unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount,
+	unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, uint64_t intervalCount,
 	AbstractColumnLayerGridRepresentation* parentGrid,
 	EML2_NS::AbstractHdfProxy * proxy, double * childCellWeights)
 {
@@ -378,40 +359,30 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 		clpw->ParentGrid = parentGrid->newResqmlReference();
 
 		// COLUMN INDICES
-		if (columnIndexCount > 1)
-		{
+		if (proxy == nullptr) {
+			proxy = getRepository()->getDefaultHdfProxy();
 			if (proxy == nullptr) {
-				proxy = getRepository()->getDefaultHdfProxy();
-				if (proxy == nullptr) {
-					throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-				}
+				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
-			getRepository()->addRelationship(this, proxy);
-
-			gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5ColumnIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(rep->soap);
-			clpw->ColumnIndices = hdf5ColumnIndices;
-
-			hdf5ColumnIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write column index null value in this method
-			hdf5ColumnIndices->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(rep->soap);
-			hdf5ColumnIndices->Values->HdfProxy = proxy->newResqmlReference();
-			hdf5ColumnIndices->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_ColumnIndices";
-
-			// HDF
-			proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, columnIndices, &columnIndexCount, 1);
 		}
-		else if (columnIndexCount == 1)
-		{
-			gsoap_resqml2_0_1::resqml20__IntegerConstantArray* xmlColumnIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerConstantArray(rep->soap);
-			xmlColumnIndices->Value = *columnIndices;
-			xmlColumnIndices->Count = 1;
-			clpw->ColumnIndices = xmlColumnIndices;
-		}
+		getRepository()->addRelationship(this, proxy);
+
+		gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5ColumnIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(rep->soap);
+		clpw->ColumnIndices = hdf5ColumnIndices;
+
+		hdf5ColumnIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write column index null value in this method
+		hdf5ColumnIndices->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(rep->soap);
+		hdf5ColumnIndices->Values->HdfProxy = proxy->newResqmlReference();
+		hdf5ColumnIndices->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_ColumnIndices";
+
+		// HDF
+		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, columnIndices, &columnIndexCount, 1);
 
 		// K Regrid
 		clpw->KRegrid = createRegrid2_0_1(kLayerIndexRegridStart, childCellCountPerInterval, parentCellCountPerInterval, intervalCount, childCellWeights, "K", proxy);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto rep = static_cast<gsoap_eml2_3::resqml22__AbstractGridRepresentation*>(gsoapProxy2_3);
+		auto* rep = static_cast<gsoap_eml2_3::resqml22__AbstractGridRepresentation*>(gsoapProxy2_3);
 
 		gsoap_eml2_3::resqml22__ColumnLayerParentWindow* clpw = gsoap_eml2_3::soap_new_resqml22__ColumnLayerParentWindow(rep->soap);
 		rep->ParentWindow = clpw;
@@ -419,33 +390,23 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 		clpw->ParentColumnLayerGridRepresentation = parentGrid->newEml23Reference();
 
 		// COLUMN INDICES
-		if (columnIndexCount > 1)
-		{
+		if (proxy == nullptr) {
+			proxy = getRepository()->getDefaultHdfProxy();
 			if (proxy == nullptr) {
-				proxy = getRepository()->getDefaultHdfProxy();
-				if (proxy == nullptr) {
-					throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-				}
+				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
-			getRepository()->addRelationship(this, proxy);
-
-			gsoap_eml2_3::eml23__IntegerExternalArray* hdf5ColumnIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
-			clpw->ColumnIndices = hdf5ColumnIndices;
-
-			hdf5ColumnIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write column index null value in this method
-			hdf5ColumnIndices->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(rep->soap);
-			hdf5ColumnIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/ParentWindow_ColumnIndices", columnIndexCount, proxy));
-
-			// HDF
-			proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, columnIndices, &columnIndexCount, 1);
 		}
-		else if (columnIndexCount == 1)
-		{
-			gsoap_eml2_3::eml23__IntegerConstantArray* xmlColumnIndices = gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(rep->soap);
-			xmlColumnIndices->Value = *columnIndices;
-			xmlColumnIndices->Count = 1;
-			clpw->ColumnIndices = xmlColumnIndices;
-		}
+		getRepository()->addRelationship(this, proxy);
+
+		gsoap_eml2_3::eml23__IntegerExternalArray* hdf5ColumnIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
+		clpw->ColumnIndices = hdf5ColumnIndices;
+
+		hdf5ColumnIndices->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write column index null value in this method
+		hdf5ColumnIndices->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(rep->soap);
+		hdf5ColumnIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/ParentWindow_ColumnIndices", columnIndexCount, proxy));
+
+		// HDF
+		proxy->writeArrayNd(getHdfGroup(), "ParentWindow_ColumnIndices", COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, columnIndices, &columnIndexCount, 1);
 
 		// K Regrid
 		clpw->KRegrid = createRegrid2_2(kLayerIndexRegridStart, childCellCountPerInterval, parentCellCountPerInterval, intervalCount, childCellWeights, "K", proxy);
@@ -458,9 +419,9 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 }
 
 void AbstractGridRepresentation::setParentWindow(
-	unsigned int iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval, unsigned int iIntervalCount,
-	unsigned int jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval, unsigned int jIntervalCount,
-	unsigned int kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval, unsigned int kIntervalCount,
+	unsigned int iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval, uint64_t iIntervalCount,
+	unsigned int jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval, uint64_t jIntervalCount,
+	unsigned int kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval, uint64_t kIntervalCount,
 	AbstractIjkGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy * proxy, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
 {
 	if (childCellCountPerIInterval == nullptr || parentCellCountPerIInterval == nullptr || iIntervalCount == 0 ||
@@ -482,7 +443,7 @@ void AbstractGridRepresentation::setParentWindow(
 		ijkpw->KRegrid = createRegrid2_0_1(kCellIndexRegridStart, childCellCountPerKInterval, parentCellCountPerKInterval, kIntervalCount, kChildCellWeights, "K", proxy);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto ijkpw = gsoap_eml2_3::soap_new_resqml22__IjkParentWindow(gsoapProxy2_3->soap);
+		auto* ijkpw = gsoap_eml2_3::soap_new_resqml22__IjkParentWindow(gsoapProxy2_3->soap);
 		static_cast<gsoap_eml2_3::resqml22__AbstractGridRepresentation*>(gsoapProxy2_3)->ParentWindow = ijkpw;
 
 		ijkpw->ParentIjkGridRepresentation = parentGrid->newEml23Reference();
@@ -500,9 +461,9 @@ void AbstractGridRepresentation::setParentWindow(
 }
 
 void AbstractGridRepresentation::setParentWindow(
-	unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, unsigned int iIntervalCount,
-	unsigned int jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, unsigned int jIntervalCount,
-	unsigned int kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, unsigned int kIntervalCount,
+	unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, uint64_t iIntervalCount,
+	unsigned int jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, uint64_t jIntervalCount,
+	unsigned int kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, uint64_t kIntervalCount,
 	AbstractIjkGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy * proxy, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
 {
 	if (constantChildCellCountPerIInterval == 0 || constantParentCellCountPerIInterval == 0 || iIntervalCount == 0 ||
@@ -524,7 +485,7 @@ void AbstractGridRepresentation::setParentWindow(
 		ijkpw->KRegrid = createRegrid2_0_1(kCellIndexRegridStart, &constantChildCellCountPerKInterval, &constantParentCellCountPerKInterval, kIntervalCount, kChildCellWeights, "K", proxy, true);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto ijkpw = gsoap_eml2_3::soap_new_resqml22__IjkParentWindow(gsoapProxy2_3->soap);
+		auto* ijkpw = gsoap_eml2_3::soap_new_resqml22__IjkParentWindow(gsoapProxy2_3->soap);
 		static_cast<gsoap_eml2_3::resqml22__AbstractGridRepresentation*>(gsoapProxy2_3)->ParentWindow = ijkpw;
 
 		ijkpw->ParentIjkGridRepresentation = parentGrid->newEml23Reference();
@@ -548,9 +509,9 @@ void AbstractGridRepresentation::setParentWindow(
 	AbstractIjkGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy * proxy, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
 {
 	setParentWindow(
-		iCellIndexRegridStart, &iChildCellCount, &iParentCellCount, 1,
-		jCellIndexRegridStart, &jChildCellCount, &jParentCellCount, 1,
-		kCellIndexRegridStart, &kChildCellCount, &kParentCellCount, 1,
+		iCellIndexRegridStart, iChildCellCount, iParentCellCount, 1,
+		jCellIndexRegridStart, jChildCellCount, jParentCellCount, 1,
+		kCellIndexRegridStart, kChildCellCount, kParentCellCount, 1,
 		parentGrid, proxy, iChildCellWeights, jChildCellWeights, kChildCellWeights);
 }
 
@@ -568,7 +529,7 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 			gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* xmlCellIndices = nullptr;
 
 			EML2_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
-			if (cellIndexCount > 1 && proxy != nullptr)
+			if (cellIndexCount > 0 && proxy != nullptr)
 			{
 				getRepository()->addRelationship(this, proxy);
 				xmlCellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(parentWindow->soap);
@@ -579,12 +540,6 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 
 				// HDF
 				proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &cellIndexCount, 1);
-			}
-			else if (cellIndexCount == 1)
-			{
-				xmlCellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerConstantArray(parentWindow->soap);
-				static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(xmlCellIndices)->Value = *cellIndices;
-				static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(xmlCellIndices)->Count = 1;
 			}
 			else if (cellIndexCount == 0)
 				throw invalid_argument("Cannot force an empty list of cells.");
@@ -602,14 +557,14 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr)
 		{
 			gsoap_eml2_3::eml23__AbstractIntegerArray* xmlCellIndices = nullptr;
 
 			EML2_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
-			if (cellIndexCount > 1 && proxy != nullptr)
+			if (cellIndexCount > 0 && proxy != nullptr)
 			{
 				getRepository()->addRelationship(this, proxy);
 				xmlCellIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(parentWindow->soap);
@@ -620,12 +575,6 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 
 				// HDF
 				proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "ParentWindow_CellIndices", cellIndices, &cellIndexCount, 1);
-			}
-			else if (cellIndexCount == 1)
-			{
-				xmlCellIndices = gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(parentWindow->soap);
-				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(xmlCellIndices)->Value = *cellIndices;
-				static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(xmlCellIndices)->Count = 1;
 			}
 			else if (cellIndexCount == 0)
 				throw invalid_argument("Cannot force an empty list of cells.");
@@ -664,7 +613,7 @@ bool AbstractGridRepresentation::hasForcedNonRegridedParentCell() const
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr) {
 			switch (parentWindow->soap_type()) {
@@ -741,7 +690,7 @@ void AbstractGridRepresentation::setCellOverlap(uint64_t parentChildCellPairCoun
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr)
 		{
@@ -794,7 +743,7 @@ void AbstractGridRepresentation::setCellOverlap(uint64_t parentChildCellPairCoun
 	}
 }
 
-int64_t AbstractGridRepresentation::getParentCellIndexCount() const
+uint64_t AbstractGridRepresentation::getParentCellIndexCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* parentWindow = getParentWindow2_0_1();
@@ -803,42 +752,26 @@ int64_t AbstractGridRepresentation::getParentCellIndexCount() const
 		{
 			if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__CellParentWindow)
 			{
-				gsoap_resqml2_0_1::resqml20__CellParentWindow* cpw = static_cast<gsoap_resqml2_0_1::resqml20__CellParentWindow*>(parentWindow);
-				if (cpw->CellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
-				{
-					gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(cpw->CellIndices)->Values;
-					EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-					return hdfProxy->getElementCount(dataset->PathInHdfFile);
-				}
-				else
-					throw invalid_argument("This list of cells can only be stored in HDF5 file.");
+				return getCountOfArray(static_cast<gsoap_resqml2_0_1::resqml20__CellParentWindow*>(parentWindow)->CellIndices);
 			}
 			else
-				throw invalid_argument("This information is only avaialble for cell parent window.");
+				throw invalid_argument("This information is only available for cell parent window.");
 		}
 		else {
 			throw invalid_argument("There is no parent window on this grid.");
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr)
 		{
 			if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__CellParentWindow)
 			{
-				auto cpw = static_cast<gsoap_eml2_3::resqml22__CellParentWindow*>(parentWindow);
-				if (cpw->CellIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
-				{
-					gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(cpw->CellIndices)->Values;
-					EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
-					return hdfProxy->getElementCount(dataset->ExternalDataArrayPart[0]->PathInExternalFile);
-				}
-				else
-					throw invalid_argument("This list of cells can only be stored in HDF5 file.");
+				return getCountOfArray(static_cast<gsoap_eml2_3::resqml22__CellParentWindow*>(parentWindow)->CellIndices);
 			}
 			else
-				throw invalid_argument("This information is only avaialble for cell parent window.");
+				throw invalid_argument("This information is only available for cell parent window.");
 		}
 		else {
 			throw invalid_argument("There is no parent window on this grid.");
@@ -869,7 +802,7 @@ void AbstractGridRepresentation::getParentCellIndices(uint64_t * parentCellIndic
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr)
 		{
@@ -890,7 +823,7 @@ void AbstractGridRepresentation::getParentCellIndices(uint64_t * parentCellIndic
 	}
 }
 
-int64_t AbstractGridRepresentation::getParentColumnIndexCount() const
+uint64_t AbstractGridRepresentation::getParentColumnIndexCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* parentWindow = getParentWindow2_0_1();
@@ -899,18 +832,10 @@ int64_t AbstractGridRepresentation::getParentColumnIndexCount() const
 		{
 			if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ColumnLayerParentWindow)
 			{
-				gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow* clpw = static_cast<gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow*>(parentWindow);
-				if (clpw->ColumnIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-					gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(clpw->ColumnIndices)->Values;
-					EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-					return hdfProxy->getElementCount(dataset->PathInHdfFile);
-				}
-				else {
-					throw invalid_argument("This list of columns can only be stored in HDF5 file.");
-				}
+				return getCountOfArray(static_cast<gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow*>(parentWindow)->ColumnIndices);
 			}
 			else {
-				throw invalid_argument("This information is only avaialble for column layer parent window.");
+				throw invalid_argument("This information is only available for column layer parent window.");
 			}
 		}
 		else {
@@ -918,23 +843,16 @@ int64_t AbstractGridRepresentation::getParentColumnIndexCount() const
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr)
 		{
 			if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnLayerParentWindow)
 			{
-				auto cpw = static_cast<gsoap_eml2_3::resqml22__ColumnLayerParentWindow*>(parentWindow);
-				if (cpw->ColumnIndices->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-					gsoap_eml2_3::eml23__ExternalDataArray const * dataset = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(cpw->ColumnIndices)->Values;
-					EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
-					return hdfProxy->getElementCount(dataset->ExternalDataArrayPart[0]->PathInExternalFile);
-				}
-				else
-					throw invalid_argument("This list of cells can only be stored in HDF5 file.");
+				return getCountOfArray(static_cast<gsoap_eml2_3::resqml22__ColumnLayerParentWindow*>(parentWindow)->ColumnIndices);
 			}
 			else
-				throw invalid_argument("This information is only available for cell parent window.");
+				throw invalid_argument("This information is only available for column layer parent window.");
 		}
 		else {
 			throw invalid_argument("There is no parent window on this grid.");
@@ -958,7 +876,7 @@ void AbstractGridRepresentation::getParentColumnIndices(uint64_t * parentColumnI
 				readArrayNdOfUInt64Values(clpw->ColumnIndices, parentColumnIndices);
 			}
 			else {
-				throw invalid_argument("This information is only avaialble for column layer parent window.");
+				throw invalid_argument("This information is only available for column layer parent window.");
 			}
 		}
 		else {
@@ -966,7 +884,7 @@ void AbstractGridRepresentation::getParentColumnIndices(uint64_t * parentColumnI
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr)
 		{
@@ -976,7 +894,7 @@ void AbstractGridRepresentation::getParentColumnIndices(uint64_t * parentColumnI
 				readArrayNdOfUInt64Values(cpw->ColumnIndices, parentColumnIndices);
 			}
 			else {
-				throw invalid_argument("This information is only available for cell parent window.");
+				throw invalid_argument("This information is only available for column layer parent window.");
 			}
 		}
 		else {
@@ -1029,7 +947,7 @@ uint64_t AbstractGridRepresentation::getRegridStartIndexOnParentGrid(char dimens
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr)
 		{
@@ -1120,7 +1038,7 @@ uint64_t AbstractGridRepresentation::getRegridIntervalCount(char dimension) cons
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr)
 		{
@@ -1223,7 +1141,7 @@ gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* AbstractGridRepresentation::g
 
 gsoap_eml2_3::eml23__AbstractIntegerArray* AbstractGridRepresentation::getCellCountPerInterval2_2(char dimension, bool childVsParentCellCount) const
 {
-	auto parentWindow = getParentWindow2_2();
+	auto* parentWindow = getParentWindow2_2();
 
 	if (parentWindow != nullptr) {
 		if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__IjkParentWindow) {
@@ -1324,11 +1242,9 @@ uint64_t AbstractGridRepresentation::getRegridConstantCellCountPerInterval(char 
 		switch (cellCountPerInterval->soap_type()) {
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray: return static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(cellCountPerInterval)->Value;
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array: {
-			const uint64_t intervalCount = getRegridIntervalCount(dimension);
-			std::unique_ptr<uint64_t[]> values(new uint64_t[intervalCount]);
+			std::unique_ptr<uint64_t[]> values(new uint64_t[getRegridIntervalCount(dimension)]);
 			getRegridCellCountPerInterval(dimension, values.get(), childVsParentCellCount);
-			uint64_t result = values[0];
-			return result;
+			return values[0];
 		}
 		default: throw logic_error("Not implemented yet");
 		}
@@ -1338,11 +1254,9 @@ uint64_t AbstractGridRepresentation::getRegridConstantCellCountPerInterval(char 
 		switch (cellCountPerInterval->soap_type()) {
 		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray: return static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(cellCountPerInterval)->Value;
 		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray: {
-			const uint64_t intervalCount = getRegridIntervalCount(dimension);
-			std::unique_ptr<uint64_t[]> values(new uint64_t[intervalCount]);
+			std::unique_ptr<uint64_t[]> values(new uint64_t[getRegridIntervalCount(dimension)]);
 			getRegridCellCountPerInterval(dimension, values.get(), childVsParentCellCount);
-			uint64_t result = values[0];
-			return result;
+			return values[0];
 		}
 		default: throw logic_error("Not implemented yet");
 		}
@@ -1430,7 +1344,7 @@ bool AbstractGridRepresentation::hasRegridChildCellWeights(char dimension) const
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr) {
 			if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__IjkParentWindow)
@@ -1517,7 +1431,7 @@ void AbstractGridRepresentation::getRegridChildCellWeights(char dimension, doubl
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto parentWindow = getParentWindow2_2();
+		auto* parentWindow = getParentWindow2_2();
 
 		if (parentWindow != nullptr) {
 			if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__IjkParentWindow) {
@@ -1761,7 +1675,7 @@ int64_t AbstractGridRepresentation::getCellFluidPhaseUnitIndices(int64_t * rockF
 		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->NullValue;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto rep = static_cast<gsoap_eml2_3::resqml22__AbstractGridRepresentation*>(gsoapProxy2_3);
+		auto const* rep = static_cast<gsoap_eml2_3::resqml22__AbstractGridRepresentation*>(gsoapProxy2_3);
 		if (rep->CellFluidPhaseUnits->PhaseUnitIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray) {
 			gsoap_eml2_3::eml23__IntegerLatticeArray* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(rep->CellFluidPhaseUnits->PhaseUnitIndices->CumulativeLength);
 			if (latticeArray->StartValue == 1 && latticeArray->Offset.size() == 1 &&
@@ -1784,13 +1698,7 @@ int64_t AbstractGridRepresentation::getCellFluidPhaseUnitIndices(int64_t * rockF
 
 RESQML2_NS::RockFluidOrganizationInterpretation* AbstractGridRepresentation::getRockFluidOrganizationInterpretation() const
 {
-	const string rockfluidOrganizationInterpretationUuid = getRockFluidOrganizationInterpretationDor().getUuid();
-	if (rockfluidOrganizationInterpretationUuid.empty()) {
-		return nullptr;
-	}
-
-	return static_cast<RESQML2_NS::RockFluidOrganizationInterpretation*>(getRepository()->getDataObjectByUuid(rockfluidOrganizationInterpretationUuid));
-
+	return static_cast<RESQML2_NS::RockFluidOrganizationInterpretation*>(getRepository()->getDataObjectByUuid(getRockFluidOrganizationInterpretationDor().getUuid()));
 }
 
 bool AbstractGridRepresentation::isTruncated() const
@@ -1805,12 +1713,10 @@ uint64_t AbstractGridRepresentation::getTruncatedFaceCount() const
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-		return rep->TruncationCells->TruncationFaceCount;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationFaceCount;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3);
-		return rep->TruncationCellPatch->TruncationFaceCount;
+		return static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationFaceCount;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1824,28 +1730,10 @@ void AbstractGridRepresentation::getNodeIndicesOfTruncatedFaces(uint64_t * nodeI
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-
-		if (rep->TruncationCells->NodesPerTruncationFace->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
-		{
-			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->NodesPerTruncationFace->Elements)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, nodeIndices);
-		}
-		else
-			throw logic_error("Not yet implemented");
+		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->NodesPerTruncationFace->Elements, nodeIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3);
-
-		if (rep->TruncationCellPatch->NodesPerTruncationFace->Elements->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
-		{
-			auto const* daPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->TruncationCellPatch->NodesPerTruncationFace->Elements)->Values->ExternalDataArrayPart[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
-			hdfProxy->readArrayNdOfUInt64Values(daPart->PathInExternalFile, nodeIndices);
-		}
-		else
-			throw logic_error("Not yet implemented");
+		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->NodesPerTruncationFace->Elements, nodeIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1859,50 +1747,10 @@ void AbstractGridRepresentation::getCumulativeNodeCountPerTruncatedFace(uint64_t
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-
-		if (rep->TruncationCells->NodesPerTruncationFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
-		{
-			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->NodesPerTruncationFace->CumulativeLength)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, nodeCountPerFace);
-		}
-		else if (rep->TruncationCells->NodesPerTruncationFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
-		{
-			nodeCountPerFace[0] = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(rep->TruncationCells->NodesPerTruncationFace->CumulativeLength)->StartValue;
-			const int64_t offsetValue = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(rep->TruncationCells->NodesPerTruncationFace->CumulativeLength)->Offset[0]->Value;
-			const uint64_t faceCount = getTruncatedFaceCount();
-			for (uint64_t nodeCountPerFaceIndex = 1; nodeCountPerFaceIndex < faceCount; ++nodeCountPerFaceIndex) {
-				nodeCountPerFace[nodeCountPerFaceIndex] = nodeCountPerFace[nodeCountPerFaceIndex - 1] + offsetValue;
-			}
-		}
-		else if (rep->TruncationCells->NodesPerTruncationFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
-		{
-			throw range_error("The *cumulative* length of nodes count per cells cannot be constant.");
-		}
+		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->NodesPerTruncationFace->CumulativeLength, nodeCountPerFace);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3);
-
-		if (rep->TruncationCellPatch->NodesPerTruncationFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)
-		{
-			auto const* daPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->TruncationCellPatch->NodesPerTruncationFace->CumulativeLength)->Values->ExternalDataArrayPart[0];
-			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(daPart);
-			hdfProxy->readArrayNdOfUInt64Values(daPart->PathInExternalFile, nodeCountPerFace);
-		}
-		else if (rep->TruncationCellPatch->NodesPerTruncationFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray)
-		{
-			nodeCountPerFace[0] = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(rep->TruncationCellPatch->NodesPerTruncationFace->CumulativeLength)->StartValue;
-			const int64_t offsetValue = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(rep->TruncationCellPatch->NodesPerTruncationFace->CumulativeLength)->Offset[0]->Value;
-			const uint64_t faceCount = getTruncatedFaceCount();
-			for (uint64_t nodeCountPerFaceIndex = 1; nodeCountPerFaceIndex < faceCount; ++nodeCountPerFaceIndex) {
-				nodeCountPerFace[nodeCountPerFaceIndex] = nodeCountPerFace[nodeCountPerFaceIndex - 1] + offsetValue;
-			}
-		}
-		else if (rep->TruncationCellPatch->NodesPerTruncationFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray)
-		{
-			throw range_error("The *cumulative* length of nodes count per cells cannot be constant.");
-		}
+		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->NodesPerTruncationFace->CumulativeLength, nodeCountPerFace);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1947,12 +1795,10 @@ void AbstractGridRepresentation::getTruncatedCellIndices(uint64_t* cellIndices) 
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation const* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-		readArrayNdOfUInt64Values(rep->TruncationCells->ParentCellIndices, cellIndices);
+		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->ParentCellIndices, cellIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation const* rep = static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3);
-		readArrayNdOfUInt64Values(rep->TruncationCellPatch->ParentCellIndices, cellIndices);
+		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->ParentCellIndices, cellIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1966,24 +1812,10 @@ void AbstractGridRepresentation::getTruncatedFaceIndicesOfTruncatedCells(uint64_
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-
-		if (rep->TruncationCells->TruncationFacesPerCell->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->TruncationFacesPerCell->Elements)->Values;
-			getHdfProxyFromDataset(dataset)->readArrayNdOfUInt64Values(dataset->PathInHdfFile, faceIndices);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationFacesPerCell->Elements, faceIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto rep = static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3);
-
-		if (rep->TruncationCellPatch->TruncationFacesPerCell->Elements->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			auto const* daPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->TruncationCellPatch->TruncationFacesPerCell->Elements)->Values->ExternalDataArrayPart[0];
-			getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfUInt64Values(daPart->PathInExternalFile, faceIndices);
-		}
-		else
-			throw logic_error("Not implemented yet");
+		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationFacesPerCell->Elements, faceIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1992,53 +1824,15 @@ void AbstractGridRepresentation::getTruncatedFaceIndicesOfTruncatedCells(uint64_
 
 void AbstractGridRepresentation::getCumulativeTruncatedFaceCountPerTruncatedCell(uint64_t * cumulativeFaceCountPerCell) const
 {
-
 	if (!isTruncated()) {
 		throw invalid_argument("The grid is not truncated");
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-
-		if (rep->TruncationCells->TruncationFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->TruncationFacesPerCell->CumulativeLength)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, cumulativeFaceCountPerCell);
-		}
-		else if (rep->TruncationCells->TruncationFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray) {
-			cumulativeFaceCountPerCell[0] = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(rep->TruncationCells->TruncationFacesPerCell->CumulativeLength)->StartValue;
-			const int64_t offsetValue = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(rep->TruncationCells->TruncationFacesPerCell->CumulativeLength)->Offset[0]->Value;
-			const uint64_t cellCount = getTruncatedCellCount();
-			for (uint64_t cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex) {
-				cumulativeFaceCountPerCell[cumulativeFaceCountPerCellIndex] = cumulativeFaceCountPerCell[cumulativeFaceCountPerCellIndex - 1] + offsetValue;
-			}
-		}
-		else if (rep->TruncationCells->TruncationFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
-			if (getTruncatedCellCount() > 1)
-				throw range_error("The cumulative length of faces count per cells cannot be constant if there is more than one cell in the grid");
-			cumulativeFaceCountPerCell[0] = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(rep->TruncationCells->TruncationFacesPerCell->CumulativeLength)->Value;
-		}
+		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3);
-
-		if (rep->TruncationCellPatch->TruncationFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			auto const* daPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->TruncationCellPatch->TruncationFacesPerCell->CumulativeLength)->Values->ExternalDataArrayPart[0];
-			getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfUInt64Values(daPart->PathInExternalFile, cumulativeFaceCountPerCell);
-		}
-		else if (rep->TruncationCellPatch->TruncationFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray) {
-			cumulativeFaceCountPerCell[0] = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(rep->TruncationCellPatch->TruncationFacesPerCell->CumulativeLength)->StartValue;
-			const int64_t offsetValue = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(rep->TruncationCellPatch->TruncationFacesPerCell->CumulativeLength)->Offset[0]->Value;
-			const uint64_t cellCount = getTruncatedCellCount();
-			for (uint64_t cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex) {
-				cumulativeFaceCountPerCell[cumulativeFaceCountPerCellIndex] = cumulativeFaceCountPerCell[cumulativeFaceCountPerCellIndex - 1] + offsetValue;
-			}
-		}
-		else if (rep->TruncationCellPatch->TruncationFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
-			if (getTruncatedCellCount() > 1)
-				throw range_error("The cumulative length of faces count per cells cannot be constant if there is more than one cell in the grid");
-			cumulativeFaceCountPerCell[0] = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(rep->TruncationCellPatch->TruncationFacesPerCell->CumulativeLength)->Value;
-		}
+		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -2066,32 +1860,17 @@ void AbstractGridRepresentation::getNonTruncatedFaceIndicesOfTruncatedCells(uint
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-
-		if (rep->TruncationCells->LocalFacesPerCell->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->LocalFacesPerCell->Elements)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, faceIndices);
-		}
-		else
-			throw logic_error("Not yet implemented");
+		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->LocalFacesPerCell->Elements, faceIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3);
-
-		if (rep->TruncationCellPatch->LocalFacesPerCell->Elements->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			auto const* daPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->TruncationCellPatch->LocalFacesPerCell->Elements)->Values->ExternalDataArrayPart[0];
-			getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfUInt64Values(daPart->PathInExternalFile, faceIndices);
-		}
-		else
-			throw logic_error("Not yet implemented");
+		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->LocalFacesPerCell->Elements, faceIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
 }
 
-void AbstractGridRepresentation::getCumulativeNonTruncatedFaceCountPerTruncatedCell(uint64_t * cumulativeFaceCountPerCell) const
+void AbstractGridRepresentation::getCumulativeNonTruncatedFaceCountPerTruncatedCell(uint64_t* cumulativeFaceCountPerCell) const
 {
 
 	if (!isTruncated()) {
@@ -2099,47 +1878,10 @@ void AbstractGridRepresentation::getCumulativeNonTruncatedFaceCountPerTruncatedC
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-
-		if (rep->TruncationCells->LocalFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->LocalFacesPerCell->CumulativeLength)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUInt64Values(dataset->PathInHdfFile, cumulativeFaceCountPerCell);
-		}
-		else if (rep->TruncationCells->LocalFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray) {
-			cumulativeFaceCountPerCell[0] = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(rep->TruncationCells->LocalFacesPerCell->CumulativeLength)->StartValue;
-			const int64_t offsetValue = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(rep->TruncationCells->LocalFacesPerCell->CumulativeLength)->Offset[0]->Value;
-			const uint64_t cellCount = getTruncatedCellCount();
-			for (uint64_t cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex) {
-				cumulativeFaceCountPerCell[cumulativeFaceCountPerCellIndex] = cumulativeFaceCountPerCell[cumulativeFaceCountPerCellIndex - 1] + offsetValue;
-			}
-		}
-		else if (rep->TruncationCells->LocalFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
-			if (getTruncatedCellCount() > 1)
-				throw range_error("The cumulative length of faces count per cells cannot be constant if there is more than one cell in the grid");
-			cumulativeFaceCountPerCell[0] = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(rep->TruncationCells->LocalFacesPerCell->CumulativeLength)->Value;
-		}
+		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->LocalFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3);
-
-		if (rep->TruncationCellPatch->LocalFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
-			auto const* daPart = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(rep->TruncationCellPatch->LocalFacesPerCell->CumulativeLength)->Values->ExternalDataArrayPart[0];
-			getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfUInt64Values(daPart->PathInExternalFile, cumulativeFaceCountPerCell);
-		}
-		else if (rep->TruncationCellPatch->LocalFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray) {
-			cumulativeFaceCountPerCell[0] = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(rep->TruncationCellPatch->LocalFacesPerCell->CumulativeLength)->StartValue;
-			const int64_t offsetValue = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(rep->TruncationCellPatch->LocalFacesPerCell->CumulativeLength)->Offset[0]->Value;
-			const uint64_t cellCount = getTruncatedCellCount();
-			for (uint64_t cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex) {
-				cumulativeFaceCountPerCell[cumulativeFaceCountPerCellIndex] = cumulativeFaceCountPerCell[cumulativeFaceCountPerCellIndex - 1] + offsetValue;
-			}
-		}
-		else if (rep->TruncationCellPatch->LocalFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray) {
-			if (getTruncatedCellCount() > 1)
-				throw range_error("The cumulative length of faces count per cells cannot be constant if there is more than one cell in the grid");
-			cumulativeFaceCountPerCell[0] = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(rep->TruncationCellPatch->LocalFacesPerCell->CumulativeLength)->Value;
-		}
+		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->LocalFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -2166,35 +1908,10 @@ void AbstractGridRepresentation::getTruncatedFaceIsRightHanded(uint8_t* cellFace
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-
-		if (rep->TruncationCells->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
-			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__BooleanHdf5Array*>(rep->TruncationCells->TruncationCellFaceIsRightHanded)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUInt8Values(dataset->PathInHdfFile, cellFaceIsRightHanded);
-		}
-		else if (rep->TruncationCells->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
-			for (uint64_t i = 0; i < static_cast<gsoap_resqml2_0_1::resqml20__BooleanConstantArray*>(rep->TruncationCells->TruncationCellFaceIsRightHanded)->Count; ++i) {
-				cellFaceIsRightHanded[i] = static_cast<gsoap_resqml2_0_1::resqml20__BooleanConstantArray*>(rep->TruncationCells->TruncationCellFaceIsRightHanded)->Value;
-			}
-		}
-		else
-			throw logic_error("Not implemented yet.");
+		readArrayNdOfUInt8Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationCellFaceIsRightHanded, cellFaceIsRightHanded);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation* rep = static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3);
-
-		if (rep->TruncationCellPatch->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
-			auto const* daPart = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(rep->TruncationCellPatch->TruncationCellFaceIsRightHanded)->Values->ExternalDataArrayPart[0];
-			getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfUInt8Values(daPart->PathInExternalFile, cellFaceIsRightHanded);
-		}
-		else if (rep->TruncationCellPatch->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
-			for (int64_t i = 0; i < static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(rep->TruncationCellPatch->TruncationCellFaceIsRightHanded)->Count; ++i) {
-				cellFaceIsRightHanded[i] = static_cast<gsoap_eml2_3::eml23__BooleanConstantArray*>(rep->TruncationCellPatch->TruncationCellFaceIsRightHanded)->Value;
-			}
-		}
-		else
-			throw logic_error("Not implemented yet.");
+		readArrayNdOfUInt8Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationCellFaceIsRightHanded, cellFaceIsRightHanded);
 	}
 	else {
 		throw logic_error("Not implemented yet");

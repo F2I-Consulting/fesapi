@@ -225,23 +225,7 @@ resqml20__PointGeometry* PolylineSetRepresentation::getPointGeometry2_0_1(uint64
 
 uint64_t PolylineSetRepresentation::getPolylineCountOfPatch(uint64_t patchIndex) const
 {
-	if (patchIndex >= getPatchCount()) {
-		throw std::out_of_range("patchIndex id out of range.");
-	}
-
-	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
-	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray)
-	{
-		return static_cast<resqml20__BooleanConstantArray*>(patch->ClosedPolylines)->Count;
-	}
-	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array)
-	{
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		return hdfProxy->getElementCount(dataset->PathInHdfFile);
-	}
-
-	return 0;
+	return getCountOfArray(static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.at(patchIndex)->ClosedPolylines);
 }
 
 uint64_t PolylineSetRepresentation::getPolylineCountOfAllPatches() const

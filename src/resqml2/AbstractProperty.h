@@ -74,7 +74,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The element count per value.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getElementCountPerValue() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getElementCountPerValue() const;
 
 		/**
 		 * Gets the kind of elements on which the property values are attached to

@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = 'fesapi'
+version     = '${Fesapi_PYTHON_VERSION}'
+authors     = [
+    {name = "F2I-CONSULTING"},
+]
+maintainers = [
+    {name = "F2I-CONSULTING"},
+]
+description = "A library for using the Energistics data standards"
+readme      = "README.md"
+classifiers=[
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: Apache Software License',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: POSIX :: Linux',
+    'Operating System :: MacOS',
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Topic :: Software Development',
+    'Topic :: Software Development :: Libraries',
+    'Topic :: Software Development :: Libraries :: Application Frameworks ',
+    'Topic :: File Formats',
+]
+keywords = [
+    "energistics",
+    "resqml",
+    "eml",
+    "witsml",
+    "prodml",
+    "osdu",
+    "rddms",
+]
+requires-python = ">=3.8"
+
+[project.urls]
+source = "https://github.com/F2I-Consulting/fesapi/issues"
+releasenotes = "https://github.com/F2I-Consulting/fesapi/releases"
+documentation = "https://www.f2i-consulting.com/fesapi/doxygen/"
+issues = "https://github.com/F2I-Consulting/fesapi/issues"
+
+[tool.setuptools]
+packages=['fesapi']
+package-dir={"fesapi" = "fesapi"}
+ext-modules = [
+    {name='fesapi._fesapi', sources=['swigGeneratedPythonWrapper.cpp'], library-dirs=['${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}'], libraries=['${ASSEMBLY_NAME}',], ${EXTRA_COMPILE_ARGS}}
+]
+
+[tool.setuptools.package-data]
+fesapi = ["*.dll", "*.so", "*.so.*"]
