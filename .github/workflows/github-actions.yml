@@ -21,7 +21,7 @@ jobs:
           cmake --build . --config Release --target INSTALL
       - name: Boost install
         run: |
-          (New-Object System.Net.WebClient).DownloadFile("https://boostorg.jfrog.io/artifactory/main/release/1.86.0/binaries/boost_1_86_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
+          (New-Object System.Net.WebClient).DownloadFile("https://archives.boost.io/release/1.87.0/binaries/boost_1_87_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
           Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
       - name: CMake build and install
         run: |
@@ -80,7 +80,7 @@ jobs:
           cmake --build . --config Release --target INSTALL
       - name: Boost install
         run: |
-          (New-Object System.Net.WebClient).DownloadFile("https://boostorg.jfrog.io/artifactory/main/release/1.86.0/binaries/boost_1_86_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
+          (New-Object System.Net.WebClient).DownloadFile("https://archives.boost.io/release/1.87.0/binaries/boost_1_87_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
           Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
       - name: Swig install
         run: |
