@@ -30,7 +30,7 @@ configure_file(${CMAKE_SOURCE_DIR}/cmake/swigPythonInclude.i.in ${CMAKE_SOURCE_D
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	set (EXTRA_COMPILE_ARGS "extra-compile-args=['/DSWIG_TYPE_TABLE=FESTAPI']")
 else ()
-	set (EXTRA_COMPILE_ARGS "extra-compile-args=['-DSWIG_TYPE_TABLE=FESTAPI', '-std=c++11']")
+	set (EXTRA_COMPILE_ARGS "extra-compile-args=['-DSWIG_TYPE_TABLE=FESTAPI', '-std=c++17']")
 endif()
 configure_file(${CMAKE_SOURCE_DIR}/cmake/pyproject.toml.in ${CMAKE_SOURCE_DIR}/python/pyproject.toml) # Overwrite if different
 

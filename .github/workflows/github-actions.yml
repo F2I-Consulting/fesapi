@@ -180,7 +180,6 @@ jobs:
         env:
           CIBW_BUILD: cp38-win_amd64 cp39-win_amd64 cp310-win_amd64 cp311-win_amd64 cp312-win_amd64 cp313-win_amd64
           CIBW_ARCHS: auto64
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
           CIBW_BEFORE_ALL: >
             %VCPKG_INSTALLATION_ROOT%\vcpkg install boost-uuid minizip hdf5[zlib] &&
             cd ${{ runner.temp }} &&
