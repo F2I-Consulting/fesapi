@@ -649,7 +649,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(std::uni
 				}
 
 				(*same).swap(proxy);
-				rawProxyPtr = proxy.get();
 			}
 			else {
 				if (!(*same)->isPartial()) {

@@ -32,6 +32,15 @@ under the License.
 
 %include "../src/nsDefinitions.h"
 
+#if defined(SWIGJAVA) || defined(SWIGCSHARP)
+	%nspace COMMON_NS::AbstractObject;
+	%nspace COMMON_NS::DataObjectReference;
+	%nspace COMMON_NS::DataObjectRepository;
+	%nspace COMMON_NS::EnumStringMapper;
+	%nspace COMMON_NS::EpcDocument;
+	%nspace COMMON_NS::HdfProxyFactory;
+#endif
+
 //************************/
 // JAVA
 //************************/
@@ -78,6 +87,14 @@ under the License.
 	SWIG_CSBODY_PROXY(public, public, SWIGTYPE)
 	SWIG_CSBODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 	
+%typemap(cscode) COMMON_NS::DataObjectRepository %{
+  private HdfProxyFactory hdfProxyFactoryReference = null;
+%}
+
+%typemap(csin,
+         post="      hdfProxyFactoryReference = $csinput;"
+         ) COMMON_NS::HdfProxyFactory * factory "HdfProxyFactory.getCPtr($csinput)"
+	
 	%include "swigCsInclude.i"
 #endif
 
@@ -92,6 +109,22 @@ under the License.
 	%}
 	%include "swigPythonInclude.i"
 
+	/* Following extensions aims at preventing the Python garbage collector from
+	garbage collecting an HDF Proxy factory that may be still used by a repository. */
+	%fragment("hdf_proxy_factory_reference_init", "init") {
+		hdf_proxy_factory_reference();
+	}
+	%fragment("hdf_proxy_factory_reference_function", "header", fragment="hdf_proxy_factory_reference_init") {
+		static PyObject *hdf_proxy_factory_reference() {
+		  static PyObject *hdf_proxy_factory_reference_string = SWIG_Python_str_FromChar("__hdf_proxy_factory_reference");
+		  return hdf_proxy_factory_reference_string;
+		}
+	}
+	%extend COMMON_NS::DataObjectRepository {
+		%typemap(ret, fragment="hdf_proxy_factory_reference_function") void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory) %{
+		  PyObject_SetAttr($self, hdf_proxy_factory_reference(), args);
+		%}
+	}
 #endif
 
 
@@ -171,15 +204,6 @@ under the License.
 }
 
 typedef long long 				time_t;
-
-#if defined(SWIGJAVA) || defined(SWIGCSHARP)
-	%nspace COMMON_NS::AbstractObject;
-	%nspace COMMON_NS::DataObjectReference;
-	%nspace COMMON_NS::DataObjectRepository;
-	%nspace COMMON_NS::EnumStringMapper;
-	%nspace COMMON_NS::EpcDocument;
-	%nspace COMMON_NS::HdfProxyFactory;
-#endif
 
 namespace EML2_NS
 {
@@ -813,12 +837,18 @@ import com.f2i_consulting.fesapi.*;
 %}
 %typemap(javainterfaces) COMMON_NS::DataObjectRepository "AutoCloseable"
 %typemap(javacode) COMMON_NS::DataObjectRepository %{
+  private HdfProxyFactory hdfProxyFactoryReference;
+  
   @Override
   public void close() {
 	clear();
     delete();
   }
 %}
+%typemap(javain, 
+         post="      hdfProxyFactoryReference = $javainput;"
+         ) COMMON_NS::HdfProxyFactory * factory "HdfProxyFactory.getCPtr($javainput)"
+		 
 	/**
 	 * @brief	A DataObjectRepository stores in memory all dataObjects.
 	 *			This is the in-memory container which holds deserialized (EPC) files and fetched ETP dataobjects.
