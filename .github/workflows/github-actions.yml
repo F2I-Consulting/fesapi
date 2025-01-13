@@ -251,13 +251,15 @@ jobs:
           CIBW_BUILD: cp38-macosx_* cp39-macosx_* cp310-macosx_* cp311-macosx_* cp312-macosx_* cp313-macosx_*
           CIBW_ARCHS: auto64
           # See https://cibuildwheel.pypa.io/en/stable/cpp_standards/#macos-and-deployment-target-versions
-          MACOSX_DEPLOYMENT_TARGET: 10.14
+          MACOSX_DEPLOYMENT_TARGET: 11.0
+          # Dont use brew for dependencies https://github.com/pypa/cibuildwheel/issues/1251#issuecomment-1234553537
           CIBW_BEFORE_ALL: >
-            brew install boost swig &&
-            git clone https://github.com/F2I-Consulting/Minizip.git ${{ github.workspace }}/../minizip &&
             cd ${{ github.workspace }}/.. &&
-            mkdir minizip-build &&
-            cd minizip-build &&
+            wget https://archives.boost.io/release/1.87.0/source/boost_1_87_0.tar.gz &&
+            tar xf boost_1_87_0.tar.gz &&
+            git clone https://github.com/F2I-Consulting/Minizip.git ${{ github.workspace }}/../minizip &&
+            mkdir ${{ github.workspace }}/../minizip-build &&
+            cd ${{ github.workspace }}/../minizip-build &&
             cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/../minizip-install ${{ github.workspace }}/../minizip &&
             cmake --build . -j2 --config Release &&
             cmake --install . &&
@@ -266,12 +268,13 @@ jobs:
             tar xf hdf5-1.14.5.tar.gz &&
             mkdir hdf5-build &&
             cd hdf5-build &&
-            cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../hdf5-install ../hdf5-1.14.5 &&
+            cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../hdf5-install ${{ github.workspace }}/../hdf5-1.14.5 &&
             cmake --build . -j2 --config Release &&
             cmake --install . &&
+            brew install swig &&
             mkdir ${{ github.workspace }}/../build &&
             cd ${{ github.workspace }}/../build &&
-            cmake -DCMAKE_BUILD_TYPE=Release -DMINIZIP_ROOT=${{ github.workspace }}/../minizip-install -DHDF5_ROOT=${{ github.workspace }}/../hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../fesapi-install ${{ github.workspace }} &&
+            cmake -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=${{ github.workspace }}/../boost_1_87_0 -DMINIZIP_ROOT=${{ github.workspace }}/../minizip-install -DHDF5_ROOT=${{ github.workspace }}/../hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../fesapi-install ${{ github.workspace }} &&
             cmake --build . -j2 --config Release &&
             cmake --install .
           # See https://cibuildwheel.pypa.io/en/stable/faq/#macos-passing-dyld_library_path-to-delocate
