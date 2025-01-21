@@ -40,33 +40,54 @@ void FaultMultiPatchTriangulatedSetRepresentationTest::initRepo()
 	TriangulatedSetRepresentation* rep = repo->createTriangulatedSetRepresentation(interp, defaultUuid, defaultTitle);
 	REQUIRE( rep != nullptr );
 
-	// Patch 0
-	double explicitPointsFault1Patch0[18] = {150, 0, 200, 150, 100, 200, 150, 200, 200,
-		250, 0, 300, 250, 100, 300, 250, 200, 300};
-	unsigned int triangleNodeIndexFaultPatch0[12] = {0,4,3, 0,1,4, 1,2,4, 2,5,4};
 	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch0, 4, triangleNodeIndexFaultPatch0, repo->getHdfProxySet()[0]);
-	// Patch 1
-	double explicitPointsFault1Patch1[18] = {250, 0, 300, 250, 100, 300, 250, 200, 300,
-		300, 0, 350, 300, 100, 350, 300, 200, 350};
-	unsigned int triangleNodeIndexFaultPatch1[12] = {6,10,9, 6,7,10, 7,8,10, 8,11,10};
 	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch1, 4, triangleNodeIndexFaultPatch1, repo->getHdfProxySet()[0]);
-	// Patch 2
-	double explicitPointsFault1Patch2[18] = {300, 0, 350, 300, 100, 350, 300, 200, 350,
-		450, 0, 500, 450, 100, 500, 450, 200, 500};
-	unsigned int triangleNodeIndexFaultPatch2[12] = {12,16,15, 12,13,16, 13,14,16, 14,17,16};
 	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch2, 4, triangleNodeIndexFaultPatch2, repo->getHdfProxySet()[0]);
-	// Patch 3
-	double explicitPointsFault1Patch3[18] = {450, 0, 500, 450, 100, 500, 450, 200, 500,
-		500, 0, 550, 500, 100, 550 ,500, 200, 550};
-	unsigned int triangleNodeIndexFaultPatch3[12] = {18,22,21, 18,19,22, 19,20,22, 20,23,22};
 	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch3, 4, triangleNodeIndexFaultPatch3, repo->getHdfProxySet()[0]);
-	// Patch 4
-	double explicitPointsFault1Patch4[18] = {500, 0, 550, 500, 100, 550 ,500, 200, 550,
-		600, 0, 650, 600, 100, 650, 600, 200, 650};
-	unsigned int triangleNodeIndexFaultPatch4[12] = {24,28,27, 24,25,28, 25,26,28, 26,29,28};
 	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch4, 4, triangleNodeIndexFaultPatch4, repo->getHdfProxySet()[0]);
 }
 
 void FaultMultiPatchTriangulatedSetRepresentationTest::readRepo()
 {
+	RESQML2_NS::TriangulatedSetRepresentation* rep = repo->getDataObjectByUuid<RESQML2_NS::TriangulatedSetRepresentation>(defaultUuid);
+	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
+	REQUIRE(rep->getPatchCount() == 5);
+	REQUIRE(rep->getRepresentationSetRepresentationCount() == 0);
+	REQUIRE(rep->getPropertySet().empty());
+	REQUIRE(rep->getPointsPropertyCount() == 0);
+	REQUIRE(rep->getSubRepresentationCount() == 0);
+	REQUIRE(rep->getValuesPropertyCount() == 0);
+	REQUIRE(rep->getTimeSeries() == nullptr);
+	REQUIRE(rep->getTitle() == defaultTitle);
+	REQUIRE(rep->getUuid() == defaultUuid);
+	for (size_t patchIdx = 0; patchIdx < 5; ++patchIdx) {
+		REQUIRE(rep->getTriangleCountOfPatch(patchIdx) == 4);
+		REQUIRE(rep->getXyzPointCountOfPatch(0) == 6);
+	}
+	REQUIRE(rep->getTriangleCountOfAllPatches() == 20);
+	REQUIRE(rep->getXyzPointCountOfAllPatches() == 30);
+
+	uint32_t triangleNodeIndexFaultPatch[12];
+	rep->getTriangleNodeIndicesOfPatch(0, triangleNodeIndexFaultPatch);
+	REQUIRE(std::equal(begin(triangleNodeIndexFaultPatch0), end(triangleNodeIndexFaultPatch0), begin(triangleNodeIndexFaultPatch)));
+	rep->getTriangleNodeIndicesOfPatch(1, triangleNodeIndexFaultPatch);
+	REQUIRE(std::equal(begin(triangleNodeIndexFaultPatch1), end(triangleNodeIndexFaultPatch1), begin(triangleNodeIndexFaultPatch)));
+	rep->getTriangleNodeIndicesOfPatch(2, triangleNodeIndexFaultPatch);
+	REQUIRE(std::equal(begin(triangleNodeIndexFaultPatch2), end(triangleNodeIndexFaultPatch2), begin(triangleNodeIndexFaultPatch)));
+	rep->getTriangleNodeIndicesOfPatch(3, triangleNodeIndexFaultPatch);
+	REQUIRE(std::equal(begin(triangleNodeIndexFaultPatch3), end(triangleNodeIndexFaultPatch3), begin(triangleNodeIndexFaultPatch)));
+	rep->getTriangleNodeIndicesOfPatch(4, triangleNodeIndexFaultPatch);
+	REQUIRE(std::equal(begin(triangleNodeIndexFaultPatch4), end(triangleNodeIndexFaultPatch4), begin(triangleNodeIndexFaultPatch)));
+
+	double explicitPointsFault[18];
+	rep->getXyzPointsOfPatch(0, explicitPointsFault);
+	REQUIRE(std::equal(begin(explicitPointsFault1Patch0), end(explicitPointsFault1Patch0), begin(explicitPointsFault)));
+	rep->getXyzPointsOfPatch(1, explicitPointsFault);
+	REQUIRE(std::equal(begin(explicitPointsFault1Patch1), end(explicitPointsFault1Patch1), begin(explicitPointsFault)));
+	rep->getXyzPointsOfPatch(2, explicitPointsFault);
+	REQUIRE(std::equal(begin(explicitPointsFault1Patch2), end(explicitPointsFault1Patch2), begin(explicitPointsFault)));
+	rep->getXyzPointsOfPatch(3, explicitPointsFault);
+	REQUIRE(std::equal(begin(explicitPointsFault1Patch3), end(explicitPointsFault1Patch3), begin(explicitPointsFault)));
+	rep->getXyzPointsOfPatch(4, explicitPointsFault);
+	REQUIRE(std::equal(begin(explicitPointsFault1Patch4), end(explicitPointsFault1Patch4), begin(explicitPointsFault)));
 }
