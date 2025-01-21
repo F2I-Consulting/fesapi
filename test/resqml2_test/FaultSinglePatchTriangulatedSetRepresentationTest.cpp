@@ -35,7 +35,7 @@ FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedS
 
 void FaultSinglePatchTriangulatedSetRepresentationTest::initRepo()
 {
-	FaultInterpretation * interp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
+	FaultInterpretation* interp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	if (interp == nullptr) {
 		interp = repo->createPartial<RESQML2_0_1_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid, "");
 	}
@@ -43,33 +43,34 @@ void FaultSinglePatchTriangulatedSetRepresentationTest::initRepo()
 	TriangulatedSetRepresentation* rep = repo->createTriangulatedSetRepresentation(interp, defaultUuid, defaultTitle);
 	REQUIRE( rep != nullptr );
 
-	double nodesFaultSinglePatchTriangulatedSetRepresentation[] = {
-		150, 0, 200,
-		150, 100, 200,
-		150, 200, 200,
-		250, 0, 300,
-		250, 100, 300,
-		250, 200, 300,
-		300, 0, 350,
-		300, 100, 350,
-		300, 200, 350,
-		450, 0, 500,
-		450, 100, 500,
-		450, 200, 500,
-		500, 0, 550,
-		500, 100, 550,
-		500, 200, 550,
-		600, 0, 650,
-		600, 100, 650,
-		600, 200, 650 };
-	unsigned int triangleNodeIndexFault[60] = {0,4,3, 0,1,4, 1,2,4, 2,5,4,
-		3,7,6, 3,4,7, 4,5,7, 5,8,7,
-		6,10,9, 6,7,10, 7,8,10, 8,11,10,
-		9,13,12, 9,10,13, 10,11,13, 11,14,13,
-		12,16,15, 12,13,16, 13,14,16, 14,17,16 };
 	rep->pushBackTrianglePatch(18, nodesFaultSinglePatchTriangulatedSetRepresentation, 20, triangleNodeIndexFault, repo->getHdfProxySet()[0]);
 }
 
 void FaultSinglePatchTriangulatedSetRepresentationTest::readRepo()
 {
+	RESQML2_NS::TriangulatedSetRepresentation* rep = repo->getDataObjectByUuid<RESQML2_NS::TriangulatedSetRepresentation>(defaultUuid);
+	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
+	REQUIRE(rep->getPatchCount() == 1);
+	REQUIRE(rep->getRepresentationSetRepresentationCount() == 0);
+	REQUIRE(rep->getPropertySet().empty());
+	REQUIRE(rep->getPointsPropertyCount() == 0);
+	REQUIRE(rep->getSubRepresentationCount() == 0);
+	REQUIRE(rep->getValuesPropertyCount() == 0);
+	REQUIRE(rep->getTimeSeries() == nullptr);
+	REQUIRE(rep->getTitle() == defaultTitle);
+	REQUIRE(rep->getUuid() == defaultUuid);
+	REQUIRE(rep->getTriangleCountOfPatch(0) == 20);
+	REQUIRE_THROWS(rep->getTriangleCountOfPatch(1) == 20);
+	REQUIRE(rep->getTriangleCountOfAllPatches() == 20);
+	REQUIRE(rep->getXyzPointCountOfPatch(0) == 18);
+	REQUIRE_THROWS(rep->getXyzPointCountOfPatch(1) == 18);
+	REQUIRE(rep->getXyzPointCountOfAllPatches() == 18);
+
+	uint32_t triangleNodeIndexFault2[60];
+	rep->getTriangleNodeIndicesOfPatch(0, triangleNodeIndexFault2);
+	REQUIRE(std::equal(begin(triangleNodeIndexFault), end(triangleNodeIndexFault), begin(triangleNodeIndexFault2)));
+
+	double nodesFaultSinglePatchTriangulatedSetRepresentation2[54];
+	rep->getXyzPointsOfPatch(0, nodesFaultSinglePatchTriangulatedSetRepresentation2);
+	REQUIRE(std::equal(begin(nodesFaultSinglePatchTriangulatedSetRepresentation), end(nodesFaultSinglePatchTriangulatedSetRepresentation), begin(nodesFaultSinglePatchTriangulatedSetRepresentation2)));
 }
