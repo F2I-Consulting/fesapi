@@ -109,21 +109,20 @@ jobs:
       - name: Run C# example
         run: |
           ${{ github.workspace }}\cs\example\bin\x64\Release\example.exe
-  ubuntu-20-java11:
-    runs-on: ubuntu-20.04
+  ubuntu-22-java11:
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false  # 'false' means Don't stop matrix workflows even if some matrix failed.
       matrix:
         include: [
           { xcc_name: 'gcc 9',      xcc_pkg: gcc-9,       cc: gcc-9,      cxx: g++-9 },
           { xcc_name: 'gcc 10',     xcc_pkg: gcc-10,      cc: gcc-10,     cxx: g++-10 },
-          { xcc_name: 'clang 9',    xcc_pkg: clang-9,     cc: clang-9,    cxx: clang++-9 },
-          { xcc_name: 'clang 10',   xcc_pkg: clang-10,    cc: clang-10,   cxx: clang++-10 },
           { xcc_name: 'clang 11',   xcc_pkg: clang-11,    cc: clang-11,   cxx: clang++-11 },
-          # { xcc_name: 'clang 12',   xcc_pkg: clang-12,    cc: clang,   cxx: clang++ },
+          { xcc_name: 'clang 12',   xcc_pkg: clang-12,    cc: clang-12,   cxx: clang++-12 },
+          { xcc_name: 'clang 13',   xcc_pkg: clang-13,    cc: clang-13,   cxx: clang++-13 },
         ]
     env:
-      XCC: $${{ matrix.xcc_name }}
+      XCC: ${{ matrix.xcc_name }}
       CC: ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
     steps:
@@ -164,7 +163,7 @@ jobs:
           java -Djava.library.path=${{ runner.temp }}/fesapi-install/lib -cp `find ${{ runner.temp }}/fesapi-install -name fesapiJava*.jar`:. com.f2i_consulting.example.FesapiJavaExample
       - uses: actions/upload-artifact@v4
         with:
-          name: ubuntu-20.04-${{ matrix.cxx }}
+          name: ubuntu-22.04-${{ matrix.cxx }}
           path: ${{ runner.temp }}/fesapi-install
   build_wheels_windows:
     name: Build wheels on windows-latest
@@ -289,7 +288,7 @@ jobs:
           name: cibw-wheels-macosx_arm64
           path: ./wheelhouse/*.whl
   ubuntu-20-mpi:
-    runs-on: ubuntu-20.04    
+    runs-on: ubuntu-22.04    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -333,7 +332,7 @@ jobs:
           ${{ github.workspace }}/../build/test/unitTest
   webassembly:
     if: false
-    runs-on: ubuntu-20.04    
+    runs-on: ubuntu-22.04    
     steps:
       - uses: mymindstorm/setup-emsdk@v11
       - uses: actions/checkout@v4
