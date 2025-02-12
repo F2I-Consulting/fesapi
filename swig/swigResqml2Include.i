@@ -5901,6 +5901,13 @@ namespace RESQML2_NS
 		 * @returns	The data type of the values if successful, else @c UNKNOWN.
 		 */
 		COMMON_NS::AbstractObject::numericalDatatypeEnum getValuesHdfDatatype() const;
+		
+		/**
+		 * Get the number of values in each dimension into the underlying HDF5 dataset.
+		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
+		 * @param 	patchIndex	The index of the patch we want to count the values from.
+		 */
+		std::vector<uint32_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
@@ -5912,7 +5919,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values of the @p patchIndex patch.
 		 */
-		uint64_t getValuesCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getValuesCountOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
@@ -5926,7 +5933,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, unsigned int patchIndex) const;
+		uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -5937,7 +5944,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		uint64_t getDimensionsCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getDimensionsCountOfPatch(uint64_t patchIndex) const;
 		
 		std::string getPropertyKindDescription() const;
 		std::string getPropertyKindAsString() const;
@@ -8668,7 +8675,7 @@ namespace RESQML2_NS
 		 * 											then a default HDF proxy must be defined in the
 		 * 											repository.
 		 */
-		void pushBackArrayOfXyzPoints(double const * xyzPoints, uint64_t const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		void pushBackArrayOfXyzPoints(double const * xyzPoints, uint64_t const * pointCountByDimension, uint32_t numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF

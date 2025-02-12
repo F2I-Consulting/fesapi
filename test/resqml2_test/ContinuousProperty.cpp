@@ -114,6 +114,8 @@ void ContinuousProperty::readRepo() {
 	REQUIRE(noMinMaxFltProperty->getElementCountPerValue() == 1);
 	REQUIRE(noMinMaxFltProperty->getAttachmentKind() == gsoap_eml2_3::eml23__IndexableElement::cells);
 	REQUIRE(noMinMaxFltProperty->getUom() == gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa);
+	auto valuesCount = noMinMaxFltProperty->getValuesCountPerDimensionOfPatch(0);
+	REQUIRE(std::equal(std::begin(valuesCount), std::end(valuesCount), std::begin({ 4, 3, 2 })));
 	REQUIRE(noMinMaxFltProperty->getValuesCountOfPatch(0) == 24);
 	float fltValues[24];
 	noMinMaxFltProperty->getFloatValuesOfPatch(0, fltValues);
@@ -193,6 +195,8 @@ void ContinuousProperty::readRepo() {
 	REQUIRE(!forcingMinMaxDblProperty->hasConstantValues(0));
 
 	RESQML2_NS::ContinuousProperty* constantFloatingPointProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>("3ce662a6-c94b-4d19-b9df-b241693dba41");
+	valuesCount = constantFloatingPointProperty->getValuesCountPerDimensionOfPatch(0);
+	REQUIRE(std::equal(std::begin(valuesCount), std::end(valuesCount), std::begin({ 3 })));
 	REQUIRE(constantFloatingPointProperty->getValuesCountOfPatch(0) == 3);
 	double constantFloatingPointValues[3];
 	constantFloatingPointProperty->getDoubleValuesOfPatch(0, constantFloatingPointValues);
@@ -202,5 +206,4 @@ void ContinuousProperty::readRepo() {
 	REQUIRE(constantFloatingPointProperty->hasConstantValues(0));
 	REQUIRE_THROWS(constantFloatingPointProperty->getInt64ConstantValuesOfPatch(0));
 	REQUIRE(constantFloatingPointProperty->getDoubleConstantValuesOfPatch(0) == 3.33);
-
 }

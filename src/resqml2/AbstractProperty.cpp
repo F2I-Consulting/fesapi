@@ -525,14 +525,18 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind AbstractProperty::getEnergistics
 	throw invalid_argument("The property kind of this property is not an Energistics one.");
 }
 
-uint64_t AbstractProperty::getValuesCountOfPatch(unsigned int patchIndex) const
+uint64_t AbstractProperty::getValuesCountOfPatch(uint64_t patchIndex) const
 {
-	uint64_t result = 1;
+	auto valuescountPerDim = getValuesCountPerDimensionOfPatch(patchIndex);
+	return std::accumulate(std::begin(valuescountPerDim), std::end(valuescountPerDim), static_cast<uint64_t>(1), std::multiplies<uint64_t>());
+}
 
-	size_t dimCount = getDimensionsCountOfPatch(patchIndex);
-	for (size_t dimIndex = 0; dimIndex < dimCount; ++dimIndex) {
-		result *= getValuesCountOfDimensionOfPatch(dimIndex, patchIndex);
-	}
+uint64_t AbstractProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const
+{
+	return getValuesCountPerDimensionOfPatch(patchIndex).at(dimIndex);
+}
 
-	return result;
+uint64_t AbstractProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
+{
+	return getValuesCountPerDimensionOfPatch(patchIndex).size();
 }
