@@ -745,7 +745,7 @@ void WellboreCompletion::setConnectionHistoryEndDate(uint64_t historyIndex,
 		if (statusHistory->EndDate == nullptr) {
 			statusHistory->EndDate = soap_new_tm(gsoapProxy2_3->soap);
 		}
-		*statusHistory->StartDate = timeTools::to_calendar_time(timeTools::from_time_t(endDate));
+		*statusHistory->EndDate = timeTools::to_calendar_time(timeTools::from_time_t(endDate));
 	}
 }
 

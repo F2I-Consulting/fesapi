@@ -80,6 +80,7 @@ under the License.
 #include "witsml2_test/Trajectory.h"
 #include "witsml2_test/Perforation.h"
 #include "witsml2_test/WellboreGeometryTest.h"
+#include "witsml2_test/WellboreCompletion.h"
 #if WITH_RESQML2_2
 #include "eml2_3test/GraphicalInformationSetTest.h"
 #include "resqml2_2test/DiscreteColorMapTest.h"
@@ -273,6 +274,7 @@ FESAPI_TEST("Export and import a WITSML well", "[well]", WellTest)
 FESAPI_TEST("Export and import a WITSML trajectory", "[well]", Trajectory)
 FESAPI_TEST("Export and import a WITSML perforation", "[well]", Perforation)
 FESAPI_TEST("Export and import a WITSML Wellbore Geometry", "[well]", WellboreGeometryTest)
+FESAPI_TEST("Export and import a WITSML Wellbore Completion", "[well]", WellboreCompletion)
 
 // SEISMIC
 FESAPI_TEST("Export and import a seismic lattice feature", "[seismic]", SeismicLatticeRepresentationTest)
