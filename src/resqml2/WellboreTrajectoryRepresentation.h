@@ -274,6 +274,13 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const = 0;
 
 		/**
+		 * Gets the unit of measure of the MDs along this trajectory as a string.
+		 *
+		 * @returns	The unit of measure of the MDs along this trajectory as a string.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getMdUomAsString() const;
+
+		/**
 		 * Gets the MD double values associated to each trajectory station of this trajectory.
 		 *
 		 * @exception	std::invalid_argument	If this trajectory has no MD value.

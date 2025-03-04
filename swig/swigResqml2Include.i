@@ -9004,6 +9004,13 @@ namespace RESQML2_NS
 		 * @returns	The unit of measure of the MDs along this trajectory.
 		 */
 		gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
+
+		/**
+		 * Gets the unit of measure of the MDs along this trajectory as a string.
+		 *
+		 * @returns	The unit of measure of the MDs along this trajectory as a string.
+		 */
+		std::string getMdUomAsString() const;
 		
 		/**
 		 * Gets the MD double values associated to each trajectory station of this trajectory.
