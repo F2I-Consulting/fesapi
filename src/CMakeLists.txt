@@ -261,7 +261,7 @@ INSTALL (
 	EXPORT FESAPI_TARGETS
 	FILE FesapiCppTargets.cmake
 	DESTINATION
-		"${CMAKE_INSTALL_LIBDIR}/cmake/fesapi"
+		"${CMAKE_INSTALL_LIBDIR}/cmake/${CPP_LIBRARY_NAME}"
 )
 
 CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/FesapiCppConfig.cmake.in ${FESAPI_BINARY_DIR}/cmake/FesapiCppConfig.cmake @ONLY)
@@ -269,7 +269,7 @@ INSTALL(
   FILES
     "${FESAPI_BINARY_DIR}/cmake/FesapiCppConfig.cmake"
   DESTINATION
-    "${CMAKE_INSTALL_LIBDIR}/cmake/fesapi"
+    "${CMAKE_INSTALL_LIBDIR}/cmake/${CPP_LIBRARY_NAME}"
   )
 
 IF (WIN32)
