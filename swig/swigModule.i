@@ -3962,12 +3962,12 @@ import java.lang.AutoCloseable;
     delete();
   }
 %}
-	/** @brief	EPC is an implementation of the Open Packaging Conventions (OPC), a widely used container-file technology
+	/** @brief EPC is an implementation of the Open Packaging Conventions (OPC), a widely used container-file technology
 	 * that allows multiple types of files to be bundled together into a single package.
 	 * Built on the widely used ZIP file structure and originally created by Microsoft, OPC is now an open standard supported by these standards organizations:
 	 *  - Ecma International (http://www.ecma-international.org/publications/standards/Ecma-376.htm )
 	 *  - ISO/IEC 29500-2:2012, which has 4 parts, which are all freely available at this link (http://standards.iso.org/ittf/PubliclyAvailableStandards/index.html ).
-	 * An EPC file (or package) is a ZIP file, which may be “unzipped” to view its components.
+	 * An EPC file (or package) is a ZIP file, which may be "unzipped" to view its components.
 	 * When implemented as part of an Energistics standard, the zipping/unzipping is done using the OPC libraries (per the EPC Specification).
 	 */
 	class EpcDocument
