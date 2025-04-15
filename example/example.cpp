@@ -302,6 +302,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdf
 #if WITH_RESQML2_2
 	else {
 		unitNumberPropType = repo->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", gsoap_eml2_3::eml23__QuantityClassKind::not_x0020a_x0020measure);
+		static_cast<EML2_3_NS::PropertyKind*>(unitNumberPropType)->setDeprecationDate(unitNumberPropType->getCreation() + 3600);
 	}
 #endif
 

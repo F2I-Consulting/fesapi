@@ -2042,6 +2042,26 @@ namespace EML2_3_NS
 	class PropertyKind : public EML2_NS::PropertyKind
 	{
 	public:
+
+		/**
+		 * Gets the date and time at which this property dictionary entry must no longer be used.
+		 * Files generated before this date would have used this entry so it is left here for reference.
+		 *
+		 * @exception	std::invalid_argument	If this instance is actually a partial object.
+		 *
+		 * @returns 	deprecationDate	The deprecation date and time of this data object.
+		 */
+		time_t getDeprecationDate() const;
+
+		/**
+		 * Sets the date and time at which this property dictionary entry must no longer be used.
+		 * Files generated before this date would have used this entry so it is left here for reference.
+		 *
+		 * @exception	std::invalid_argument	If this instance is actually a partial object.
+		 *
+		 * @param 	deprecationDate	The deprecation date and time to set to this data object.
+		*/
+		void setDeprecationDate(time_t deprecationDate);
 	};
 
 #if defined(SWIGJAVA) || defined(SWIGPYTHON)

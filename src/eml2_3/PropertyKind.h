@@ -124,6 +124,44 @@ namespace EML2_3_NS
 		 */
 		COMMON_NS::DataObjectReference getParentPropertyKindDor() const final;
 
+		/**
+		 * Gets the date and time at which this property dictionary entry must no longer be used.
+		 * Files generated before this date would have used this entry so it is left here for reference.
+		 *
+		 * @exception	std::invalid_argument	If this instance is actually a partial object.
+		 *
+		 * @returns 	deprecationDate	The deprecation date and time of this data object.
+		 */
+		DLL_IMPORT_OR_EXPORT time_t getDeprecationDate() const;
+
+		/**
+		 * Same as {@link getDeprecationDate()}. Please use this method if you want to read some dates out of
+		 * the range of @c time_t
+		 *
+		 * @exception	std::invalid_argument	If this instance is actually a partial object.
+		 *
+		 * @returns	The deprecation date and time of the data object.
+		 */
+		DLL_IMPORT_OR_EXPORT tm getDeprecationDateAsTimeStructure() const;
+
+		/**
+		 * Sets the date and time at which this property dictionary entry must no longer be used.
+		 * Files generated before this date would have used this entry so it is left here for reference.
+		 *
+		 * @exception	std::invalid_argument	If this instance is actually a partial object.
+		 *
+		 * @param 	deprecationDate	The deprecation date and time to set to this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT void setDeprecationDate(time_t deprecationDate);
+
+		/**
+		 * Same as {@link setDeprecationDate()}. Please use this method if you want to read some dates out of
+		 * the range of @c time_t
+		 *
+		 * @param 	lastUpdate	The deprecation date and time to set to this data object.
+		 */
+		DLL_IMPORT_OR_EXPORT void setDeprecationDate(const tm& lastUpdate);
+
 		/** Loads target relationships */
 		void loadTargetRelationships() final;
 

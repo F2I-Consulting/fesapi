@@ -19,6 +19,7 @@ under the License.
 #include "PropertyKind.h"
 
 #include <stdexcept>
+#include "../tools/TimeTools.h"
 
 using namespace std;
 using namespace EML2_3_NS;
@@ -111,6 +112,63 @@ std::string PropertyKind::getParentAsString() const
 COMMON_NS::DataObjectReference PropertyKind::getParentPropertyKindDor() const
 {
 	return COMMON_NS::DataObjectReference(static_cast<gsoap_eml2_3::_eml23__PropertyKind*>(gsoapProxy2_3)->Parent);
+}
+
+time_t PropertyKind::getDeprecationDate() const
+{
+	tm result = getDeprecationDateAsTimeStructure();
+
+	if (result.tm_mday == 0) {
+		return -1;
+	}
+
+	return timeTools::timegm(result);
+}
+
+tm PropertyKind::getDeprecationDateAsTimeStructure() const
+{
+	cannotBePartial();
+
+	if (gsoapProxy2_3 != nullptr && static_cast<gsoap_eml2_3::_eml23__PropertyKind*>(gsoapProxy2_3)->DeprecationDate)
+		return *static_cast<gsoap_eml2_3::_eml23__PropertyKind*>(gsoapProxy2_3)->DeprecationDate;
+	else {
+		tm result;
+		result.tm_hour = 0;
+		result.tm_isdst = 0;
+		result.tm_mday = 0;
+		result.tm_min = 0;
+		result.tm_mon = 0;
+		result.tm_sec = 0;
+		result.tm_wday = 0;
+		result.tm_yday = 0;
+		result.tm_year = 0;
+		return result;
+	}
+}
+
+void PropertyKind::setDeprecationDate(time_t deprecationDate)
+{
+	cannotBePartial();
+
+	if (deprecationDate > 0) {
+
+		if (deprecationDate < getCreation()) {
+			throw invalid_argument("Deprecation Date cannot be inferior to creation date.");
+		}
+
+		std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(deprecationDate));
+		setDeprecationDate(tmConversion);
+	}
+}
+
+void PropertyKind::setDeprecationDate(const tm& deprecationDate)
+{
+	cannotBePartial();
+
+	if (static_cast<gsoap_eml2_3::_eml23__PropertyKind*>(gsoapProxy2_3)->DeprecationDate == nullptr) {
+		static_cast<gsoap_eml2_3::_eml23__PropertyKind*>(gsoapProxy2_3)->DeprecationDate = (tm*)soap_malloc(gsoapProxy2_3->soap, sizeof(tm));
+	}
+	*static_cast<gsoap_eml2_3::_eml23__PropertyKind*>(gsoapProxy2_3)->DeprecationDate = deprecationDate;
 }
 
 void PropertyKind::loadTargetRelationships()
