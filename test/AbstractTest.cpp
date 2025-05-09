@@ -45,7 +45,6 @@ void AbstractTest::serialize() {
 	initRepo();
 	
 	epcDocument.serializeFrom(*repo);
-	epcDocument.close();
 
 	delete repo;
 }
@@ -61,7 +60,6 @@ void AbstractTest::deserialize() {
 	}
 
 	readRepo();
-	epcDocument.close();
 
 	delete repo;
 }

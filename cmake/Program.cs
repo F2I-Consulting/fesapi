@@ -253,10 +253,6 @@ ${COMMENT_END}
                 dummyPoints.setitem(2, 3.0);
                 repo.createPointSetRepresentation("", "").pushBackXyzGeometryPatch(1, dummyPoints.cast());
                 dummyPoints.Dispose();
-                // **************************************
-                // **************************************
-
-                epc_file.close();
             }
         }
 

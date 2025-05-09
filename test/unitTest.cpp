@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------
+﻿/*-----------------------------------------------------------------------
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -23,6 +23,7 @@ under the License.
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 
 #include "catch.hpp"
+#include <filesystem>
 
 #include "common/DataObjectRepository.h"
 #include "eml2/AbstractHdfProxy.h"
@@ -98,7 +99,7 @@ using namespace witsml2_test;
 
 #define FESAPI_TEST2_2(name, tags, classTest)  TEST_CASE(#name " 2_2", tags)\
 {\
-	classTest test("../../" #classTest "2_2.epc");\
+	classTest test(u8"../../" #classTest "2_2.epc");\
 	test.defaultEmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3;\
 	test.defaultResqmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2;\
 	test.serialize();\
@@ -107,7 +108,7 @@ using namespace witsml2_test;
 
 #define FESAPI_TEST2_0(name, tags, classTest)  TEST_CASE(#name " 2_0", tags)\
 {\
-	classTest test("../../" #classTest "2_0.epc");\
+	classTest test(u8"../../" #classTest "2_0.epc");\
 	test.defaultEmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_0;\
 	test.defaultResqmlVersion = COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1;\
 	test.serialize();\
@@ -133,13 +134,24 @@ FESAPI_TEST2_2("Export and import regular seismic wellbore frame", "[well]", Sei
 #endif
 TEST_CASE("Export and import an empty EPC document", "[epc]")
 {
-	EpcDocumentTest testIn("../../EpcDocumentTest");
+	EpcDocumentTest testIn(u8"../../EpcDocumentTest");
 	testIn.serialize();
 
 	// Check that the epc file extension has properly been added at previous step.
 
-	EpcDocumentTest testOut("../../EpcDocumentTest.epc");
+	EpcDocumentTest testOut(u8"../../EpcDocumentTest.epc");
 	testOut.deserialize();	
+}
+
+TEST_CASE("Export and import an empty UTF8 EPC document", "[epc]")
+{
+	std::filesystem::create_directory(std::filesystem::u8path(u8"../../UTF8_Test_µŋß"));
+
+	EpcDocumentTest testIn(u8"../../UTF8_Test_µŋß/UTF8_Test_çéè.epc");
+	testIn.serialize();
+
+	EpcDocumentTest testOut(u8"../../UTF8_Test_µŋß/UTF8_Test_çéè.epc");
+	testOut.deserialize();
 }
 
 TEST_CASE("Set a wrong UUID", "[UUID]")
@@ -150,7 +162,7 @@ TEST_CASE("Set a wrong UUID", "[UUID]")
 
 TEST_CASE("Test hdf5 opening mode", "[hdf]")
 {
-	std::remove("../../testingFile.h5");
+	std::filesystem::remove("../../testingFile.h5");
 
 	COMMON_NS::DataObjectRepository repo;
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy Test", "../../", "testingFile.h5", COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);

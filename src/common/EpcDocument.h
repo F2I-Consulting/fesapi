@@ -42,48 +42,30 @@ namespace COMMON_NS
 		/**
 		 * Constructor
 		 *
-		 * @param 	fileName	Full pathname of the EPC document.
+		 * @param 	fileName	Full pathname of the EPC document in UTF-8 encoding.
 		 */
-		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName) { open(fileName); }
+		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string& fileName) { open(fileName); }
 
 		/** The destructor frees all allocated ressources. */
-		DLL_IMPORT_OR_EXPORT ~EpcDocument() { close(); }
+		DLL_IMPORT_OR_EXPORT ~EpcDocument() = default;
 
 		/**
-		 * Opens an EPC document. If one is already opened, it must be closed before to open a new one.
-		 * Don't forget to call {@link close()} before to destroy this object.
+		 * Opens an EPC document.
 		 *
-		 * @exception	std::invalid_argument	if the name of the EPC document is empty or if there is
-		 * 										already an opened EPC document.
-		 *
-		 * @param 	fileName	Full pathname of the EPC document.
+		 * @param 	fileName	Full pathname of the EPC document in UTF-8 encoding.
 		 */
-		DLL_IMPORT_OR_EXPORT void open(const std::string & fileName);
-	
-		/** Free all ressources contained in this package. */
-		DLL_IMPORT_OR_EXPORT void close() {
-			package.reset();
-			filePath = "";
+		DLL_IMPORT_OR_EXPORT void open(const std::string& fileName)
+		{
+			setFilePath(fileName);
+			package.reset(new epc::Package());
 		}
-
-		/**
-		 * Sets the EPC document file path which will be used for future serialization and
-		 * deserialization. This method will add the standard @c .epc extension if it is not already
-		 * present.
-		 *
-		 * @exception	std::invalid_argument	if the HDF5 file error handling cannot be disabled.
-		 *
-		 * @param 	fp	Full pathname of the EPC document.
-		 */
-		DLL_IMPORT_OR_EXPORT void setFilePath(const std::string & fp);
 
 		/**
 		 * Serializes the content of a data object repository into this EPC document.
 		 *
 		 * @param 	repo		A data object repository (not const because we may create a Fake Property for solivng a RESQML2.0.1 empty PropertySet issue)
-		 * @param 	useZip64	(Optional) True to zip the EPC document using Zip64 format, else (default) simply use Zip format.
 		 */
-		DLL_IMPORT_OR_EXPORT void serializeFrom(DataObjectRepository& repo, bool useZip64 = false);
+		DLL_IMPORT_OR_EXPORT void serializeFrom(DataObjectRepository& repo);
 
 		/**
 		 * Deserializes this package (data objects and relationships) into a data object repository
@@ -118,10 +100,11 @@ namespace COMMON_NS
 
 		/**
 		 * Gets the extended core properties of this package
+		 * The EpcDocument must have been deserialized at least once to get the extended core proeprties information.
 		 *
 		 * @returns	A map which associates keys and values of the extended core properties.
 		 */
-		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::string > & getExtendedCoreProperty();
+		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::string >& getExtendedCoreProperty();
 
 		/**
 		 * Sets or adds an extended core property
@@ -129,10 +112,11 @@ namespace COMMON_NS
 		 * @param 	key  	The key of the property.
 		 * @param 	value	The value of the property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setExtendedCoreProperty(const std::string & key, const std::string & value);
+		DLL_IMPORT_OR_EXPORT void setExtendedCoreProperty(const std::string& key, const std::string& value);
 
 		/**
 		 * Gets extended core property count.
+		 * The EpcDocument must have been deserialized at least once to get the extended core proeprties information.
 		 *
 		 * @returns	The count of extended core properties in this EPC document
 		 */
@@ -140,20 +124,32 @@ namespace COMMON_NS
 
 		/**
 		 * Gets an extended core property value according to its key.
+		 * The EpcDocument must have been deserialized at least once to get the extended core proeprties information.
 		 *
 		 * @param 	key	The key of the property.
 		 *
 		 * @returns	An empty string if the extended core property does not exist. Or the extended core
 		 * 			property value if it exists.
 		 */
-		DLL_IMPORT_OR_EXPORT std::string getExtendedCoreProperty(const std::string & key);
+		DLL_IMPORT_OR_EXPORT std::string getExtendedCoreProperty(const std::string& key) const;
 
-		DLL_IMPORT_OR_EXPORT std::string resolvePartial(AbstractObject const * partialObj) const;
+		DLL_IMPORT_OR_EXPORT std::string resolvePartial(AbstractObject const* partialObj) const;
 
 	private :
-		static constexpr char const* DOCUMENT_EXTENSION = ".epc";
+		/**
+		 * Sets the EPC document file path which will be used for future serialization and
+		 * deserialization. This method will add the standard @c .epc extension if it is not already
+		 * present.
+		 *
+		 * @exception	std::invalid_argument	if the HDF5 file error handling cannot be disabled.
+		 *
+		 * @param 	fp	Full pathname of the EPC document.
+		 */
+		void setFilePath(const std::string& fp);
 
-		void deserializeRelFiles(DataObjectRepository & repo);
+		void deserializeRelFiles(DataObjectRepository& repo);
+
+		static constexpr char const* DOCUMENT_EXTENSION = ".epc";
 
 		/** The package */
 		std::unique_ptr<epc::Package> package;

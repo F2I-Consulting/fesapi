@@ -3950,18 +3950,7 @@ import com.f2i_consulting.fesapi.*;
 		%template(createPartialChannelSet) createPartial<WITSML2_1_NS::ChannelSet>;
 		%template(createPartialChannel) createPartial<WITSML2_1_NS::Channel>;
 	};
-	
-%typemap(javaimports) COMMON_NS::EpcDocument %{
-import java.lang.AutoCloseable;
-%}
-%typemap(javainterfaces) COMMON_NS::EpcDocument "AutoCloseable"
-%typemap(javacode) COMMON_NS::EpcDocument %{
-  @Override
-  public void close() {
-	closeNativeResource();
-    delete();
-  }
-%}
+
 	/** @brief EPC is an implementation of the Open Packaging Conventions (OPC), a widely used container-file technology
 	 * that allows multiple types of files to be bundled together into a single package.
 	 * Built on the widely used ZIP file structure and originally created by Microsoft, OPC is now an open standard supported by these standards organizations:
@@ -3977,28 +3966,23 @@ import java.lang.AutoCloseable;
 		/**
 		 * Constructor
 		 *
-		 * @param 	fileName	Full pathname of the EPC document.
+		 * @param 	fileName	Full pathname of the EPC document in UTF-8 encoding.
 		 */
-		EpcDocument(const std::string & fileName);
+		EpcDocument(const std::string& fileName);
 
 		/**
-		 * Sets the EPC document file path which will be used for future serialization and
-		 * deserialization. This method will add the standard @c .epc extension if it is not already
-		 * present.
+		 * Opens an EPC document.
 		 *
-		 * @exception	std::invalid_argument	if the HDF5 file error handling cannot be disabled.
-		 *
-		 * @param 	fp	Full pathname of the EPC document.
+		 * @param 	fileName	Full pathname of the EPC document in UTF-8 encoding.
 		 */
-		void setFilePath(const std::string & fp);
+		void open(const std::string& fileName);
 
 		/**
 		 * Serializes the content of a data object repository into this EPC document.
 		 *
 		 * @param 	repo		A data object repository.
-		 * @param 	useZip64	(Optional) True to zip the EPC document using Zip64 format, else (default) simply use Zip format.
 		 */
-		void serializeFrom(DataObjectRepository& repo, bool useZip64 = false);
+		void serializeFrom(DataObjectRepository& repo);
 
 		/**
 		 * Deserializes this package (data objects and relationships) into a data object repository
@@ -4010,13 +3994,6 @@ import java.lang.AutoCloseable;
 		 * @returns	An empty string if success otherwise the warning string.
 		 */
 		virtual std::string deserializeInto(DataObjectRepository& repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
-
-// JAVA uses autocloseable and consequently cannot use a second "close" method
-#ifdef SWIGJAVA
-		%javamethodmodifiers close() "private";
-		%rename(closeNativeResource) close();
-#endif
-		void close();
 
 		/**
 		 * Gets the absolute path of the directory where the EPC document is stored.
@@ -4038,10 +4015,11 @@ import java.lang.AutoCloseable;
 		 * @param 	key  	The key of the property.
 		 * @param 	value	The value of the property.
 		 */
-		void setExtendedCoreProperty(const std::string & key, const std::string & value);
+		void setExtendedCoreProperty(const std::string& key, const std::string& value);
 		
 		/**
 		 * Gets extended core property count.
+		 * The EpcDocument must have been deserialized at least once to get the extended core proeprties information.
 		 *
 		 * @returns	The count of extended core properties in this EPC document
 		 */
@@ -4049,13 +4027,14 @@ import java.lang.AutoCloseable;
 		
 		/**
 		 * Gets an extended core property value according to its key.
+		 * The EpcDocument must have been deserialized at least once to get the extended core proeprties information.
 		 *
 		 * @param 	key	The key of the property.
 		 *
 		 * @returns	An empty string if the extended core property does not exist. Or the extended core
 		 * 			property value if it exists.
 		 */
-		std::string getExtendedCoreProperty(const std::string & key);
+		std::string getExtendedCoreProperty(const std::string& key) const;
 	};
 	
 	class EnumStringMapper

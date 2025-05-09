@@ -100,7 +100,7 @@ public class FesapiJavaExample {
 	 */
 	static {
 		try {
-			System.loadLibrary("${CPP_LIBRARY_NAME}-${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}");
+			System.loadLibrary("${ASSEMBLY_NAME}");
 		}
 		catch (UnsatisfiedLinkError e) {
 			System.out.println("UnsatisfiedLinkError : " + e.toString());
@@ -673,20 +673,18 @@ ${COMMENT_START}
 			serializeGraphicalInformationSet(repo, hdfProxy);
 ${COMMENT_END}
 
-			try (EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc")) {
-				pck.serializeFrom(repo);
-			}
+			EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc");
+			pck.serializeFrom(repo);
 		}
 	}
 
 	private static void deserialize()
 	{
 		try (DataObjectRepository repo = new DataObjectRepository()) {
-			try (EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc")) {
-				String status = pck.deserializeInto(repo);
-				if (!status.isEmpty()) {
-					System.out.println("Status : " + status);
-				}
+			EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc");
+			String status = pck.deserializeInto(repo);
+			if (!status.isEmpty()) {
+				System.out.println("Status : " + status);
 			}
 
 			LongStream.range(0, repo.getLocal3dCrsCount()).forEach(index -> System.out.println("CRS title is " + repo.getLocal3dCrs(index).getTitle()));

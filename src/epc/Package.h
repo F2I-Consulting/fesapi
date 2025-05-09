@@ -86,9 +86,8 @@ namespace epc
 		 * 						add files in existing zip (be sure you don't add file that doesn't
 		 * 						exist). Else an ovewrite or a creation of the file will be done. If the
 		 * 						zipfile cannot be opened, an invalid_argument exception is thrown.
-		 * @param 	useZip64   	(Optional) True to use zip 64.
 		 */
-		void openForWriting(const std::string & pkgPathName, int append, bool useZip64 = false);
+		void openForWriting(const std::string & pkgPathName, int append);
 
 		/**
 		* Check if the package is already opened for writing.
@@ -98,7 +97,7 @@ namespace epc
 		/**
 		 * Open the package for reading purpose
 		 *
-		 * @param 	pkgPathName	Full pathname of the package file.
+		 * @param 	pkgPathName	Full pathname of the package file in UTF-8 encoding.
 		 *
 		 * @returns	empty vector if nothing went wrong. Otherwise, return warnings.
 		 */

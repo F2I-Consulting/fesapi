@@ -36,6 +36,9 @@ under the License.
 
 #include <zip.h>
 #include <unzip.h>
+#ifdef _WIN32
+#include <iowin32.h>
+#endif
 
 #include "FilePart.h"
 
@@ -100,7 +103,7 @@ Package::~Package()
 	delete d_ptr;
 }
 
-void Package::openForWriting(const std::string & pkgPathName, int append, bool useZip64)
+void Package::openForWriting(const std::string & pkgPathName, int append)
 {
 	d_ptr->allFileParts.clear();
 	d_ptr->fileContentType.clear();
@@ -118,8 +121,21 @@ void Package::openForWriting(const std::string & pkgPathName, int append, bool u
 
 	addRelationship(Relationship("docProps/core.xml", CORE_PROP_REL_TYPE, "CoreProperties"));
 
-	d_ptr->isZip64 = useZip64;
-	d_ptr->zf = useZip64 ? zipOpen64(d_ptr->pathName.c_str(), append) : zipOpen(d_ptr->pathName.c_str(), append);
+	d_ptr->isZip64 = true;
+#ifdef WIN32
+		zlib_filefunc64_def ffunc;
+		fill_win32_filefunc64W(&ffunc);
+
+		// Convert path from UTF-8 to Unicode
+		const int count = MultiByteToWideChar(CP_UTF8, 0, d_ptr->pathName.c_str(), static_cast<int>(d_ptr->pathName.size()), NULL, 0);
+		std::wstring unicodePath(count, 0);
+		MultiByteToWideChar(CP_UTF8, 0, d_ptr->pathName.c_str(), static_cast<int>(d_ptr->pathName.size()), &unicodePath[0], count);
+
+		d_ptr->zf = zipOpen2_64(unicodePath.c_str(), append, NULL, &ffunc);
+#else
+		// Unix systems handles path in the UTF-8 by default
+		d_ptr->zf = zipOpen64(d_ptr->pathName.c_str(), append);
+#endif
 
 	if (d_ptr->zf == nullptr) {
 		throw invalid_argument("The file " + pkgPathName + " could not be opened");
@@ -136,7 +152,20 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	std::vector<std::string> result;
 	d_ptr->pathName.assign(pkgPathName);
 	
+#ifdef WIN32
+	zlib_filefunc64_def ffunc;
+	fill_win32_filefunc64W(&ffunc);
+
+	// Convert path from UTF-8 to Unicode
+	const int count = MultiByteToWideChar(CP_UTF8, 0, d_ptr->pathName.c_str(), static_cast<int>(d_ptr->pathName.size()), NULL, 0);
+	std::wstring unicodePath(count, 0);
+	MultiByteToWideChar(CP_UTF8, 0, d_ptr->pathName.c_str(), static_cast<int>(d_ptr->pathName.size()), &unicodePath[0], count);
+
+	d_ptr->unzipped = unzOpen2_64(unicodePath.c_str(), &ffunc);
+#else
+	// Unix systems handles path in the UTF-8 by default
 	d_ptr->unzipped = unzOpen64(d_ptr->pathName.c_str());
+#endif
 
 	if (d_ptr->unzipped == nullptr) {
 		throw invalid_argument("Cannot unzip " + pkgPathName + ". Please verify the path of the file and if you can open it with a third party archiver.");

@@ -97,7 +97,6 @@ void deserialize(const std::string filename) {
 			std::cerr << resqmlResult << std::endl;
 			repo.clearWarnings();
 		}
-		pck.close();
 
 		auto* unstructuredGrid_4cells = repo.getUnstructuredGridRepresentation(0);
 		RESQML2_NS::ContinuousProperty* prop = dynamic_cast<RESQML2_NS::ContinuousProperty*>(unstructuredGrid_4cells->getValuesProperty(0));

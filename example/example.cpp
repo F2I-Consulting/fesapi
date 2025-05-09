@@ -618,7 +618,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * repo, EML2_NS::Abstra
 	//**************
 	// Horizon Representations
 	//**************
-	RESQML2_NS::PolylineRepresentation* h1i1SinglePolylineRep = repo->createPolylineRepresentation(horizon1Interp1, "", "Horizon1 Interp1 SinglePolylineRep");
+	RESQML2_NS::PolylineRepresentation* h1i1SinglePolylineRep = repo->createPolylineRepresentation(horizon1Interp1, "47f86668-27c4-4b28-a19e-bd0355321ecc", "Horizon1 Interp1 SinglePolylineRep");
 	double h1i1SinglePolylineRepPoints[12] = { 0, 100, 300, 150, 110, 300, 450, 130, 350, 600, 140, 350 };
 	h1i1SinglePolylineRep->setGeometry(h1i1SinglePolylineRepPoints, 4, hdfProxy);
 	double seismicLineAbscissa[4] = { 0.0, 1.0, 3.0, 4.0 };
@@ -5108,7 +5108,6 @@ void deserialize(const string & inputFile)
 		cerr << resqmlResult << endl;
 		repo.clearWarnings();
 	}
-	epcDoc.close();
 
 	const unsigned int hdfProxyCount = repo.getHdfProxyCount();
 	cout << "There are " << hdfProxyCount << " hdf files associated to this epc document." << endl;
@@ -5679,20 +5678,20 @@ void appendAContinuousProp(const string& filePath)
 }
 
 // filepath is defined in a macro to better check memory leak
-#define filePath "../../testingPackageCpp.epc"
+#define filePath u8"../../testingPackageCpp.epc"
 int main()
 {
-	//try {
+	try {
 		if (serialize(filePath)) {
 			appendAContinuousProp(filePath);
 			deserialize(filePath);
 		}
-	/*}
+	}
 	catch (const std::invalid_argument & Exp)
 	{
 		std::cerr << "Error : " << Exp.what() << ".\n";
 		return 1;
-	}*/
+	}
 
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();
