@@ -102,6 +102,13 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::AbstractObject::numericalDatatypeEnum getValuesHdfDatatype() const = 0;
 
 		/**
+		 * Get the number of values in each dimension into the underlying HDF5 dataset.
+		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
+		 * @param 	patchIndex	The index of the patch we want to count the values from.
+		 */
+		DLL_IMPORT_OR_EXPORT virtual std::vector<uint32_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const = 0;
+
+		/**
 		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
 		 * this property.
 		 *
@@ -111,7 +118,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values of the @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfPatch(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
@@ -125,7 +132,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -136,7 +143,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getDimensionsCountOfPatch(uint64_t patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT uint64_t getDimensionsCountOfPatch(uint64_t patchIndex) const;
 
 		//*********************************************
 		//************* PROPERTY SET ******************

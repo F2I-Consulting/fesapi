@@ -21,33 +21,21 @@ under the License.
 #include "../AbstractTest.h"
 #include <string>
 
-namespace COMMON_NS {
-	class DataObjectRepository;
-}
-
 namespace witsml2_test {
-	class WellboreGeometryTest : public commontest::AbstractTest {
+	class WellboreCompletion : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
+		static constexpr char const* defaultUuid = "27ff6ec3-ad84-4ac2-baa1-1f050259404d";
+		static constexpr char const* defaultTitle = "testing wellbore completion";
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
-		* exising .epc file will be erased.
+		* existing .epc file will be erased.
 		* @param epcDocPath the path of the .epc file (including .epc extension)
 		*/
-		WellboreGeometryTest(const std::string & epcDocPath);
+		WellboreCompletion(const std::string& epcDocPath);
 
-		/**
-		* Creation of a testing object from an existing EPC document.
-		* @param repo an existing EPC document
-		* @param init true if this object is created for initialization purpose else false if it is
-		* created for reading purpose. According to init value a iniEpcDoc() or readRepo() is called.
-		*/
-		WellboreGeometryTest(COMMON_NS::DataObjectRepository* repo, bool init);
 	protected:
 		void initRepo();
 		void readRepo();
 	};
 }
-

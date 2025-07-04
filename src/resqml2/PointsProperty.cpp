@@ -28,9 +28,7 @@ const char* PointsProperty::XML_TAG = "PointsProperty";
 
 COMMON_NS::AbstractObject::numericalDatatypeEnum PointsProperty::getValuesHdfDatatype() const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot get values from a partial property.");
-	}
+	cannotBePartial();
 
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
@@ -39,36 +37,15 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum PointsProperty::getValuesHdfDat
 	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
-uint64_t PointsProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const
+std::vector<uint32_t> PointsProperty::getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const
 {
-	if (isPartial()) {
-		throw logic_error("You cannot get values from a partial property.");
-	}
+	cannotBePartial();
 
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	std::vector<uint32_t> dims = hdfProxy->getElementCountPerDimension(dsPath);
-
-	if (dimIndex < dims.size()) {
-		return dims[dimIndex];
-	}
-
-	throw out_of_range("The dim index to get the count is out of range.");
-}
-
-uint64_t PointsProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
-{
-	if (isPartial()) {
-		throw logic_error("You cannot get values from a partial property.");
-	}
-
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	return hdfProxy->getDimensionCount(dsPath);
+	return hdfProxy->getElementCountPerDimension(dsPath);
 }
 
 uint64_t PointsProperty::getXyzPointCountOfAllPatches() const
@@ -140,13 +117,13 @@ void PointsProperty::pushBackArray3dOfXyzPoints(const double * points, uint64_t 
 	pushBackArrayOfXyzPoints(points, pointCountPerDimension, 3, proxy);
 }
 
-void PointsProperty::pushBackArrayOfXyzPoints(double const * points, uint64_t const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
+void PointsProperty::pushBackArrayOfXyzPoints(double const * points, uint64_t const * pointCountByDimension, uint32_t numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
 {
 	const string datasetName = "points_patch" + std::to_string(getPatchCount());
 
 	// HDF
 	std::unique_ptr<uint64_t[]> coordinateCountByDimension(new uint64_t[numArrayDimensions + 1]);
-	for (unsigned int i = 0; i < numArrayDimensions; ++i) {
+	for (size_t i = 0; i < numArrayDimensions; ++i) {
 		coordinateCountByDimension[i] = pointCountByDimension[i];
 	}
 	coordinateCountByDimension[numArrayDimensions] = 3; // For the XYZ triplet

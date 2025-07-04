@@ -150,6 +150,11 @@ RESQML2_NS::MdDatum * WellboreTrajectoryRepresentation::getMdDatum() const
 	return getRepository()->getDataObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumDor().getUuid());
 }
 
+std::string WellboreTrajectoryRepresentation::getMdUomAsString() const
+{
+	return gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_0_1->soap, getMdUom());
+}
+
 void WellboreTrajectoryRepresentation::convertMdValuesToXyzValues(double* mdValues, uint64_t mdCount, double* xyzPoints) const
 {
 	auto const* mdDatum = getMdDatum();

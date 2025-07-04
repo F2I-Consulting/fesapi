@@ -8,8 +8,12 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>example</RootNamespace>
-    <AssemblyName>example</AssemblyName>
+<!-- Initial TargetFrameworkVersion
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+-->
+	<!-- TargetFrameworkVersion which is ok for a lot of softwares and for Github Runner image -->
+	<TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <AssemblyName>example</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <PublishUrl>publier\</PublishUrl>

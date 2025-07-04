@@ -48,20 +48,6 @@ using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 
-void  EpcDocument::open(const std::string & fileName)
-{
-	if (fileName.empty()) {
-		throw invalid_argument("The epc document name cannot be empty.");
-	}
-	if (package != nullptr) {
-		throw invalid_argument("The epc document must be closed before to be opened again.");
-	}
-
-	setFilePath(fileName);
-
-	package.reset(new epc::Package());
-}
-
 void EpcDocument::setFilePath(const std::string & fp)
 {
 	filePath = fp;
@@ -249,11 +235,11 @@ namespace {
 	}
 }
 
-void EpcDocument::serializeFrom(DataObjectRepository& repo, bool useZip64)
+void EpcDocument::serializeFrom(DataObjectRepository& repo)
 {
 	addFakePropertyToEmptyPropertySet(repo);
 
-	package->openForWriting(filePath, APPEND_STATUS_CREATE, useZip64);
+	package->openForWriting(filePath, APPEND_STATUS_CREATE);
 
 	for (auto const& uuidDataobjectPair : repo.getDataObjects()) {
 		for (auto const& dataobject : uuidDataobjectPair.second) {
@@ -359,6 +345,8 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 		hdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not an obj_EpcExternalPartReference
 	}
 
+	package->close();
+
 	return result;
 }
 
@@ -440,6 +428,8 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 		hdfProxy->setOpeningMode(hdfPermissionAccess); // Must repeat this setter in case of RESQML2.2 which is not an obj_EpcExternalPartReference
 	}
 
+	package->close();
+
 	return result;
 }
 
@@ -508,13 +498,12 @@ uint64_t EpcDocument::getExtendedCorePropertyCount() const
 	return package->getExtendedCoreProperty().size();
 }
 
-std::string EpcDocument::getExtendedCoreProperty(const std::string & key)
+std::string EpcDocument::getExtendedCoreProperty(const std::string & key) const
 {
-	if (package->getExtendedCoreProperty().find(key) != package->getExtendedCoreProperty().end()) {
-		return (package->getExtendedCoreProperty())[key];
-	}
-
-	return "";
+	auto entry = package->getExtendedCoreProperty().find(key);
+	return entry != package->getExtendedCoreProperty().end()
+		? entry->second
+		: "";
 }
 
 std::string EpcDocument::resolvePartial(AbstractObject const * partialObj) const
@@ -527,9 +516,12 @@ std::string EpcDocument::resolvePartial(AbstractObject const * partialObj) const
 	for (auto it : package->getFileContentType().getAllContentType()) {
 		if (it.first.find(partialObj->getUuid()) != std::string::npos)
 		{
-			return package->extractFile(it.second.getExtensionOrPartName().substr(1));
+			std::string result = package->extractFile(it.second.getExtensionOrPartName().substr(1));
+			package->close();
+			return result;
 		}
 	}
 
+	package->close();
 	return "";
 }

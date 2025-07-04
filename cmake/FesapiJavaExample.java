@@ -23,6 +23,7 @@ import java.util.UUID;
 import java.util.stream.LongStream;
 
 import com.f2i_consulting.fesapi.SWIGTYPE_p_double;
+import com.f2i_consulting.fesapi.SWIGTYPE_p_unsigned_char;
 import com.f2i_consulting.fesapi.SWIGTYPE_p_unsigned_int;
 import com.f2i_consulting.fesapi.SWIGTYPE_p_unsigned_short;
 import com.f2i_consulting.fesapi.StringVector;
@@ -537,27 +538,27 @@ ${COMMENT_START}
 
 		// associating a discrete color map to dicreteProp1
 		DiscreteColorMap discrColMap = repo.createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map");
-		SWIGTYPE_p_unsigned_int discrColMapRgbColors = fesapi.new_UInt32Array(18);
+		SWIGTYPE_p_unsigned_char discrColMapRgbColors = fesapi.new_UInt8Array(18);
 		SWIGTYPE_p_double discrColMapAlphas = fesapi.new_DoubleArray(6);
 		try {
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 0, 255);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 1, 0);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 2, 0);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 3, 0);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 4, 255);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 5, 0);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 6, 0);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 7, 0);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 8, 255);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 9, 169);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 10, 84);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 11, 27);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 12, 0);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 13, 0);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 14, 0);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 15, 255);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 16, 255);
-			fesapi.UInt32Array_setitem(discrColMapRgbColors, 17, 255);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 0L, (short) 255);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 1L, (short) 0);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 2L, (short) 0);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 3L, (short) 0);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 4L, (short) 255);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 5L, (short) 0);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 6L, (short) 0);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 7L, (short) 0);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 8L, (short) 255);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 9L, (short) 169);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 10L, (short) 84);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 11L, (short) 27);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 12L, (short) 0);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 13L, (short) 0);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 14L, (short) 0);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 15L, (short) 255);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 16L, (short) 255);
+			fesapi.UInt8Array_setitem(discrColMapRgbColors, 17L, (short) 255);
 
 			fesapi.DoubleArray_setitem(discrColMapAlphas, 0, 1.);
 			fesapi.DoubleArray_setitem(discrColMapAlphas, 1, 1.);
@@ -574,10 +575,10 @@ ${COMMENT_START}
 			discrColMapTitles.add("black");
 			discrColMapTitles.add("white");
 
-			discrColMap.setRgbColors(6, discrColMapRgbColors, discrColMapAlphas, discrColMapTitles);
+			discrColMap.setRgbColors(6, discrColMapRgbColors, discrColMapAlphas, null, discrColMapTitles);
 		}
 		finally {
-			fesapi.delete_UInt32Array(discrColMapRgbColors);
+			fesapi.delete_UInt8Array(discrColMapRgbColors);
 			fesapi.delete_DoubleArray(discrColMapAlphas);
 		}
 
@@ -627,15 +628,15 @@ ${COMMENT_START}
 		contColMapContProp.pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 		ContinuousColorMap contColMap = repo.createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", resqml22__InterpolationDomain.rgb, resqml22__InterpolationMethod.linear);
-		SWIGTYPE_p_unsigned_int contColMapRgbColors = fesapi.new_UInt32Array(6);
+		SWIGTYPE_p_unsigned_char contColMapRgbColors = fesapi.new_UInt8Array(6);
 		SWIGTYPE_p_double contColMapAlphas = fesapi.new_DoubleArray(2);
 		try {
-			fesapi.UInt32Array_setitem(contColMapRgbColors, 0, 0);
-			fesapi.UInt32Array_setitem(contColMapRgbColors, 1, 255);
-			fesapi.UInt32Array_setitem(contColMapRgbColors, 2, 0);
-			fesapi.UInt32Array_setitem(contColMapRgbColors, 3, 255);
-			fesapi.UInt32Array_setitem(contColMapRgbColors, 4, 0);
-			fesapi.UInt32Array_setitem(contColMapRgbColors, 5, 0);
+			fesapi.UInt8Array_setitem(contColMapRgbColors, 0L, (short) 0);
+			fesapi.UInt8Array_setitem(contColMapRgbColors, 1L, (short) 255);
+			fesapi.UInt8Array_setitem(contColMapRgbColors, 2L, (short) 0);
+			fesapi.UInt8Array_setitem(contColMapRgbColors, 3L, (short) 255);
+			fesapi.UInt8Array_setitem(contColMapRgbColors, 4L, (short) 0);
+			fesapi.UInt8Array_setitem(contColMapRgbColors, 5L, (short) 0);
 
 			fesapi.DoubleArray_setitem(contColMapAlphas, 0, 1.);
 			fesapi.DoubleArray_setitem(contColMapAlphas, 1, 1.);
@@ -644,10 +645,10 @@ ${COMMENT_START}
 			contColMapColTitles.add("green");
 			contColMapColTitles.add("red");
 
-			contColMap.setRgbColors(2, contColMapRgbColors, contColMapAlphas, contColMapColTitles);
+			contColMap.setRgbColors(2, contColMapRgbColors, contColMapAlphas, null, contColMapColTitles);
 		}
 		finally {
-			fesapi.delete_UInt32Array(contColMapRgbColors);
+			fesapi.delete_UInt8Array(contColMapRgbColors);
 			fesapi.delete_DoubleArray(contColMapAlphas);
 		}
 
@@ -672,20 +673,18 @@ ${COMMENT_START}
 			serializeGraphicalInformationSet(repo, hdfProxy);
 ${COMMENT_END}
 
-			try (EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc")) {
-				pck.serializeFrom(repo);
-			}
+			EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc");
+			pck.serializeFrom(repo);
 		}
 	}
 
 	private static void deserialize()
 	{
 		try (DataObjectRepository repo = new DataObjectRepository()) {
-			try (EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc")) {
-				String status = pck.deserializeInto(repo);
-				if (!status.isEmpty()) {
-					System.out.println("Status : " + status);
-				}
+			EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc");
+			String status = pck.deserializeInto(repo);
+			if (!status.isEmpty()) {
+				System.out.println("Status : " + status);
 			}
 
 			LongStream.range(0, repo.getLocal3dCrsCount()).forEach(index -> System.out.println("CRS title is " + repo.getLocal3dCrs(index).getTitle()));
@@ -769,12 +768,12 @@ ${COMMENT_START}
 				if (graphicalInformationSet.hasDiscreteColorMap(targetObject)) {
 					DiscreteColorMap discreteColorMap = graphicalInformationSet.getDiscreteColorMap(targetObject);
 					System.out.println("discrete color map title: " + discreteColorMap.getTitle());
-					SWIGTYPE_p_unsigned_int r = fesapi.new_UInt32Array(1);
-					SWIGTYPE_p_unsigned_int g = fesapi.new_UInt32Array(1);
-					SWIGTYPE_p_unsigned_int b = fesapi.new_UInt32Array(1);
+					SWIGTYPE_p_unsigned_char r = fesapi.new_UInt8Array(1);
+					SWIGTYPE_p_unsigned_char g = fesapi.new_UInt8Array(1);
+					SWIGTYPE_p_unsigned_char b = fesapi.new_UInt8Array(1);
 					for (int colorIndex = 0; colorIndex < discreteColorMap.getColorCount(); ++colorIndex) {
 						discreteColorMap.getRgbColor(colorIndex, r, g, b);
-						System.out.print(colorIndex  + ": (" + fesapi.UInt32Array_getitem(r, 0) + ", " + fesapi.UInt32Array_getitem(g, 0) + ", " + fesapi.UInt32Array_getitem(b, 0) + ", ");
+						System.out.print(colorIndex  + ": (" + fesapi.UInt8Array_getitem(r, 0) + ", " + fesapi.UInt8Array_getitem(g, 0) + ", " + fesapi.UInt8Array_getitem(b, 0) + ", ");
 						System.out.print(discreteColorMap.getAlpha(colorIndex));
 						if (discreteColorMap.hasColorTitle(colorIndex)) {
 							System.out.print(", " + discreteColorMap.getColorTitle(colorIndex));

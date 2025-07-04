@@ -40,29 +40,11 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::numericalDatatypeEnum getValuesHdfDatatype() const final;
 
 		/**
-		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
-		 * patch of this property.
-		 *
-		 * @exception	std::out_of_range	If @p dimIndex is strictly greater than dimension count.
-		 * @exception	std::range_error 	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	dimIndex  	The index of the dimension we want to count the values from.
+		 * Get the number of values in each dimension into the underlying HDF5 dataset.
+		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
 		 * @param 	patchIndex	The index of the patch we want to count the values from.
-		 *
-		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const final;
-
-		/**
-		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
-		 *
-		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	patchIndex	The index of the patch we want to count the dimensions from.
-		 *
-		 * @returns	The number of values, 0 otherwise.
-		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getDimensionsCountOfPatch(uint64_t patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT std::vector<uint32_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const final;
 		
 		/**
 		 * Get the xyz point count in a given patch of this property.
@@ -211,7 +193,7 @@ namespace RESQML2_NS
 		 * 											then a default HDF proxy must be defined in the
 		 * 											repository.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackArrayOfXyzPoints(double const * xyzPoints, uint64_t const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackArrayOfXyzPoints(double const * xyzPoints, uint64_t const * pointCountByDimension, uint32_t numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF

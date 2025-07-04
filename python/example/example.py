@@ -62,7 +62,6 @@ def serialize(file_name: str):
     serialize_grid(repo)
 
     epc_file.serializeFrom(repo)
-    epc_file.close()
 
 def show_all_metadata(data_object: fesapi.AbstractObject):
     """
@@ -151,7 +150,6 @@ def deserialize(file_name: str):
     if not warnings:
         print(warnings)
         repo.clearWarnings()
-    epc_file.close()
 
     hdf_proxy_count = repo.getHdfProxyCount()
     print("There is/are " + str(hdf_proxy_count) + " hdf file(s) associated to this epc document.")

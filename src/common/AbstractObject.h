@@ -28,7 +28,9 @@ under the License.
 
 namespace COMMON_NS
 {
-	/** @brief	An abstract data object. */
+	/** @brief	An abstract data object is the super class of all FESAPI dataobjects which are contained in a DataObjectRepository.
+	* Its lifetime is controlled by a DataObjectRepository making it non copyable, non movable.
+	*/
 	class AbstractObject
 	{
 	public:
@@ -739,6 +741,10 @@ namespace COMMON_NS
 			gsoapProxy2_0_1(nullptr),
 			gsoapProxy2_3(proxy),
 			repository(nullptr) {}
+
+		//This class is non copyable (non movable) since it is designed to be owned by a DataObjectRepository
+		AbstractObject(const AbstractObject&) = delete;
+		AbstractObject& operator=(const AbstractObject&) = delete;
 
 		friend bool COMMON_NS::DataObjectRepository::addDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy);
 		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy, bool replaceOnlyContent);

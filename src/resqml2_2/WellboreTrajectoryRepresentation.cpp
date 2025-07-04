@@ -271,7 +271,7 @@ bool WellboreTrajectoryRepresentation::hasMdValues() const
 gsoap_resqml2_0_1::eml20__LengthUom WellboreTrajectoryRepresentation::getMdUom() const
 {
 	gsoap_resqml2_0_1::eml20__LengthUom result;
-	gsoap_resqml2_0_1::soap_s2eml20__LengthUom(gsoapProxy2_3->soap, getMdDatum()->getLocalCrs()->getVerticalCrsUnitAsString().c_str(), &result);
+	gsoap_resqml2_0_1::soap_s2eml20__LengthUom(gsoapProxy2_3->soap, static_cast<gsoap_eml2_3::resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->MdInterval->Uom.c_str(), &result);
 	return result;
 }
 

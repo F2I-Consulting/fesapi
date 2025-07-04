@@ -17,11 +17,13 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreGeometryTest.h"
+
+#include <stdexcept>
+
 #include "../catch.hpp"
-#include "witsml2_1/Well.h"
+
 #include "witsml2_1/Wellbore.h"
 #include "witsml2_1/WellboreGeometry.h"
-#include <stdexcept>
 
 using namespace std;
 using namespace witsml2_test;
@@ -35,7 +37,7 @@ WellboreGeometryTest::WellboreGeometryTest(const string & epcDocPath)
 }
 
 void WellboreGeometryTest::initRepo() {
-	WITSML2_1_NS::Wellbore* wellbore = repo->createPartial<WITSML2_1_NS::Wellbore>("", "");
+	WITSML2_NS::Wellbore* wellbore = repo->createPartial<WITSML2_1_NS::Wellbore>("", "");
 	WITSML2_1_NS::WellboreGeometry* witsmlWbGeom = repo->createWellboreGeometry(wellbore, defaultUuid, "WellboreGeometry TEST", false);
 
 	witsmlWbGeom->pushBackSection(0, 250, gsoap_eml2_3::eml23__LengthUom::m);

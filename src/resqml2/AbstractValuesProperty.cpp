@@ -84,50 +84,70 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractValuesProperty::getValu
 	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
-uint64_t AbstractValuesProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const
+std::vector<uint32_t> AbstractValuesProperty::getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const
 {
 	cannotBePartial();
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
 
 		switch (patch->Values->soap_type()) {
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray:
 		{
-			return static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray*>(patch->Values)->Count;
+			return std::vector<uint32_t>(1, static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray*>(patch->Values)->Count);
 		}
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray:
 		{
-			return static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray*>(patch->Values)->Offset[dimIndex]->Count + 1;
+			auto const* arrayDef = static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray*>(patch->Values);
+			std::vector<uint32_t> result;
+			for (auto offset : arrayDef->Offset) {
+				result.push_back(offset->Count + 1);
+			}
+			return result;
 		}
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
 		{
-			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(patch->Values)->Count;
+			return std::vector<uint32_t>(1, static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(patch->Values)->Count);
 		}
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
 		{
-			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(patch->Values)->Offset[dimIndex]->Count + 1;
+			auto const* arrayDef = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(patch->Values);
+			std::vector<uint32_t> result;
+			for (auto offset : arrayDef->Offset) {
+				result.push_back(offset->Count + 1);
+			}
+			return result;
 		}
 		}
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto const* patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
 		switch (patch->soap_type()) {
 		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray:
 		{
-			return static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray*>(patch)->Count;
+			return std::vector<uint32_t>(1, static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray const*>(patch)->Count);
 		}
 		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray:
 		{
-			return static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray*>(patch)->Offset[dimIndex]->Count + 1;
+			auto const* arrayDef = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray const*>(patch);
+			std::vector<uint32_t> result;
+			for (auto offset : arrayDef->Offset) {
+				result.push_back(offset->Count + 1);
+			}
+			return result;
 		}
 		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
 		{
-			return static_cast<gsoap_eml2_3::eml23__IntegerConstantArray*>(patch)->Count;
+			return std::vector<uint32_t>(1, static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(patch)->Count);
 		}
 		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
 		{
-			return static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(patch)->Offset[dimIndex]->Count + 1;
+			auto const* arrayDef = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray const*>(patch);
+			std::vector<uint32_t> result;
+			for (auto offset : arrayDef->Offset) {
+				result.push_back(offset->Count + 1);
+			}
+			return result;
 		}
 		}
 	}
@@ -137,77 +157,15 @@ uint64_t AbstractValuesProperty::getValuesCountOfDimensionOfPatch(uint64_t dimIn
 
 	int64_t nullValue = (numeric_limits<int64_t>::min)();
 	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
+	EML2_NS::AbstractHdfProxy* hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	std::vector<uint32_t> dims = hdfProxy->getElementCountPerDimension(dsPath);
-
-	if (dimIndex < dims.size()) {
-		return dims[dimIndex];
-	}
-
-	throw out_of_range("The dim index to get the count is out of range.");
+	return hdfProxy->getElementCountPerDimension(dsPath);
 }
 
-uint64_t AbstractValuesProperty::getDimensionsCountOfPatch(uint64_t patchIndex) const
+EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t patchIndex, int64_t& nullValue, std::string& dsPath) const
 {
-	cannotBePartial();
-
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
-
-		switch (patch->Values->soap_type()) {
-		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray:
-		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
-		{
-			return 1;
-		}
-		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray:
-		{
-			return static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray*>(patch->Values)->Offset.size();
-		}
-		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
-		{
-			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(patch->Values)->Offset.size();
-		}
-		}
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		switch (patch->soap_type()) {
-		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray:
-		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
-		{
-			return 1;
-		}
-		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray:
-		{
-			return static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray*>(patch)->Offset.size();
-		}
-		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
-		{
-			return static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray*>(patch)->Offset.size();
-		}
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-
-	int64_t nullValue = (numeric_limits<int64_t>::min)();
-	std::string dsPath;
-	EML2_NS::AbstractHdfProxy * hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
-
-	return hdfProxy->getDimensionCount(dsPath);
-}
-
-EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t patchIndex, int64_t & nullValue, std::string & dsPath) const
-{
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
+		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues.at(patchIndex);
 
 		nullValue = (numeric_limits<int64_t>::min)();
 		int valuesType = patch->Values->soap_type();
@@ -234,7 +192,7 @@ EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t p
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		nullValue = (numeric_limits<int64_t>::min)();
-		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
+		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch.at(patchIndex);
 		if (dynamic_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch) != nullptr) {
 			dsPath = static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalDataArrayPart[0]->PathInExternalFile;
 			return getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalDataArrayPart[0]);

@@ -2058,7 +2058,7 @@ namespace RESQML2_NS
 		* @param colorCount		the size (number of colors) of the color map
 		* @param rgbColors		array (of size colorCount * 3) of RGB colors with hsvColors[3*i] is red componant, hsvColors[3*i + 1] is green component and hsvColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 255])
 		* @param alphas			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
+		* @param indices		array (of size colorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
 		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles is empty (default value)
 		*/
 		void setRgbColors(uint64_t colorCount,
@@ -5901,6 +5901,13 @@ namespace RESQML2_NS
 		 * @returns	The data type of the values if successful, else @c UNKNOWN.
 		 */
 		COMMON_NS::AbstractObject::numericalDatatypeEnum getValuesHdfDatatype() const;
+		
+		/**
+		 * Get the number of values in each dimension into the underlying HDF5 dataset.
+		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
+		 * @param 	patchIndex	The index of the patch we want to count the values from.
+		 */
+		std::vector<uint32_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
@@ -5912,7 +5919,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values of the @p patchIndex patch.
 		 */
-		uint64_t getValuesCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getValuesCountOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
@@ -5926,7 +5933,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
-		uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, unsigned int patchIndex) const;
+		uint64_t getValuesCountOfDimensionOfPatch(uint64_t dimIndex, uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
@@ -5937,7 +5944,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
-		uint64_t getDimensionsCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getDimensionsCountOfPatch(uint64_t patchIndex) const;
 		
 		std::string getPropertyKindDescription() const;
 		std::string getPropertyKindAsString() const;
@@ -8668,7 +8675,7 @@ namespace RESQML2_NS
 		 * 											then a default HDF proxy must be defined in the
 		 * 											repository.
 		 */
-		void pushBackArrayOfXyzPoints(double const * xyzPoints, uint64_t const * pointCountByDimension, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		void pushBackArrayOfXyzPoints(double const * xyzPoints, uint64_t const * pointCountByDimension, uint32_t numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
@@ -8997,6 +9004,13 @@ namespace RESQML2_NS
 		 * @returns	The unit of measure of the MDs along this trajectory.
 		 */
 		gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
+
+		/**
+		 * Gets the unit of measure of the MDs along this trajectory as a string.
+		 *
+		 * @returns	The unit of measure of the MDs along this trajectory as a string.
+		 */
+		std::string getMdUomAsString() const;
 		
 		/**
 		 * Gets the MD double values associated to each trajectory station of this trajectory.
