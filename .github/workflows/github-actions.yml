@@ -1,52 +1,8 @@
 name: github-actions
 on: [push, pull_request]
 jobs:
-  windows-2019-dynamicLink:
-    runs-on: windows-2019
-    steps:
-      - uses: actions/checkout@v4
-      - name: HDF5 install
-        run: |
-          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/bin/hdf5-1.12.0-Std-win10_64-vs16.zip -OutFile ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16.zip
-          Expand-Archive ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16.zip -DestinationPath ${{ runner.temp }}
-          msiexec.exe /i "${{ runner.temp }}\hdf\HDF5-1.12.0-win64.msi" /qn INSTALL_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16
-      - name: Minizip DLL install
-        run: |
-          git clone https://github.com/F2I-Consulting/Minizip.git ${{ runner.temp }}/Minizip
-          cd ${{ runner.temp }}
-          mkdir minizip-build
-          cd minizip-build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DZLIB_ROOT=${{ runner.temp }}/hdf5-1.12.0-Std-win10_64-vs16 -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/minizip-install ${{ runner.temp }}/Minizip
-          cmake --build . --config Release -j2
-          cmake --build . --config Release --target INSTALL
-      - name: Boost install
-        run: |
-          (New-Object System.Net.WebClient).DownloadFile("https://archives.boost.io/release/1.87.0/binaries/boost_1_87_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
-          Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
-      - name: CMake build and install
-        run: |
-          cd ${{ github.workspace }}/..
-          mkdir build
-          cd build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16 -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16 -DSZIP_LIBRARY_RELEASE=${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16/lib/szip.lib -DBoost_INCLUDE_DIR=${{ runner.temp }}\boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_TEST=TRUE -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
-          cmake --build . --config Release -j2
-          cmake --build . --config Release --target INSTALL
-      - name: Copy hdf5 dll
-        run: |
-          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\hdf5.dll -Destination ${{ github.workspace }}\..\build\Release
-          Copy-Item ${{ runner.temp }}\hdf5-1.12.0-Std-win10_64-vs16\bin\zlib.dll -Destination ${{ github.workspace }}\..\build\Release
-      - name: Run Unit tests
-        run: |
-          ${{ github.workspace }}\..\build\Release\unitTest
-      - name: Run Cpp example
-        run: |
-          ${{ github.workspace }}\..\build\Release\example.exe
-      - uses: actions/upload-artifact@v4
-        with:
-          name: windows-2019
-          path: ${{ runner.temp }}/fesapi-install
-  windows-2019-staticLink-cs:
-    runs-on: windows-2019
+  windows-2022-staticLink-cs:
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
       - name: zlib install
@@ -56,7 +12,7 @@ jobs:
           tar -xzf ${{ runner.temp }}\zlib.tar.gz
           mkdir zlib-build
           cd zlib-build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/zlib-install ${{ runner.temp }}/zlib-1.3.1
+          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/zlib-install ${{ runner.temp }}/zlib-1.3.1
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Minizip static lib install
@@ -65,33 +21,33 @@ jobs:
           cd ${{ runner.temp }}
           mkdir minizip-build
           cd minizip-build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DBUILD_SHARED_LIBS=FALSE -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/minizip-install ${{ runner.temp }}/Minizip
+          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DBUILD_SHARED_LIBS=FALSE -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/minizip-install ${{ runner.temp }}/Minizip
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: HDF5 install
         run: |
-          Invoke-WebRequest https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/hdf5-1.14.5.zip -OutFile ${{ runner.temp }}\hdf5-1.14.5.zip
+          Invoke-WebRequest https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_6/downloads/hdf5-1.14.6.zip -OutFile ${{ runner.temp }}\hdf5-1.14.6.zip
           cd ${{ runner.temp }}
-          Expand-Archive ${{ runner.temp }}\hdf5-1.14.5.zip -DestinationPath ${{ runner.temp }}
+          Expand-Archive ${{ runner.temp }}\hdf5-1.14.6.zip -DestinationPath ${{ runner.temp }}
           mkdir hdf5-build
           cd hdf5-build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON -DZLIB_INCLUDE_DIR:PATH=${{ runner.temp }}/zlib-install/include -DZLIB_LIBRARY:PATH=${{ runner.temp }}/zlib-install/lib/zlibstatic.lib -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/hdf5-install ${{ runner.temp }}/hdf5-1.14.5
+          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON -DZLIB_INCLUDE_DIR:PATH=${{ runner.temp }}/zlib-install/include -DZLIB_LIBRARY:PATH=${{ runner.temp }}/zlib-install/lib/zlibstatic.lib -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/hdf5-install ${{ runner.temp }}/hdf5-1.14.6
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Boost install
         run: |
-          (New-Object System.Net.WebClient).DownloadFile("https://archives.boost.io/release/1.87.0/binaries/boost_1_87_0-msvc-14.2-64.exe", "${{ runner.temp }}\boost.exe")
+          (New-Object System.Net.WebClient).DownloadFile("https://archives.boost.io/release/1.88.0/binaries/boost_1_88_0-msvc-14.3-64.exe", "${{ runner.temp }}\boost.exe")
           Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
       - name: Swig install
         run: |
-          (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.3.0.zip", "${{ runner.temp }}\swigwin-4.3.0.zip")
-          7z x ${{ runner.temp }}\swigwin-4.3.0.zip -o${{ runner.temp }}
+          (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.3.1.zip", "${{ runner.temp }}\swigwin-4.3.1.zip")
+          7z x ${{ runner.temp }}\swigwin-4.3.1.zip -o${{ runner.temp }}
       - name: CMake build and install
         run: |
           cd ${{ github.workspace }}/..
           mkdir build
           cd build
-          cmake -G"Visual Studio 16 2019" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.3.0/swig.exe -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
+          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.3.1/swig.exe -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Add msbuild to PATH
