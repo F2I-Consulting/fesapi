@@ -10,7 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>f2i.energisticsStandardsApi</RootNamespace>
     <AssemblyName>${CS_LIBRARY_NAME}</AssemblyName>
+<!-- Minimal TargetFrameworkVersion according to SWIG
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+-->
+	<!-- TargetFrameworkVersion which is ok for a lot of softwares and for Github Runner image -->
+	<TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>

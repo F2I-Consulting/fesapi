@@ -65,3 +65,13 @@ endif ()
 #file(TO_NATIVE_PATH "${FESAPI_ROOT_DIR}/cs/src" DOS_STYLE_SOURCE_DIR)
 configure_file(${FESAPI_ROOT_DIR}/cmake/fesapiCs.csproj.template ${FESAPI_ROOT_DIR}/cs/fesapiCs.csproj) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/AssemblyInfo.cs ${FESAPI_ROOT_DIR}/cs/Properties/AssemblyInfo.cs) # Overwrite if different
+
+install (
+	DIRECTORY ${FESAPI_ROOT_DIR}/cs/
+	DESTINATION ./csProject
+	PATTERN "bin" EXCLUDE
+	PATTERN "example" EXCLUDE
+	PATTERN "obj" EXCLUDE
+	PATTERN ".gitignore" EXCLUDE
+	PATTERN "CMakeLists.txt" EXCLUDE
+)
