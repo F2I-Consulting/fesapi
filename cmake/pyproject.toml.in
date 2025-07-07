@@ -29,7 +29,7 @@ classifiers=[
     'Programming Language :: Python :: 3.12',
     'Topic :: Software Development',
     'Topic :: Software Development :: Libraries',
-    'Topic :: Software Development :: Libraries :: Application Frameworks ',
+    'Topic :: Software Development :: Libraries :: Application Frameworks',
     'Topic :: File Formats',
 ]
 keywords = [
