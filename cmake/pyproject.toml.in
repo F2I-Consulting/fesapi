@@ -16,7 +16,6 @@ readme      = "README.md"
 classifiers=[
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',
-    'License :: OSI Approved :: Apache Software License',
     'Operating System :: Microsoft :: Windows',
     'Operating System :: POSIX :: Linux',
     'Operating System :: MacOS',
@@ -32,6 +31,7 @@ classifiers=[
     'Topic :: Software Development :: Libraries :: Application Frameworks',
     'Topic :: File Formats',
 ]
+license = {text = "Apache-2.0"}
 keywords = [
     "energistics",
     "resqml",
