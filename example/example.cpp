@@ -309,7 +309,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdf
 	RESQML2_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::intervals, unitNumberPropType);
 	int8_t unitNumbers[5] = { 0, 1, 2, 3, 4 };
-	discreteProp->pushBackInt8Hdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
+	discreteProp->pushBackIntegerArray1dOfValues(unitNumbers, 5, hdfProxy, static_cast<std::int8_t>(-1));
 #if WITH_RESQML2_2
 	// SeismicWellboreFrameRepresentation
 	RESQML2_NS::SeismicWellboreFrameRepresentation* w1i1SeismicFrameRep = repo->createSeismicWellboreFrameRepresentation(
@@ -416,7 +416,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(twoCellsIjkGrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	uint16_t prop2Values[2] = { 0, 1 };
-	discreteProp2->pushBackUInt16Hdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
+	discreteProp2->pushBackIntegerArray3dOfValues(prop2Values, 2, 1, 1, hdfProxy, (std::numeric_limits<uint16_t>::max)());
 
 	// ********************
 	// Continuous color map
@@ -1021,12 +1021,12 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 #endif
 	discreteProp1 = repo->createDiscreteProperty(twoCellsIjkGrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
-	unsigned short prop1Values[2] = { 0, 1 };
-	discreteProp1->pushBackUInt16Hdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
+	uint16_t prop1Values[2] = { 0, 1 };
+	discreteProp1->pushBackIntegerArray3dOfValues(prop1Values, 2, 1, 1, hdfProxy, static_cast<uint16_t>(1111));
 	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(twoCellsIjkGrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	int64_t prop2Values[2] = { 10, 11 };
-	discreteProp2->pushBackInt64Hdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
+	discreteProp2->pushBackIntegerArray3dOfValues(prop2Values, 2, 1, 1, hdfProxy, static_cast<int64_t>(1111));
 
 	RESQML2_0_1_NS::PropertySet* parentPropSet = repo->createPropertySet("3135a6c1-1204-4c30-a0ec-c9357ec13510", "Testing parent property set", false, true, gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
 	RESQML2_0_1_NS::PropertySet* childPropSet = repo->createPropertySet("1d4b4342-288d-47c1-9572-9f330f8e632a", "Testing child property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
@@ -1046,7 +1046,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	int64_t discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 	//hdfProxy->setMaxChunkSize(192/2); // Create two chunks
-	discreteProp432->pushBackInt64Hdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
+	discreteProp432->pushBackIntegerArray3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, static_cast<std::int64_t>(1111));
 
 	/**************
 	 Continuous Properties

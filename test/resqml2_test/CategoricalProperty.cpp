@@ -66,7 +66,7 @@ void CategoricalProperty::initRepo() {
 		stringTableLookup,
 		propertyKind);
 	int8_t charValues[6] = { 0, 1, 2, 3, 4, 5 };
-	charCategoricalProperty->pushBackInt8Hdf5Array3dOfValues(charValues, 1, 2, 3, hdfProxy, -1);
+	charCategoricalProperty->pushBackIntegerArray3dOfValues(charValues, 1, 2, 3, hdfProxy, (std::numeric_limits<int8_t>::max)());
 
 	// creating the Double Table Lookup
 	RESQML2_NS::DoubleTableLookup* dblTableLookup = repo->createDoubleTableLookup("0df04180-8bb1-4ca2-90c2-c48bfd4b0958", "My Double Table Lookup");

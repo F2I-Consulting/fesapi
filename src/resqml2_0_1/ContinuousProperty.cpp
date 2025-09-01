@@ -109,8 +109,8 @@ std::string ContinuousProperty::getUomAsString() const
 	gsoap_resqml2_0_1::resqml20__ResqmlUom uom = getUom();
 
 	if (uom == gsoap_resqml2_0_1::resqml20__ResqmlUom::Euc) {
-		unsigned int emCount = getExtraMetadataCount();
-		for (unsigned int i = 0; i < emCount; ++i) {
+		const uint64_t emCount = getExtraMetadataCount();
+		for (uint64_t i = 0; i < emCount; ++i) {
 			if (getExtraMetadataKeyAtIndex(i) == "Uom") {
 				return getExtraMetadataStringValueAtIndex(i);
 			}

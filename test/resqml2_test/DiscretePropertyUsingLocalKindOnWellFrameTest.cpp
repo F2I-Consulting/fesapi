@@ -56,7 +56,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepo()
 		propertyKind);
 	REQUIRE(discreteProperty != nullptr);
 	int values[4] = { 0, 1, 2, 3 };
-	discreteProperty->pushBackInt32Hdf5Array1dOfValues(values, 4, hdfProxy, -1);
+	discreteProperty->pushBackIntegerArray1dOfValues(values, 4, hdfProxy, -1);
 }
 
 void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepo()

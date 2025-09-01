@@ -99,6 +99,81 @@ namespace RESQML2_NS
 		//****** INTEGER *************
 		//****************************
 
+		template<typename T> void pushBackIntegerArrayOfValues(const T* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, T nullValue);
+		
+		/**
+		 * @brief	Adds a 1d array of explicit integer values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values	  	All the property values to set ordered according to the topology
+		 * 								of the representation it is based on.
+		 * @param 		  	valueCount	The number of values to write.
+		 * @param [in,out]	proxy	  	The HDF proxy where to write the property values. It must be
+		 * 								already opened for writing and won't be closed in this method. If
+		 * 								@c nullptr, then a default HDF proxy must be defined in the
+		 * 								repository.
+		 * @param 		  	nullValue 	The null value.
+		 */
+		template<typename T>
+		void pushBackIntegerArray1dOfValues(const T* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
+			pushBackIntegerArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+		}
+
+		/**
+		 * @brief Adds a 2d array of explicit integer values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according to
+		 * 											the topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly J dimension).
+		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * 											must be already opened for writing and won't be
+		 * 											closed in this method. If @c nullptr, then a default
+		 * 											HDF proxy must be defined in the repository.
+		 * @param 		  	nullValue			  	The null value.
+		 */
+		template<typename T>
+		void pushBackIntegerArray2dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			pushBackIntegerArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+		}
+
+		/**
+		 * @brief Adds a 3d array of explicit integer values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according the
+		 * 											topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * 											must be already opened for writing and won't be
+		 * 											closed in this method. If @c nullptr, then a default
+		 * 											HDF proxy must be defined in the repository.
+		 * @param 		  	nullValue			  	The null value.
+		 */
+		template<typename T>
+		void pushBackIntegerArray3dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			pushBackIntegerArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+		}
+
 		/**
 		 * @brief	Adds an array constant integer values to the property values.
 		 *
@@ -125,29 +200,31 @@ namespace RESQML2_NS
 		 * 								repository.
 		 * @param 		  	nullValue 	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
-			pushBackInt64Hdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
-		}
+		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array1dOfValues(const int64_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds a 1d array of explicit integer values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt32Hdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackInt32Hdf5Array1dOfValues(const int* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 1d array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt16Hdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackInt16Hdf5Array1dOfValues(const short* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 1d array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
+		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array1dOfValues(const int8_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -169,38 +246,40 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
-			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-			pushBackInt64Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
-		}
+		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array2dOfValues(const int64_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds a 2d array of explicit integer values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt32Hdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackInt32Hdf5Array2dOfValues(const int* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 2d array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt16Hdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackInt16Hdf5Array2dOfValues(const short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 2d array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackUInt16Hdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackUInt16Hdf5Array2dOfValues(const unsigned short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds a 2d array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
+		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array2dOfValues(const int8_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * @brief Adds a 3d array of explicit int values to the property values.
@@ -223,38 +302,39 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
-			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-			pushBackInt64Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
-		}
+		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array3dOfValues(const int64_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds a 3d array of explicit integer values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt32Hdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackInt32Hdf5Array3dOfValues(const int* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds a 3d array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt16Hdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackInt16Hdf5Array3dOfValues(const short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds a 3d array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackUInt16Hdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackUInt16Hdf5Array3dOfValues(const unsigned short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds a 3d array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
+		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array3dOfValues(const int8_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * @brief	Adds an nd array of explicit int values to the property values.
@@ -274,35 +354,40 @@ namespace RESQML2_NS
 		 * 											be defined in the repository.
 		 * @param 		  	nullValue				The null value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT virtual void pushBackInt64Hdf5ArrayOfValues(const int64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds an nd array of explicit integer values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT virtual void pushBackInt32Hdf5ArrayOfValues(const int* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT virtual void pushBackInt16Hdf5ArrayOfValues(const short* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT virtual void pushBackUInt16Hdf5ArrayOfValues(const unsigned short* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds an nd array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
+		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		DLL_IMPORT_OR_EXPORT virtual void pushBackInt8Hdf5ArrayOfValues(const int8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written
@@ -1627,5 +1712,18 @@ namespace RESQML2_NS
 			unsigned int numArrayDimensions,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)());
+
+		// Need to dll export because it is called in a template implementation
+		DLL_IMPORT_OR_EXPORT void pushBackIntegerArrayOfValues(const void* values, COMMON_NS::AbstractObject::numericalDatatypeEnum numericalDatatype, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 	};
+
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<int8_t>(const int8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint8_t>(const uint8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint8_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<int16_t>(const int16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int16_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint16_t>(const uint16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint16_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<int32_t>(const int32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int32_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint32_t>(const uint32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint32_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<int64_t>(const int64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint64_t>(const uint64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint64_t nullValue);
+
 }

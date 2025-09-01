@@ -6052,6 +6052,55 @@ namespace RESQML2_NS
 		//****************************/
 		//****** INTEGER *************/
 		//****************************/
+		
+		template<typename T> void pushBackIntegerArrayOfValues(const T* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, T nullValue);
+		template<typename T> void pushBackIntegerArray1dOfValues(const T* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
+			pushBackIntegerArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+		}
+		template<typename T> void pushBackIntegerArray2dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
+			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
+			pushBackIntegerArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+		}
+		template<typename T> void pushBackIntegerArray3dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
+			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
+			pushBackIntegerArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+		}
+		
+		%template(pushBackInt8ArrayOfValues) pushBackIntegerArrayOfValues<int8_t>;
+		%template(pushBackUInt8ArrayOfValues) pushBackIntegerArrayOfValues<uint8_t>;
+		%template(pushBackInt16ArrayOfValues) pushBackIntegerArrayOfValues<int16_t>;
+		%template(pushBackUInt16ArrayOfValues) pushBackIntegerArrayOfValues<uint16_t>;
+		%template(pushBackInt32ArrayOfValues) pushBackIntegerArrayOfValues<int32_t>;
+		%template(pushBackUInt32ArrayOfValues) pushBackIntegerArrayOfValues<uint32_t>;
+		%template(pushBackInt64ArrayOfValues) pushBackIntegerArrayOfValues<int64_t>;
+		%template(pushBackUInt64ArrayOfValues) pushBackIntegerArrayOfValues<uint64_t>;
+		
+		%template(pushBackInt8Array1dOfValues) pushBackIntegerArray1dOfValues<int8_t>;
+		%template(pushBackUInt8Array1dOfValues) pushBackIntegerArray1dOfValues<uint8_t>;
+		%template(pushBackInt16Array1dOfValues) pushBackIntegerArray1dOfValues<int16_t>;
+		%template(pushBackUInt16Array1dOfValues) pushBackIntegerArray1dOfValues<uint16_t>;
+		%template(pushBackInt32Array1dOfValues) pushBackIntegerArray1dOfValues<int32_t>;
+		%template(pushBackUInt32Array1dOfValues) pushBackIntegerArray1dOfValues<uint32_t>;
+		%template(pushBackInt64Array1dOfValues) pushBackIntegerArray1dOfValues<int64_t>;
+		%template(pushBackUInt64Array1dOfValues) pushBackIntegerArray1dOfValues<uint64_t>;
+		
+		%template(pushBackInt8Array2dOfValues) pushBackIntegerArray2dOfValues<int8_t>;
+		%template(pushBackUInt8Array2dOfValues) pushBackIntegerArray2dOfValues<uint8_t>;
+		%template(pushBackInt16Array2dOfValues) pushBackIntegerArray2dOfValues<int16_t>;
+		%template(pushBackUInt16Array2dOfValues) pushBackIntegerArray2dOfValues<uint16_t>;
+		%template(pushBackInt32Array2dOfValues) pushBackIntegerArray2dOfValues<int32_t>;
+		%template(pushBackUInt32Array2dOfValues) pushBackIntegerArray2dOfValues<uint32_t>;
+		%template(pushBackInt64Array2dOfValues) pushBackIntegerArray2dOfValues<int64_t>;
+		%template(pushBackUInt64Array2dOfValues) pushBackIntegerArray2dOfValues<uint64_t>;
+		
+		%template(pushBackInt8Array3dOfValues) pushBackIntegerArray3dOfValues<int8_t>;
+		%template(pushBackUInt8Array3dOfValues) pushBackIntegerArray3dOfValues<uint8_t>;
+		%template(pushBackInt16Array3dOfValues) pushBackIntegerArray3dOfValues<int16_t>;
+		%template(pushBackUInt16Array3dOfValues) pushBackIntegerArray3dOfValues<uint16_t>;
+		%template(pushBackInt32Array3dOfValues) pushBackIntegerArray3dOfValues<int32_t>;
+		%template(pushBackUInt32Array3dOfValues) pushBackIntegerArray3dOfValues<uint32_t>;
+		%template(pushBackInt64Array3dOfValues) pushBackIntegerArray3dOfValues<int64_t>;
+		%template(pushBackUInt64Array3dOfValues) pushBackIntegerArray3dOfValues<uint64_t>;
 
 		/**
 		 * @brief	Adds a 1d array of explicit int 64 bits values to the property values.
@@ -6069,6 +6118,9 @@ namespace RESQML2_NS
 		 * 								repository.
 		 * @param 		  	nullValue 	The null value.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		#endif
 		void pushBackInt64Hdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
@@ -6076,6 +6128,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		#endif
 		void pushBackInt32Hdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
@@ -6083,6 +6138,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		#endif
 		void pushBackInt16Hdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
@@ -6090,6 +6148,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		#endif
 		void pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -6111,6 +6172,9 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		#endif
 		void pushBackInt64Hdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
@@ -6118,6 +6182,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		#endif
 		void pushBackInt32Hdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
@@ -6125,6 +6192,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		#endif
 		void pushBackInt16Hdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
@@ -6132,6 +6202,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		#endif
 		void pushBackUInt16Hdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
@@ -6139,6 +6212,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		#endif
 		void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -6162,6 +6238,9 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		#endif
 		void pushBackInt64Hdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
@@ -6169,6 +6248,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		#endif
 		void pushBackInt32Hdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
@@ -6176,6 +6258,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		#endif
 		void pushBackInt16Hdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
@@ -6183,6 +6268,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		#endif
 		void pushBackUInt16Hdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
@@ -6190,6 +6278,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		#endif
 		void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -6210,35 +6301,50 @@ namespace RESQML2_NS
 		 * 											be defined in the repository.
 		 * @param 		  	nullValue				The null value.
 		 */
-		virtual void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		#endif
+		void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds an nd array of explicit integer values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		#endif
+		void pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		#endif
+		void pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		#endif
+		void pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds an nd array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		#endif
+		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written

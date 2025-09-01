@@ -367,77 +367,110 @@ void AbstractValuesProperty::pushBackIntegerConstantArrayOfValues(int64_t value,
 	}
 }
 
-void AbstractValuesProperty::pushBackInt32Hdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
-	int nullValue)
-{
-	pushBackInt32Hdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<int8_t>(const int8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue) {
+	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8, numValues, numDimensionsInArray, proxy, nullValue);
+}
+template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint8_t>(const uint8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint8_t nullValue) {
+	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, numValues, numDimensionsInArray, proxy, nullValue);
+}
+template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<int16_t>(const int16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int16_t nullValue) {
+	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, numValues, numDimensionsInArray, proxy, nullValue);
+}
+template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint16_t>(const uint16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint16_t nullValue) {
+	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16, numValues, numDimensionsInArray, proxy, nullValue);
+}
+template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<int32_t>(const int32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int32_t nullValue) {
+	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32, numValues, numDimensionsInArray, proxy, nullValue);
+}
+template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint32_t>(const uint32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint32_t nullValue) {
+	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, numValues, numDimensionsInArray, proxy, nullValue);
+}
+template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<int64_t>(const int64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
+	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, numValues, numDimensionsInArray, proxy, nullValue);
+}
+template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint64_t>(const uint64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint64_t nullValue) {
+	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, numValues, numDimensionsInArray, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackInt16Hdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
-	short nullValue)
-{
-	pushBackInt16Hdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+void AbstractValuesProperty::pushBackInt64Hdf5Array1dOfValues(const int64_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
+	pushBackIntegerArray1dOfValues(values, valueCount, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy,
-	int8_t nullValue)
-{
-	pushBackInt8Hdf5ArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+void AbstractValuesProperty::pushBackInt32Hdf5Array1dOfValues(const int* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue) {
+	pushBackIntegerArray1dOfValues(values, valueCount, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackInt32Hdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
-	int nullValue)
-{
-	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	pushBackInt32Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+void AbstractValuesProperty::pushBackInt16Hdf5Array1dOfValues(const short* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue) {
+	pushBackIntegerArray1dOfValues(values, valueCount, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackInt16Hdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
-	short nullValue)
-{
-	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	pushBackInt16Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+void AbstractValuesProperty::pushBackInt8Hdf5Array1dOfValues(const int8_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue) {
+	pushBackIntegerArray1dOfValues(values, valueCount, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackUInt16Hdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
-{
-	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	pushBackUInt16Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+void AbstractValuesProperty::pushBackInt64Hdf5Array2dOfValues(const int64_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
+	pushBackIntegerArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
-	int8_t nullValue)
-{
-	uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	pushBackInt8Hdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+void AbstractValuesProperty::pushBackInt32Hdf5Array2dOfValues(const int* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue) {
+	pushBackIntegerArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackInt32Hdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
-	int nullValue)
-{
-	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	pushBackInt32Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+void AbstractValuesProperty::pushBackInt16Hdf5Array2dOfValues(const short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue) {
+	pushBackIntegerArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackInt16Hdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
-	short nullValue)
-{
-	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	pushBackInt16Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+void AbstractValuesProperty::pushBackUInt16Hdf5Array2dOfValues(const unsigned short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue) {
+	pushBackIntegerArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackUInt16Hdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
-	unsigned short nullValue)
-{
-	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	pushBackUInt16Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+void AbstractValuesProperty::pushBackInt8Hdf5Array2dOfValues(const int8_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue) {
+	pushBackIntegerArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
-void AbstractValuesProperty::pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy,
-	int8_t nullValue)
+void AbstractValuesProperty::pushBackInt64Hdf5Array3dOfValues(const int64_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
+	pushBackIntegerArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
+}
+
+void AbstractValuesProperty::pushBackInt32Hdf5Array3dOfValues(const int* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue) {
+	pushBackIntegerArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
+}
+
+void AbstractValuesProperty::pushBackInt16Hdf5Array3dOfValues(const short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue) {
+	pushBackIntegerArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
+}
+
+void AbstractValuesProperty::pushBackUInt16Hdf5Array3dOfValues(const unsigned short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue) {
+	pushBackIntegerArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
+}
+
+void AbstractValuesProperty::pushBackInt8Hdf5Array3dOfValues(const int8_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue) {
+	pushBackIntegerArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
+}
+
+void AbstractValuesProperty::pushBackInt64Hdf5ArrayOfValues(const int64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue)
 {
-	uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	pushBackInt8Hdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+	pushBackIntegerArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
+}
+
+void AbstractValuesProperty::pushBackInt32Hdf5ArrayOfValues(const int* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
+{
+	pushBackIntegerArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
+}
+
+void AbstractValuesProperty::pushBackInt16Hdf5ArrayOfValues(const short* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
+{
+	pushBackIntegerArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
+}
+
+void AbstractValuesProperty::pushBackUInt16Hdf5ArrayOfValues(const unsigned short* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
+{
+	pushBackIntegerArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
+}
+
+void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue)
+{
+	pushBackIntegerArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
 }
 
 std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, int64_t nullValue)
@@ -550,7 +583,8 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 	throw logic_error("Unrecognized RESQML version");
 }
 
-void AbstractValuesProperty::pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy * proxy, int64_t nullValue)
+void AbstractValuesProperty::pushBackIntegerArrayOfValues(const void* values, COMMON_NS::AbstractObject::numericalDatatypeEnum numericalDatatype, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -563,87 +597,7 @@ void AbstractValuesProperty::pushBackInt64Hdf5ArrayOfValues(const int64_t * valu
 
 	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
-		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64,
-		values,
-		numValues, numDimensionsInArray);
-
-	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
-}
-
-void AbstractValuesProperty::pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
-{
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-
-	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
-
-	proxy->writeArrayNd(getHdfGroup(),
-		datasetName,
-		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32,
-		values,
-		numValues, numDimensionsInArray);
-
-	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
-}
-
-void AbstractValuesProperty::pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
-{
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-
-	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
-
-	proxy->writeArrayNd(getHdfGroup(),
-		datasetName,
-		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16,
-		values,
-		numValues, numDimensionsInArray);
-
-	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
-}
-
-void AbstractValuesProperty::pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
-{
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-
-	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
-
-	proxy->writeArrayNd(getHdfGroup(),
-		datasetName,
-		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16,
-		values,
-		numValues, numDimensionsInArray);
-
-	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
-}
-
-void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue)
-{
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-
-	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
-
-	proxy->writeArrayNd(getHdfGroup(),
-		datasetName,
-		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,
+		numericalDatatype,
 		values,
 		numValues, numDimensionsInArray);
 

@@ -20,11 +20,14 @@ under the License.
 
 #include "catch.hpp"
 
-#include "resqml2_0_1/PropertyKind.h"
-#include "eml2_3/PropertyKind.h"
-#include "resqml2/DiscreteProperty.h"
-#include "resqml2/AbstractIjkGridRepresentation.h"
 #include "eml2/AbstractHdfProxy.h"
+
+#include "eml2_3/PropertyKind.h"
+
+#include "resqml2/AbstractIjkGridRepresentation.h"
+#include "resqml2/DiscreteProperty.h"
+
+#include "resqml2_0_1/PropertyKind.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -41,50 +44,77 @@ void DiscreteProperty::initRepo() {
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
-	// creating the char DiscreteProperty
-	RESQML2_NS::DiscreteProperty* charDiscreteProperty = repo->createDiscreteProperty(
-		ijkGrid, defaultCharPropUuid, "char prop",
+	// creating the int8_t DiscreteProperty
+	RESQML2_NS::DiscreteProperty* int8DiscreteProperty = repo->createDiscreteProperty(
+		ijkGrid, defaultInt8PropUuid, "int8_t prop",
 		1,
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
-	int8_t charValues[6] = { 0, 1, 2, 3, 4, 5 };
-	charDiscreteProperty->pushBackInt8Hdf5Array3dOfValues(charValues, 1, 2, 3, hdfProxy, -1);
+	int8_t int8Values[6] = { -2, -1, 0, 1, 2, 3 };
+	int8DiscreteProperty->pushBackIntegerArray3dOfValues(int8Values, 1, 2, 3, hdfProxy, static_cast<int8_t>(-1));
 
-	// creating the short DiscreteProperty
-	RESQML2_NS::DiscreteProperty* shortDiscreteProperty = repo->createDiscreteProperty(
-		ijkGrid, defaultShortPropUuid, "short prop",
+	// creating the uint8_t DiscreteProperty
+	RESQML2_NS::DiscreteProperty* uint8DiscreteProperty = repo->createDiscreteProperty(
+		ijkGrid, defaultUInt8PropUuid, "uint8_t prop",
 		1,
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
-	short shortValues[6] = { 0, 1, 2, 3, 4, 5 };
-	shortDiscreteProperty->pushBackInt16Hdf5Array3dOfValues(shortValues, 1, 2, 3, hdfProxy, -1);
+	uint8_t uint8Values[6] = { 0, 1, 2, 3, 4, 5 };
+	uint8DiscreteProperty->pushBackIntegerArray3dOfValues(uint8Values, 1, 2, 3, hdfProxy, (std::numeric_limits<uint8_t>::max)());
 
-	// creating the ushort DiscreteProperty
-	RESQML2_NS::DiscreteProperty* ushortDiscreteProperty = repo->createDiscreteProperty(
-		ijkGrid, defaultUShortPropUuid, "ushort prop",
+	// creating the int16_t DiscreteProperty
+	RESQML2_NS::DiscreteProperty* int16DiscreteProperty = repo->createDiscreteProperty(
+		ijkGrid, defaultInt16PropUuid, "int16_t prop",
 		1,
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
-	unsigned short ushortValues[6] = { 0, 1, 2, 3, 4, 5 };
-	ushortDiscreteProperty->pushBackUInt16Hdf5Array3dOfValues(ushortValues, 1, 2, 3, hdfProxy, -1);
+	int16_t int16Values[6] = { -2, -1, 0, 1, 2, 3 };
+	int16DiscreteProperty->pushBackIntegerArray3dOfValues(int16Values, 1, 2, 3, hdfProxy, static_cast<int16_t>(-1));
 
-	// creating the int DiscreteProperty
-	RESQML2_NS::DiscreteProperty* intDiscreteProperty = repo->createDiscreteProperty(
-		ijkGrid, defaultIntPropUuid, "int prop",
+	// creating the uint16_t DiscreteProperty
+	RESQML2_NS::DiscreteProperty* uint16DiscreteProperty = repo->createDiscreteProperty(
+		ijkGrid, defaultUInt16PropUuid, "uint16_t prop",
 		1,
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
-	int intValues[6] = { 0, 1, 2, 3, 4, 5 };
-	intDiscreteProperty->pushBackInt32Hdf5Array3dOfValues(intValues, 1, 2, 3, hdfProxy, -1);
+	uint16_t uint16Values[6] = { 0, 1, 2, 3, 4, 5 };
+	uint16DiscreteProperty->pushBackIntegerArray3dOfValues(uint16Values, 1, 2, 3, hdfProxy, (std::numeric_limits<uint16_t>::max)());
 
-	// creating the Int64 DiscreteProperty
+	// creating the int32_t DiscreteProperty
+	RESQML2_NS::DiscreteProperty* int32DiscreteProperty = repo->createDiscreteProperty(
+		ijkGrid, defaultInt32PropUuid, "int32_t prop",
+		1,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
+		propertyKind);
+	int32_t int32Values[6] = { -2, -1, 0, 1, 2, 3 };
+	int32DiscreteProperty->pushBackIntegerArray3dOfValues(int32Values, 1, 2, 3, hdfProxy, -1);
+
+	// creating the uint32_t DiscreteProperty
+	RESQML2_NS::DiscreteProperty* uint32DiscreteProperty = repo->createDiscreteProperty(
+		ijkGrid, defaultUInt32PropUuid, "uint32_t prop",
+		1,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
+		propertyKind);
+	uint32_t uint32Values[6] = { 0, 1, 2, 3, 4, 5 };
+	uint32DiscreteProperty->pushBackIntegerArray3dOfValues(uint32Values, 1, 2, 3, hdfProxy, (std::numeric_limits<uint32_t>::max)());
+
+	// creating the int64_t DiscreteProperty
 	RESQML2_NS::DiscreteProperty* int64DiscreteProperty = repo->createDiscreteProperty(
-		ijkGrid, defaultInt64PropUuid, "Int64 prop",
+		ijkGrid, defaultInt64PropUuid, "int64_t prop",
 		1,
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
-	int64_t int64Values[6] = { 0, 1, 2, 3, 4, 5 };
-	int64DiscreteProperty->pushBackInt64Hdf5Array3dOfValues(int64Values, 1, 2, 3, hdfProxy, -1);
+	int64_t int64Values[6] = { -2, -1, 0, 1, 2, 3 };
+	int64DiscreteProperty->pushBackIntegerArray3dOfValues(int64Values, 1, 2, 3, hdfProxy, static_cast<int64_t>(-1));
+
+	// creating the uint64_t DiscreteProperty
+	RESQML2_NS::DiscreteProperty* uint64DiscreteProperty = repo->createDiscreteProperty(
+		ijkGrid, defaultUInt64PropUuid, "uint64_t prop",
+		1,
+		gsoap_eml2_3::eml23__IndexableElement::cells,
+		propertyKind);
+	uint64_t uint64Values[6] = { 0, 1, 2, 3, 4, 5 };
+	uint64DiscreteProperty->pushBackIntegerArray3dOfValues(uint64Values, 1, 2, 3, hdfProxy, (std::numeric_limits<uint64_t>::max)());
 
 	// creating Constant Integer prop
 	RESQML2_NS::DiscreteProperty* constantIntegerProperty = repo->createDiscreteProperty(
@@ -95,18 +125,55 @@ void DiscreteProperty::initRepo() {
 	constantIntegerProperty->pushBackIntegerConstantArrayOfValues(10, 3);
 }
 
+namespace {
+	void checkSignedProperty(RESQML2_NS::DiscreteProperty* unsignedProp) {
+		int64_t values[6];
+		unsignedProp->getInt64ValuesOfPatch(0, values);
+		REQUIRE(values[0] == -2);
+		REQUIRE(values[1] == -1);
+		REQUIRE(values[2] == 0);
+		REQUIRE(values[3] == 1);
+		REQUIRE(values[4] == 2);
+		REQUIRE(values[5] == 3);
+	}
+	void checkUnsignedProperty(RESQML2_NS::DiscreteProperty * signedProp) {
+		uint64_t values[6];
+		signedProp->getUInt64ValuesOfPatch(0, values);
+		REQUIRE(values[0] == 0);
+		REQUIRE(values[1] == 1);
+		REQUIRE(values[2] == 2);
+		REQUIRE(values[3] == 3);
+		REQUIRE(values[4] == 4);
+		REQUIRE(values[5] == 5);
+	}
+}
+
 void DiscreteProperty::readRepo() {
 	// getting the DiscreteProperty
-	RESQML2_NS::DiscreteProperty* charDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultCharPropUuid);
-	REQUIRE(charDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8);
-	RESQML2_NS::DiscreteProperty* shortDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultShortPropUuid);
-	REQUIRE(shortDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16);
-	RESQML2_NS::DiscreteProperty* ushortDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultUShortPropUuid);
-	REQUIRE(ushortDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16);
-	RESQML2_NS::DiscreteProperty* intDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultIntPropUuid);
-	REQUIRE(intDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32);
+	RESQML2_NS::DiscreteProperty* int8DiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultInt8PropUuid);
+	REQUIRE(int8DiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8);
+	checkSignedProperty(int8DiscreteProperty);
+	RESQML2_NS::DiscreteProperty* uint8DiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultUInt8PropUuid);
+	REQUIRE(uint8DiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8);
+	checkUnsignedProperty(uint8DiscreteProperty);
+	RESQML2_NS::DiscreteProperty* int16DiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultInt16PropUuid);
+	REQUIRE(int16DiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16);
+	checkSignedProperty(int16DiscreteProperty);
+	RESQML2_NS::DiscreteProperty* uint16DiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultUInt16PropUuid);
+	REQUIRE(uint16DiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16);
+	checkUnsignedProperty(uint16DiscreteProperty);
+	RESQML2_NS::DiscreteProperty* int32DiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultInt32PropUuid);
+	REQUIRE(int32DiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32);
+	checkSignedProperty(int32DiscreteProperty);
+	RESQML2_NS::DiscreteProperty* uint32DiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultUInt32PropUuid);
+	REQUIRE(uint32DiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32);
+	checkUnsignedProperty(uint32DiscreteProperty);
 	RESQML2_NS::DiscreteProperty* int64DiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultInt64PropUuid);
 	REQUIRE(int64DiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
+	checkSignedProperty(int64DiscreteProperty);
+	RESQML2_NS::DiscreteProperty* uint64DiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>(defaultUInt64PropUuid);
+	REQUIRE(uint64DiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64);
+	checkUnsignedProperty(uint64DiscreteProperty);
 	REQUIRE(!int64DiscreteProperty->hasConstantValues(0));
 
 	RESQML2_NS::DiscreteProperty* constantDiscreteProperty = repo->getDataObjectByUuid<RESQML2_NS::DiscreteProperty>("d6896172-795c-46be-bdd1-f9f9ed42f1f0");
