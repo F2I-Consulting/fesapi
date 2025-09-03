@@ -107,7 +107,7 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 
 				gsoap_eml2_3::eml23__BooleanExternalArray* boolArray = gsoap_eml2_3::soap_new_eml23__BooleanExternalArray(getGsoapContext());
 				boolArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(getGsoapContext());
-				boolArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart("/" + getXmlNamespace() + "/" + guid + "/GapAfterLayer", getCellCount(), proxy));
+				boolArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart("/" + getXmlNamespace() + "/" + guid + "/GapAfterLayer", kGapCount, proxy));
 				xmlKGaps->GapAfterLayer = boolArray;
 
 				ijkGrid->KGaps = xmlKGaps;

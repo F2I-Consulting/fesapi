@@ -889,8 +889,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	ijkgrid432rh->setCellGeometryIsDefinedFlags(enabledCells32rh);
 
 	// 4*3*2 explicit grid with gap layer
-	bool kgap[1] = { true };
-	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432gap = repo->createIjkGridExplicitRepresentation("c14755a5-e3b3-4272-99e5-fc20993b79a0", "Four by Three by Two with gap layer", 4, 3, 2, kgap);
+	bool kgap = true;
+	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432gap = repo->createIjkGridExplicitRepresentation("c14755a5-e3b3-4272-99e5-fc20993b79a0", "Four by Three by Two with gap layer", 4, 3, 2, &kgap);
 	double nodes432gap[288] = {
 		0, 150, 300, 150, 150, 300, 375, 150, 300, 550, 150, 350, 700, 150, 350, //IJ0K0
 		0, 100, 300, 150, 100, 300, 375, 100, 300, 550, 100, 350, 700, 100, 350, //IJ1K0
@@ -904,11 +904,11 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 		0, 0, 360, 150, 0, 360, 375, 0, 360, 550, 0, 410, 700, 0, 410, //IJ3K1
 		375, 0, 410, 375, 50, 410, 375, 100, 410, 375, 150, 410, // SPLIT K1
 		// K Gap Layer
-		0, 150, 400, 150, 150, 400, 375, 150, 400, 550, 150, 450, 700, 150, 450, //IJ0K1
-		0, 100, 400, 150, 100, 400, 375, 100, 400, 550, 100, 450, 700, 100, 450, //IJ1K1
-		0, 50, 400, 150, 50, 400, 375, 50, 400, 550, 50, 450, 700, 50, 450, //IJ2K1
-		0, 0, 400, 150, 0, 400, 375, 0, 400, 550, 0, 450, 700, 0, 450, //IJ3K1
-		375, 0, 450, 375, 50, 450, 375, 100, 450, 375, 150, 450, // SPLIT K1
+		0, 150, 400, 150, 150, 400, 375, 150, 400, 550, 150, 450, 700, 150, 450, //IJ0K2
+		0, 100, 400, 150, 100, 400, 375, 100, 400, 550, 100, 450, 700, 100, 450, //IJ1K2
+		0, 50, 400, 150, 50, 400, 375, 50, 400, 550, 50, 450, 700, 50, 450, //IJ2K2
+		0, 0, 400, 150, 0, 400, 375, 0, 400, 550, 0, 450, 700, 0, 450, //IJ3K2
+		375, 0, 450, 375, 50, 450, 375, 100, 450, 375, 150, 450, // SPLIT K2
 
 		0, 150, 500, 150, 150, 500, 375, 150, 500, 550, 150, 550, 700, 150, 550, //IJ0K3
 		0, 100, 500, 150, 100, 500, 375, 100, 500, 550, 100, 550, 700, 100, 550, //IJ1K3
@@ -921,11 +921,11 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	unsigned int splitCoordinateLineColumns432gap[6] = { 10, 10, 6, 6, 2, 2 };
 	ijkgrid432gap->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape::vertical, gsoap_resqml2_0_1::resqml20__KDirection::down, true, nodes432gap, hdfProxy,
 		4, pillarOfCoordinateLine432gap, splitCoordinateLineColumnCumulativeCount432gap, splitCoordinateLineColumns432gap);
-	unsigned char enabledCells32gap[24] = {
+	uint8_t enabledCells432gap[24] = {
 		0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0
 	};
-	ijkgrid432gap->setCellGeometryIsDefinedFlags(enabledCells32gap);
+	ijkgrid432gap->setCellGeometryIsDefinedFlags(enabledCells432gap);
 
 	/**************
 	 Subrepresentations
@@ -3139,19 +3139,21 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 
 				ijkGrid->loadSplitInformation();
 
-				if (ijkGrid->getKGapsCount() > 0) {
+				const uint64_t kGapsCount = ijkGrid->getKGapsCount();
+				const size_t kCellCount = ijkGrid->getKCellCount();
+				if (kGapsCount > 0 && kCellCount > 1) {
 
 					// here, we read a grid interface by interface. Each interface is read
 					// in i then j direction
 					cout << "INTERFACE BY INTERFACE" << std::endl;
 
-					std::unique_ptr<bool[]> gapAfterLayer(new bool[ijkGrid->getKCellCount() - 1]);
+					std::unique_ptr<bool[]> gapAfterLayer(new bool[kCellCount - 1]);
 					ijkGrid->getKGaps(gapAfterLayer.get());
 					
 					unsigned int kLayer = 0;
 					unsigned int cornerShift = 0;
 
-					for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount() + 1 + ijkGrid->getKGapsCount(); kInterface++) {
+					for (unsigned int kInterface = 0; kInterface < kCellCount + 1 + kGapsCount; kInterface++) {
 						cout << "INTERFACE: " << kInterface << std::endl;
 
 						std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
@@ -3191,7 +3193,7 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 							}
 						}
 
-						if (cornerShift == 4 || (!gapAfterLayer[kLayer] && kInterface != ijkGrid->getKCellCount() + ijkGrid->getKGapsCount() - 1)) {
+						if (cornerShift == 4 || (kInterface != kCellCount + kGapsCount - 1 && !gapAfterLayer[kLayer])) {
 							kLayer++;
 							cornerShift = 0;
 						}
@@ -3207,7 +3209,7 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 
 					int kInterface = 0;
 
-					for (unsigned int kLayer = 0; kLayer < ijkGrid->getKCellCount(); kLayer++)
+					for (unsigned int kLayer = 0; kLayer < kCellCount; kLayer++)
 					{
 						cout << "LAYER: " << kLayer << std::endl;
 
@@ -3283,15 +3285,20 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 							}
 						}
 
-						kInterface = gapAfterLayer[kLayer] ? kInterface + 2 : kInterface + 1;
+						if (kLayer < kCellCount - 1) {
+							kInterface = gapAfterLayer[kLayer] ? kInterface + 2 : kInterface + 1;
+						}
 					}
+				}
+				else if (kGapsCount > 0) {
+					std::cout << "Not enough K Layer (" << kCellCount << ") to have K Gaps (" << kGapsCount << ")" << std::endl;
 				}
 				else { // no K gap
 					// here, we read a grid interface by interface. Each interface is read
 					// in i then j direction
 					cout << "INTERFACE BY INTERFACE" << std::endl;
 
-					for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount(); kInterface++) {
+					for (unsigned int kInterface = 0; kInterface < kCellCount; kInterface++) {
 						cout << "INTERFACE: " << kInterface << std::endl;
 
 						std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
@@ -3338,44 +3345,44 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 					}
 
 					// last interface differs from the other because of  getXyzPointIndexFromCellCorner usage
-					cout << "INTERFACE: " << ijkGrid->getKCellCount() << std::endl;
+					cout << "INTERFACE: " << kCellCount << std::endl;
 
 					std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
-					ijkGrid->getXyzPointsOfKInterface(ijkGrid->getKCellCount(), interfaceXyzPoints.get());
+					ijkGrid->getXyzPointsOfKInterface(kCellCount, interfaceXyzPoints.get());
 
 					for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++)
 					{
 						for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++)
 						{
-							cout << "CELL (" << i << ", " << j << ", " << ijkGrid->getKCellCount() - 1 << ")" << std::endl;
+							cout << "CELL (" << i << ", " << j << ", " << kCellCount - 1 << ")" << std::endl;
 
 							uint64_t xyzPointIndex;
 							double x, y, z;
-							uint64_t indexShift = ijkGrid->getKCellCount() * ijkGrid->getXyzPointCountOfKInterface() * 3;
+							uint64_t indexShift = kCellCount * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 							// Corner (0, 0, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 4) * 3 - indexShift;
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kCellCount - 1, 4) * 3 - indexShift;
 							x = interfaceXyzPoints[xyzPointIndex];
 							y = interfaceXyzPoints[xyzPointIndex + 1];
 							z = interfaceXyzPoints[xyzPointIndex + 2];
 							cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
 
 							// Corner (1, 0, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 5) * 3 - indexShift;
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kCellCount - 1, 5) * 3 - indexShift;
 							x = interfaceXyzPoints[xyzPointIndex];
 							y = interfaceXyzPoints[xyzPointIndex + 1];
 							z = interfaceXyzPoints[xyzPointIndex + 2];
 							cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
 
 							// Corner (1, 1, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 6) * 3 - indexShift;
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kCellCount - 1, 6) * 3 - indexShift;
 							x = interfaceXyzPoints[xyzPointIndex];
 							y = interfaceXyzPoints[xyzPointIndex + 1];
 							z = interfaceXyzPoints[xyzPointIndex + 2];
 							cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
 
 							// Corner (0, 1, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 7) * 3 - indexShift;
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kCellCount - 1, 7) * 3 - indexShift;
 							x = interfaceXyzPoints[xyzPointIndex];
 							y = interfaceXyzPoints[xyzPointIndex + 1];
 							z = interfaceXyzPoints[xyzPointIndex + 2];
@@ -3388,7 +3395,7 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 					cout << "--------------------------------------------------" << std::endl;
 					cout << "LAYER BY LAYER" << std::endl;
 
-					for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount(); kInterface++)
+					for (unsigned int kInterface = 0; kInterface < kCellCount; kInterface++)
 					{
 						cout << "LAYER: " << kInterface << std::endl;
 
@@ -4820,13 +4827,20 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 			auto kGapCount = ijkGrid->getKGapsCount();
 			std::cout << " K Gap Count" << kGapCount << std::endl;
 			if (kGapCount > 0) {
-				std::unique_ptr<bool[]> kGapAfterLayer(new bool[ijkGrid->getKCellCount() - 1]);
-				for (size_t kIndex = 0; kIndex < ijkGrid->getKCellCount() - 1; ++kIndex) {
-					std::cout << "There is ";
-					if (!kGapAfterLayer[kIndex]) {
-						std::cout << "NOT ";
+				const size_t kCellCount = ijkGrid->getKCellCount();
+				if (kCellCount > 1) {
+					std::unique_ptr<bool[]> kGapAfterLayer(new bool[kCellCount - 1]);
+					ijkGrid->getKGaps(kGapAfterLayer.get());
+					for (size_t kIndex = 0; kIndex < kCellCount - 1; ++kIndex) {
+						std::cout << "There is ";
+						if (!kGapAfterLayer[kIndex]) {
+							std::cout << "NOT ";
+						}
+						std::cout << "a K gap after K layer " << kIndex << std::endl;
 					}
-					std::cout << "a K gap after K layer " << kIndex << std::endl;
+				}
+				else {
+					std::cout << "Not enough K Layer (" << kCellCount << ") to have K Gaps" << std::endl;
 				}
 			}
 
