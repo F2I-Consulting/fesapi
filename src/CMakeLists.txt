@@ -370,15 +370,15 @@ else ()
 	)
 endif (NOT WITH_PYTHON_WRAPPING AND NOT WITH_DOTNET_WRAPPING AND NOT WITH_JAVA_WRAPPING)
 
-if (WIN32)
-	#PDB for debug
+if (MSVC)
+	#PDB only for debug and only for shared lib waiting for https://gitlab.kitware.com/cmake/cmake/-/issues/25244 fix
 	INSTALL (
-		FILES $<TARGET_PDB_FILE:${CPP_LIBRARY_NAME}>
+		FILES $<$<BOOL:${BUILD_SHARED_LIBS}>:$<TARGET_PDB_FILE:${CPP_LIBRARY_NAME}>>
 		CONFIGURATIONS Debug RelWithDebInfo
 		DESTINATION ${CMAKE_INSTALL_BINDIR}
 		OPTIONAL
 	)
-endif (WIN32)
+endif (MSVC)
 
 # PropertyTypeMapping.xml
 INSTALL (
