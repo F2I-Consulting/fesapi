@@ -125,10 +125,10 @@ under the License.
 #include "witsml2_1/ChannelSet.h"
 #include "witsml2_1/Channel.h"
 
-#include "prodml2_2/FluidSystem.h"
-#include "prodml2_2/FluidCharacterization.h"
-#include "prodml2_2/FrictionTheorySpecification.h"
-#include "prodml2_2/TimeSeriesData.h"
+#include "prodml2_3/FluidSystem.h"
+#include "prodml2_3/FluidCharacterization.h"
+#include "prodml2_3/FrictionTheorySpecification.h"
+#include "prodml2_3/TimeSeriesData.h"
 
 #include "HdfProxyFactoryExample.h"
 
@@ -2124,15 +2124,15 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & repo, EML2
 	*/
 }
 
-PRODML2_2_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository & repo)
+PRODML2_3_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository & repo)
 {
-	PRODML2_2_NS::FluidSystem* fluidSystem = repo.createFluidSystem("e8ae6cf8-c4a4-40bf-a3c7-5bf5d0a5b1dd", "Fluid system Region 1",
+	PRODML2_3_NS::FluidSystem* fluidSystem = repo.createFluidSystem("e8ae6cf8-c4a4-40bf-a3c7-5bf5d0a5b1dd", "Fluid system Region 1",
 		std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__ThermodynamicTemperatureUom::degF, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__PressureUom::psi,
-		gsoap_eml2_3::prodml22__ReservoirFluidKind::black_x0020oil, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__VolumePerVolumeUom::ft3_x002fbbl);
+		gsoap_eml2_3::prodml23__ReservoirFluidKind::black_x0020oil, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__VolumePerVolumeUom::ft3_x002fbbl);
 
-	fluidSystem->setPhasesPresent(gsoap_eml2_3::prodml22__PhasePresent::gas_x0020and_x0020oil_x0020and_x0020water);
+	fluidSystem->setPhasesPresent(gsoap_eml2_3::prodml23__PhasePresent::gas_x0020and_x0020oil_x0020and_x0020water);
 	
-	//fluidSystem->setReservoirLifeCycleState(gsoap_eml2_3::prodml22__ReservoirLifeCycleState__primary_x0020production);
+	//fluidSystem->setReservoirLifeCycleState(gsoap_eml2_3::prodml23__ReservoirLifeCycleState__primary_x0020production);
 	fluidSystem->setStockTankOilAPIGravity((141.5/0.8989209)-131.5, gsoap_eml2_3::eml23__APIGravityUom::dAPI);
 	/*
 	fluidSystem->setNaturalGasGasGravity(0.8);
@@ -2144,18 +2144,18 @@ PRODML2_2_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository 
 	return fluidSystem;
 }
 
-void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
+void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_3_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_2_NS::FluidCharacterization* oilFluidCharac = repo.createFluidCharacterization("656aa27f-5373-4c7f-9469-a57890e2b5d8", "Oil Fluid Characterization");
+	PRODML2_3_NS::FluidCharacterization* oilFluidCharac = repo.createFluidCharacterization("656aa27f-5373-4c7f-9469-a57890e2b5d8", "Oil Fluid Characterization");
 	oilFluidCharac->setRockFluidUnit(oilColumnInterp);
 	oilFluidCharac->pushBackModel();
 
-	oilFluidCharac->pushBackParameter(0, 882, gsoap_eml2_3::eml23__UnitOfMeasure::kg_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Density, gsoap_eml2_3::prodml22__ThermodynamicPhase::oleic);
+	oilFluidCharac->pushBackParameter(0, 882, gsoap_eml2_3::eml23__UnitOfMeasure::kg_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Density, gsoap_eml2_3::prodml23__ThermodynamicPhase::oleic);
 
 	// Black Oil Variation with Depth
 	oilFluidCharac->pushBackTableFormat();
 	oilFluidCharac->pushBackTableFormatColumn(0, "m", "Depth from MSL");
-	oilFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Saturation_x0020Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Saturation_x0020Pressure);
 
 	oilFluidCharac->pushBackTable(0, "Black Oil Variation with Depth", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
 	oilFluidCharac->pushBackTableRow(0, 0, { 2600, 333.25 });
@@ -2172,10 +2172,10 @@ void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & r
 
 	// Saturated Oil Table
 	oilFluidCharac->pushBackTableFormat();
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure);
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity);
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Solution_x0020GOR);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml23__OutputFluidProperty::Viscosity);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Solution_x0020GOR);
 
 	oilFluidCharac->pushBackTable(0, "Saturated Oil Table", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
 	oilFluidCharac->pushBackTableRow(0, 1, { 268.5, 1.51746, 0.464, 156.9 }, true);
@@ -2187,10 +2187,10 @@ void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & r
 
 	// Undersaturated Oil Table
 	oilFluidCharac->pushBackTableFormat();
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Saturation_x0020Pressure);
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure);
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Saturation_x0020Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml23__OutputFluidProperty::Viscosity);
 
 	oilFluidCharac->pushBackTable(0, "Undersaturated Oil Table", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
 	oilFluidCharac->pushBackTableRow(0, 2, { 50, 100, 1.16296, 1.31 }, false);
@@ -2262,17 +2262,17 @@ void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & r
 	}
 }
 
-void serializeGasFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
+void serializeGasFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_3_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_2_NS::FluidCharacterization* gasFluidCharac = repo.createFluidCharacterization("5ea0eeb2-a287-4a2e-9362-1d2491e491b2", "Gas Fluid Characterization");
+	PRODML2_3_NS::FluidCharacterization* gasFluidCharac = repo.createFluidCharacterization("5ea0eeb2-a287-4a2e-9362-1d2491e491b2", "Gas Fluid Characterization");
 	gasFluidCharac->setRockFluidUnit(gasCapInterp);
 	gasFluidCharac->pushBackModel();
 
 	// Saturated Gas Table
 	gasFluidCharac->pushBackTableFormat();
-	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure);
-	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
-	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Pressure);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml23__OutputFluidProperty::Viscosity);
 
 	gasFluidCharac->pushBackTable(0, "Saturated Gas Table", std::to_string(gasFluidCharac->getTableFormatCount() - 1));
 	gasFluidCharac->pushBackTableRow(0, 0, { 350, 0.003929, 0.034856 }, true);
@@ -2289,43 +2289,43 @@ void serializeGasFluidCharacCharacterization(COMMON_NS::DataObjectRepository & r
 	}
 }
 
-void serializeWaterFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
+void serializeWaterFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_3_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_2_NS::FluidCharacterization* waterFluidCharac = repo.createFluidCharacterization("8bea1d3f-9599-4a45-b88c-8196aef3f397", "Water Fluid Characterization");
+	PRODML2_3_NS::FluidCharacterization* waterFluidCharac = repo.createFluidCharacterization("8bea1d3f-9599-4a45-b88c-8196aef3f397", "Water Fluid Characterization");
 	waterFluidCharac->setRockFluidUnit(aquiferInterp);
 	waterFluidCharac->pushBackModel();
 
-	waterFluidCharac->pushBackParameter(0, 1101.3, gsoap_eml2_3::eml23__UnitOfMeasure::kg_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Density, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 313000, gsoap_eml2_3::eml23__UnitOfMeasure::_1_x002fbar, gsoap_eml2_3::prodml22__OutputFluidProperty::Compressibility, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 0.38509, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 1.03382, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 978000, gsoap_eml2_3::eml23__UnitOfMeasure::_1_x002fbar, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity_x0020Compressibility, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 268.5, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 1101.3, gsoap_eml2_3::eml23__UnitOfMeasure::kg_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Density, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 313000, gsoap_eml2_3::eml23__UnitOfMeasure::_1_x002fbar, gsoap_eml2_3::prodml23__OutputFluidProperty::Compressibility, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 0.38509, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml23__OutputFluidProperty::Viscosity, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 1.03382, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Formation_x0020Volume_x0020Factor, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 978000, gsoap_eml2_3::eml23__UnitOfMeasure::_1_x002fbar, gsoap_eml2_3::prodml23__OutputFluidProperty::Viscosity_x0020Compressibility, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 268.5, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Pressure, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
 
 	if (fluidSystem != nullptr) {
 		waterFluidCharac->setFluidSystem(fluidSystem);
 	}
 }
 
-void serializeTabularFluidCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
+void serializeTabularFluidCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_3_NS::FluidSystem* fluidSystem = nullptr)
 {
 	serializeOilFluidCharacCharacterization(repo, fluidSystem);	
 	serializeGasFluidCharacCharacterization(repo, fluidSystem);	
 	serializeWaterFluidCharacCharacterization(repo, fluidSystem);	
 }
 
-void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
+void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_3_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_2_NS::FluidCharacterization* fluidCharac = repo.createFluidCharacterization("6f5f6146-6f8b-4222-b322-9dbef1e7e4cf", "my compositional Fluid Characterization");
+	PRODML2_3_NS::FluidCharacterization* fluidCharac = repo.createFluidCharacterization("6f5f6146-6f8b-4222-b322-9dbef1e7e4cf", "my compositional Fluid Characterization");
 
 	fluidCharac->pushBackFormationWater("h2o");
 	fluidCharac->setFormationWaterSpecificGravity(0, 1.02);
 	fluidCharac->setFormationWaterSalinity(0, 80000, gsoap_eml2_3::eml23__MassPerMassUom::ppm);
 
-	fluidCharac->pushBackPureFluidComponent("c1", gsoap_eml2_3::prodml22__PureComponentKind::c1, false);
+	fluidCharac->pushBackPureFluidComponent("c1", gsoap_eml2_3::prodml23__PureComponentKind::c1, false);
 	fluidCharac->setPureFluidComponentMolecularWeight(0, 16.04, gsoap_eml2_3::eml23__MolecularWeightUom::g_x002fmol);
 
-	fluidCharac->pushBackPseudoFluidComponent("c2-3", gsoap_eml2_3::prodml22__PseudoComponentKind::c2_c4_x002bn2);
+	fluidCharac->pushBackPseudoFluidComponent("c2-3", gsoap_eml2_3::prodml23__PseudoComponentKind::c2_c4_x002bn2);
 	fluidCharac->setPseudoFluidComponentStartingCarbonNumber(0, 2);
 	fluidCharac->setPseudoFluidComponentEndingCarbonNumber(0, 3);
 
@@ -2333,10 +2333,10 @@ void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository
 	fluidCharac->setModelName(0, "F2I Good Oil No. 4 EOS Demonstration");
 	fluidCharac->setModelReferenceTemperature(0, 60, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom::degF);
 
-	PRODML2_2_NS::PvtSpecification* spec = fluidCharac->initModelSpecification(0, PRODML2_2_NS::FluidCharacterization::SrkEos);
-	PRODML2_2_NS::CompositionalSpecification* srkEosSpec = dynamic_cast<PRODML2_2_NS::CompositionalSpecification*>(spec);
-	srkEosSpec->pushBackCoefficient(1, gsoap_eml2_3::prodml22__PvtModelParameterKind::a1);
-	srkEosSpec->setMixingRule(gsoap_eml2_3::prodml22__MixingRule::classical);
+	PRODML2_3_NS::PvtSpecification* spec = fluidCharac->initModelSpecification(0, PRODML2_3_NS::FluidCharacterization::SrkEos);
+	PRODML2_3_NS::CompositionalSpecification* srkEosSpec = dynamic_cast<PRODML2_3_NS::CompositionalSpecification*>(spec);
+	srkEosSpec->pushBackCoefficient(1, gsoap_eml2_3::prodml23__PvtModelParameterKind::a1);
+	srkEosSpec->setMixingRule(gsoap_eml2_3::prodml23__MixingRule::classical);
 	srkEosSpec->pushBackFluidComponentProperty("h2o");
 	srkEosSpec->pushBackFluidComponentProperty("c1");
 	srkEosSpec->pushBackFluidComponentProperty("c2-3");
@@ -2352,20 +2352,20 @@ void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository
 
 void serializeTimeSeriesData(COMMON_NS::DataObjectRepository & repo)
 {
-	PRODML2_2_NS::TimeSeriesData* timeSeriesData = repo.createTimeSeriesData("25d2e0d8-dffa-414d-b7cd-f871cb436781", "my Time Series Data");
+	PRODML2_3_NS::TimeSeriesData* timeSeriesData = repo.createTimeSeriesData("25d2e0d8-dffa-414d-b7cd-f871cb436781", "my Time Series Data");
 
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::asset_x0020identifier, "prodml://f2i-consulting.com/manifold(HDR01)");
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::flow, "production");
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::product, "oil");
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::qualifier, "measured");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml23__TimeSeriesKeyword::asset_x0020identifier, "prodml://f2i-consulting.com/manifold(HDR01)");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml23__TimeSeriesKeyword::flow, "production");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml23__TimeSeriesKeyword::product, "oil");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml23__TimeSeriesKeyword::qualifier, "measured");
 
 	timeSeriesData->setUom(gsoap_resqml2_0_1::resqml20__ResqmlUom::psi);
 	timeSeriesData->setMeasureClass(gsoap_eml2_3::eml23__MeasureClass::pressure);
 
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706000, gsoap_eml2_3::prodml22__ValueStatus::frozen);
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706060, gsoap_eml2_3::prodml22__ValueStatus::frozen);
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706120, gsoap_eml2_3::prodml22__ValueStatus::frozen);
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706180, gsoap_eml2_3::prodml22__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706000, gsoap_eml2_3::prodml23__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706060, gsoap_eml2_3::prodml23__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706120, gsoap_eml2_3::prodml23__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706180, gsoap_eml2_3::prodml23__ValueStatus::frozen);
 	timeSeriesData->pushBackDoubleValue(746.7316, 1328706241);
 	timeSeriesData->pushBackDoubleValue(745.7316, 1328706242);
 	timeSeriesData->pushBackDoubleValue(746.003, 1328706243);
@@ -2503,7 +2503,7 @@ bool serialize(const string& filePath)
 	serializeActivities(&repo);
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
-	PRODML2_2_NS::FluidSystem* fluidSystem = serializeFluidSystem(repo);
+	PRODML2_3_NS::FluidSystem* fluidSystem = serializeFluidSystem(repo);
 	serializeTabularFluidCharacterization(repo, fluidSystem);
 	serializeCompositionalFluidCharacterization(repo);
 	serializeTimeSeriesData(repo);
@@ -3021,9 +3021,9 @@ void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & repo)
 
 void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & repo)
 {
-	std::vector<PRODML2_2_NS::FluidCharacterization*> fluidCharacterization = repo.getDataObjects<PRODML2_2_NS::FluidCharacterization>();
+	std::vector<PRODML2_3_NS::FluidCharacterization*> fluidCharacterization = repo.getDataObjects<PRODML2_3_NS::FluidCharacterization>();
 	for (size_t fcIndex = 0; fcIndex < fluidCharacterization.size(); ++fcIndex) {
-		PRODML2_2_NS::FluidCharacterization* fc = fluidCharacterization[fcIndex];
+		PRODML2_3_NS::FluidCharacterization* fc = fluidCharacterization[fcIndex];
 		showAllMetadata(fc);
 		RESQML2_NS::RockFluidUnitInterpretation* rfu = fc->getRockFluidUnit();
 		if (rfu != nullptr) {
@@ -3057,10 +3057,10 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & repo)
 			}
 			if (fc->hasModelRemark(modelIndex)) { cout << "Remark: " << fc->getModelRemark(modelIndex) << std::endl; }
 
-			PRODML2_2_NS::PvtSpecification* spec = fc->getModelSpecification(modelIndex);
+			PRODML2_3_NS::PvtSpecification* spec = fc->getModelSpecification(modelIndex);
 			if (spec != nullptr) {
-				if (dynamic_cast<PRODML2_2_NS::CompositionalSpecification*>(spec) != nullptr) {
-					PRODML2_2_NS::CompositionalSpecification* compoSpec = static_cast<PRODML2_2_NS::CompositionalSpecification*>(spec);
+				if (dynamic_cast<PRODML2_3_NS::CompositionalSpecification*>(spec) != nullptr) {
+					PRODML2_3_NS::CompositionalSpecification* compoSpec = static_cast<PRODML2_3_NS::CompositionalSpecification*>(spec);
 					for (unsigned int coeffIndex = 0; coeffIndex < compoSpec->getCoefficientCount(); ++coeffIndex) {
 						cout << "coeff value: " << compoSpec->getCoefficientValue(coeffIndex) << std::endl;
 						cout << "coeff kind: " << static_cast<int>(compoSpec->getCoefficientKind(coeffIndex)) << std::endl;
@@ -3088,9 +3088,9 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & repo)
 
 void deserializeTimeSeriesData(COMMON_NS::DataObjectRepository & repo)
 {
-	std::vector<PRODML2_2_NS::TimeSeriesData*> timeSeriesDataSet = repo.getDataObjects<PRODML2_2_NS::TimeSeriesData>();
+	std::vector<PRODML2_3_NS::TimeSeriesData*> timeSeriesDataSet = repo.getDataObjects<PRODML2_3_NS::TimeSeriesData>();
 	for (size_t timeSeriesDataSetIdx = 0; timeSeriesDataSetIdx < timeSeriesDataSet.size(); ++timeSeriesDataSetIdx) {
-		PRODML2_2_NS::TimeSeriesData* tsd = timeSeriesDataSet[timeSeriesDataSetIdx];
+		PRODML2_3_NS::TimeSeriesData* tsd = timeSeriesDataSet[timeSeriesDataSetIdx];
 		showAllMetadata(tsd);
 
 		for (unsigned int i = 0; i < tsd->getKeywordCount(); ++i) {

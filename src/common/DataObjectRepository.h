@@ -146,7 +146,7 @@ namespace WITSML2_1_NS
 	class Channel;
 }
 
-namespace PRODML2_2_NS
+namespace PRODML2_3_NS
 {
 	class FluidSystem;
 	class FluidCharacterization;
@@ -203,7 +203,7 @@ namespace COMMON_NS
 			RESQML2_0_1 = 0,
 			EML2_0 = 1,
 			EML2_3 = 2,
-			PRODML2_2 = 3,
+			PRODML2_3 = 3,
 			RESQML2_2 = 4,
 			WITSML2_1 = 5
 		};
@@ -220,7 +220,7 @@ namespace COMMON_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void setDefaultStandard(EnergisticsStandard version) {
 			switch (version) {
-			case EnergisticsStandard::PRODML2_2:
+			case EnergisticsStandard::PRODML2_3:
 				defaultProdmlVersion = version; break;
 			case EnergisticsStandard::RESQML2_0_1:
 			case EnergisticsStandard::RESQML2_2:
@@ -632,8 +632,8 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(WITSML2_1_NS::ChannelSet, ChannelSet)
 		GETTER_DATAOBJECTS(WITSML2_1_NS::Channel, Channel)
 
-		GETTER_DATAOBJECTS(PRODML2_2_NS::FluidSystem, FluidSystem)
-		GETTER_DATAOBJECTS(PRODML2_2_NS::FluidCharacterization, FluidCharacterization)
+		GETTER_DATAOBJECTS(PRODML2_3_NS::FluidSystem, FluidSystem)
+		GETTER_DATAOBJECTS(PRODML2_3_NS::FluidCharacterization, FluidCharacterization)
 
 		/**
 		 * Gets a data object from the repository by means of its uuid. If several data object
@@ -3482,11 +3482,11 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new fluid system.
 		 */
-		DLL_IMPORT_OR_EXPORT PRODML2_2_NS::FluidSystem* createFluidSystem(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT PRODML2_3_NS::FluidSystem* createFluidSystem(const std::string & guid,
 			const std::string & title,
 			double temperatureValue, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom temperatureUom,
 			double pressureValue, gsoap_eml2_3::eml23__PressureUom pressureUom,
-			gsoap_eml2_3::prodml22__ReservoirFluidKind reservoirFluidKind,
+			gsoap_eml2_3::prodml23__ReservoirFluidKind reservoirFluidKind,
 			double gasOilRatio, gsoap_eml2_3::eml23__VolumePerVolumeUom gasOilRatioUom);
 
 		/**
@@ -3503,10 +3503,10 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new fluid system.
 		 */
-		DLL_IMPORT_OR_EXPORT PRODML2_2_NS::FluidSystem* createFluidSystem(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT PRODML2_3_NS::FluidSystem* createFluidSystem(const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_3::eml23__ReferenceCondition referenceCondition,
-			gsoap_eml2_3::prodml22__ReservoirFluidKind reservoirFluidKind,
+			gsoap_eml2_3::prodml23__ReservoirFluidKind reservoirFluidKind,
 			double gasOilRatio, gsoap_eml2_3::eml23__VolumePerVolumeUom gasOilRatioUom);
 
 		/**
@@ -3519,7 +3519,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new fluid characterization.
 		 */
-		DLL_IMPORT_OR_EXPORT PRODML2_2_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT PRODML2_3_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a time series data into this repository
@@ -3531,7 +3531,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to the new time series data.
 		 */
-		DLL_IMPORT_OR_EXPORT PRODML2_2_NS::TimeSeriesData* createTimeSeriesData(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT PRODML2_3_NS::TimeSeriesData* createTimeSeriesData(const std::string & guid, const std::string & title);
 
 		//************** EML2.3 ****************
 
@@ -3647,7 +3647,7 @@ namespace COMMON_NS
 		std::unique_ptr<COMMON_NS::HdfProxyFactory> hdfProxyFactory;
 
 		EnergisticsStandard defaultEmlVersion = EnergisticsStandard::EML2_0;
-		EnergisticsStandard defaultProdmlVersion = EnergisticsStandard::PRODML2_2;
+		EnergisticsStandard defaultProdmlVersion = EnergisticsStandard::PRODML2_3;
 		EnergisticsStandard defaultResqmlVersion = EnergisticsStandard::RESQML2_0_1;
 		EnergisticsStandard defaultWitsmlVersion = EnergisticsStandard::WITSML2_1;
 
@@ -3669,7 +3669,7 @@ namespace COMMON_NS
 		std::unique_ptr< COMMON_NS::AbstractObject > getEml2_3WrapperFromGsoapContext(const std::string & datatype);
 
 		std::unique_ptr< COMMON_NS::AbstractObject > getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
-		std::unique_ptr< COMMON_NS::AbstractObject > getProdml2_2WrapperFromGsoapContext(const std::string & datatype);
+		std::unique_ptr< COMMON_NS::AbstractObject > getProdml2_3WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
 		* Get the error code of the current gsoap context.

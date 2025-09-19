@@ -818,7 +818,7 @@ namespace COMMON_NS
 %include "swigEml2Include.i"
 %include "swigResqml2Include.i"
 %include "swigWitsml2Include.i"
-%include "swigProdml2_2Include.i"
+%include "swigProdml2_3Include.i"
 #ifdef WITH_ETP
 %include "swigEtp1_2Include.i"
 #endif
@@ -874,7 +874,7 @@ import com.f2i_consulting.fesapi.*;
 			RESQML2_0_1 = 0,
 			EML2_0 = 1,
 			EML2_3 = 2,
-			PRODML2_2 = 3,
+			PRODML2_3 = 3,
 			RESQML2_2 = 4,
 			WITSML2_1 = 5
 		};
@@ -1072,8 +1072,8 @@ import com.f2i_consulting.fesapi.*;
 		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::ChannelSet, ChannelSet)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::Channel, Channel)
 				
-		SWIG_GETTER_DATAOBJECTS(PRODML2_2_NS::FluidSystem, FluidSystem)
-		SWIG_GETTER_DATAOBJECTS(PRODML2_2_NS::FluidCharacterization, FluidCharacterization)
+		SWIG_GETTER_DATAOBJECTS(PRODML2_3_NS::FluidSystem, FluidSystem)
+		SWIG_GETTER_DATAOBJECTS(PRODML2_3_NS::FluidCharacterization, FluidCharacterization)
 
 		/**
 		 * Gets a data object from the repository by means of its uuid. If several data object
@@ -3762,11 +3762,11 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new fluid system.
 		 */
-		PRODML2_2_NS::FluidSystem* createFluidSystem(const std::string & guid,
+		PRODML2_3_NS::FluidSystem* createFluidSystem(const std::string & guid,
 			const std::string & title,
 			double temperatureValue, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom temperatureUom,
 			double pressureValue, gsoap_eml2_3::eml23__PressureUom pressureUom,
-			gsoap_eml2_3::prodml22__ReservoirFluidKind reservoirFluidKind,
+			gsoap_eml2_3::prodml23__ReservoirFluidKind reservoirFluidKind,
 			double gasOilRatio, gsoap_eml2_3::eml23__VolumePerVolumeUom gasOilRatioUom);
 
 		/**
@@ -3779,7 +3779,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new fluid characterization.
 		 */
-		PRODML2_2_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
+		PRODML2_3_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a time series data into this repository
@@ -3791,7 +3791,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new time series data.
 		 */
-		PRODML2_2_NS::TimeSeriesData* createTimeSeriesData(const std::string & guid, const std::string & title);
+		PRODML2_3_NS::TimeSeriesData* createTimeSeriesData(const std::string & guid, const std::string & title);
 
 #ifdef WITH_RESQML2_2
 		//************************************/

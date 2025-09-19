@@ -20,7 +20,7 @@ under the License.
 
 #include "GeologicUnitFeature.h"
 
-namespace PRODML2_2_NS {
+namespace PRODML2_3_NS {
 	/** A fluid characterization. */
 	class FluidCharacterization;
 }
@@ -88,7 +88,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @returns	Null if it fails, else the fluid characterization set.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<PRODML2_2_NS::FluidCharacterization *> getFluidCharacterizationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<PRODML2_3_NS::FluidCharacterization *> getFluidCharacterizationSet() const;
 
 		/**
 		 * The standard XML tag without XML namespace for serializing this data object.

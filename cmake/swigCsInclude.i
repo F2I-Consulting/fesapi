@@ -888,8 +888,8 @@ ${COMMENT_END}
 ${COMMENT_START}
 		case DataObjectName.FLUIDBOUNDARYINTERPRETATION : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.FluidBoundaryInterpretation(cPtr, owner);
 ${COMMENT_END}
-		case DataObjectName.FLUIDCHARACTERIZATION : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_2_NS}.FluidCharacterization(cPtr, owner);
-		case DataObjectName.FLUIDSYSTEM : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_2_NS}.FluidSystem(cPtr, owner);
+		case DataObjectName.FLUIDCHARACTERIZATION : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_3_NS}.FluidCharacterization(cPtr, owner);
+		case DataObjectName.FLUIDSYSTEM : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_3_NS}.FluidSystem(cPtr, owner);
 		case DataObjectName.FRONTIERFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.FrontierFeature(cPtr, owner);
 		case DataObjectName.GENETICBOUNDARYFEATURE :
 			F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature result = new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.GeneticBoundaryFeature(cPtr, owner);
@@ -950,7 +950,7 @@ ${COMMENT_END}
 		case DataObjectName.SUBREPRESENTATION : return resqml2_instantiateSubRepresentation(cPtr, owner);
 		case DataObjectName.TECTONICBOUNDARYFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.TectonicBoundaryFeature(cPtr, owner);
 		case DataObjectName.TIMESERIES : return eml2_instantiateTimeSeries(cPtr, owner);
-		case DataObjectName.TIMESERIESDATA : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_2_NS}.TimeSeriesData(cPtr, owner);
+		case DataObjectName.TIMESERIESDATA : return new F2iConsulting.Fesapi.${FESAPI_PRODML2_3_NS}.TimeSeriesData(cPtr, owner);
 		case DataObjectName.TRAJECTORY : return new F2iConsulting.Fesapi.${FESAPI_WITSML2_1_NS}.Trajectory(cPtr, owner);
 		case DataObjectName.TRIANGULATEDSETREPRESENTATION : return resqml2_instantiateTriangulatedSetRepresentation(cPtr, owner);
 		case DataObjectName.TRUNCATEDIJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);

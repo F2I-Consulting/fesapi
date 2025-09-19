@@ -888,8 +888,8 @@ ${COMMENT_END}
 ${COMMENT_START}
 		case FLUIDBOUNDARYINTERPRETATION : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_2_NS}.Resqml22_FluidBoundaryInterpretation(cPtr, owner);
 ${COMMENT_END}
-		case FLUIDCHARACTERIZATION : return new com.f2i_consulting.fesapi.${FESAPI_PRODML2_2_NS}.FluidCharacterization(cPtr, owner);
-		case FLUIDSYSTEM : return new com.f2i_consulting.fesapi.${FESAPI_PRODML2_2_NS}.FluidSystem(cPtr, owner);
+		case FLUIDCHARACTERIZATION : return new com.f2i_consulting.fesapi.${FESAPI_PRODML2_3_NS}.FluidCharacterization(cPtr, owner);
+		case FLUIDSYSTEM : return new com.f2i_consulting.fesapi.${FESAPI_PRODML2_3_NS}.FluidSystem(cPtr, owner);
 		case FRONTIERFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_FrontierFeature(cPtr, owner);
 		case GENETICBOUNDARYFEATURE :
 			com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_GeneticBoundaryFeature result = new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_GeneticBoundaryFeature(cPtr, owner);
@@ -950,7 +950,7 @@ ${COMMENT_END}
 		case SUBREPRESENTATION : return resqml2_instantiateSubRepresentation(cPtr, owner);
 		case TECTONICBOUNDARYFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_TectonicBoundaryFeature(cPtr, owner);
 		case TIMESERIES : return eml2_instantiateTimeSeries(cPtr, owner);
-		case TIMESERIESDATA : return new com.f2i_consulting.fesapi.${FESAPI_PRODML2_2_NS}.TimeSeriesData(cPtr, owner);
+		case TIMESERIESDATA : return new com.f2i_consulting.fesapi.${FESAPI_PRODML2_3_NS}.TimeSeriesData(cPtr, owner);
 		case TRAJECTORY : return new com.f2i_consulting.fesapi.${FESAPI_WITSML2_1_NS}.Witsml21_Trajectory(cPtr, owner);
 		case TRIANGULATEDSETREPRESENTATION : return resqml2_instantiateTriangulatedSetRepresentation(cPtr, owner);
 		case TRUNCATEDIJKGRIDREPRESENTATION : return resqml2_instantiateConcreteIjkGridRepresentation(cPtr, owner);
