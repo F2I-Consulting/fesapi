@@ -162,7 +162,7 @@ uint64_t TriangulatedSetRepresentation::getTriangleCountOfAllPatches() const
 
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int* triangleNodeIndices) const
 {
-	readArrayNdOfUInt32Values(static_cast<_resqml20__TriangulatedSetRepresentation const*>(gsoapProxy2_0_1)->TrianglePatch.at(patchIndex)->Triangles, triangleNodeIndices);
+	readArrayNdOfIntegerValues(static_cast<_resqml20__TriangulatedSetRepresentation const*>(gsoapProxy2_0_1)->TrianglePatch.at(patchIndex)->Triangles, triangleNodeIndices);
 }
 
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfAllPatches(unsigned int* triangleNodeIndices) const

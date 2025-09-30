@@ -179,9 +179,9 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const final;
 
-		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT double getMinimumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT double getMaximumValue(uint64_t index = 0) const final;
 
 		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const final;
 
@@ -200,6 +200,43 @@ namespace RESQML2_0_1_NS
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind* pk) final;
 
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) final;
+
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<float> getFloatStatistics(uint64_t) const final {
+			COMMON_NS::NumberArrayStatistics<float> result;
+			const auto minimumValueSize = getMinimumValueSize();
+			for (size_t i = 0; i < minimumValueSize; ++i) {
+				const auto minVal = getMinimumValue(i);
+				if (!std::isnan(minVal)) {
+					result.setMinimum(static_cast<float>(minVal), i);
+				}
+			}
+			const auto maximumValueSize = getMaximumValueSize();
+			for (size_t i = 0; i < maximumValueSize; ++i) {
+				const auto maxVal = getMinimumValue(i);
+				if (!std::isnan(maxVal)) {
+					result.setMaximum(static_cast<float>(maxVal), i);
+				}
+			}
+			return result;
+		}
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<double> getDoubleStatistics(uint64_t) const final {
+			COMMON_NS::NumberArrayStatistics<double> result;
+			const auto minimumValueSize = getMinimumValueSize();
+			for (size_t i = 0; i < minimumValueSize; ++i) {
+				const auto minVal = getMinimumValue(i);
+				if (!std::isnan(minVal)) {
+					result.setMinimum(minVal, i);
+				}
+			}
+			const auto maximumValueSize = getMaximumValueSize();
+			for (size_t i = 0; i < maximumValueSize; ++i) {
+				const auto maxVal = getMinimumValue(i);
+				if (!std::isnan(maxVal)) {
+					result.setMaximum(maxVal, i);
+				}
+			}
+			return result;
+		}
 
 		/**
 		* The standard XML namespace for serializing this data object.

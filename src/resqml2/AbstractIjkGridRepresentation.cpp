@@ -339,7 +339,7 @@ void AbstractIjkGridRepresentation::getPillarsOfSplitCoordinateLines(unsigned in
 		if (geom == nullptr || geom->ColumnLayerSplitCoordinateLines == nullptr) {
 			throw invalid_argument("There is no geometry or no split coordinate line in this grid.");
 		}
-		readArrayNdOfUInt32Values(geom->ColumnLayerSplitCoordinateLines->PillarIndices, pillarIndices);
+		readArrayNdOfIntegerValues(geom->ColumnLayerSplitCoordinateLines->PillarIndices, pillarIndices);
 	}
 
 	if (reverseIAxis || reverseJAxis) {
@@ -370,7 +370,7 @@ void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned in
 			throw invalid_argument("There is no geometry or no split coordinate line in this IJK grid.");
 		}
 
-		readArrayNdOfUInt32Values(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements, columnIndices);
+		readArrayNdOfIntegerValues(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements, columnIndices);
 		if (reverseIAxis || reverseJAxis) {
 			datasetValueCount = getCountOfArray(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements);
 		}
@@ -381,7 +381,7 @@ void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned in
 			throw invalid_argument("There is no geometry or no split coordinate line in this IJK grid.");
 		}
 
-		readArrayNdOfUInt32Values(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements, columnIndices);
+		readArrayNdOfIntegerValues(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements, columnIndices);
 		if (reverseIAxis || reverseJAxis) {
 			datasetValueCount = getCountOfArray(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements);
 		}
@@ -426,7 +426,7 @@ void AbstractIjkGridRepresentation::getColumnCountOfSplitCoordinateLines(unsigne
 		if (geom == nullptr || geom->ColumnLayerSplitCoordinateLines == nullptr) {
 			throw invalid_argument("There is no geometry or no split coordinate line in this IJK grid.");
 		}
-		readArrayNdOfUInt32Values(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength, columnIndexCountPerSplitCoordinateLine);
+		readArrayNdOfIntegerValues(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength, columnIndexCountPerSplitCoordinateLine);
 	}
 }
 
@@ -892,8 +892,7 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 
 						if ((iColumnIndex >= iInterfaceStart && iColumnIndex < iInterfaceEnd) && (jColumnIndex >= jInterfaceStart && jColumnIndex < jInterfaceEnd)) {
 							// here is a split coordinate line impacting the bloc
-							(blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][splitCoordinateLineIndex].first] = -1;
-
+							(blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][splitCoordinateLineIndex].first] = (std::numeric_limits<uint32_t>::max)();
 							break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the block
 						}
 					}

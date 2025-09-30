@@ -866,22 +866,22 @@ namespace RESQML2_NS
 		public:
 
 			/** Zero-based index of the interface start */
-			unsigned int iInterfaceStart;
+			uint32_t iInterfaceStart;
 			/** Zero-based index of the interface end */
-			unsigned int iInterfaceEnd;
+			uint32_t iInterfaceEnd;
 			/** The interface start */
-			unsigned int jInterfaceStart;
+			uint32_t jInterfaceStart;
 			/** The interface end */
-			unsigned int jInterfaceEnd;
+			uint32_t jInterfaceEnd;
 			/** The interface start */
-			unsigned int kInterfaceStart;
+			uint32_t kInterfaceStart;
 			/** The interface end */
-			unsigned int kInterfaceEnd;
+			uint32_t kInterfaceEnd;
 
 			/** Map split coordinate lines index with local index (according to a block) */
-			std::map<unsigned int, unsigned int> globalToLocalSplitCoordinateLinesIndex;
+			std::map<uint32_t, uint32_t> globalToLocalSplitCoordinateLinesIndex;
 
-			BlockInformation(unsigned int iNodeStart, unsigned int iNodeEnd, unsigned int jNodeStart, unsigned int jNodeEnd, unsigned int kNodeStart, unsigned int kNodeEnd) :
+			BlockInformation(uint32_t iNodeStart, uint32_t iNodeEnd, uint32_t jNodeStart, uint32_t jNodeEnd, uint32_t kNodeStart, uint32_t kNodeEnd) :
 				iInterfaceStart(iNodeStart), iInterfaceEnd(iNodeEnd), jInterfaceStart(jNodeStart), jInterfaceEnd(jNodeEnd), kInterfaceStart(kNodeStart), kInterfaceEnd(kNodeEnd) {}
 
 			/** Destructor */

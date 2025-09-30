@@ -6049,58 +6049,221 @@ namespace RESQML2_NS
 		gsoap_eml2_3::eml23__FacetKind getFacetKind(unsigned int index) const;
 		std::string getFacetValue(unsigned int index) const;
 		
-		//****************************/
-		//****** INTEGER *************/
-		//****************************/
+		/**
+		 * @brief	Adds a nd array of explicit values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values	  	All the property values to set ordered according to the topology
+		 * 								of the representation it is based on.
+		 * @param [in]		proxy	  	The HDF proxy where to write the property values. It must be
+		 * 								already opened for writing and won't be closed in this method. If
+		 * 								@c nullptr, then a default HDF proxy must be defined in the
+		 * 								repository.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
+		 */
+		template<typename T>
+		void pushBackArrayOfValues(const T* values, const uint64_t* numValues, uint32_t numDimensionsInArray,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = std::numeric_limits<T>::max());
+
+		template<typename T>
+		void pushBackArrayOfValuesPlusStatistics(const T* values, const uint64_t* numValues, uint32_t numDimensionsInArray, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		
-		template<typename T> void pushBackIntegerArrayOfValues(const T* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, T nullValue);
-		template<typename T> void pushBackIntegerArray1dOfValues(const T* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
-			pushBackIntegerArrayOfValues(values, &valueCount, 1, proxy, nullValue);
-		}
-		template<typename T> void pushBackIntegerArray2dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
-			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-			pushBackIntegerArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
-		}
-		template<typename T> void pushBackIntegerArray3dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
-			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-			pushBackIntegerArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
-		}
+		/**
+		 * @brief	Adds a 1d array of explicit values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values	  	All the property values to set ordered according to the topology
+		 * 								of the representation it is based on.
+		 * @param 		  	valueCount	The number of values to write.
+		 * @param [in]		proxy	  	The HDF proxy where to write the property values. It must be
+		 * 								already opened for writing and won't be closed in this method. If
+		 * 								@c nullptr, then a default HDF proxy must be defined in the
+		 * 								repository.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
+		 */
+		template<typename T>
+		void pushBackArray1dOfValues(const T* values, uint64_t valueCount,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = std::numeric_limits<T>::max());
+		template<typename T>
+		void pushBackArray1dOfValuesPlusStatistics(const T* values, uint64_t valueCount, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * @brief Adds a 2d array of explicit values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according to
+		 * 											the topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly J dimension).
+		 * @param [in]		proxy				  	The HDF proxy where to write the property values. It
+		 * 											must be already opened for writing and won't be
+		 * 											closed in this method. If @c nullptr, then a default
+		 * 											HDF proxy must be defined in the repository.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
+		 */
+		template<typename T>
+		void pushBackArray2dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = std::numeric_limits<T>::max());
+		template<typename T>
+		void pushBackArray2dOfValuesPlusStatistics(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * @brief Adds a 3d array of explicit values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according the
+		 * 											topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param [in]		proxy				  	The HDF proxy where to write the property values. It
+		 * 											must be already opened for writing and won't be
+		 * 											closed in this method. If @c nullptr, then a default
+		 * 											HDF proxy must be defined in the repository.
+		 * @param			forceStatisticsComputation	Indicates if FESAPI must force computation of the statistics or not.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
+		 */
+		template<typename T>
+		void pushBackArray3dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = std::numeric_limits<T>::max());
+		template<typename T>
+		void pushBackArray3dOfValuesPlusStatistics(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 		
-		%template(pushBackInt8ArrayOfValues) pushBackIntegerArrayOfValues<int8_t>;
-		%template(pushBackUInt8ArrayOfValues) pushBackIntegerArrayOfValues<uint8_t>;
-		%template(pushBackInt16ArrayOfValues) pushBackIntegerArrayOfValues<int16_t>;
-		%template(pushBackUInt16ArrayOfValues) pushBackIntegerArrayOfValues<uint16_t>;
-		%template(pushBackInt32ArrayOfValues) pushBackIntegerArrayOfValues<int32_t>;
-		%template(pushBackUInt32ArrayOfValues) pushBackIntegerArrayOfValues<uint32_t>;
-		%template(pushBackInt64ArrayOfValues) pushBackIntegerArrayOfValues<int64_t>;
-		%template(pushBackUInt64ArrayOfValues) pushBackIntegerArrayOfValues<uint64_t>;
+		%template(pushBackInt8ArrayOfValues) pushBackArrayOfValues<int8_t>;
+		%template(pushBackUInt8ArrayOfValues) pushBackArrayOfValues<uint8_t>;
+		%template(pushBackInt16ArrayOfValues) pushBackArrayOfValues<int16_t>;
+		%template(pushBackUInt16ArrayOfValues) pushBackArrayOfValues<uint16_t>;
+		%template(pushBackInt32ArrayOfValues) pushBackArrayOfValues<int32_t>;
+		%template(pushBackUInt32ArrayOfValues) pushBackArrayOfValues<uint32_t>;
+		%template(pushBackInt64ArrayOfValues) pushBackArrayOfValues<int64_t>;
+		%template(pushBackUInt64ArrayOfValues) pushBackArrayOfValues<uint64_t>;
+		%template(pushBackFloatArrayOfValues) pushBackArrayOfValues<float>;
+		%template(pushBackDoubleArrayOfValues) pushBackArrayOfValues<double>;
 		
-		%template(pushBackInt8Array1dOfValues) pushBackIntegerArray1dOfValues<int8_t>;
-		%template(pushBackUInt8Array1dOfValues) pushBackIntegerArray1dOfValues<uint8_t>;
-		%template(pushBackInt16Array1dOfValues) pushBackIntegerArray1dOfValues<int16_t>;
-		%template(pushBackUInt16Array1dOfValues) pushBackIntegerArray1dOfValues<uint16_t>;
-		%template(pushBackInt32Array1dOfValues) pushBackIntegerArray1dOfValues<int32_t>;
-		%template(pushBackUInt32Array1dOfValues) pushBackIntegerArray1dOfValues<uint32_t>;
-		%template(pushBackInt64Array1dOfValues) pushBackIntegerArray1dOfValues<int64_t>;
-		%template(pushBackUInt64Array1dOfValues) pushBackIntegerArray1dOfValues<uint64_t>;
+		%template(pushBackInt8ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<int8_t>;
+		%template(pushBackUInt8ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<uint8_t>;
+		%template(pushBackInt16ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<int16_t>;
+		%template(pushBackUInt16ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<uint16_t>;
+		%template(pushBackInt32ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<int32_t>;
+		%template(pushBackUInt32ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<uint32_t>;
+		%template(pushBackInt64ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<int64_t>;
+		%template(pushBackUInt64ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<uint64_t>;
+		%template(pushBackFloatArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<float>;
+		%template(pushBackDoubleArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<double>;
 		
-		%template(pushBackInt8Array2dOfValues) pushBackIntegerArray2dOfValues<int8_t>;
-		%template(pushBackUInt8Array2dOfValues) pushBackIntegerArray2dOfValues<uint8_t>;
-		%template(pushBackInt16Array2dOfValues) pushBackIntegerArray2dOfValues<int16_t>;
-		%template(pushBackUInt16Array2dOfValues) pushBackIntegerArray2dOfValues<uint16_t>;
-		%template(pushBackInt32Array2dOfValues) pushBackIntegerArray2dOfValues<int32_t>;
-		%template(pushBackUInt32Array2dOfValues) pushBackIntegerArray2dOfValues<uint32_t>;
-		%template(pushBackInt64Array2dOfValues) pushBackIntegerArray2dOfValues<int64_t>;
-		%template(pushBackUInt64Array2dOfValues) pushBackIntegerArray2dOfValues<uint64_t>;
+		%template(pushBackInt8Array1dOfValues) pushBackArray1dOfValues<int8_t>;
+		%template(pushBackUInt8Array1dOfValues) pushBackArray1dOfValues<uint8_t>;
+		%template(pushBackInt16Array1dOfValues) pushBackArray1dOfValues<int16_t>;
+		%template(pushBackUInt16Array1dOfValues) pushBackArray1dOfValues<uint16_t>;
+		%template(pushBackInt32Array1dOfValues) pushBackArray1dOfValues<int32_t>;
+		%template(pushBackUInt32Array1dOfValues) pushBackArray1dOfValues<uint32_t>;
+		%template(pushBackInt64Array1dOfValues) pushBackArray1dOfValues<int64_t>;
+		%template(pushBackUInt64Array1dOfValues) pushBackArray1dOfValues<uint64_t>;
+		%template(pushBackFloatArray1dOfValues) pushBackArray1dOfValues<float>;
+		%template(pushBackDoubleArray1dOfValues) pushBackArray1dOfValues<double>;
 		
-		%template(pushBackInt8Array3dOfValues) pushBackIntegerArray3dOfValues<int8_t>;
-		%template(pushBackUInt8Array3dOfValues) pushBackIntegerArray3dOfValues<uint8_t>;
-		%template(pushBackInt16Array3dOfValues) pushBackIntegerArray3dOfValues<int16_t>;
-		%template(pushBackUInt16Array3dOfValues) pushBackIntegerArray3dOfValues<uint16_t>;
-		%template(pushBackInt32Array3dOfValues) pushBackIntegerArray3dOfValues<int32_t>;
-		%template(pushBackUInt32Array3dOfValues) pushBackIntegerArray3dOfValues<uint32_t>;
-		%template(pushBackInt64Array3dOfValues) pushBackIntegerArray3dOfValues<int64_t>;
-		%template(pushBackUInt64Array3dOfValues) pushBackIntegerArray3dOfValues<uint64_t>;
+		%template(pushBackInt8Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<int8_t>;
+		%template(pushBackUInt8Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<uint8_t>;
+		%template(pushBackInt16Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<int16_t>;
+		%template(pushBackUInt16Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<uint16_t>;
+		%template(pushBackInt32Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<int32_t>;
+		%template(pushBackUInt32Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<uint32_t>;
+		%template(pushBackInt64Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<int64_t>;
+		%template(pushBackUInt64Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<uint64_t>;
+		%template(pushBackFloatArray1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<float>;
+		%template(pushBackDoubleArray1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<double>;
+		
+		%template(pushBackInt8Array2dOfValues) pushBackArray2dOfValues<int8_t>;
+		%template(pushBackUInt8Array2dOfValues) pushBackArray2dOfValues<uint8_t>;
+		%template(pushBackInt16Array2dOfValues) pushBackArray2dOfValues<int16_t>;
+		%template(pushBackUInt16Array2dOfValues) pushBackArray2dOfValues<uint16_t>;
+		%template(pushBackInt32Array2dOfValues) pushBackArray2dOfValues<int32_t>;
+		%template(pushBackUInt32Array2dOfValues) pushBackArray2dOfValues<uint32_t>;
+		%template(pushBackInt64Array2dOfValues) pushBackArray2dOfValues<int64_t>;
+		%template(pushBackUInt64Array2dOfValues) pushBackArray2dOfValues<uint64_t>;
+		%template(pushBackFloatArray2dOfValues) pushBackArray2dOfValues<float>;
+		%template(pushBackDoubleArray2dOfValues) pushBackArray2dOfValues<double>;
+		
+		%template(pushBackInt8Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<int8_t>;
+		%template(pushBackUInt8Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<uint8_t>;
+		%template(pushBackInt16Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<int16_t>;
+		%template(pushBackUInt16Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<uint16_t>;
+		%template(pushBackInt32Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<int32_t>;
+		%template(pushBackUInt32Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<uint32_t>;
+		%template(pushBackInt64Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<int64_t>;
+		%template(pushBackUInt64Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<uint64_t>;
+		%template(pushBackFloatArray2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<float>;
+		%template(pushBackDoubleArray2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<double>;
+		
+		%template(pushBackInt8Array3dOfValues) pushBackArray3dOfValues<int8_t>;
+		%template(pushBackUInt8Array3dOfValues) pushBackArray3dOfValues<uint8_t>;
+		%template(pushBackInt16Array3dOfValues) pushBackArray3dOfValues<int16_t>;
+		%template(pushBackUInt16Array3dOfValues) pushBackArray3dOfValues<uint16_t>;
+		%template(pushBackInt32Array3dOfValues) pushBackArray3dOfValues<int32_t>;
+		%template(pushBackUInt32Array3dOfValues) pushBackArray3dOfValues<uint32_t>;
+		%template(pushBackInt64Array3dOfValues) pushBackArray3dOfValues<int64_t>;
+		%template(pushBackUInt64Array3dOfValues) pushBackArray3dOfValues<uint64_t>;
+		%template(pushBackFloatArray3dOfValues) pushBackArray3dOfValues<float>;
+		%template(pushBackDoubleArray3dOfValues) pushBackArray3dOfValues<double>;
+		
+		%template(pushBackInt8Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<int8_t>;
+		%template(pushBackUInt8Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<uint8_t>;
+		%template(pushBackInt16Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<int16_t>;
+		%template(pushBackUInt16Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<uint16_t>;
+		%template(pushBackInt32Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<int32_t>;
+		%template(pushBackUInt32Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<uint32_t>;
+		%template(pushBackInt64Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<int64_t>;
+		%template(pushBackUInt64Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<uint64_t>;
+		%template(pushBackFloatArray3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<float>;
+		%template(pushBackDoubleArray3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<double>;
+		
+		template<typename T>
+		COMMON_NS::NumberArrayStatistics<T> getArrayOfValuesOfPatch(uint64_t patchIndex, T* values, bool forceStatisticsComputation = false) const;
+
+		template<typename T> COMMON_NS::NumberArrayStatistics<T> getStatistics(uint64_t patchIndex) const;
+				
+		%template(getInt8ValuesOfPatch) getArrayOfValuesOfPatch<int8_t>;
+		%template(getUInt8ValuesOfPatch) getArrayOfValuesOfPatch<uint8_t>;
+		%template(getInt16ValuesOfPatch) getArrayOfValuesOfPatch<int16_t>;
+		%template(getUInt16ValuesOfPatch) getArrayOfValuesOfPatch<uint16_t>;
+		%template(getInt32ValuesOfPatch) getArrayOfValuesOfPatch<int32_t>;
+		%template(getUInt32ValuesOfPatch) getArrayOfValuesOfPatch<uint32_t>;
+		%template(getInt64ValuesOfPatch) getArrayOfValuesOfPatch<int64_t>;
+		%template(getUInt64ValuesOfPatch) getArrayOfValuesOfPatch<uint64_t>;
+		%template(getFloatValuesOfPatch) getArrayOfValuesOfPatch<float>;
+		%template(getDoubleValuesOfPatch) getArrayOfValuesOfPatch<double>;
+				
+		%template(getInt8StatisticsOfPatch) getStatistics<int8_t>;
+		%template(getUInt8StatisticsOfPatch) getStatistics<uint8_t>;
+		%template(getInt16StatisticsOfPatch) getStatistics<int16_t>;
+		%template(getUInt16StatisticsOfPatch) getStatistics<uint16_t>;
+		%template(getInt32StatisticsOfPatch) getStatistics<int32_t>;
+		%template(getUInt32StatisticsOfPatch) getStatistics<uint32_t>;
+		%template(getInt64StatisticsOfPatch) getStatistics<int64_t>;
+		%template(getUInt64StatisticsOfPatch) getStatistics<uint64_t>;
+		%template(getFloatStatisticsOfPatch) getStatistics<float>;
+		%template(getDoubleStatisticsOfPatch) getStatistics<double>;
 
 		/**
 		 * @brief	Adds a 1d array of explicit int 64 bits values to the property values.
@@ -6119,7 +6282,7 @@ namespace RESQML2_NS
 		 * @param 		  	nullValue 	The null value.
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
 		#endif
 		void pushBackInt64Hdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
@@ -6129,7 +6292,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
 		#endif
 		void pushBackInt32Hdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
@@ -6139,7 +6302,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
 		#endif
 		void pushBackInt16Hdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
@@ -6149,7 +6312,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
 		#endif
 		void pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
@@ -6173,7 +6336,7 @@ namespace RESQML2_NS
 		 * @param 		  	nullValue			  	The null value.
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		#endif
 		void pushBackInt64Hdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
@@ -6183,7 +6346,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		#endif
 		void pushBackInt32Hdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
@@ -6193,7 +6356,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		#endif
 		void pushBackInt16Hdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
@@ -6203,7 +6366,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		#endif
 		void pushBackUInt16Hdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
@@ -6213,7 +6376,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		#endif
 		void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
@@ -6239,7 +6402,7 @@ namespace RESQML2_NS
 		 * @param 		  	nullValue			  	The null value.
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		#endif
 		void pushBackInt64Hdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
@@ -6249,7 +6412,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		#endif
 		void pushBackInt32Hdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
@@ -6259,7 +6422,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		#endif
 		void pushBackInt16Hdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
@@ -6269,7 +6432,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		#endif
 		void pushBackUInt16Hdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
@@ -6279,7 +6442,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		#endif
 		void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
@@ -6302,7 +6465,7 @@ namespace RESQML2_NS
 		 * @param 		  	nullValue				The null value.
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		#endif
 		void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
@@ -6312,7 +6475,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		#endif
 		void pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
@@ -6322,7 +6485,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		#endif
 		void pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
@@ -6332,7 +6495,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		#endif
 		void pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
@@ -6342,7 +6505,7 @@ namespace RESQML2_NS
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
 		#if SWIG_VERSION >= 0x040100
-		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		#endif
 		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
@@ -6424,118 +6587,6 @@ namespace RESQML2_NS
 		 * @returns	the null value.
 		 */
 		int64_t getNullValueOfPatch(uint64_t patchIndex) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 64 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 *
-		 * @returns	The null value.
-		 */
-		int64_t getInt64ValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 64 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 *
-		 * @returns	The null value.
-		 */
-		uint64_t getUInt64ValuesOfPatch(uint64_t patchIndex, uint64_t* values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 32 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		int32_t getInt32ValuesOfPatch(uint64_t patchIndex, int32_t * values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 32 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		uint32_t getUInt32ValuesOfPatch(uint64_t patchIndex, uint32_t * values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 16 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		int16_t getInt16ValuesOfPatch(uint64_t patchIndex, int16_t * values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 16 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		uint16_t getUInt16ValuesOfPatch(uint64_t patchIndex, uint16_t * values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 8 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		int8_t getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 8 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		uint8_t getUInt8ValuesOfPatch(uint64_t patchIndex, uint8_t* values) const;
 
 		//***********************************
 		//*** Writing with hyperslabbing *****
@@ -7230,6 +7281,9 @@ namespace RESQML2_NS
 		 * 									method. If @c nullptr (default value), then a default HDF proxy
 		 * 									must be defined in the repository.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
+		#endif
 		void pushBackDoubleHdf5Array1dOfValues(const double * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7250,6 +7304,9 @@ namespace RESQML2_NS
 		 * 											(default value), then a default HDF proxy must be
 		 * 											defined in the repository.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
+		#endif
 		void pushBackDoubleHdf5Array2dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7272,6 +7329,9 @@ namespace RESQML2_NS
 		 * 											(default value), then a default HDF proxy must be
 		 * 											defined in the repository.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
+		#endif
 		void pushBackDoubleHdf5Array3dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7291,6 +7351,9 @@ namespace RESQML2_NS
 		 * 										then a default HDF proxy must be defined in the
 		 * 										repository.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
+		#endif
 		void pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7298,6 +7361,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array1dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
+		#endif
 		void pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7305,6 +7371,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array2dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
+		#endif
 		void pushBackFloatHdf5Array2dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7312,6 +7381,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array3dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
+		#endif
 		void pushBackFloatHdf5Array3dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7322,6 +7394,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
+		#endif
 		void pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7343,30 +7418,6 @@ namespace RESQML2_NS
 		 * @returns	The name of the referenced HDF5 dataset.
 		 */
 		std::string pushBackRefToExistingFloatingPointDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
-
-		/**
-		 * Gets all the values of a particular patch of this instance which are supposed to be double
-		 * ones.
-		 *
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 */
-		void getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const;
-
-		/**
-		 * Gets all the values of a particular patch of this instance which are supposed to be float
-		 * ones.
-		 *
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 */
-		void getFloatValuesOfPatch(unsigned int patchIndex, float * values) const;
 
 		//******************************************/
 		//*** For FLOATING POINT hyperslabbing *****/
@@ -7627,7 +7678,7 @@ namespace RESQML2_NS
 		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
 		 * 			vector property).
 		 */
-		double getMinimumValue(unsigned int index = 0) const;
+		double getMinimumValue(uint64_t index = 0) const;
 
 		/**
 		 * @brief	Gets the maximum value of a non vector property or the maximum value of one given
@@ -7642,7 +7693,7 @@ namespace RESQML2_NS
 		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
 		 * 			vector property).
 		 */
-		double getMaximumValue(unsigned int index = 0) const;
+		double getMaximumValue(uint64_t index = 0) const;
 
 		/**
 		 * @brief	Sets the minimum value of a non vector property or the minimum value of one given

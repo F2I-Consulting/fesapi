@@ -477,7 +477,7 @@ ${COMMENT_END}
 			fesapi.DoubleArray_setitem(prop1Values, 14, 351);
 			fesapi.DoubleArray_setitem(prop1Values, 15, 352);
 
-			contProp1.pushBackDoubleHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
+			contProp1.pushBackDoubleArray2dOfValues(prop1Values, 2, 8, hdfProxy);
 		}
 		finally {
 			fesapi.delete_DoubleArray(prop1Values);
@@ -497,7 +497,7 @@ ${COMMENT_END}
 		try {
 			fesapi.UInt16Array_setitem(propValues, 0, 0);
 			fesapi.UInt16Array_setitem(propValues, 1, 1);
-			discreteProp1.pushBackUInt16Hdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+			discreteProp1.pushBackUInt16Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
 			fesapi.delete_UInt16Array(propValues);
@@ -510,7 +510,7 @@ ${COMMENT_END}
 		try {
 			fesapi.UInt16Array_setitem(propValues, 0, 10);
 			fesapi.UInt16Array_setitem(propValues, 1, 11);
-			discreteProp2.pushBackUInt16Hdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+			discreteProp2.pushBackUInt16Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
 			fesapi.delete_UInt16Array(propValues);
@@ -588,7 +588,7 @@ ${COMMENT_START}
 		try {
 			fesapi.UInt16Array_setitem(propValues, 0, 10);
 			fesapi.UInt16Array_setitem(propValues, 1, 11);
-			discreteProp2.pushBackUInt16Hdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
+			discreteProp2.pushBackUInt16Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
 			fesapi.delete_UInt16Array(propValues);
@@ -625,7 +625,7 @@ ${COMMENT_START}
 		finally {
 			fesapi.delete_DoubleArray(values);
 		}
-		contColMapContProp.pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
+		contColMapContProp.pushBackDoubleArray2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 		ContinuousColorMap contColMap = repo.createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", resqml22__InterpolationDomain.rgb, resqml22__InterpolationMethod.linear);
 		SWIGTYPE_p_unsigned_char contColMapRgbColors = fesapi.new_UInt8Array(6);

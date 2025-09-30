@@ -55,7 +55,7 @@ void MultirealPropertyTest::initRepo() {
 		propertyKind);
 	REQUIRE(continuousPropertyReal0 != nullptr);
 	double values[2] = { 0.0, 0.0 };
-	continuousPropertyReal0->pushBackDoubleHdf5Array1dOfValues(values, 2, hdfProxy);
+	continuousPropertyReal0->pushBackArray1dOfValues(values, 2, hdfProxy);
 	continuousPropertyReal0->setRealizationIndices(0, 1);
 
 	// creating the ContinuousProperty real 1
@@ -68,7 +68,7 @@ void MultirealPropertyTest::initRepo() {
 	REQUIRE(continuousPropertyReal1 != nullptr);
 	values[0] = 1.0;
 	values[1] = 1.0;
-	continuousPropertyReal1->pushBackDoubleHdf5Array1dOfValues(values, 2, hdfProxy);
+	continuousPropertyReal1->pushBackArray1dOfValues(values, 2, hdfProxy);
 	continuousPropertyReal1->setRealizationIndices(1, 1);
 
 	// creating the ContinuousProperty real 10
@@ -81,7 +81,7 @@ void MultirealPropertyTest::initRepo() {
 	REQUIRE(continuousPropertyReal10 != nullptr);
 	values[0] = 10;
 	values[1] = 10;
-	continuousPropertyReal10->pushBackDoubleHdf5Array1dOfValues(values, 2, hdfProxy);
+	continuousPropertyReal10->pushBackArray1dOfValues(values, 2, hdfProxy);
 	continuousPropertyReal10->setRealizationIndices(0, 1);
 
 	// creating the ContinuousProperty real 15
@@ -94,7 +94,7 @@ void MultirealPropertyTest::initRepo() {
 	REQUIRE(continuousPropertyReal0 != nullptr);
 	values[0] = 15;
 	values[1] = 15;
-	continuousPropertyReal15->pushBackDoubleHdf5Array1dOfValues(values, 2, hdfProxy);
+	continuousPropertyReal15->pushBackArray1dOfValues(values, 2, hdfProxy);
 	continuousPropertyReal15->setRealizationIndices(0, 1);
 }
 

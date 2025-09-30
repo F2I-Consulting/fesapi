@@ -86,7 +86,7 @@ uint32_t StreamlinesRepresentation::getInjectorPerLine(uint32_t* injectorPerLine
 		throw std::logic_error("There is no wellbore trajectory associated to this streamlines representation");
 	}
 
-	return readArrayNdOfUInt32Values(wellboresInfo->InjectorPerLine, injectorPerLine);
+	return readArrayNdOfIntegerValues(wellboresInfo->InjectorPerLine, injectorPerLine);
 }
 
 uint32_t StreamlinesRepresentation::getProducerPerLine(uint32_t* producerPerLine) const
@@ -97,7 +97,7 @@ uint32_t StreamlinesRepresentation::getProducerPerLine(uint32_t* producerPerLine
 		throw std::logic_error("There is no wellbore trajectory associated to this streamlines representation");
 	}
 
-	return readArrayNdOfUInt32Values(wellboresInfo->ProducerPerLine, producerPerLine);
+	return readArrayNdOfIntegerValues(wellboresInfo->ProducerPerLine, producerPerLine);
 }
 
 void StreamlinesRepresentation::setWellboreInformation(uint32_t const* injectorPerLine, uint32_t const* producerPerLine, const std::vector<RESQML2_NS::WellboreTrajectoryRepresentation*> & wellboreTrajectories,
@@ -167,7 +167,7 @@ void StreamlinesRepresentation::getNodeCountPerLine(uint32_t * nodeCountPerPolyl
 		throw std::logic_error("There is no geometry associated to this streamlines representation");
 	}
 
-	readArrayNdOfUInt32Values(geometry->NodeCountPerPolyline, nodeCountPerPolyline);
+	readArrayNdOfIntegerValues(geometry->NodeCountPerPolyline, nodeCountPerPolyline);
 }
 
 void StreamlinesRepresentation::setGeometry(
@@ -354,7 +354,7 @@ uint16_t StreamlinesRepresentation::getGridIndices(uint16_t * gridIndices) const
 		throw std::logic_error("There is no grid associated to this streamlines representation");
 	}
 
-	return readArrayNdOfUInt16Values(gridLink->GridIndices, gridIndices);
+	return readArrayNdOfIntegerValues(gridLink->GridIndices, gridIndices);
 }
 
 int64_t StreamlinesRepresentation::getCellIndices(int64_t * cellIndices) const
@@ -368,7 +368,7 @@ int64_t StreamlinesRepresentation::getCellIndices(int64_t * cellIndices) const
 		throw std::logic_error("There is no grid associated to this streamlines representation");
 	}
 
-	return readArrayNdOfInt64Values(gridLink->CellIndices, cellIndices);
+	return readArrayNdOfIntegerValues(gridLink->CellIndices, cellIndices);
 }
 
 uint8_t StreamlinesRepresentation::getLocalFacePairPerCellIndices(uint8_t * localFacePairPerCellIndices) const
@@ -382,7 +382,7 @@ uint8_t StreamlinesRepresentation::getLocalFacePairPerCellIndices(uint8_t * loca
 		throw std::logic_error("There is no grid associated to this streamlines representation");
 	}
 
-	return readArrayNdOfUInt8Values(gridLink->LocalFacePairPerCellIndices, localFacePairPerCellIndices);
+	return readArrayNdOfIntegerValues(gridLink->LocalFacePairPerCellIndices, localFacePairPerCellIndices);
 }
 
 uint64_t StreamlinesRepresentation::getGridRepresentationCount() const

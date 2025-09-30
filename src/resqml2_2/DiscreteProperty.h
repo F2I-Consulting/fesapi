@@ -89,6 +89,15 @@ namespace RESQML2_2_NS
 
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) final { return true; }
 
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int8_t> getInt8Statistics(uint64_t patchIndex) const final { return getStats<int8_t>(patchIndex); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint8_t> getUInt8Statistics(uint64_t patchIndex) const final { return getStats<uint8_t>(patchIndex); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int16_t> getInt16Statistics(uint64_t patchIndex) const final { return getStats<int16_t>(patchIndex); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint16_t> getUInt16Statistics(uint64_t patchIndex) const final { return getStats<uint16_t>(patchIndex); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int32_t> getInt32Statistics(uint64_t patchIndex) const final { return getStats<int32_t>(patchIndex); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint32_t> getUInt32Statistics(uint64_t patchIndex) const final { return getStats<uint32_t>(patchIndex); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int64_t> getInt64Statistics(uint64_t patchIndex) const final { return getStats<int64_t>(patchIndex); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint64_t> getUInt64Statistics(uint64_t patchIndex) const final { return getStats<uint64_t>(patchIndex); }
+
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
@@ -103,5 +112,83 @@ namespace RESQML2_2_NS
 
 		size_t getMinimumValueSize() const;
 		size_t getMaximumValueSize() const;
+
+		template<typename T>
+		COMMON_NS::NumberArrayStatistics<T> getStats(uint64_t patchIndex) const {
+			auto nullValue = getNullValueOfPatch(patchIndex);
+			if constexpr (std::is_signed_v<T>) {
+				if (nullValue > (std::numeric_limits<T>::max)() || nullValue < (std::numeric_limits<T>::min)()) {
+					nullValue = (std::numeric_limits<T>::max)();
+				}
+			}
+			else {
+				if (nullValue > 0 || static_cast<uint64_t>(nullValue) < (std::numeric_limits<T>::min)()) {
+					nullValue = (std::numeric_limits<T>::max)();
+				}
+			}
+			COMMON_NS::NumberArrayStatistics<T> result;
+			result.setNullValue(static_cast<T>(nullValue));
+
+			const auto* valuesforPatch = static_cast<gsoap_eml2_3::_resqml22__DiscreteProperty*>(gsoapProxy2_3)->ValuesForPatch.at(patchIndex);
+			auto const* intArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(valuesforPatch);
+			if (intArray == nullptr) return result;
+
+			for (size_t i = 0; i < intArray->Statistics.size(); ++i) {
+				auto const* stats = intArray->Statistics[i];
+				if (stats->MaximumValue) {
+					if constexpr (std::is_signed_v<T>) {
+						if (*stats->MaximumValue > (std::numeric_limits<T>::min)() &&
+							*stats->MaximumValue < (std::numeric_limits<T>::max)()) {
+							result.setMaximum(static_cast<T>(*stats->MaximumValue), i);
+						}
+					}
+					else {
+						if (*stats->MaximumValue > 0 &&
+							static_cast<uint64_t>(*stats->MaximumValue) < (std::numeric_limits<T>::max)()) {
+							result.setMaximum(static_cast<T>(*stats->MaximumValue), i);
+						}
+					}
+				}
+				if (stats->MinimumValue) {
+					if constexpr (std::is_signed_v<T>) {
+						if (*stats->MinimumValue > (std::numeric_limits<T>::min)() &&
+							*stats->MinimumValue < (std::numeric_limits<T>::max)()) {
+							result.setMinimum(static_cast<T>(*stats->MinimumValue), i);
+						}
+					}
+					else {
+						if (*stats->MinimumValue > 0 &&
+							static_cast<uint64_t>(*stats->MinimumValue) < (std::numeric_limits<T>::max)()) {
+							result.setMinimum(static_cast<T>(*stats->MinimumValue), i);
+						}
+					}
+				}
+				if (stats->ModePercentage) {
+					result.setModePercentage(*stats->ModePercentage, i);
+				}
+				if (stats->ValidValueCount) {
+					result.setValidValueCount(*stats->ValidValueCount, i);
+				}
+				if (stats->ValuesMedian) {
+					result.setMedian(*stats->ValuesMedian, i);
+				}
+				if (stats->ValuesMode) {
+					if constexpr (std::is_signed_v<T>) {
+						if (*stats->ValuesMode > (std::numeric_limits<T>::min)() &&
+							*stats->ValuesMode < (std::numeric_limits<T>::max)()) {
+							result.setMode(static_cast<T>(*stats->ValuesMode), i);
+						}
+					}
+					else {
+						if (*stats->ValuesMode > 0 &&
+							static_cast<uint64_t>(*stats->ValuesMode) < (std::numeric_limits<T>::max)()) {
+							result.setMode(static_cast<T>(*stats->ValuesMode), i);
+						}
+					}
+				}
+			}
+
+			return result;
+		}
 	};
 }

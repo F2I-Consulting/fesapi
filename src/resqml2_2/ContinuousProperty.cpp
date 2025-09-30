@@ -82,7 +82,7 @@ std::string ContinuousProperty::getUomAsString() const
 	return static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3)->Uom;
 }
 
-double ContinuousProperty::getMinimumValue(unsigned int index) const
+double ContinuousProperty::getMinimumValue(uint64_t index) const
 {
 	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 
@@ -98,7 +98,7 @@ double ContinuousProperty::getMinimumValue(unsigned int index) const
 	return result;
 }
 
-double ContinuousProperty::getMaximumValue(unsigned int index) const
+double ContinuousProperty::getMaximumValue(uint64_t index) const
 {
 	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 

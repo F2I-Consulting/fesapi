@@ -182,7 +182,7 @@ void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(unsigned int p
 		throw out_of_range("The patchIndex is out of range");
 	}
 
-	readArrayNdOfUInt32Values(triRep->TrianglePatch[patchIndex]->Triangles, triangleNodeIndices);
+	readArrayNdOfIntegerValues(triRep->TrianglePatch[patchIndex]->Triangles, triangleNodeIndices);
 }
 
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const

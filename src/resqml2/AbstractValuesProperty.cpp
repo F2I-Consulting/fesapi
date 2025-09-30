@@ -367,110 +367,137 @@ void AbstractValuesProperty::pushBackIntegerConstantArrayOfValues(int64_t value,
 	}
 }
 
-template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<int8_t>(const int8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue) {
-	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8, numValues, numDimensionsInArray, proxy, nullValue);
+template<> void AbstractValuesProperty::pushBackArrayOfValues<int8_t>(const int8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue) {
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8, numValues, numDimensionsInArray, proxy, nullValue);
 }
-template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint8_t>(const uint8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint8_t nullValue) {
-	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, numValues, numDimensionsInArray, proxy, nullValue);
+template<> void AbstractValuesProperty::pushBackArrayOfValues<uint8_t>(const uint8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, uint8_t nullValue) {
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT8, numValues, numDimensionsInArray, proxy, nullValue);
 }
-template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<int16_t>(const int16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int16_t nullValue) {
-	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, numValues, numDimensionsInArray, proxy, nullValue);
+template<> void AbstractValuesProperty::pushBackArrayOfValues<int16_t>(const int16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, int16_t nullValue) {
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT16, numValues, numDimensionsInArray, proxy, nullValue);
 }
-template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint16_t>(const uint16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint16_t nullValue) {
-	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16, numValues, numDimensionsInArray, proxy, nullValue);
+template<> void AbstractValuesProperty::pushBackArrayOfValues<uint16_t>(const uint16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, uint16_t nullValue) {
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT16, numValues, numDimensionsInArray, proxy, nullValue);
 }
-template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<int32_t>(const int32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int32_t nullValue) {
-	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32, numValues, numDimensionsInArray, proxy, nullValue);
+template<> void AbstractValuesProperty::pushBackArrayOfValues<int32_t>(const int32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, int32_t nullValue) {
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT32, numValues, numDimensionsInArray, proxy, nullValue);
 }
-template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint32_t>(const uint32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint32_t nullValue) {
-	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, numValues, numDimensionsInArray, proxy, nullValue);
+template<> void AbstractValuesProperty::pushBackArrayOfValues<uint32_t>(const uint32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, uint32_t nullValue) {
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT32, numValues, numDimensionsInArray, proxy, nullValue);
 }
-template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<int64_t>(const int64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
-	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, numValues, numDimensionsInArray, proxy, nullValue);
+template<> void AbstractValuesProperty::pushBackArrayOfValues<int64_t>(const int64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64, numValues, numDimensionsInArray, proxy, nullValue);
 }
-template<> void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint64_t>(const uint64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint64_t nullValue) {
-	pushBackIntegerArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, numValues, numDimensionsInArray, proxy, nullValue);
+template<> void AbstractValuesProperty::pushBackArrayOfValues<uint64_t>(const uint64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, uint64_t nullValue) {
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, numValues, numDimensionsInArray, proxy, nullValue);
+}
+template<> void AbstractValuesProperty::pushBackArrayOfValues<float>(const float* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, float) {
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT, numValues, numDimensionsInArray, proxy, (std::numeric_limits<int64_t>::max)());
+}
+template<> void AbstractValuesProperty::pushBackArrayOfValues<double>(const double* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+	EML2_NS::AbstractHdfProxy* proxy, double) {
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE, numValues, numDimensionsInArray, proxy, (std::numeric_limits<int64_t>::max)());
 }
 
+template<> COMMON_NS::NumberArrayStatistics<int8_t> AbstractValuesProperty::getStatistics<int8_t>(uint64_t patchIndex) const { return getInt8Statistics(patchIndex); }
+template<> COMMON_NS::NumberArrayStatistics<uint8_t> AbstractValuesProperty::getStatistics<uint8_t>(uint64_t patchIndex) const { return getUInt8Statistics(patchIndex); }
+template<> COMMON_NS::NumberArrayStatistics<int16_t> AbstractValuesProperty::getStatistics<int16_t>(uint64_t patchIndex) const { return getInt16Statistics(patchIndex); }
+template<> COMMON_NS::NumberArrayStatistics<uint16_t> AbstractValuesProperty::getStatistics<uint16_t>(uint64_t patchIndex) const { return getUInt16Statistics(patchIndex); }
+template<> COMMON_NS::NumberArrayStatistics<int32_t> AbstractValuesProperty::getStatistics<int32_t>(uint64_t patchIndex) const { return getInt32Statistics(patchIndex); }
+template<> COMMON_NS::NumberArrayStatistics<uint32_t> AbstractValuesProperty::getStatistics<uint32_t>(uint64_t patchIndex) const { return getUInt32Statistics(patchIndex); }
+template<> COMMON_NS::NumberArrayStatistics<int64_t> AbstractValuesProperty::getStatistics<int64_t>(uint64_t patchIndex) const { return getInt64Statistics(patchIndex); }
+template<> COMMON_NS::NumberArrayStatistics<uint64_t> AbstractValuesProperty::getStatistics<uint64_t>(uint64_t patchIndex) const { return getUInt64Statistics(patchIndex); }
+template<> COMMON_NS::NumberArrayStatistics<float> AbstractValuesProperty::getStatistics<float>(uint64_t patchIndex) const { return getFloatStatistics(patchIndex); }
+template<> COMMON_NS::NumberArrayStatistics<double> AbstractValuesProperty::getStatistics<double>(uint64_t patchIndex) const { return getDoubleStatistics(patchIndex); }
+
 void AbstractValuesProperty::pushBackInt64Hdf5Array1dOfValues(const int64_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
-	pushBackIntegerArray1dOfValues(values, valueCount, proxy, nullValue);
+	pushBackArray1dOfValues(values, valueCount, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt32Hdf5Array1dOfValues(const int* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue) {
-	pushBackIntegerArray1dOfValues(values, valueCount, proxy, nullValue);
+	pushBackArray1dOfValues(values, valueCount, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt16Hdf5Array1dOfValues(const short* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue) {
-	pushBackIntegerArray1dOfValues(values, valueCount, proxy, nullValue);
+	pushBackArray1dOfValues(values, valueCount, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt8Hdf5Array1dOfValues(const int8_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue) {
-	pushBackIntegerArray1dOfValues(values, valueCount, proxy, nullValue);
+	pushBackArray1dOfValues(values, valueCount, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt64Hdf5Array2dOfValues(const int64_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
-	pushBackIntegerArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
+	pushBackArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt32Hdf5Array2dOfValues(const int* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue) {
-	pushBackIntegerArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
+	pushBackArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt16Hdf5Array2dOfValues(const short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue) {
-	pushBackIntegerArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
+	pushBackArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackUInt16Hdf5Array2dOfValues(const unsigned short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue) {
-	pushBackIntegerArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
+	pushBackArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt8Hdf5Array2dOfValues(const int8_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue) {
-	pushBackIntegerArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
+	pushBackArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt64Hdf5Array3dOfValues(const int64_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue) {
-	pushBackIntegerArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
+	pushBackArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt32Hdf5Array3dOfValues(const int* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue) {
-	pushBackIntegerArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
+	pushBackArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt16Hdf5Array3dOfValues(const short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue) {
-	pushBackIntegerArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
+	pushBackArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackUInt16Hdf5Array3dOfValues(const unsigned short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue) {
-	pushBackIntegerArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
+	pushBackArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt8Hdf5Array3dOfValues(const int8_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue) {
-	pushBackIntegerArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
+	pushBackArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt64Hdf5ArrayOfValues(const int64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue)
 {
-	pushBackIntegerArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
+	pushBackArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt32Hdf5ArrayOfValues(const int* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue)
 {
-	pushBackIntegerArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
+	pushBackArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt16Hdf5ArrayOfValues(const short* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue)
 {
-	pushBackIntegerArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
+	pushBackArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackUInt16Hdf5ArrayOfValues(const unsigned short* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
 {
-	pushBackIntegerArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
+	pushBackArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
 }
 
 void AbstractValuesProperty::pushBackInt8Hdf5ArrayOfValues(const int8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue)
 {
-	pushBackIntegerArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
+	pushBackArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue);
 }
 
 std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, int64_t nullValue)
@@ -583,8 +610,8 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 	throw logic_error("Unrecognized RESQML version");
 }
 
-void AbstractValuesProperty::pushBackIntegerArrayOfValues(const void* values, COMMON_NS::AbstractObject::numericalDatatypeEnum numericalDatatype, const uint64_t* numValues, unsigned int numDimensionsInArray,
-	EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue)
+void AbstractValuesProperty::pushBackArrayOfValues(const void* values, COMMON_NS::AbstractObject::numericalDatatypeEnum numericalDatatype, const uint64_t* numValues, unsigned int numDimensionsInArray
+	, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -601,7 +628,15 @@ void AbstractValuesProperty::pushBackIntegerArrayOfValues(const void* values, CO
 		values,
 		numValues, numDimensionsInArray);
 
-	pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
+	if (numericalDatatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE || numericalDatatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT) {
+		pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
+	}
+	else if (numericalDatatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::UNKNOWN) {
+		throw std::invalid_argument("The datatype cannot be unknown");
+	}
+	else {
+		pushBackRefToExistingIntegerDataset(proxy, getHdfGroup() + "/" + datasetName, nullValue);
+	}
 }
 
 bool AbstractValuesProperty::hasConstantValues(uint64_t patchIndex) const {
@@ -673,56 +708,6 @@ double AbstractValuesProperty::getDoubleConstantValuesOfPatch(uint64_t patchInde
 	throw std::invalid_argument("The property " + getUuid() + " has constant values which are not floating point ones.");
 }
 
-int64_t AbstractValuesProperty::getInt64ValuesOfPatch(uint64_t patchIndex, int64_t * values) const
-{
-	cannotBePartial();
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		return readArrayNdOfInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfInt64Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-}
-
-uint64_t AbstractValuesProperty::getUInt64ValuesOfPatch(uint64_t patchIndex, uint64_t* values) const
-{
-	cannotBePartial();
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		return readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfUInt64Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-}
-
 int64_t AbstractValuesProperty::getNullValueOfPatch(uint64_t patchIndex) const
 {
 	cannotBePartial();
@@ -770,158 +755,6 @@ int64_t AbstractValuesProperty::getNullValueOfPatch(uint64_t patchIndex) const
 	}
 	else {
 		throw logic_error("Not implemented yet");
-	}
-}
-
-int32_t AbstractValuesProperty::getInt32ValuesOfPatch(uint64_t patchIndex, int32_t * values) const
-{
-	cannotBePartial();
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		return readArrayNdOfInt32Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfInt32Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-}
-
-uint32_t AbstractValuesProperty::getUInt32ValuesOfPatch(uint64_t patchIndex, uint32_t * values) const
-{
-	cannotBePartial();
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		return readArrayNdOfUInt32Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfUInt32Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-}
-
-int16_t AbstractValuesProperty::getInt16ValuesOfPatch(uint64_t patchIndex, int16_t * values) const
-{
-	cannotBePartial();
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		return readArrayNdOfInt16Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfInt16Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-}
-
-uint16_t AbstractValuesProperty::getUInt16ValuesOfPatch(uint64_t patchIndex, uint16_t * values) const
-{
-	cannotBePartial();
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		return readArrayNdOfUInt16Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfUInt16Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-}
-
-int8_t AbstractValuesProperty::getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const
-{
-	if (isPartial()) {
-		throw logic_error("You cannot read values from a partial property.");
-	}
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		return readArrayNdOfInt8Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfInt8Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-}
-
-uint8_t AbstractValuesProperty::getUInt8ValuesOfPatch(uint64_t patchIndex, uint8_t* values) const
-{
-	cannotBePartial();
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		return readArrayNdOfUInt8Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values, values);
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
-		if (xmlArray != nullptr) {
-			return readArrayNdOfUInt8Values(xmlArray, values);
-		}
-		else {
-			throw logic_error("Reading integer values from a non integer array is not supported.");
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
 	}
 }
 
@@ -1085,77 +918,42 @@ void AbstractValuesProperty::pushBackFloatingPointConstantArrayOfValues(double v
 
 void AbstractValuesProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy)
 {
-	pushBackDoubleHdf5ArrayOfValues(values, &valueCount, 1, proxy);
+	pushBackArray1dOfValues(values, valueCount, proxy);
 }
 
 void AbstractValuesProperty::pushBackDoubleHdf5Array2dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy);
+	pushBackArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy);
 }
 
 void AbstractValuesProperty::pushBackDoubleHdf5Array3dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy);
+	pushBackArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy);
 }
 
 void AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
 {
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
-
-	// HDF
-	proxy->writeArrayNd(getHdfGroup(),
-		datasetName,
-		COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE,
-		values,
-		numValues, numArrayDimensions);
-
-	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
+	pushBackArrayOfValues(values, numValues, numArrayDimensions, proxy);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy)
 {
-	pushBackFloatHdf5ArrayOfValues(values, &valueCount, 1, proxy);
+	pushBackArray1dOfValues(values, valueCount, proxy);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5Array2dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-	pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy);
+	pushBackArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5Array3dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy * proxy)
 {
-	const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-	pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy);
+	pushBackArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy);
 }
 
 void AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy * proxy)
 {
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
-		}
-	}
-	const std::string datasetName = "values_patch" + std::to_string(getPatchCount());
-
-	// HDF
-	proxy->writeArrayNd(getHdfGroup(),
-		datasetName,
-		COMMON_NS::AbstractObject::numericalDatatypeEnum::FLOAT,
-		values,
-		numValues,
-		numArrayDimensions);
-
-	pushBackRefToExistingFloatingPointDataset(proxy, getHdfGroup() + "/" + datasetName);
+	pushBackArrayOfValues(values, numValues, numArrayDimensions, proxy);
 }
 
 void AbstractValuesProperty::pushBackHdf5ArrayOfValues(
@@ -1222,74 +1020,6 @@ void AbstractValuesProperty::pushBackHdf5Array3dOfValues(
 	pushBackHdf5ArrayOfValues(datatype, valueCountPerDimension, 3, nullValue, proxy);
 }
 
-void AbstractValuesProperty::getDoubleValuesOfPatch(uint64_t patchIndex, double * values) const
-{
-	cannotBePartial();
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
-		auto const* xmlArrayOfDouble = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const*>(patch->Values);
-		if (xmlArrayOfDouble != nullptr) {
-			readArrayNdOfDoubleValues(xmlArrayOfDouble, values);
-			return;
-		}
-		else {
-			throw logic_error("Reading double values from a non double array is not supported.");
-		}
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		auto const* xmlArrayOfFloatingPoints = dynamic_cast<gsoap_eml2_3::eml23__AbstractFloatingPointArray const*>(xmlValues);
-		if (xmlArrayOfFloatingPoints != nullptr) {
-			readArrayNdOfDoubleValues(xmlArrayOfFloatingPoints, values);
-			return;
-		}
-		else {
-			throw logic_error("Reading double values from a non floating point array is not supported.");
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-}
-
-void AbstractValuesProperty::getFloatValuesOfPatch(uint64_t patchIndex, float * values) const
-{
-	cannotBePartial();
-	if (patchIndex >= getPatchCount()) {
-		throw out_of_range("The values property patch is out of range");
-	}
-
-	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
-		auto const* xmlArrayOfDouble = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const*>(patch->Values);
-		if (xmlArrayOfDouble != nullptr) {
-			readArrayNdOfFloatValues(xmlArrayOfDouble, values);
-			return;
-		}
-		else {
-			throw logic_error("Reading float values from a non double array is not supported.");
-		}
-	}
-	else if (gsoapProxy2_3 != nullptr) {
-		gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
-		auto const* xmlArrayOfFloatingPoints = dynamic_cast<gsoap_eml2_3::eml23__AbstractFloatingPointArray const*>(xmlValues);
-		if (xmlArrayOfFloatingPoints != nullptr) {
-			readArrayNdOfFloatValues(xmlArrayOfFloatingPoints, values);
-			return;
-		}
-		else {
-			throw logic_error("Reading float values from a non floating point array is not supported.");
-		}
-	}
-	else {
-		throw logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
-	}
-}
-
 void AbstractValuesProperty::getFloatValuesOfPatch(
 	uint64_t patchIndex,
 	float* values,
@@ -1329,4 +1059,118 @@ void AbstractValuesProperty::getFloatValuesOf3dPatch(
 		offsetPerDimension,
 		3
 	);
+}
+
+namespace {
+
+	// the soap_new* methods are not dll exported preventing to use them in the H file.
+
+	template<typename T>  std::enable_if_t<std::is_integral_v<T>, gsoap_eml2_3::eml23__IntegerArrayStatistics*>
+	template_createIntegerArrayStatisticsFrom(soap* ctx, const COMMON_NS::NumberArrayStatistics<T>& source, size_t sourceIndex) {
+		gsoap_eml2_3::eml23__IntegerArrayStatistics* xmlStats = gsoap_eml2_3::soap_new_eml23__IntegerArrayStatistics(ctx);
+		if (source.getMinimumSize() > sourceIndex) {
+			xmlStats->MinimumValue = gsoap_eml2_3::soap_new_LONG64(ctx);
+			*xmlStats->MinimumValue = source.getMinimum(sourceIndex);
+		}
+		if (source.getMaximumSize() > sourceIndex) {
+			xmlStats->MaximumValue = gsoap_eml2_3::soap_new_LONG64(ctx);
+			*xmlStats->MaximumValue = source.getMaximum(sourceIndex);
+		}
+		if (source.getModePercentageSize() > sourceIndex) {
+			xmlStats->ModePercentage = gsoap_eml2_3::soap_new_double(ctx);
+			*xmlStats->ModePercentage = source.getModePercentage(sourceIndex);
+		}
+		if (source.getValidValueCountSize() > sourceIndex) {
+			xmlStats->ValidValueCount = gsoap_eml2_3::soap_new_LONG64(ctx);
+			*xmlStats->ValidValueCount = source.getValidValueCount(sourceIndex);
+		}
+		if (source.getMedianSize() > sourceIndex) {
+			xmlStats->ValuesMedian = gsoap_eml2_3::soap_new_LONG64(ctx);
+			*xmlStats->ValuesMedian = source.getMedian(sourceIndex);
+		}
+		if (source.getModeSize() > sourceIndex) {
+			xmlStats->ValuesMode = gsoap_eml2_3::soap_new_LONG64(ctx);
+			*xmlStats->ValuesMode = source.getMode(sourceIndex);
+		}
+
+		return xmlStats;
+	}
+
+	template<typename T>  std::enable_if_t<std::is_floating_point_v<T>, gsoap_eml2_3::eml23__FloatingPointArrayStatistics*>
+	template_createFloatingPointArrayStatisticsFrom(soap* ctx, const COMMON_NS::NumberArrayStatistics<T>& source, size_t sourceIndex) {
+		gsoap_eml2_3::eml23__FloatingPointArrayStatistics* xmlStats = gsoap_eml2_3::soap_new_eml23__FloatingPointArrayStatistics(ctx);
+		if (source.getMinimumSize() > sourceIndex) {
+			xmlStats->MinimumValue = gsoap_eml2_3::soap_new_double(ctx);
+			*xmlStats->MinimumValue = source.getMinimum(sourceIndex);
+		}
+		if (source.getMaximumSize() > sourceIndex) {
+			xmlStats->MaximumValue = gsoap_eml2_3::soap_new_double(ctx);
+			*xmlStats->MaximumValue = source.getMaximum(sourceIndex);
+		}
+		if (source.getModePercentageSize() > sourceIndex) {
+			xmlStats->ModePercentage = gsoap_eml2_3::soap_new_double(ctx);
+			*xmlStats->ModePercentage = source.getModePercentage(sourceIndex);
+		}
+		if (source.getValidValueCountSize() > sourceIndex) {
+			xmlStats->ValidValueCount = gsoap_eml2_3::soap_new_LONG64(ctx);
+			*xmlStats->ValidValueCount = source.getValidValueCount(sourceIndex);
+		}
+		if (source.getMeanSize() > sourceIndex) {
+			xmlStats->ValuesMean = gsoap_eml2_3::soap_new_double(ctx);
+			*xmlStats->ValuesMean = source.getMean(sourceIndex);
+		}
+		if (source.getMedianSize() > sourceIndex) {
+			xmlStats->ValuesMedian = gsoap_eml2_3::soap_new_double(ctx);
+			*xmlStats->ValuesMedian = source.getMedian(sourceIndex);
+		}
+		if (source.getModeSize() > sourceIndex) {
+			xmlStats->ValuesMode = gsoap_eml2_3::soap_new_double(ctx);
+			*xmlStats->ValuesMode = source.getMode(sourceIndex);
+		}
+		if (source.getStandardDeviationSize() > sourceIndex) {
+			xmlStats->ValuesStandardDeviation = gsoap_eml2_3::soap_new_double(ctx);
+			*xmlStats->ValuesStandardDeviation = source.getStandardDeviation(sourceIndex);
+		}
+		return xmlStats;
+	}
+};
+
+gsoap_eml2_3::eml23__IntegerArrayStatistics* AbstractValuesProperty::createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<int8_t>& stats, size_t index) {
+	return template_createIntegerArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);
+}
+
+gsoap_eml2_3::eml23__IntegerArrayStatistics* AbstractValuesProperty::createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<uint8_t>& stats, size_t index) {
+	return template_createIntegerArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);
+}
+
+gsoap_eml2_3::eml23__IntegerArrayStatistics* AbstractValuesProperty::createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<int16_t>& stats, size_t index) {
+	return template_createIntegerArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);
+}
+
+gsoap_eml2_3::eml23__IntegerArrayStatistics* AbstractValuesProperty::createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<uint16_t>& stats, size_t index) {
+	return template_createIntegerArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);
+}
+
+gsoap_eml2_3::eml23__IntegerArrayStatistics* AbstractValuesProperty::createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<int32_t>& stats, size_t index) {
+	return template_createIntegerArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);
+}
+
+gsoap_eml2_3::eml23__IntegerArrayStatistics* AbstractValuesProperty::createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<uint32_t>& stats, size_t index) {
+	return template_createIntegerArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);
+}
+
+gsoap_eml2_3::eml23__IntegerArrayStatistics* AbstractValuesProperty::createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<int64_t>& stats, size_t index) {
+	return template_createIntegerArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);
+}
+
+gsoap_eml2_3::eml23__IntegerArrayStatistics* AbstractValuesProperty::createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<uint64_t>& stats, size_t index) {
+	return template_createIntegerArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);
+}
+
+gsoap_eml2_3::eml23__FloatingPointArrayStatistics* AbstractValuesProperty::createFloatingPointArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<float>& stats, size_t index) {
+	return template_createFloatingPointArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);
+}
+
+gsoap_eml2_3::eml23__FloatingPointArrayStatistics* AbstractValuesProperty::createFloatingPointArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<double>& stats, size_t index) {
+	return template_createFloatingPointArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);
 }

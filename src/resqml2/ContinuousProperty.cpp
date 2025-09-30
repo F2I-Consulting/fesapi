@@ -69,7 +69,7 @@ void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, 
 		(minimumValue != nullptr && maximumValue == nullptr)) {
 		throw std::invalid_argument("You cannot set the minimum value without the maximum value and viceversa.");
 	}
-	AbstractValuesProperty::pushBackDoubleHdf5ArrayOfValues(values, numValues, numArrayDimensions, proxy);
+	AbstractValuesProperty::pushBackArrayOfValues(values, numValues, numArrayDimensions, proxy);
 
 	setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
 }
@@ -166,7 +166,7 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, ui
 		(minimumValue != nullptr && maximumValue == nullptr)) {
 		throw std::invalid_argument("You cannot set the minimum value without the maximum value and viceversa.");
 	}
-	AbstractValuesProperty::pushBackFloatHdf5ArrayOfValues(values, numValues, numArrayDimensions, proxy);
+	AbstractValuesProperty::pushBackArrayOfValues(values, numValues, numArrayDimensions, proxy);
 
 	setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
 }

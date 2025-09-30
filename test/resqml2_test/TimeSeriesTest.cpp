@@ -55,7 +55,7 @@ void TimeSeriesTest::initRepo()
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	float prop1Values[2] = { -1, 0 };
-	prop1->pushBackFloatHdf5Array3dOfValues(prop1Values, 2, 1, 1);
+	prop1->pushBackArray3dOfValues(prop1Values, 2, 1, 1);
 	prop1->setTimeSeries(timeSeries);
 	prop1->setSingleTimestamp(1378217895);
 
@@ -65,7 +65,7 @@ void TimeSeriesTest::initRepo()
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	float prop2Values[2] = { -10, 0 };
-	prop2->pushBackFloatHdf5Array3dOfValues(prop2Values, 2, 1, 1);
+	prop2->pushBackArray3dOfValues(prop2Values, 2, 1, 1);
 	prop2->setTimeSeries(timeSeries);
 	prop2->setSingleTimestamp(1409753895);
 
@@ -75,7 +75,7 @@ void TimeSeriesTest::initRepo()
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	float prop3Values[2] = { -100, 0 };
-	prop3->pushBackFloatHdf5Array3dOfValues(prop3Values, 2, 1, 1);
+	prop3->pushBackArray3dOfValues(prop3Values, 2, 1, 1);
 	prop3->setTimeSeries(timeSeries);
 	prop3->setSingleTimestamp(1441289895);
 
@@ -85,7 +85,7 @@ void TimeSeriesTest::initRepo()
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	float prop4Values[2] = { -1000, 0 };
-	prop4->pushBackFloatHdf5Array3dOfValues(prop3Values, 2, 1, 1);
+	prop4->pushBackArray3dOfValues(prop3Values, 2, 1, 1);
 	prop4->setTimeSeries(timeSeries);
 	prop4->setSingleTimestamp(170266171200);
 

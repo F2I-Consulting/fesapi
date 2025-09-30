@@ -75,7 +75,7 @@ void DiscreteColorMapTest::initRepo() {
 	DiscreteProperty* discreteProperty = repo->createDiscreteProperty(ijkgrid, uuidDiscreteProperty, titleDiscreteProperty, 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propertyKind);
 	uint16_t prop1Values[2] = { 0, 1 };
-	discreteProperty->pushBackIntegerArray3dOfValues(prop1Values, 2, 1, 1, hdfProxy, (std::numeric_limits<uint16_t>::max)());
+	discreteProperty->pushBackArray3dOfValues(prop1Values, 2, 1, 1, hdfProxy);
 
 	// associating a discrete color map to the discrete property kind
 	RESQML2_NS::DiscreteColorMap* discreteColorMap1 = repo->createDiscreteColorMap(uuidPropertyKindDiscreteColorMap, titlePropertyKindDiscreteColorMap);

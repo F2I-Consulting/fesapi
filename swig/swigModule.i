@@ -39,6 +39,11 @@ under the License.
 	%nspace COMMON_NS::EnumStringMapper;
 	%nspace COMMON_NS::EpcDocument;
 	%nspace COMMON_NS::HdfProxyFactory;
+	#if SWIG_VERSION >= 0x040300
+		%nspacemove(common) COMMON_NS::NumberArrayStatistics;
+	#else
+		%feature("nspace", "common") COMMON_NS::NumberArrayStatistics;
+	#endif
 #endif
 
 //************************/
@@ -795,6 +800,80 @@ namespace COMMON_NS
 			const std::string & packageDirAbsolutePath, const std::string & externalFilePath,
 			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 	};
+	
+	template <typename T> class NumberArrayStatistics
+	{
+    public:
+	
+        NumberArrayStatistics() = default;
+
+        /*
+		* Create statistics on scalar array
+		*
+        * @param 		  	valueCountPerIndexableElement	the number of values per indexable element. It is 1 for a scalar property.
+        */
+        NumberArrayStatistics(T const* values, uint64_t valueCount);
+
+        /*
+        * @param 		  	valueCountPerIndexableElement	the number of values per indexable element. It is 1 for a scalar property.
+        */
+        NumberArrayStatistics(T const* values, uint64_t valueCount, uint64_t valueCountPerIndexableElement);
+
+        /*
+        * @param 		  	valueCountPerIndexableElement	the number of values per indexable element. It is 1 for a scalar property.
+        * @param 		  	nullVal			  		The integer null value.Ignored (fixed to NaN) if it is a floating point value.
+        */
+        NumberArrayStatistics(T const* values, uint64_t valueCount, uint64_t valueCountPerIndexableElement, T nullVal);
+		
+		void computeFrom(T const* values, size_t valueCount, size_t valueCountPerIndexableElement);
+
+		T getNullValue() const;
+
+        uint64_t getValidValueCount(size_t valueIndex = 0) const;
+        uint64_t getValidValueCountSize() const;
+
+        T getMinimum(size_t valueIndex = 0) const;
+        uint64_t getMinimumSize() const;
+
+        T getMaximum(size_t valueIndex = 0) const;
+        uint64_t getMaximumSize() const;
+
+        double getMean(size_t valueIndex = 0) const;
+        uint64_t getMeanSize() const;
+
+        double getMedian(size_t valueIndex = 0) const;
+        uint64_t getMedianSize() const;
+
+        T getMode(size_t valueIndex = 0) const;
+        uint64_t getModeSize() const;
+
+        double getModePercentage(size_t valueIndex = 0) const;
+        uint64_t getModePercentageSize() const;
+
+        double getStandardDeviation(size_t valueIndex = 0) const;
+        uint64_t getStandardDeviationSize() const;
+
+        void setNullValue(T value);
+        void setValidValueCount(uint64_t value, size_t valueIndex = 0);
+        void setMinimum(T value, size_t valueIndex = 0);
+        void setMaximum(T value, size_t valueIndex = 0);
+        void setMean(double value, size_t valueIndex = 0);
+        void setMedian(double value, size_t valueIndex = 0);
+        void setMode(T value, size_t valueIndex = 0);
+        void setModePercentage(double value, size_t valueIndex = 0);
+        void setStandardDeviation(double value, size_t valueIndex = 0);
+	};
+
+	%template(Int8ArrayStatistics) COMMON_NS::NumberArrayStatistics<int8_t>;
+	%template(UInt8ArrayStatistics) COMMON_NS::NumberArrayStatistics<uint8_t>;
+	%template(Int16ArrayStatistics) COMMON_NS::NumberArrayStatistics<int16_t>;
+	%template(UInt16ArrayStatistics) COMMON_NS::NumberArrayStatistics<uint16_t>;
+	%template(Int32ArrayStatistics) COMMON_NS::NumberArrayStatistics<int32_t>;
+	%template(UInt32ArrayStatistics) COMMON_NS::NumberArrayStatistics<uint32_t>;
+	%template(Int64ArrayStatistics) COMMON_NS::NumberArrayStatistics<int64_t>;
+	%template(UInt64ArrayStatistics) COMMON_NS::NumberArrayStatistics<uint64_t>;
+	%template(FloatArrayStatistics) COMMON_NS::NumberArrayStatistics<float>;
+	%template(DoubleArrayStatistics) COMMON_NS::NumberArrayStatistics<double>;
 }
 
 #define CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName) bool has##vectorName##attributeName(unsigned int index) const;

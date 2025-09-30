@@ -47,7 +47,7 @@ void HdfProxy::initRepo() {
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 	hdfProxy->setCompressionLevel(6);
 	hdfProxy->setMaxChunkSize(192/2); // Create two chunks
-	discreteProp432->pushBackIntegerArray3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, static_cast<int64_t>(1111));
+	discreteProp432->pushBackArray3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, static_cast<int64_t>(1111));
 }
 
 void HdfProxy::readRepo() {

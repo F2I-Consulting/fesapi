@@ -331,7 +331,7 @@ void SubRepresentation::getElementIndicesOfPatch(unsigned int patchIndex, unsign
 		throw out_of_range("The elementIndices does not exist at this index.");
 	}
 
-	readArrayNdOfUInt64Values(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices, elementIndices);
+	readArrayNdOfIntegerValues(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices, elementIndices);
 }
 
 void SubRepresentation::getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short * supportingRepresentationIndices) const
@@ -350,7 +350,7 @@ void SubRepresentation::getSupportingRepresentationIndicesOfPatch(unsigned int p
 	}
 
 	DiscreteProperty* prop = getSupportingRepresentationIndicesDiscretePropOfPatch(patchIndex);
-	prop->getInt16ValuesOfPatch(0, supportingRepresentationIndices);
+	prop->getArrayOfValuesOfPatch(0, supportingRepresentationIndices);
 }
 
 uint64_t SubRepresentation::getPatchCount() const

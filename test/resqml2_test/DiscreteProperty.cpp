@@ -51,7 +51,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	int8_t int8Values[6] = { -2, -1, 0, 1, 2, 3 };
-	int8DiscreteProperty->pushBackIntegerArray3dOfValues(int8Values, 1, 2, 3, hdfProxy, static_cast<int8_t>(-1));
+	int8DiscreteProperty->pushBackArray3dOfValues(int8Values, 1, 2, 3, hdfProxy, static_cast<int8_t>(-1));
 
 	// creating the uint8_t DiscreteProperty
 	RESQML2_NS::DiscreteProperty* uint8DiscreteProperty = repo->createDiscreteProperty(
@@ -60,7 +60,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	uint8_t uint8Values[6] = { 0, 1, 2, 3, 4, 5 };
-	uint8DiscreteProperty->pushBackIntegerArray3dOfValues(uint8Values, 1, 2, 3, hdfProxy, (std::numeric_limits<uint8_t>::max)());
+	uint8DiscreteProperty->pushBackArray3dOfValues(uint8Values, 1, 2, 3, hdfProxy);
 
 	// creating the int16_t DiscreteProperty
 	RESQML2_NS::DiscreteProperty* int16DiscreteProperty = repo->createDiscreteProperty(
@@ -69,7 +69,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	int16_t int16Values[6] = { -2, -1, 0, 1, 2, 3 };
-	int16DiscreteProperty->pushBackIntegerArray3dOfValues(int16Values, 1, 2, 3, hdfProxy, static_cast<int16_t>(-1));
+	int16DiscreteProperty->pushBackArray3dOfValues(int16Values, 1, 2, 3, hdfProxy, static_cast<int16_t>(-1));
 
 	// creating the uint16_t DiscreteProperty
 	RESQML2_NS::DiscreteProperty* uint16DiscreteProperty = repo->createDiscreteProperty(
@@ -78,7 +78,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	uint16_t uint16Values[6] = { 0, 1, 2, 3, 4, 5 };
-	uint16DiscreteProperty->pushBackIntegerArray3dOfValues(uint16Values, 1, 2, 3, hdfProxy, (std::numeric_limits<uint16_t>::max)());
+	uint16DiscreteProperty->pushBackArray3dOfValues(uint16Values, 1, 2, 3, hdfProxy);
 
 	// creating the int32_t DiscreteProperty
 	RESQML2_NS::DiscreteProperty* int32DiscreteProperty = repo->createDiscreteProperty(
@@ -87,7 +87,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	int32_t int32Values[6] = { -2, -1, 0, 1, 2, 3 };
-	int32DiscreteProperty->pushBackIntegerArray3dOfValues(int32Values, 1, 2, 3, hdfProxy, -1);
+	int32DiscreteProperty->pushBackArray3dOfValues(int32Values, 1, 2, 3, hdfProxy, -1);
 
 	// creating the uint32_t DiscreteProperty
 	RESQML2_NS::DiscreteProperty* uint32DiscreteProperty = repo->createDiscreteProperty(
@@ -96,7 +96,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	uint32_t uint32Values[6] = { 0, 1, 2, 3, 4, 5 };
-	uint32DiscreteProperty->pushBackIntegerArray3dOfValues(uint32Values, 1, 2, 3, hdfProxy, (std::numeric_limits<uint32_t>::max)());
+	uint32DiscreteProperty->pushBackArray3dOfValues(uint32Values, 1, 2, 3, hdfProxy);
 
 	// creating the int64_t DiscreteProperty
 	RESQML2_NS::DiscreteProperty* int64DiscreteProperty = repo->createDiscreteProperty(
@@ -105,7 +105,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	int64_t int64Values[6] = { -2, -1, 0, 1, 2, 3 };
-	int64DiscreteProperty->pushBackIntegerArray3dOfValues(int64Values, 1, 2, 3, hdfProxy, static_cast<int64_t>(-1));
+	int64DiscreteProperty->pushBackArray3dOfValues(int64Values, 1, 2, 3, hdfProxy, static_cast<int64_t>(-1));
 
 	// creating the uint64_t DiscreteProperty
 	RESQML2_NS::DiscreteProperty* uint64DiscreteProperty = repo->createDiscreteProperty(
@@ -114,7 +114,7 @@ void DiscreteProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		propertyKind);
 	uint64_t uint64Values[6] = { 0, 1, 2, 3, 4, 5 };
-	uint64DiscreteProperty->pushBackIntegerArray3dOfValues(uint64Values, 1, 2, 3, hdfProxy, (std::numeric_limits<uint64_t>::max)());
+	uint64DiscreteProperty->pushBackArray3dOfValues(uint64Values, 1, 2, 3, hdfProxy);
 
 	// creating Constant Integer prop
 	RESQML2_NS::DiscreteProperty* constantIntegerProperty = repo->createDiscreteProperty(
@@ -128,7 +128,7 @@ void DiscreteProperty::initRepo() {
 namespace {
 	void checkSignedProperty(RESQML2_NS::DiscreteProperty* unsignedProp) {
 		int64_t values[6];
-		unsignedProp->getInt64ValuesOfPatch(0, values);
+		unsignedProp->getArrayOfValuesOfPatch(0, values);
 		REQUIRE(values[0] == -2);
 		REQUIRE(values[1] == -1);
 		REQUIRE(values[2] == 0);
@@ -138,7 +138,7 @@ namespace {
 	}
 	void checkUnsignedProperty(RESQML2_NS::DiscreteProperty * signedProp) {
 		uint64_t values[6];
-		signedProp->getUInt64ValuesOfPatch(0, values);
+		signedProp->getArrayOfValuesOfPatch(0, values);
 		REQUIRE(values[0] == 0);
 		REQUIRE(values[1] == 1);
 		REQUIRE(values[2] == 2);
@@ -180,7 +180,7 @@ void DiscreteProperty::readRepo() {
 	REQUIRE(constantDiscreteProperty->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64);
 	REQUIRE(constantDiscreteProperty->getValuesCountOfPatch(0) == 3);
 	int64_t constantDiscreteValues[3];
-	constantDiscreteProperty->getInt64ValuesOfPatch(0, constantDiscreteValues);
+	constantDiscreteProperty->getArrayOfValuesOfPatch(0, constantDiscreteValues);
 	REQUIRE(constantDiscreteValues[0] == 10);
 	REQUIRE(constantDiscreteValues[1] == 10);
 	REQUIRE(constantDiscreteValues[2] == 10);

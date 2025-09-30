@@ -146,22 +146,22 @@ uint64_t BlockedWellboreRepresentation::getCellCount() const
 	return static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->CellCount;
 }
 
-int8_t BlockedWellboreRepresentation::getGridIndices(int8_t * gridIndices) const
+int8_t BlockedWellboreRepresentation::getGridIndices(int8_t* gridIndices) const
 {
 	auto const* xmlGridIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->GridIndices;
-	return readArrayNdOfInt8Values(xmlGridIndices, gridIndices);
+	return readArrayNdOfIntegerValues(xmlGridIndices, gridIndices);
 }
 
 int64_t BlockedWellboreRepresentation::getCellIndices(int64_t* cellIndices) const
 {
 	auto const* xmlCellIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->CellIndices;
-	return readArrayNdOfInt64Values(xmlCellIndices, cellIndices);
+	return readArrayNdOfIntegerValues(xmlCellIndices, cellIndices);
 }
 
 int8_t BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(int8_t* localFacePairPerCellIndices) const
 {
 	auto const* xmlLocalFacePairPerCellIndices = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3)->IntervalGridCells->LocalFacePairPerCellIndices;
-	return readArrayNdOfInt8Values(xmlLocalFacePairPerCellIndices, localFacePairPerCellIndices);
+	return readArrayNdOfIntegerValues(xmlLocalFacePairPerCellIndices, localFacePairPerCellIndices);
 }
 
 void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep)

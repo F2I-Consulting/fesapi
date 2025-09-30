@@ -61,7 +61,7 @@ void BigIjkGridExplicitRepresentationTest::initRepo() {
 		propertyKind);
 	std::unique_ptr<uint16_t[]> discretePropertyValues(new unsigned short[iCount * jCount * kCount]);
 	initDiscreteProperty(discretePropertyValues.get());
-	discreteProperty->pushBackIntegerArray3dOfValues(discretePropertyValues.get(), iCount, jCount, kCount, nullptr, (std::numeric_limits<uint16_t>::max)());
+	discreteProperty->pushBackArray3dOfValues(discretePropertyValues.get(), iCount, jCount, kCount, nullptr);
 
 	// adding a continuous property
 	propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
@@ -73,7 +73,7 @@ void BigIjkGridExplicitRepresentationTest::initRepo() {
 		propertyKind);
 	std::unique_ptr<double[]> continuousPropertyValues(new double[iCount * jCount * kCount]);
 	initContinuousProperty(continuousPropertyValues.get());
-	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousPropertyValues.get(), iCount * jCount * kCount, nullptr);
+	continuousProperty->pushBackArray1dOfValues(continuousPropertyValues.get(), iCount * jCount * kCount, nullptr);
 }
 
 void BigIjkGridExplicitRepresentationTest::readRepo() {

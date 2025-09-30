@@ -230,7 +230,7 @@ namespace RESQML2_NS
 		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
 		 * 			vector property).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual double getMinimumValue(unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getMinimumValue(uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Gets the maximum value of a non vector property or the maximum value of one given
@@ -245,7 +245,7 @@ namespace RESQML2_NS
 		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
 		 * 			vector property).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual double getMaximumValue(unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getMaximumValue(uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Sets the minimum value of a non vector property or the minimum value of one given

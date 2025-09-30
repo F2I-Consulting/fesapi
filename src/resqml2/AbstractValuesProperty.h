@@ -20,6 +20,11 @@ under the License.
 
 #include "AbstractProperty.h"
 
+#include <algorithm>
+#include <stdexcept>
+
+#include "../common/NumberArrayStatistics.h"
+
 namespace RESQML2_NS
 {
 	/** @brief	Proxy class for an abstract values property. */
@@ -95,14 +100,34 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getFacetValue(uint64_t index) const;
 
-		//****************************
-		//****** INTEGER *************
-		//****************************
+		/**
+		 * @brief	Adds a nd array of explicit values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values	  	All the property values to set ordered according to the topology
+		 * 								of the representation it is based on.
+		 * @param [in]		proxy	  	The HDF proxy where to write the property values. It must be
+		 * 								already opened for writing and won't be closed in this method. If
+		 * 								@c nullptr, then a default HDF proxy must be defined in the
+		 * 								repository.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
+		 */
+		template<typename T> std::enable_if_t<std::is_arithmetic_v<T>, void>
+		pushBackArrayOfValues(const T* values, const uint64_t* numValues, uint32_t numDimensionsInArray,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = (std::numeric_limits<T>::max)());
 
-		template<typename T> void pushBackIntegerArrayOfValues(const T* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, T nullValue);
+		template<typename T>
+		void pushBackArrayOfValuesPlusStatistics(const T* values, const uint64_t* numValues, uint32_t numDimensionsInArray, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr) {
+			pushBackArrayOfValues(values, numValues, numDimensionsInArray, proxy, statistics.getNullValue());
+			setStatistics(statistics, getPatchCount() - 1);
+		}
 		
 		/**
-		 * @brief	Adds a 1d array of explicit integer values to the property values.
+		 * @brief	Adds a 1d array of explicit values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -111,19 +136,26 @@ namespace RESQML2_NS
 		 * @param 		  	values	  	All the property values to set ordered according to the topology
 		 * 								of the representation it is based on.
 		 * @param 		  	valueCount	The number of values to write.
-		 * @param [in,out]	proxy	  	The HDF proxy where to write the property values. It must be
+		 * @param [in]		proxy	  	The HDF proxy where to write the property values. It must be
 		 * 								already opened for writing and won't be closed in this method. If
 		 * 								@c nullptr, then a default HDF proxy must be defined in the
 		 * 								repository.
-		 * @param 		  	nullValue 	The null value.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
 		 */
 		template<typename T>
-		void pushBackIntegerArray1dOfValues(const T* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
-			pushBackIntegerArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+		void pushBackArray1dOfValues(const T* values, uint64_t valueCount,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = (std::numeric_limits<T>::max)()) {
+			pushBackArrayOfValues(values, &valueCount, 1, proxy, nullValue);
+		}
+		template<typename T>
+		void pushBackArray1dOfValuesPlusStatistics(const T* values, uint64_t valueCount, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr) {
+			pushBackArray1dOfValues(values, valueCount, proxy, statistics.getNullValue());
+			setStatistics(statistics, getPatchCount() - 1);
 		}
 
 		/**
-		 * @brief Adds a 2d array of explicit integer values to the property values.
+		 * @brief Adds a 2d array of explicit values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -135,20 +167,27 @@ namespace RESQML2_NS
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly J dimension).
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * @param [in]		proxy				  	The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be
 		 * 											closed in this method. If @c nullptr, then a default
 		 * 											HDF proxy must be defined in the repository.
-		 * @param 		  	nullValue			  	The null value.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
 		 */
 		template<typename T>
-		void pushBackIntegerArray2dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
+		void pushBackArray2dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = (std::numeric_limits<T>::max)()) {
 			const uint64_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
-			pushBackIntegerArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+			pushBackArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
+		}
+		template<typename T>
+		void pushBackArray2dOfValuesPlusStatistics(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr) {
+			pushBackArray2dOfValues(values, valueCountInFastestDim, valueCountInSlowestDim, proxy, statistics.getNullValue());
+			setStatistics(statistics, getPatchCount() - 1);
 		}
 
 		/**
-		 * @brief Adds a 3d array of explicit integer values to the property values.
+		 * @brief Adds a 3d array of explicit values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -162,17 +201,110 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly K dimension).
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * @param [in]		proxy				  	The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be
 		 * 											closed in this method. If @c nullptr, then a default
 		 * 											HDF proxy must be defined in the repository.
-		 * @param 		  	nullValue			  	The null value.
+		 * @param 		  	nullValue			  	The integer null value. Ignored (fixed to NaN) if it is a floating point value.
 		 */
 		template<typename T>
-		void pushBackIntegerArray3dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, T nullValue) {
+		void pushBackArray3dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = (std::numeric_limits<T>::max)()) {
 			const uint64_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
-			pushBackIntegerArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
+			pushBackArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 		}
+		template<typename T>
+		void pushBackArray3dOfValuesPlusStatistics(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr) {
+			pushBackArray3dOfValues(values, valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim, proxy, statistics.getNullValue());
+			setStatistics(statistics, getPatchCount() - 1);
+		}
+
+		/**
+		 * Gets all the values of a given patch of this instance.
+		 *
+		 * @exception	std::logic_error 		If the underlying gSOAP instance is not a RESQML2.0, nor a RESQML2.2 instance.
+		 * @exception	std::out_of_range		If @p patchIndex is out of range.
+		 * @exception	std::invalid_argument	If @p values is NULL.
+		 *
+		 * @param 	   	patchIndex					The index of the patch we want the values from.
+		 * @param [out]	values	  					Preallocated buffer for receiving the values. Size is
+		 * 											<tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 * @param		forceStatisticsComputation	Indicates if FESAPI must force computation of the statistics or if it only reads the provided statistics.
+		 *
+		 * @returns	The statistics about the array including the null value.
+		 */
+		template<typename T>
+		COMMON_NS::NumberArrayStatistics<T> getArrayOfValuesOfPatch(uint64_t patchIndex, T* values, bool forceStatisticsComputation = false) const {
+			cannotBePartial();
+			if (values == nullptr) {
+				throw std::invalid_argument("The array of values cannot be null");
+			}
+
+			T nullValue;
+			if (gsoapProxy2_0_1 != nullptr) {
+				auto const* xmlValues = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty const*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex]->Values;
+				if constexpr (std::is_integral_v<T>) {
+					nullValue = readArrayNdOfIntegerValues(xmlValues, values);
+				}
+				else {
+					auto const* xmlArray = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const*>(xmlValues);
+					if (xmlArray != nullptr) {
+						if constexpr (std::is_same_v<T, float>) {
+							nullValue = std::numeric_limits<float>::quiet_NaN();
+							readArrayNdOfFloatValues(xmlArray, values);
+						}
+						else {
+							nullValue = std::numeric_limits<double>::quiet_NaN();
+							readArrayNdOfDoubleValues(xmlArray, values);
+						}
+					}
+					else {
+						throw std::logic_error("Reading floating point values from a non RESQML2.0.1 double array is not supported.");
+					}
+				}
+			}
+			else if (gsoapProxy2_3 != nullptr) {
+				gsoap_eml2_3::eml23__AbstractValueArray const* xmlValues = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch.at(patchIndex);
+				if constexpr (std::is_integral_v<T>) {
+					auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray const*>(xmlValues);
+					if (xmlArray != nullptr) {
+						nullValue = readArrayNdOfIntegerValues(xmlArray, values);
+					}
+					else {
+						throw std::logic_error("Reading integer values from a non integer array is not supported.");
+					}
+				}
+				else {
+					auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractFloatingPointArray const*>(xmlValues);
+					if (xmlArray != nullptr) {
+						if constexpr (std::is_same_v<T, float>) {
+							nullValue = std::numeric_limits<float>::quiet_NaN();
+							readArrayNdOfFloatValues(xmlArray, values);
+						}
+						else {
+							nullValue = std::numeric_limits<double>::quiet_NaN();
+							readArrayNdOfDoubleValues(xmlArray, values);
+						}
+					}
+					else {
+						throw std::logic_error("Reading floating point values from a non RESQML2.2 double array is not supported.");
+					}
+				}
+			}
+			else {
+				throw std::logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+			}
+
+			if (forceStatisticsComputation) {
+				return COMMON_NS::NumberArrayStatistics<T>(values, getValuesCountOfPatch(patchIndex), getElementCountPerValue(), nullValue);
+			}
+
+			return getStatistics<T>(patchIndex);
+		}
+
+		template<typename T>  std::enable_if_t<std::is_arithmetic_v<T>, COMMON_NS::NumberArrayStatistics<T>>
+		getStatistics(uint64_t patchIndex) const;
 
 		/**
 		 * @brief	Adds an array constant integer values to the property values.
@@ -200,7 +332,7 @@ namespace RESQML2_NS
 		 * 								repository.
 		 * @param 		  	nullValue 	The null value.
 		 */
-		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array1dOfValues(const int64_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
@@ -208,7 +340,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt32Hdf5Array1dOfValues(const int* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
@@ -216,7 +348,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt16Hdf5Array1dOfValues(const short* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
@@ -224,7 +356,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArray1dOfValues instead.")]]
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array1dOfValues(const int8_t* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -246,7 +378,7 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
-		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array2dOfValues(const int64_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
@@ -254,7 +386,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt32Hdf5Array2dOfValues(const int* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
@@ -262,7 +394,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt16Hdf5Array2dOfValues(const short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
@@ -270,7 +402,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackUInt16Hdf5Array2dOfValues(const unsigned short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
@@ -278,7 +410,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArray2dOfValues instead.")]]
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array2dOfValues(const int8_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -302,7 +434,7 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
-		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt64Hdf5Array3dOfValues(const int64_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
@@ -310,7 +442,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt32Hdf5Array3dOfValues(const int* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
@@ -325,7 +457,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackUInt16Hdf5Array3dOfValues(const unsigned short* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
@@ -333,7 +465,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArray3dOfValues instead.")]]
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackInt8Hdf5Array3dOfValues(const int8_t* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -354,7 +486,7 @@ namespace RESQML2_NS
 		 * 											be defined in the repository.
 		 * @param 		  	nullValue				The null value.
 		 */
-		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT virtual void pushBackInt64Hdf5ArrayOfValues(const int64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
@@ -362,7 +494,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT virtual void pushBackInt32Hdf5ArrayOfValues(const int* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
@@ -370,7 +502,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT virtual void pushBackInt16Hdf5ArrayOfValues(const short* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
@@ -378,7 +510,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT virtual void pushBackUInt16Hdf5ArrayOfValues(const unsigned short* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
@@ -386,7 +518,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		[[deprecated("Use pushBackIntegerArrayOfValues instead.")]]
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT virtual void pushBackInt8Hdf5ArrayOfValues(const int8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -468,117 +600,44 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT int64_t getNullValueOfPatch(uint64_t patchIndex) const;
 
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 64 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 *
-		 * @returns	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT int64_t getInt64ValuesOfPatch(uint64_t patchIndex, int64_t* values) const;
+		[[deprecated("Use getArrayOfValuesOfPatch instead.")]]
+		DLL_IMPORT_OR_EXPORT int64_t getInt64ValuesOfPatch(uint64_t patchIndex, int64_t* values) const {
+			return getArrayOfValuesOfPatch(patchIndex, values).getNullValue();
+		}
 
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 64 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 *
-		 * @returns	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getUInt64ValuesOfPatch(uint64_t patchIndex, uint64_t* values) const;
+		[[deprecated("Use getArrayOfValuesOfPatch instead.")]]
+		DLL_IMPORT_OR_EXPORT uint64_t getUInt64ValuesOfPatch(uint64_t patchIndex, uint64_t* values) const {
+			return getArrayOfValuesOfPatch(patchIndex, values).getNullValue();
+		}
 
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 32 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT int32_t getInt32ValuesOfPatch(uint64_t patchIndex, int32_t* values) const;
+		[[deprecated("Use getArrayOfValuesOfPatch instead.")]]
+		DLL_IMPORT_OR_EXPORT int32_t getInt32ValuesOfPatch(uint64_t patchIndex, int32_t* values) const {
+			return getArrayOfValuesOfPatch(patchIndex, values).getNullValue();
+		}
 
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 32 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT uint32_t getUInt32ValuesOfPatch(uint64_t patchIndex, uint32_t* values) const;
+		[[deprecated("Use getArrayOfValuesOfPatch instead.")]]
+		DLL_IMPORT_OR_EXPORT uint32_t getUInt32ValuesOfPatch(uint64_t patchIndex, uint32_t* values) const {
+			return getArrayOfValuesOfPatch(patchIndex, values).getNullValue();
+		}
 
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 16 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT int16_t getInt16ValuesOfPatch(uint64_t patchIndex, int16_t* values) const;
+		[[deprecated("Use getArrayOfValuesOfPatch instead.")]]
+		DLL_IMPORT_OR_EXPORT int16_t getInt16ValuesOfPatch(uint64_t patchIndex, int16_t* values) const {
+			return getArrayOfValuesOfPatch(patchIndex, values).getNullValue();
+		}
 
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 16 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT uint16_t getUInt16ValuesOfPatch(uint64_t patchIndex, uint16_t* values) const;
+		[[deprecated("Use getArrayOfValuesOfPatch instead.")]]
+		DLL_IMPORT_OR_EXPORT uint16_t getUInt16ValuesOfPatch(uint64_t patchIndex, uint16_t* values) const {
+			return getArrayOfValuesOfPatch(patchIndex, values).getNullValue();
+		}
 
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 8 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT int8_t getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const;
+		DLL_IMPORT_OR_EXPORT int8_t getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const {
+			return getArrayOfValuesOfPatch(patchIndex, values).getNullValue();
+		}
 
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 8 bits integer
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT uint8_t getUInt8ValuesOfPatch(uint64_t patchIndex, uint8_t* values) const;
+		[[deprecated("Use getArrayOfValuesOfPatch instead.")]]
+		DLL_IMPORT_OR_EXPORT uint8_t getUInt8ValuesOfPatch(uint64_t patchIndex, uint8_t* values) const {
+			return getArrayOfValuesOfPatch(patchIndex, values).getNullValue();
+		}
 
 		//***********************************
 		//*** Writing with hyperslabbing *****
@@ -1428,6 +1487,7 @@ namespace RESQML2_NS
 		 * 									method. If @c nullptr (default value), then a default HDF proxy
 		 * 									must be defined in the repository.
 		 */
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array1dOfValues(const double * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -1448,6 +1508,7 @@ namespace RESQML2_NS
 		 * 											(default value), then a default HDF proxy must be
 		 * 											defined in the repository.
 		 */
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array2dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -1470,6 +1531,7 @@ namespace RESQML2_NS
 		 * 											(default value), then a default HDF proxy must be
 		 * 											defined in the repository.
 		 */
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array3dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -1489,6 +1551,7 @@ namespace RESQML2_NS
 		 * 										then a default HDF proxy must be defined in the
 		 * 										repository.
 		 */
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -1496,6 +1559,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array1dOfValues
 		 */
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -1503,6 +1567,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array2dOfValues
 		 */
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array2dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -1510,6 +1575,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array3dOfValues
 		 */
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array3dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -1517,6 +1583,7 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -1539,29 +1606,15 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string pushBackRefToExistingFloatingPointDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
 
-		/**
-		 * Gets all the values of a particular patch of this instance which are supposed to be double
-		 * ones.
-		 *
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 */
-		DLL_IMPORT_OR_EXPORT void getDoubleValuesOfPatch(uint64_t patchIndex, double * values) const;
+		[[deprecated("Use getArrayOfValuesOfPatch instead.")]]
+		DLL_IMPORT_OR_EXPORT void getDoubleValuesOfPatch(uint64_t patchIndex, double * values) const {
+			getArrayOfValuesOfPatch(patchIndex, values);
+		}
 
-		/**
-		 * Gets all the values of a particular patch of this instance which are supposed to be float
-		 * ones.
-		 *
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 */
-		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(uint64_t patchIndex, float * values) const;
+		[[deprecated("Use getArrayOfValuesOfPatch instead.")]]
+		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(uint64_t patchIndex, float * values) const {
+			getArrayOfValuesOfPatch(patchIndex, values);
+		}
 
 		//******************************************
 		//*** For FLOATING POINT hyperslabbing *****
@@ -1714,16 +1767,204 @@ namespace RESQML2_NS
 			uint64_t patchIndex = (std::numeric_limits<uint64_t>::max)());
 
 		// Need to dll export because it is called in a template implementation
-		DLL_IMPORT_OR_EXPORT void pushBackIntegerArrayOfValues(const void* values, COMMON_NS::AbstractObject::numericalDatatypeEnum numericalDatatype, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackArrayOfValues(const void* values, COMMON_NS::AbstractObject::numericalDatatypeEnum numericalDatatype, const uint64_t* numValues, unsigned int numDimensionsInArray,
+			EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<int8_t> getInt8Statistics(uint64_t patchIndex) const {
+			auto nullValue = getNullValueOfPatch(patchIndex);
+			if (nullValue > (std::numeric_limits<int8_t>::max)() || nullValue < (std::numeric_limits<int8_t>::min)()) {
+				nullValue = (std::numeric_limits<int8_t>::max)();
+			}
+			COMMON_NS::NumberArrayStatistics<int8_t> result;
+			result.setNullValue(static_cast<int8_t>(nullValue));
+			return result;
+		}
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<uint8_t> getUInt8Statistics(uint64_t patchIndex) const {
+			auto nullValue = getNullValueOfPatch(patchIndex);
+			if (nullValue > (std::numeric_limits<uint8_t>::max)() || nullValue < 0) {
+				nullValue = (std::numeric_limits<uint8_t>::max)();
+			}
+			COMMON_NS::NumberArrayStatistics<uint8_t> result;
+			result.setNullValue(static_cast<uint8_t>(nullValue));
+			return result;
+		}
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<int16_t> getInt16Statistics(uint64_t patchIndex) const {
+			auto nullValue = getNullValueOfPatch(patchIndex);
+			if (nullValue > (std::numeric_limits<int16_t>::max)() || nullValue < (std::numeric_limits<int16_t>::min)()) {
+				nullValue = (std::numeric_limits<int16_t>::max)();
+			}
+			COMMON_NS::NumberArrayStatistics<int16_t> result;
+			result.setNullValue(static_cast<int16_t>(nullValue));
+			return result;
+		}
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<uint16_t> getUInt16Statistics(uint64_t patchIndex) const {
+			auto nullValue = getNullValueOfPatch(patchIndex);
+			if (nullValue > (std::numeric_limits<uint16_t>::max)() || nullValue < 0) {
+				nullValue = (std::numeric_limits<uint16_t>::max)();
+			}
+			COMMON_NS::NumberArrayStatistics<uint16_t> result;
+			result.setNullValue(static_cast<uint16_t>(nullValue));
+			return result;
+		}
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<int32_t> getInt32Statistics(uint64_t patchIndex) const {
+			auto nullValue = getNullValueOfPatch(patchIndex);
+			if (nullValue > (std::numeric_limits<int32_t>::max)() || nullValue < (std::numeric_limits<int32_t>::min)()) {
+				nullValue = (std::numeric_limits<int32_t>::max)();
+			}
+			COMMON_NS::NumberArrayStatistics<int32_t> result;
+			result.setNullValue(static_cast<int32_t>(nullValue));
+			return result;
+		}
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<uint32_t> getUInt32Statistics(uint64_t patchIndex) const {
+			auto nullValue = getNullValueOfPatch(patchIndex);
+			if (nullValue > (std::numeric_limits<uint32_t>::max)() || nullValue < 0) {
+				nullValue = (std::numeric_limits<uint32_t>::max)();
+			}
+			COMMON_NS::NumberArrayStatistics<uint32_t> result;
+			result.setNullValue(static_cast<uint32_t>(nullValue));
+			return result;
+		}
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<int64_t> getInt64Statistics(uint64_t patchIndex) const {
+			COMMON_NS::NumberArrayStatistics<int64_t> result;
+			result.setNullValue(getNullValueOfPatch(patchIndex));
+			return result;
+		}
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<uint64_t> getUInt64Statistics(uint64_t patchIndex) const {
+			COMMON_NS::NumberArrayStatistics<uint64_t> result;
+			result.setNullValue(getNullValueOfPatch(patchIndex));
+			return result;
+		}
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<float> getFloatStatistics(uint64_t) const { return COMMON_NS::NumberArrayStatistics<float>(); }
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<double> getDoubleStatistics(uint64_t) const { return COMMON_NS::NumberArrayStatistics<double>(); }
+
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IntegerArrayStatistics* createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<int8_t>& stats, size_t index);
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IntegerArrayStatistics* createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<uint8_t>& stats, size_t index);
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IntegerArrayStatistics* createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<int16_t>& stats, size_t index);
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IntegerArrayStatistics* createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<uint16_t>& stats, size_t index);
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IntegerArrayStatistics* createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<int32_t>& stats, size_t index);
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IntegerArrayStatistics* createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<uint32_t>& stats, size_t index);
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IntegerArrayStatistics* createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<int64_t>& stats, size_t index);
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IntegerArrayStatistics* createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<uint64_t>& stats, size_t index);
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__FloatingPointArrayStatistics* createFloatingPointArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<float>& stats, size_t index);
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__FloatingPointArrayStatistics* createFloatingPointArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<double>& stats, size_t index);
+
+		template<typename T>
+		void setStatistics(const COMMON_NS::NumberArrayStatistics<T>& stats, size_t patchIndex) {
+			cannotBePartial();
+
+			if (gsoapProxy2_0_1 != nullptr) {
+				if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREContinuousProperty) {
+					gsoap_resqml2_0_1::_resqml20__ContinuousProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
+					for (size_t i = 0; i < stats.getMinimumSize(); ++i) {
+						const auto minStat = stats.getMinimum(i);
+						if (prop->MinimumValue.size() > i) {
+							if (minStat == minStat && prop->MinimumValue[i] > minStat) {
+								prop->MinimumValue[i] = minStat;
+							}
+						}
+						else {
+							prop->MinimumValue.push_back(minStat);
+						}
+					}
+					for (size_t i = 0; i < stats.getMaximumSize(); ++i) {
+						const auto maxStat = stats.getMaximum(i);
+						if (prop->MaximumValue.size() > i) {
+							if (maxStat == maxStat && prop->MaximumValue[i] < maxStat) {
+								prop->MaximumValue[i] = maxStat;
+							}
+						}
+						else {
+							prop->MaximumValue.push_back(maxStat);
+						}
+					}
+				}
+				else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREDiscreteProperty) {
+					gsoap_resqml2_0_1::_resqml20__DiscreteProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
+					for (size_t i = 0; i < stats.getMinimumSize(); ++i) {
+						const auto minStat = stats.getMinimum(i);
+						if (prop->MinimumValue.size() > i) {
+							if (minStat == minStat && prop->MinimumValue[i] > minStat) {
+								prop->MinimumValue[i] = minStat;
+							}
+						}
+						else {
+							prop->MinimumValue.push_back(minStat);
+						}
+					}
+					for (size_t i = 0; i < stats.getMaximumSize(); ++i) {
+						const auto maxStat = stats.getMaximum(i);
+						if (prop->MaximumValue.size() > i) {
+							if (maxStat == maxStat && prop->MaximumValue[i] < maxStat) {
+								prop->MaximumValue[i] = maxStat;
+							}
+						}
+						else {
+							prop->MaximumValue.push_back(maxStat);
+						}
+					}
+				}
+				else {
+					throw std::invalid_argument("In RESQML 2.0.1, only continuous and discrete properties can transfer only minimum and maximum values");
+				}
+			}
+			else if (gsoapProxy2_3 != nullptr) {
+				const auto valuePerIndexableElement = getElementCountPerValue();
+				gsoap_eml2_3::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3);
+				if (auto* integerArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray*>(prop->ValuesForPatch.at(patchIndex))) {
+					if constexpr (std::is_integral_v<T>) {
+						integerArray->Statistics.clear();
+						for (size_t i = 0; i < valuePerIndexableElement; ++i) {
+							integerArray->Statistics.push_back(createIntegerArrayStatisticsFrom(stats, i));
+						}
+					}
+				}
+				else if (auto* floatingPointArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractFloatingPointArray*>(prop->ValuesForPatch.at(patchIndex))) {
+					if constexpr (std::is_floating_point_v<T>) {
+						floatingPointArray->Statistics.clear();
+						for (size_t i = 0; i < valuePerIndexableElement; ++i) {
+							floatingPointArray->Statistics.push_back(createFloatingPointArrayStatisticsFrom(stats, i));
+						}
+					}
+				}
+				else {
+					throw std::invalid_argument("In RESQML 2.2, only floating point and integer property array of values can haev statistics");
+				}
+			}
+			else {
+				throw std::logic_error("Only RESQML 2.2 and 2.0.1 are supported for now.");
+			}
+		}
 	};
 
-	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<int8_t>(const int8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
-	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint8_t>(const uint8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint8_t nullValue);
-	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<int16_t>(const int16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int16_t nullValue);
-	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint16_t>(const uint16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint16_t nullValue);
-	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<int32_t>(const int32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int32_t nullValue);
-	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint32_t>(const uint32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint32_t nullValue);
-	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<int64_t>(const int64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
-	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackIntegerArrayOfValues<uint64_t>(const uint64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, uint64_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackArrayOfValues<int8_t>(const int8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+		EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackArrayOfValues<uint8_t>(const uint8_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+		EML2_NS::AbstractHdfProxy* proxy, uint8_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackArrayOfValues<int16_t>(const int16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+		EML2_NS::AbstractHdfProxy* proxy, int16_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackArrayOfValues<uint16_t>(const uint16_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+		EML2_NS::AbstractHdfProxy* proxy, uint16_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackArrayOfValues<int32_t>(const int32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+		EML2_NS::AbstractHdfProxy* proxy, int32_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackArrayOfValues<uint32_t>(const uint32_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+		EML2_NS::AbstractHdfProxy* proxy, uint32_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackArrayOfValues<int64_t>(const int64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+		EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackArrayOfValues<uint64_t>(const uint64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+		EML2_NS::AbstractHdfProxy* proxy, uint64_t nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackArrayOfValues<float>(const float* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+		EML2_NS::AbstractHdfProxy* proxy, float nullValue);
+	template<> DLL_IMPORT_OR_EXPORT void AbstractValuesProperty::pushBackArrayOfValues<double>(const double* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
+		EML2_NS::AbstractHdfProxy* proxy, double nullValue);
 
+	template<> DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int8_t> AbstractValuesProperty::getStatistics<int8_t>(uint64_t patchIndex) const;
+	template<> DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint8_t> AbstractValuesProperty::getStatistics<uint8_t>(uint64_t patchIndex) const;
+	template<> DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int16_t> AbstractValuesProperty::getStatistics<int16_t>(uint64_t patchIndex) const;
+	template<> DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint16_t> AbstractValuesProperty::getStatistics<uint16_t>(uint64_t patchIndex) const;
+	template<> DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int32_t> AbstractValuesProperty::getStatistics<int32_t>(uint64_t patchIndex) const;
+	template<> DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint32_t> AbstractValuesProperty::getStatistics<uint32_t>(uint64_t patchIndex) const;
+	template<> DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int64_t> AbstractValuesProperty::getStatistics<int64_t>(uint64_t patchIndex) const;
+	template<> DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint64_t> AbstractValuesProperty::getStatistics<uint64_t>(uint64_t patchIndex) const;
+	template<> DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<float> AbstractValuesProperty::getStatistics<float>(uint64_t patchIndex) const;
+	template<> DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<double> AbstractValuesProperty::getStatistics<double>(uint64_t patchIndex) const;
 }

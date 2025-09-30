@@ -132,14 +132,14 @@ EML2_NS::AbstractHdfProxy* ContinuousProperty::getValuesHdfProxyAndDatasetPathOf
 	return getHdfProxyFromDataset(dataset);
 }
 
-double ContinuousProperty::getMinimumValue(unsigned int index) const
+double ContinuousProperty::getMinimumValue(uint64_t index) const
 {
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 
 	return prop->MinimumValue.size() <= index ? std::numeric_limits<double>::quiet_NaN() : prop->MinimumValue[index];
 }
 
-double ContinuousProperty::getMaximumValue(unsigned int index) const
+double ContinuousProperty::getMaximumValue(uint64_t index) const
 {
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 

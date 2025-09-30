@@ -464,7 +464,7 @@ std::vector<unsigned int> AbstractProperty::getRealizationIndices() const
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		std::vector<unsigned int> result(getCountOfArray(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices));
-		readArrayNdOfUInt32Values(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices, result.data());
+		readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices, result.data());
 		return result;
 	}
 	else {

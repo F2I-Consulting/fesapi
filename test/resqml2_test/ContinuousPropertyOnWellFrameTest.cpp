@@ -54,7 +54,7 @@ void ContinuousPropertyOnWellFrameTest::initRepo() {
 		propertyKind);
 	REQUIRE(continuousProperty != nullptr);
 	double values[5] = { 0.1, 1.2, 2.3, 3.4, 4.5 };
-	continuousProperty->pushBackDoubleHdf5Array1dOfValues(values, 5, hdfProxy);
+	continuousProperty->pushBackArray1dOfValues(values, 5, hdfProxy);
 	
 	// creating the exotic ContinuousProperty
 	RESQML2_NS::ContinuousProperty* exoticContinuousProperty = repo->createContinuousProperty(
@@ -64,7 +64,7 @@ void ContinuousPropertyOnWellFrameTest::initRepo() {
 		"My exotic Uom",
 		propertyKind);
 	REQUIRE(exoticContinuousProperty != nullptr);
-	exoticContinuousProperty->pushBackDoubleHdf5Array1dOfValues(values, 5, hdfProxy);
+	exoticContinuousProperty->pushBackArray1dOfValues(values, 5, hdfProxy);
 }
 
 void ContinuousPropertyOnWellFrameTest::readRepo()
@@ -95,7 +95,7 @@ void ContinuousPropertyOnWellFrameTest::readRepo()
 	REQUIRE(continuousProperty->getValuesCountOfPatch(0) == 5);
 
 	double values[5];
-	continuousProperty->getDoubleValuesOfPatch(0, values);
+	continuousProperty->getArrayOfValuesOfPatch(0, values);
 	REQUIRE(values[0] == 0.1);
 	REQUIRE(values[1] == 1.2);
 	REQUIRE(values[2] == 2.3);
