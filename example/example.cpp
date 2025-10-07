@@ -2761,9 +2761,12 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		if (prop->getTimeSeries() != nullptr || singleTs != -1) {
 			std::cout << "\tThis property is a time related one" << std::endl;
 			if (singleTs != -1) {
-				std::cout << "\tThis property is a related to single timestamp " << std::endl;
+				std::cout << "\tThis property is related to single timestamp " << std::endl;
 				if (prop->getTimeSeries() != nullptr) {
-					std::cout << "which is part of a time series at index " << prop->getTimeSeries()->getTimestampIndex(singleTs) << std::endl;
+					auto timeSeriesIndex = prop->getTimeSeries()->getTimestampIndex(singleTs);
+					std::cout << "which is part of a time series at index " << timeSeriesIndex
+						<< " ISO String (without time)" << prop->getTimeSeries()->getTimestampAsIsoString(timeSeriesIndex, false)
+						<< " ISO String (with time)" << prop->getTimeSeries()->getTimestampAsIsoString(timeSeriesIndex, true) << std::endl;
 				}
 				else {
 					std::cout << "which is not part of a time series." << std::endl;

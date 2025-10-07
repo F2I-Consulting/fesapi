@@ -105,6 +105,19 @@ namespace EML2_NS
 		DLL_IMPORT_OR_EXPORT time_t getTimestamp(uint64_t index) const;
 
 		/**
+		 * Gets a timestamp as an ISO string at a particular index of this time series.
+		 *
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index		Zero-based index of the timestamp we look for.
+		 * @param 	withTime	Include or not the time in the output.
+		 *
+		 * @returns	The timestamp as an ISO string at position @p index.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getTimestampAsIsoString(uint64_t index, bool withTime = true) const;
+
+		/**
 		 * Gets a timestamp as a time structure at a particular index of this time series. It allows to
 		 * read dates from 1900-01-01T00:00:00.
 		 *

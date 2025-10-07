@@ -27,14 +27,20 @@ using namespace EML2_NS;
 
 void TimeSeries::pushBackTimestamp(time_t timestamp)
 {
-	std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(timestamp));
+	const std::tm tmConversion = timeTools::to_calendar_time(timeTools::from_time_t(timestamp));
 	pushBackTimestamp(tmConversion);
 }
 
 time_t TimeSeries::getTimestamp(uint64_t index) const
 {
-	tm temp = getTimestampAsTimeStructure(index);
+	const tm temp = getTimestampAsTimeStructure(index);
 	return timeTools::timegm(temp);
+}
+
+std::string TimeSeries::getTimestampAsIsoString(uint64_t index, bool withTime) const
+{
+	const time_t temp = getTimestamp(index);
+	return timeTools::convertUnixTimestampToIso(temp, withTime);
 }
 
 std::vector<RESQML2_NS::AbstractProperty *> TimeSeries::getPropertySet() const

@@ -45,10 +45,10 @@ std::string timeTools::convertMicrosecondUnixTimestampToIso(long long ts)
 	return oss.str();
 }
 */
-std::string timeTools::convertUnixTimestampToIso(time_t ts)
+std::string timeTools::convertUnixTimestampToIso(time_t ts, bool withTime)
 {
 	auto tmp = timeTools::from_time_t(ts);
-	return date::format("%FT%TZ", date::floor<std::chrono::seconds>(tmp));
+	return date::format(withTime ? "%FT%TZ" : "%F", date::floor<std::chrono::seconds>(tmp));
 }
 
 time_t timeTools::convertIsoToUnixTimestamp(const std::string & s)
