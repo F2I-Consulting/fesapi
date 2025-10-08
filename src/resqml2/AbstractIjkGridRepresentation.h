@@ -758,7 +758,7 @@ namespace RESQML2_NS
 
 		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const override { throw std::logic_error("Partial object"); }
 
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const override;
 
 		/**
 		* @copybrief AbstractRepresentation::getXyzPointsOfPatch
@@ -770,7 +770,7 @@ namespace RESQML2_NS
 		* 					with a count of <tt>((iCellCount+1) * (jCellCount+1) + splitCoordinateLineCount)</tt>
 		* 					<tt> * kCellCount.</tt>
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const override;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static constexpr char const* XML_TAG = "IjkGridRepresentation";

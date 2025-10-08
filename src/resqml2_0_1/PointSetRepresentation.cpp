@@ -120,7 +120,7 @@ resqml20__PointGeometry* PointSetRepresentation::getPointGeometry2_0_1(uint64_t 
 	return static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.at(patchIndex)->Geometry;
 }
 
-uint64_t PointSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t PointSetRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -129,7 +129,7 @@ uint64_t PointSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex
 	return static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch[patchIndex]->Count;
 }
 
-void PointSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void PointSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	resqml20__PointGeometry const* pointGeom = getPointGeometry2_0_1(patchIndex);
 	if (pointGeom != nullptr) {

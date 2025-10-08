@@ -110,9 +110,9 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT double getMaximumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, uint64_t index = 0) const final;
 
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) final { return true; }
 

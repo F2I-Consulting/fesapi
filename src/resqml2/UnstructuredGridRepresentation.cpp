@@ -29,7 +29,7 @@ using namespace RESQML2_NS;
 
 const char* UnstructuredGridRepresentation::XML_TAG = "UnstructuredGridRepresentation";
 
-uint64_t UnstructuredGridRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t UnstructuredGridRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The index of the patch is not in the allowed range of patch.");

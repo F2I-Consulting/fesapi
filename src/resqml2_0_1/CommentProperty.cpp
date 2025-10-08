@@ -108,7 +108,7 @@ std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPr
 	return xmlValues->Values->PathInHdfFile;
 }
 
-EML2_NS::AbstractHdfProxy* CommentProperty::getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const
+EML2_NS::AbstractHdfProxy* CommentProperty::getValuesHdfProxyAndDatasetPathOfPatch(uint64_t patchIndex, std::string & datasetPath) const
 {
 	// Look for the hdf where the comments are stored.
 	_resqml20__CommentProperty const * prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);

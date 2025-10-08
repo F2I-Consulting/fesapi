@@ -125,12 +125,12 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 		dim, 2);
 }
 
-uint64_t TriangulatedSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t TriangulatedSetRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	return static_cast<_resqml20__TriangulatedSetRepresentation const*>(gsoapProxy2_0_1)->TrianglePatch.at(patchIndex)->NodeCount;
 }
 
-void TriangulatedSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const
+void TriangulatedSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double* xyzPoints) const
 {
 	resqml20__PointGeometry const* pointGeom = getPointGeometry2_0_1(patchIndex);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
@@ -143,7 +143,7 @@ void TriangulatedSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex,
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
 }
 
-uint64_t TriangulatedSetRepresentation::getTriangleCountOfPatch(unsigned int patchIndex) const
+uint64_t TriangulatedSetRepresentation::getTriangleCountOfPatch(uint64_t patchIndex) const
 {
 	return static_cast<_resqml20__TriangulatedSetRepresentation const*>(gsoapProxy2_0_1)->TrianglePatch.at(patchIndex)->Count;
 }
@@ -160,7 +160,7 @@ uint64_t TriangulatedSetRepresentation::getTriangleCountOfAllPatches() const
 	);
 }
 
-void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int* triangleNodeIndices) const
+void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(uint64_t patchIndex, unsigned int* triangleNodeIndices) const
 {
 	readArrayNdOfIntegerValues(static_cast<_resqml20__TriangulatedSetRepresentation const*>(gsoapProxy2_0_1)->TrianglePatch.at(patchIndex)->Triangles, triangleNodeIndices);
 }

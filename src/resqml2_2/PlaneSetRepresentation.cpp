@@ -111,7 +111,7 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 	getRepository()->addRelationship(this, localCrs);
 }
 
-uint64_t PlaneSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t PlaneSetRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");
@@ -123,7 +123,7 @@ uint64_t PlaneSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex
 		: static_cast<resqml22__TiltedPlaneGeometry*>(rep->Planes[patchIndex])->Plane.size() * 3;
 }
 
-void PlaneSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void PlaneSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");

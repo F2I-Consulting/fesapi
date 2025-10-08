@@ -67,8 +67,8 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepo()
 	// ************************************
 	// reading the DiscreteProperty
 
-	// getElementCountPerValue
-	REQUIRE(discreteProperty->getElementCountPerValue() == 1);
+	// getValueCountPerIndexableElement
+	REQUIRE(discreteProperty->getValueCountPerIndexableElement() == 1);
 
 	// getAttachmentKind
 	REQUIRE(discreteProperty->getAttachmentKind() == gsoap_eml2_3::eml23__IndexableElement::intervals);

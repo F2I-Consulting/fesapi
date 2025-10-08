@@ -68,13 +68,13 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT AbstractRepresentation* getRepresentation() const;
 
 		/**
-		 * Gets the count of elements per property value. If the property is a scalar one then it should
+		 * Gets the count of values per indexable element. If the property is a scalar one then it should
 		 * be one. If it is a vectorial one, then it should be more than one. It is not possible to have
 		 * some tensor property values (more dimensions than a vector)
 		 *
-		 * @returns	The element count per value.
+		 * @returns	The value count per indexable element.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getElementCountPerValue() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getValueCountPerIndexableElement() const;
 
 		/**
 		 * Gets the kind of elements on which the property values are attached to

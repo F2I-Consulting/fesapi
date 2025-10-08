@@ -119,7 +119,7 @@ void ContinuousProperty::initRepo() {
 
 void ContinuousProperty::readRepo() {
 	RESQML2_NS::ContinuousProperty* noMinMaxFltProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(defaultUuid);
-	REQUIRE(noMinMaxFltProperty->getElementCountPerValue() == 1);
+	REQUIRE(noMinMaxFltProperty->getValueCountPerIndexableElement() == 1);
 	REQUIRE(noMinMaxFltProperty->getAttachmentKind() == gsoap_eml2_3::eml23__IndexableElement::cells);
 	REQUIRE(noMinMaxFltProperty->getUom() == gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa);
 	auto valuesCount = noMinMaxFltProperty->getValuesCountPerDimensionOfPatch(0);

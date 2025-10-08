@@ -2882,7 +2882,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The xyz point count of the patch at position @p patchIndex.
 		 */
-		uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const;
 		
 		/**
 		 * Get the xyz point count of all patches of this representation.
@@ -2904,7 +2904,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const;
+		void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const;
 		
 		/**
 		 * @brief Gets all the xyz points of a particular patch of this representation. xyz points are given in
@@ -2918,7 +2918,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
+		void getXyzPointsOfPatchInGlobalCrs(uint64_t patchIndex, double * xyzPoints) const;
 		
 		/**
 		 * @brief Gets all the xyz points of all patches of this representation. xyz points are given in the
@@ -2975,7 +2975,7 @@ namespace RESQML2_NS
 		 * @returns	Null if no seismic information have been provided for the patch at position @p
 		 * 			patchIndex. Else, its seismic support.
 		 */
-		AbstractRepresentation* getSeismicSupportOfPatch(unsigned int patchIndex);
+		AbstractRepresentation* getSeismicSupportOfPatch(uint64_t patchIndex);
 		
 		/**
 		 * Gets all the abscissa of the points of a specific patch related to 2d seismic line.
@@ -2988,7 +2988,7 @@ namespace RESQML2_NS
 		 * @param [out]	values	  	The array where the abscissa are going to be stored. The count of
 		 * 							this array must be equal to <tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getSeismicLineAbscissaOfPointsOfPatch(unsigned int patchIndex, double* values) const;
+		void getSeismicLineAbscissaOfPointsOfPatch(uint64_t patchIndex, double* values) const;
 		
 		/**
 		 * Adds seismic 2d coordinates to an existing point geometry patch.
@@ -3008,7 +3008,7 @@ namespace RESQML2_NS
 		 * 									must be already opened for writing and won't be closed in
 		 * 									this method.
 		 */
-		void addSeismic2dCoordinatesToPatch(unsigned int patchIndex, double * lineAbscissa,
+		void addSeismic2dCoordinatesToPatch(uint64_t patchIndex, double * lineAbscissa,
 			AbstractRepresentation * seismicSupport, EML2_NS::AbstractHdfProxy * proxy);
 		
 		/**
@@ -3023,7 +3023,7 @@ namespace RESQML2_NS
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getInlinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
+		void getInlinesOfPointsOfPatch(uint64_t patchIndex, double * values) const;
 		
 		/**
 		 * Gets all the crossline coordinates of the points of a specific patch related to seismic
@@ -3038,7 +3038,7 @@ namespace RESQML2_NS
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
+		void getCrosslinesOfPointsOfPatch(uint64_t patchIndex, double * values) const;
 		
 		/**
 		 * Adds seismic 3d coordinates to an existing point geometry patch.
@@ -3063,7 +3063,7 @@ namespace RESQML2_NS
 		 * 									values. It must be already opened for writing and won't be
 		 * 									closed in this method.
 		 */
-		void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double * inlines, double * crosslines, uint64_t pointCount,
+		void addSeismic3dCoordinatesToPatch(uint64_t patchIndex, double * inlines, double * crosslines, uint64_t pointCount,
 			AbstractRepresentation * seismicSupport, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
@@ -3084,7 +3084,7 @@ namespace RESQML2_NS
 		 * @param 	  	countCrossline	The crossline count.
 		 * @param [in]	seismicSupport	The representation of the seismic line.
 		 */
-		void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double startInline, double incrInline, unsigned int countInline,
+		void addSeismic3dCoordinatesToPatch(uint64_t patchIndex, double startInline, double incrInline, unsigned int countInline,
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			AbstractRepresentation * seismicSupport);
 
@@ -3235,7 +3235,7 @@ namespace RESQML2_NS
 	public:
 		uint64_t getPolylineCountOfPatch(uint64_t patchIndex) const;
 		uint64_t getPolylineCountOfAllPatches() const;
-		void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const;
+		void getNodeCountPerPolylineInPatch(uint64_t patchIndex, unsigned int * nodeCountPerPolyline) const;
 		void getNodeCountPerPolylineOfAllPatches(unsigned int * nodeCountPerPolyline) const;
 		void pushBackGeometryPatch(
 			unsigned int * nodeCountPerPolyline, double * nodes,
@@ -3247,11 +3247,11 @@ namespace RESQML2_NS
 			uint64_t polylineCount, bool * polylineClosedFlags,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 				
-		bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const;
+		bool areAllPolylinesClosedOfPatch(uint64_t patchIndex) const;
 		bool areAllPolylinesClosedOfAllPatches() const;
-		bool areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const;
+		bool areAllPolylinesNonClosedOfPatch(uint64_t patchIndex) const;
 		bool areAllPolylinesNonClosedOfAllPatches() const;
-		void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const;
+		void getClosedFlagPerPolylineOfPatch(uint64_t patchIndex, bool * closedFlagPerPolyline) const;
 		void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const;
 		bool hasALineRole() const;
 		gsoap_eml2_3::resqml22__LineRole getLineRole() const;
@@ -3361,9 +3361,9 @@ namespace RESQML2_NS
 	class TriangulatedSetRepresentation : public AbstractSurfaceRepresentation
 	{
 	public:
-		uint64_t getTriangleCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getTriangleCountOfPatch(uint64_t patchIndex) const;
 		uint64_t getTriangleCountOfAllPatches() const;
-		void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const;
+		void getTriangleNodeIndicesOfPatch(uint64_t patchIndex, unsigned int * triangleNodeIndices) const;
 		void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
 		void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
@@ -3453,19 +3453,19 @@ namespace RESQML2_NS
 			uint64_t elementCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<unsigned int>::max());
 
-		bool areElementIndicesPairwise(unsigned int patchIndex) const;
-		bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
+		bool areElementIndicesPairwise(uint64_t patchIndex) const;
+		bool areElementIndicesBasedOnLattice(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
 
-		int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		uint64_t getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
+		int64_t getLatticeElementIndicesStartValue(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+		uint64_t getLatticeElementIndicesDimensionCount(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+		int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+		uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
 
-		gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const;
-		uint64_t getElementCountOfPatch(unsigned int patchIndex) const;
-		void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const;
+		gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex) const;
+		uint64_t getElementCountOfPatch(uint64_t patchIndex) const;
+		void getElementIndicesOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const;
 
 		void pushBackSupportingRepresentation(AbstractRepresentation * supportingRep);
 		uint64_t getSupportingRepresentationCount() const;
@@ -5126,7 +5126,7 @@ namespace RESQML2_NS
 			double directionKX, double directionKY, double directionKZ, double spacingK, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void addSeismic3dCoordinatesToPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			double startInline, double incrInline, unsigned int countInline,
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			unsigned int countSample, AbstractRepresentation * seismicSupport);
@@ -5954,13 +5954,13 @@ namespace RESQML2_NS
 		EML2_NS::PropertyKind* getPropertyKind() const;
 		
 		/**
-		 * Gets the count of elements per property value. If the property is a scalar one then it should
+		 * Gets the count of values per indexable element. If the property is a scalar one then it should
 		 * be one. If it is a vectorial one, then it should be more than one. It is not possible to have
 		 * some tensor property values (more dimensions than a vector)
 		 *
-		 * @returns	The element count per value.
+		 * @returns	The value count per indexable element.
 		 */
-		uint64_t getElementCountPerValue() const;
+		uint64_t getValueCountPerIndexableElement() const;
 		
 		/**
 		 * Gets the kind of elements on which the property values are attached to
@@ -7159,7 +7159,7 @@ namespace RESQML2_NS
 		 * @param 	   	numArrayDimensions			The number of dimensions of the array to write.
 		 */
 		void getInt64ValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int64_t* values,
 			uint64_t const * numValuesInEachDimension,
 			uint64_t const * offsetInEachDimension,
@@ -7190,7 +7190,7 @@ namespace RESQML2_NS
 		 * 										(mainly K dimension).
 		 */
 		void getInt64ValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int64_t* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -7222,7 +7222,7 @@ namespace RESQML2_NS
 		 * @returns	The null value.
 		 */
 		int getIntValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int* values,
 			const uint64_t* numValuesInEachDimension,
 			const uint64_t* offsetInEachDimension,
@@ -7253,7 +7253,7 @@ namespace RESQML2_NS
 		 * 										(mainly K dimension).
 		 */
 		void getIntValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int* values,
 			unsigned int valueCountInFastestDim,
 			unsigned int valueCountInMiddleDim,
@@ -7442,7 +7442,7 @@ namespace RESQML2_NS
 		 * @param 	   	numArrayDimensions			The number of dimensions of the HDF5 array to read.
 		 */
 		void getFloatValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			float* values,
 			uint64_t const * numValuesInEachDimension,
 			uint64_t const * offsetInEachDimension,
@@ -7472,7 +7472,7 @@ namespace RESQML2_NS
 		 * 											(mainly K dimension).
 		 */
 		void getFloatValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			float* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -7490,7 +7490,7 @@ namespace RESQML2_NS
 	{
 	public:
 		void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy * proxy);
-		std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
+		std::vector<std::string> getStringValuesOfPatch(uint64_t patchIndex);
 		
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written in
@@ -7704,7 +7704,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					minimum value (vector property case).
 		 */
-		void setMinimumValue(double value, unsigned int index = 0) const;
+		void setMinimumValue(double value, uint64_t index = 0) const;
 
 		/**
 		 * @brief	Sets the maximum value of a non vector property or the maximum value of one given
@@ -7715,7 +7715,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					maximum value (vector property case).
 		 */
-		void setMaximumValue(double value, unsigned int index = 0) const;
+		void setMaximumValue(double value, uint64_t index = 0) const;
 
 		//******************************************/
 		//*** For FLOATING POINT hyperslabbing *****/
@@ -8697,7 +8697,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The xyz point count of the patch at position @p patchIndex.
 		 */
-		uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Get the xyz point count of all patches of this property.
@@ -8719,7 +8719,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const;
+		void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const;
 
 		/**
 		 * @brief Gets all the xyz points of a particular patch of this property. xyz points are given in
@@ -8733,7 +8733,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
+		void getXyzPointsOfPatchInGlobalCrs(uint64_t patchIndex, double * xyzPoints) const;
 
 		/**
 		 * @brief Gets all the xyz points of all patches of this property. xyz points are given in the

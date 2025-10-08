@@ -114,7 +114,7 @@ double ContinuousProperty::getMaximumValue(uint64_t index) const
 	return result;
 }
 
-void ContinuousProperty::setMinimumValue(double value, unsigned int index) const
+void ContinuousProperty::setMinimumValue(double value, uint64_t index) const
 {
 	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 
@@ -132,7 +132,7 @@ void ContinuousProperty::setMinimumValue(double value, unsigned int index) const
 	}
 }
 
-void ContinuousProperty::setMaximumValue(double value, unsigned int index) const
+void ContinuousProperty::setMaximumValue(double value, uint64_t index) const
 {
 	_resqml22__ContinuousProperty* prop = static_cast<_resqml22__ContinuousProperty*>(gsoapProxy2_3);
 

@@ -85,7 +85,7 @@ resqml22__PointGeometry* PolylineRepresentation::getPointGeometry2_2(uint64_t pa
 	return patchIndex == 0 ? static_cast<_resqml22__PolylineRepresentation*>(gsoapProxy2_3)->NodePatchGeometry : nullptr;
 }
 
-uint64_t PolylineRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t PolylineRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -103,7 +103,7 @@ uint64_t PolylineRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex
 	return result / 3;
 }
 
-void PolylineRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void PolylineRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");

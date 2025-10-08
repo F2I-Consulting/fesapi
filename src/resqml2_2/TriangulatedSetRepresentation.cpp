@@ -132,7 +132,7 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	triRep->TrianglePatch.push_back(patch);
 }
 
-uint64_t TriangulatedSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t TriangulatedSetRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -142,7 +142,7 @@ uint64_t TriangulatedSetRepresentation::getXyzPointCountOfPatch(unsigned int pat
 	return triRep->TrianglePatch[patchIndex]->NodeCount;
 }
 
-void TriangulatedSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void TriangulatedSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount())
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -158,7 +158,7 @@ void TriangulatedSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex,
 	}
 }
 
-uint64_t TriangulatedSetRepresentation::getTriangleCountOfPatch(unsigned int patchIndex) const
+uint64_t TriangulatedSetRepresentation::getTriangleCountOfPatch(uint64_t patchIndex) const
 {
 	return getCountOfArray(static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3)->TrianglePatch.at(patchIndex)->Triangles) / 3;;
 }
@@ -174,7 +174,7 @@ uint64_t TriangulatedSetRepresentation::getTriangleCountOfAllPatches() const
 	return result;
 }
 
-void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const
+void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(uint64_t patchIndex, unsigned int * triangleNodeIndices) const
 {
 	_resqml22__TriangulatedSetRepresentation* triRep = static_cast<_resqml22__TriangulatedSetRepresentation*>(gsoapProxy2_3);
 

@@ -68,7 +68,7 @@ namespace RESQML2_NS
 		 * 										patchIndex. Its size must be
 		 * 										<tt>getPolylineCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getNodeCountPerPolylineInPatch(uint64_t patchIndex, unsigned int * nodeCountPerPolyline) const = 0;
 
 		/**
 		 * Gets all the node count per polyline for all the patches of this representation.
@@ -79,7 +79,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const = 0;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
 		/**
 		 * Pushes back a new patch of polylines. Here, the closed flag of all of the polylines is the
@@ -151,7 +151,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if all polylines of patch @p patchIndex are closed, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool virtual areAllPolylinesClosedOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT bool virtual areAllPolylinesClosedOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Checks if all polylines of all patches are closed. Notice that a returned "false" does not
@@ -174,7 +174,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if all polylines of patch @p patchIndex are not closed, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool areAllPolylinesNonClosedOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Checks if all polylines of all patches are not closed. Notice that a returned "false" does
@@ -196,7 +196,7 @@ namespace RESQML2_NS
 		 * 										ordered by polyline. Its size must be
 		 * 										<tt>getPolylineCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getClosedFlagPerPolylineOfPatch(uint64_t patchIndex, bool * closedFlagPerPolyline) const = 0;
 
 		/**
 		 * Gets the closed flag of all polylines of all patches.

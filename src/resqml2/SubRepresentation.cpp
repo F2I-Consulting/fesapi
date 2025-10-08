@@ -78,7 +78,7 @@ void SubRepresentation::setElementIndices(uint64_t* elementIndices,
 	uint64_t elementCount,
 	uint64_t offset,
 	EML2_NS::AbstractHdfProxy* proxy,
-	unsigned int patchIndex)
+	uint64_t patchIndex)
 {
 	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<unsigned int>::max)()) {
 		throw out_of_range("The subrepresentation patch is out of range");
@@ -123,7 +123,7 @@ void SubRepresentation::loadTargetRelationships()
 	}
 }
 
-uint64_t SubRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t SubRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -137,7 +137,7 @@ uint64_t SubRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) con
 	}
 }
 
-void SubRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
+void SubRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");

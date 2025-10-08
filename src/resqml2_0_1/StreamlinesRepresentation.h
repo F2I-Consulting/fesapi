@@ -159,7 +159,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Use linear interpolation between 2 trajectory stations.
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int, double *) const final {
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t, double *) const final {
 			throw std::logic_error("Streamlines have no XYZ information in version 2.0.1.");
 		}
 

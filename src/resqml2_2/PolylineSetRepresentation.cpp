@@ -231,7 +231,7 @@ uint64_t PolylineSetRepresentation::getPolylineCountOfAllPatches() const
 	return result;
 }
 
-void PolylineSetRepresentation::getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const
+void PolylineSetRepresentation::getNodeCountPerPolylineInPatch(uint64_t patchIndex, unsigned int * nodeCountPerPolyline) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw std::out_of_range("patchIndex id out of range.");
@@ -251,7 +251,7 @@ void PolylineSetRepresentation::getNodeCountPerPolylineOfAllPatches(unsigned int
 	}
 }
 
-void PolylineSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void PolylineSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -272,7 +272,7 @@ uint64_t PolylineSetRepresentation::getPatchCount() const
     return static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size();
 }
 
-bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(unsigned int patchIndex) const
+bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -310,7 +310,7 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfAllPatches() const
 	return true;
 }
 
-bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const
+bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -346,7 +346,7 @@ bool PolylineSetRepresentation::areAllPolylinesNonClosedOfAllPatches() const
 	return true;
 }
 		
-void PolylineSetRepresentation::getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const
+void PolylineSetRepresentation::getClosedFlagPerPolylineOfPatch(uint64_t patchIndex, bool * closedFlagPerPolyline) const
 {
 	uint64_t polylineCount = getPolylineCountOfPatch(patchIndex);
 	resqml22__PolylineSetPatch* patch = static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch[patchIndex];

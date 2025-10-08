@@ -121,7 +121,7 @@ RESQML2_NS::MdDatum* DeviationSurveyRepresentation::getMdDatum() const
 	return getRepository()->getDataObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumDor().getUuid());
 }
 
-uint64_t DeviationSurveyRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t DeviationSurveyRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
@@ -131,7 +131,7 @@ uint64_t DeviationSurveyRepresentation::getXyzPointCountOfPatch(unsigned int pat
 	return rep->StationCount;
 }
 
-void DeviationSurveyRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double*) const
+void DeviationSurveyRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double*) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");

@@ -76,8 +76,8 @@ void ContinuousPropertyOnWellFrameTest::readRepo()
 	// ************************************
 	// reading the ContinuousProperty
 
-	// getElementCountPerValue
-	REQUIRE(continuousProperty->getElementCountPerValue() == 1);
+	// getValueCountPerIndexableElement
+	REQUIRE(continuousProperty->getValueCountPerIndexableElement() == 1);
 
 	// getAttachmentKind
 	REQUIRE(continuousProperty->getAttachmentKind() == gsoap_eml2_3::eml23__IndexableElement::nodes);

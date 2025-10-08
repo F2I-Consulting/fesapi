@@ -2709,7 +2709,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 
-				if (continuousProp->getElementCountPerValue() == 1) {
+				if (continuousProp->getValueCountPerIndexableElement() == 1) {
 					for (size_t cellIndex = 0; cellIndex < valueCount; ++cellIndex) {
 						if (enabledCells != nullptr && !enabledCells[cellIndex]) {
 							continue;

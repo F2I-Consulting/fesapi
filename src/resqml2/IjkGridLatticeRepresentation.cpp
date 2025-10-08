@@ -69,7 +69,7 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
     return getInterpretation() != nullptr && getInterpretation()->getInterpretedFeature()->getXmlTag() == "SeismicLatticeFeature";
 }
 
-void IjkGridLatticeRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
+void IjkGridLatticeRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double *) const
 {
 	if (patchIndex < getPatchCount())
 	{

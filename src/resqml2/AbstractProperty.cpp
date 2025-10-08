@@ -57,7 +57,7 @@ void AbstractProperty::loadTargetRelationships()
 		convertDorIntoRel<EML2_NS::PropertyKind>(dor);
 	}
 
-	for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+	for (uint64_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 		dor = getHdfProxyDor(patchIndex);
 		if (!dor.isEmpty()) {
 			convertDorIntoRel(dor);
@@ -233,7 +233,7 @@ bool AbstractProperty::useInterval() const
 	throw logic_error("Not implemented yet");
 }
 
-uint64_t AbstractProperty::getElementCountPerValue() const
+uint64_t AbstractProperty::getValueCountPerIndexableElement() const
 {
 	uint64_t result;
 	if (gsoapProxy2_0_1 != nullptr) {

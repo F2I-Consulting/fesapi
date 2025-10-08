@@ -183,9 +183,9 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT double getMaximumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, uint64_t index = 0) const final;
 
 		/**
 		 * Gets the Energistics property kind which is associated to this intance
@@ -263,7 +263,7 @@ namespace RESQML2_0_1_NS
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_eml2_3::eml23__IndexableElement attachmentKind);
 
-		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const;
+		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(uint64_t patchIndex, std::string & datasetPath) const;
 
 		size_t getMinimumValueSize() const;
 		size_t getMaximumValueSize() const;

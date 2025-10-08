@@ -317,16 +317,16 @@ void DiscreteProperty::pushBackHdf5ArrayOfValues(
 	AbstractValuesProperty::pushBackHdf5ArrayOfValues(datatype, numValues, numArrayDimensions, nullValue, proxy);
 
 	if (minimumValue != nullptr && maximumValue != nullptr) {
-		const uint64_t elementCount = getElementCountPerValue();
-		for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
-			setMinimumValue(getMinimumValueSize() > propIndex 
-					? (getMinimumValue(propIndex) > minimumValue[propIndex] ? minimumValue[propIndex] : getMinimumValue(propIndex))
-					: minimumValue[propIndex]
-				, propIndex);
-			setMaximumValue(getMaximumValueSize() > propIndex
-					? (getMaximumValue(propIndex) > maximumValue[propIndex] ? maximumValue[propIndex] : getMaximumValue(propIndex))
-					: maximumValue[propIndex]
-				, propIndex);
+		const uint64_t valuePerIndexableElement = getValueCountPerIndexableElement();
+		for (uint64_t valuePerIndexableElementIndex = 0; valuePerIndexableElementIndex < valuePerIndexableElement; ++valuePerIndexableElementIndex) {
+			setMinimumValue(getMinimumValueSize() > valuePerIndexableElementIndex 
+					? (getMinimumValue(valuePerIndexableElementIndex) > minimumValue[valuePerIndexableElementIndex] ? minimumValue[valuePerIndexableElementIndex] : getMinimumValue(valuePerIndexableElementIndex))
+					: minimumValue[valuePerIndexableElementIndex]
+				, valuePerIndexableElementIndex);
+			setMaximumValue(getMaximumValueSize() > valuePerIndexableElementIndex
+					? (getMaximumValue(valuePerIndexableElementIndex) > maximumValue[valuePerIndexableElementIndex] ? maximumValue[valuePerIndexableElementIndex] : getMaximumValue(valuePerIndexableElementIndex))
+					: maximumValue[valuePerIndexableElementIndex]
+				, valuePerIndexableElementIndex);
 		}
 	}
 }
@@ -379,30 +379,30 @@ void DiscreteProperty::setValuesOfInt64Hdf5ArrayOfValues(
 		offsetValues, numArrayDimensions, proxy, patchIndex);
 
 	if (computeMinMax) {
-		const uint64_t elementCount = getElementCountPerValue();
+		const uint64_t valuePerIndexableElement = getValueCountPerIndexableElement();
 		uint64_t nValues = numValues[0];
 		//If count > 1, the last (fastest) dimension has the number of properties per indexable element of the representation.
-		for (unsigned int dim = 1; dim < (elementCount == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {
+		for (uint64_t dim = 1; dim < (valuePerIndexableElement == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {
 			nValues *= numValues[dim];
 		}
 
-		while (getMinimumValueSize() < elementCount) {
+		while (getMinimumValueSize() < valuePerIndexableElement) {
 			setMinimumValue((std::numeric_limits<int64_t>::max)(), getMinimumValueSize());
 		}
-		while (getMaximumValueSize() < elementCount) {
+		while (getMaximumValueSize() < valuePerIndexableElement) {
 			setMaximumValue((std::numeric_limits<int64_t>::min)(), getMaximumValueSize());
 		}
 
 		int64_t nullValue = getNullValue(patchIndex);
 
-		for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
-			for (size_t i = 0; i < nValues; i += elementCount) {
+		for (uint64_t valuePerIndexableElementIndex = 0; valuePerIndexableElementIndex < valuePerIndexableElement; ++valuePerIndexableElementIndex) {
+			for (size_t i = 0; i < nValues; i += valuePerIndexableElement) {
 				if (values[i] == nullValue) { continue; }
-				if (getMinimumValue(propIndex) > values[i]) {
-					setMinimumValue(values[i], propIndex);
+				if (getMinimumValue(valuePerIndexableElementIndex) > values[i]) {
+					setMinimumValue(values[i], valuePerIndexableElementIndex);
 				}
-				if (getMaximumValue(propIndex) < values[i]) {
-					setMaximumValue(values[i], propIndex);
+				if (getMaximumValue(valuePerIndexableElementIndex) < values[i]) {
+					setMaximumValue(values[i], valuePerIndexableElementIndex);
 				}
 			}
 		}
@@ -422,30 +422,30 @@ void DiscreteProperty::setValuesOfInt32Hdf5ArrayOfValues(
 		offsetValues, numArrayDimensions, proxy, patchIndex);
 
 	if (computeMinMax) {
-		const uint64_t elementCount = getElementCountPerValue();
+		const uint64_t valuePerIndexableElement = getValueCountPerIndexableElement();
 		uint64_t nValues = numValues[0];
 		//If count > 1, the last (fastest) dimension has the number of properties per indexable element of the representation.
-		for (unsigned int dim = 1; dim < (elementCount == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {
+		for (uint64_t dim = 1; dim < (valuePerIndexableElement == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {
 			nValues *= numValues[dim];
 		}
 
-		while (getMinimumValueSize() < elementCount) {
+		while (getMinimumValueSize() < valuePerIndexableElement) {
 			setMinimumValue((std::numeric_limits<int64_t>::max)(), getMinimumValueSize());
 		}
-		while (getMaximumValueSize() < elementCount) {
+		while (getMaximumValueSize() < valuePerIndexableElement) {
 			setMaximumValue((std::numeric_limits<int64_t>::min)(), getMaximumValueSize());
 		}
 
 		int64_t nullValue = getNullValue(patchIndex);
 
-		for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
-			for (size_t i = 0; i < nValues; i += elementCount) {
+		for (uint64_t valuePerIndexableElementIndex = 0; valuePerIndexableElementIndex < valuePerIndexableElement; ++valuePerIndexableElementIndex) {
+			for (size_t i = 0; i < nValues; i += valuePerIndexableElement) {
 				if (values[i] == nullValue) { continue; }
-				if (getMinimumValue(propIndex) > values[i]) {
-					setMinimumValue(values[i], propIndex);
+				if (getMinimumValue(valuePerIndexableElementIndex) > values[i]) {
+					setMinimumValue(values[i], valuePerIndexableElementIndex);
 				}
-				if (getMaximumValue(propIndex) < values[i]) {
-					setMaximumValue(values[i], propIndex);
+				if (getMaximumValue(valuePerIndexableElementIndex) < values[i]) {
+					setMaximumValue(values[i], valuePerIndexableElementIndex);
 				}
 			}
 		}

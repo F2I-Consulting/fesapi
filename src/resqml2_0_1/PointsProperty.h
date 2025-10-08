@@ -171,6 +171,6 @@ namespace RESQML2_0_1_NS
 		COMMON_NS::DataObjectReference getHdfProxyDor(uint64_t patchIndex) const final;
 
 	private:
-		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const final;
+		EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(uint64_t patchIndex, std::string & datasetPath) const final;
 	};
 }

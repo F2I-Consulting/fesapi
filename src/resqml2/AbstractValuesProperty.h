@@ -297,7 +297,7 @@ namespace RESQML2_NS
 			}
 
 			if (forceStatisticsComputation) {
-				return COMMON_NS::NumberArrayStatistics<T>(values, getValuesCountOfPatch(patchIndex), getElementCountPerValue(), nullValue);
+				return COMMON_NS::NumberArrayStatistics<T>(values, getValuesCountOfPatch(patchIndex), getValueCountPerIndexableElement(), nullValue);
 			}
 
 			return getStatistics<T>(patchIndex);
@@ -1908,7 +1908,7 @@ namespace RESQML2_NS
 				}
 			}
 			else if (gsoapProxy2_3 != nullptr) {
-				const auto valuePerIndexableElement = getElementCountPerValue();
+				const auto valuePerIndexableElement = getValueCountPerIndexableElement();
 				gsoap_eml2_3::resqml22__AbstractValuesProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3);
 				if (auto* integerArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray*>(prop->ValuesForPatch.at(patchIndex))) {
 					if constexpr (std::is_integral_v<T>) {

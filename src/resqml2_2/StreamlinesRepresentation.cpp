@@ -242,7 +242,7 @@ resqml22__PointGeometry* StreamlinesRepresentation::getPointGeometry2_2(uint64_t
 	return nullptr;
 }
 
-void StreamlinesRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void StreamlinesRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");

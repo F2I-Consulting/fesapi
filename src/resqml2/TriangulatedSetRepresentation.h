@@ -73,7 +73,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The triangle count of the patch at position @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getTriangleCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTriangleCountOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Get the triangle count of all patches of this representation.
@@ -98,7 +98,7 @@ namespace RESQML2_NS
 		 * 									following values define the 3 vertices of the second triangle
 		 * 									and so on.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getTriangleNodeIndicesOfPatch(uint64_t patchIndex, unsigned int * triangleNodeIndices) const = 0;
 
 		/**
 		 * Gets all the triangle node indices of all patches of this representation. See

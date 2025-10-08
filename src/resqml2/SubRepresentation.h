@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The kind of the selected elements.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex) const = 0;
 
 		/**
 		 * Gets the count of the selected elements of a particular patch of this sub-representation.
@@ -75,7 +75,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The count of the selected elements.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getElementCountOfPatch(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getElementCountOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Gets the indices of the selected elements for a particular patch of this sub-representation.
@@ -98,7 +98,7 @@ namespace RESQML2_NS
 		 * 									elements. It must be preallocated with
 		 * 									{@link getElementCountOfPatch()} size.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t* elementIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex, uint64_t* elementIndices) const = 0;
 
 		/**
 		 * @brief	Gets the indices of the supporting representations that refer the selected elements
@@ -117,7 +117,7 @@ namespace RESQML2_NS
 		 * 												elements) at the same position in the sub-
 		 * 												representation patch.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short* supportingRepresentationIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getSupportingRepresentationIndicesOfPatch(uint64_t patchIndex, short* supportingRepresentationIndices) const = 0;
 
 		/**
 		 * Checks if the element indices of a particular patch are pairwise or not.
@@ -128,7 +128,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if the elements indices are pairwise, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesPairwise(unsigned int patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesPairwise(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Checks if the element indices of a particular patch are based on a lattice or not.
@@ -147,7 +147,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if element indices based on lattice, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesBasedOnLattice(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the start value of the lattice the element indices of a particular patch are based on.
@@ -168,7 +168,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The lattice start value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesStartValue(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the dimension count of the lattice the element indices of a particular patch are based
@@ -190,7 +190,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The lattice dimension count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesDimensionCount(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the offset value at a given dimension of the lattice the element indices of a particular
@@ -214,7 +214,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The offset value.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Gets the offset count at a given dimension of the lattice the element indices of a particular
@@ -238,7 +238,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The offset count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		 * Pushes back a new lattice-based patch (without pairwise elements) in this sub-representation.
@@ -318,7 +318,7 @@ namespace RESQML2_NS
 			uint64_t elementCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)());
+			uint64_t patchIndex = (std::numeric_limits<unsigned int>::max)());
 		
 		/**
 		 * Pushes back a new patch in this sub-representation which is constituted by means of pairwise
@@ -375,10 +375,10 @@ namespace RESQML2_NS
 		 * 							   pairwise) or if the kind of the left part of the pairs of elements is
 		 * 							    not node (pairwise case).
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const override;
 
 		/** Please do note use : not implemented yet. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double* xyzPoints) const override;
 
 		DLL_IMPORT_OR_EXPORT virtual uint64_t getPatchCount() const override = 0;
 

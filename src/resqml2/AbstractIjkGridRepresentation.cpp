@@ -1346,7 +1346,7 @@ void AbstractIjkGridRepresentation::getXyzPointsOfBlock(double *)
 	throw std::logic_error("Partial object");
 }
 
-uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) const
+uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfPatch(uint64_t) const
 {
 	const uint64_t result = getXyzPointCountOfKInterface() * (getKCellCount() + 1 + getKGapsCount()) + getSplitNodeCount();
 
@@ -1364,7 +1364,7 @@ uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) co
 	throw std::logic_error("The IJK Grid is in an unknown Energistics standard version.");
 }
 
-void AbstractIjkGridRepresentation::getXyzPointsOfPatch(unsigned int, double *) const
+void AbstractIjkGridRepresentation::getXyzPointsOfPatch(uint64_t, double *) const
 {
 	throw std::logic_error("Partial object");
 }

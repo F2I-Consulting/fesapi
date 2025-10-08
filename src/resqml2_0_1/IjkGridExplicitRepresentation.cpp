@@ -51,7 +51,7 @@ EML2_NS::AbstractHdfProxy* IjkGridExplicitRepresentation::getPointDatasetPath(st
 	}
 }
 
-void IjkGridExplicitRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void IjkGridExplicitRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("An ijk grid has a maximum of one patch.");

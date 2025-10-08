@@ -707,7 +707,7 @@ resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfLatticePoints3d(
 }
 
 resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
-	unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
+	uint64_t patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 	unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 	RESQML2_NS::Grid2dRepresentation * supportingRepresentation,
 	uint64_t startGlobalIndex,
@@ -771,7 +771,7 @@ resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
 }
 
 resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
-	unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
+	uint64_t patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 	unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy * proxy,
 	double originX, double originY, double originZ,
 	double offsetIX, double offsetIY, double offsetIZ, double spacingI,

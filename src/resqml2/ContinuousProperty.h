@@ -256,7 +256,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					minimum value (vector property case).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setMinimumValue(double value, unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setMinimumValue(double value, uint64_t index = 0) const = 0;
 
 		/**
 		 * @brief	Sets the maximum value of a non vector property or the maximum value of one given
@@ -267,7 +267,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					maximum value (vector property case).
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setMaximumValue(double value, unsigned int index = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setMaximumValue(double value, uint64_t index = 0) const = 0;
 
 		//***************************
 		//*** For hyperslabbing *****
@@ -583,34 +583,38 @@ namespace RESQML2_NS
 			unsigned int numArrayDimensions,
 			T * minimumValue = nullptr, T * maximumValue = nullptr)
 		{
-			const uint64_t elementCount = getElementCountPerValue();
+			const uint64_t valuePerIndexableElement = getValueCountPerIndexableElement();
 
 			// Some minimum and maximum values are given : No need to compute them.
 			if (minimumValue != nullptr) {
-				for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
-					setMinimumValue(getMinimumValueSize() > propIndex ? fmin(getMinimumValue(propIndex), minimumValue[propIndex]) : minimumValue[propIndex], propIndex);
+				for (uint64_t valuePerIndexableElementIndex = 0; valuePerIndexableElementIndex < valuePerIndexableElement; ++valuePerIndexableElementIndex) {
+					setMinimumValue(getMinimumValueSize() > valuePerIndexableElementIndex
+						? fmin(getMinimumValue(valuePerIndexableElementIndex), minimumValue[valuePerIndexableElementIndex])
+						: minimumValue[valuePerIndexableElementIndex], valuePerIndexableElementIndex);
 				}
 			}
 			if (maximumValue != nullptr) {
-				for (unsigned int propIndex = 0; propIndex < elementCount; ++propIndex) {
-					setMaximumValue(getMaximumValueSize() > propIndex ? fmax(getMaximumValue(propIndex), maximumValue[propIndex]) : maximumValue[propIndex], propIndex);
+				for (uint64_t valuePerIndexableElementIndex = 0; valuePerIndexableElementIndex < valuePerIndexableElement; ++valuePerIndexableElementIndex) {
+					setMaximumValue(getMaximumValueSize() > valuePerIndexableElementIndex
+						? fmax(getMaximumValue(valuePerIndexableElementIndex), maximumValue[valuePerIndexableElementIndex])
+						: maximumValue[valuePerIndexableElementIndex], valuePerIndexableElementIndex);
 				}
 			}
 			if (minimumValue != nullptr && maximumValue != nullptr) return; // No need to compute max or min value
 
 			uint64_t nValues = numValuesInEachDimension[0];
 			//If count > 1, the last (fastest) dimension has the number of properties per indexable element of the representation.
-			for (unsigned int dim = 1; dim < (elementCount == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {
+			for (uint64_t dim = 1; dim < (valuePerIndexableElement == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) {
 				nValues *= numValuesInEachDimension[dim];
 			}
 
 			// Minimum or maximum values are not given : Need to compute them.
-			std::unique_ptr<T[]> allComputedMin(new T[elementCount]);
-			std::unique_ptr<T[]> allComputedMax(new T[elementCount]);
-			for (size_t propIndex = 0; propIndex < elementCount; ++propIndex) {
+			std::unique_ptr<T[]> allComputedMin(new T[valuePerIndexableElement]);
+			std::unique_ptr<T[]> allComputedMax(new T[valuePerIndexableElement]);
+			for (size_t propIndex = 0; propIndex < valuePerIndexableElement; ++propIndex) {
 				allComputedMin[propIndex] = std::numeric_limits<T>::quiet_NaN();
 				allComputedMax[propIndex] = std::numeric_limits<T>::quiet_NaN();
-				for (size_t i = 0; i < nValues; i += elementCount) {
+				for (size_t i = 0; i < nValues; i += valuePerIndexableElement) {
 					allComputedMin[propIndex] = fmin(allComputedMin[propIndex], values[i]);
 					allComputedMax[propIndex] = fmax(allComputedMax[propIndex], values[i]);
 				}
