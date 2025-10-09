@@ -819,8 +819,18 @@ namespace COMMON_NS
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray:
 			{
 				gsoap_resqml2_0_1::resqml20__IntegerRangeArray const* rangeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray const *>(arrayInput);
-				if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The range integer values are superior to maximum value of read datatype.");
+				if constexpr (std::is_signed_v<T>) {
+					if (rangeArray->Value < (std::numeric_limits<T>::min)()) {
+						throw std::overflow_error("Too low integers in XML for the C++ chosen datatype");
+					}
+				}
+				else {
+					if (rangeArray->Value < 0 ) {
+						throw std::underflow_error("Cannot deal with negative values when using unsigned integer");
+					}
+				}
+				if (rangeArray->Value + rangeArray->Count > static_cast<uint64_t>((std::numeric_limits<T>::max)())) {
+					throw std::overflow_error("The range integer values are superior to maximum value of read datatype.");
 				}
 				for (T i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
 					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
@@ -830,10 +840,17 @@ namespace COMMON_NS
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
 			{
 				gsoap_resqml2_0_1::resqml20__IntegerConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(arrayInput);
-				if (sizeof(constantArray->Value) > sizeof(T) && constantArray->Value > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The constant integer value is superior to maximum value of read datatype.");
+				T value;
+				if constexpr (std::is_signed_v<T>) {
+					value = static_cast<T>(std::clamp(constantArray->Value,
+						static_cast<int64_t>((std::numeric_limits<T>::min)()), static_cast<int64_t>((std::numeric_limits<T>::max)())));
 				}
-				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
+				else {
+					value = constantArray->Value > 0
+						? static_cast<T>(std::clamp(static_cast<uint64_t>(constantArray->Value), static_cast<uint64_t>(0), static_cast<uint64_t>((std::numeric_limits<T>::max)())))
+						: (std::numeric_limits<T>::max)();
+				}
+				std::fill(arrayOutput, arrayOutput + constantArray->Count, value);
 				return (std::numeric_limits<T>::max)();
 			}
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray:
@@ -848,8 +865,26 @@ namespace COMMON_NS
 				if (latticeArray->Offset.size() > 1) {
 					throw std::invalid_argument("The integer lattice array contains more than one offset.");
 				}
-				for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
-					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+				if constexpr (std::is_signed_v<T>) {
+					if (latticeArray->StartValue < (std::numeric_limits<T>::min)() || latticeArray->Offset[0]->Value < (std::numeric_limits<T>::min)()) {
+						throw std::underflow_error("Too low integers in XML for the C++ chosen datatype");
+					}
+					if (latticeArray->StartValue > (std::numeric_limits<T>::max)() ||
+						latticeArray->Offset[0]->Value > (std::numeric_limits<T>::max)()) {
+						throw std::overflow_error("Too big integers in XML for the C++ chosen datatype");
+					}
+				}
+				else {
+					if (latticeArray->StartValue < 0 || latticeArray->Offset[0]->Value < 0) {
+						throw std::underflow_error("Cannot deal with negative values when using unsigned integer");
+					}
+					if (static_cast<uint64_t>(latticeArray->StartValue) > (std::numeric_limits<T>::max)() ||
+						static_cast<uint64_t>(latticeArray->Offset[0]->Value) > (std::numeric_limits<T>::max)()) {
+						throw std::overflow_error("Too big integers in XML for the C++ chosen datatype");
+					}
+				}
+				for (uint64_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+					arrayOutput[i] = static_cast<T>(latticeArray->StartValue) + (i * static_cast<T>(latticeArray->Offset[0]->Value));
 				}
 				return (std::numeric_limits<T>::max)();
 			}
@@ -864,8 +899,21 @@ namespace COMMON_NS
 			case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
 			{
 				gsoap_eml2_3::eml23__IntegerConstantArray const* constantArray = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(arrayInput);
-				if (sizeof(constantArray->Value) > sizeof(T) && constantArray->Value > (std::numeric_limits<T>::max)()) {
-					throw std::range_error("The constant integer value is superior to maximum value of read datatype.");
+				if constexpr (std::is_signed_v<T>) {
+					if (constantArray->Value < (std::numeric_limits<T>::min)()) {
+						throw std::underflow_error("Too low integers in XML for the C++ chosen datatype");
+					}
+					if (constantArray->Value > (std::numeric_limits<T>::max)()) {
+						throw std::overflow_error("Too big integers in XML for the C++ chosen datatype");
+					}
+				}
+				else {
+					if (constantArray->Value < 0) {
+						throw std::underflow_error("Cannot deal with negative values when using unsigned integer");
+					}
+					if (static_cast<uint64_t>(constantArray->Value) > (std::numeric_limits<T>::max)()) {
+						throw std::overflow_error("Too big integers in XML for the C++ chosen datatype");
+					}
 				}
 				std::fill(arrayOutput, arrayOutput + constantArray->Count, static_cast<T>(constantArray->Value));
 				return (std::numeric_limits<T>::max)();

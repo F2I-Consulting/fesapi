@@ -1133,7 +1133,7 @@ namespace {
 		}
 		return xmlStats;
 	}
-};
+}
 
 gsoap_eml2_3::eml23__IntegerArrayStatistics* AbstractValuesProperty::createIntegerArrayStatisticsFrom(const COMMON_NS::NumberArrayStatistics<int8_t>& stats, size_t index) {
 	return template_createIntegerArrayStatisticsFrom(gsoapProxy2_3->soap, stats, index);

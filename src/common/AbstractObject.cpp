@@ -1063,8 +1063,15 @@ namespace {
 		T nullValue = (std::numeric_limits<T>::max)();
 		if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 			auto const* hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
-			if (hdfArray->NullValue > (std::numeric_limits<T>::min)() && hdfArray->NullValue < (std::numeric_limits<T>::max)()) {
-				nullValue = static_cast<T>(hdfArray->NullValue);
+			if constexpr (std::is_signed_v<T>) {
+				nullValue = static_cast<T>(std::clamp(hdfArray->NullValue,
+					static_cast<int64_t>((std::numeric_limits<T>::min)()), static_cast<int64_t>((std::numeric_limits<T>::max)())));
+			}
+			else {
+				if (hdfArray->NullValue > 0) {
+					nullValue = static_cast<T>(std::clamp(static_cast<uint64_t>(hdfArray->NullValue),
+						static_cast<uint64_t>(0), static_cast<uint64_t>((std::numeric_limits<T>::max)())));
+				}
 			}
 			dataset = hdfArray->Values;
 			pathInHdfFile = hdfArray->Values->PathInHdfFile;
@@ -1086,9 +1093,16 @@ namespace {
 		T nullValue = (std::numeric_limits<T>::max)();
 		if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 			externalDataArrayParts = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart;
-			auto xmlNullValue = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
-			if (xmlNullValue > (std::numeric_limits<T>::min)() && xmlNullValue < (std::numeric_limits<T>::max)()) {
-				nullValue = static_cast<T>(xmlNullValue);
+			const int64_t xmlNullValue = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
+			if constexpr (std::is_signed_v<T>) {
+				nullValue = static_cast<T>(std::clamp(xmlNullValue,
+					static_cast<int64_t>((std::numeric_limits<T>::min)()), static_cast<int64_t>((std::numeric_limits<T>::max)())));
+			}
+			else {
+				if (xmlNullValue > 0) {
+					nullValue = static_cast<T>(std::clamp(static_cast<uint64_t>(xmlNullValue),
+						static_cast<uint64_t>(0), static_cast<uint64_t>((std::numeric_limits<T>::max)())));
+				}
 			}
 		}
 		else if (arrayInput->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
