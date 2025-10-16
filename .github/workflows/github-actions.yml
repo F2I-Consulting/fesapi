@@ -131,7 +131,7 @@ jobs:
         # https://github.com/pypa/cibuildwheel/issues/1139
         run: touch python/setup.py
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.1.4
+        uses: pypa/cibuildwheel@v3.2.1
         env:
           CIBW_BUILD: cp38-win_amd64 cp39-win_amd64 cp310-win_amd64 cp311-win_amd64 cp312-win_amd64 cp313-win_amd64
           CIBW_ARCHS: auto64
@@ -164,7 +164,8 @@ jobs:
         # https://github.com/pypa/cibuildwheel/issues/1139
         run: touch python/setup.py
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.1.4
+        # Cannot use a more recent version than v2.22.0 because of fetappi wheel which uses AVRO which cannot be built with GNU 14.
+        uses: pypa/cibuildwheel@v2.22.0
         env:
           CIBW_BUILD: cp38-manylinux_* cp39-manylinux_* cp310-manylinux_* cp311-manylinux_* cp312-manylinux_* cp313-manylinux_*
           CIBW_ARCHS: auto64
@@ -201,7 +202,7 @@ jobs:
         # https://github.com/pypa/cibuildwheel/issues/1139
         run: touch python/setup.py
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.1.4
+        uses: pypa/cibuildwheel@v3.2.1
         env:
           CIBW_BUILD: cp38-macosx_* cp39-macosx_* cp310-macosx_* cp311-macosx_* cp312-macosx_* cp313-macosx_*
           CIBW_ARCHS: auto64
