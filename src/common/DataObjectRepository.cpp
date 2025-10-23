@@ -1333,11 +1333,17 @@ EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const st
 	}
 }
 
+EML2_3_NS::VerticalCrs* DataObjectRepository::createVerticalCrs(const std::string& guid, const std::string& title,
+	uint64_t verticalEpsgCode, gsoap_eml2_3::eml23__LengthUom verticalUom, bool isUpOriented)
+{
+	return new EML2_3_NS::VerticalCrs(this, guid, title, verticalEpsgCode, verticalUom, isUpOriented);
+}
+
 RESQML2_NS::MdDatum* DataObjectRepository::createMdDatum(const std::string & guid, const std::string & title,
 	EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
 {
-		return new RESQML2_0_1_NS::MdDatum(this, guid, title, locCrs, originKind, referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
+	return new RESQML2_0_1_NS::MdDatum(this, guid, title, locCrs, originKind, referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
 }
 
 //************************************

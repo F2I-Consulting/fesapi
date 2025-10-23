@@ -37,6 +37,11 @@ namespace EML2_NS
 	class TimeSeries;
 }
 
+namespace EML2_3_NS
+{
+	class VerticalCrs;
+}
+
 namespace RESQML2_NS
 {
 	class AbstractFeature;
@@ -1067,9 +1072,27 @@ namespace COMMON_NS
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented);
 
 		/**
-		 * @brief	Creates a measured depth (MD) datum into this repository
+		 * @brief	Creates a vertical CRS which is identified by means of an EPSG code.
+		 * 			Resulting vertical CRS is stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>verticalEpsgCode == 0</tt>.
+		 *
+		 * @param 	guid			 	The guid to set to the local 3d CRS. If empty then a new guid
+		 * 								will be generated.
+		 * @param 	title			 	The title to set to the local 3d CRS. If empty then \"unknown\"
+		 * 								title will be set.
+		 * @param 	verticalUom		 	The unit of measure of the vertical axis of this instance.
+		 * @param 	verticalEpsgCode 	The EPSG code of the associated vertical CRS.
+		 * @param 	isUpOriented	 	If true, indicates that this depth CRS is actually an elevation
+		 * 								CRS.
+		 *
+		 * @returns	A pointer to the new vertical CRS.
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_3_NS::VerticalCrs* createVerticalCrs(const std::string& guid, const std::string& title,
+			uint64_t verticalEpsgCode, gsoap_eml2_3::eml23__LengthUom verticalUom, bool isUpOriented);
+
+		/**
+		 * @brief	Creates a measured depth (MD) datum into this repository
 		 *
 		 * @param 	  	guid					 	The guid to set to the MD datum. If empty then a new
 		 * 											guid will be generated.
