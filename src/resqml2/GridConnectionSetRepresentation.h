@@ -476,10 +476,10 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(uint64_t index) const = 0;
 
 		/** Please do note use: not implemented yet. */
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const override;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const override;
 
 		/** Please do note use: not implemented yet. */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const override;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const override;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getPatchCount() const override {return 1;}
 

@@ -254,7 +254,7 @@ void HdfProxy::close()
 	}
 }
 
-void HdfProxy::readArrayNdOfValues(const std::string & datasetName, void* values, hid_t datatype)
+void HdfProxy::readArrayNdOfValues(const std::string& datasetName, void* values, hid_t datatype)
 {
 	if (!isOpened()) {
 		open();
@@ -264,9 +264,33 @@ void HdfProxy::readArrayNdOfValues(const std::string & datasetName, void* values
 	if (dataset < 0) {
 		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be opened.");
 	}
+
+	// check if the dataset is empty
+	hid_t dataspace = H5Dget_space(dataset);
+	if (dataspace < 0) {
+		H5Dclose(dataset);
+		throw invalid_argument("The dataspace for the dataset " + datasetName + " could not be opened.");
+	}
+	hssize_t hdf5ValueCount = H5Sget_simple_extent_npoints(dataspace);
+	if (hdf5ValueCount < 0) {
+		H5Sclose(dataspace);
+		H5Dclose(dataset);
+		throw invalid_argument("The number of values of the dataset " + datasetName + " could not be read.");
+	}
+	else if (hdf5ValueCount == 0) {
+		H5Sclose(dataspace);
+		H5Dclose(dataset);
+		throw invalid_argument("The dataset " + datasetName + " is empty and consequently cannot be read.");
+	}
+	if (H5Sclose(dataspace) < 0) {
+		throw invalid_argument("Cannot close the HDF5 dataspace of the HDF5 dataset " + datasetName);
+	}
+
 	hid_t readingError = H5Dread (dataset, datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, values);
 
-	H5Dclose(dataset);
+	if (H5Dclose(dataset) < 0) {
+		throw invalid_argument("Cannot close the HDF5 dataset " + datasetName);
+	}
 	if (readingError < 0) {
 		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be read.");
 	}

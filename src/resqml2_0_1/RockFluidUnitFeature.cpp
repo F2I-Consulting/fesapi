@@ -20,7 +20,7 @@ under the License.
 
 #include "BoundaryFeature.h"
 
-#include "../prodml2_2/FluidCharacterization.h"
+#include "../prodml2_3/FluidCharacterization.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -69,9 +69,9 @@ BoundaryFeature* RockFluidUnitFeature::getBottom() const
 	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom->UUID);
 }
 
-std::vector<PRODML2_2_NS::FluidCharacterization *> RockFluidUnitFeature::getFluidCharacterizationSet() const
+std::vector<PRODML2_3_NS::FluidCharacterization *> RockFluidUnitFeature::getFluidCharacterizationSet() const
 {
-	return repository->getSourceObjects<PRODML2_2_NS::FluidCharacterization>(this);
+	return repository->getSourceObjects<PRODML2_3_NS::FluidCharacterization>(this);
 }
 
 void RockFluidUnitFeature::loadTargetRelationships()

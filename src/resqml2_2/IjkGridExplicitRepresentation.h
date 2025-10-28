@@ -104,7 +104,7 @@ namespace RESQML2_2_NS
 		*
 		* @copydetails resqml2::AbstractIjkGridRepresentation::getXyzPointsOfPatch
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
 		DLL_IMPORT_OR_EXPORT void setGeometryAsCoordinateLineNodes(
 			gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,

@@ -792,7 +792,7 @@ void AbstractGridRepresentation::getParentCellIndices(uint64_t * parentCellIndic
 			if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__CellParentWindow)
 			{
 				gsoap_resqml2_0_1::resqml20__CellParentWindow const* cpw = static_cast<gsoap_resqml2_0_1::resqml20__CellParentWindow*>(parentWindow);
-				readArrayNdOfUInt64Values(cpw->CellIndices, parentCellIndices);
+				readArrayNdOfIntegerValues(cpw->CellIndices, parentCellIndices);
 			}
 			else
 				throw invalid_argument("This information is only available for cell parent window.");
@@ -809,7 +809,7 @@ void AbstractGridRepresentation::getParentCellIndices(uint64_t * parentCellIndic
 			if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__CellParentWindow)
 			{
 				gsoap_eml2_3::resqml22__CellParentWindow const* cpw = static_cast<gsoap_eml2_3::resqml22__CellParentWindow*>(parentWindow);
-				readArrayNdOfUInt64Values(cpw->CellIndices, parentCellIndices);
+				readArrayNdOfIntegerValues(cpw->CellIndices, parentCellIndices);
 			}
 			else
 				throw invalid_argument("This information is only available for cell parent window.");
@@ -873,7 +873,7 @@ void AbstractGridRepresentation::getParentColumnIndices(uint64_t * parentColumnI
 			if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ColumnLayerParentWindow)
 			{
 				gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow const* clpw = static_cast<gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow*>(parentWindow);
-				readArrayNdOfUInt64Values(clpw->ColumnIndices, parentColumnIndices);
+				readArrayNdOfIntegerValues(clpw->ColumnIndices, parentColumnIndices);
 			}
 			else {
 				throw invalid_argument("This information is only available for column layer parent window.");
@@ -891,7 +891,7 @@ void AbstractGridRepresentation::getParentColumnIndices(uint64_t * parentColumnI
 			if (parentWindow->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnLayerParentWindow)
 			{
 				gsoap_eml2_3::resqml22__ColumnLayerParentWindow const* cpw = static_cast<gsoap_eml2_3::resqml22__ColumnLayerParentWindow*>(parentWindow);
-				readArrayNdOfUInt64Values(cpw->ColumnIndices, parentColumnIndices);
+				readArrayNdOfIntegerValues(cpw->ColumnIndices, parentColumnIndices);
 			}
 			else {
 				throw invalid_argument("This information is only available for column layer parent window.");
@@ -1269,10 +1269,10 @@ uint64_t AbstractGridRepresentation::getRegridConstantCellCountPerInterval(char 
 void AbstractGridRepresentation::getRegridCellCountPerInterval(char dimension, uint64_t * childCellCountPerInterval, bool childVsParentCellCount) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUInt64Values(getCellCountPerInterval2_0_1(dimension, childVsParentCellCount), childCellCountPerInterval);
+		readArrayNdOfIntegerValues(getCellCountPerInterval2_0_1(dimension, childVsParentCellCount), childCellCountPerInterval);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt64Values(getCellCountPerInterval2_2(dimension, childVsParentCellCount), childCellCountPerInterval);
+		readArrayNdOfIntegerValues(getCellCountPerInterval2_2(dimension, childVsParentCellCount), childCellCountPerInterval);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1655,7 +1655,7 @@ int64_t AbstractGridRepresentation::getCellStratigraphicUnitIndices(int64_t * st
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation*>(gsoapProxy2_0_1);
-		readArrayNdOfInt64Values(rep->CellStratigraphicUnits->UnitIndices, stratiUnitIndices);
+		readArrayNdOfIntegerValues(rep->CellStratigraphicUnits->UnitIndices, stratiUnitIndices);
 		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellStratigraphicUnits->UnitIndices)->NullValue;
 	}
 	else {
@@ -1671,7 +1671,7 @@ int64_t AbstractGridRepresentation::getCellFluidPhaseUnitIndices(int64_t * rockF
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation*>(gsoapProxy2_0_1);
-		readArrayNdOfInt64Values(rep->CellFluidPhaseUnits->PhaseUnitIndices, rockFluidUnitIndices);
+		readArrayNdOfIntegerValues(rep->CellFluidPhaseUnits->PhaseUnitIndices, rockFluidUnitIndices);
 		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->NullValue;
 	}
 	else if (gsoapProxy2_3 != nullptr) {
@@ -1730,10 +1730,10 @@ void AbstractGridRepresentation::getNodeIndicesOfTruncatedFaces(uint64_t * nodeI
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->NodesPerTruncationFace->Elements, nodeIndices);
+		readArrayNdOfIntegerValues(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->NodesPerTruncationFace->Elements, nodeIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->NodesPerTruncationFace->Elements, nodeIndices);
+		readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->NodesPerTruncationFace->Elements, nodeIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1747,10 +1747,10 @@ void AbstractGridRepresentation::getCumulativeNodeCountPerTruncatedFace(uint64_t
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->NodesPerTruncationFace->CumulativeLength, nodeCountPerFace);
+		readArrayNdOfIntegerValues(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->NodesPerTruncationFace->CumulativeLength, nodeCountPerFace);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->NodesPerTruncationFace->CumulativeLength, nodeCountPerFace);
+		readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->NodesPerTruncationFace->CumulativeLength, nodeCountPerFace);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1795,10 +1795,10 @@ void AbstractGridRepresentation::getTruncatedCellIndices(uint64_t* cellIndices) 
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->ParentCellIndices, cellIndices);
+		readArrayNdOfIntegerValues(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->ParentCellIndices, cellIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->ParentCellIndices, cellIndices);
+		readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->ParentCellIndices, cellIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1812,10 +1812,10 @@ void AbstractGridRepresentation::getTruncatedFaceIndicesOfTruncatedCells(uint64_
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationFacesPerCell->Elements, faceIndices);
+		readArrayNdOfIntegerValues(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationFacesPerCell->Elements, faceIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationFacesPerCell->Elements, faceIndices);
+		readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationFacesPerCell->Elements, faceIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1829,10 +1829,10 @@ void AbstractGridRepresentation::getCumulativeTruncatedFaceCountPerTruncatedCell
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
+		readArrayNdOfIntegerValues(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
+		readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1860,10 +1860,10 @@ void AbstractGridRepresentation::getNonTruncatedFaceIndicesOfTruncatedCells(uint
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->LocalFacesPerCell->Elements, faceIndices);
+		readArrayNdOfIntegerValues(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->LocalFacesPerCell->Elements, faceIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->LocalFacesPerCell->Elements, faceIndices);
+		readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->LocalFacesPerCell->Elements, faceIndices);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1878,10 +1878,10 @@ void AbstractGridRepresentation::getCumulativeNonTruncatedFaceCountPerTruncatedC
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->LocalFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
+		readArrayNdOfIntegerValues(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->LocalFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt64Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->LocalFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
+		readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->LocalFacesPerCell->CumulativeLength, cumulativeFaceCountPerCell);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1908,10 +1908,10 @@ void AbstractGridRepresentation::getTruncatedFaceIsRightHanded(uint8_t* cellFace
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		readArrayNdOfUInt8Values(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationCellFaceIsRightHanded, cellFaceIsRightHanded);
+		readArrayNdOfIntegerValues(static_cast<gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationCellFaceIsRightHanded, cellFaceIsRightHanded);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		readArrayNdOfUInt8Values(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationCellFaceIsRightHanded, cellFaceIsRightHanded);
+		readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_3)->TruncationCellPatch->TruncationCellFaceIsRightHanded, cellFaceIsRightHanded);
 	}
 	else {
 		throw logic_error("Not implemented yet");

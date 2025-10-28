@@ -197,9 +197,9 @@ under the License.
 #include "../witsml2_1/WellboreMarkerSet.h"
 #include "../witsml2_1/WellCompletion.h"
 
-#include "../prodml2_2/FluidSystem.h"
-#include "../prodml2_2/FluidCharacterization.h"
-#include "../prodml2_2/TimeSeriesData.h"
+#include "../prodml2_3/FluidSystem.h"
+#include "../prodml2_3/FluidCharacterization.h"
+#include "../prodml2_3/TimeSeriesData.h"
 
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -208,7 +208,7 @@ using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 using namespace WITSML2_1_NS;
-using namespace PRODML2_2_NS;
+using namespace PRODML2_3_NS;
 
 // Create a fesapi partial wrapper based on a data type and its version
 #define CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(className)\
@@ -266,11 +266,11 @@ using namespace PRODML2_2_NS;
 	}
 
 /////////////////////
-///// PRODML 2.1 ////
+///// PRODML 2.3 ////
 /////////////////////
 #define GET_PRODML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
-	gsoapNameSpace::_prodml22__##className* read = gsoapNameSpace::soap_new_prodml22__##className(gsoapContext);\
-	gsoapNameSpace::soap_read_prodml22__##className(gsoapContext, read);
+	gsoapNameSpace::_prodml23__##className* read = gsoapNameSpace::soap_new_prodml23__##className(gsoapContext);\
+	gsoapNameSpace::soap_read_prodml23__##className(gsoapContext, read);
 
 #define GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
 	GET_PRODML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
@@ -661,7 +661,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(std::uni
 				if (xmlNs == "resqml20" || xmlNs == "eml20") {
 					(*same)->setGsoapProxy(proxy->getEml20GsoapProxy());
 				}
-				else if (xmlNs == "witsml21" || xmlNs == "prodml22" || xmlNs == "eml23"
+				else if (xmlNs == "witsml21" || xmlNs == "prodml23" || xmlNs == "eml23"
 #if WITH_RESQML2_2
 					|| xmlNs == "resqml22"
 #endif
@@ -740,8 +740,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	else if (ns == "witsml21") {
 		wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
 	}
-	else if (ns == "prodml22") {
-		wrapper = getProdml2_2WrapperFromGsoapContext(datatype);
+	else if (ns == "prodml23") {
+		wrapper = getProdml2_3WrapperFromGsoapContext(datatype);
 	}
 	else if (ns == "resqml22") {
 		wrapper = getResqml2_2WrapperFromGsoapContext(datatype);
@@ -960,10 +960,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::TimeSeries)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::VerticalCrs)
 	}
-	else if (ns == "prodml22") {
-		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_2_NS::FluidSystem)
-		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_2_NS::FluidCharacterization)
-		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_2_NS::TimeSeriesData)
+	else if (ns == "prodml23") {
+		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_3_NS::FluidSystem)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_3_NS::FluidCharacterization)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_3_NS::TimeSeriesData)
 	}
 	else if (ns == "resqml20") {
 		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::Activity)
@@ -1333,11 +1333,17 @@ EML2_NS::AbstractLocal3dCrs* DataObjectRepository::createLocalTime3dCrs(const st
 	}
 }
 
+EML2_3_NS::VerticalCrs* DataObjectRepository::createVerticalCrs(const std::string& guid, const std::string& title,
+	uint64_t verticalEpsgCode, gsoap_eml2_3::eml23__LengthUom verticalUom, bool isUpOriented)
+{
+	return new EML2_3_NS::VerticalCrs(this, guid, title, verticalEpsgCode, verticalUom, isUpOriented);
+}
+
 RESQML2_NS::MdDatum* DataObjectRepository::createMdDatum(const std::string & guid, const std::string & title,
 	EML2_NS::AbstractLocal3dCrs * locCrs, gsoap_eml2_3::eml23__ReferencePointKind originKind,
 	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
 {
-		return new RESQML2_0_1_NS::MdDatum(this, guid, title, locCrs, originKind, referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
+	return new RESQML2_0_1_NS::MdDatum(this, guid, title, locCrs, originKind, referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
 }
 
 //************************************
@@ -2804,14 +2810,14 @@ WITSML2_1_NS::WellboreMarker* DataObjectRepository::createWellboreMarker(WITSML2
 //*************** PRODML *************
 //************************************
 
-PRODML2_2_NS::FluidSystem* DataObjectRepository::createFluidSystem(const std::string & guid,
+PRODML2_3_NS::FluidSystem* DataObjectRepository::createFluidSystem(const std::string & guid,
 	const std::string & title,
 	double temperatureValue, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom temperatureUom,
 	double pressureValue, gsoap_eml2_3::eml23__PressureUom pressureUom,
-	gsoap_eml2_3::prodml22__ReservoirFluidKind reservoirFluidKind,
+	gsoap_eml2_3::prodml23__ReservoirFluidKind reservoirFluidKind,
 	double gasOilRatio, gsoap_eml2_3::eml23__VolumePerVolumeUom gasOilRatioUom)
 {
-	return new PRODML2_2_NS::FluidSystem(this,
+	return new PRODML2_3_NS::FluidSystem(this,
 		guid, title,
 		temperatureValue, temperatureUom,
 		pressureValue, pressureUom,
@@ -2819,27 +2825,27 @@ PRODML2_2_NS::FluidSystem* DataObjectRepository::createFluidSystem(const std::st
 		gasOilRatio, gasOilRatioUom);
 }
 
-PRODML2_2_NS::FluidSystem* DataObjectRepository::createFluidSystem(const std::string & guid,
+PRODML2_3_NS::FluidSystem* DataObjectRepository::createFluidSystem(const std::string & guid,
 	const std::string & title,
 	gsoap_eml2_3::eml23__ReferenceCondition referenceCondition,
-	gsoap_eml2_3::prodml22__ReservoirFluidKind reservoirFluidKind,
+	gsoap_eml2_3::prodml23__ReservoirFluidKind reservoirFluidKind,
 	double gasOilRatio, gsoap_eml2_3::eml23__VolumePerVolumeUom gasOilRatioUom)
 {
-	return new PRODML2_2_NS::FluidSystem(this,
+	return new PRODML2_3_NS::FluidSystem(this,
 		guid, title,
 		referenceCondition,
 		reservoirFluidKind,
 		gasOilRatio, gasOilRatioUom);
 }
 
-PRODML2_2_NS::FluidCharacterization* DataObjectRepository::createFluidCharacterization(const std::string & guid, const std::string & title)
+PRODML2_3_NS::FluidCharacterization* DataObjectRepository::createFluidCharacterization(const std::string & guid, const std::string & title)
 {
-	return new PRODML2_2_NS::FluidCharacterization(this, guid, title);
+	return new PRODML2_3_NS::FluidCharacterization(this, guid, title);
 }
 
-PRODML2_2_NS::TimeSeriesData* DataObjectRepository::createTimeSeriesData(const std::string & guid, const std::string & title)
+PRODML2_3_NS::TimeSeriesData* DataObjectRepository::createTimeSeriesData(const std::string & guid, const std::string & title)
 {
-	return new PRODML2_2_NS::TimeSeriesData(this, guid, title);
+	return new PRODML2_3_NS::TimeSeriesData(this, guid, title);
 }
 
 EML2_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
@@ -2973,8 +2979,8 @@ GETTER_DATAOBJECTS_IMPL(WITSML2_1_NS::Log, Log)
 GETTER_DATAOBJECTS_IMPL(WITSML2_1_NS::ChannelSet, ChannelSet)
 GETTER_DATAOBJECTS_IMPL(WITSML2_1_NS::Channel, Channel)
 
-GETTER_DATAOBJECTS_IMPL(PRODML2_2_NS::FluidSystem, FluidSystem)
-GETTER_DATAOBJECTS_IMPL(PRODML2_2_NS::FluidCharacterization, FluidCharacterization)
+GETTER_DATAOBJECTS_IMPL(PRODML2_3_NS::FluidSystem, FluidSystem)
+GETTER_DATAOBJECTS_IMPL(PRODML2_3_NS::FluidCharacterization, FluidCharacterization)
 
 std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFaultSet() const
 {
@@ -3411,13 +3417,13 @@ std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getWitsml2_1W
 	return wrapper;
 }
 
-std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getProdml2_2WrapperFromGsoapContext(const std::string & datatype)
+std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getProdml2_3WrapperFromGsoapContext(const std::string & datatype)
 {
 	std::unique_ptr< COMMON_NS::AbstractObject > wrapper;
 
-	if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_2_NS, FluidSystem, gsoap_eml2_3)
-	else if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_2_NS, FluidCharacterization, gsoap_eml2_3)
-	else if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_2_NS, TimeSeriesData, gsoap_eml2_3)
+	if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_3_NS, FluidSystem, gsoap_eml2_3)
+	else if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_3_NS, FluidCharacterization, gsoap_eml2_3)
+	else if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_3_NS, TimeSeriesData, gsoap_eml2_3)
 
 	return wrapper;
 }

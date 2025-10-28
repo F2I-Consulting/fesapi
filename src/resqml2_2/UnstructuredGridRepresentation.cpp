@@ -122,7 +122,7 @@ uint64_t UnstructuredGridRepresentation::getNodeCount() const
 	return 0;
 }
 
-void UnstructuredGridRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const
+void UnstructuredGridRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double* xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");

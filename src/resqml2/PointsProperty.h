@@ -56,7 +56,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The xyz point count of the patch at position @p patchIndex.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const {
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const {
 			return getValuesCountOfPatch(patchIndex) / 3;
 		}
 
@@ -80,7 +80,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const;
 
 		/**
 		 * @brief Gets all the xyz points of a particular patch of this property. xyz points are given in
@@ -94,7 +94,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatchInGlobalCrs(uint64_t patchIndex, double * xyzPoints) const;
 
 		/**
 		 * @brief Gets all the xyz points of all patches of this property. xyz points are given in the
@@ -267,6 +267,6 @@ namespace RESQML2_NS
 		PointsProperty(gsoap_resqml2_0_1::_resqml20__PointsProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
 		PointsProperty(gsoap_eml2_3::resqml22__PointsProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
 
-		virtual EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(unsigned int patchIndex, std::string & datasetPath) const = 0;
+		virtual EML2_NS::AbstractHdfProxy* getValuesHdfProxyAndDatasetPathOfPatch(uint64_t patchIndex, std::string & datasetPath) const = 0;
 	};
 }

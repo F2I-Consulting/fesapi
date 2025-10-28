@@ -68,8 +68,8 @@ void CommentProperty::readRepo() {
 	// ************************************
 	// reading the ContinuousProperty
 
-	// getElementCountPerValue
-	REQUIRE(commentProperty->getElementCountPerValue() == 1);
+	// getValueCountPerIndexableElement
+	REQUIRE(commentProperty->getValueCountPerIndexableElement() == 1);
 
 	// getAttachmentKind
 	REQUIRE(commentProperty->getAttachmentKind() == gsoap_eml2_3::eml23__IndexableElement::nodes);

@@ -125,10 +125,10 @@ under the License.
 #include "witsml2_1/ChannelSet.h"
 #include "witsml2_1/Channel.h"
 
-#include "prodml2_2/FluidSystem.h"
-#include "prodml2_2/FluidCharacterization.h"
-#include "prodml2_2/FrictionTheorySpecification.h"
-#include "prodml2_2/TimeSeriesData.h"
+#include "prodml2_3/FluidSystem.h"
+#include "prodml2_3/FluidCharacterization.h"
+#include "prodml2_3/FrictionTheorySpecification.h"
+#include "prodml2_3/TimeSeriesData.h"
 
 #include "HdfProxyFactoryExample.h"
 
@@ -309,7 +309,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdf
 	RESQML2_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::intervals, unitNumberPropType);
 	int8_t unitNumbers[5] = { 0, 1, 2, 3, 4 };
-	discreteProp->pushBackInt8Hdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
+	discreteProp->pushBackArray1dOfValues(unitNumbers, 5, hdfProxy, static_cast<std::int8_t>(-1));
 #if WITH_RESQML2_2
 	// SeismicWellboreFrameRepresentation
 	RESQML2_NS::SeismicWellboreFrameRepresentation* w1i1SeismicFrameRep = repo->createSeismicWellboreFrameRepresentation(
@@ -416,7 +416,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(twoCellsIjkGrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	uint16_t prop2Values[2] = { 0, 1 };
-	discreteProp2->pushBackUInt16Hdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
+	discreteProp2->pushBackArray3dOfValues(prop2Values, 2, 1, 1, hdfProxy, (std::numeric_limits<uint16_t>::max)());
 
 	// ********************
 	// Continuous color map
@@ -442,7 +442,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, EM
 			values[fastestIndex + slowestIndex * numPointInFastestDirection] = fastestIndex * (1. / (numPointInFastestDirection - 1));
 		}
 	}
-	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values.get(), numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
+	contColMapContProp->pushBackArray2dOfValues(values.get(), numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 	RESQML2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_3::resqml22__InterpolationDomain::rgb, gsoap_eml2_3::resqml22__InterpolationMethod::linear);
 	uint8_t contColMapRgbColors[6] = { 0, 255, 0, 255, 0, 0 };
@@ -747,7 +747,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * repo, EML2_NS::Abstra
 	RESQML2_NS::ContinuousProperty* contProp1 = repo->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
 		gsoap_eml2_3::eml23__IndexableElement::nodes, "exoticMeter", propType1);
 	float prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
-	contProp1->pushBackFloatHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
+	contProp1->pushBackArray2dOfValues(prop1Values, 2, 8, hdfProxy);
 
 	EML2_NS::PropertyKind * propType2 = nullptr;
 	if (repo->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
@@ -762,7 +762,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * repo, EML2_NS::Abstra
 	RESQML2_NS::ContinuousProperty* contProp2 = repo->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2", 1,
 		gsoap_eml2_3::eml23__IndexableElement::nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom::ft, propType2);
 	double prop2Values[8] = { 302, 302, 352, 352, 302, 302, 352, 352 };
-	contProp2->pushBackDoubleHdf5Array2dOfValues(prop2Values, 4, 2, hdfProxy);
+	contProp2->pushBackArray2dOfValues(prop2Values, 4, 2, hdfProxy);
 }
 
 void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfProxy* hdfProxy)
@@ -889,8 +889,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	ijkgrid432rh->setCellGeometryIsDefinedFlags(enabledCells32rh);
 
 	// 4*3*2 explicit grid with gap layer
-	bool kgap[1] = { true };
-	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432gap = repo->createIjkGridExplicitRepresentation("c14755a5-e3b3-4272-99e5-fc20993b79a0", "Four by Three by Two with gap layer", 4, 3, 2, kgap);
+	bool kgap = true;
+	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432gap = repo->createIjkGridExplicitRepresentation("c14755a5-e3b3-4272-99e5-fc20993b79a0", "Four by Three by Two with gap layer", 4, 3, 2, &kgap);
 	double nodes432gap[288] = {
 		0, 150, 300, 150, 150, 300, 375, 150, 300, 550, 150, 350, 700, 150, 350, //IJ0K0
 		0, 100, 300, 150, 100, 300, 375, 100, 300, 550, 100, 350, 700, 100, 350, //IJ1K0
@@ -904,11 +904,11 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 		0, 0, 360, 150, 0, 360, 375, 0, 360, 550, 0, 410, 700, 0, 410, //IJ3K1
 		375, 0, 410, 375, 50, 410, 375, 100, 410, 375, 150, 410, // SPLIT K1
 		// K Gap Layer
-		0, 150, 400, 150, 150, 400, 375, 150, 400, 550, 150, 450, 700, 150, 450, //IJ0K1
-		0, 100, 400, 150, 100, 400, 375, 100, 400, 550, 100, 450, 700, 100, 450, //IJ1K1
-		0, 50, 400, 150, 50, 400, 375, 50, 400, 550, 50, 450, 700, 50, 450, //IJ2K1
-		0, 0, 400, 150, 0, 400, 375, 0, 400, 550, 0, 450, 700, 0, 450, //IJ3K1
-		375, 0, 450, 375, 50, 450, 375, 100, 450, 375, 150, 450, // SPLIT K1
+		0, 150, 400, 150, 150, 400, 375, 150, 400, 550, 150, 450, 700, 150, 450, //IJ0K2
+		0, 100, 400, 150, 100, 400, 375, 100, 400, 550, 100, 450, 700, 100, 450, //IJ1K2
+		0, 50, 400, 150, 50, 400, 375, 50, 400, 550, 50, 450, 700, 50, 450, //IJ2K2
+		0, 0, 400, 150, 0, 400, 375, 0, 400, 550, 0, 450, 700, 0, 450, //IJ3K2
+		375, 0, 450, 375, 50, 450, 375, 100, 450, 375, 150, 450, // SPLIT K2
 
 		0, 150, 500, 150, 150, 500, 375, 150, 500, 550, 150, 550, 700, 150, 550, //IJ0K3
 		0, 100, 500, 150, 100, 500, 375, 100, 500, 550, 100, 550, 700, 100, 550, //IJ1K3
@@ -921,11 +921,11 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	unsigned int splitCoordinateLineColumns432gap[6] = { 10, 10, 6, 6, 2, 2 };
 	ijkgrid432gap->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape::vertical, gsoap_resqml2_0_1::resqml20__KDirection::down, true, nodes432gap, hdfProxy,
 		4, pillarOfCoordinateLine432gap, splitCoordinateLineColumnCumulativeCount432gap, splitCoordinateLineColumns432gap);
-	unsigned char enabledCells32gap[24] = {
+	uint8_t enabledCells432gap[24] = {
 		0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0
 	};
-	ijkgrid432gap->setCellGeometryIsDefinedFlags(enabledCells32gap);
+	ijkgrid432gap->setCellGeometryIsDefinedFlags(enabledCells432gap);
 
 	/**************
 	 Subrepresentations
@@ -1021,12 +1021,12 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 #endif
 	discreteProp1 = repo->createDiscreteProperty(twoCellsIjkGrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
-	unsigned short prop1Values[2] = { 0, 1 };
-	discreteProp1->pushBackUInt16Hdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
+	uint16_t prop1Values[2] = { 0, 1 };
+	discreteProp1->pushBackArray3dOfValues(prop1Values, 2, 1, 1, hdfProxy, static_cast<uint16_t>(1111));
 	RESQML2_NS::DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(twoCellsIjkGrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
 	int64_t prop2Values[2] = { 10, 11 };
-	discreteProp2->pushBackInt64Hdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
+	discreteProp2->pushBackArray3dOfValues(prop2Values, 2, 1, 1, hdfProxy, static_cast<int64_t>(1111));
 
 	RESQML2_0_1_NS::PropertySet* parentPropSet = repo->createPropertySet("3135a6c1-1204-4c30-a0ec-c9357ec13510", "Testing parent property set", false, true, gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
 	RESQML2_0_1_NS::PropertySet* childPropSet = repo->createPropertySet("1d4b4342-288d-47c1-9572-9f330f8e632a", "Testing child property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind::not_x0020a_x0020time_x0020set);
@@ -1036,8 +1036,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 
 	RESQML2_NS::DiscreteProperty* discreteProp1OnIjkgridParametric = repo->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
-	unsigned short prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
-	discreteProp1OnIjkgridParametric->pushBackUInt16Hdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111, 0, 3);
+	uint16_t prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
+	COMMON_NS::NumberArrayStatistics<uint16_t> stats(prop1ValuesOnIjkgridParametric, 4, 1, 1111);
+	discreteProp1OnIjkgridParametric->pushBackArray3dOfValuesPlusStatistics(prop1ValuesOnIjkgridParametric, 2, 1, 2, stats, hdfProxy);
 	//Move this prop to another same ninjnk ijk grid
 	discreteProp1OnIjkgridParametric->setRepresentation(ijkgridParametricNotSameLineKind);
 
@@ -1046,7 +1047,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	int64_t discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 	//hdfProxy->setMaxChunkSize(192/2); // Create two chunks
-	discreteProp432->pushBackInt64Hdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
+	discreteProp432->pushBackArray3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, static_cast<std::int64_t>(1111));
 
 	/**************
 	 Continuous Properties
@@ -1055,13 +1056,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 		RESQML2_NS::ContinuousProperty* continuousPropOnIjkgridParametric = repo->createContinuousProperty(ijkgridParametric, "a31d7376-1a2a-47f3-9586-dd74ac13d820", "Continuous prop with nan", 1,
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
 		double continuousPropValuesOnIjkgridParametric[4] = { -1.1, 0.0, std::numeric_limits<double>::quiet_NaN(), 2.2 };
-		continuousPropOnIjkgridParametric->pushBackDoubleHdf5Array3dOfValues(continuousPropValuesOnIjkgridParametric, 2, 1, 2);
+		continuousPropOnIjkgridParametric->pushBackArray3dOfValues(continuousPropValuesOnIjkgridParametric, 2, 1, 2);
 	}
 
 	/**************
 	 Time Series
 	***************/
-	EML2_NS::TimeSeries * timeSeries = repo->createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series");
+	EML2_NS::TimeSeries* timeSeries1 = repo->createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series 1");
 	tm timeStruct;
 	timeStruct.tm_hour = 15;
 	timeStruct.tm_min = 2;
@@ -1071,32 +1072,67 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	timeStruct.tm_year = 0;
 	timeStruct.tm_isdst = -1;
 	mktime(&timeStruct); 
-	timeSeries->pushBackTimestamp(timeStruct);
-	timeSeries->pushBackTimestamp(1409753895);
-	timeSeries->pushBackTimestamp(1441289895);
+	timeSeries1->pushBackTimestamp(timeStruct);
+	timeSeries1->pushBackTimestamp(1409753895);
+	timeSeries1->pushBackTimestamp(1441289895);
+
+	EML2_NS::TimeSeries* timeSeries2 = repo->createTimeSeries("49207072-563b-404a-9707-9a9b70168d33", "Testing time series 2");
+	timeSeries2->pushBackTimestamp(1420066800);
+	timeSeries2->pushBackTimestamp(1577833200);
+	timeSeries2->pushBackTimestamp(1735686000);
+	timeSeries2->pushBackTimestamp(1893452400);
+
+
 	if (repo->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
 		// RESQML2.0 forces to export values at each timestamp of the whole time series in a single property
 
 		RESQML2_NS::ContinuousProperty* continuousPropTime0 = repo->createContinuousProperty(twoCellsIjkGrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		continuousPropTime0->setTimeSeries(timeSeries);
-		continuousPropTime0->setSingleTimestamp(timeSeries->getTimestamp(0));
+		continuousPropTime0->setTimeSeries(timeSeries1);
+		continuousPropTime0->setSingleTimestamp(timeSeries1->getTimestamp(0));
 		double valuesTime0[2] = { 0, 1 };
-		continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
+		continuousPropTime0->pushBackArray3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
 
 		RESQML2_NS::ContinuousProperty* continuousPropTime1 = repo->createContinuousProperty(twoCellsIjkGrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		continuousPropTime1->setTimeSeries(timeSeries);
+		continuousPropTime1->setTimeSeries(timeSeries1);
 		continuousPropTime1->setSingleTimestamp(1409753895);
 		double valuesTime1[2] = { 2, 3 };
-		continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
+		continuousPropTime1->pushBackArray3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
 
 		RESQML2_NS::ContinuousProperty* continuousPropTime2 = repo->createContinuousProperty(twoCellsIjkGrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property", 1,
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
-		continuousPropTime2->setTimeSeries(timeSeries);
+		continuousPropTime2->setTimeSeries(timeSeries1);
 		continuousPropTime2->setSingleTimestamp(1441289895);
 		double valuesTime2[2] = { 3, 4 };
-		continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
+		continuousPropTime2->pushBackArray3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
+
+
+
+		RESQML2_NS::ContinuousProperty* continuousPropTime0_2 = repo->createContinuousProperty(twoCellsIjkGrid, "", "Time Series Property 2", 1,
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		continuousPropTime0_2->setTimeSeries(timeSeries2);
+		continuousPropTime0_2->setSingleTimestamp(timeSeries2->getTimestamp(0));
+		continuousPropTime0_2->pushBackArray3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
+
+		RESQML2_NS::ContinuousProperty* continuousPropTime1_2 = repo->createContinuousProperty(twoCellsIjkGrid, "", "Time Series Property 2", 1,
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		continuousPropTime1_2->setTimeSeries(timeSeries2);
+		continuousPropTime1_2->setSingleTimestamp(timeSeries2->getTimestamp(1));
+		continuousPropTime1_2->pushBackArray3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
+
+		RESQML2_NS::ContinuousProperty* continuousPropTime2_2 = repo->createContinuousProperty(twoCellsIjkGrid, "", "Time Series Property 2", 1,
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		continuousPropTime2_2->setTimeSeries(timeSeries2);
+		continuousPropTime2_2->setSingleTimestamp(1735686000);
+		continuousPropTime2_2->pushBackArray3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
+
+		RESQML2_NS::ContinuousProperty* continuousPropTime3_2 = repo->createContinuousProperty(twoCellsIjkGrid, "", "Time Series Property 2", 1,
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		continuousPropTime3_2->setTimeSeries(timeSeries2);
+		continuousPropTime3_2->setSingleTimestamp(timeSeries2->getTimestamp(3));
+		double valuesTime3[2] = { 4, 5 };
+		continuousPropTime3_2->pushBackArray3dOfValues(valuesTime3, 2, 1, 1, hdfProxy);
 	}
 #if WITH_RESQML2_2
 	else {
@@ -1104,11 +1140,21 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 		RESQML2_NS::ContinuousProperty* dynamicContinuousProp = repo->createContinuousProperty(twoCellsIjkGrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 
-		dynamicContinuousProp->setTimeSeries(timeSeries);
+		dynamicContinuousProp->setTimeSeries(timeSeries1);
 		double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
 		uint64_t dimensions[4] = { 2, 1, 1, 3 };
-		dynamicContinuousProp->pushBackDoubleHdf5ArrayOfValues(
+		dynamicContinuousProp->pushBackArrayOfValues(
 			valuesTime, dimensions, 4, hdfProxy);
+
+
+		RESQML2_NS::ContinuousProperty* dynamicContinuousProp2 = repo->createContinuousProperty(twoCellsIjkGrid, "", "Time Series Property 2", 1,
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
+
+		dynamicContinuousProp2->setTimeSeries(timeSeries2);
+		double valuesTime2[8] = { 0, 1, 2, 3, 3, 4, 4, 5 };
+		uint64_t dimensions2[4] = { 2, 1, 1, 4 };
+		dynamicContinuousProp2->pushBackArrayOfValues(
+			valuesTime2, dimensions2, 4, hdfProxy);
 	}
 #endif
 
@@ -1121,7 +1167,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	stringTableLookup->addValue("Cell index 1", 1);
 	RESQML2_NS::CategoricalProperty* categoricalProp = repo->createCategoricalProperty(twoCellsIjkGrid, "23b85de7-639c-48a5-a80d-e0fe76da416a", "Two faulted sugar cubes cellIndex (categorical)", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, stringTableLookup, propType1);
-	categoricalProp->pushBackUInt16Hdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
+	categoricalProp->pushBackArray3dOfValues(prop1Values, 2, 1, 1, hdfProxy);
 #endif
 	/**************
 	 Points Properties
@@ -1160,7 +1206,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, pwls3Length);
 	}
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
-	continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
+	continuousProp1->pushBackArray1dOfValues(continuousProp1Values, 6, hdfProxy);
 #ifndef WITH_RESQML2_2
 	// sub rep of a partial unstructured grid
 	RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = repo->createSubRepresentation("6b48c8d0-d60e-42b5-994c-2d4d4f3d0765", "Subrep On Partial grid");
@@ -1203,7 +1249,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 
 		// Fill the property
 		double propValues[2] = { 12.3, 45.6 };
-		unstructuredGridProp->pushBackDoubleHdf5Array1dOfValues(propValues, 2);
+		unstructuredGridProp->pushBackArray1dOfValues(propValues, 2);
 	}
 #if WITH_RESQML2_2
 	else {
@@ -1213,7 +1259,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 
 		// Fill the property
 		double propValues[2] = { 12.3, 45.6 };
-		unstructuredGridProp->pushBackDoubleHdf5Array1dOfValues(propValues, 2);
+		unstructuredGridProp->pushBackArray1dOfValues(propValues, 2);
 	}
 #endif
 }
@@ -2124,15 +2170,15 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & repo, EML2
 	*/
 }
 
-PRODML2_2_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository & repo)
+PRODML2_3_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository & repo)
 {
-	PRODML2_2_NS::FluidSystem* fluidSystem = repo.createFluidSystem("e8ae6cf8-c4a4-40bf-a3c7-5bf5d0a5b1dd", "Fluid system Region 1",
+	PRODML2_3_NS::FluidSystem* fluidSystem = repo.createFluidSystem("e8ae6cf8-c4a4-40bf-a3c7-5bf5d0a5b1dd", "Fluid system Region 1",
 		std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__ThermodynamicTemperatureUom::degF, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__PressureUom::psi,
-		gsoap_eml2_3::prodml22__ReservoirFluidKind::black_x0020oil, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__VolumePerVolumeUom::ft3_x002fbbl);
+		gsoap_eml2_3::prodml23__ReservoirFluidKind::black_x0020oil, std::numeric_limits<double>::quiet_NaN(), gsoap_eml2_3::eml23__VolumePerVolumeUom::ft3_x002fbbl);
 
-	fluidSystem->setPhasesPresent(gsoap_eml2_3::prodml22__PhasePresent::gas_x0020and_x0020oil_x0020and_x0020water);
+	fluidSystem->setPhasesPresent(gsoap_eml2_3::prodml23__PhasePresent::gas_x0020and_x0020oil_x0020and_x0020water);
 	
-	//fluidSystem->setReservoirLifeCycleState(gsoap_eml2_3::prodml22__ReservoirLifeCycleState__primary_x0020production);
+	//fluidSystem->setReservoirLifeCycleState(gsoap_eml2_3::prodml23__ReservoirLifeCycleState__primary_x0020production);
 	fluidSystem->setStockTankOilAPIGravity((141.5/0.8989209)-131.5, gsoap_eml2_3::eml23__APIGravityUom::dAPI);
 	/*
 	fluidSystem->setNaturalGasGasGravity(0.8);
@@ -2144,18 +2190,18 @@ PRODML2_2_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository 
 	return fluidSystem;
 }
 
-void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
+void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_3_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_2_NS::FluidCharacterization* oilFluidCharac = repo.createFluidCharacterization("656aa27f-5373-4c7f-9469-a57890e2b5d8", "Oil Fluid Characterization");
+	PRODML2_3_NS::FluidCharacterization* oilFluidCharac = repo.createFluidCharacterization("656aa27f-5373-4c7f-9469-a57890e2b5d8", "Oil Fluid Characterization");
 	oilFluidCharac->setRockFluidUnit(oilColumnInterp);
 	oilFluidCharac->pushBackModel();
 
-	oilFluidCharac->pushBackParameter(0, 882, gsoap_eml2_3::eml23__UnitOfMeasure::kg_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Density, gsoap_eml2_3::prodml22__ThermodynamicPhase::oleic);
+	oilFluidCharac->pushBackParameter(0, 882, gsoap_eml2_3::eml23__UnitOfMeasure::kg_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Density, gsoap_eml2_3::prodml23__ThermodynamicPhase::oleic);
 
 	// Black Oil Variation with Depth
 	oilFluidCharac->pushBackTableFormat();
 	oilFluidCharac->pushBackTableFormatColumn(0, "m", "Depth from MSL");
-	oilFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Saturation_x0020Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Saturation_x0020Pressure);
 
 	oilFluidCharac->pushBackTable(0, "Black Oil Variation with Depth", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
 	oilFluidCharac->pushBackTableRow(0, 0, { 2600, 333.25 });
@@ -2172,10 +2218,10 @@ void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & r
 
 	// Saturated Oil Table
 	oilFluidCharac->pushBackTableFormat();
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure);
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity);
-	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Solution_x0020GOR);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml23__OutputFluidProperty::Viscosity);
+	oilFluidCharac->pushBackTableFormatColumn(1, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Solution_x0020GOR);
 
 	oilFluidCharac->pushBackTable(0, "Saturated Oil Table", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
 	oilFluidCharac->pushBackTableRow(0, 1, { 268.5, 1.51746, 0.464, 156.9 }, true);
@@ -2187,10 +2233,10 @@ void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & r
 
 	// Undersaturated Oil Table
 	oilFluidCharac->pushBackTableFormat();
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Saturation_x0020Pressure);
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure);
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
-	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Saturation_x0020Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Pressure);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
+	oilFluidCharac->pushBackTableFormatColumn(2, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml23__OutputFluidProperty::Viscosity);
 
 	oilFluidCharac->pushBackTable(0, "Undersaturated Oil Table", std::to_string(oilFluidCharac->getTableFormatCount() - 1));
 	oilFluidCharac->pushBackTableRow(0, 2, { 50, 100, 1.16296, 1.31 }, false);
@@ -2262,17 +2308,17 @@ void serializeOilFluidCharacCharacterization(COMMON_NS::DataObjectRepository & r
 	}
 }
 
-void serializeGasFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
+void serializeGasFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_3_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_2_NS::FluidCharacterization* gasFluidCharac = repo.createFluidCharacterization("5ea0eeb2-a287-4a2e-9362-1d2491e491b2", "Gas Fluid Characterization");
+	PRODML2_3_NS::FluidCharacterization* gasFluidCharac = repo.createFluidCharacterization("5ea0eeb2-a287-4a2e-9362-1d2491e491b2", "Gas Fluid Characterization");
 	gasFluidCharac->setRockFluidUnit(gasCapInterp);
 	gasFluidCharac->pushBackModel();
 
 	// Saturated Gas Table
 	gasFluidCharac->pushBackTableFormat();
-	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure);
-	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
-	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Pressure);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Formation_x0020Volume_x0020Factor);
+	gasFluidCharac->pushBackTableFormatColumn(0, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml23__OutputFluidProperty::Viscosity);
 
 	gasFluidCharac->pushBackTable(0, "Saturated Gas Table", std::to_string(gasFluidCharac->getTableFormatCount() - 1));
 	gasFluidCharac->pushBackTableRow(0, 0, { 350, 0.003929, 0.034856 }, true);
@@ -2289,43 +2335,43 @@ void serializeGasFluidCharacCharacterization(COMMON_NS::DataObjectRepository & r
 	}
 }
 
-void serializeWaterFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
+void serializeWaterFluidCharacCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_3_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_2_NS::FluidCharacterization* waterFluidCharac = repo.createFluidCharacterization("8bea1d3f-9599-4a45-b88c-8196aef3f397", "Water Fluid Characterization");
+	PRODML2_3_NS::FluidCharacterization* waterFluidCharac = repo.createFluidCharacterization("8bea1d3f-9599-4a45-b88c-8196aef3f397", "Water Fluid Characterization");
 	waterFluidCharac->setRockFluidUnit(aquiferInterp);
 	waterFluidCharac->pushBackModel();
 
-	waterFluidCharac->pushBackParameter(0, 1101.3, gsoap_eml2_3::eml23__UnitOfMeasure::kg_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Density, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 313000, gsoap_eml2_3::eml23__UnitOfMeasure::_1_x002fbar, gsoap_eml2_3::prodml22__OutputFluidProperty::Compressibility, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 0.38509, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 1.03382, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml22__OutputFluidProperty::Formation_x0020Volume_x0020Factor, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 978000, gsoap_eml2_3::eml23__UnitOfMeasure::_1_x002fbar, gsoap_eml2_3::prodml22__OutputFluidProperty::Viscosity_x0020Compressibility, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
-	waterFluidCharac->pushBackParameter(0, 268.5, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml22__OutputFluidProperty::Pressure, gsoap_eml2_3::prodml22__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 1101.3, gsoap_eml2_3::eml23__UnitOfMeasure::kg_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Density, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 313000, gsoap_eml2_3::eml23__UnitOfMeasure::_1_x002fbar, gsoap_eml2_3::prodml23__OutputFluidProperty::Compressibility, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 0.38509, gsoap_eml2_3::eml23__UnitOfMeasure::cP, gsoap_eml2_3::prodml23__OutputFluidProperty::Viscosity, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 1.03382, gsoap_eml2_3::eml23__UnitOfMeasure::m3_x002fm3, gsoap_eml2_3::prodml23__OutputFluidProperty::Formation_x0020Volume_x0020Factor, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 978000, gsoap_eml2_3::eml23__UnitOfMeasure::_1_x002fbar, gsoap_eml2_3::prodml23__OutputFluidProperty::Viscosity_x0020Compressibility, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
+	waterFluidCharac->pushBackParameter(0, 268.5, gsoap_eml2_3::eml23__UnitOfMeasure::bar, gsoap_eml2_3::prodml23__OutputFluidProperty::Pressure, gsoap_eml2_3::prodml23__ThermodynamicPhase::aqueous);
 
 	if (fluidSystem != nullptr) {
 		waterFluidCharac->setFluidSystem(fluidSystem);
 	}
 }
 
-void serializeTabularFluidCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
+void serializeTabularFluidCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_3_NS::FluidSystem* fluidSystem = nullptr)
 {
 	serializeOilFluidCharacCharacterization(repo, fluidSystem);	
 	serializeGasFluidCharacCharacterization(repo, fluidSystem);	
 	serializeWaterFluidCharacCharacterization(repo, fluidSystem);	
 }
 
-void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_2_NS::FluidSystem* fluidSystem = nullptr)
+void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository & repo, PRODML2_3_NS::FluidSystem* fluidSystem = nullptr)
 {
-	PRODML2_2_NS::FluidCharacterization* fluidCharac = repo.createFluidCharacterization("6f5f6146-6f8b-4222-b322-9dbef1e7e4cf", "my compositional Fluid Characterization");
+	PRODML2_3_NS::FluidCharacterization* fluidCharac = repo.createFluidCharacterization("6f5f6146-6f8b-4222-b322-9dbef1e7e4cf", "my compositional Fluid Characterization");
 
 	fluidCharac->pushBackFormationWater("h2o");
 	fluidCharac->setFormationWaterSpecificGravity(0, 1.02);
 	fluidCharac->setFormationWaterSalinity(0, 80000, gsoap_eml2_3::eml23__MassPerMassUom::ppm);
 
-	fluidCharac->pushBackPureFluidComponent("c1", gsoap_eml2_3::prodml22__PureComponentKind::c1, false);
+	fluidCharac->pushBackPureFluidComponent("c1", gsoap_eml2_3::prodml23__PureComponentKind::c1, false);
 	fluidCharac->setPureFluidComponentMolecularWeight(0, 16.04, gsoap_eml2_3::eml23__MolecularWeightUom::g_x002fmol);
 
-	fluidCharac->pushBackPseudoFluidComponent("c2-3", gsoap_eml2_3::prodml22__PseudoComponentKind::c2_c4_x002bn2);
+	fluidCharac->pushBackPseudoFluidComponent("c2-3", gsoap_eml2_3::prodml23__PseudoComponentKind::c2_c4_x002bn2);
 	fluidCharac->setPseudoFluidComponentStartingCarbonNumber(0, 2);
 	fluidCharac->setPseudoFluidComponentEndingCarbonNumber(0, 3);
 
@@ -2333,10 +2379,10 @@ void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository
 	fluidCharac->setModelName(0, "F2I Good Oil No. 4 EOS Demonstration");
 	fluidCharac->setModelReferenceTemperature(0, 60, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom::degF);
 
-	PRODML2_2_NS::PvtSpecification* spec = fluidCharac->initModelSpecification(0, PRODML2_2_NS::FluidCharacterization::SrkEos);
-	PRODML2_2_NS::CompositionalSpecification* srkEosSpec = dynamic_cast<PRODML2_2_NS::CompositionalSpecification*>(spec);
-	srkEosSpec->pushBackCoefficient(1, gsoap_eml2_3::prodml22__PvtModelParameterKind::a1);
-	srkEosSpec->setMixingRule(gsoap_eml2_3::prodml22__MixingRule::classical);
+	PRODML2_3_NS::PvtSpecification* spec = fluidCharac->initModelSpecification(0, PRODML2_3_NS::FluidCharacterization::SrkEos);
+	PRODML2_3_NS::CompositionalSpecification* srkEosSpec = dynamic_cast<PRODML2_3_NS::CompositionalSpecification*>(spec);
+	srkEosSpec->pushBackCoefficient(1, gsoap_eml2_3::prodml23__PvtModelParameterKind::a1);
+	srkEosSpec->setMixingRule(gsoap_eml2_3::prodml23__MixingRule::classical);
 	srkEosSpec->pushBackFluidComponentProperty("h2o");
 	srkEosSpec->pushBackFluidComponentProperty("c1");
 	srkEosSpec->pushBackFluidComponentProperty("c2-3");
@@ -2352,20 +2398,20 @@ void serializeCompositionalFluidCharacterization(COMMON_NS::DataObjectRepository
 
 void serializeTimeSeriesData(COMMON_NS::DataObjectRepository & repo)
 {
-	PRODML2_2_NS::TimeSeriesData* timeSeriesData = repo.createTimeSeriesData("25d2e0d8-dffa-414d-b7cd-f871cb436781", "my Time Series Data");
+	PRODML2_3_NS::TimeSeriesData* timeSeriesData = repo.createTimeSeriesData("25d2e0d8-dffa-414d-b7cd-f871cb436781", "my Time Series Data");
 
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::asset_x0020identifier, "prodml://f2i-consulting.com/manifold(HDR01)");
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::flow, "production");
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::product, "oil");
-	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml22__TimeSeriesKeyword::qualifier, "measured");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml23__TimeSeriesKeyword::asset_x0020identifier, "prodml://f2i-consulting.com/manifold(HDR01)");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml23__TimeSeriesKeyword::flow, "production");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml23__TimeSeriesKeyword::product, "oil");
+	timeSeriesData->pushBackKeywordValue(gsoap_eml2_3::prodml23__TimeSeriesKeyword::qualifier, "measured");
 
 	timeSeriesData->setUom(gsoap_resqml2_0_1::resqml20__ResqmlUom::psi);
 	timeSeriesData->setMeasureClass(gsoap_eml2_3::eml23__MeasureClass::pressure);
 
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706000, gsoap_eml2_3::prodml22__ValueStatus::frozen);
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706060, gsoap_eml2_3::prodml22__ValueStatus::frozen);
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706120, gsoap_eml2_3::prodml22__ValueStatus::frozen);
-	timeSeriesData->pushBackDoubleValue(747.7316, 1328706180, gsoap_eml2_3::prodml22__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706000, gsoap_eml2_3::prodml23__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706060, gsoap_eml2_3::prodml23__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706120, gsoap_eml2_3::prodml23__ValueStatus::frozen);
+	timeSeriesData->pushBackDoubleValue(747.7316, 1328706180, gsoap_eml2_3::prodml23__ValueStatus::frozen);
 	timeSeriesData->pushBackDoubleValue(746.7316, 1328706241);
 	timeSeriesData->pushBackDoubleValue(745.7316, 1328706242);
 	timeSeriesData->pushBackDoubleValue(746.003, 1328706243);
@@ -2503,7 +2549,7 @@ bool serialize(const string& filePath)
 	serializeActivities(&repo);
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
-	PRODML2_2_NS::FluidSystem* fluidSystem = serializeFluidSystem(repo);
+	PRODML2_3_NS::FluidSystem* fluidSystem = serializeFluidSystem(repo);
 	serializeTabularFluidCharacterization(repo, fluidSystem);
 	serializeCompositionalFluidCharacterization(repo);
 	serializeTimeSeriesData(repo);
@@ -2613,7 +2659,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				cerr << "\tERROR !!!!! Only categorical or Discrete properties should be associated to an integer dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				std::unique_ptr<double[]> values(new double[valueCount]);
-				static_cast<RESQML2_NS::ContinuousProperty const *>(prop)->getDoubleValuesOfPatch(0, values.get());
+				static_cast<RESQML2_NS::ContinuousProperty const *>(prop)->getArrayOfValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 				cout << "\tPress enter to continue..." << endl;
@@ -2643,7 +2689,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 					}
 				}
 				std::unique_ptr<int64_t[]> values(new int64_t[valueCount]);
-				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getInt64ValuesOfPatch(0, values.get());
+				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getArrayOfValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 			}
@@ -2659,11 +2705,11 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				std::cout << "\tMax value is " << maxValue << endl;
 				std::cout << "\tMin value is " << minValue << endl;
 				std::unique_ptr<double[]> values(new double[valueCount]);
-				continuousProp->getDoubleValuesOfPatch(0, values.get());
+				continuousProp->getArrayOfValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 
-				if (continuousProp->getElementCountPerValue() == 1) {
+				if (continuousProp->getValueCountPerIndexableElement() == 1) {
 					for (size_t cellIndex = 0; cellIndex < valueCount; ++cellIndex) {
 						if (enabledCells != nullptr && !enabledCells[cellIndex]) {
 							continue;
@@ -2694,7 +2740,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 					std::cout << stl->getKeyAtIndex(itemIndex) << "->" << stl->getValueAtIndex(itemIndex) << endl;
 				}
 				std::unique_ptr<double[]> values(new double[valueCount]);
-				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getDoubleValuesOfPatch(0, values.get());
+				static_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getArrayOfValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 			}
@@ -2702,7 +2748,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				cerr << "\tERROR !!!!! The discrete or comment property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				std::unique_ptr<int64_t[]> values(new int64_t[valueCount]);
-				dynamic_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getInt64ValuesOfPatch(0, values.get());
+				dynamic_cast<RESQML2_NS::AbstractValuesProperty const *>(prop)->getArrayOfValuesOfPatch(0, values.get());
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 				cout << "\tPress enter to continue..." << endl;
@@ -2715,9 +2761,12 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		if (prop->getTimeSeries() != nullptr || singleTs != -1) {
 			std::cout << "\tThis property is a time related one" << std::endl;
 			if (singleTs != -1) {
-				std::cout << "\tThis property is a related to single timestamp " << std::endl;
+				std::cout << "\tThis property is related to single timestamp " << std::endl;
 				if (prop->getTimeSeries() != nullptr) {
-					std::cout << "which is part of a time series at index " << prop->getTimeSeries()->getTimestampIndex(singleTs) << std::endl;
+					auto timeSeriesIndex = prop->getTimeSeries()->getTimestampIndex(singleTs);
+					std::cout << "which is part of a time series at index " << timeSeriesIndex
+						<< " ISO String (without time)" << prop->getTimeSeries()->getTimestampAsIsoString(timeSeriesIndex, false)
+						<< " ISO String (with time)" << prop->getTimeSeries()->getTimestampAsIsoString(timeSeriesIndex, true) << std::endl;
 				}
 				else {
 					std::cout << "which is not part of a time series." << std::endl;
@@ -3021,9 +3070,9 @@ void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & repo)
 
 void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & repo)
 {
-	std::vector<PRODML2_2_NS::FluidCharacterization*> fluidCharacterization = repo.getDataObjects<PRODML2_2_NS::FluidCharacterization>();
+	std::vector<PRODML2_3_NS::FluidCharacterization*> fluidCharacterization = repo.getDataObjects<PRODML2_3_NS::FluidCharacterization>();
 	for (size_t fcIndex = 0; fcIndex < fluidCharacterization.size(); ++fcIndex) {
-		PRODML2_2_NS::FluidCharacterization* fc = fluidCharacterization[fcIndex];
+		PRODML2_3_NS::FluidCharacterization* fc = fluidCharacterization[fcIndex];
 		showAllMetadata(fc);
 		RESQML2_NS::RockFluidUnitInterpretation* rfu = fc->getRockFluidUnit();
 		if (rfu != nullptr) {
@@ -3057,10 +3106,10 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & repo)
 			}
 			if (fc->hasModelRemark(modelIndex)) { cout << "Remark: " << fc->getModelRemark(modelIndex) << std::endl; }
 
-			PRODML2_2_NS::PvtSpecification* spec = fc->getModelSpecification(modelIndex);
+			PRODML2_3_NS::PvtSpecification* spec = fc->getModelSpecification(modelIndex);
 			if (spec != nullptr) {
-				if (dynamic_cast<PRODML2_2_NS::CompositionalSpecification*>(spec) != nullptr) {
-					PRODML2_2_NS::CompositionalSpecification* compoSpec = static_cast<PRODML2_2_NS::CompositionalSpecification*>(spec);
+				if (dynamic_cast<PRODML2_3_NS::CompositionalSpecification*>(spec) != nullptr) {
+					PRODML2_3_NS::CompositionalSpecification* compoSpec = static_cast<PRODML2_3_NS::CompositionalSpecification*>(spec);
 					for (unsigned int coeffIndex = 0; coeffIndex < compoSpec->getCoefficientCount(); ++coeffIndex) {
 						cout << "coeff value: " << compoSpec->getCoefficientValue(coeffIndex) << std::endl;
 						cout << "coeff kind: " << static_cast<int>(compoSpec->getCoefficientKind(coeffIndex)) << std::endl;
@@ -3088,9 +3137,9 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & repo)
 
 void deserializeTimeSeriesData(COMMON_NS::DataObjectRepository & repo)
 {
-	std::vector<PRODML2_2_NS::TimeSeriesData*> timeSeriesDataSet = repo.getDataObjects<PRODML2_2_NS::TimeSeriesData>();
+	std::vector<PRODML2_3_NS::TimeSeriesData*> timeSeriesDataSet = repo.getDataObjects<PRODML2_3_NS::TimeSeriesData>();
 	for (size_t timeSeriesDataSetIdx = 0; timeSeriesDataSetIdx < timeSeriesDataSet.size(); ++timeSeriesDataSetIdx) {
-		PRODML2_2_NS::TimeSeriesData* tsd = timeSeriesDataSet[timeSeriesDataSetIdx];
+		PRODML2_3_NS::TimeSeriesData* tsd = timeSeriesDataSet[timeSeriesDataSetIdx];
 		showAllMetadata(tsd);
 
 		for (unsigned int i = 0; i < tsd->getKeywordCount(); ++i) {
@@ -3139,19 +3188,21 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 
 				ijkGrid->loadSplitInformation();
 
-				if (ijkGrid->getKGapsCount() > 0) {
+				const uint64_t kGapsCount = ijkGrid->getKGapsCount();
+				const size_t kCellCount = ijkGrid->getKCellCount();
+				if (kGapsCount > 0 && kCellCount > 1) {
 
 					// here, we read a grid interface by interface. Each interface is read
 					// in i then j direction
 					cout << "INTERFACE BY INTERFACE" << std::endl;
 
-					std::unique_ptr<bool[]> gapAfterLayer(new bool[ijkGrid->getKCellCount() - 1]);
+					std::unique_ptr<bool[]> gapAfterLayer(new bool[kCellCount - 1]);
 					ijkGrid->getKGaps(gapAfterLayer.get());
 					
 					unsigned int kLayer = 0;
 					unsigned int cornerShift = 0;
 
-					for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount() + 1 + ijkGrid->getKGapsCount(); kInterface++) {
+					for (unsigned int kInterface = 0; kInterface < kCellCount + 1 + kGapsCount; kInterface++) {
 						cout << "INTERFACE: " << kInterface << std::endl;
 
 						std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
@@ -3191,7 +3242,7 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 							}
 						}
 
-						if (cornerShift == 4 || (!gapAfterLayer[kLayer] && kInterface != ijkGrid->getKCellCount() + ijkGrid->getKGapsCount() - 1)) {
+						if (cornerShift == 4 || (kInterface != kCellCount + kGapsCount - 1 && !gapAfterLayer[kLayer])) {
 							kLayer++;
 							cornerShift = 0;
 						}
@@ -3207,7 +3258,7 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 
 					int kInterface = 0;
 
-					for (unsigned int kLayer = 0; kLayer < ijkGrid->getKCellCount(); kLayer++)
+					for (unsigned int kLayer = 0; kLayer < kCellCount; kLayer++)
 					{
 						cout << "LAYER: " << kLayer << std::endl;
 
@@ -3283,15 +3334,20 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 							}
 						}
 
-						kInterface = gapAfterLayer[kLayer] ? kInterface + 2 : kInterface + 1;
+						if (kLayer < kCellCount - 1) {
+							kInterface = gapAfterLayer[kLayer] ? kInterface + 2 : kInterface + 1;
+						}
 					}
+				}
+				else if (kGapsCount > 0) {
+					std::cout << "Not enough K Layer (" << kCellCount << ") to have K Gaps (" << kGapsCount << ")" << std::endl;
 				}
 				else { // no K gap
 					// here, we read a grid interface by interface. Each interface is read
 					// in i then j direction
 					cout << "INTERFACE BY INTERFACE" << std::endl;
 
-					for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount(); kInterface++) {
+					for (unsigned int kInterface = 0; kInterface < kCellCount; kInterface++) {
 						cout << "INTERFACE: " << kInterface << std::endl;
 
 						std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
@@ -3338,44 +3394,44 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 					}
 
 					// last interface differs from the other because of  getXyzPointIndexFromCellCorner usage
-					cout << "INTERFACE: " << ijkGrid->getKCellCount() << std::endl;
+					cout << "INTERFACE: " << kCellCount << std::endl;
 
 					std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
-					ijkGrid->getXyzPointsOfKInterface(ijkGrid->getKCellCount(), interfaceXyzPoints.get());
+					ijkGrid->getXyzPointsOfKInterface(kCellCount, interfaceXyzPoints.get());
 
 					for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++)
 					{
 						for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++)
 						{
-							cout << "CELL (" << i << ", " << j << ", " << ijkGrid->getKCellCount() - 1 << ")" << std::endl;
+							cout << "CELL (" << i << ", " << j << ", " << kCellCount - 1 << ")" << std::endl;
 
 							uint64_t xyzPointIndex;
 							double x, y, z;
-							uint64_t indexShift = ijkGrid->getKCellCount() * ijkGrid->getXyzPointCountOfKInterface() * 3;
+							uint64_t indexShift = kCellCount * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 							// Corner (0, 0, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 4) * 3 - indexShift;
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kCellCount - 1, 4) * 3 - indexShift;
 							x = interfaceXyzPoints[xyzPointIndex];
 							y = interfaceXyzPoints[xyzPointIndex + 1];
 							z = interfaceXyzPoints[xyzPointIndex + 2];
 							cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
 
 							// Corner (1, 0, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 5) * 3 - indexShift;
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kCellCount - 1, 5) * 3 - indexShift;
 							x = interfaceXyzPoints[xyzPointIndex];
 							y = interfaceXyzPoints[xyzPointIndex + 1];
 							z = interfaceXyzPoints[xyzPointIndex + 2];
 							cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
 
 							// Corner (1, 1, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 6) * 3 - indexShift;
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kCellCount - 1, 6) * 3 - indexShift;
 							x = interfaceXyzPoints[xyzPointIndex];
 							y = interfaceXyzPoints[xyzPointIndex + 1];
 							z = interfaceXyzPoints[xyzPointIndex + 2];
 							cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
 
 							// Corner (0, 1, 1)
-							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 7) * 3 - indexShift;
+							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kCellCount - 1, 7) * 3 - indexShift;
 							x = interfaceXyzPoints[xyzPointIndex];
 							y = interfaceXyzPoints[xyzPointIndex + 1];
 							z = interfaceXyzPoints[xyzPointIndex + 2];
@@ -3388,7 +3444,7 @@ void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRe
 					cout << "--------------------------------------------------" << std::endl;
 					cout << "LAYER BY LAYER" << std::endl;
 
-					for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount(); kInterface++)
+					for (unsigned int kInterface = 0; kInterface < kCellCount; kInterface++)
 					{
 						cout << "LAYER: " << kInterface << std::endl;
 
@@ -4483,7 +4539,7 @@ void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentatio
 		clockStart = clock();
 		time(&timeStart);
 		for (unsigned int n = 0; n < nbIter; ++n) {
-			prop->getInt32ValuesOfPatch(0, values.get());
+			prop->getArrayOfValuesOfPatch(0, values.get());
 		}
 		clockEnd = clock();
 		time(&timeEnd);
@@ -4820,13 +4876,20 @@ void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 			auto kGapCount = ijkGrid->getKGapsCount();
 			std::cout << " K Gap Count" << kGapCount << std::endl;
 			if (kGapCount > 0) {
-				std::unique_ptr<bool[]> kGapAfterLayer(new bool[ijkGrid->getKCellCount() - 1]);
-				for (size_t kIndex = 0; kIndex < ijkGrid->getKCellCount() - 1; ++kIndex) {
-					std::cout << "There is ";
-					if (!kGapAfterLayer[kIndex]) {
-						std::cout << "NOT ";
+				const size_t kCellCount = ijkGrid->getKCellCount();
+				if (kCellCount > 1) {
+					std::unique_ptr<bool[]> kGapAfterLayer(new bool[kCellCount - 1]);
+					ijkGrid->getKGaps(kGapAfterLayer.get());
+					for (size_t kIndex = 0; kIndex < kCellCount - 1; ++kIndex) {
+						std::cout << "There is ";
+						if (!kGapAfterLayer[kIndex]) {
+							std::cout << "NOT ";
+						}
+						std::cout << "a K gap after K layer " << kIndex << std::endl;
 					}
-					std::cout << "a K gap after K layer " << kIndex << std::endl;
+				}
+				else {
+					std::cout << "Not enough K Layer (" << kCellCount << ") to have K Gaps" << std::endl;
 				}
 			}
 
@@ -5429,7 +5492,7 @@ void deserialize(const string & inputFile)
 							if (catVal->getValuesHdfDatatype() == COMMON_NS::AbstractObject::numericalDatatypeEnum::INT64) {
 								std::cout << "Hdf datatype is NATIVE INT 64" << std::endl;
 								std::unique_ptr<int64_t[]> tmp(new int64_t[wmf->getMdValuesCount()]);
-								catVal->getInt64ValuesOfPatch(0, tmp.get());
+								catVal->getArrayOfValuesOfPatch(0, tmp.get());
 								for (size_t ind = 0; ind < 2; ind++) {
 									std::cout << "Value " << ind << " : " << tmp[ind] << std::endl;
 								}
@@ -5618,17 +5681,17 @@ void deserialize(const string & inputFile)
 	showAllSubRepresentations(onlyPartialSubReps);
 
 	std::cout << endl << "TIME SERIES" << endl;
-	for (auto const* timeSeries : timeSeriesSet) {
-		showAllMetadata(timeSeries);
-		for (unsigned int j = 0; j < timeSeries->getTimestampCount(); ++j) {
-			time_t creation = timeSeries->getTimestamp(j);
+	for (auto const* timeSeries1 : timeSeriesSet) {
+		showAllMetadata(timeSeries1);
+		for (unsigned int j = 0; j < timeSeries1->getTimestampCount(); ++j) {
+			time_t creation = timeSeries1->getTimestamp(j);
 			std::cout << "Timestamp " << j << " is (unix timestamp) : " << creation << std::endl;
-			tm creationTm = timeSeries->getTimestampAsTimeStructure(j);
+			tm creationTm = timeSeries1->getTimestampAsTimeStructure(j);
 			std::cout << "Timestamp " << j << " is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
 		}
-		for (size_t j = 0; j < timeSeries->getPropertySet().size(); ++j) 	{
+		for (size_t j = 0; j < timeSeries1->getPropertySet().size(); ++j) 	{
 			std::cout << endl << "\tPROPERTIES" << endl;
-			showAllMetadata(timeSeries->getPropertySet()[j]);
+			showAllMetadata(timeSeries1->getPropertySet()[j]);
 		}
 	}
 
@@ -5672,7 +5735,7 @@ void appendAContinuousProp(const string& filePath)
 #endif
 
 	double values[2] = { 0, 1 };
-	continuousProp->pushBackDoubleHdf5Array3dOfValues(values, 2, 1, 1);
+	continuousProp->pushBackArray3dOfValues(values, 2, 1, 1);
 
 	epcDoc.serializeFrom(repo);
 }

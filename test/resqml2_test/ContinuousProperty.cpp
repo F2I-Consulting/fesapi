@@ -48,20 +48,20 @@ void ContinuousProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
-	float fltValues[24] = { -1, 0, 1, 2, 3, 4, -1, 0, 1, 2, 3, 4,
+	float fltValues[24] = { 1, 0, 1, 2, 3, 4, -1, 0, 1, 2, 3, 4,
 		-1, 0, 1, 2, 3, 4, -1, 0, 1, 2, 3, 5 };
-	noMinMaxFltProperty->pushBackFloatHdf5Array3dOfValues(fltValues, 2, 3, 4);
+	noMinMaxFltProperty->pushBackArray3dOfValues(fltValues, 2, 3, 4);
 
-	// creating Float prop without min max
+	// creating Double prop without min max
 	RESQML2_NS::ContinuousProperty* noMinMaxDblProperty = repo->createContinuousProperty(
 		rep, "f2c1c3de-0986-485a-9d09-d0edeadf0d1e", "Double prop without min max",
 		1,
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
-	double dblValues[24] = { -1, 0, 1, 2, 3, 4, -1, 0, 1, 2, 3, 4,
+	double dblValues[24] = { 1, std::numeric_limits<double>::quiet_NaN(), 1, std::numeric_limits<double>::quiet_NaN(), 3, 4, -1, 0, 1, 2, 3, 4,
 		-1, 0, 1, 2, 3, 4, -1, 0, 1, 2, 3, 5 };
-	noMinMaxDblProperty->pushBackDoubleHdf5Array3dOfValues(dblValues, 2, 3, 4);
+	noMinMaxDblProperty->pushBackArray3dOfValues(dblValues, 2, 3, 4);
 
 	// creating Float prop with min max computation
 	RESQML2_NS::ContinuousProperty* computedMinMaxFltProperty = repo->createContinuousProperty(
@@ -70,7 +70,8 @@ void ContinuousProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
-	computedMinMaxFltProperty->pushBackFloatHdf5Array3dOfValues(fltValues, 2, 3, 4, std::numeric_limits<float>::quiet_NaN(), std::numeric_limits<float>::quiet_NaN());
+	COMMON_NS::NumberArrayStatistics<float> floatStats(fltValues, 24);
+	computedMinMaxFltProperty->pushBackArray3dOfValuesPlusStatistics(fltValues, 2, 3, 4, floatStats);
 
 	// creating Float prop with min max computation
 	RESQML2_NS::ContinuousProperty* computedMinMaxDblProperty = repo->createContinuousProperty(
@@ -79,7 +80,8 @@ void ContinuousProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
-	computedMinMaxDblProperty->pushBackDoubleHdf5Array3dOfValues(dblValues, 2, 3, 4, std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN());
+	COMMON_NS::NumberArrayStatistics<double> doubleStats(dblValues, 24);
+	computedMinMaxDblProperty->pushBackArray3dOfValuesPlusStatistics(dblValues, 2, 3, 4, doubleStats);
 
 	// creating Float prop with min max forcing
 	RESQML2_NS::ContinuousProperty* forcingMinMaxFltProperty = repo->createContinuousProperty(
@@ -88,7 +90,10 @@ void ContinuousProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
-	forcingMinMaxFltProperty->pushBackFloatHdf5Array3dOfValues(fltValues, 2, 3, 4, -5.5, 2.0);
+	COMMON_NS::NumberArrayStatistics<float> floatForcedStats;
+	floatForcedStats.setMinimum(-5.5, 0);
+	floatForcedStats.setMaximum(2.0, 0);
+	forcingMinMaxFltProperty->pushBackArray3dOfValuesPlusStatistics(fltValues, 2, 3, 4, floatForcedStats);
 
 	// creating Float prop with min max forcing
 	RESQML2_NS::ContinuousProperty* forcingMinMaxDblProperty = repo->createContinuousProperty(
@@ -97,7 +102,10 @@ void ContinuousProperty::initRepo() {
 		gsoap_eml2_3::eml23__IndexableElement::cells,
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa,
 		propertyKind);
-	forcingMinMaxDblProperty->pushBackDoubleHdf5Array3dOfValues(dblValues, 2, 3, 4, -5.5, 2.0);
+	COMMON_NS::NumberArrayStatistics<double> doubleForcedStats;
+	doubleForcedStats.setMinimum(-5.5, 0);
+	doubleForcedStats.setMaximum(2.0, 0);
+	forcingMinMaxDblProperty->pushBackArray3dOfValuesPlusStatistics(dblValues, 2, 3, 4, doubleForcedStats);
 
 	// creating Constant Floating point prop
 	RESQML2_NS::ContinuousProperty* constantDblProperty = repo->createContinuousProperty(
@@ -111,15 +119,15 @@ void ContinuousProperty::initRepo() {
 
 void ContinuousProperty::readRepo() {
 	RESQML2_NS::ContinuousProperty* noMinMaxFltProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>(defaultUuid);
-	REQUIRE(noMinMaxFltProperty->getElementCountPerValue() == 1);
+	REQUIRE(noMinMaxFltProperty->getValueCountPerIndexableElement() == 1);
 	REQUIRE(noMinMaxFltProperty->getAttachmentKind() == gsoap_eml2_3::eml23__IndexableElement::cells);
 	REQUIRE(noMinMaxFltProperty->getUom() == gsoap_resqml2_0_1::resqml20__ResqmlUom::Pa);
 	auto valuesCount = noMinMaxFltProperty->getValuesCountPerDimensionOfPatch(0);
 	REQUIRE(std::equal(std::begin(valuesCount), std::end(valuesCount), std::begin({ 4, 3, 2 })));
 	REQUIRE(noMinMaxFltProperty->getValuesCountOfPatch(0) == 24);
 	float fltValues[24];
-	noMinMaxFltProperty->getFloatValuesOfPatch(0, fltValues);
-	REQUIRE(fltValues[0] == -1);
+	const auto floatStats = noMinMaxFltProperty->getArrayOfValuesOfPatch(0, fltValues);
+	REQUIRE(fltValues[0] == 1);
 	REQUIRE(fltValues[1] == 0);
 	REQUIRE(fltValues[2] == 1);
 	REQUIRE(fltValues[3] == 2);
@@ -145,15 +153,20 @@ void ContinuousProperty::readRepo() {
 	REQUIRE(fltValues[23] == 5);
 	REQUIRE(std::isnan(noMinMaxFltProperty->getMinimumValue()));
 	REQUIRE(std::isnan(noMinMaxFltProperty->getMaximumValue()));
+	REQUIRE(std::isnan(floatStats.getNullValue()));
+	REQUIRE(floatStats.getMaximumSize() == 0);
+	REQUIRE(floatStats.getMinimumSize() == 0);
+	REQUIRE(floatStats.getValidValueCountSize() == 0);
+	REQUIRE(floatStats.getModeSize() == 0);
 
 	RESQML2_NS::ContinuousProperty* noMinMaxDblProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>("f2c1c3de-0986-485a-9d09-d0edeadf0d1e");
 	REQUIRE(noMinMaxDblProperty->getValuesCountOfPatch(0) == 24);
 	double dblValues[24];
-	noMinMaxDblProperty->getDoubleValuesOfPatch(0, dblValues);
-	REQUIRE(dblValues[0] == -1);
-	REQUIRE(dblValues[1] == 0);
+	const auto doubleStats = noMinMaxDblProperty->getArrayOfValuesOfPatch(0, dblValues, true);
+	REQUIRE(dblValues[0] == 1);
+	REQUIRE(std::isnan(dblValues[1]));
 	REQUIRE(dblValues[2] == 1);
-	REQUIRE(dblValues[3] == 2);
+	REQUIRE(std::isnan(dblValues[3]));
 	REQUIRE(dblValues[4] == 3);
 	REQUIRE(dblValues[5] == 4);
 	REQUIRE(dblValues[6] == -1);
@@ -176,6 +189,26 @@ void ContinuousProperty::readRepo() {
 	REQUIRE(dblValues[23] == 5);
 	REQUIRE(std::isnan(noMinMaxDblProperty->getMinimumValue()));
 	REQUIRE(std::isnan(noMinMaxDblProperty->getMaximumValue()));
+	REQUIRE(std::isnan(doubleStats.getNullValue()));
+	REQUIRE(doubleStats.getMaximumSize() == 1);
+	REQUIRE(doubleStats.getMaximum() == 5);
+	REQUIRE(doubleStats.getMinimumSize() == 1);
+	REQUIRE(doubleStats.getMinimum(0) == -1);
+	REQUIRE(doubleStats.getValidValueCountSize() == 1);
+	REQUIRE(doubleStats.getValidValueCount(0) == 22);
+	REQUIRE(doubleStats.getModeSize() == 1);
+	REQUIRE(doubleStats.getMode(0) == 1);
+	REQUIRE(doubleStats.getModePercentageSize() == 1);
+	REQUIRE(doubleStats.getModePercentage(0) < 0.2273);
+	REQUIRE(doubleStats.getModePercentage(0) > 0.2272);
+	REQUIRE(doubleStats.getMeanSize() == 1);
+	REQUIRE(doubleStats.getMean(0) > 1.68);
+	REQUIRE(doubleStats.getMean(0) < 1.69);
+	REQUIRE(doubleStats.getMedianSize() == 1);
+	REQUIRE(doubleStats.getMedian() == 1.5);
+	REQUIRE(doubleStats.getStandardDeviationSize() == 1);
+	REQUIRE(doubleStats.getStandardDeviation() > 1.74);
+	REQUIRE(doubleStats.getStandardDeviation() < 1.75);
 
 	RESQML2_NS::ContinuousProperty* computedMinMaxFltProperty = repo->getDataObjectByUuid<RESQML2_NS::ContinuousProperty>("3d31a87a-2715-4d23-b455-ff9980a08819");
 	REQUIRE(computedMinMaxFltProperty->getMinimumValue() == -1);
@@ -199,7 +232,7 @@ void ContinuousProperty::readRepo() {
 	REQUIRE(std::equal(std::begin(valuesCount), std::end(valuesCount), std::begin({ 3 })));
 	REQUIRE(constantFloatingPointProperty->getValuesCountOfPatch(0) == 3);
 	double constantFloatingPointValues[3];
-	constantFloatingPointProperty->getDoubleValuesOfPatch(0, constantFloatingPointValues);
+	constantFloatingPointProperty->getArrayOfValuesOfPatch(0, constantFloatingPointValues);
 	REQUIRE(constantFloatingPointValues[0] == 3.33);
 	REQUIRE(constantFloatingPointValues[1] == 3.33);
 	REQUIRE(constantFloatingPointValues[2] == 3.33);

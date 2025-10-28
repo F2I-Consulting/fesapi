@@ -204,7 +204,7 @@ COMMON_NS::DataObjectReference IjkGridParametricRepresentation::getHdfProxyDor()
 		throw std::logic_error("Not yet implemented");
 }
 
-void IjkGridParametricRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const
+void IjkGridParametricRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const
 {
 	getXyzPointsFromParametricPoints(xyzPoints);
 

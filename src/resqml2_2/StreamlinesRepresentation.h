@@ -159,7 +159,7 @@ namespace RESQML2_2_NS
 		/**
 		* Use linear interpolation between 2 trajectory stations.
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
 		/**
 		 * Sets the geometry of the streamlines representation.

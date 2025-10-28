@@ -1,10 +1,10 @@
 /*
-        stdsoap2.h 2.8.127E
+        stdsoap2.h 2.8.139E
 
         gSOAP runtime engine
 
 gSOAP XML Web services tools
-Copyright (C) 2000-2023, Robert van Engelen, Genivia Inc., All Rights Reserved.
+Copyright (C) 2000-2025, Robert van Engelen, Genivia Inc., All Rights Reserved.
 This part of the software is released under ONE of the following licenses:
 
 --------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 208127
+#define GSOAP_VERSION 208139
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -1728,6 +1728,7 @@ typedef soap_int32 soap_mode;
 #define SOAP_SSL_ALLOW_EXPIRED_CERTIFICATE      (0x0008)  /* allow self-signed and expired certificates and those w/o CRL */
 #define SOAP_SSL_NO_DEFAULT_CA_PATH             (0x0010)  /* don't use SSL_CTX_set_default_verify_paths */
 #define SOAP_SSL_RSA                            (0x0020)  /* use RSA */
+#define SOAP_SSL_SNI_HOST_CHECK                 (0x0040)  /* client SNI only with a valid hostname, reject IP */
 #define SOAP_SSLv3                              (0x0080)  /* enable SSL v3 */
 #define SOAP_TLSv1_0                            (0x0100)  /* enable TLS v1.0 */
 #define SOAP_TLSv1_1                            (0x0200)  /* enable TLS v1.1 */
@@ -2379,10 +2380,12 @@ struct SOAP_CMAC soap_dom_attribute
   soap_dom_attribute(struct soap *soap, const char *ns, const char *tag, const wchar_t *str);
   soap_dom_attribute(struct soap *soap, const char *ns, const wchar_t *tag, const char *str);
   soap_dom_attribute(struct soap *soap, const char *ns, const wchar_t *tag, const wchar_t *str);
+#ifndef WITH_COMPAT
   soap_dom_attribute(struct soap *soap, const char *ns, const char *tag, const std::string& str);
   soap_dom_attribute(struct soap *soap, const char *ns, const char *tag, const std::wstring& str);
   soap_dom_attribute(struct soap *soap, const char *ns, const wchar_t *tag, const std::string& str);
   soap_dom_attribute(struct soap *soap, const char *ns, const wchar_t *tag, const std::wstring& str);
+#endif
   ~soap_dom_attribute();
   soap_dom_attribute& set(const char *ns, const char *tag)      { return *soap_att_set(this, ns, tag); }
   soap_dom_attribute& set(const char *ns, const wchar_t *tag)   { return *soap_att_set_w(this, ns, tag); }

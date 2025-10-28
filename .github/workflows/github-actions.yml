@@ -4,7 +4,7 @@ jobs:
   windows-2022-staticLink-cs:
     runs-on: windows-2022
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: zlib install
         run: |
           Invoke-WebRequest https://zlib.net/current/zlib.tar.gz -OutFile ${{ runner.temp }}\zlib.tar.gz
@@ -82,8 +82,8 @@ jobs:
       CC: ${{ matrix.cc }}
       CXX: ${{ matrix.cxx }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
         with:
           distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '11'
@@ -125,13 +125,13 @@ jobs:
     name: Build wheels on windows-latest
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Stub `setup.py` check
         # It will be generated during CMake run
         # https://github.com/pypa/cibuildwheel/issues/1139
         run: touch python/setup.py
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.21.3
+        uses: pypa/cibuildwheel@v3.2.1
         env:
           CIBW_BUILD: cp38-win_amd64 cp39-win_amd64 cp310-win_amd64 cp311-win_amd64 cp312-win_amd64 cp313-win_amd64
           CIBW_ARCHS: auto64
@@ -158,13 +158,14 @@ jobs:
     name: Build wheels on ubuntu-latest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Stub `setup.py` check
         # It will be generated during CMake run
         # https://github.com/pypa/cibuildwheel/issues/1139
         run: touch python/setup.py
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.21.3
+        # Cannot use a more recent version than v2.22.0 because of fetappi wheel which uses AVRO which cannot be built with GNU 14.
+        uses: pypa/cibuildwheel@v2.22.0
         env:
           CIBW_BUILD: cp38-manylinux_* cp39-manylinux_* cp310-manylinux_* cp311-manylinux_* cp312-manylinux_* cp313-manylinux_*
           CIBW_ARCHS: auto64
@@ -195,13 +196,13 @@ jobs:
     name: Build wheels on macos-14
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Stub `setup.py` check
         # It will be generated during CMake run
         # https://github.com/pypa/cibuildwheel/issues/1139
         run: touch python/setup.py
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.21.3
+        uses: pypa/cibuildwheel@v3.2.1
         env:
           CIBW_BUILD: cp38-macosx_* cp39-macosx_* cp310-macosx_* cp311-macosx_* cp312-macosx_* cp313-macosx_*
           CIBW_ARCHS: auto64
@@ -247,7 +248,7 @@ jobs:
     runs-on: ubuntu-22.04    
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: APT install
         run: |
           sudo apt update
@@ -267,7 +268,7 @@ jobs:
   ubuntu-latest-valgrind-unitTest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: APT install
         run: |
           sudo apt update
@@ -291,7 +292,7 @@ jobs:
     runs-on: ubuntu-22.04    
     steps:
       - uses: mymindstorm/setup-emsdk@v11
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Verify
         run: emcc -v
       - name: "Set environmental variables"
@@ -352,7 +353,7 @@ jobs:
           emmake make -j8 fesapi-wasm
           emmake make -j8 fesapi-wasm-node
       - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: fesapi-mjs
           path: |

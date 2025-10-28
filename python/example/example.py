@@ -30,7 +30,10 @@ def serialize_grid(repo: fesapi.DataObjectRepository):
     resqml_values = fesapi.FloatArray(3)
     for i, value in enumerate(prop_values):
         resqml_values.setitem(i, value)
-    continuous_prop.pushBackFloatHdf5Array3dOfValues(resqml_values, 1, 1, 3, 1.1, 3.3)
+    stats = fesapi.FloatArrayStatistics()
+    stats.setMaximum(3.3)
+    stats.setMinimum(1.1)
+    continuous_prop.pushBackFloatArray3dOfValuesPlusStatistics(resqml_values, 1, 1, 3, stats)
 
 def serialize(file_name: str):
     """

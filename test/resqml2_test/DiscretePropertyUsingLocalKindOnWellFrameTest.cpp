@@ -56,7 +56,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::initRepo()
 		propertyKind);
 	REQUIRE(discreteProperty != nullptr);
 	int values[4] = { 0, 1, 2, 3 };
-	discreteProperty->pushBackInt32Hdf5Array1dOfValues(values, 4, hdfProxy, -1);
+	discreteProperty->pushBackArray1dOfValues(values, 4, hdfProxy, -1);
 }
 
 void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepo()
@@ -67,8 +67,8 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepo()
 	// ************************************
 	// reading the DiscreteProperty
 
-	// getElementCountPerValue
-	REQUIRE(discreteProperty->getElementCountPerValue() == 1);
+	// getValueCountPerIndexableElement
+	REQUIRE(discreteProperty->getValueCountPerIndexableElement() == 1);
 
 	// getAttachmentKind
 	REQUIRE(discreteProperty->getAttachmentKind() == gsoap_eml2_3::eml23__IndexableElement::intervals);
@@ -80,7 +80,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::readRepo()
 	REQUIRE(discreteProperty->getValuesCountOfPatch(0) == 4);
 
 	int values[4];
-	discreteProperty->getInt32ValuesOfPatch(0, values);
+	discreteProperty->getArrayOfValuesOfPatch(0, values);
 	REQUIRE(values[0] == 0);
 	REQUIRE(values[1] == 1);
 	REQUIRE(values[2] == 2);

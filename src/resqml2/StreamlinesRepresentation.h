@@ -163,7 +163,7 @@ namespace RESQML2_NS
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final {
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final {
 			if (patchIndex > 0) {
 				throw std::out_of_range("The patch index is out of range and should only be zero.");
 			}

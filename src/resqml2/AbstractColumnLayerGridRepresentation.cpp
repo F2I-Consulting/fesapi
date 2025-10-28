@@ -182,7 +182,7 @@ int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		resqml20__AbstractColumnLayerGridRepresentation const* rep = static_cast<resqml20__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-		return readArrayNdOfInt64Values(rep->IntervalStratigraphicUnits->UnitIndices, stratiUnitIndices);
+		return readArrayNdOfIntegerValues(rep->IntervalStratigraphicUnits->UnitIndices, stratiUnitIndices);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation const* rep = static_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_3);
@@ -200,11 +200,11 @@ int64_t AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 		}
 		else if (rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerXmlArray) {
 			std::unique_ptr<uint64_t[]> cumulativeLength(new uint64_t[getKCellCount()]);
-			readArrayNdOfUInt64Values(rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength, cumulativeLength.get());
+			readArrayNdOfIntegerValues(rep->IntervalStratigraphicUnits->UnitIndices->CumulativeLength, cumulativeLength.get());
 			if (cumulativeLength[0] == 1 && cumulativeLength[getKCellCount() - 1] == getKCellCount()) {
 				auto* elements = dynamic_cast<gsoap_eml2_3::eml23__AbstractIntegerArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements);
 				if (elements != nullptr) {
-					return readArrayNdOfInt64Values(elements, stratiUnitIndices);
+					return readArrayNdOfIntegerValues(elements, stratiUnitIndices);
 				}
 				throw logic_error("The stratigraphic unit indices associated to K layer must be integers only.");
 			}

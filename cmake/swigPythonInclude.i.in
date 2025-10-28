@@ -35,7 +35,7 @@ namespace COMMON_NS
 					if (xmlNs == "resqml20") return "${FESAPI_RESQML2_0_1_NS}";
 					else if (xmlNs == "resqml22") return "${FESAPI_RESQML2_2_NS}";
 					else if (xmlNs == "witsml21") return "${FESAPI_WITSML2_1_NS}";
-					else if (xmlNs == "prodml22") return "${FESAPI_PRODML2_2_NS}";
+					else if (xmlNs == "prodml23") return "${FESAPI_PRODML2_3_NS}";
 					else if (xmlNs == "eml23") return "${FESAPI_EML2_3_NS}";
 				}();
 
@@ -76,7 +76,7 @@ namespace EML2_NS
 					if (xmlNs == "resqml20") return "${FESAPI_RESQML2_0_1_NS}";
 					else if (xmlNs == "resqml22") return "${FESAPI_RESQML2_2_NS}";
 					else if (xmlNs == "witsml21") return "${FESAPI_WITSML2_1_NS}";
-					else if (xmlNs == "prodml22") return "${FESAPI_PRODML2_2_NS}";
+					else if (xmlNs == "prodml23") return "${FESAPI_PRODML2_3_NS}";
 					else if (xmlNs == "eml23") return "${FESAPI_EML2_3_NS}";
 				}();
 

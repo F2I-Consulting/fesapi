@@ -36,12 +36,12 @@ void RepresentationSetRepresentation::loadTargetRelationships()
 	}
 }
 
-uint64_t RepresentationSetRepresentation::getXyzPointCountOfPatch(unsigned int) const
+uint64_t RepresentationSetRepresentation::getXyzPointCountOfPatch(uint64_t) const
 {
 	throw logic_error("Not implemented yet.");
 }
 
-void RepresentationSetRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double *) const
+void RepresentationSetRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");

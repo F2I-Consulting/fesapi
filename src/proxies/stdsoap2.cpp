@@ -1,10 +1,10 @@
 /*
-        stdsoap2.c[pp] 2.8.127E
+        stdsoap2.c[pp] 2.8.139E
 
         gSOAP runtime engine
 
 gSOAP XML Web services tools
-Copyright (C) 2000-2023, Robert van Engelen, Genivia Inc., All Rights Reserved.
+Copyright (C) 2000-2025, Robert van Engelen, Genivia Inc., All Rights Reserved.
 This part of the software is released under ONE of the following licenses:
 
 --------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_LIB_VERSION 208127
+#define GSOAP_LIB_VERSION 208139
 
 /* silence GNU's warnings on format nonliteral strings and truncation (snprintf truncates on purpose for safety) */
 #ifdef __GNUC__
@@ -57,15 +57,15 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 #  else
 #   pragma comment(lib, "Ws2_32.lib")
 #  endif
-#  pragma warning(disable : 4996) /* disable deprecation warnings */
+#  pragma warning(disable : 4996) /* disable visual studio POSIX deprecation warnings */
 # endif
 #endif
 
 #ifdef __cplusplus
-SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.127E 2023-03-22 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.139E 2025-07-14 00:00:00 GMT")
 extern "C" {
 #else
-SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.127E 2023-03-22 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.139E 2025-07-14 00:00:00 GMT")
 #endif
 
 /* 8bit character representing unknown character entity or multibyte data */
@@ -940,7 +940,7 @@ soap_flush_raw(struct soap *soap, const char *s, size_t n)
 #ifndef WITH_LEANER
   if ((soap->mode & SOAP_IO) == SOAP_IO_CHUNK)
   {
-    char t[24];
+    char t[24]; /* note: actually the value of n <= SOAP_BUFLEN, which is 65536 or smaller */
     (SOAP_SNPRINTF(t, sizeof(t), 20), &"\r\n%lX\r\n"[soap->chunksize ? 0 : 2], (unsigned long)n);
     DBGMSG(SENT, t, strlen(t));
     soap->error = soap->fsend(soap, t, strlen(t));
@@ -949,7 +949,7 @@ soap_flush_raw(struct soap *soap, const char *s, size_t n)
     soap->chunksize += n;
   }
   DBGMSG(SENT, s, n);
-  DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Send %u bytes to socket=%d/fd=%d\n", (unsigned int)n, (int)soap->socket, soap->sendfd));
+  DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Send %lu bytes to socket=%d/fd=%d\n", (unsigned long)n, (int)soap->socket, soap->sendfd));
 #endif
   return soap->error = soap->fsend(soap, s, n);
 }
@@ -1260,7 +1260,7 @@ frecv(struct soap *soap, char *s, size_t n)
 #ifndef WITH_LEAN
         if ((soap->omode & SOAP_IO_UDP))
         {
-          SOAP_SOCKLEN_T k = (SOAP_SOCKLEN_T)sizeof(soap->peer);
+          SOAP_SOCKLEN_T k = (SOAP_SOCKLEN_T)sizeof(soap->peer.addr);
           memset((void*)&soap->peer, 0, sizeof(soap->peer));
           r = recvfrom(sk, s, (SOAP_WINSOCKINT)n, soap->socket_flags, &soap->peer.addr, &k);    /* portability note: see SOAP_SOCKLEN_T definition in stdsoap2.h, SOAP_WINSOCKINT cast is safe due to limited range of n in the engine (64K) */
           soap->peerlen = (size_t)k;
@@ -1908,7 +1908,7 @@ soap_binary_search_string(const char **a, int n, const char *s)
 static soap_wchar
 soap_char(struct soap *soap)
 {
-  char tmp[8];
+  char tmp[12];
   int i;
   soap_wchar c;
   char *s = tmp;
@@ -1923,8 +1923,12 @@ soap_char(struct soap *soap)
   if (*tmp == '#')
   {
     if (tmp[1] == 'x' || tmp[1] == 'X')
-      return (soap_wchar)soap_strtol(tmp + 2, NULL, 16);
-    return (soap_wchar)soap_strtol(tmp + 1, NULL, 10);
+      c = (soap_wchar)soap_strtoul(tmp + 2, NULL, 16);
+    else
+      c = (soap_wchar)soap_strtoul(tmp + 1, NULL, 10);
+    if (c > 0x10FFFF)
+      c = SOAP_UNKNOWN_CHAR; /* exceeds Unicode max */
+    return c;
   }
   if (!strcmp(tmp, "lt"))
     return '<';
@@ -1939,7 +1943,7 @@ soap_char(struct soap *soap)
 #ifndef WITH_LEAN
   return (soap_wchar)soap_code_int(html_entity_codes, tmp, (LONG64)SOAP_UNKNOWN_CHAR);
 #else
-  return SOAP_UNKNOWN_CHAR; /* use this to represent unknown code */
+  return SOAP_UNKNOWN_CHAR; /* unknown entity */
 #endif
 }
 
@@ -3835,7 +3839,7 @@ soap_match_tag(struct soap *soap, const char *tag1, const char *tag2)
   {
     if (s)
     {
-      if (t[1] && SOAP_STRCMP(s + 1, t + 1))
+      if (t[1] ? SOAP_STRCMP(s + 1, t + 1) : (soap->mode & SOAP_XML_IGNORENS))
         return SOAP_TAG_MISMATCH;
       if (t != tag2 && !(soap->mode & SOAP_XML_IGNORENS))
       {
@@ -4486,6 +4490,8 @@ ssl_auth_init(struct soap *soap)
 #endif
   if ((soap->ssl_flags & SOAP_SSL_RSA))
   {
+    /* OpenSSL v3 deprecated low-level RSA key generation: ignore SOAP_SSL_RSA flag */
+#if OPENSSL_VERSION_NUMBER < 0x30000000L
 #if OPENSSL_VERSION_NUMBER >= 0x10002000L
     if (SSL_CTX_need_tmp_RSA(soap->ctx))
     {
@@ -4513,14 +4519,38 @@ ssl_auth_init(struct soap *soap)
     }
     RSA_free(rsa);
 #endif
+#endif
   }
   else if (soap->dhfile)
   {
-    DH *dh = NULL;
-    char *s = NULL;
+    char *s = (char*)soap->dhfile;
     int n = (int)soap_strtoul(soap->dhfile, &s, 10);
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+    /* if dhfile is numeric, set auto DH selection regardless of the value of n */
+    if (n >= 1 && *s == '\0')
+    {
+      if (!SSL_CTX_set_dh_auto(soap->ctx, 1))
+        return soap_set_receiver_error(soap, "SSL/TLS error", "Can't generate DH parameters", SOAP_SSL_ERROR);
+    }
+    else
+    {
+      EVP_PKEY *dh;
+      BIO *bio = BIO_new_file(soap->dhfile, "r");
+      if (!bio)
+        return soap_set_receiver_error(soap, "SSL/TLS error", "Can't read DH PEM file", SOAP_SSL_ERROR);
+      dh = PEM_read_bio_Parameters(bio, NULL);
+      BIO_free(bio);
+      if (!dh || !SSL_CTX_set0_tmp_dh_pkey(soap->ctx, dh))
+      {
+        if (dh)
+          EVP_PKEY_free(dh);
+        return soap_set_receiver_error(soap, "SSL/TLS error", "Can't set DH parameters", SOAP_SSL_ERROR);
+      }
+    }
+#else
+    DH *dh = NULL;
     /* if dhfile is numeric, treat it as a key length to generate DH params which can take a while */
-    if (n >= 512 && s && *s == '\0')
+    if (n >= 512 && *s == '\0')
     {
 #if OPENSSL_VERSION_NUMBER >= 0x10002000L
       dh = DH_new();
@@ -4545,13 +4575,14 @@ ssl_auth_init(struct soap *soap)
       dh = PEM_read_bio_DHparams(bio, NULL, NULL, NULL);
       BIO_free(bio);
     }
-    if (!dh || DH_check(dh, &n) != 1 || SSL_CTX_set_tmp_dh(soap->ctx, dh) < 0)
+    if (!dh || !DH_check(dh, &n) || !SSL_CTX_set_tmp_dh(soap->ctx, dh))
     {
       if (dh)
         DH_free(dh);
       return soap_set_receiver_error(soap, "SSL/TLS error", "Can't set DH parameters", SOAP_SSL_ERROR);
     }
     DH_free(dh);
+#endif
   }
   /* enable all TSLv1 protocols and disable SSLv3 by default if no SSL/TLS flags are set */
   if ((soap->ssl_flags & SOAP_SSLv3_TLSv1) == 0)
@@ -5396,7 +5427,7 @@ tcp_gethostbyname(struct soap *soap, const char *addr, struct hostent *hostent, 
 {
 #if (defined(_AIX43) || defined(TRU64) || defined(HP_UX)) && defined(HAVE_GETHOSTBYNAME_R)
   struct hostent_data ht_data;
-#elif (!defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && !defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || _POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600 || defined(__ANDROID__) || defined(FREEBSD) || defined(__FreeBSD__)) && defined(HAVE_GETHOSTBYNAME_R)
+#elif (!defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && !defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || _POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600 || defined(__ANDROID__) || defined(FREEBSD) || defined(__FreeBSD__)) && !defined(SUN_OS) && !defined(__QNX__) && !defined(QNX) && defined(HAVE_GETHOSTBYNAME_R)
   int r;
   char *tmpbuf = soap->tmpbuf;
   size_t tmplen = sizeof(soap->tmpbuf);
@@ -6241,11 +6272,55 @@ again:
       soap->session = NULL;
     }
 #if OPENSSL_VERSION_NUMBER >= 0x1000000aL
-    if (!(soap->ssl_flags & SOAP_SSLv3) && !SSL_set_tlsext_host_name(soap->ssl, host))
+    if (!(soap->ssl_flags & SOAP_SSLv3))
     {
-      (void)soap_set_receiver_error(soap, "SSL/TLS error", "SNI failed", SOAP_SSL_ERROR);
-      (void)soap->fclosesocket(soap, sk);
-      return soap->socket = SOAP_INVALID_SOCKET;
+      const char *name = host;
+      if ((soap->ssl_flags & SOAP_SSL_SNI_HOST_CHECK))
+      {
+        /* do not use IP address with SNI (RFC 6066), perform a host check */
+        const size_t MAX_LABEL_LEN = 63;
+        size_t i;
+        size_t len = strlen(host);
+        size_t label_len = 0;
+        int ip = 1;
+        for (i = 0; i < len && label_len < MAX_LABEL_LEN; ++i)
+        {
+          int c = host[i];
+          if (c >= '0' && c <= '9')
+          {
+            label_len += 1;
+            continue;
+          }
+          if (i > 0 && i < len - 1)
+          {
+            if (c == '-')
+            {
+              label_len += 1;
+              continue;
+            }
+            if (c == '.' && host[i + 1] != '.' && host[i - 1] != '-' && host[i + 1] != '-')
+            {
+              label_len = 0;
+              continue;
+            }
+          }
+          if (c >= '\0' && c <= '@')
+          {
+            name = NULL;
+            break;
+          }
+          label_len += 1;
+          ip = 0;
+        }
+        if (ip || label_len >= MAX_LABEL_LEN)
+          name = NULL;
+      }
+      if (name != NULL && !SSL_set_tlsext_host_name(soap->ssl, name))
+      {
+        (void)soap_set_receiver_error(soap, "SSL/TLS error", "SNI failed", SOAP_SSL_ERROR);
+        (void)soap->fclosesocket(soap, sk);
+        return soap->socket = SOAP_INVALID_SOCKET;
+      }
     }
 #elif (OPENSSL_VERSION_NUMBER >= 0x0090800fL) && defined(SSL_CTRL_SET_TLSEXT_HOSTNAME)
     if (!SSL_ctrl(soap->ssl, SSL_CTRL_SET_TLSEXT_HOSTNAME, TLSEXT_NAMETYPE_host_name, (void*)host))
@@ -6974,9 +7049,10 @@ tcp_select(struct soap *soap, SOAP_SOCKET sk, int flags, int timeout)
 static SOAP_SOCKET
 tcp_accept(struct soap *soap, SOAP_SOCKET sk, struct sockaddr *addr, int *len)
 {
+  SOAP_SOCKLEN_T n = (SOAP_SOCKLEN_T)*len;
   SOAP_SOCKET s;
   (void)soap;
-  s = accept(sk, addr, (SOAP_SOCKLEN_T*)len); /* portability note: see SOAP_SOCKLEN_T definition in stdsoap2.h */
+  s = accept(sk, addr, &n);
 #ifdef WITH_SOCKET_CLOSE_ON_EXIT
 #ifdef WIN32
 #ifndef UNDER_CE
@@ -10683,11 +10759,12 @@ soap_attachment(struct soap *soap, const char *tag, int id, const void *p, const
       return -1;
   }
   /* Add MTOM xop:Include element when necessary */
-  /* TODO: this code to be obsoleted with new import/xop.h conventions */
   if ((soap->omode & SOAP_ENC_MTOM) && strcmp(tag, "xop:Include"))
   {
-    if (soap_element_begin_out(soap, tag, 0, type)
-     || soap_element_href(soap, "xop:Include", 0, "xmlns:xop=\"http://www.w3.org/2004/08/xop/include\" href", aid)
+    if (soap_element(soap, tag, 0, type)
+     || soap_attribute(soap, "xmlns:xop", "http://www.w3.org/2004/08/xop/include")
+     || soap_element_start_end_out(soap, NULL)
+     || soap_element_href(soap, "xop:Include", 0, "href", aid)
      || soap_element_end_out(soap, tag))
       return soap->error;
   }
@@ -11534,7 +11611,8 @@ soap_id_enter(struct soap *soap, const char *id, void *p, int t, size_t n, const
   else if (ip->ptr)
   {
     DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Multiply defined id='%s'\n", id));
-    soap_strcpy(soap->id, sizeof(soap->id), id);
+    if (id != soap->id)
+      soap_strcpy(soap->id, sizeof(soap->id), id); /* set soap->id for error reporting, unless soap->id was passed as the id */
     soap->error = SOAP_DUPLICATE_ID;
     return NULL;
   }
@@ -11638,7 +11716,8 @@ soap_id_nullify(struct soap *soap, const char *id)
       ip->link = NULL;
     }
   }
-  soap_strcpy(soap->id, sizeof(soap->id), id);
+  if (id != soap->id)
+    soap_strcpy(soap->id, sizeof(soap->id), id); /* set soap->id for error reporting, unless soap->id was passed as the id */
   return soap->error = SOAP_HREF;
 }
 #endif
@@ -17105,11 +17184,11 @@ soap_float2s(struct soap *soap, float n)
   _sprintf_s_l(soap->tmpbuf, _countof(soap->tmpbuf), soap->float_format, SOAP_LOCALE(soap), n);
 # else
   locale = uselocale(SOAP_LOCALE(soap));
-  (SOAP_SNPRINTF(soap->tmpbuf, sizeof(soap->tmpbuf), 20), soap->float_format, n);
+  (SOAP_SNPRINTF(soap->tmpbuf, sizeof(soap->tmpbuf), 80), soap->float_format, n);
   uselocale(locale);
 # endif
 #else
-  (SOAP_SNPRINTF(soap->tmpbuf, sizeof(soap->tmpbuf), 20), soap->float_format, n);
+  (SOAP_SNPRINTF(soap->tmpbuf, sizeof(soap->tmpbuf), 80), soap->float_format, n);
   s = strchr(soap->tmpbuf, ',');        /* convert decimal comma to DP */
   if (s)
     *s = '.';
@@ -17316,11 +17395,11 @@ soap_double2s(struct soap *soap, double n)
   _sprintf_s_l(soap->tmpbuf, _countof(soap->tmpbuf), soap->double_format, SOAP_LOCALE(soap), n);
 # else
   locale = uselocale(SOAP_LOCALE(soap));
-  (SOAP_SNPRINTF(soap->tmpbuf, sizeof(soap->tmpbuf), 40), soap->double_format, n);
+  (SOAP_SNPRINTF(soap->tmpbuf, sizeof(soap->tmpbuf), 80), soap->double_format, n);
   uselocale(locale);
 # endif
 #else
-  (SOAP_SNPRINTF(soap->tmpbuf, sizeof(soap->tmpbuf), 40), soap->double_format, n);
+  (SOAP_SNPRINTF(soap->tmpbuf, sizeof(soap->tmpbuf), 80), soap->double_format, n);
   s = strchr(soap->tmpbuf, ',');        /* convert decimal comma to DP */
   if (s)
     *s = '.';
@@ -21623,7 +21702,8 @@ soap_envelope_begin_in(struct soap *soap)
       if (soap->status == 0
            || (soap->status >= 200 && soap->status <= 299)
            || soap->status == 400
-           || soap->status == 500)
+           || soap->status == 500
+           || soap->status >= SOAP_POST)
         return soap->error = SOAP_OK; /* allow non-SOAP (REST) XML content to be captured */
       soap->error = soap->status;
     }
@@ -22513,14 +22593,27 @@ soap_puthttphdr(struct soap *soap, int status, ULONG64 count)
   {
     const char *header = soap->http_extra_header;
     soap->http_extra_header = NULL; /* use http_extra_header once (assign new value before each call) */
-    if (*header)
+    while (*header)
     {
-      err = soap_send(soap, header);
-      if (err)
-        return err;
-      err = soap_send_raw(soap, "\r\n", 2);
-      if (err)
-        return err;
+      const char *s = strchr(header, ':');
+      const char *t = strchr(header, '\n');
+      if (t == NULL)
+        t = header + strlen(header);
+      if (s != NULL && s < t && t < header + sizeof(soap->tmpbuf))
+      {
+        while (s < t && isspace(*(t - 1)))
+          --t;
+        soap_strncpy(soap->tmpbuf, sizeof(soap->tmpbuf), header, t - header);
+        soap->tmpbuf[s - header] = '\0';
+        while (s < t && isspace(*++s))
+          continue;
+        err = soap->fposthdr(soap, soap->tmpbuf, soap->tmpbuf + (s - header));
+        if (err)
+          return err;
+      }
+      while (isspace(*t))
+        ++t;
+      header = t;
     }
   }
   if (soap->keep_alive)
@@ -23084,7 +23177,7 @@ soap_strerror(struct soap *soap)
   {
 #ifndef WIN32
 # ifdef HAVE_STRERROR_R
-#  if !defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && ((!defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600)))
+#  if !defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && ((!defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600))) || defined(WITH_POSIX_STRERROR_R)
     err = strerror_r(err, soap->msgbuf, sizeof(soap->msgbuf)); /* XSI-compliant */
     if (err != 0)
       soap_strcpy(soap->msgbuf, sizeof(soap->msgbuf), "unknown error");

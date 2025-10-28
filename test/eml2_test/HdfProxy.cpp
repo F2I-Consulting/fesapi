@@ -40,14 +40,14 @@ void HdfProxy::initRepo() {
 
 	RESQML2_NS::DiscreteProperty* discreteProp432 = repo->createDiscreteProperty(ijkgrid432, "f9447f76-34c5-4967-a3ee-4f400f96dba6", "4x3x2 grid cellIndex", 1,
 		gsoap_eml2_3::eml23__IndexableElement::cells, propType1);
-	LONG64 discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+	int64_t discreteProp432Values[24] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
 
 	// getting the hdf proxy
 	EML2_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 	hdfProxy->setCompressionLevel(6);
 	hdfProxy->setMaxChunkSize(192/2); // Create two chunks
-	discreteProp432->pushBackInt64Hdf5Array3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, 1111);
+	discreteProp432->pushBackArray3dOfValues(discreteProp432Values, 4, 3, 2, hdfProxy, static_cast<int64_t>(1111));
 }
 
 void HdfProxy::readRepo() {

@@ -107,7 +107,7 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 
 				gsoap_eml2_3::eml23__BooleanExternalArray* boolArray = gsoap_eml2_3::soap_new_eml23__BooleanExternalArray(getGsoapContext());
 				boolArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(getGsoapContext());
-				boolArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart("/" + getXmlNamespace() + "/" + guid + "/GapAfterLayer", getCellCount(), proxy));
+				boolArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart("/" + getXmlNamespace() + "/" + guid + "/GapAfterLayer", kGapCount, proxy));
 				xmlKGaps->GapAfterLayer = boolArray;
 
 				ijkGrid->KGaps = xmlKGaps;
@@ -339,7 +339,7 @@ void AbstractIjkGridRepresentation::getPillarsOfSplitCoordinateLines(unsigned in
 		if (geom == nullptr || geom->ColumnLayerSplitCoordinateLines == nullptr) {
 			throw invalid_argument("There is no geometry or no split coordinate line in this grid.");
 		}
-		readArrayNdOfUInt32Values(geom->ColumnLayerSplitCoordinateLines->PillarIndices, pillarIndices);
+		readArrayNdOfIntegerValues(geom->ColumnLayerSplitCoordinateLines->PillarIndices, pillarIndices);
 	}
 
 	if (reverseIAxis || reverseJAxis) {
@@ -370,7 +370,7 @@ void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned in
 			throw invalid_argument("There is no geometry or no split coordinate line in this IJK grid.");
 		}
 
-		readArrayNdOfUInt32Values(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements, columnIndices);
+		readArrayNdOfIntegerValues(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements, columnIndices);
 		if (reverseIAxis || reverseJAxis) {
 			datasetValueCount = getCountOfArray(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements);
 		}
@@ -381,7 +381,7 @@ void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned in
 			throw invalid_argument("There is no geometry or no split coordinate line in this IJK grid.");
 		}
 
-		readArrayNdOfUInt32Values(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements, columnIndices);
+		readArrayNdOfIntegerValues(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements, columnIndices);
 		if (reverseIAxis || reverseJAxis) {
 			datasetValueCount = getCountOfArray(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements);
 		}
@@ -426,7 +426,7 @@ void AbstractIjkGridRepresentation::getColumnCountOfSplitCoordinateLines(unsigne
 		if (geom == nullptr || geom->ColumnLayerSplitCoordinateLines == nullptr) {
 			throw invalid_argument("There is no geometry or no split coordinate line in this IJK grid.");
 		}
-		readArrayNdOfUInt32Values(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength, columnIndexCountPerSplitCoordinateLine);
+		readArrayNdOfIntegerValues(geom->ColumnLayerSplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength, columnIndexCountPerSplitCoordinateLine);
 	}
 }
 
@@ -892,8 +892,7 @@ void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterface
 
 						if ((iColumnIndex >= iInterfaceStart && iColumnIndex < iInterfaceEnd) && (jColumnIndex >= jInterfaceStart && jColumnIndex < jInterfaceEnd)) {
 							// here is a split coordinate line impacting the bloc
-							(blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][splitCoordinateLineIndex].first] = -1;
-
+							(blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][splitCoordinateLineIndex].first] = (std::numeric_limits<uint32_t>::max)();
 							break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the block
 						}
 					}
@@ -1347,7 +1346,7 @@ void AbstractIjkGridRepresentation::getXyzPointsOfBlock(double *)
 	throw std::logic_error("Partial object");
 }
 
-uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) const
+uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfPatch(uint64_t) const
 {
 	const uint64_t result = getXyzPointCountOfKInterface() * (getKCellCount() + 1 + getKGapsCount()) + getSplitNodeCount();
 
@@ -1365,7 +1364,7 @@ uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfPatch(unsigned int) co
 	throw std::logic_error("The IJK Grid is in an unknown Energistics standard version.");
 }
 
-void AbstractIjkGridRepresentation::getXyzPointsOfPatch(unsigned int, double *) const
+void AbstractIjkGridRepresentation::getXyzPointsOfPatch(uint64_t, double *) const
 {
 	throw std::logic_error("Partial object");
 }

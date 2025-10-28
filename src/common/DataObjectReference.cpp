@@ -29,7 +29,7 @@ DataObjectReference::DataObjectReference(AbstractObject const * dataObj)
 	if (ns == "resqml20" || ns == "eml20") {
 		dor20 = dataObj->newResqmlReference();
 	}
-	else if (ns == "witsml21" || ns == "prodml22" || ns == "resqml22" || ns == "eml23") {
+	else if (ns == "witsml21" || ns == "prodml23" || ns == "resqml22" || ns == "eml23") {
 		dor23 = dataObj->newEml23Reference();
 	}
 }

@@ -216,7 +216,7 @@ namespace RESQML2_2_NS
 		 * @returns	Null if it fails, else the new array 2D of explicit z coordinate.
 		 */
 		gsoap_eml2_3::resqml22__PointGeometry* createArray2dOfExplicitZ(
-			unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
+			uint64_t patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			RESQML2_NS::Grid2dRepresentation * supportingRepresentation,
 			uint64_t startGlobalIndex = 0,
@@ -248,7 +248,7 @@ namespace RESQML2_2_NS
 		 * @returns	Null if it fails, else the new array 2D of explicit z coordinate.
 		 */
 		gsoap_eml2_3::resqml22__PointGeometry* createArray2dOfExplicitZ(
-			unsigned int patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
+			uint64_t patchIndex, double * zValues, EML2_NS::AbstractLocal3dCrs * localCrs,
 			unsigned int numI, unsigned int numJ, EML2_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,

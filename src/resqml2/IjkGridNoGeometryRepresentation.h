@@ -47,7 +47,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The XYZ point count of the patch.
 		 */
-		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
 		/**
 		 * Please do not use: not implemented yet. Please use parent window information or geometrical
@@ -55,7 +55,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::_out_of_range	If <tt>patchIndex &gt;= 1</tt> (IJK grids only carry 1 patch).
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const final;
 
 		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const final;
 

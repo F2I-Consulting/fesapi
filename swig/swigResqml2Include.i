@@ -2882,7 +2882,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The xyz point count of the patch at position @p patchIndex.
 		 */
-		uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const;
 		
 		/**
 		 * Get the xyz point count of all patches of this representation.
@@ -2904,7 +2904,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const;
+		void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const;
 		
 		/**
 		 * @brief Gets all the xyz points of a particular patch of this representation. xyz points are given in
@@ -2918,7 +2918,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
+		void getXyzPointsOfPatchInGlobalCrs(uint64_t patchIndex, double * xyzPoints) const;
 		
 		/**
 		 * @brief Gets all the xyz points of all patches of this representation. xyz points are given in the
@@ -2975,7 +2975,7 @@ namespace RESQML2_NS
 		 * @returns	Null if no seismic information have been provided for the patch at position @p
 		 * 			patchIndex. Else, its seismic support.
 		 */
-		AbstractRepresentation* getSeismicSupportOfPatch(unsigned int patchIndex);
+		AbstractRepresentation* getSeismicSupportOfPatch(uint64_t patchIndex);
 		
 		/**
 		 * Gets all the abscissa of the points of a specific patch related to 2d seismic line.
@@ -2988,7 +2988,7 @@ namespace RESQML2_NS
 		 * @param [out]	values	  	The array where the abscissa are going to be stored. The count of
 		 * 							this array must be equal to <tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getSeismicLineAbscissaOfPointsOfPatch(unsigned int patchIndex, double* values) const;
+		void getSeismicLineAbscissaOfPointsOfPatch(uint64_t patchIndex, double* values) const;
 		
 		/**
 		 * Adds seismic 2d coordinates to an existing point geometry patch.
@@ -3008,7 +3008,7 @@ namespace RESQML2_NS
 		 * 									must be already opened for writing and won't be closed in
 		 * 									this method.
 		 */
-		void addSeismic2dCoordinatesToPatch(unsigned int patchIndex, double * lineAbscissa,
+		void addSeismic2dCoordinatesToPatch(uint64_t patchIndex, double * lineAbscissa,
 			AbstractRepresentation * seismicSupport, EML2_NS::AbstractHdfProxy * proxy);
 		
 		/**
@@ -3023,7 +3023,7 @@ namespace RESQML2_NS
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getInlinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
+		void getInlinesOfPointsOfPatch(uint64_t patchIndex, double * values) const;
 		
 		/**
 		 * Gets all the crossline coordinates of the points of a specific patch related to seismic
@@ -3038,7 +3038,7 @@ namespace RESQML2_NS
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
+		void getCrosslinesOfPointsOfPatch(uint64_t patchIndex, double * values) const;
 		
 		/**
 		 * Adds seismic 3d coordinates to an existing point geometry patch.
@@ -3063,7 +3063,7 @@ namespace RESQML2_NS
 		 * 									values. It must be already opened for writing and won't be
 		 * 									closed in this method.
 		 */
-		void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double * inlines, double * crosslines, uint64_t pointCount,
+		void addSeismic3dCoordinatesToPatch(uint64_t patchIndex, double * inlines, double * crosslines, uint64_t pointCount,
 			AbstractRepresentation * seismicSupport, EML2_NS::AbstractHdfProxy * proxy);
 
 		/**
@@ -3084,7 +3084,7 @@ namespace RESQML2_NS
 		 * @param 	  	countCrossline	The crossline count.
 		 * @param [in]	seismicSupport	The representation of the seismic line.
 		 */
-		void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double startInline, double incrInline, unsigned int countInline,
+		void addSeismic3dCoordinatesToPatch(uint64_t patchIndex, double startInline, double incrInline, unsigned int countInline,
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			AbstractRepresentation * seismicSupport);
 
@@ -3235,7 +3235,7 @@ namespace RESQML2_NS
 	public:
 		uint64_t getPolylineCountOfPatch(uint64_t patchIndex) const;
 		uint64_t getPolylineCountOfAllPatches() const;
-		void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const;
+		void getNodeCountPerPolylineInPatch(uint64_t patchIndex, unsigned int * nodeCountPerPolyline) const;
 		void getNodeCountPerPolylineOfAllPatches(unsigned int * nodeCountPerPolyline) const;
 		void pushBackGeometryPatch(
 			unsigned int * nodeCountPerPolyline, double * nodes,
@@ -3247,11 +3247,11 @@ namespace RESQML2_NS
 			uint64_t polylineCount, bool * polylineClosedFlags,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 				
-		bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const;
+		bool areAllPolylinesClosedOfPatch(uint64_t patchIndex) const;
 		bool areAllPolylinesClosedOfAllPatches() const;
-		bool areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const;
+		bool areAllPolylinesNonClosedOfPatch(uint64_t patchIndex) const;
 		bool areAllPolylinesNonClosedOfAllPatches() const;
-		void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const;
+		void getClosedFlagPerPolylineOfPatch(uint64_t patchIndex, bool * closedFlagPerPolyline) const;
 		void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const;
 		bool hasALineRole() const;
 		gsoap_eml2_3::resqml22__LineRole getLineRole() const;
@@ -3361,9 +3361,9 @@ namespace RESQML2_NS
 	class TriangulatedSetRepresentation : public AbstractSurfaceRepresentation
 	{
 	public:
-		uint64_t getTriangleCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getTriangleCountOfPatch(uint64_t patchIndex) const;
 		uint64_t getTriangleCountOfAllPatches() const;
-		void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const;
+		void getTriangleNodeIndicesOfPatch(uint64_t patchIndex, unsigned int * triangleNodeIndices) const;
 		void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
 		void pushBackTrianglePatch(unsigned int nodeCount, double * nodes, unsigned int triangleCount, unsigned int * triangleNodeIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 	};
@@ -3453,19 +3453,19 @@ namespace RESQML2_NS
 			uint64_t elementCount,
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = std::numeric_limits<unsigned int>::max());
+			uint64_t patchIndex = std::numeric_limits<unsigned int>::max());
 
-		bool areElementIndicesPairwise(unsigned int patchIndex) const;
-		bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
+		bool areElementIndicesPairwise(uint64_t patchIndex) const;
+		bool areElementIndicesBasedOnLattice(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
 
-		int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		uint64_t getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
+		int64_t getLatticeElementIndicesStartValue(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+		uint64_t getLatticeElementIndicesDimensionCount(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+		int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+		uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
 
-		gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const;
-		uint64_t getElementCountOfPatch(unsigned int patchIndex) const;
-		void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const;
+		gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex) const;
+		uint64_t getElementCountOfPatch(uint64_t patchIndex) const;
+		void getElementIndicesOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const;
 
 		void pushBackSupportingRepresentation(AbstractRepresentation * supportingRep);
 		uint64_t getSupportingRepresentationCount() const;
@@ -5126,7 +5126,7 @@ namespace RESQML2_NS
 			double directionKX, double directionKY, double directionKZ, double spacingK, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void addSeismic3dCoordinatesToPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			double startInline, double incrInline, unsigned int countInline,
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			unsigned int countSample, AbstractRepresentation * seismicSupport);
@@ -5954,13 +5954,13 @@ namespace RESQML2_NS
 		EML2_NS::PropertyKind* getPropertyKind() const;
 		
 		/**
-		 * Gets the count of elements per property value. If the property is a scalar one then it should
+		 * Gets the count of values per indexable element. If the property is a scalar one then it should
 		 * be one. If it is a vectorial one, then it should be more than one. It is not possible to have
 		 * some tensor property values (more dimensions than a vector)
 		 *
-		 * @returns	The element count per value.
+		 * @returns	The value count per indexable element.
 		 */
-		uint64_t getElementCountPerValue() const;
+		uint64_t getValueCountPerIndexableElement() const;
 		
 		/**
 		 * Gets the kind of elements on which the property values are attached to
@@ -6049,9 +6049,221 @@ namespace RESQML2_NS
 		gsoap_eml2_3::eml23__FacetKind getFacetKind(unsigned int index) const;
 		std::string getFacetValue(unsigned int index) const;
 		
-		//****************************/
-		//****** INTEGER *************/
-		//****************************/
+		/**
+		 * @brief	Adds a nd array of explicit values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values	  	All the property values to set ordered according to the topology
+		 * 								of the representation it is based on.
+		 * @param [in]		proxy	  	The HDF proxy where to write the property values. It must be
+		 * 								already opened for writing and won't be closed in this method. If
+		 * 								@c nullptr, then a default HDF proxy must be defined in the
+		 * 								repository.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
+		 */
+		template<typename T>
+		void pushBackArrayOfValues(const T* values, const uint64_t* numValues, uint32_t numDimensionsInArray,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = std::numeric_limits<T>::max());
+
+		template<typename T>
+		void pushBackArrayOfValuesPlusStatistics(const T* values, const uint64_t* numValues, uint32_t numDimensionsInArray, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		
+		/**
+		 * @brief	Adds a 1d array of explicit values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values	  	All the property values to set ordered according to the topology
+		 * 								of the representation it is based on.
+		 * @param 		  	valueCount	The number of values to write.
+		 * @param [in]		proxy	  	The HDF proxy where to write the property values. It must be
+		 * 								already opened for writing and won't be closed in this method. If
+		 * 								@c nullptr, then a default HDF proxy must be defined in the
+		 * 								repository.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
+		 */
+		template<typename T>
+		void pushBackArray1dOfValues(const T* values, uint64_t valueCount,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = std::numeric_limits<T>::max());
+		template<typename T>
+		void pushBackArray1dOfValuesPlusStatistics(const T* values, uint64_t valueCount, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * @brief Adds a 2d array of explicit values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according to
+		 * 											the topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly J dimension).
+		 * @param [in]		proxy				  	The HDF proxy where to write the property values. It
+		 * 											must be already opened for writing and won't be
+		 * 											closed in this method. If @c nullptr, then a default
+		 * 											HDF proxy must be defined in the repository.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
+		 */
+		template<typename T>
+		void pushBackArray2dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = std::numeric_limits<T>::max());
+		template<typename T>
+		void pushBackArray2dOfValuesPlusStatistics(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * @brief Adds a 3d array of explicit values to the property values.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according the
+		 * 											topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param [in]		proxy				  	The HDF proxy where to write the property values. It
+		 * 											must be already opened for writing and won't be
+		 * 											closed in this method. If @c nullptr, then a default
+		 * 											HDF proxy must be defined in the repository.
+		 * @param			forceStatisticsComputation	Indicates if FESAPI must force computation of the statistics or not.
+		 * @param 		  	nullValue			  		The integer null value. Ignored (fixed to NaN) if it is a floating point value.
+		 */
+		template<typename T>
+		void pushBackArray3dOfValues(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, T nullValue = std::numeric_limits<T>::max());
+		template<typename T>
+		void pushBackArray3dOfValuesPlusStatistics(const T* values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, const COMMON_NS::NumberArrayStatistics<T>& statistics,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+		
+		%template(pushBackInt8ArrayOfValues) pushBackArrayOfValues<int8_t>;
+		%template(pushBackUInt8ArrayOfValues) pushBackArrayOfValues<uint8_t>;
+		%template(pushBackInt16ArrayOfValues) pushBackArrayOfValues<int16_t>;
+		%template(pushBackUInt16ArrayOfValues) pushBackArrayOfValues<uint16_t>;
+		%template(pushBackInt32ArrayOfValues) pushBackArrayOfValues<int32_t>;
+		%template(pushBackUInt32ArrayOfValues) pushBackArrayOfValues<uint32_t>;
+		%template(pushBackInt64ArrayOfValues) pushBackArrayOfValues<int64_t>;
+		%template(pushBackUInt64ArrayOfValues) pushBackArrayOfValues<uint64_t>;
+		%template(pushBackFloatArrayOfValues) pushBackArrayOfValues<float>;
+		%template(pushBackDoubleArrayOfValues) pushBackArrayOfValues<double>;
+		
+		%template(pushBackInt8ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<int8_t>;
+		%template(pushBackUInt8ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<uint8_t>;
+		%template(pushBackInt16ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<int16_t>;
+		%template(pushBackUInt16ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<uint16_t>;
+		%template(pushBackInt32ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<int32_t>;
+		%template(pushBackUInt32ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<uint32_t>;
+		%template(pushBackInt64ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<int64_t>;
+		%template(pushBackUInt64ArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<uint64_t>;
+		%template(pushBackFloatArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<float>;
+		%template(pushBackDoubleArrayOfValuesPlusStatistics) pushBackArrayOfValuesPlusStatistics<double>;
+		
+		%template(pushBackInt8Array1dOfValues) pushBackArray1dOfValues<int8_t>;
+		%template(pushBackUInt8Array1dOfValues) pushBackArray1dOfValues<uint8_t>;
+		%template(pushBackInt16Array1dOfValues) pushBackArray1dOfValues<int16_t>;
+		%template(pushBackUInt16Array1dOfValues) pushBackArray1dOfValues<uint16_t>;
+		%template(pushBackInt32Array1dOfValues) pushBackArray1dOfValues<int32_t>;
+		%template(pushBackUInt32Array1dOfValues) pushBackArray1dOfValues<uint32_t>;
+		%template(pushBackInt64Array1dOfValues) pushBackArray1dOfValues<int64_t>;
+		%template(pushBackUInt64Array1dOfValues) pushBackArray1dOfValues<uint64_t>;
+		%template(pushBackFloatArray1dOfValues) pushBackArray1dOfValues<float>;
+		%template(pushBackDoubleArray1dOfValues) pushBackArray1dOfValues<double>;
+		
+		%template(pushBackInt8Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<int8_t>;
+		%template(pushBackUInt8Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<uint8_t>;
+		%template(pushBackInt16Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<int16_t>;
+		%template(pushBackUInt16Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<uint16_t>;
+		%template(pushBackInt32Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<int32_t>;
+		%template(pushBackUInt32Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<uint32_t>;
+		%template(pushBackInt64Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<int64_t>;
+		%template(pushBackUInt64Array1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<uint64_t>;
+		%template(pushBackFloatArray1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<float>;
+		%template(pushBackDoubleArray1dOfValuesPlusStatistics) pushBackArray1dOfValuesPlusStatistics<double>;
+		
+		%template(pushBackInt8Array2dOfValues) pushBackArray2dOfValues<int8_t>;
+		%template(pushBackUInt8Array2dOfValues) pushBackArray2dOfValues<uint8_t>;
+		%template(pushBackInt16Array2dOfValues) pushBackArray2dOfValues<int16_t>;
+		%template(pushBackUInt16Array2dOfValues) pushBackArray2dOfValues<uint16_t>;
+		%template(pushBackInt32Array2dOfValues) pushBackArray2dOfValues<int32_t>;
+		%template(pushBackUInt32Array2dOfValues) pushBackArray2dOfValues<uint32_t>;
+		%template(pushBackInt64Array2dOfValues) pushBackArray2dOfValues<int64_t>;
+		%template(pushBackUInt64Array2dOfValues) pushBackArray2dOfValues<uint64_t>;
+		%template(pushBackFloatArray2dOfValues) pushBackArray2dOfValues<float>;
+		%template(pushBackDoubleArray2dOfValues) pushBackArray2dOfValues<double>;
+		
+		%template(pushBackInt8Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<int8_t>;
+		%template(pushBackUInt8Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<uint8_t>;
+		%template(pushBackInt16Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<int16_t>;
+		%template(pushBackUInt16Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<uint16_t>;
+		%template(pushBackInt32Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<int32_t>;
+		%template(pushBackUInt32Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<uint32_t>;
+		%template(pushBackInt64Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<int64_t>;
+		%template(pushBackUInt64Array2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<uint64_t>;
+		%template(pushBackFloatArray2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<float>;
+		%template(pushBackDoubleArray2dOfValuesPlusStatistics) pushBackArray2dOfValuesPlusStatistics<double>;
+		
+		%template(pushBackInt8Array3dOfValues) pushBackArray3dOfValues<int8_t>;
+		%template(pushBackUInt8Array3dOfValues) pushBackArray3dOfValues<uint8_t>;
+		%template(pushBackInt16Array3dOfValues) pushBackArray3dOfValues<int16_t>;
+		%template(pushBackUInt16Array3dOfValues) pushBackArray3dOfValues<uint16_t>;
+		%template(pushBackInt32Array3dOfValues) pushBackArray3dOfValues<int32_t>;
+		%template(pushBackUInt32Array3dOfValues) pushBackArray3dOfValues<uint32_t>;
+		%template(pushBackInt64Array3dOfValues) pushBackArray3dOfValues<int64_t>;
+		%template(pushBackUInt64Array3dOfValues) pushBackArray3dOfValues<uint64_t>;
+		%template(pushBackFloatArray3dOfValues) pushBackArray3dOfValues<float>;
+		%template(pushBackDoubleArray3dOfValues) pushBackArray3dOfValues<double>;
+		
+		%template(pushBackInt8Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<int8_t>;
+		%template(pushBackUInt8Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<uint8_t>;
+		%template(pushBackInt16Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<int16_t>;
+		%template(pushBackUInt16Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<uint16_t>;
+		%template(pushBackInt32Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<int32_t>;
+		%template(pushBackUInt32Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<uint32_t>;
+		%template(pushBackInt64Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<int64_t>;
+		%template(pushBackUInt64Array3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<uint64_t>;
+		%template(pushBackFloatArray3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<float>;
+		%template(pushBackDoubleArray3dOfValuesPlusStatistics) pushBackArray3dOfValuesPlusStatistics<double>;
+		
+		template<typename T>
+		COMMON_NS::NumberArrayStatistics<T> getArrayOfValuesOfPatch(uint64_t patchIndex, T* values, bool forceStatisticsComputation = false) const;
+
+		template<typename T> COMMON_NS::NumberArrayStatistics<T> getStatistics(uint64_t patchIndex) const;
+				
+		%template(getInt8ValuesOfPatch) getArrayOfValuesOfPatch<int8_t>;
+		%template(getUInt8ValuesOfPatch) getArrayOfValuesOfPatch<uint8_t>;
+		%template(getInt16ValuesOfPatch) getArrayOfValuesOfPatch<int16_t>;
+		%template(getUInt16ValuesOfPatch) getArrayOfValuesOfPatch<uint16_t>;
+		%template(getInt32ValuesOfPatch) getArrayOfValuesOfPatch<int32_t>;
+		%template(getUInt32ValuesOfPatch) getArrayOfValuesOfPatch<uint32_t>;
+		%template(getInt64ValuesOfPatch) getArrayOfValuesOfPatch<int64_t>;
+		%template(getUInt64ValuesOfPatch) getArrayOfValuesOfPatch<uint64_t>;
+		%template(getFloatValuesOfPatch) getArrayOfValuesOfPatch<float>;
+		%template(getDoubleValuesOfPatch) getArrayOfValuesOfPatch<double>;
+				
+		%template(getInt8StatisticsOfPatch) getStatistics<int8_t>;
+		%template(getUInt8StatisticsOfPatch) getStatistics<uint8_t>;
+		%template(getInt16StatisticsOfPatch) getStatistics<int16_t>;
+		%template(getUInt16StatisticsOfPatch) getStatistics<uint16_t>;
+		%template(getInt32StatisticsOfPatch) getStatistics<int32_t>;
+		%template(getUInt32StatisticsOfPatch) getStatistics<uint32_t>;
+		%template(getInt64StatisticsOfPatch) getStatistics<int64_t>;
+		%template(getUInt64StatisticsOfPatch) getStatistics<uint64_t>;
+		%template(getFloatStatisticsOfPatch) getStatistics<float>;
+		%template(getDoubleStatisticsOfPatch) getStatistics<double>;
 
 		/**
 		 * @brief	Adds a 1d array of explicit int 64 bits values to the property values.
@@ -6069,6 +6281,9 @@ namespace RESQML2_NS
 		 * 								repository.
 		 * @param 		  	nullValue 	The null value.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
+		#endif
 		void pushBackInt64Hdf5Array1dOfValues(const int64_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
@@ -6076,6 +6291,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
+		#endif
 		void pushBackInt32Hdf5Array1dOfValues(const int * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
@@ -6083,6 +6301,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
+		#endif
 		void pushBackInt16Hdf5Array1dOfValues(const short * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
@@ -6090,6 +6311,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array1dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
+		#endif
 		void pushBackInt8Hdf5Array1dOfValues(const int8_t * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -6111,6 +6335,9 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
+		#endif
 		void pushBackInt64Hdf5Array2dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
@@ -6118,6 +6345,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
+		#endif
 		void pushBackInt32Hdf5Array2dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
@@ -6125,6 +6355,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
+		#endif
 		void pushBackInt16Hdf5Array2dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
@@ -6132,6 +6365,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
+		#endif
 		void pushBackUInt16Hdf5Array2dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
@@ -6139,6 +6375,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array2dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
+		#endif
 		void pushBackInt8Hdf5Array2dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -6162,6 +6401,9 @@ namespace RESQML2_NS
 		 * 											HDF proxy must be defined in the repository.
 		 * @param 		  	nullValue			  	The null value.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
+		#endif
 		void pushBackInt64Hdf5Array3dOfValues(const int64_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
@@ -6169,6 +6411,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
+		#endif
 		void pushBackInt32Hdf5Array3dOfValues(const int * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
@@ -6176,6 +6421,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
+		#endif
 		void pushBackInt16Hdf5Array3dOfValues(const short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
@@ -6183,6 +6431,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
+		#endif
 		void pushBackUInt16Hdf5Array3dOfValues(const unsigned short * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
@@ -6190,6 +6441,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackInt64Hdf5Array3dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
+		#endif
 		void pushBackInt8Hdf5Array3dOfValues(const int8_t * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
@@ -6210,35 +6464,50 @@ namespace RESQML2_NS
 		 * 											be defined in the repository.
 		 * @param 		  	nullValue				The null value.
 		 */
-		virtual void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
+		#endif
+		void pushBackInt64Hdf5ArrayOfValues(const int64_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int64_t nullValue);
 
 		/**
 		 * Adds an nd array of explicit integer values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
+		#endif
+		void pushBackInt32Hdf5ArrayOfValues(const int * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int nullValue);
 
 		/**
 		 * Adds an nd array of explicit short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
+		#endif
+		void pushBackInt16Hdf5ArrayOfValues(const short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, short nullValue);
 
 		/**
 		 * Adds an nd array of explicit unsigned short values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
+		#endif
+		void pushBackUInt16Hdf5ArrayOfValues(const unsigned short * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 
 		/**
 		 * Adds an nd array of explicit int8_t values to the property values.
 		 *
 		 * @copydetails pushBackInt64Hdf5ArrayOfValues
 		 */
-		virtual void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
+		#endif
+		void pushBackInt8Hdf5ArrayOfValues(const int8_t * values, const uint64_t * numValues, unsigned int numDimensionsInArray, EML2_NS::AbstractHdfProxy* proxy, int8_t nullValue);
 
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written
@@ -6318,118 +6587,6 @@ namespace RESQML2_NS
 		 * @returns	the null value.
 		 */
 		int64_t getNullValueOfPatch(uint64_t patchIndex) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 64 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 *
-		 * @returns	The null value.
-		 */
-		int64_t getInt64ValuesOfPatch(uint64_t patchIndex, int64_t * values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 64 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 *
-		 * @returns	The null value.
-		 */
-		uint64_t getUInt64ValuesOfPatch(uint64_t patchIndex, uint64_t* values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 32 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		int32_t getInt32ValuesOfPatch(uint64_t patchIndex, int32_t * values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 32 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		uint32_t getUInt32ValuesOfPatch(uint64_t patchIndex, uint32_t * values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 16 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		int16_t getInt16ValuesOfPatch(uint64_t patchIndex, int16_t * values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 16 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		uint16_t getUInt16ValuesOfPatch(uint64_t patchIndex, uint16_t * values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be signed 8 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		int8_t getInt8ValuesOfPatch(uint64_t patchIndex, int8_t* values) const;
-
-		/**
-		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned 8 bits integer.
-		 *
-		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
-		 *
-		 * @returns	The null value.
-		 */
-		uint8_t getUInt8ValuesOfPatch(uint64_t patchIndex, uint8_t* values) const;
 
 		//***********************************
 		//*** Writing with hyperslabbing *****
@@ -7002,7 +7159,7 @@ namespace RESQML2_NS
 		 * @param 	   	numArrayDimensions			The number of dimensions of the array to write.
 		 */
 		void getInt64ValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int64_t* values,
 			uint64_t const * numValuesInEachDimension,
 			uint64_t const * offsetInEachDimension,
@@ -7033,7 +7190,7 @@ namespace RESQML2_NS
 		 * 										(mainly K dimension).
 		 */
 		void getInt64ValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int64_t* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -7065,7 +7222,7 @@ namespace RESQML2_NS
 		 * @returns	The null value.
 		 */
 		int getIntValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int* values,
 			const uint64_t* numValuesInEachDimension,
 			const uint64_t* offsetInEachDimension,
@@ -7096,7 +7253,7 @@ namespace RESQML2_NS
 		 * 										(mainly K dimension).
 		 */
 		void getIntValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			int* values,
 			unsigned int valueCountInFastestDim,
 			unsigned int valueCountInMiddleDim,
@@ -7124,6 +7281,9 @@ namespace RESQML2_NS
 		 * 									method. If @c nullptr (default value), then a default HDF proxy
 		 * 									must be defined in the repository.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
+		#endif
 		void pushBackDoubleHdf5Array1dOfValues(const double * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7144,6 +7304,9 @@ namespace RESQML2_NS
 		 * 											(default value), then a default HDF proxy must be
 		 * 											defined in the repository.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
+		#endif
 		void pushBackDoubleHdf5Array2dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7166,6 +7329,9 @@ namespace RESQML2_NS
 		 * 											(default value), then a default HDF proxy must be
 		 * 											defined in the repository.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
+		#endif
 		void pushBackDoubleHdf5Array3dOfValues(const double * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7185,6 +7351,9 @@ namespace RESQML2_NS
 		 * 										then a default HDF proxy must be defined in the
 		 * 										repository.
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
+		#endif
 		void pushBackDoubleHdf5ArrayOfValues(double const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7192,6 +7361,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array1dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray1dOfValues instead.")]]
+		#endif
 		void pushBackFloatHdf5Array1dOfValues(const float * values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7199,6 +7371,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array2dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray2dOfValues instead.")]]
+		#endif
 		void pushBackFloatHdf5Array2dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7206,6 +7381,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails pushBackDoubleHdf5Array3dOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArray3dOfValues instead.")]]
+		#endif
 		void pushBackFloatHdf5Array3dOfValues(const float * values, uint64_t valueCountInFastestDim, uint64_t valueCountInMiddleDim, uint64_t valueCountInSlowestDim, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7216,6 +7394,9 @@ namespace RESQML2_NS
 		 *
 		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
 		 */
+		#if SWIG_VERSION >= 0x040100
+		[[deprecated("Use pushBackArrayOfValues instead.")]]
+		#endif
 		void pushBackFloatHdf5ArrayOfValues(float const * values, uint64_t const * numValues, unsigned int numArrayDimensions, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
@@ -7237,30 +7418,6 @@ namespace RESQML2_NS
 		 * @returns	The name of the referenced HDF5 dataset.
 		 */
 		std::string pushBackRefToExistingFloatingPointDataset(EML2_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
-
-		/**
-		 * Gets all the values of a particular patch of this instance which are supposed to be double
-		 * ones.
-		 *
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 */
-		void getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const;
-
-		/**
-		 * Gets all the values of a particular patch of this instance which are supposed to be float
-		 * ones.
-		 *
-		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
-		 *
-		 * @param 	   	patchIndex	The index of the patch we want the values from.
-		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 */
-		void getFloatValuesOfPatch(unsigned int patchIndex, float * values) const;
 
 		//******************************************/
 		//*** For FLOATING POINT hyperslabbing *****/
@@ -7285,7 +7442,7 @@ namespace RESQML2_NS
 		 * @param 	   	numArrayDimensions			The number of dimensions of the HDF5 array to read.
 		 */
 		void getFloatValuesOfPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			float* values,
 			uint64_t const * numValuesInEachDimension,
 			uint64_t const * offsetInEachDimension,
@@ -7315,7 +7472,7 @@ namespace RESQML2_NS
 		 * 											(mainly K dimension).
 		 */
 		void getFloatValuesOf3dPatch(
-			unsigned int patchIndex,
+			uint64_t patchIndex,
 			float* values,
 			uint64_t valueCountInFastestDim,
 			uint64_t valueCountInMiddleDim,
@@ -7333,7 +7490,7 @@ namespace RESQML2_NS
 	{
 	public:
 		void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy * proxy);
-		std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
+		std::vector<std::string> getStringValuesOfPatch(uint64_t patchIndex);
 		
 		/**
 		 * Pushes back a new patch of values for this property where the values have not to be written in
@@ -7521,7 +7678,7 @@ namespace RESQML2_NS
 		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
 		 * 			vector property).
 		 */
-		double getMinimumValue(unsigned int index = 0) const;
+		double getMinimumValue(uint64_t index = 0) const;
 
 		/**
 		 * @brief	Gets the maximum value of a non vector property or the maximum value of one given
@@ -7536,7 +7693,7 @@ namespace RESQML2_NS
 		 * 			greater than @p 0 for a non vector property or greater than the vector size for a
 		 * 			vector property).
 		 */
-		double getMaximumValue(unsigned int index = 0) const;
+		double getMaximumValue(uint64_t index = 0) const;
 
 		/**
 		 * @brief	Sets the minimum value of a non vector property or the minimum value of one given
@@ -7547,7 +7704,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					minimum value (vector property case).
 		 */
-		void setMinimumValue(double value, unsigned int index = 0) const;
+		void setMinimumValue(double value, uint64_t index = 0) const;
 
 		/**
 		 * @brief	Sets the maximum value of a non vector property or the maximum value of one given
@@ -7558,7 +7715,7 @@ namespace RESQML2_NS
 		 * 					case) or zero-based index of the vector value for which we want to set the
 		 * 					maximum value (vector property case).
 		 */
-		void setMaximumValue(double value, unsigned int index = 0) const;
+		void setMaximumValue(double value, uint64_t index = 0) const;
 
 		//******************************************/
 		//*** For FLOATING POINT hyperslabbing *****/
@@ -8540,7 +8697,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The xyz point count of the patch at position @p patchIndex.
 		 */
-		uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const;
+		uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Get the xyz point count of all patches of this property.
@@ -8562,7 +8719,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getXyzPointsOfPatch(unsigned int patchIndex, double * xyzPoints) const;
+		void getXyzPointsOfPatch(uint64_t patchIndex, double * xyzPoints) const;
 
 		/**
 		 * @brief Gets all the xyz points of a particular patch of this property. xyz points are given in
@@ -8576,7 +8733,7 @@ namespace RESQML2_NS
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
-		void getXyzPointsOfPatchInGlobalCrs(unsigned int patchIndex, double * xyzPoints) const;
+		void getXyzPointsOfPatchInGlobalCrs(uint64_t patchIndex, double * xyzPoints) const;
 
 		/**
 		 * @brief Gets all the xyz points of all patches of this property. xyz points are given in the

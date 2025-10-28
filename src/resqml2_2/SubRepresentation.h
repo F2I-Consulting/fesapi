@@ -72,22 +72,22 @@ namespace RESQML2_2_NS
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const final;
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const final;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT uint64_t getElementCountOfPatch(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getElementCountOfPatch(uint64_t patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const final;
+		DLL_IMPORT_OR_EXPORT void getElementIndicesOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const final;
 
-		DLL_IMPORT_OR_EXPORT void getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short * supportingRepresentationIndices) const final;
+		DLL_IMPORT_OR_EXPORT void getSupportingRepresentationIndicesOfPatch(uint64_t patchIndex, short * supportingRepresentationIndices) const final;
 
-		DLL_IMPORT_OR_EXPORT bool areElementIndicesPairwise(unsigned int patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT bool areElementIndicesPairwise(uint64_t patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
+		DLL_IMPORT_OR_EXPORT bool areElementIndicesBasedOnLattice(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const;
-		DLL_IMPORT_OR_EXPORT uint64_t getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
-		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
-		DLL_IMPORT_OR_EXPORT uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesStartValue(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT uint64_t getLatticeElementIndicesDimensionCount(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const final;
+		DLL_IMPORT_OR_EXPORT int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const final;
 
 		using RESQML2_NS::SubRepresentation::pushBackSubRepresentationPatch;
 
@@ -139,9 +139,9 @@ namespace RESQML2_2_NS
 		gsoap_eml2_3::_resqml22__SubRepresentation* getSpecializedGsoapProxy() const;
 
 		/**
-		* Get a patch of the current subrepresentation at a particluar index.
+		* Get a patch of the current subrepresentation at a particular patch index.
 		*/
-		gsoap_eml2_3::resqml22__SubRepresentationPatch* getSubRepresentationPatch(unsigned int index) const;
+		gsoap_eml2_3::resqml22__SubRepresentationPatch* getSubRepresentationPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Push back a representation which is one of the support of this subrepresentation. And push

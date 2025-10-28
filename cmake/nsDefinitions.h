@@ -37,8 +37,8 @@ under the License.
 /** @namespace	${FESAPI_WITSML2_1_NS} @brief The ${FESAPI_WITSML2_1_NS} namespace. */
 #define WITSML2_1_NS ${FESAPI_WITSML2_1_NS}
 
-/** @namespace	${FESAPI_PRODML2_1_NS} @brief The ${FESAPI_PRODML2_1_NS} namespace. */
-#define PRODML2_2_NS ${FESAPI_PRODML2_2_NS}
+/** @namespace	${FESAPI_PRODML2_3_NS} @brief The ${FESAPI_PRODML2_3_NS} namespace. */
+#define PRODML2_3_NS ${FESAPI_PRODML2_3_NS}
 
 /** @namespace	${FESAPI_EML2_NS} @brief The ${FESAPI_EML2_NS} namespace.  This namespaces contains classes to handle data objects that exist in various EML v2.*. The classes of this namespace should be favored, when possible, instead of the classes of the namespace ${FESAPI_EML2_0_NS}, ${FESAPI_EML2_1_NS}, ${FESAPI_EML2_2_NS} and ${FESAPI_EML2_3_NS}. */
 #define EML2_NS ${FESAPI_EML2_NS}

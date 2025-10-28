@@ -140,9 +140,9 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT bool isFinal() const;
 
-		uint64_t getXyzPointCountOfPatch(unsigned int patchIndex) const final;
+		uint64_t getXyzPointCountOfPatch(uint64_t patchIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const final;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(uint64_t patchIndex, double* xyzPoints) const final;
 
 		/**
 		 * Gets the unit of measure of the MDs along this deviation survey.

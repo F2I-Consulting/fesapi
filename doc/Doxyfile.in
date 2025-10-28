@@ -2444,7 +2444,7 @@ EXPAND_AS_DEFINED      = COMMON_NS \
                          RESQML2_0_1_NS \
                          RESQML2_2_NS \
                          WITSML2_1_NS \
-                         PRODML2_2_NS \
+                         PRODML2_3_NS \
                          EML2_NS \
                          EML2_0_NS \
                          EML2_3_NS

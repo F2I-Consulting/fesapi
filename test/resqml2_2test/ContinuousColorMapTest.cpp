@@ -80,7 +80,7 @@ void ContinuousColorMapTest::initRepo() {
 	ContinuousProperty* continuousProperty = repo->createContinuousProperty(grid2dRepresentation, uuidContinuousProperty, titleContinuousProperty, 2,
 		gsoap_eml2_3::eml23__IndexableElement::nodes, "continuousColorMapIndex", propertyKind);
 	double values[2] = { 0., 1. };
-	continuousProperty->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
+	continuousProperty->pushBackArray2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 	// creating the continuous color map
 	RESQML2_NS::ContinuousColorMap* continuousColorMap = repo->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_3::resqml22__InterpolationDomain::rgb, gsoap_eml2_3::resqml22__InterpolationMethod::linear);

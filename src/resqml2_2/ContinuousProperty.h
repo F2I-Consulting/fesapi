@@ -106,17 +106,24 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const final;
 
-		DLL_IMPORT_OR_EXPORT double getMinimumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT double getMinimumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT double getMaximumValue(unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT double getMaximumValue(uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMinimumValue(double value, uint64_t index = 0) const final;
 
-		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, unsigned int index = 0) const final;
+		DLL_IMPORT_OR_EXPORT void setMaximumValue(double value, uint64_t index = 0) const final;
 
 		bool validatePropertyKindAssociation(EML2_NS::PropertyKind*) final { return true; }
 
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind) final { return true; }
+
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<float> getFloatStatistics(uint64_t patchIndex) const final {
+			return getStats<float>(patchIndex);
+		}
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<double> getDoubleStatistics(uint64_t patchIndex) const final {
+			return getStats<double>(patchIndex);
+		}
 
 		/**
 		* The standard XML namespace for serializing this data object.
@@ -145,5 +152,44 @@ namespace RESQML2_2_NS
 
 		size_t getMinimumValueSize() const { return 1; }
 		size_t getMaximumValueSize() const { return 1; }
+
+		template<typename T>
+		COMMON_NS::NumberArrayStatistics<T> getStats(uint64_t patchIndex) const {
+			COMMON_NS::NumberArrayStatistics<T> result;
+
+			const auto* valuesforPatch = static_cast<gsoap_eml2_3::_resqml22__ContinuousProperty*>(gsoapProxy2_3)->ValuesForPatch.at(patchIndex);
+			auto const* xmlArray = dynamic_cast<gsoap_eml2_3::eml23__AbstractFloatingPointArray const*>(valuesforPatch);
+			if (xmlArray == nullptr) return result;
+
+			for (size_t i = 0; i < xmlArray->Statistics.size(); ++i) {
+				auto const* stats = xmlArray->Statistics[i];
+				if (stats->MaximumValue) {
+					result.setMaximum(*stats->MaximumValue, i);
+				}
+				if (stats->MinimumValue) {
+					result.setMinimum(*stats->MinimumValue, i);
+				}
+				if (stats->ModePercentage) {
+					result.setModePercentage(*stats->ModePercentage, i);
+				}
+				if (stats->ValidValueCount) {
+					result.setValidValueCount(*stats->ValidValueCount, i);
+				}
+				if (stats->ValuesMedian) {
+					result.setMedian(*stats->ValuesMedian, i);
+				}
+				if (stats->ValuesMode) {
+					result.setMode(*stats->ValuesMode, i);
+				}
+				if (stats->ValuesMean) {
+					result.setMean(*stats->ValuesMean, i);
+				}
+				if (stats->ValuesStandardDeviation) {
+					result.setStandardDeviation(*stats->ValuesStandardDeviation, i);
+				}
+			}
+
+			return result;
+		}
 	};
 }

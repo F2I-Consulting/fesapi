@@ -142,7 +142,7 @@ void GridConnectionSetRepresentation::getInterpretationIndexCumulativeCount(uint
 {
 	if (isAssociatedToInterpretations()) {		
 		_resqml22__GridConnectionSetRepresentation const* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
-		readArrayNdOfUInt64Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount);
+		readArrayNdOfIntegerValues(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount);
 	}
 	else {
 		throw std::invalid_argument("The grid connection does not contain any interpretation association.");
@@ -155,7 +155,7 @@ void GridConnectionSetRepresentation::getInterpretationIndices(int64_t * interpr
 		_resqml22__GridConnectionSetRepresentation* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
 		auto const* integerArray = dynamic_cast<eml23__AbstractIntegerArray const*>(rep->ConnectionInterpretations->InterpretationIndices->Elements);
 		if (integerArray != nullptr) {
-			readArrayNdOfInt64Values(integerArray, interpretationIndices);
+			readArrayNdOfIntegerValues(integerArray, interpretationIndices);
 		}
 		else {
 			throw std::logic_error("The interpretation indices array should be an integer one.");
@@ -204,7 +204,7 @@ uint64_t GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretatio
 		}
 		else {
 			std::unique_ptr<unsigned int[]> const cumulative(new unsigned int[totalCellIndexPairCount]);
-			readArrayNdOfUInt32Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulative.get());
+			readArrayNdOfIntegerValues(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulative.get());
 			result = cumulative[0] > 0 ? 0 : 1;
 			for (uint64_t i = 1; i < totalCellIndexPairCount; ++i) {
 				if (cumulative[i] == cumulative[i - 1]) {
@@ -271,7 +271,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 
 	std::unique_ptr<unsigned int[]> cumulativeCount(new unsigned int[totalCellIndexPairCount]);
 	if (interpCount > 0) {
-		readArrayNdOfUInt32Values(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount.get());
+		readArrayNdOfIntegerValues(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength, cumulativeCount.get());
 	}
 	else {
 		std::fill(cumulativeCount.get(), cumulativeCount.get() + totalCellIndexPairCount, 0);
@@ -313,7 +313,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 		std::unique_ptr<int64_t[]> faultIndices(new int64_t[getCountOfArray(xmlArray)]);
 		eml23__AbstractIntegerArray const* xmlIntArray = dynamic_cast<eml23__AbstractIntegerArray const*>(xmlArray);
 		if (xmlIntArray != nullptr) {
-			readArrayNdOfInt64Values(xmlIntArray, faultIndices.get());
+			readArrayNdOfIntegerValues(xmlIntArray, faultIndices.get());
 		}
 		else {
 			throw std::logic_error("Interpretation indices: only integer arrays are supported for now");
@@ -370,7 +370,7 @@ uint64_t GridConnectionSetRepresentation::getInterpretationCount() const
 
 int64_t GridConnectionSetRepresentation::getCellIndexPairs(int64_t* cellIndexPairs) const
 {
-	return readArrayNdOfInt64Values(static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3)->CellIndexPairs, cellIndexPairs);
+	return readArrayNdOfIntegerValues(static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3)->CellIndexPairs, cellIndexPairs);
 }
 
 bool GridConnectionSetRepresentation::isBasedOnMultiGrids() const 
@@ -386,7 +386,7 @@ void GridConnectionSetRepresentation::getGridIndexPairs(unsigned short* gridInde
 	if (!isBasedOnMultiGrids()) {
 		throw std::invalid_argument("This representation has no multiple grid support.");
 	}
-	readArrayNdOfUInt16Values(static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3)->GridIndexPairs, gridIndexPairs);
+	readArrayNdOfIntegerValues(static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3)->GridIndexPairs, gridIndexPairs);
 }
 
 bool GridConnectionSetRepresentation::hasLocalFacePerCell() const
@@ -399,7 +399,7 @@ int64_t GridConnectionSetRepresentation::getLocalFacePerCellIndexPairs(int* loca
 	if (!hasLocalFacePerCell()) {
 		throw std::invalid_argument("This representation has no local face per cell.");
 	}
-	return readArrayNdOfInt32Values(static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3)->LocalFacePerCellIndexPairs, localFaceCellIndexPairs);
+	return readArrayNdOfIntegerValues(static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3)->LocalFacePerCellIndexPairs, localFaceCellIndexPairs);
 }
 
 void GridConnectionSetRepresentation::pushBackXmlSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep)

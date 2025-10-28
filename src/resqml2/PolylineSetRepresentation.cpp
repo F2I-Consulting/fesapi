@@ -25,7 +25,7 @@ using namespace RESQML2_NS;
 
 const char* PolylineSetRepresentation::XML_TAG = "PolylineSetRepresentation";
 
-uint64_t PolylineSetRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t PolylineSetRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");

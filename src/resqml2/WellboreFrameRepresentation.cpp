@@ -29,7 +29,7 @@ using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace gsoap_eml2_3;
 
-void WellboreFrameRepresentation::getXyzPointsOfPatch(unsigned int patchIndex, double* xyzPoints) const
+void WellboreFrameRepresentation::getXyzPointsOfPatch(uint64_t patchIndex, double* xyzPoints) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -423,7 +423,7 @@ COMMON_NS::DataObjectReference WellboreFrameRepresentation::getHdfProxyDor() con
 	return COMMON_NS::DataObjectReference();
 }
 
-uint64_t WellboreFrameRepresentation::getXyzPointCountOfPatch(unsigned int patchIndex) const
+uint64_t WellboreFrameRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw out_of_range("The patch index is out of range");

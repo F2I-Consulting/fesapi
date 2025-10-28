@@ -55,7 +55,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m, 
 		propertyKind);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
-	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
+	continuousProperty->pushBackArray1dOfValues(continuousProp1Values, 6, hdfProxy);
 
 	// IJK grid
 	RESQML2_NS::AbstractIjkGridRepresentation* partialIjkGrid = repo->createPartialIjkGridRepresentation("b0ec8bf4-9b93-428b-a814-87c38887f6d0", "Partial Ijk Grid");
@@ -65,7 +65,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	double continuousPropOnIjkValues[6] = { 0, 1, 2, 3, 4, 5 };
-	continuousPropertyOnIjk->pushBackDoubleHdf5Array1dOfValues(continuousPropOnIjkValues, 6, hdfProxy);
+	continuousPropertyOnIjk->pushBackArray1dOfValues(continuousPropOnIjkValues, 6, hdfProxy);
 
 	// Truncated IJK grid
 	RESQML2_NS::AbstractIjkGridRepresentation* partialTruncIjkGrid = repo->createPartialTruncatedIjkGridRepresentation("def167fb-89b2-45bc-92ff-01d228142350", "Partial Truncated Ijk Grid");
@@ -75,7 +75,7 @@ void GridConnectionSetOnPartialGridSet::initRepo() {
 		gsoap_resqml2_0_1::resqml20__ResqmlUom::m,
 		propertyKind);
 	double continuousPropOnTruncIjkValues[6] = { 0, 1, 2, 3, 4, 5 };
-	continuousPropertyOnTruncIjk->pushBackDoubleHdf5Array1dOfValues(continuousPropOnTruncIjkValues, 6, hdfProxy);
+	continuousPropertyOnTruncIjk->pushBackArray1dOfValues(continuousPropOnTruncIjkValues, 6, hdfProxy);
 
 	// Partial fault
 	RESQML2_NS::FaultInterpretation* partialFaultInterp = repo->createPartial<RESQML2_0_1_NS::FaultInterpretation>("83504f50-9301-4565-9615-44099cc73ae3", "Partial Fault");

@@ -39,6 +39,11 @@ under the License.
 	%nspace COMMON_NS::EnumStringMapper;
 	%nspace COMMON_NS::EpcDocument;
 	%nspace COMMON_NS::HdfProxyFactory;
+	#if SWIG_VERSION >= 0x040300
+		%nspacemove(common) COMMON_NS::NumberArrayStatistics;
+	#else
+		%feature("nspace", "common") COMMON_NS::NumberArrayStatistics;
+	#endif
 #endif
 
 //************************/
@@ -795,6 +800,80 @@ namespace COMMON_NS
 			const std::string & packageDirAbsolutePath, const std::string & externalFilePath,
 			COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 	};
+	
+	template <typename T> class NumberArrayStatistics
+	{
+    public:
+	
+        NumberArrayStatistics() = default;
+
+        /*
+		* Create statistics on scalar array
+		*
+        * @param 		  	valueCountPerIndexableElement	the number of values per indexable element. It is 1 for a scalar property.
+        */
+        NumberArrayStatistics(T const* values, uint64_t valueCount);
+
+        /*
+        * @param 		  	valueCountPerIndexableElement	the number of values per indexable element. It is 1 for a scalar property.
+        */
+        NumberArrayStatistics(T const* values, uint64_t valueCount, uint64_t valueCountPerIndexableElement);
+
+        /*
+        * @param 		  	valueCountPerIndexableElement	the number of values per indexable element. It is 1 for a scalar property.
+        * @param 		  	nullVal			  		The integer null value.Ignored (fixed to NaN) if it is a floating point value.
+        */
+        NumberArrayStatistics(T const* values, uint64_t valueCount, uint64_t valueCountPerIndexableElement, T nullVal);
+		
+		void computeFrom(T const* values, size_t valueCount, size_t valueCountPerIndexableElement);
+
+		T getNullValue() const;
+
+        uint64_t getValidValueCount(size_t valueIndex = 0) const;
+        uint64_t getValidValueCountSize() const;
+
+        T getMinimum(size_t valueIndex = 0) const;
+        uint64_t getMinimumSize() const;
+
+        T getMaximum(size_t valueIndex = 0) const;
+        uint64_t getMaximumSize() const;
+
+        double getMean(size_t valueIndex = 0) const;
+        uint64_t getMeanSize() const;
+
+        double getMedian(size_t valueIndex = 0) const;
+        uint64_t getMedianSize() const;
+
+        T getMode(size_t valueIndex = 0) const;
+        uint64_t getModeSize() const;
+
+        double getModePercentage(size_t valueIndex = 0) const;
+        uint64_t getModePercentageSize() const;
+
+        double getStandardDeviation(size_t valueIndex = 0) const;
+        uint64_t getStandardDeviationSize() const;
+
+        void setNullValue(T value);
+        void setValidValueCount(uint64_t value, size_t valueIndex = 0);
+        void setMinimum(T value, size_t valueIndex = 0);
+        void setMaximum(T value, size_t valueIndex = 0);
+        void setMean(double value, size_t valueIndex = 0);
+        void setMedian(double value, size_t valueIndex = 0);
+        void setMode(T value, size_t valueIndex = 0);
+        void setModePercentage(double value, size_t valueIndex = 0);
+        void setStandardDeviation(double value, size_t valueIndex = 0);
+	};
+
+	%template(Int8ArrayStatistics) COMMON_NS::NumberArrayStatistics<int8_t>;
+	%template(UInt8ArrayStatistics) COMMON_NS::NumberArrayStatistics<uint8_t>;
+	%template(Int16ArrayStatistics) COMMON_NS::NumberArrayStatistics<int16_t>;
+	%template(UInt16ArrayStatistics) COMMON_NS::NumberArrayStatistics<uint16_t>;
+	%template(Int32ArrayStatistics) COMMON_NS::NumberArrayStatistics<int32_t>;
+	%template(UInt32ArrayStatistics) COMMON_NS::NumberArrayStatistics<uint32_t>;
+	%template(Int64ArrayStatistics) COMMON_NS::NumberArrayStatistics<int64_t>;
+	%template(UInt64ArrayStatistics) COMMON_NS::NumberArrayStatistics<uint64_t>;
+	%template(FloatArrayStatistics) COMMON_NS::NumberArrayStatistics<float>;
+	%template(DoubleArrayStatistics) COMMON_NS::NumberArrayStatistics<double>;
 }
 
 #define CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName) bool has##vectorName##attributeName(unsigned int index) const;
@@ -818,7 +897,7 @@ namespace COMMON_NS
 %include "swigEml2Include.i"
 %include "swigResqml2Include.i"
 %include "swigWitsml2Include.i"
-%include "swigProdml2_2Include.i"
+%include "swigProdml2_3Include.i"
 #ifdef WITH_ETP
 %include "swigEtp1_2Include.i"
 #endif
@@ -874,7 +953,7 @@ import com.f2i_consulting.fesapi.*;
 			RESQML2_0_1 = 0,
 			EML2_0 = 1,
 			EML2_3 = 2,
-			PRODML2_2 = 3,
+			PRODML2_3 = 3,
 			RESQML2_2 = 4,
 			WITSML2_1 = 5
 		};
@@ -1072,8 +1151,8 @@ import com.f2i_consulting.fesapi.*;
 		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::ChannelSet, ChannelSet)
 		SWIG_GETTER_DATAOBJECTS(WITSML2_1_NS::Channel, Channel)
 				
-		SWIG_GETTER_DATAOBJECTS(PRODML2_2_NS::FluidSystem, FluidSystem)
-		SWIG_GETTER_DATAOBJECTS(PRODML2_2_NS::FluidCharacterization, FluidCharacterization)
+		SWIG_GETTER_DATAOBJECTS(PRODML2_3_NS::FluidSystem, FluidSystem)
+		SWIG_GETTER_DATAOBJECTS(PRODML2_3_NS::FluidCharacterization, FluidCharacterization)
 
 		/**
 		 * Gets a data object from the repository by means of its uuid. If several data object
@@ -1395,9 +1474,27 @@ import com.f2i_consulting.fesapi.*;
 			gsoap_resqml2_0_1::eml20__LengthUom verticalUom, uint64_t verticalEpsgCode, bool isUpOriented);
 
 		/**
-		 * @brief	Creates a reference point (such as a MD datum) into this repository
+		 * @brief	Creates a vertical CRS which is identified by means of an EPSG code.
+		 * 			Resulting vertical CRS is stored into this repository
 		 *
-		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>verticalEpsgCode == 0</tt>.
+		 *
+		 * @param 	guid			 	The guid to set to the local 3d CRS. If empty then a new guid
+		 * 								will be generated.
+		 * @param 	title			 	The title to set to the local 3d CRS. If empty then \"unknown\"
+		 * 								title will be set.
+		 * @param 	verticalUom		 	The unit of measure of the vertical axis of this instance.
+		 * @param 	verticalEpsgCode 	The EPSG code of the associated vertical CRS.
+		 * @param 	isUpOriented	 	If true, indicates that this depth CRS is actually an elevation
+		 * 								CRS.
+		 *
+		 * @returns	A pointer to the new vertical CRS.
+		 */
+		EML2_3_NS::VerticalCrs* createVerticalCrs(const std::string& guid, const std::string& title,
+			uint64_t verticalEpsgCode, gsoap_eml2_3::eml23__LengthUom verticalUom, bool isUpOriented);
+
+		/**
+		 * @brief	Creates a reference point (such as a MD datum) into this repository
 		 *
 		 * @param 	  	guid					 	The guid to set to the reference point. If empty then a new
 		 * 											guid will be generated.
@@ -3762,11 +3859,11 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new fluid system.
 		 */
-		PRODML2_2_NS::FluidSystem* createFluidSystem(const std::string & guid,
+		PRODML2_3_NS::FluidSystem* createFluidSystem(const std::string & guid,
 			const std::string & title,
 			double temperatureValue, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom temperatureUom,
 			double pressureValue, gsoap_eml2_3::eml23__PressureUom pressureUom,
-			gsoap_eml2_3::prodml22__ReservoirFluidKind reservoirFluidKind,
+			gsoap_eml2_3::prodml23__ReservoirFluidKind reservoirFluidKind,
 			double gasOilRatio, gsoap_eml2_3::eml23__VolumePerVolumeUom gasOilRatioUom);
 
 		/**
@@ -3779,7 +3876,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new fluid characterization.
 		 */
-		PRODML2_2_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
+		PRODML2_3_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a time series data into this repository
@@ -3791,7 +3888,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new time series data.
 		 */
-		PRODML2_2_NS::TimeSeriesData* createTimeSeriesData(const std::string & guid, const std::string & title);
+		PRODML2_3_NS::TimeSeriesData* createTimeSeriesData(const std::string & guid, const std::string & title);
 
 #ifdef WITH_RESQML2_2
 		//************************************/

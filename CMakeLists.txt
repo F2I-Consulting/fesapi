@@ -12,7 +12,7 @@ set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
 set (Fesapi_VERSION_MAJOR 2)
-set (Fesapi_VERSION_MINOR 13)
+set (Fesapi_VERSION_MINOR 14)
 set (Fesapi_VERSION_PATCH 0)
 set (Fesapi_VERSION_TWEAK 0)
 
@@ -64,14 +64,14 @@ ELSE()
 	ENDIF()
 	IF(HDF5_PREFER_PARALLEL)
 		if(NOT HDF5_IS_PARALLEL)
-			message(FATAL_ERROR
-				"Parallel HDF5 required but only serial version found!"
+			message(WARNING
+				"Parallel HDF5 is preferred but only serial version found!"
 			)
 		ENDIF()
 	ELSE()
 		IF(HDF5_IS_PARALLEL)
-			message(FATAL_ERROR
-				"Serial HDF5 required but only parallel version found!"
+			message(WARNING
+				"Serial HDF5 is preferred but only parallel version found!"
 			)
 		ENDIF()
 	ENDIF()

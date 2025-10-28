@@ -122,6 +122,15 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int8_t> getInt8Statistics(uint64_t patchIndex) const final { return getStats(static_cast<int8_t>(getNullValueOfPatch(patchIndex))); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint8_t> getUInt8Statistics(uint64_t patchIndex) const final { return getStats(static_cast<uint8_t>(getNullValueOfPatch(patchIndex))); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int16_t> getInt16Statistics(uint64_t patchIndex) const final { return getStats(static_cast<int16_t>(getNullValueOfPatch(patchIndex))); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint16_t> getUInt16Statistics(uint64_t patchIndex) const final { return getStats(static_cast<uint16_t>(getNullValueOfPatch(patchIndex))); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int32_t> getInt32Statistics(uint64_t patchIndex) const final { return getStats(static_cast<int32_t>(getNullValueOfPatch(patchIndex))); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint32_t> getUInt32Statistics(uint64_t patchIndex) const final { return getStats(static_cast<uint32_t>(getNullValueOfPatch(patchIndex))); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<int64_t> getInt64Statistics(uint64_t patchIndex) const final { return getStats(getNullValueOfPatch(patchIndex)); }
+		DLL_IMPORT_OR_EXPORT COMMON_NS::NumberArrayStatistics<uint64_t> getUInt64Statistics(uint64_t patchIndex) const final { return getStats(static_cast<uint64_t>(getNullValueOfPatch(patchIndex))); }
+
 		/**
 		* The standard XML namespace for serializing this data object.
 		*/
@@ -137,5 +146,49 @@ namespace RESQML2_0_1_NS
 		size_t getMinimumValueSize() const;
 		size_t getMaximumValueSize() const;
 
+		template<typename T>
+		COMMON_NS::NumberArrayStatistics<T> getStats(T nullValue) const {
+			COMMON_NS::NumberArrayStatistics<T> result;
+			result.setNullValue(nullValue);
+
+			const auto minimumValueSize = getMinimumValueSize();
+			for (size_t i = 0; i < minimumValueSize; ++i) {
+				if (hasMinimumValue(i)) {
+					int64_t minVal = getMinimumValue(i);
+					if constexpr (std::is_signed_v<T>) {
+						if (minVal > (std::numeric_limits<T>::min)() &&
+							minVal < (std::numeric_limits<T>::max)()) {
+							result.setMinimum(static_cast<T>(minVal), i);
+						}
+					}
+					else {
+						if (minVal > 0 &&
+							static_cast<uint64_t>(minVal) < (std::numeric_limits<T>::max)()) {
+							result.setMinimum(static_cast<T>(minVal), i);
+						}
+					}
+				}
+			}
+			const auto maximumValueSize = getMaximumValueSize();
+			for (size_t i = 0; i < maximumValueSize; ++i) {
+				if (hasMaximumValue(i)) {
+					int64_t maxVal = getMaximumValue(i);
+					if constexpr (std::is_signed_v<T>) {
+						if (maxVal > (std::numeric_limits<T>::min)() &&
+							maxVal < (std::numeric_limits<T>::max)()) {
+							result.setMaximum(static_cast<T>(maxVal), i);
+						}
+					}
+					else {
+						if (maxVal > 0 &&
+							static_cast<uint64_t>(maxVal) < (std::numeric_limits<T>::max)()) {
+							result.setMaximum(static_cast<T>(maxVal), i);
+						}
+					}
+				}
+			}
+
+			return result;
+		}
 	};
 }

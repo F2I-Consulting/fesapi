@@ -102,7 +102,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
 	};
-	discreteProp->pushBackInt64Hdf5Array3dOfValues(discretePropValues, 4, 3, 2, nullptr, -1);
+	discreteProp->pushBackArray3dOfValues(discretePropValues, 4, 3, 2, nullptr, static_cast<int64_t>(-1));
 
 	// Continuous property
 	propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("4a305182-221e-4205-9e7c-a36b06fa5b3d", "length");
@@ -112,7 +112,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepo() {
 		0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0,
 		1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0
 	};
-	continuousProp->pushBackDoubleHdf5Array3dOfValues(continuousPropValues, 4, 3, 2, nullptr);
+	continuousProp->pushBackArray3dOfValues(continuousPropValues, 4, 3, 2);
 }
 
 void RightHanded4x3x2ExplicitIjkGrid::readRepo() {

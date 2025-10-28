@@ -57,7 +57,7 @@ void AbstractProperty::loadTargetRelationships()
 		convertDorIntoRel<EML2_NS::PropertyKind>(dor);
 	}
 
-	for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+	for (uint64_t patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 		dor = getHdfProxyDor(patchIndex);
 		if (!dor.isEmpty()) {
 			convertDorIntoRel(dor);
@@ -233,7 +233,7 @@ bool AbstractProperty::useInterval() const
 	throw logic_error("Not implemented yet");
 }
 
-uint64_t AbstractProperty::getElementCountPerValue() const
+uint64_t AbstractProperty::getValueCountPerIndexableElement() const
 {
 	uint64_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -464,7 +464,7 @@ std::vector<unsigned int> AbstractProperty::getRealizationIndices() const
 	}
 	else if (gsoapProxy2_3 != nullptr) {
 		std::vector<unsigned int> result(getCountOfArray(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices));
-		readArrayNdOfUInt32Values(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices, result.data());
+		readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3)->RealizationIndices, result.data());
 		return result;
 	}
 	else {
