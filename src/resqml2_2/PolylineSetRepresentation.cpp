@@ -158,7 +158,8 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlClosedPolylines->CountPerValue = 1;
 	xmlClosedPolylines->Values = polylineClosedFlags[0] ? "true" : "false";
 	for (size_t i = 1; i < polylineCount; ++i) {
-		xmlClosedPolylines->Values += " " + polylineClosedFlags[i] ? "true" : "false";
+		xmlClosedPolylines->Values += " ";
+		xmlClosedPolylines->Values += polylineClosedFlags[i] ? "true" : "false";
 	}
 	patch->ClosedPolylines = xmlClosedPolylines;
 
@@ -204,20 +205,7 @@ resqml22__PointGeometry* PolylineSetRepresentation::getPointGeometry2_2(uint64_t
 
 uint64_t PolylineSetRepresentation::getPolylineCountOfPatch(uint64_t patchIndex) const
 {
-	if (patchIndex >= getPatchCount()) {
-		throw std::out_of_range("patchIndex id out of range.");
-	}
-
-	resqml22__PolylineSetPatch* patch = static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch[patchIndex];
-	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanConstantArray) {
-		return static_cast<eml23__BooleanConstantArray*>(patch->ClosedPolylines)->Count;
-	}
-	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
-		auto const* daPart = static_cast<eml23__BooleanExternalArray*>(patch->ClosedPolylines)->Values->ExternalDataArrayPart[0];
-		return getOrCreateHdfProxyFromDataArrayPart(daPart) ->getElementCount(daPart->PathInExternalFile);
-	}
-
-	return 0;
+	return getCountOfArray(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.at(patchIndex)->ClosedPolylines);
 }
 
 uint64_t PolylineSetRepresentation::getPolylineCountOfAllPatches() const
@@ -294,6 +282,10 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(uint64_t patchIndex
 
 		return result;
 	}
+	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanXmlArray)
+	{
+		return static_cast<eml23__BooleanXmlArray*>(patch->ClosedPolylines)->Values.find("false") == std::string::npos;
+	}
 	else
 		throw logic_error("Not yet implemented.");
 }
@@ -329,6 +321,10 @@ bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(uint64_t patchIn
 		std::unique_ptr<int8_t[]> tmp(new int8_t[polylineCount]);
 		getOrCreateHdfProxyFromDataArrayPart(daPart)->readArrayNdOfInt8Values(daPart->PathInExternalFile, tmp.get());
 		return find_if(tmp.get(), tmp.get() + polylineCount, [](char i) {return i != 0; }) == tmp.get() + polylineCount;
+	}
+	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanXmlArray)
+	{
+		return static_cast<eml23__BooleanXmlArray*>(patch->ClosedPolylines)->Values.find("true") == std::string::npos;
 	}
 	else
 		throw logic_error("Not yet implemented.");

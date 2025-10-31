@@ -76,6 +76,7 @@ under the License.
 #include "resqml2_test/DiscreteProperty.h"
 #include "resqml2_test/PointsProperty.h"
 #include "resqml2_test/PropertyBySlab.h"
+#include "resqml2_test/PolylineSetRepresentation.h"
 #include "resqml2_test/Streamlines.h"
 #include "witsml2_test/WellTest.h"
 #include "witsml2_test/Trajectory.h"
@@ -226,6 +227,9 @@ FESAPI_TEST("Export a multi domains interpretation", "[interpretation]", Interpr
 // TRIANGULATION
 FESAPI_TEST("Export and import a single patch triangulated set fault representation", "[representation]", FaultSinglePatchTriangulatedSetRepresentationTest)
 FESAPI_TEST("Export and import a multi patch triangulated set fault representation", "[representation]", FaultMultiPatchTriangulatedSetRepresentationTest)
+
+// POLYLINE SET REPRESENTATION
+FESAPI_TEST("Export and import fault sticks and opened/closed rings", "[representation]", PolylineSetRepresentation)
 
 // ACTIVITY
 FESAPI_TEST("Export and import a generic creation activity template", "[activity]", ActivityTemplateGenericCreationTest)

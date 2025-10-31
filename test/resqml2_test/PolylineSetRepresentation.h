@@ -24,11 +24,6 @@ under the License.
 namespace resqml2_test {
 	class PolylineSetRepresentation : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
-		static unsigned int numNodesPerPolylinePerPatch[];
-		static double polylinePoints[];
-
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
 		* exising .epc file will be erased. 
