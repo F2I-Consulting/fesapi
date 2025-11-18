@@ -71,11 +71,10 @@ jobs:
       fail-fast: false  # 'false' means Don't stop matrix workflows even if some matrix failed.
       matrix:
         include: [
-          { xcc_name: 'gcc 9',      xcc_pkg: gcc-9,       cc: gcc-9,      cxx: g++-9 },
           { xcc_name: 'gcc 10',     xcc_pkg: gcc-10,      cc: gcc-10,     cxx: g++-10 },
-          { xcc_name: 'clang 11',   xcc_pkg: clang-11,    cc: clang-11,   cxx: clang++-11 },
-          { xcc_name: 'clang 12',   xcc_pkg: clang-12,    cc: clang-12,   cxx: clang++-12 },
+          { xcc_name: 'gcc 12',     xcc_pkg: gcc-12,      cc: gcc-12,     cxx: g++-12 },
           { xcc_name: 'clang 13',   xcc_pkg: clang-13,    cc: clang-13,   cxx: clang++-13 },
+          { xcc_name: 'clang 15',   xcc_pkg: clang-15,    cc: clang-15,   cxx: clang++-15 },
         ]
     env:
       XCC: ${{ matrix.xcc_name }}

@@ -1229,7 +1229,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	// The cumulative count of points per face i.e. first face contains 3 points, second face contains 6-3=3 points, third face contains 9-6=3 points etc...
 	uint64_t nodeIndicesCumulativeCountPerFace[8] = { 3, // shared face
 		6, 9, 12, // faces for tetra
-		16, 20, 24, 27 //  faces for wedge
+		16, 20, 24, 27 // faces for wedge
 	};
 	// The face indices of each cell. 
 	uint64_t faceIndicesPerCell[9] = { 0, 1, 2, 3, // tetra
