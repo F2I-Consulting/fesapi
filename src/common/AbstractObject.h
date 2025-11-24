@@ -842,7 +842,7 @@ namespace COMMON_NS
 				gsoap_resqml2_0_1::resqml20__IntegerConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(arrayInput);
 				T value;
 				if constexpr (std::is_signed_v<T>) {
-					value = static_cast<T>(std::clamp(constantArray->Value,
+					value = static_cast<T>(std::clamp(static_cast<int64_t>(constantArray->Value),
 						static_cast<int64_t>((std::numeric_limits<T>::min)()), static_cast<int64_t>((std::numeric_limits<T>::max)())));
 				}
 				else {

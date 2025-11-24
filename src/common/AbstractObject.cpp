@@ -1064,7 +1064,7 @@ namespace {
 		if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 			auto const* hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
 			if constexpr (std::is_signed_v<T>) {
-				nullValue = static_cast<T>(std::clamp(hdfArray->NullValue,
+				nullValue = static_cast<T>(std::clamp(static_cast<int64_t>(hdfArray->NullValue),
 					static_cast<int64_t>((std::numeric_limits<T>::min)()), static_cast<int64_t>((std::numeric_limits<T>::max)())));
 			}
 			else {
@@ -1095,7 +1095,7 @@ namespace {
 			externalDataArrayParts = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart;
 			const int64_t xmlNullValue = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
 			if constexpr (std::is_signed_v<T>) {
-				nullValue = static_cast<T>(std::clamp(xmlNullValue,
+				nullValue = static_cast<T>(std::clamp(static_cast<int64_t>(xmlNullValue),
 					static_cast<int64_t>((std::numeric_limits<T>::min)()), static_cast<int64_t>((std::numeric_limits<T>::max)())));
 			}
 			else {
