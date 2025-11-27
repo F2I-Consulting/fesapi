@@ -1773,7 +1773,7 @@ namespace EML2_NS
 		 *
 		 * @returns	The index of @p timestamp in this time series.
 		 */
-		uint64_t getTimestampIndex(time_t timestamp, LONG64 yearOffset = 0) const;
+		uint64_t getTimestampIndex(time_t timestamp, int64_t yearOffset = 0) const;
 
 		/**
 		 * Get the count of timestamps in this time series.

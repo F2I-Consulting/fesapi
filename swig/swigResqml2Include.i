@@ -6015,7 +6015,7 @@ namespace RESQML2_NS
 		 * @param [in]	timestamp	The single timestamps to associate to this property
 		 * @param [in]	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
 		 */
-		void setSingleTimestamp(time_t timestamp, LONG64 yearOffset = 0);
+		void setSingleTimestamp(time_t timestamp, int64_t yearOffset = 0);
 
 		/**
 		 * Get a single associated timestamp for this property.

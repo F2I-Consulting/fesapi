@@ -35,6 +35,24 @@ def serialize_grid(repo: fesapi.DataObjectRepository):
     stats.setMinimum(1.1)
     continuous_prop.pushBackFloatArray3dOfValuesPlusStatistics(resqml_values.cast(), 1, 1, 3, stats)
 
+    # A time series definition
+    time_series = repo.createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series 1")
+    time_series.pushBackTimestamp(1409753895)
+    time_series.pushBackTimestamp(1441289895)
+
+    # A continuous property with time series
+    continuous_prop_time0 = repo.createContinuousProperty(partial_ijk_grid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
+                                                          fesapi.eml23__IndexableElement_cells, fesapi.resqml20__ResqmlUom_m, fesapi.resqml20__ResqmlPropertyKind_length)
+    continuous_prop_time0.setTimeSeries(time_series)
+    continuous_prop_time0.setSingleTimestamp(time_series.getTimestamp(0))
+    continuous_prop_time0.pushBackFloatArray3dOfValues(resqml_values.cast(), 1, 1, 3)
+
+    continuous_prop_time1= repo.createContinuousProperty(partial_ijk_grid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
+                                                          fesapi.eml23__IndexableElement_cells, fesapi.resqml20__ResqmlUom_m, fesapi.resqml20__ResqmlPropertyKind_length)
+    continuous_prop_time1.setTimeSeries(time_series)
+    continuous_prop_time1.setSingleTimestamp(1441289895)
+    continuous_prop_time1.pushBackFloatArray3dOfValues(resqml_values.cast(), 1, 1, 3)
+
     # unstructured grid example
     unstructured_grid = repo.createUnstructuredGridRepresentation(
         "9283cd33-5e52-4110-b7b1-616abde2b303",
