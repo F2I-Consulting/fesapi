@@ -26,7 +26,8 @@ using namespace std;
 using namespace RESQML2_2_NS;
 using namespace gsoap_eml2_3;
 
-StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria)
+StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title,
+	uint64_t rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria ascendingOrderingCriteria)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
@@ -34,10 +35,10 @@ StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(RES
 
 	gsoapProxy2_3 = soap_new_resqml22__StratigraphicColumnRankInterpretation(orgFeat->getGsoapContext());
 	static_cast<_resqml22__StratigraphicColumnRankInterpretation*>(gsoapProxy2_3)->RankInStratigraphicColumn = rank;
-	static_cast<_resqml22__StratigraphicColumnRankInterpretation*>(gsoapProxy2_3)->AscendingOrderingCriteria = static_cast<resqml22__OrderingCriteria>(orderingCriteria);
+	static_cast<_resqml22__StratigraphicColumnRankInterpretation*>(gsoapProxy2_3)->AscendingOrderingCriteria = static_cast<resqml22__OrderingCriteria>(ascendingOrderingCriteria);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	orgFeat->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(orgFeat);

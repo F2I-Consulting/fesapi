@@ -2616,21 +2616,142 @@ namespace RESQML2_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_StratigraphicColumnRankInterpretation) StratigraphicColumnRankInterpretation;
 #endif
+	/** 
+	* @brief	A stratigraphic column rank interpretation contains an ordered list of stratigraphic unit interpretations.
+	*			It corresponds to a level of detail of the stratigraphic column. First indexed ranks are coarser than last indexed ranks which are more detailed.
+	*/
 	class StratigraphicColumnRankInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
 	public:
+	
+		/**
+		 * Pushes back a stratigraphic unit interpretation to this stratigraphic column rank interpretation.
+		 * The stratigraphic unit interpretation must be pushed back according to the ordering criteria of the stratigraphic column rank interpretation:
+		 *  - If the (ascending) ordering criteria is age then units must be pushed back from the youngest to oldest.
+		 *	- If the (ascending) ordering criteria is apparent depth then units must be pushed back from the shallowest one to the deepest one.
+		 *	- If the (ascending) ordering criteria is measured depth then units must be pushed back
+		 *		from the first drilled trajectory stations to the latest drilled trajectory stations of the wellbore.
+		 * Remark : RESQML2.0.1 does not explicitely states that the ordering criteria is ascending but RESQML 2.2 does.
+		 *
+		 * @exception	std::invalid_argument	If @p stratiUnitInterpretation is @c nullptr.
+		 *
+		 * @param [in]	stratiUnitInterpretation	The stratigraphic unit interpretation to add.
+		 */
 		void pushBackStratiUnitInterpretation(StratigraphicUnitInterpretation * stratiUnitInterpretation);
+
+		/**
+		 * Sets the horizon interpretation that contains the last (the one with the greater index)
+		 * contact interpretation within the list of contact interpretation associated to this
+		 * stratigraphic column rank interpretation.
+		 *
+		 * @exception	std::invalid_argument	If @p partOf is @c nullptr.
+		 *
+		 * @param [in]	partOf	The horizon interpretation that contains the last contact interpretation.
+		 */
+		void setHorizonOfLastContact(HorizonInterpretation * partOf);
+
+		/**
+		 * Adds a stratigraphic binary "stops" contact to this stratigraphic column rank interpretation.
+		 *
+		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
+		 *
+		 * @param [in]	subject			  	The subject of the sentence that defines how the contact was
+		 * 									constructed.
+		 * @param 	  	subjectContactMode	The subject contact mode (baselap, erosion, extended or
+		 * 									proportional).
+		 * @param [in]	directObject	  	The direct object of the sentence that defines how the
+		 * 									contact was constructed.
+		 * @param 	  	directObjectMode  	The direct object contact mode (baselap, erosion, extended or
+		 * 									proportional).
+		 * @param [in]	partOf			  	(Optional) If non-null, the horizon interpretation that
+		 * 									contains this new binary contact. Default value is @c nullptr.
+		 */
 		void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, gsoap_eml2_3::resqml22__ContactMode subjectContactMode,
 			StratigraphicUnitInterpretation* directObject, gsoap_eml2_3::resqml22__ContactMode directObjectMode,
 			HorizonInterpretation * partOf = nullptr);
-			
-		unsigned int getContactCount() const;
-		gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(unsigned int contactIndex) const;
-		gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(unsigned int contactIndex) const;
-		HorizonInterpretation* getHorizonInterpretationOfContact(unsigned int contactIndex) const;
+
+		/**
+		 * Indicates whether this stratigraphic column rank interpretation is a chrono one (it is
+		 * ordered by ages) or not. One of the consequence is that in a chrono stratigraphic column rank
+		 * interpretation, each stratigraphic unit interpretation have only one top and only one bottom.
+		 *
+		 * @returns	True if is a chrono stratigraphic column rank, false if it is not.
+		 */
 		bool isAChronoStratiRank() const;
+
+		/**
+		 * Gets the count of contacts in this stratigraphic column rank interpretation.
+		 *
+		 * @returns	The contact count.
+		 */
+		unsigned int getContactCount() const;
+
+		/**
+		 * Gets the contact mode of the subject stratigraphic unit of a contact located at a particular
+		 * index. Most of time the subject stratigraphic unit is the stratigraphic unit on top of the
+		 * contact.
+		 *
+		 * @exception	std::out_of_range	If @p contactIndex is out of range.
+		 *
+		 * @param 	contactIndex	Zero-based index of the contact for which we look for the contact
+		 * 							mode of the subject stratigraphic unit.
+		 *
+		 * @returns	Proportional contact mode by default (if no contact mode is associated to the subject
+		 * 			stratigraphic unit) or the contact mode of the subject stratigraphic unit.
+		 */
+		gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(unsigned int contactIndex) const;
+
+		/** Gets the stratigraphic unit interpretation which is the subject of a particular contact.
+		 *
+		 * @exception std::out_of_range	If @p contactIndex is out of range.
+		 * 								
+		 * @param 	contactIndex	Zero-based index of the contact for which we look for the subject 
+		 * 							stratigraphic unit interpretation.
+		 * 							
+		 * @returns The subject stratigraphic unit interpretation of the contact at position @p contactIndex
+		 * 			if it exists, else @c nullptr.
+		 */
 		StratigraphicUnitInterpretation* getSubjectOfContact(unsigned int contactIndex) const;
+
+		/**
+		 * Gets the contact mode of the direct object stratigraphic unit of a contact located at a
+		 * particular index. Most of time the direct object stratigraphic unit is the stratigraphic unit
+		 * below the contact.
+		 *
+		 * @param 	contactIndex	Zero-based index of the contact for which we look for the contact
+		 * 							mode of the direct object stratigraphic unit.
+		 *
+		 * @returns	Proportional contact mode by default (if no contact mode is associated to the direct
+		 * 			object stratigraphic unit) or the contact mode of the direct object stratigraphic
+		 * 			unit.
+		 */
+		gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(unsigned int contactIndex) const;
+
+		/** Gets the stratigraphic unit interpretation which is the direct object of a particular contact.
+		 *
+		 * @exception std::out_of_range	If @p contactIndex is out of range.
+		 *
+		 * @param 	contactIndex	Zero-based index of the contact for which we look for the direct
+		 * 							object stratigraphic unit interpretation.
+		 *
+		 * @returns The direct object stratigraphic unit interpretation of the contact at position 
+		 * 			@p contactIndex if it exists, else @c nullptr.
+		 */
 		StratigraphicUnitInterpretation* getDirectObjectOfContact(unsigned int contactIndex) const;
+
+		/**
+		 * Gets the horizon interpretation which is the contact between two stratigraphic units.
+		 *
+		 * @exception	std::out_of_range	If @p contactIndex is out of range.
+		 *
+		 * @param 	contactIndex	Zero-based index of the contact for which we want to get the
+		 * 							corresponding horizon interpretation.
+		 *
+		 * @returns	@c nullptr if the horizon corresponding to the contact at position @p contactIndex is
+		 * 			unknown, else the corresponding horizon interpretation.
+		 */
+		HorizonInterpretation* getHorizonInterpretationOfContact(unsigned int contactIndex) const;
+		
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicUnitInterpretation, StratigraphicUnitInterpretation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicOccurrenceInterpretation, StratigraphicOccurrenceInterpretation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::HorizonInterpretation, HorizonInterpretation)
@@ -2651,11 +2772,44 @@ namespace RESQML2_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_StratigraphicColumn) StratigraphicColumn;
 #endif
+	/**
+	* @brief	A global interpretation of the stratigraphy, which can be made up of several ranks of
+	* 			stratigraphic unit interpretations.
+	*/
 	class StratigraphicColumn : public COMMON_NS::AbstractObject
 	{
 	public:
+	
+		/**
+		 * Stratigraphic column ranks must be pushed back from the coarsest rank to the most detailed one.
+		 *		
+		 * Pushes a back a stratigraphic column rank interpretation into this stratigraphic column.
+		 *
+		 * @exception	std::invalid_argument	If <tt>stratiColumnRank == nullptr</tt>
+		 *
+		 * @param [in]	stratiColumnRank	A stratigraphic column rank interpretation.
+		 */
 		void pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank);
+
+		/**
+		 * Gets the count of all the stratigraphic column rank interpretations which are contained in
+		 * this stratigraphic column.
+		 *
+		 * @returns	The count of all the stratigraphic column rank interpretations which are contained in
+		 * 			this stratigraphic column.
+		 */
 		unsigned int getStratigraphicColumnRankInterpretationCount() const;
+		
+		/**
+		 * Gets the stratigraphic column rank interpretations at a particular index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=
+		 * 									getStratigraphicColumnRankInterpretationCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the stratigraphic column rank interpretations.
+		 *
+		 * @returns	The stratigraphic column rank interpretation at position @p index.
+		 */
 		StratigraphicColumnRankInterpretation* getStratigraphicColumnRankInterpretation(unsigned int index) const;
 	};
 

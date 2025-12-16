@@ -1702,8 +1702,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumn* createStratigraphicColumn(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	Creates a stratigraphic column rank interpretation ordered by age into this
-		 * 			repository.
+		 * @brief	Creates a stratigraphic column rank interpretation ordered by ascending age into this repository.
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
@@ -1721,8 +1720,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank);
 
 		/**
-		 * @brief	Creates a stratigraphic column rank interpretation ordered by apparent depth into
-		 * 			this repository
+		 * @brief	Creates a stratigraphic column rank interpretation ordered by ascending apparent depth into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
