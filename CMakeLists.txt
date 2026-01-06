@@ -63,13 +63,13 @@ ELSE()
 	  MESSAGE(FATAL_ERROR "Wrong HDF5_VERSION=${HDF5_VERSION}")
 	ENDIF()
 	IF(HDF5_PREFER_PARALLEL)
-		if(NOT HDF5_IS_PARALLEL)
+		if (NOT (HDF5_IS_PARALLEL OR HDF5_PROVIDES_PARALLEL))
 			message(WARNING
 				"Parallel HDF5 is preferred but only serial version found!"
 			)
 		ENDIF()
 	ELSE()
-		IF(HDF5_IS_PARALLEL)
+		IF(HDF5_IS_PARALLEL OR HDF5_PROVIDES_PARALLEL)
 			message(WARNING
 				"Serial HDF5 is preferred but only parallel version found!"
 			)
