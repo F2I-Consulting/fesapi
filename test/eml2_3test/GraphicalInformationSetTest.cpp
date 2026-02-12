@@ -24,7 +24,7 @@ under the License.
 using namespace std;
 using namespace EML2_NS;
 using namespace RESQML2_NS;
-using namespace commontest;
+using namespace eml2_3test;
 
 const char* GraphicalInformationSetTest::defaultUuid = "b4a247f5-aeab-46c3-8afc-bce6420d47a8";
 const char* GraphicalInformationSetTest::defaultTitle = "Graphical Information Set";

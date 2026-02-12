@@ -21,14 +21,10 @@ under the License.
 #include "AbstractTest.h"
 
 namespace eml2_3test {
-	class GraphicalInformationSetTest : public commontest::AbstractTest {
+	class ColumnBasedTableTest : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
-		static const char* uuidHorizon;
-		static const char* titleHorzon;
 
-		GraphicalInformationSetTest(const std::string & repoPath);
+		ColumnBasedTableTest(const std::string & repoPath);
 
 	protected:
 		void initRepo();

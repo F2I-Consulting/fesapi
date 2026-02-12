@@ -36,6 +36,7 @@ under the License.
 
 #include "../eml2_3/Activity.h"
 #include "../eml2_3/ActivityTemplate.h"
+#include "../eml2_3/ColumnBasedTable.h"
 #include "../eml2_3/GraphicalInformationSet.h"
 #include "../eml2_3/LocalEngineeringCompoundCrs.h"
 #include "../eml2_3/LocalEngineering2dCrs.h"
@@ -953,6 +954,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if (ns == "eml23") {
 		if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::Activity)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::ActivityTemplate)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::ColumnBasedTable)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::LocalEngineering2dCrs)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::LocalEngineeringCompoundCrs)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(EML2_3_NS::GraphicalInformationSet)
@@ -2492,6 +2494,11 @@ RESQML2_NS::StringTableLookup* DataObjectRepository::createStringTableLookup(con
 	return new RESQML2_0_1_NS::StringTableLookup(this, guid, title);
 }
 
+EML2_NS::ColumnBasedTable* DataObjectRepository::createColumnBasedTable(const std::string& guid, const std::string& title)
+{
+	return new EML2_3_NS::ColumnBasedTable(this, guid, title);
+}
+
 RESQML2_0_1_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
 	const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parentEnergisticsPropertyKind)
 {
@@ -2932,6 +2939,7 @@ GETTER_DATAOBJECTS_IMPL(EML2_NS::AbstractHdfProxy, HdfProxy)
 GETTER_DATAOBJECTS_IMPL(EML2_NS::AbstractLocal3dCrs, Local3dCrs)
 GETTER_DATAOBJECTS_IMPL(EML2_NS::Activity, Activity)
 GETTER_DATAOBJECTS_IMPL(EML2_NS::ActivityTemplate, ActivityTemplate)
+GETTER_DATAOBJECTS_IMPL(EML2_NS::ColumnBasedTable, ColumnBasedTable)
 GETTER_DATAOBJECTS_IMPL(EML2_NS::GraphicalInformationSet, GraphicalInformationSet)
 GETTER_DATAOBJECTS_IMPL(EML2_NS::PropertyKind, PropertyKind)
 GETTER_DATAOBJECTS_IMPL(EML2_NS::TimeSeries, TimeSeries)
@@ -3534,6 +3542,7 @@ std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getEml2_3Wrap
 
 	if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, Activity, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ActivityTemplate, gsoap_eml2_3, eml23)
+	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, ColumnBasedTable, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, GraphicalInformationSet, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, LocalEngineering2dCrs, gsoap_eml2_3, eml23)
 	else if CHECK_AND_GET_EML_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EML2_3_NS, LocalEngineeringCompoundCrs, gsoap_eml2_3, eml23)

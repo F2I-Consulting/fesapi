@@ -42,6 +42,8 @@ under the License.
 #include "eml2/PropertyKind.h"
 #include "eml2/TimeSeries.h"
 
+#include "eml2_3/ColumnBasedTable.h"
+#include "eml2_3/GraphicalInformationSet.h"
 #include "eml2_3/LocalEngineeringCompoundCrs.h"
 #include "eml2_3/PropertyKind.h"
 
@@ -106,7 +108,6 @@ under the License.
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
 
 #if WITH_RESQML2_2
-#include "eml2_3/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
 #include "resqml2_2/FluidBoundaryInterpretation.h"
@@ -263,6 +264,29 @@ void serializeWitsmlWells(COMMON_NS::DataObjectRepository * repo)
 	witsmlWellboreMarker = repo->createWellboreMarker(witsmlWellbore, "08b18514-e0c8-4667-850b-4ddd1cb785b5", "WITSML marker", 350, gsoap_eml2_3::eml23__LengthUom::m);
 	witsmlWellboreMarker->setDipAngle(5, gsoap_eml2_3::eml23__PlaneAngleUom::dega);
 	witsmlWellboreMarker->setDipDirection(10, gsoap_eml2_3::eml23__PlaneAngleUom::dega);
+}
+
+void serializeColumnBasedTable(COMMON_NS::DataObjectRepository* repo, EML2_NS::AbstractHdfProxy* hdfProxy)
+{
+	auto* cbt = repo->createColumnBasedTable("866841eb-0c56-4b7d-96d6-f15f385deaf9", "KrPc");
+
+	auto* pwls3Saturation = repo->createPropertyKind("cfe9293f-d5a9-486d-815a-a957cace90b6", "saturation", gsoap_eml2_3::eml23__QuantityClassKind::dimensionless);
+	auto* pwls3RelPerm = repo->createPropertyKind("8e3c5579-7efd-40d0-ab03-bc79452dd2db", "relative permeability", gsoap_eml2_3::eml23__QuantityClassKind::unitless);
+	auto* pwls3CapPressure = repo->createPropertyKind("a816a113-1544-4f58-bc6d-7c030b65627b", "capillary pressure", gsoap_eml2_3::eml23__QuantityClassKind::pressure);
+
+	cbt->pushBackColumnHeader(true, "Water Saturation", pwls3Saturation);
+	cbt->pushBackColumnHeader(false, "Water Relative Permeability", pwls3RelPerm);
+	cbt->pushBackColumnHeader(false, "Oil Relative Permeability", pwls3RelPerm);
+	cbt->pushBackColumnHeader(false, "Oil Water Capillary Pressure", pwls3CapPressure);
+
+	double watSat[] = { 0, 0.157, 0.173, 0.174325, 0.19, 0.19165, 0.207 };
+	cbt->setDoubleValues(0, watSat, 7);
+	double watRelPerm[] = { 0, 0, 0.000356, 0.0004392, 0.0014241, 0.0015969, 0.0032041 };
+	cbt->setDoubleValues(1, watRelPerm, 7);
+	double oilRelPerm[] = { 1, 0.99, 0.886131, 0.8767012, 0.7764308, 0.765876, 0.6778755 };
+	cbt->setDoubleValues(2, oilRelPerm, 7);
+	double capPressure[] = { 0, 0, 0, 0, 0, 0, 0 };
+	cbt->setDoubleValues(3, capPressure, 7);
 }
 
 void serializeWells(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfProxy* hdfProxy)
@@ -2539,6 +2563,7 @@ bool serialize(const string& filePath)
 	repo.setDefaultCrs(local3dCrs);
 
 	// Comment or uncomment below domains/lines you want wether to test or not
+	serializeColumnBasedTable(&repo, hdfProxy);
 	serializeWells(&repo, hdfProxy);
 	serializePerforations(&repo);
 	serializeBoundaries(&repo, hdfProxy);
@@ -2965,7 +2990,24 @@ void deserializeSealedVolumeFramework(const COMMON_NS::DataObjectRepository & re
 				showAllMetadata(svf->getRepOfExternalShellFace(regionIdx, faceIdx));
 			}
 		}
+	}
+}
 
+void deserializeColumnBasedTable(COMMON_NS::DataObjectRepository* repo)
+{
+	for (auto const* cbt : repo->getColumnBasedTableSet()) {
+		cout << "COLUMN BASED TABLE : " << cbt->getTitle() << endl;
+		for (size_t columnIdx = 0; columnIdx < cbt->getColumnCount(); ++columnIdx) {
+			cout << "PropKind : " << cbt->getPropertyKind(columnIdx)->getTitle() << endl;
+			auto datatype = cbt->getDatatype(columnIdx);
+			cout << "Datatype : " << (int)datatype << endl;
+			if (datatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE) {
+				for (double dbl : cbt->getDoubleValues(columnIdx)) {
+					cout << dbl << " ";
+				}
+				cout << endl;
+			}
+		}
 	}
 }
 
@@ -5214,6 +5256,7 @@ void deserialize(const string & inputFile)
 	}
 	cout << endl;
 
+	deserializeColumnBasedTable(&repo);
 	deserializeGeobody(&repo);
 	deserializeFluidBoundary(repo);
 	deserializeRockFluidOrganization(repo);

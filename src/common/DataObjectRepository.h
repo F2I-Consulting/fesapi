@@ -32,6 +32,7 @@ namespace EML2_NS
 	class AbstractLocal3dCrs;
 	class Activity;
 	class ActivityTemplate;
+	class ColumnBasedTable;
 	class GraphicalInformationSet;
 	class PropertyKind;
 	class TimeSeries;
@@ -572,6 +573,7 @@ namespace COMMON_NS
 		GETTER_DATAOBJECTS(EML2_NS::AbstractLocal3dCrs, Local3dCrs)
 		GETTER_DATAOBJECTS(EML2_NS::Activity, Activity)
 		GETTER_DATAOBJECTS(EML2_NS::ActivityTemplate, ActivityTemplate)
+		GETTER_DATAOBJECTS(EML2_NS::ColumnBasedTable, ColumnBasedTable)
 		GETTER_DATAOBJECTS(EML2_NS::GraphicalInformationSet, GraphicalInformationSet)
 		GETTER_DATAOBJECTS(EML2_NS::PropertyKind, PropertyKind)
 		GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
@@ -1131,7 +1133,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a horizon into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1144,7 +1146,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* createHorizon(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a geobody boundary feature into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1173,7 +1175,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockVolumeFeature* createGeobodyFeature(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a fault into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1186,7 +1188,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::BoundaryFeature* createFault(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a fracture into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1312,7 +1314,7 @@ namespace COMMON_NS
 			gsoap_eml2_3::resqml22__CulturalFeatureKind kind = gsoap_eml2_3::resqml22__CulturalFeatureKind::project_x0020boundaries);
 
 		/**
-		 * @brief	@deprecated Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
+		 * @brief	Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
 		 * 			Creates a stratigraphic unit into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1327,8 +1329,8 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockVolumeFeature* createStratigraphicUnitFeature(const std::string & guid, const std::string & title);
 
 		/**
-		 * @deprecated Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
-		 * Creates a RockVolume feature into this repository
+		 * @brief	Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
+		 *			Creates a RockVolume feature into this repository
 		 *
 		 * @param 	guid 	The guid to set to the RockVolume feature. If empty then a new guid will be generated.
 		 * @param 	title	The title to set to the RockVolume feature. If empty then \"unknown\" title will be set.
@@ -1348,7 +1350,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates a
+		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates a
 		 * 			structural model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1363,7 +1365,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createStructuralModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates a
+		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates a
 		 * 			stratigraphic model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1378,7 +1380,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createStratigraphicModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates a rock
+		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates a rock
 		 * 			fluid model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1393,7 +1395,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Model* createRockFluidModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates an earth
+		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates an earth
 		 * 			model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -2649,6 +2651,21 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new string table lookup.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
+
+		/**
+		 * @brief	Creates a column based table into this repository
+		 *			You need to define the columns and set their values after creation
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the column based table. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the column based table. If empty then \"unknown\" title
+		 * 					will be set.
+		 *
+		 * @returns	A pointer to the new column based table.
+		 */
+		DLL_IMPORT_OR_EXPORT EML2_NS::ColumnBasedTable* createColumnBasedTable(const std::string& guid, const std::string& title);
 
 		/**
 		 * Creates a property kind into this repository

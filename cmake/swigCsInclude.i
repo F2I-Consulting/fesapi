@@ -33,6 +33,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		CHANNEL,
 		CHANNELSET,
 		CMPLINEFEATURE,
+		COLUMNBASEDTABLE,
 		COMMENTPROPERTY,
 		CONTINUOUSCOLORMAP,
 		CONTINUOUSPROPERTY,
@@ -125,11 +126,9 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		if (xmlNs.Equals("resqml20")) {
 			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.Activity(cPtr, owner);
 		}
-${COMMENT_START}
 		else if (xmlNs.Equals("eml23")) {
 			return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.Activity(cPtr, owner);
 		}
-${COMMENT_END}
 		
 		return null;
 	}
@@ -140,11 +139,9 @@ ${COMMENT_END}
 		if (xmlNs.Equals("resqml20")) {
 			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.ActivityTemplate(cPtr, owner);
 		}
-${COMMENT_START}
 		else if (xmlNs.Equals("eml23")) {
 			return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.ActivityTemplate(cPtr, owner);
 		}
-${COMMENT_END}
 		
 		return null;
 	}
@@ -160,11 +157,9 @@ ${COMMENT_END}
 		if (xmlNs.Equals("resqml20")) {
 			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.PropertyKind(cPtr, owner);
 		}
-${COMMENT_START}
 		else if (xmlNs.Equals("eml23")) {
 			return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.PropertyKind(cPtr, owner);
 		}
-${COMMENT_END}
 		
 		return null;
 	}
@@ -175,11 +170,9 @@ ${COMMENT_END}
 		if (xmlNs.Equals("resqml20")) {
 			return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.TimeSeries(cPtr, owner);
 		}
-${COMMENT_START}
 		else if (xmlNs.Equals("eml23")) {
 			return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.TimeSeries(cPtr, owner);
 		}
-${COMMENT_END}
 		
 		return null;
 	}
@@ -867,6 +860,7 @@ ${COMMENT_END}
 ${COMMENT_START}
 		case DataObjectName.CMPLINEFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.CmpLineFeature(cPtr, owner);
 ${COMMENT_END}
+		case DataObjectName.COLUMNBASEDTABLE : return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.ColumnBasedTable(cPtr, owner);
 		case DataObjectName.COMMENTPROPERTY : return resqml2_instantiateCommentProperty(cPtr, owner);
 ${COMMENT_START}
 		case DataObjectName.CONTINUOUSCOLORMAP : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_2_NS}.ContinuousColorMap(cPtr, owner);
@@ -983,8 +977,7 @@ namespace COMMON_NS
 
 namespace EML2_NS
 {
-	%typemap(csout, excode=SWIGEXCODE) 	Activity*, ActivityTemplate*, EpcExternalPartReference*, PropertyKind*, TimeSeries*, AbstractLocal3dCrs*
-										,GraphicalInformationSet*
+	%typemap(csout, excode=SWIGEXCODE) 	Activity*, ActivityTemplate*, EpcExternalPartReference*, PropertyKind*, TimeSeries*, AbstractLocal3dCrs*, GraphicalInformationSet*, ColumnBasedTable*
 	{
 		global::System.IntPtr cPtr = $imcall;
 		$csclassname ret = ($csclassname) $modulePINVOKE.eml2_instantiateConcreteObject(cPtr, $owner);$excode

@@ -20,6 +20,7 @@ under the License.
 #include "../src/eml2/AbstractLocal3dCrs.h"
 #include "../src/eml2/Activity.h"
 #include "../src/eml2/ActivityTemplate.h"
+#include "../src/eml2/ColumnBasedTable.h"
 #include "../src/eml2/GraphicalInformationSet.h"
 #include "../src/eml2/PropertyKind.h"
 #include "../src/eml2/TimeSeries.h"
@@ -30,6 +31,7 @@ under the License.
 	%nspace EML2_NS::AbstractLocal3dCrs;
 	%nspace EML2_NS::Activity;
 	%nspace EML2_NS::ActivityTemplate;
+	%nspace EML2_NS::ColumnBasedTable;
 	%nspace EML2_NS::EpcExternalPartReference;
 	%nspace EML2_NS::GraphicalInformationSet;
 	%nspace EML2_NS::PropertyKind;
@@ -1702,8 +1704,6 @@ namespace EML2_NS
 		void setValueVectorIndex(COMMON_NS::AbstractObject const* targetObject, int64_t valueVectorIndex);
 	};
 	
-	/************ Property **************/
-	
 	class PropertyKind : public COMMON_NS::AbstractObject {
 	public:
 		/**
@@ -1747,6 +1747,137 @@ namespace EML2_NS
 		 * @returns	True if abstract, false if not.
 		 */
 		virtual bool isAbstract() const;
+	};
+	
+	class ColumnBasedTable : public COMMON_NS::AbstractObject
+	{
+	public:		
+		/**
+		 * Gets the row count of this table
+		 */
+		uint64_t getRowCount() const;
+
+		/**
+		 * Gets the column count of this table
+		 */
+		uint64_t getColumnCount() const;
+
+		/**
+		 * Gets the property kind associated to a particular column count of this table
+		 *
+		 * @param columnIndex	The index of the column which we want the associated property kind from
+		 *
+		 * @return				The associated property kind.
+		 */
+		PropertyKind* getPropertyKind(uint64_t columnIndex) const;
+
+		/**
+		 * Gets the uom associated to a particular column count of this table
+		 *
+		 * @param columnIndex	The index of the column which we want the associated uom from
+		 *
+		 * @return				The associated uom. If no uom is provided or if Euc is provided, this method returns Euc.
+		 */
+		gsoap_eml2_3::eml23__UnitOfMeasure getUom(uint64_t columnIndex) const;
+
+		/**
+		 * Gets the uom associated to a particular column count of this table
+		 *
+		 * @param columnIndex	The index of the column which we want the associated uom from
+		 *
+		 * @return				The associated uom as string. If no uom is provided, this method returns an empty string.
+		 */
+		std::string getUomAsString(uint64_t columnIndex) const;
+
+		/**
+		 * Gets the value count per row for a particular column count of this table
+		 *
+		 * @param columnIndex	The index of the column which we want the associated uom from
+		 *
+		 * @return				The associated uom. If no uom is provided or if Euc is provided, this method returns Euc.
+		 */
+		uint64_t getValueCountPerRow(uint64_t columnIndex) const;
+
+		/**
+		 * Gets the values of a column as string values
+		 *
+		 * @param columnIndex	The index of the column which we want the values from
+		 *
+		 * @return				The string values
+		 */
+		std::vector<std::string> getStringValues(uint64_t columnIndex) const;
+
+		/**
+		 * Sets the values of a column as XML string values
+		 *
+		 * @param columnIndex	The index of the column which we want to set the values
+		 * @param values		The values to set
+		 */
+		void setStringValues(uint64_t columnIndex, const std::vector<std::string> & values);
+
+		/**
+		 * Gets the values of a column as double values
+		 *
+		 * @param columnIndex	The index of the column which we want the values from
+		 *
+		 * @return				The double values
+		 */
+		std::vector<double> getDoubleValues(uint64_t columnIndex) const;
+
+		/**
+		 * Sets the values of a column as XML double values
+		 *
+		 * @param columnIndex	The index of the column which we want to set the values
+		 * @param values		The values to set
+		 */
+		void setDoubleValues(uint64_t columnIndex, const std::vector<double> & values);
+
+		/**
+		 * Sets the values of a column as double values into the HDF proxy.
+		 *
+		 * @param columnIndex	The index of the column which we want to set the values
+		 * @param values		The values to set
+		 * @param valueCount	The count of values/rows.
+		 * @param proxy			The hdf proxy which indicates the support where the values will be stored.
+		 */
+		void setDoubleValues(uint64_t columnIndex, double const* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy * proxy = nullptr);
+
+		/**
+		 * Gets the values of a column as int64 values
+		 *
+		 * @param columnIndex	The index of the column which we want the values from
+		 *
+		 * @return				The int64 values
+		 */
+		std::vector<int64_t> getInt64Values(uint64_t columnIndex) const;
+
+		/**
+		 * Sets the values of a column as XML int64 values
+		 *
+		 * @param columnIndex	The index of the column which we want to set the values
+		 * @param values		The values to set
+		 */
+		void setInt64Values(uint64_t columnIndex, const std::vector<int64_t> & values);
+
+		/**
+		 * Sets the values of a column as int64 values into the HDF proxy.
+		 *
+		 * @param columnIndex	The index of the column which we want to set the values
+		 * @param values		The values to set
+		 * @param valueCount	The count of values/rows.
+		 * @param proxy			The hdf proxy which indicates the support where the values will be stored.
+		 */
+		void setInt64Values(uint64_t columnIndex, int64_t const* values, uint64_t valueCount, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		* Pushes back a new column in this table and fill in its header
+		*
+		* @param isAKeyColumn		Indicate if the column to push back is a key one or not
+		* @param title				Indicate the name of the column
+		* @param propKind			The property kind associated to the value of this column
+		* @param valueCountPerRow	The count of values in each row of this column
+		*/
+		void pushBackColumnHeader(bool isAKeyColumn, const std::string& title, PropertyKind* propKind, uint64_t valueCountPerRow = 1);
 	};
 	
 	class TimeSeries : public COMMON_NS::AbstractObject

@@ -1086,6 +1086,7 @@ import com.f2i_consulting.fesapi.*;
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::AbstractLocal3dCrs, Local3dCrs)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::Activity, Activity)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::ActivityTemplate, ActivityTemplate)
+		SWIG_GETTER_DATAOBJECTS(EML2_NS::ColumnBasedTable, ColumnBasedTable)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::GraphicalInformationSet, GraphicalInformationSet)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::PropertyKind, PropertyKind)
 		SWIG_GETTER_DATAOBJECTS(EML2_NS::TimeSeries, TimeSeries)
@@ -1533,7 +1534,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a horizon into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1546,7 +1547,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::BoundaryFeature* createHorizon(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a geobody boundary feature into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1575,7 +1576,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::RockVolumeFeature* createGeobodyFeature(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a fault into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1588,7 +1589,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::BoundaryFeature* createFault(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
 		 * 			a fracture into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1714,7 +1715,7 @@ import com.f2i_consulting.fesapi.*;
 			gsoap_eml2_3::resqml22__CulturalFeatureKind kind = gsoap_eml2_3::resqml22__CulturalFeatureKind::project_x0020boundaries);
 
 		/**
-		 * @brief	@deprecated Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
+		 * @brief	Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
 		 * 			Creates a stratigraphic unit into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1734,7 +1735,7 @@ import com.f2i_consulting.fesapi.*;
 #endif
 
 		/**
-		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates a
+		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates a
 		 * 			structural model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1749,7 +1750,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::Model* createStructuralModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates a
+		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates a
 		 * 			stratigraphic model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1764,7 +1765,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::Model* createStratigraphicModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates a rock
+		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates a rock
 		 * 			fluid model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1779,7 +1780,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::Model* createRockFluidModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	@deprecated Use {@link createModel()} method for RESQML post v2.0.1 Creates an earth
+		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates an earth
 		 * 			model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -3030,7 +3031,22 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @returns	A pointer to the new string table lookup.
 		 */
-		 RESQML2_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
+		RESQML2_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
+		 
+		/**
+		 * @brief	Creates a column based table into this repository
+		 *			You need to define the columns and set their values after creation
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the column based table. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the column based table. If empty then \"unknown\" title
+		 * 					will be set.
+		 *
+		 * @returns	A pointer to the new column based table.
+		 */
+		EML2_NS::ColumnBasedTable* createColumnBasedTable(const std::string& guid, const std::string& title);
 
 		/**
 		 * Creates a property kind into this repository

@@ -16,22 +16,21 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#pragma once
+#include "ColumnBasedTable.h"
 
-#include "AbstractTest.h"
+#include "PropertyKind.h"
 
-namespace eml2_3test {
-	class GraphicalInformationSetTest : public commontest::AbstractTest {
-	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
-		static const char* uuidHorizon;
-		static const char* titleHorzon;
+using namespace EML2_NS;
 
-		GraphicalInformationSetTest(const std::string & repoPath);
+PropertyKind* ColumnBasedTable::getPropertyKind(uint64_t columnIndex) const
+{
+	return getRepository()->getDataObjectByUuid<PropertyKind>(getPropertyKindDor(columnIndex).getUuid());
+}
 
-	protected:
-		void initRepo();
-		void readRepo();
-	};
+gsoap_eml2_3::eml23__UnitOfMeasure ColumnBasedTable::getUom(uint64_t columnIndex) const
+{
+	gsoap_eml2_3::eml23__UnitOfMeasure result;
+	return gsoap_eml2_3::soap_s2eml23__UnitOfMeasure(getGsoapContext(), getUomAsString(columnIndex).c_str(), &result) == SOAP_OK
+		? result
+		: gsoap_eml2_3::eml23__UnitOfMeasure::Euc;
 }
