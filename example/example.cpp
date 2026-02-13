@@ -5786,7 +5786,7 @@ void appendAContinuousProp(const string& filePath)
 }
 
 // filepath is defined in a macro to better check memory leak
-#define filePath u8"../../testingPackageCpp22.epc"
+#define filePath u8"../../testingPackageCpp.epc"
 int main()
 {
 	try {
