@@ -528,7 +528,7 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * repo, EML2_NS
 	stratiColumnRank0->pushBackStratigraphicBinaryContact(stratiUnitAInterp, gsoap_eml2_3::resqml22__ContactMode::conformable, stratiUnitBInterp, gsoap_eml2_3::resqml22__ContactMode::conformable, horizon2Interp1);
 
 	// WellboreFeature marker frame
-	if (wellbore1Interp1 != nullptr) {
+	if (repo->getDefaultHdfProxy()->getXmlNamespace() == "resqml20" && wellbore1Interp1 != nullptr) {
 		RESQML2_NS::WellboreMarkerFrameRepresentation* wmf = repo->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
 		double markerMdValues[2] = { 350, 550 };
 		wmf->setMdValues(markerMdValues, 2, hdfProxy);
@@ -1196,10 +1196,12 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	/**************
 	 Points Properties
 	***************/
-	RESQML2_NS::PointsProperty* pointsProp = repo->createPointsProperty(twoCellsIjkGrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center", 1,
-		gsoap_eml2_3::eml23__IndexableElement::cells, local3dCrs);
-	double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
-	pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
+	if (repo->getDefaultHdfProxy()->getXmlNamespace() == "resqml20") {
+		RESQML2_NS::PointsProperty* pointsProp = repo->createPointsProperty(twoCellsIjkGrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center", 1,
+			gsoap_eml2_3::eml23__IndexableElement::cells, local3dCrs);
+		double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
+		pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
+	}
 
 	/**************
 	 LGR
@@ -5784,7 +5786,7 @@ void appendAContinuousProp(const string& filePath)
 }
 
 // filepath is defined in a macro to better check memory leak
-#define filePath u8"../../testingPackageCpp.epc"
+#define filePath u8"../../testingPackageCpp22.epc"
 int main()
 {
 	try {
