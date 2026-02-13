@@ -72,8 +72,9 @@ PropertySet* PropertySet::getChildren(uint64_t index) const
 
 void PropertySet::pushBackProperty(RESQML2_NS::AbstractProperty * prop)
 {
-	if (prop == nullptr)
+	if (prop == nullptr) {
 		throw invalid_argument("The property to push cannot be null.");
+	}
 
 	pushBackXmlProperty(prop);
 

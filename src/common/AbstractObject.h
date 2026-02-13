@@ -471,7 +471,9 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespaceVersion() const;
 
 		/**
-		 * Gets the content type of this instance according to EPC recommendation
+		 * Gets the content type of this instance according to Energistics Identifier Specification v4.0
+		 * https://docs.energistics.org/#EID/EID_TOPICS/EID-000-007-0-C-sv4000.html
+		 * Example here : https://docs.energistics.org/#EID/EID_TOPICS/EID-000-009-0-C-sv4000.html
 		 *
 		 * @returns	The content type of this instance.
 		 */

@@ -497,11 +497,21 @@ void AbstractObject::initMandatoryMetadata()
 	cannotBePartial();
 
 	if (gsoapProxy2_0_1 != nullptr) {
+		/* From EML2.0 Abstract.xsd, schemaVersion documentation :
+		* The specific version of a schema from which this object is derived.
+		* This string should be exactly equivalent to the version attribute of the root element of the associated XSD schema file
+		*/
 		gsoapProxy2_0_1->schemaVersion = getXmlNamespaceVersion();
 		gsoapProxy2_0_1->Citation = gsoap_resqml2_0_1::soap_new_eml20__Citation(gsoapProxy2_0_1->soap);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoapProxy2_3->schemaVersion = getXmlNamespaceVersion();
+		/* From EML2.3 Abstract.xsd, schemaVersion documentation :
+		* The version of the Energistics schema used for a data object. The schema version is the first 2 digits of an ML version. EXAMPLES: 
+		* - For WITSML v2.0 the schema version is 20
+		* - For RESQML v2.0.1 the schema version is 20
+		*/
+		const std::string& xmlNs = getXmlNamespace();
+		gsoapProxy2_3->schemaVersion = xmlNs.substr(xmlNs.size()-2);
 		gsoapProxy2_3->Citation = gsoap_eml2_3::soap_new_eml23__Citation(gsoapProxy2_3->soap);
 	}
 

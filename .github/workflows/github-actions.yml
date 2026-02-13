@@ -166,7 +166,7 @@ jobs:
         # https://github.com/pypa/cibuildwheel/issues/1139
         run: touch python/setup.py
       - name: Build wheels
-        # Cannot use a more recent version than v2.22.0 because of fetappi wheel which uses AVRO which cannot be built with GNU 14.
+        # Cannot use a more recent version than v2.22.0 because of fetpapi wheel which uses AVRO which cannot be built with GNU 14.
         uses: pypa/cibuildwheel@v2.22.0
         env:
           CIBW_BUILD: cp38-manylinux_* cp39-manylinux_* cp310-manylinux_* cp311-manylinux_* cp312-manylinux_* cp313-manylinux_*
