@@ -43,8 +43,7 @@ namespace RESQML2_NS
 		 * 						1] for alpha transparency channel (0 means transparent and 1 means
 		 * 						opaque). If alphas == nullptr (default value), default alpha value is 1.
 		 * @param 	indices	   	(Optional) array (of size colorCount) of color indices.  These indices
-		 * 						are cast to unsigned int in the case of a discrete color map. If indices
-		 * 						== nullptr (default value), indices are set from 0 to colorCount - 1.
+		 * 						are cast to int64_t. If indices == nullptr (default value), indices are set from 0 to colorCount - 1.
 		 * @param 	colorTitles	(Optional) vector (of size colorCount) of color titles. Titles are not
 		 * 						set if colorTitles is empty (default value)
 		 */
