@@ -4720,11 +4720,139 @@ namespace RESQML2_NS
 		 */
 		void setKCellCount(uint64_t kCount);
 
+		/**
+		 * Gets the K direction (up, down or not monotonic) of this grid.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 *
+		 * @returns	The K direction of this grid.
+		 */
+		gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const;
+
+		/**
+		 * Set the stratigraphic organization interpretation which is associated to this grid
+		 * representation.
+		 *
+		 * @exception	std::invalid_argument	If this grid is a truncated one and thus cannot be linked
+		 * 										to a stratigraphic column in RESQML2.0.
+		 * @exception	std::invalid_argument	If @p stratiOrgInterp is null.
+		 * @exception	std::invalid_argument	If @p hdfProxy is null and no default HDF proxy is
+		 * 										provided in the associated data object repository.
+		 *
+		 * @param [in]	   	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
+		 * 										column for each interval of this grid representation.
+		 * 										Array length is the number of interval in the grids.
+		 * 										Intervals = layers + K gaps.
+		 * @param 		   	nullValue		 	The value which is used to tell that the association
+		 * 										between a grid interval and a stratigraphic unit is
+		 * 										unavailable.
+		 * @param [in]	   	stratiOrgInterp  	The stratigraphic organization interpretation which is
+		 * 										associated to this grid representation.
+		 * @param [in, out]	hdfProxy		 	(Optional) The HDF proxy where to write the values. It
+		 * 										must be already opened for writing and won't be closed in
+		 * 										this method.
+		 */
 		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(int64_t * stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy);
+		
 		RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
+
+		/**
+		 * Queries if this grid has some interval stratigraphic unit indices.
+		 *
+		 * @exception	std::logic_error	If this grid is partial or if the underlying gSOAP instance is not a RESQML2.0 one..
+		 *
+		 * @returns	true if this grid representation has got some association between stratigraphic unit
+		 * 			indices and intervals. Intervals = layers + K gaps.
+		 */
 		bool hasIntervalStratigraphicUnitIndices() const;
+
+		/**
+		 * Get the stratigraphic unit indices (regarding the associated stratigraphic organization
+		 * interpretation) of each interval of this grid representation.
+		 *
+		 * @exception	std::invalid_argument	If this grid is a truncated one.
+		 * @exception	std::invalid_argument	If this grid has no stratigraphic unit interval
+		 * 										information.
+		 *
+		 * @param [out]	stratiUnitIndices	This array must be allocated with a size equal to the
+		 * 										count of interval in this grid. Intervals = layers + K gaps.
+		 * 										It will be filled in with the stratigraphic unit indices
+		 * 										ordered as grid intervals are ordered.
+		 *
+		 * @returns	The null value. The null value is used to tell the association between a grid
+		 * 			interval and a stratigraphic unit is unavailable.
+		 */
 		int64_t getIntervalStratigraphicUnitIndices(int64_t * stratiUnitIndices);
+
+		/**
+		 * Gets the most complex pillar geometry we can find on this grid. The returned value is not
+		 * computed. It is just read from the data object attributes. Since it is denormalized
+		 * information, inconsistency (mainly due to non synchronized information) might occur. In order
+		 * to be sure the value is consistent with actual data, please compute this value again from the
+		 * pillar kind indices.
+		 *
+		 * @exception	std::invalid_argument	If this grid has no AbstractColumnLayerGridGeometry.
+		 *
+		 * @returns	The most complex pillar geometry which we can find on this grid.
+		 */
 		gsoap_resqml2_0_1::resqml20__PillarShape getMostComplexPillarGeometry() const;
+
+		/**
+		 * Gets the parent node index for each of the split nodes.
+		 *
+		 * @param [out]	splitNodeParentNodeIndices	This array must be pre-allocated with a size equal to the
+		 * 											count of split nodes. It will be filled in by this method
+		 *											and not deleted.
+		 *
+		 * @exception	std::invalid_argument	If there is no split node on this column layer grid.
+		 */
+		void getSplitNodeParentNodeIndices(uint64_t* splitNodeParentNodeIndices) const;
+
+		/**
+		 * Gets the cumulative count of cells impacted by all the split nodes. The order of
+		 * the cumulative count values corresponds to the order of the split nodes.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split node in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the cumulative count of the columns impacted by the
+		 * 										split coordinate lines are not stored within an HDF5
+		 * 										integer array.
+		 *
+		 * @param [out]	cumulativeCountOfCellsPerSplitNode	This array must be pre-allocated with a size equal to the
+		 * 													count of split nodes. It will be filled in with the cumulative
+		 * 													count of cells impacted by the split nodes.
+		 */
+		void getCumulativeCountOfCellsPerSplitNode(uint64_t* cumulativeCountOfCellsPerSplitNode) const;
+
+		/**
+		 * Gets the indices of the cells impacted by all the split nodes. They are linearized and must be read according to getCumulativeCountOfCellsPerSplitNode.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split node in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the cumulative count of the columns impacted by the
+		 * 										split coordinate lines are not stored within an HDF5
+		 * 										integer array.
+		 *
+		 * @param [out]	cellsPerSplitNode	This array must be pre-allocated with the last value of the 
+		 * 									getCumulativeCountOfCellsPerSplitNode returned value.
+		 *									It will be filled in with the cell indices impacted by the split nodes.
+		 */
+		void getCellsPerSplitNode(uint64_t* cellsPerSplitNode) const;
+
+		/**
+		* Sets all information about a split node patch of the grid. These information is related to
+		* all XYZ points which are located after the index (PillarCount + SplitPillarCount + SplitCoordinateLineCount) * (KCellCount + 1)
+		* 
+		* @param [in] splitNodeCount						The count of split nodes
+		* @param [in] splitNodeParentNodeIndices			The parent node index for each of the split nodes. Size must be splitNodeCount.
+		* @param [in] cumulativeCountOfCellsPerSplitNode	The cumulative count of cells impacted by each of the split nodes. Size must be splitNodeCount.
+		* @param [in] cellsPerSplitNode						The indices of the cells impacted by each of the split nodes.
+		*													Size must be the last value of cumulativeCountOfCellsPerSplitNode
+		*/
+		void setSplitNodePatch(uint64_t splitNodeCount, uint64_t* splitNodeParentNodeIndices,
+			uint64_t* cumulativeCountOfCellsPerSplitNode, uint64_t* cellsPerSplitNode, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -5228,8 +5356,6 @@ namespace RESQML2_NS
 		void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints);
 		
 		bool isNodeGeometryCompressed() const;
-		
-		gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const;
 		
 		geometryKind getGeometryKind() const;
 	};

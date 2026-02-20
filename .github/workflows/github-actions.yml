@@ -9,13 +9,20 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: zlib install
+        shell: pwsh
         run: |
+          # Download and extract
           curl -L "https://zlib.net/current/zlib.tar.gz" -o "${{ runner.temp }}\zlib.tar.gz"
           cd ${{ runner.temp }}
-          tar -xzf ${{ runner.temp }}\zlib.tar.gz
+          tar -xzf zlib.tar.gz
+          # Detect extracted folder (handles zlib-1.3.1 or future versions)
+          $zlibSrc = Get-ChildItem -Directory | Where-Object { $_.Name -like "zlib-*" } | Select-Object -First 1
+          Write-Host ("Detected zlib source folder: " + $zlibSrc.FullName)
+          # Build directory
           mkdir zlib-build
           cd zlib-build
-          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/zlib-install ${{ runner.temp }}/zlib-1.3.1
+          # Configure and install
+          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/zlib-install $zlibSrc.FullName
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Minizip static lib install

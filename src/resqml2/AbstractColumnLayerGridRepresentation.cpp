@@ -102,7 +102,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		rep->IntervalStratigraphicUnits->UnitIndices = gsoap_eml2_3::soap_new_eml23__JaggedArray(rep->soap);
 		// element XML
 		gsoap_eml2_3::eml23__IntegerXmlArray* elementDataset = gsoap_eml2_3::soap_new_eml23__IntegerXmlArray(rep->soap);
-		elementDataset->CountPerValue = nullValue;
+		elementDataset->NullValue = nullValue;
 		elementDataset->Values = std::to_string(stratiUnitIndices[0]);
 		for (uint64_t i = 1; i < getKCellCount(); ++i) {
 			elementDataset->Values += " " + std::to_string(stratiUnitIndices[i]);
@@ -111,7 +111,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 
 		// cumulative XML
 		gsoap_eml2_3::eml23__IntegerXmlArray* cumulativeDataset = gsoap_eml2_3::soap_new_eml23__IntegerXmlArray(rep->soap);
-		cumulativeDataset->CountPerValue = 1;
+		cumulativeDataset->NullValue = nullValue;
 		cumulativeDataset->Values = "1";
 		for (uint64_t i = 1; i < getKCellCount(); ++i) {
 			cumulativeDataset->Values += " " + std::to_string(i + 1);
@@ -268,4 +268,167 @@ gsoap_resqml2_0_1::resqml20__PillarShape AbstractColumnLayerGridRepresentation::
 	else {
 		throw logic_error("Not implemented yet");
 	}
+}
+
+void AbstractColumnLayerGridRepresentation::getSplitNodeParentNodeIndices(uint64_t* splitNodeParentNodeIndices) const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry* geom = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry*>(getPointGeometry2_0_1(0));
+		if (geom == nullptr) {
+			throw invalid_argument("There is no geometry on this grid.");
+		}
+		if (geom->SplitNodes == nullptr || geom->SplitNodes->Count == 0) {
+			throw invalid_argument("There is no split node on this grid.");
+		}
+
+		readArrayNdOfIntegerValues(geom->SplitNodes->ParentNodeIndices, splitNodeParentNodeIndices);
+	}
+	else {
+		gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry* geom = dynamic_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry*>(getPointGeometry2_2(0));
+		if (geom == nullptr) {
+			throw invalid_argument("There is no geometry on this grid.");
+		}
+		if (geom->SplitNodePatch == nullptr || geom->SplitNodePatch->Count == 0) {
+			throw invalid_argument("There is no split node on this grid.");
+		}
+
+		readArrayNdOfIntegerValues(geom->SplitNodePatch->ParentNodeIndices, splitNodeParentNodeIndices);
+	}
+}
+
+void AbstractColumnLayerGridRepresentation::getCumulativeCountOfCellsPerSplitNode(uint64_t* cumulativeCountOfCellsPerSplitNode) const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry* geom = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry*>(getPointGeometry2_0_1(0));
+		if (geom == nullptr) {
+			throw invalid_argument("There is no geometry on this grid.");
+		}
+		if (geom->SplitNodes == nullptr || geom->SplitNodes->Count == 0) {
+			throw invalid_argument("There is no split node on this grid.");
+		}
+
+		readArrayNdOfIntegerValues(geom->SplitNodes->CellsPerSplitNode->CumulativeLength, cumulativeCountOfCellsPerSplitNode);
+	}
+	else {
+		gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry* geom = dynamic_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry*>(getPointGeometry2_2(0));
+		if (geom == nullptr) {
+			throw invalid_argument("There is no geometry on this grid.");
+		}
+		if (geom->SplitNodePatch == nullptr || geom->SplitNodePatch->Count == 0) {
+			throw invalid_argument("There is no split node on this grid.");
+		}
+
+		readArrayNdOfIntegerValues(geom->SplitNodePatch->CellsPerSplitNode->CumulativeLength, cumulativeCountOfCellsPerSplitNode);
+	}
+}
+
+void AbstractColumnLayerGridRepresentation::getCellsPerSplitNode(uint64_t* cellsPerSplitNode) const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry* geom = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry*>(getPointGeometry2_0_1(0));
+		if (geom == nullptr) {
+			throw invalid_argument("There is no geometry on this grid.");
+		}
+		if (geom->SplitNodes == nullptr || geom->SplitNodes->Count == 0) {
+			throw invalid_argument("There is no split node on this grid.");
+		}
+
+		readArrayNdOfIntegerValues(geom->SplitNodes->CellsPerSplitNode->Elements, cellsPerSplitNode);
+	}
+	else {
+		gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry* geom = dynamic_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry*>(getPointGeometry2_2(0));
+		if (geom == nullptr) {
+			throw invalid_argument("There is no geometry on this grid.");
+		}
+		if (geom->SplitNodePatch == nullptr || geom->SplitNodePatch->Count == 0) {
+			throw invalid_argument("There is no split node on this grid.");
+		}
+
+		readArrayNdOfIntegerValues(geom->SplitNodePatch->CellsPerSplitNode->Elements, cellsPerSplitNode);
+	}
+}
+
+void AbstractColumnLayerGridRepresentation::setSplitNodePatch(uint64_t splitNodeCount, uint64_t* splitNodeParentNodeIndices,
+	uint64_t* cumulativeCountOfCellsPerSplitNode, uint64_t* cellsPerSplitNode, EML2_NS::AbstractHdfProxy* proxy)
+{
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry* geom = dynamic_cast<gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridGeometry*>(getPointGeometry2_0_1(0));
+		if (geom == nullptr) {
+			throw invalid_argument("There is no geometry on this grid.");
+		}
+
+		auto* patch = soap_new_resqml20__SplitNodePatch(gsoapProxy2_0_1->soap);
+		patch->Count = splitNodeCount;
+
+		auto* parentNodeIndicesArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+		parentNodeIndicesArray->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
+		parentNodeIndicesArray->Values->HdfProxy = proxy->newResqmlReference();
+		parentNodeIndicesArray->Values->PathInHdfFile = getHdfGroup() + "/SplitNodeParentNodeIndices";
+		parentNodeIndicesArray->NullValue = -1;
+		patch->ParentNodeIndices = parentNodeIndicesArray;
+
+		patch->CellsPerSplitNode = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap);
+		// Cumulative
+		resqml20__IntegerHdf5Array* cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+		patch->CellsPerSplitNode->CumulativeLength = cumulativeLength;
+		cumulativeLength->NullValue = -1;
+		cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
+		cumulativeLength->Values->HdfProxy = proxy->newResqmlReference();
+		cumulativeLength->Values->PathInHdfFile = getHdfGroup() + "/CellsPerSplitNode/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME;
+		// Elements
+		resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+		patch->CellsPerSplitNode->Elements = elements;
+		elements->NullValue = -1;
+		elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
+		elements->Values->HdfProxy = proxy->newResqmlReference();
+		elements->Values->PathInHdfFile = getHdfGroup() + "/CellsPerSplitNode/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME;
+
+		geom->SplitNodes = patch;
+	}
+	else {
+		gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry* geom = dynamic_cast<gsoap_eml2_3::resqml22__AbstractColumnLayerGridGeometry*>(getPointGeometry2_2(0));
+		if (geom == nullptr) {
+			throw invalid_argument("There is no geometry on this grid.");
+		}
+
+		auto* patch = gsoap_eml2_3::soap_new_resqml22__SplitNodePatch(gsoapProxy2_3->soap);
+		patch->Count = splitNodeCount;
+
+		auto* parentNodeIndicesArray = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
+		parentNodeIndicesArray->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		parentNodeIndicesArray->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() + "/SplitNodeParentNodeIndices", splitNodeCount, proxy));
+		parentNodeIndicesArray->NullValue = -1;
+		patch->ParentNodeIndices = parentNodeIndicesArray;
+
+		patch->CellsPerSplitNode = gsoap_eml2_3::soap_new_eml23__JaggedArray(gsoapProxy2_3->soap);
+		// cumulative XML
+		auto* cumulativeDataset = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
+		cumulativeDataset->NullValue = -1;
+		cumulativeDataset->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		cumulativeDataset->Values->ExternalDataArrayPart.push_back(
+			createExternalDataArrayPart(getHdfGroup() + "/CellsPerSplitNode/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, splitNodeCount, proxy));
+		patch->CellsPerSplitNode->CumulativeLength = cumulativeDataset;
+		// element XML
+		auto* elementDataset = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
+		elementDataset->NullValue = -1;
+		elementDataset->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
+		elementDataset->Values->ExternalDataArrayPart.push_back(
+			createExternalDataArrayPart(getHdfGroup() + "/CellsPerSplitNode/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME, cumulativeCountOfCellsPerSplitNode[splitNodeCount-1], proxy));
+		patch->CellsPerSplitNode->Elements = elementDataset;
+
+		geom->SplitNodePatch = patch;
+	}
+
+	// HDF
+	proxy->writeArrayNdOfUInt64Values(getHdfGroup(), "SplitNodeParentNodeIndices", splitNodeParentNodeIndices, &splitNodeCount, 1);
+	proxy->writeItemizedListOfList(getHdfGroup(), "CellsPerSplitNode",
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cumulativeCountOfCellsPerSplitNode, splitNodeCount,
+		COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, cellsPerSplitNode, cumulativeCountOfCellsPerSplitNode[splitNodeCount - 1]);
 }
