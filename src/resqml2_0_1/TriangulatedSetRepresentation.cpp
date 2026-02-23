@@ -150,14 +150,14 @@ uint64_t TriangulatedSetRepresentation::getTriangleCountOfPatch(uint64_t patchIn
 
 uint64_t TriangulatedSetRepresentation::getTriangleCountOfAllPatches() const
 {
-	auto const& patches = static_cast<_resqml20__TriangulatedSetRepresentation const*>(gsoapProxy2_0_1)->TrianglePatch;
-
-	return std::transform_reduce(
-		patches.begin(),
-		patches.end(),
+	return std::accumulate(
+		static_cast<_resqml20__TriangulatedSetRepresentation const*>(gsoapProxy2_0_1)->TrianglePatch.begin(),
+		static_cast<_resqml20__TriangulatedSetRepresentation const*>(gsoapProxy2_0_1)->TrianglePatch.end(),
 		uint64_t{ 0 },
-		std::plus<>{},
-		[](auto* patch) { return patch->Count; }
+		[](uint64_t a, resqml20__TrianglePatch const* b) {
+			return a + b->Count;
+		}
+
 	);
 }
 
