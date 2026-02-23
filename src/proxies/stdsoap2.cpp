@@ -1,10 +1,10 @@
 /*
-        stdsoap2.c[pp] 2.8.139E
+        stdsoap2.c[pp] 2.8.140E
 
         gSOAP runtime engine
 
 gSOAP XML Web services tools
-Copyright (C) 2000-2025, Robert van Engelen, Genivia Inc., All Rights Reserved.
+Copyright (C) 2000-2026, Robert van Engelen, Genivia Inc., All Rights Reserved.
 This part of the software is released under ONE of the following licenses:
 
 --------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_LIB_VERSION 208139
+#define GSOAP_LIB_VERSION 208140
 
 /* silence GNU's warnings on format nonliteral strings and truncation (snprintf truncates on purpose for safety) */
 #ifdef __GNUC__
@@ -62,10 +62,10 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 #endif
 
 #ifdef __cplusplus
-SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.139E 2025-07-14 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.140E 2026-01-21 00:00:00 GMT")
 extern "C" {
 #else
-SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.139E 2025-07-14 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.140E 2026-01-21 00:00:00 GMT")
 #endif
 
 /* 8bit character representing unknown character entity or multibyte data */
@@ -89,22 +89,16 @@ SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.139E 2025-07-14 00:00:00 GMT")
 
 #define soap_coblank(c)         ((c)+1 > 0 && (c) <= 32)
 
-#if defined(WIN32) && !defined(UNDER_CE)
-#define soap_hash_ptr(p)        ((size_t)((PtrToUlong(p) >> 3) & (SOAP_PTRHASH - 1)))
-#else
-#define soap_hash_ptr(p)        ((size_t)(((unsigned long)(p) >> 3) & (SOAP_PTRHASH-1)))
+#if !defined(WIN32) || defined(UNDER_CE)
+#define PtrToUlong(p) ((unsigned long)p)
 #endif
+
+#define soap_hash_ptr(p)        ((size_t)((PtrToUlong(p) >> 3) & (SOAP_PTRHASH - 1)))
 
 #ifdef SOAP_DEBUG
 static void soap_init_logs(struct soap*);
 static void soap_close_logfile(struct soap*, int);
 static void soap_set_logfile(struct soap*, int, const char*);
-#endif
-
-#ifdef SOAP_MEM_DEBUG
-static void soap_init_mht(struct soap*);
-static void soap_free_mht(struct soap*);
-static void soap_track_unlink(struct soap*, const void*);
 #endif
 
 static int soap_set_error(struct soap*, const char*, const char*, const char*, const char*, int);
@@ -133,14 +127,19 @@ static void soap_free_iht(struct soap*);
 #endif
 static void soap_init_pht(struct soap*);
 static void soap_free_pht(struct soap*);
+static void soap_init_cht(struct soap*);
+static void soap_free_cht(struct soap*);
 
 #ifndef WITH_LEAN
 static const char *soap_set_validation_fault(struct soap*, const char*, const char*);
 static int soap_isnumeric(struct soap*, const char*);
 static struct soap_nlist *soap_push_ns(struct soap *soap, const char *id, const char *ns, short utilized, short isearly);
 static void soap_utilize_ns(struct soap *soap, const char *tag, short isearly);
-static const wchar_t* soap_wstring(struct soap *soap, const char *s, int flag, long minlen, long maxlen, const char *pattern);
 static wchar_t* soap_wcollapse(struct soap *soap, wchar_t *s, int flag, int insitu);
+#endif
+
+#ifndef WITH_LEANER
+static const wchar_t* soap_wstring(struct soap *soap, const char *s, int flag, long minlen, long maxlen, const char *pattern);
 #endif
 
 static const char* soap_string(struct soap *soap, const char *s, int flag, long minlen, long maxlen, const char *pattern);
@@ -325,7 +324,7 @@ static const char soap_indent[41] = "\n                                       ";
 #endif
 
 #ifndef SOAP_CANARY
-# define SOAP_CANARY (0xC0DE)
+# define SOAP_CANARY (0x5AFEC0DE)
 #endif
 
 static const char soap_padding[4] = "\0\0\0";
@@ -7794,19 +7793,6 @@ soap_done(struct soap *soap)
     return;
   DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Done with context%s\n", soap->state == SOAP_COPY ? " copy" : ""));
   soap_free_temp(soap);
-#ifdef SOAP_DEBUG
-  if (soap->clist)
-    DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Warning: managed C++ data was not deallocated with soap_destroy() from the heap managed by context %p\n", (void*)soap));
-  if (soap->alist)
-    DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Warning: managed C data was not deallocated with soap_end() from the heap managed by context %p\n", (void*)soap));
-#endif
-  soap->alist = NULL;
-  while (soap->clist)
-  {
-    struct soap_clist *p = soap->clist->next;
-    SOAP_FREE(soap, soap->clist);
-    soap->clist = p;
-  }
   if (soap->state == SOAP_INIT)
     soap->omode &= ~SOAP_IO_UDP; /* to force close the socket */
   soap->keep_alive = 0; /* to force close the socket */
@@ -8008,9 +7994,7 @@ soap_done(struct soap *soap)
   close(soap->pipe_fd[0]);
   close(soap->pipe_fd[1]);
 #endif
-#ifdef SOAP_MEM_DEBUG
-  soap_free_mht(soap);
-#endif
+  soap_free_cht(soap);
   soap->state = SOAP_NONE;
 }
 
@@ -10070,7 +10054,7 @@ soap_init_pht(struct soap *soap)
   int i;
   soap->pblk = NULL;
   soap->pidx = 0;
-  for (i = 0; i < (int)SOAP_PTRHASH; i++)
+  for (i = 0; i < SOAP_PTRHASH; i++)
     soap->pht[i] = NULL;
 }
 
@@ -10132,7 +10116,7 @@ soap_free_pht(struct soap *soap)
   }
   soap->pblk = NULL;
   soap->pidx = 0;
-  for (i = 0; i < (int)SOAP_PTRHASH; i++)
+  for (i = 0; i < SOAP_PTRHASH; i++)
     soap->pht[i] = NULL;
 }
 
@@ -10919,8 +10903,9 @@ void*
 SOAP_FMAC2
 soap_malloc(struct soap *soap, size_t n)
 {
+  struct soap_clist *cp;
   char *p;
-  size_t k = n;
+  size_t k;
   if (SOAP_MAXALLOCSIZE > 0 && n > SOAP_MAXALLOCSIZE)
   {
     if (soap)
@@ -10929,61 +10914,96 @@ soap_malloc(struct soap *soap, size_t n)
   }
   if (!soap)
     return SOAP_MALLOC(soap, n);
-  n += sizeof(short);
-  n += (~n+1) & (sizeof(void*)-1); /* align at 4-, 8- or 16-byte boundary by rounding up */
-  if (n + sizeof(void*) + sizeof(size_t) < k)
+  if (!soap->cblk || soap->cidx >= SOAP_PTRBLK)
   {
-    soap->error = SOAP_EOM;
-    return NULL;
+#ifdef SOAP_MEM_DEBUG
+    struct soap_cblk *pb = (struct soap_cblk*)malloc(sizeof(struct soap_cblk));
+#else
+    struct soap_cblk *pb = (struct soap_cblk*)SOAP_MALLOC(soap, sizeof(struct soap_cblk));
+#endif
+    if (!pb)
+    {
+      soap->error = SOAP_EOM;
+      return 0;
+    }
+    pb->next = soap->cblk;
+    soap->cblk = pb;
+    soap->cidx = 0;
   }
-  p = (char*)SOAP_MALLOC(soap, n + sizeof(void*) + sizeof(size_t));
+#ifdef SOAP_MEM_DEBUG
+  p = (char*)malloc(n + sizeof(unsigned int));
+#else
+  p = (char*)SOAP_MALLOC(soap, n + sizeof(unsigned int));
+#endif
   if (!p)
   {
     soap->error = SOAP_EOM;
     return NULL;
   }
-  /* set a canary word to detect memory overruns and data corruption */
-  *(unsigned short*)(p + n - sizeof(unsigned short)) = (unsigned short)SOAP_CANARY;
-  /* keep chain of alloced cells for destruction */
-  *(void**)(p + n) = soap->alist;
-  *(size_t*)(p + n + sizeof(void*)) = n;
-  soap->alist = p + n;
+  *(unsigned int*)(p + n) = (unsigned int)(SOAP_CANARY ^ PtrToUlong(p));
+  cp = &soap->cblk->clist[soap->cidx++];
+  k = soap_hash_ptr(p);
+  cp->next = soap->cht[k];
+  soap->cht[k] = cp;
+  cp->ptr = p;
+  cp->ref.fdelete = NULL;
+  cp->size = (LONG64)n;
+  cp->type = 0;
   return p;
 }
 
 /******************************************************************************/
 
-#ifdef SOAP_MEM_DEBUG
 static void
-soap_init_mht(struct soap *soap)
+soap_init_cht(struct soap *soap)
 {
   int i;
-  for (i = 0; i < (int)SOAP_PTRHASH; i++)
-    soap->mht[i] = NULL;
+  soap->cblk = NULL;
+  soap->cidx = 0;
+  for (i = 0; i < SOAP_PTRHASH; i++)
+    soap->cht[i] = NULL;
 }
-#endif
 
 /******************************************************************************/
 
-#ifdef SOAP_MEM_DEBUG
 static void
-soap_free_mht(struct soap *soap)
+soap_free_cht(struct soap *soap)
 {
+  struct soap_cblk *pb, *next;
+#ifdef SOAP_MEM_DEBUG
   int i;
-  struct soap_mlist *mp, *mq;
-  for (i = 0; i < (int)SOAP_PTRHASH; i++)
+  for (i = 0; i < SOAP_PTRHASH; i++)
   {
-    for (mp = soap->mht[i]; mp; mp = mq)
+    struct soap_clist *cp = soap->cht[i];
+    while (cp)
     {
-      mq = mp->next;
-      if (mp->live)
-        fprintf(stderr, "%s(%d): malloc() = %p not freed (memory leak or forgot to call soap_end()?)\n", mp->file, mp->line, mp->ptr);
-      free(mp);
+      if (soap_is_unmanaged_mem(cp->type))
+      {
+        if (cp->size >= 0)
+          fprintf(stderr, "%s(%d): malloc() = %p not freed (runtime engine memory leak!)\n", cp->ref.file, (int)cp->size, cp->ptr);
+      }
+      else
+      {
+        fprintf(stderr, "malloc() = %p not freed, please call soap_end() to delete managed memory\n", cp->ptr);
+        i = SOAP_PTRHASH;
+        break;
+      }
+      cp = cp->next;
     }
-    soap->mht[i] = NULL;
   }
-}
 #endif
+  DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Free memory allocation hashtable\n"));
+  for (pb = soap->cblk; pb; pb = next)
+  {
+    next = pb->next;
+#ifdef SOAP_MEM_DEBUG
+    free(pb);
+#else
+    SOAP_FREE(soap, pb);
+#endif
+  }
+  soap_init_cht(soap);
+}
 
 /******************************************************************************/
 
@@ -10993,22 +11013,29 @@ void*
 SOAP_FMAC2
 soap_track_malloc(struct soap *soap, const char *file, int line, size_t size)
 {
-  void *p = malloc(size);
-  if (soap)
+  struct soap_clist *cp;
+  void *p;
+  size_t k;
+  if (!soap)
+    return malloc(size);
+  if (!soap->cblk || soap->cidx >= SOAP_PTRBLK)
   {
-    size_t h = soap_hash_ptr(p);
-    struct soap_mlist *mp = (struct soap_mlist*)malloc(sizeof(struct soap_mlist));
-    if (soap->fdebug[SOAP_INDEX_TEST])
-    {
-      DBGLOG(TEST, SOAP_MESSAGE(fdebug, "%s(%d): malloc(%lu) = %p\n", file, line, (unsigned long)size, p));
-    }
-    mp->next = soap->mht[h];
-    mp->ptr = p;
-    mp->file = file;
-    mp->line = line;
-    mp->live = 1;
-    soap->mht[h] = mp;
+    struct soap_cblk *pb = (struct soap_cblk*)malloc(sizeof(struct soap_cblk));
+    if (!pb)
+      return NULL;
+    pb->next = soap->cblk;
+    soap->cblk = pb;
+    soap->cidx = 0;
   }
+  p = malloc(size);
+  cp = &soap->cblk->clist[soap->cidx++];
+  k = soap_hash_ptr(p);
+  cp->next = soap->cht[k];
+  soap->cht[k] = cp;
+  cp->ptr = p;
+  cp->ref.file = file;
+  cp->size = line; /* ugly reuse for type SOAP_TRACK_MALLOC in DEBUG mode (SOAP_MEM_DEBUG) */
+  cp->type = SOAP_TRACK_MALLOC;
   return p;
 }
 #endif
@@ -11021,112 +11048,132 @@ void
 SOAP_FMAC2
 soap_track_free(struct soap *soap, const char *file, int line, void *p)
 {
-  if (!soap)
+  if (!p)
+  {
+    fprintf(stderr, "%s(%d): attempt to free() a NULL pointer\n", file, line);
+  }
+  else if (!soap)
   {
     free(p);
   }
   else
   {
-    size_t h = soap_hash_ptr(p);
-    struct soap_mlist *mp;
-    for (mp = soap->mht[h]; mp; mp = mp->next)
-      if (mp->ptr == p)
-        break;
-    if (mp)
+    struct soap_clist *cp = soap->cht[soap_hash_ptr(p)];
+    while (cp)
     {
-      if (mp->live)
+      if (p == cp->ptr && soap_is_unmanaged_mem(cp->type))
       {
-        if (soap->fdebug[SOAP_INDEX_TEST])
+        if (cp->size >= 0)
         {
-          DBGLOG(TEST, SOAP_MESSAGE(fdebug, "%s(%d): free(%p)\n", file, line, p));
+          if (soap->fdebug[SOAP_INDEX_TEST])
+          {
+            DBGLOG(TEST, SOAP_MESSAGE(fdebug, "%s(%d): free(%p)\n", file, line, p));
+          }
+          cp->size = -cp->size;
+          free(p);
         }
-        free(p);
-        mp->live = 0;
+        else
+        {
+          fprintf(stderr, "%s(%d): free(%p) double free of memory allocated at %s(%d)\n", file, line, p, cp->ref.file, (int)-cp->size);
+        }
+        return;
       }
-      else
-      {
-        fprintf(stderr, "%s(%d): free(%p) double free of pointer malloced at %s(%d)\n", file, line, p, mp->file, mp->line);
-      }
+      cp = cp->next;
     }
-    else
-    {
-      fprintf(stderr, "%s(%d): free(%p) pointer not malloced\n", file, line, p);
-    }
+    fprintf(stderr, "%s(%d): free(%p) pointer not allocated\n", file, line, p);
   }
-}
-#endif
-
-/******************************************************************************/
-
-#ifdef SOAP_MEM_DEBUG
-static void
-soap_track_unlink(struct soap *soap, const void *p)
-{
-  size_t h = soap_hash_ptr(p);
-  struct soap_mlist *mp;
-  for (mp = soap->mht[h]; mp; mp = mp->next)
-    if (mp->ptr == p)
-      break;
-  if (mp)
-    mp->live = 0;
 }
 #endif
 
 /******************************************************************************/
 
 SOAP_FMAC1
-void
+int
 SOAP_FMAC2
 soap_dealloc(struct soap *soap, void *p)
 {
   if (soap_check_state(soap))
-    return;
+    return SOAP_OK;
   if (p)
   {
-    char **q;
-    for (q = (char**)(void*)&soap->alist; *q; q = *(char***)q)
+    struct soap_clist **q = &soap->cht[soap_hash_ptr(p)];
+    struct soap_clist *cp = *q;
+    while (cp)
     {
-      if (*(unsigned short*)(char*)(*q - sizeof(unsigned short)) != (unsigned short)SOAP_CANARY)
+      if (p == cp->ptr && !soap_is_unmanaged_mem(cp->type))
       {
+        *q = cp->next;
+        if (cp->ref.fdelete)
+        {
+          cp->ref.fdelete(soap, cp);
+        }
+        else
+        {
+          if (*(unsigned int*)((char*)p + cp->size) != (unsigned int)(SOAP_CANARY ^ PtrToUlong(p)))
+          {
 #ifdef SOAP_MEM_DEBUG
-        fprintf(stderr, "Data corruption in dynamic allocation (see logs)\n");
+            fprintf(stderr, "Memory corruption detected at %p %zu bytes (see logs)\n", p, (size_t)cp->size);
 #endif
-        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Data corruption:\n"));
-        DBGHEX(TEST, *q - 200, 200);
-        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "\n"));
-        soap->error = SOAP_MOE;
-        return;
+            DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Data corruption at %p allocated %zu bytes:\n", p, (size_t)cp->size));
+            return soap->error = SOAP_MOE;
+          }
+          DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Free managed memory at %p\n", p));
+#ifdef SOAP_MEM_DEBUG
+          free(p);
+#else
+          SOAP_FREE(soap, p);
+#endif
+        }
+        cp->ptr = NULL;
+        return SOAP_OK;
       }
-      if (p == (void*)(*q - *(size_t*)(*q + sizeof(void*))))
-      {
-        *q = **(char***)q;
-        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Freed data at %p\n", p));
-        SOAP_FREE(soap, p);
-        return;
-      }
+      q = &cp->next;
+      cp = *q;
     }
-    soap_delete(soap, p);
+    DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Cannot free memory at %p: address not in managed memory list\n", p));
   }
   else
   {
-    DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Free all soap_malloc() data\n"));
-    while (soap->alist)
+    int i;
+    for (i = 0; i < SOAP_PTRHASH; i++)
     {
-      char *q = (char*)soap->alist;
-      if (*(unsigned short*)(char*)(q - sizeof(unsigned short)) != (unsigned short)SOAP_CANARY)
+      struct soap_clist **q = &soap->cht[i];
+      struct soap_clist *cp = *q;
+      while (cp)
       {
+        p = cp->ptr;
+        if (p && !soap_is_unmanaged_mem(cp->type))
+        {
+          *q = cp->next;
+          if (cp->ref.fdelete)
+          {
+            cp->ref.fdelete(soap, cp);
+          }
+          else
+          {
+            if (*(unsigned int*)((char*)p + cp->size) != (unsigned int)(SOAP_CANARY ^ PtrToUlong(p)))
+            {
 #ifdef SOAP_MEM_DEBUG
-        fprintf(stderr, "Data corruption in dynamic allocation (see logs)\n");
+              fprintf(stderr, "Memory corruption detected at %p %zu bytes (see logs)\n", p, (size_t)cp->size);
 #endif
-        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Data corruption:\n"));
-        DBGHEX(TEST, q - 200, 200);
-        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "\n"));
-        soap->error = SOAP_MOE;
-        return;
+              DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Data corruption at %p %zu bytes:\n", p, (size_t)cp->size));
+              return soap->error = SOAP_MOE;
+            }
+            DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Free managed memory at %p\n", p));
+#ifdef SOAP_MEM_DEBUG
+            free(p);
+#else
+            SOAP_FREE(soap, p);
+#endif
+          }
+          cp->ptr = NULL;
+        }
+        else
+        {
+          q = &cp->next;
+        }
+        cp = *q;
       }
-      soap->alist = *(void**)q;
-      q -= *(size_t*)(q + sizeof(void*));
-      SOAP_FREE(soap, q);
     }
     /* assume these were deallocated: */
     soap->http_content = NULL;
@@ -11144,60 +11191,17 @@ soap_dealloc(struct soap *soap, void *p)
     soap_clr_mime(soap);
 #endif
   }
+  return SOAP_OK;
 }
 
 /******************************************************************************/
 
 SOAP_FMAC1
-void
+int
 SOAP_FMAC2
 soap_delete(struct soap *soap, void *p)
 {
-  struct soap_clist **cp;
-  if (soap_check_state(soap))
-    return;
-  cp = &soap->clist;
-  if (p)
-  {
-    while (*cp)
-    {
-      if (p == (*cp)->ptr)
-      {
-        struct soap_clist *q = *cp;
-        *cp = q->next;
-        if (q->fdelete(soap, q))
-        {
-          DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Could not dealloc data %p: deletion callback failed for object type=%d\n", q->ptr, q->type));
-#ifdef SOAP_MEM_DEBUG
-          fprintf(stderr, "new(object type=%d) = %p not freed: deletion callback failed\n", q->type, q->ptr);
-#endif
-        }
-        SOAP_FREE(soap, q);
-        return;
-      }
-      cp = &(*cp)->next;
-    }
-    DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Could not dealloc data %p: address not in list\n", p));
-  }
-  else
-  {
-    while (*cp)
-    {
-      struct soap_clist *q = *cp;
-      *cp = q->next;
-      DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Delete %p type=%d (cp=%p)\n", q->ptr, q->type, (void*)q));
-      if (q->fdelete(soap, q))
-      {
-        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Could not dealloc data %p: deletion callback failed for object type=%d\n", q->ptr, q->type));
-#ifdef SOAP_MEM_DEBUG
-        fprintf(stderr, "new(object type=%d) = %p not freed: deletion callback failed\n", q->type, q->ptr);
-#endif
-      }
-      SOAP_FREE(soap, q);
-    }
-  }
-  soap->fault = NULL; /* assume this was deallocated */
-  soap->header = NULL; /* assume this was deallocated */
+  return soap_dealloc(soap, p);
 }
 
 /******************************************************************************/
@@ -11207,76 +11211,103 @@ void
 SOAP_FMAC2
 soap_delegate_deletion(struct soap *soap, struct soap *soap_to)
 {
-  struct soap_clist *cp;
-  char **q;
-#ifdef SOAP_MEM_DEBUG
-  void *p;
-  struct soap_mlist **mp, *mq;
-  size_t h;
-#endif
-  for (q = (char**)(void*)&soap->alist; *q; q = *(char***)q)
+  struct soap_cblk *pb = soap->cblk;
+  DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Delegating_managed memory deletion from context %p to %p\n", (void*)soap, (void*)soap_to));
+  if (pb)
   {
-    if (*(unsigned short*)(char*)(*q - sizeof(unsigned short)) != (unsigned short)SOAP_CANARY)
-    {
+    struct soap_cblk *qb = pb;
+    int ci = soap->cidx;
+    int i;
 #ifdef SOAP_MEM_DEBUG
-      fprintf(stderr, "Data corruption in dynamic allocation (see logs)\n");
-#endif
-      DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Data corruption:\n"));
-      DBGHEX(TEST, *q - 200, 200);
-      DBGLOG(TEST, SOAP_MESSAGE(fdebug, "\n"));
-      soap->error = SOAP_MOE;
-      return;
-    }
-#ifdef SOAP_MEM_DEBUG
-    p = (void*)(*q - *(size_t*)(*q + sizeof(void*)));
-    h = soap_hash_ptr(p);
-    for (mp = &soap->mht[h]; *mp; mp = &(*mp)->next)
+    /* when debugging memory, keep unmanaged memory allocations of this runtime state with this context */
+    struct soap_clist *cht[SOAP_PTRHASH];
+    struct soap_cblk *cblk = NULL;
+    int cidx = 0;
+    for (i = 0; i < SOAP_PTRHASH; i++)
+      cht[i] = NULL;
+    for (i = 0; i < SOAP_PTRHASH; i++)
     {
-      if ((*mp)->ptr == p)
+      struct soap_clist *cp = soap->cht[i], *prev = NULL;
+      while (cp)
       {
-        mq = *mp;
-        *mp = mq->next;
-        mq->next = soap_to->mht[h];
-        soap_to->mht[h] = mq;
-        break;
+        if (soap_is_unmanaged_mem(cp->type) && cp->size >= 0)
+        {
+          struct soap_clist *cq;
+          int k;
+          /* unmanaged memory, i.e. used by this runtime state */
+          DBGLOG(TEST, SOAP_MESSAGE(fdebug, "%s(%d): do not delegate unmanaged %p\n", cp->ref.file, (int)cp->size, cp->ptr));
+          if (!cblk || cidx >= SOAP_PTRBLK)
+          {
+            qb = (struct soap_cblk*)malloc(sizeof(struct soap_cblk));
+            if (!qb)
+            {
+              /* soap_delegate_deletion normally never fails */
+              /* but when debugging we have to allocate blocks and try to safely continue when we can't allocate */
+              prev = cp;
+              cp = cp->next;
+              continue;
+            }
+            qb->next = cblk;
+            cblk = qb;
+            cidx = 0;
+          }
+          cq = &cblk->clist[cidx++];
+          k = soap_hash_ptr(cp->ptr);
+          cq->next = cht[k];
+          cht[k] = cq;
+          cq->ptr = cp->ptr;
+          cq->type = SOAP_TRACK_MALLOC;
+          cq->size = cp->size;
+          cq->ref.file = cp->ref.file;
+          if (prev)
+            prev->next = cp->next;
+          else
+            soap->cht[i] = cp->next;
+        }
+        else
+        {
+          prev = cp;
+        }
+        cp = cp->next;
       }
     }
+    qb = pb;
 #endif
-  }
-  *q = (char*)soap_to->alist;
-  soap_to->alist = soap->alist;
-  soap->alist = NULL;
-#ifdef SOAP_MEM_DEBUG
-  cp = soap->clist;
-  while (cp)
-  {
-    h = soap_hash_ptr(cp);
-    for (mp = &soap->mht[h]; *mp; mp = &(*mp)->next)
+    while (qb->next)
+      qb = qb->next;
+    qb->next = soap_to->cblk;
+    soap_to->cblk = pb;
+    soap_to->cidx = ci;
+    for (i = 0; i < SOAP_PTRHASH; i++)
     {
-      if ((*mp)->ptr == cp)
+      struct soap_clist *cp = soap->cht[i];
+      if (cp)
       {
-        mq = *mp;
-        *mp = mq->next;
-        mq->next = soap_to->mht[h];
-        soap_to->mht[h] = mq;
-        break;
+        while (cp->next)
+          cp = cp->next;
+        cp->next = soap_to->cht[i];
+        soap_to->cht[i] = soap->cht[i];
       }
     }
-    cp = cp->next;
-  }
+#ifdef SOAP_MEM_DEBUG
+    /* when debugging memory, keep unmanaged memory allocations of this runtime state with this context */
+    for (i = 0; i < SOAP_PTRHASH; i++)
+      soap->cht[i] = cht[i];
+    soap->cblk = cblk;
+    soap->cidx = cidx;
+#else
+    soap_init_cht(soap);
 #endif
-  cp = soap_to->clist;
-  if (cp)
-  {
-    while (cp->next)
-      cp = cp->next;
-    cp->next = soap->clist;
   }
   else
   {
-    soap_to->clist = soap->clist;
+    int i;
+    soap_to->cblk = soap->cblk;
+    soap_to->cidx = soap->cidx;
+    for (i = 0; i < SOAP_PTRHASH; i++)
+      soap_to->cht[i] = soap->cht[i];
+    soap_init_cht(soap);
   }
-  soap->clist = NULL;
 }
 
 /******************************************************************************/
@@ -11284,31 +11315,63 @@ soap_delegate_deletion(struct soap *soap, struct soap *soap_to)
 SOAP_FMAC1
 struct soap_clist *
 SOAP_FMAC2
-soap_link(struct soap *soap, int t, int n, int (*fdelete)(struct soap*, struct soap_clist*))
+soap_new_link(struct soap *soap, int t, int n, int (*fdelete)(struct soap*, struct soap_clist*))
 {
   struct soap_clist *cp = NULL;
   if (soap)
   {
     if (n != SOAP_NO_LINK_TO_DELETE)
     {
-      cp = (struct soap_clist*)SOAP_MALLOC(soap, sizeof(struct soap_clist));
-      if (!cp)
+      if (!soap->cblk || soap->cidx >= SOAP_PTRBLK)
       {
-        soap->error = SOAP_EOM;
+#ifdef SOAP_MEM_DEBUG
+        struct soap_cblk *pb = (struct soap_cblk*)malloc(sizeof(struct soap_cblk));
+#else
+        struct soap_cblk *pb = (struct soap_cblk*)SOAP_MALLOC(soap, sizeof(struct soap_cblk));
+#endif
+        if (!pb)
+        {
+          soap->error = SOAP_EOM;
+          return NULL;
+        }
+        pb->next = soap->cblk;
+        soap->cblk = pb;
+        soap->cidx = 0;
       }
-      else
-      {
-        cp->next = soap->clist;
-        cp->type = t;
-        cp->size = n;
-        cp->ptr = NULL;
-        cp->fdelete = fdelete;
-        soap->clist = cp;
-      }
+      cp = &soap->cblk->clist[soap->cidx++];
+      cp->next = NULL;
+      cp->ptr = NULL;
+      cp->ref.fdelete = fdelete;
+      cp->size = n;
+      cp->type = t;
     }
     soap->alloced = t;
   }
   return cp;
+}
+
+/******************************************************************************/
+
+SOAP_FMAC1
+void
+SOAP_FMAC2
+soap_set_link(struct soap *soap, struct soap_clist *cp, void *p)
+{
+  if (soap && cp)
+  {
+    if (p)
+    {
+      int k = soap_hash_ptr(p);
+      cp->ptr = p;
+      cp->next = soap->cht[k];
+      soap->cht[k] = cp;
+      DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Instantiated location=%p\n", p))
+    }
+    else
+    {
+      soap->error = SOAP_EOM;
+    }
+  }
 }
 
 /******************************************************************************/
@@ -11320,30 +11383,18 @@ soap_unlink(struct soap *soap, const void *p)
 {
   if (soap && p)
   {
-    char **q;
-    struct soap_clist **cp;
-    for (q = (char**)(void*)&soap->alist; *q; q = *(char***)q)
+    struct soap_clist **q = &soap->cht[soap_hash_ptr(p)];
+    struct soap_clist *cp = *q;
+    while (cp)
     {
-      if (p == (void*)(*q - *(size_t*)(*q + sizeof(void*))))
+      if (p == cp->ptr && !soap_is_unmanaged_mem(cp->type))
       {
-        *q = **(char***)q;
-        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Unlinked data %p\n", p));
-#ifdef SOAP_MEM_DEBUG
-        soap_track_unlink(soap, p);
-#endif
-        return SOAP_OK;         /* found and removed from dealloc chain */
+        cp->ptr = NULL;
+        *q = cp->next;
+        return SOAP_OK;
       }
-    }
-    for (cp = &soap->clist; *cp; cp = &(*cp)->next)
-    {
-      if (p == (*cp)->ptr)
-      {
-        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Unlinked class instance %p\n", p));
-        q = (char**)*cp;
-        *cp = (*cp)->next;
-        SOAP_FREE(soap, q);
-        return SOAP_OK;         /* found and removed from dealloc chain */
-      }
+      q = &cp->next;
+      cp = *q;
     }
   }
   return SOAP_ERR;
@@ -11582,7 +11633,7 @@ soap_id_enter(struct soap *soap, const char *id, void *p, int t, size_t n, const
   {
     if (finstantiate)
     {
-      p = finstantiate(soap, t, type, arrayType, &n); /* soap->alloced is set in soap_link() */
+      p = finstantiate(soap, t, type, arrayType, &n); /* soap->alloced is set in soap_new_link() */
       t = soap->alloced;
     }
     else
@@ -12035,7 +12086,7 @@ soap_free_temp(struct soap *soap)
   struct soap_attribute *tp, *tq;
   struct Namespace *ns;
   soap_free_ns(soap);
-  DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Free any remaining temp blocks\n"));
+  DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Free nested block allocation stack\n"));
   while (soap->blist)
     soap_end_block(soap, NULL);
   DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Free attribute storage\n"));
@@ -12249,9 +12300,6 @@ soap_copy_context(struct soap *copy, const struct soap *soap)
     struct soap_plugin *p = NULL;
     (void)soap_memcpy((void*)copy, sizeof(struct soap), (const void*)soap, sizeof(struct soap));
     copy->state = SOAP_COPY;
-#ifdef SOAP_MEM_DEBUG
-    soap_init_mht(copy);
-#endif
 #ifdef SOAP_DEBUG
     soap_init_logs(copy);
     soap_set_test_logfile(copy, soap->logfile[SOAP_INDEX_TEST]);
@@ -12268,8 +12316,6 @@ soap_copy_context(struct soap *copy, const struct soap *soap)
 #endif
     copy->nlist = NULL;
     copy->blist = NULL;
-    copy->clist = NULL;
-    copy->alist = NULL;
     copy->attributes = NULL;
     copy->labbuf = NULL;
     copy->lablen = 0;
@@ -12300,6 +12346,7 @@ soap_copy_context(struct soap *copy, const struct soap *soap)
     soap_init_iht(copy);
 #endif
     soap_init_pht(copy);
+    soap_init_cht(copy);
     copy->header = NULL;
     copy->fault = NULL;
     copy->action = NULL;
@@ -12582,9 +12629,6 @@ soap_versioning(soap_init)(struct soap *soap, soap_mode imode, soap_mode omode)
 {
   size_t i;
   soap->state = SOAP_INIT;
-#ifdef SOAP_MEM_DEBUG
-  soap_init_mht(soap);
-#endif
 #ifdef SOAP_DEBUG
   soap_init_logs(soap);
 #endif
@@ -12755,8 +12799,6 @@ soap_versioning(soap_init)(struct soap *soap, soap_mode imode, soap_mode omode)
   soap->local_namespaces = NULL;
   soap->nlist = NULL;
   soap->blist = NULL;
-  soap->clist = NULL;
-  soap->alist = NULL;
   soap->shaky = 0;
   soap->attributes = NULL;
   soap->header = NULL;
@@ -12838,6 +12880,7 @@ soap_versioning(soap_init)(struct soap *soap, soap_mode imode, soap_mode omode)
   soap_init_iht(soap);
 #endif
   soap_init_pht(soap);
+  soap_init_cht(soap);
 #ifdef WITH_OPENSSL
   if (!soap_ssl_init_done)
     soap_ssl_init();
@@ -12971,24 +13014,20 @@ soap_begin(struct soap *soap)
 /******************************************************************************/
 
 SOAP_FMAC1
-void
+int
 SOAP_FMAC2
 soap_end(struct soap *soap)
 {
+  int err = SOAP_OK;
   if (soap_check_state(soap))
-    return;
+    return SOAP_OK;
   soap_free_temp(soap);
-  soap_dealloc(soap, NULL);
-  while (soap->clist)
-  {
-    struct soap_clist *cp = soap->clist->next;
-    SOAP_FREE(soap, soap->clist);
-    soap->clist = cp;
-  }
+  err = soap_dealloc(soap, NULL);
   (void)soap_closesock(soap);
 #ifdef SOAP_DEBUG
   soap_close_logfiles(soap);
 #endif
+  return err;
 }
 
 /******************************************************************************/
@@ -18502,7 +18541,7 @@ soap_QName2s(struct soap *soap, const char *s)
 
 /******************************************************************************/
 
-#ifndef WITH_LEAN
+#ifndef WITH_LEANER
 SOAP_FMAC1
 int
 SOAP_FMAC2
@@ -18522,7 +18561,7 @@ soap_s2wchar(struct soap *soap, const char *s, wchar_t **t, int flag, long minle
 
 #ifndef WITH_COMPAT
 #ifdef __cplusplus
-#ifndef WITH_LEAN
+#ifndef WITH_LEANER
 SOAP_FMAC1
 int
 SOAP_FMAC2
@@ -18542,7 +18581,7 @@ soap_s2stdwchar(struct soap *soap, const char *s, std::wstring *t, int flag, lon
 
 /******************************************************************************/
 
-#ifndef WITH_LEAN
+#ifndef WITH_LEANER
 static const wchar_t*
 soap_wstring(struct soap *soap, const char *s, int flag, long minlen, long maxlen, const char *pattern)
 {
@@ -18792,7 +18831,7 @@ soap_wcollapse(struct soap *soap, wchar_t *s, int flag, int insitu)
 
 /******************************************************************************/
 
-#ifndef WITH_LEAN
+#ifndef WITH_LEANER
 SOAP_FMAC1
 const char*
 SOAP_FMAC2
@@ -19140,7 +19179,7 @@ strftime(char *buf, size_t len, const char *format, const struct tm *pT)
 
 /******************************************************************************/
 
-#if !defined(WITH_LEAN) || defined(WITH_COOKIES)
+#if !defined(WITH_LEANER) || defined(WITH_COOKIES)
 SOAP_FMAC1
 time_t
 SOAP_FMAC2
@@ -19178,7 +19217,7 @@ soap_timegm(struct tm *T)
 
 /******************************************************************************/
 
-#ifndef WITH_LEAN
+#ifndef WITH_LEANER
 SOAP_FMAC1
 const char*
 SOAP_FMAC2
@@ -19303,7 +19342,7 @@ soap_outdateTime(struct soap *soap, const char *tag, int id, const time_t *p, co
 
 /******************************************************************************/
 
-#ifndef WITH_LEAN
+#ifndef WITH_LEANER
 SOAP_FMAC1
 int
 SOAP_FMAC2

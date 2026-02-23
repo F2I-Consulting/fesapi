@@ -20,7 +20,7 @@ under the License.
 
 #include "AbstractTest.h"
 
-namespace commontest {
+namespace eml2_3test {
 	class GraphicalInformationSetTest : public commontest::AbstractTest {
 	public:
 		static const char* defaultUuid;

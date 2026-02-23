@@ -27,7 +27,7 @@ namespace EML2_NS
 	* It is possible to derive this class in a custom class in order for the FESAPI user
 	* to get change the FESAPI reads from and writes to HDF5 file.
 	* However, please note that the RESQML standard mandates so far a HDF5 1.8 backward compatibility.
-	* In ordre to achieve this backward compatibility please use
+	* In order to achieve this backward compatibility please use
 	*	hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
 	*	H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
 	* when you create an HDF5 file before to write into it.

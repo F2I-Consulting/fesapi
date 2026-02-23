@@ -390,15 +390,15 @@ void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned in
 	if (datasetValueCount > 0) {
 		if (reverseIAxis) {
 			for (uint64_t index = 0; index < datasetValueCount; ++index) {
-				const uint64_t iColumn = columnIndices[index] % getICellCount();
-				const uint64_t jColumn = columnIndices[index] / getICellCount();
+				const uint32_t iColumn = columnIndices[index] % getICellCount();
+				const uint32_t jColumn = columnIndices[index] / getICellCount();
 				columnIndices[index] = (getICellCount() - 1 - iColumn) + jColumn*getICellCount();
 			}
 		}
 		if (reverseJAxis) {
 			for (uint64_t index = 0; index < datasetValueCount; ++index) {
-				const uint64_t iColumn = columnIndices[index] % getICellCount();
-				const uint64_t jColumn = columnIndices[index] / getICellCount();
+				const uint32_t iColumn = columnIndices[index] % getICellCount();
+				const uint32_t jColumn = columnIndices[index] / getICellCount();
 				columnIndices[index] = iColumn + (getJCellCount() - 1 - jColumn)*getICellCount();
 			}
 		}
@@ -412,14 +412,7 @@ void AbstractIjkGridRepresentation::getColumnCountOfSplitCoordinateLines(unsigne
 		if (geom == nullptr || geom->SplitCoordinateLines == nullptr) {
 			throw invalid_argument("There is no geometry or no split coordinate line in this grid.");
 		}
-		if (geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength)->Values;
-			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, columnIndexCountPerSplitCoordinateLine);
-		}
-		else {
-			throw std::logic_error("Not implemented yet");
-		}
+		readArrayNdOfIntegerValues(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength, columnIndexCountPerSplitCoordinateLine);
 	}
 	else {
 		gsoap_eml2_3::resqml22__IjkGridGeometry* geom = static_cast<gsoap_eml2_3::resqml22__IjkGridGeometry*>(getPointGeometry2_2(0));
@@ -490,7 +483,6 @@ uint64_t AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() const
 
 	return splitCoordinateLineCount;
 }
-
 
 uint64_t AbstractIjkGridRepresentation::getSplitNodeCount() const
 {
@@ -569,16 +561,16 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 	{
 		const unsigned int iPillarCount = getICellCount()+1;
 		const unsigned int jPillarCount = getJCellCount()+1;
-		const unsigned int arrayCount = iPillarCount * jPillarCount;
+		const size_t arrayCount = iPillarCount * jPillarCount;
 
 		// Copy in order not to modify the controlPoints pointer
 		std::unique_ptr<bool[]> initialPillarGeometryIsDefined(new bool[arrayCount]);
-		for (unsigned int index = 0; index < arrayCount; ++index) {
+		for (size_t index = 0; index < arrayCount; ++index) {
 			initialPillarGeometryIsDefined[index] = pillarGeometryIsDefined[index];
 		}
 
 		if (reverseIAxis) {
-			unsigned int pillarIndex = 0;
+			size_t pillarIndex = 0;
 			for (unsigned int j = 0; j < jPillarCount; ++j) {
 				for (unsigned int i = 0; i < iPillarCount; ++i) {
 					pillarGeometryIsDefined[pillarIndex] = initialPillarGeometryIsDefined[getICellCount() - i + j*iPillarCount];
@@ -588,7 +580,7 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 		}
 
 		if (reverseJAxis) {
-			unsigned int pillarIndex = 0;
+			size_t pillarIndex = 0;
 			for (unsigned int j = 0; j < jPillarCount; ++j) {
 				for (unsigned int i = 0; i < iPillarCount; ++i) {
 					pillarGeometryIsDefined[pillarIndex] = initialPillarGeometryIsDefined[i + (getJCellCount() - j)*iPillarCount];
@@ -628,13 +620,13 @@ void AbstractIjkGridRepresentation::getCellGeometryIsDefinedFlags(bool * cellGeo
 			EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			std::unique_ptr<int8_t[]> tmp(new int8_t[cellCount]);
 			hdfProxy->readArrayNdOfInt8Values(dataset->PathInHdfFile, tmp.get());
-			for (uint64_t i = 0; i < cellCount; ++i) {
+			for (size_t i = 0; i < cellCount; ++i) {
 				cellGeometryIsDefinedFlags[i] = tmp[i] != 0;
 			}
 		}
 		else if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
 			const bool enabled = static_cast<resqml20__BooleanConstantArray*>(geom->CellGeometryIsDefined)->Value;
-			for (uint64_t i = 0; i < cellCount; ++i) {
+			for (size_t i = 0; i < cellCount; ++i) {
 				cellGeometryIsDefinedFlags[i] = enabled;
 			}
 		}
@@ -652,7 +644,7 @@ void AbstractIjkGridRepresentation::getCellGeometryIsDefinedFlags(bool * cellGeo
 			EML2_NS::AbstractHdfProxy * hdfProxy = getOrCreateHdfProxyFromDataArrayPart(dataset->ExternalDataArrayPart[0]);
 			std::unique_ptr<int8_t[]> tmp(new int8_t[cellCount]);
 			hdfProxy->readArrayNdOfInt8Values(dataset->ExternalDataArrayPart[0]->PathInExternalFile, tmp.get());
-			for (unsigned int i = 0; i < cellCount; ++i) {
+			for (size_t i = 0; i < cellCount; ++i) {
 				cellGeometryIsDefinedFlags[i] = tmp[i] != 0;
 			}
 		}
@@ -676,8 +668,8 @@ void AbstractIjkGridRepresentation::getCellGeometryIsDefinedFlags(bool * cellGeo
 		}
 
 		if (reverseIAxis) {
-			unsigned int cellIndex = 0;
-			for (unsigned int k = 0; k < getKCellCount(); ++k) {
+			size_t cellIndex = 0;
+			for (uint64_t k = 0; k < getKCellCount(); ++k) {
 				for (unsigned int j = 0; j < getJCellCount(); ++j) {
 					for (unsigned int i = 0; i < getICellCount(); ++i) {
 						cellGeometryIsDefinedFlags[cellIndex] = initialCellGeometryIsDefined[getICellCount() - 1 - i + j*getICellCount() + k*getICellCount()*getJCellCount()];
@@ -688,8 +680,8 @@ void AbstractIjkGridRepresentation::getCellGeometryIsDefinedFlags(bool * cellGeo
 		}
 
 		if (reverseJAxis) {
-			unsigned int cellIndex = 0;
-			for (unsigned int k = 0; k < getKCellCount(); ++k) {
+			size_t cellIndex = 0;
+			for (uint64_t k = 0; k < getKCellCount(); ++k) {
 				for (unsigned int j = 0; j < getJCellCount(); ++j) {
 					for (unsigned int i = 0; i < getICellCount(); ++i) {
 						cellGeometryIsDefinedFlags[cellIndex] = initialCellGeometryIsDefined[i + (getJCellCount() - 1 -j)*getICellCount() + k*getICellCount()*getJCellCount()];
@@ -700,8 +692,8 @@ void AbstractIjkGridRepresentation::getCellGeometryIsDefinedFlags(bool * cellGeo
 		}
 
 		if (reverseKAxis) {
-			unsigned int cellIndex = 0;
-			for (unsigned int k = 0; k < getKCellCount(); ++k) {
+			size_t cellIndex = 0;
+			for (uint64_t k = 0; k < getKCellCount(); ++k) {
 				for (unsigned int j = 0; j < getJCellCount(); ++j) {
 					for (unsigned int i = 0; i < getICellCount(); ++i) {
 						cellGeometryIsDefinedFlags[cellIndex] = initialCellGeometryIsDefined[i + j*getICellCount() + (getKCellCount() - 1 -k)*getICellCount()*getJCellCount()];
@@ -1135,17 +1127,17 @@ uint64_t AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned 
 	if (corner > 7) {
 		throw out_of_range("Corner is out of range.");
 	}
-	const unsigned int iPillarIndex = corner == 1 || corner == 2 || corner == 5 || corner == 6
+	const uint64_t iPillarIndex = corner == 1 || corner == 2 || corner == 5 || corner == 6
 		? iCell + 1
 		: iCell;
-	const unsigned int jPillarIndex = corner == 2 || corner == 3 || corner == 6 || corner == 7
+	const uint64_t jPillarIndex = corner == 2 || corner == 3 || corner == 6 || corner == 7
 		? jCell + 1
 		: jCell;
 
 	if (kCell > getKCellCount()) {
 		throw out_of_range("K Cell is out of range.");
 	}
-	const unsigned int kPointIndex = corner > 3
+	const uint64_t kPointIndex = corner > 3
 		? kCellIndexWithGapLayer[kCell] + 1
 		: kCellIndexWithGapLayer[kCell];
 
@@ -1153,16 +1145,16 @@ uint64_t AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned 
 	if (iCell > iCellCount) {
 		throw out_of_range("I Cell is out of range.");
 	}
-	const unsigned int iPillarCount = iCellCount + 1;
-	const unsigned int jCellCount = getJCellCount();
+	const uint64_t iPillarCount = iCellCount + 1;
+	const uint64_t jCellCount = getJCellCount();
 	if (jCell > jCellCount) {
 		throw out_of_range("J Cell is out of range.");
 	}
-	const unsigned int jPillarCount = jCellCount + 1;
+	const uint64_t jPillarCount = jCellCount + 1;
 
-	const unsigned int pillarIndex = iPillarIndex + iPillarCount * jPillarIndex; // Do not call getGlobalIndexPillarFromIjIndex for performance reason.
+	const uint64_t pillarIndex = iPillarIndex + iPillarCount * jPillarIndex; // Do not call getGlobalIndexPillarFromIjIndex for performance reason.
 	if (!splitInformation[pillarIndex].empty()) {
-		const unsigned int columnIndex = iCell + iCellCount * jCell; // Do not call getGlobalIndexColumnFromIjIndex for performance reason.
+		const uint64_t columnIndex = iCell + iCellCount * jCell; // Do not call getGlobalIndexColumnFromIjIndex for performance reason.
 		for (const auto& columnSet : splitInformation[pillarIndex]) {
 			for (const unsigned int column : columnSet.second) {
 				if (column == columnIndex) {
@@ -1197,26 +1189,27 @@ void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(unsigned in
 		throw out_of_range("Corner is out of the block.");
 	}
 
-	unsigned int iPillarIndex = corner == 1 || corner == 2 || corner == 5 || corner == 6
+	uint32_t iPillarIndex = corner == 1 || corner == 2 || corner == 5 || corner == 6
 		? iCell + 1
 		: iCell;
-	unsigned int jPillarIndex = corner == 2 || corner == 3 || corner == 6 || corner == 7
+	uint32_t jPillarIndex = corner == 2 || corner == 3 || corner == 6 || corner == 7
 		? jCell + 1
 		: jCell;
-	unsigned int kPointIndex = corner > 3
+	uint64_t kPointIndex = corner > 3
 		? kCellIndexWithGapLayer[kCell] + 1
 		: kCellIndexWithGapLayer[kCell];
 	kPointIndex -= blockInformation->kInterfaceStart;
 
 	uint64_t pointIndex;
 
-	const unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
+	const uint64_t pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
 	if (!splitInformation[pillarIndex].empty()) {
 		const unsigned int columnIndex = getGlobalIndexColumnFromIjIndex(iCell, jCell);
 		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet) {
 			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column) {
 				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex) {
-					pointIndex = (blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][columnSet].first] + kPointIndex * ((blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) + getBlockSplitCoordinateLineCount()); // splitted point
+					pointIndex = (blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][columnSet].first] +
+						kPointIndex * ((blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) + getBlockSplitCoordinateLineCount()); // splitted point
 					x = xyzPoints[3 * pointIndex];
 					y = xyzPoints[3 * pointIndex + 1];
 					z = xyzPoints[3 * pointIndex + 2];
@@ -1246,7 +1239,8 @@ uint64_t AbstractIjkGridRepresentation::getXyzPointCountOfBlock() const
 		throw invalid_argument("The block information must have been loaded first.");
 	}
 
-	return (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) * (blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1) + (blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1) * getBlockSplitCoordinateLineCount();
+	return (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) * (blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1) +
+		(blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1) * getBlockSplitCoordinateLineCount();
 }
 
 void AbstractIjkGridRepresentation::getXyzPointsOfKInterface(unsigned int kInterface, double * xyzPoints)

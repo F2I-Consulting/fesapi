@@ -77,7 +77,9 @@ namespace timeTools
 		days daysSinceJan1 = date - sys_days(ymd.year() / 1 / 1);
 
 		std::tm result;
-		result.tm_sec = tod.seconds().count();
+
+		// static_ cast to silence MSVC C4244 (std::tm uses int fields and tod.seconds().count() uses long long)
+		result.tm_sec = static_cast<int>(tod.seconds().count()); // Range must be [0..60] by definition
 		result.tm_min = tod.minutes().count();
 		result.tm_hour = tod.hours().count();
 		result.tm_mday = (ymd.day() - 0_d).count();

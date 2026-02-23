@@ -20,7 +20,7 @@ def serialize_grid(repo: fesapi.DataObjectRepository):
         resqml_points.setitem(i, value)
     single_cell_ijk_grid.setGeometryAsCoordinateLineNodes(
         fesapi.resqml20__PillarShape_vertical, fesapi.resqml20__KDirection_down, False,
-        resqml_points)
+        resqml_points.cast())
 
     # ONE CONTINUOUS PROPERTY ON A PARTIAL 3 cells I=1 J=1 K=3 GRID
     partial_ijk_grid = repo.createPartialIjkGridRepresentation("bc92a216-aa17-4a1f-9253-8b3ab094bf84", "partial grid")
@@ -33,7 +33,66 @@ def serialize_grid(repo: fesapi.DataObjectRepository):
     stats = fesapi.FloatArrayStatistics()
     stats.setMaximum(3.3)
     stats.setMinimum(1.1)
-    continuous_prop.pushBackFloatArray3dOfValuesPlusStatistics(resqml_values, 1, 1, 3, stats)
+    continuous_prop.pushBackFloatArray3dOfValuesPlusStatistics(resqml_values.cast(), 1, 1, 3, stats)
+
+    # A time series definition
+    time_series = repo.createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series 1")
+    time_series.pushBackTimestamp(1409753895)
+    time_series.pushBackTimestamp(1441289895)
+
+    # A continuous property with time series
+    continuous_prop_time0 = repo.createContinuousProperty(partial_ijk_grid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
+                                                          fesapi.eml23__IndexableElement_cells, fesapi.resqml20__ResqmlUom_m, fesapi.resqml20__ResqmlPropertyKind_length)
+    continuous_prop_time0.setTimeSeries(time_series)
+    continuous_prop_time0.setSingleTimestamp(time_series.getTimestamp(0))
+    continuous_prop_time0.pushBackFloatArray3dOfValues(resqml_values.cast(), 1, 1, 3)
+
+    continuous_prop_time1= repo.createContinuousProperty(partial_ijk_grid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
+                                                          fesapi.eml23__IndexableElement_cells, fesapi.resqml20__ResqmlUom_m, fesapi.resqml20__ResqmlPropertyKind_length)
+    continuous_prop_time1.setTimeSeries(time_series)
+    continuous_prop_time1.setSingleTimestamp(1441289895)
+    continuous_prop_time1.pushBackFloatArray3dOfValues(resqml_values.cast(), 1, 1, 3)
+
+    # unstructured grid example
+    unstructured_grid = repo.createUnstructuredGridRepresentation(
+        "9283cd33-5e52-4110-b7b1-616abde2b303",
+        "One tetrahedron + prism grid",
+        2
+    )
+    python_points = [0, 0, 300, 375, 0, 300, 0, 150, 300, # points for shared face between tetra and wedge
+		0, 0, 500, # point for tetra
+		0, 0, 0, 375, 0, 0, 0, 150, 0]
+    resqml_points = fesapi.DoubleArray(21)
+    for i, value in enumerate(python_points):
+        resqml_points.setitem(i, value)
+    python_node_indices_per_face = [0, 1, 2, # shared face
+		1, 2, 3, 0, 1, 3, 0, 2, 3, # faces for tetra
+		0, 2, 6, 4, 2, 1, 5, 6, 0, 1, 5, 4, 4, 5, 6] # faces for wedge
+    resqml_node_indices_per_face = fesapi.UInt64Array(27)
+    for i, value in enumerate(python_node_indices_per_face):
+        resqml_node_indices_per_face.setitem(i, value)
+    python_node_indices_cumulative_count_per_face = [3, # shared face
+		6, 9, 12, # faces for tetra
+		16, 20, 24, 27] # faces for wedge
+    resqml_node_indices_cumulative_count_per_face = fesapi.UInt64Array(8)
+    for i, value in enumerate(python_node_indices_cumulative_count_per_face):
+        resqml_node_indices_cumulative_count_per_face.setitem(i, value)
+    python_face_indices_per_cell = [0, 1, 2, 3, # tetra
+		0, 4, 5, 6, 7] # wedge
+    resqml_face_indices_per_cell = fesapi.UInt64Array(9)
+    for i, value in enumerate(python_face_indices_per_cell):
+        resqml_face_indices_per_cell.setitem(i, value)
+    python_face_indices_cumulative_count_per_cell = [ 4, 9 ];
+    resqml_face_indices_cumulative_count_per_cell = fesapi.UInt64Array(2)
+    for i, value in enumerate(python_face_indices_cumulative_count_per_cell):
+        resqml_face_indices_cumulative_count_per_cell.setitem(i, value)
+    python_face_right_handness = [ 1, 0, 0, 1, 0, 0, 0, 1, 1 ];
+    resqml_face_right_handness = fesapi.UInt8Array(9)
+    for i, value in enumerate(python_face_right_handness):
+        resqml_face_right_handness.setitem(i, value)
+    unstructured_grid.setGeometry(resqml_face_right_handness.cast(), resqml_points.cast(), 7, None, resqml_face_indices_per_cell.cast(), resqml_face_indices_cumulative_count_per_cell.cast(), 8,
+                                  resqml_node_indices_per_face.cast(), resqml_node_indices_cumulative_count_per_face.cast(), fesapi.resqml20__CellShape_prism);
+
 
 def serialize(file_name: str):
     """
@@ -122,7 +181,7 @@ def show_ijk_grid(ijk_grid: fesapi.Resqml2_AbstractIjkGridRepresentation):
         for patch_index in range(patch_count):
             nb_xyz_points_in_patch = ijk_grid.getXyzPointCountOfPatch(patch_index)
             xyz_points_in_patch = fesapi.DoubleArray(nb_xyz_points_in_patch * 3)
-            ijk_grid.getXyzPointsOfPatch(patch_index, xyz_points_in_patch)
+            ijk_grid.getXyzPointsOfPatch(patch_index, xyz_points_in_patch.cast())
             for vertex_index in range(nb_xyz_points_in_patch):
                 x = xyz_points_in_patch.getitem(vertex_index * 3)
                 y = xyz_points_in_patch.getitem(vertex_index * 3 + 1)
@@ -130,7 +189,7 @@ def show_ijk_grid(ijk_grid: fesapi.Resqml2_AbstractIjkGridRepresentation):
                 print("Vertex ", vertex_index, " : ", x, " ", y, " ", z)
 
         xyz_points = fesapi.DoubleArray(nb_xyz_points * 3)
-        ijk_grid.getXyzPointsOfAllPatches(xyz_points)
+        ijk_grid.getXyzPointsOfAllPatches(xyz_points.cast())
 
         ijk_grid.loadSplitInformation()
         for cell_corner in range(8):

@@ -23,7 +23,8 @@ under the License.
 namespace RESQML2_2_NS
 {
 	/**
-	* This class is a container for other organizations that are consistent to each others.
+	* @brief	A stratigraphic column rank interpretation contains an ordered list of stratigraphic unit interpretations.
+	*			It corresponds to a level of detail of the stratigraphic column. First indexed ranks are coarser than last indexed ranks which are more detailed.
 	*/
 	class StratigraphicColumnRankInterpretation final : public RESQML2_NS::StratigraphicColumnRankInterpretation
 	{
@@ -48,7 +49,8 @@ namespace RESQML2_2_NS
 		 * 									column.
 		 * @param 	  	orderingCriteria	How the included horizons are ordered.
 		 */
-		StratigraphicColumnRankInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title, uint64_t rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria orderingCriteria);
+		StratigraphicColumnRankInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title,
+			uint64_t rank, gsoap_resqml2_0_1::resqml20__OrderingCriteria ascendingOrderingCriteria);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -59,6 +61,19 @@ namespace RESQML2_2_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicColumnRankInterpretation() = default;
 
+		/**
+		 * Pushes back a stratigraphic unit interpretation to this stratigraphic column rank interpretation.
+		 * The stratigraphic unit interpretation must be pushed back according to the ordering criteria of the stratigraphic column rank interpretation:
+		 *  - If the (ascending) ordering criteria is age then units must be pushed back from the youngest to oldest.
+		 *	- If the (ascending) ordering criteria is apparent depth then units must be pushed back from the shallowest one to the deepest one.
+		 *	- If the (ascending) ordering criteria is measured depth then units must be pushed back
+		 *		from the first drilled trajectory stations to the latest drilled trajectory stations of the wellbore.
+		 * Remark : RESQML2.0.1 does not explicitely states that the ordering criteria is ascending but RESQML 2.2 does.
+		 *
+		 * @exception	std::invalid_argument	If @p stratiUnitInterpretation is @c nullptr.
+		 *
+		 * @param [in]	stratiUnitInterpretation	The stratigraphic unit interpretation to add.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStratiUnitInterpretation(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterpretation) final;
 
 		DLL_IMPORT_OR_EXPORT void setHorizonOfLastContact(RESQML2_NS::HorizonInterpretation * partOf) final;

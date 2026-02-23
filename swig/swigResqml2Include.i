@@ -2616,21 +2616,142 @@ namespace RESQML2_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_StratigraphicColumnRankInterpretation) StratigraphicColumnRankInterpretation;
 #endif
+	/** 
+	* @brief	A stratigraphic column rank interpretation contains an ordered list of stratigraphic unit interpretations.
+	*			It corresponds to a level of detail of the stratigraphic column. First indexed ranks are coarser than last indexed ranks which are more detailed.
+	*/
 	class StratigraphicColumnRankInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
 	public:
+	
+		/**
+		 * Pushes back a stratigraphic unit interpretation to this stratigraphic column rank interpretation.
+		 * The stratigraphic unit interpretation must be pushed back according to the ordering criteria of the stratigraphic column rank interpretation:
+		 *  - If the (ascending) ordering criteria is age then units must be pushed back from the youngest to oldest.
+		 *	- If the (ascending) ordering criteria is apparent depth then units must be pushed back from the shallowest one to the deepest one.
+		 *	- If the (ascending) ordering criteria is measured depth then units must be pushed back
+		 *		from the first drilled trajectory stations to the latest drilled trajectory stations of the wellbore.
+		 * Remark : RESQML2.0.1 does not explicitely states that the ordering criteria is ascending but RESQML 2.2 does.
+		 *
+		 * @exception	std::invalid_argument	If @p stratiUnitInterpretation is @c nullptr.
+		 *
+		 * @param [in]	stratiUnitInterpretation	The stratigraphic unit interpretation to add.
+		 */
 		void pushBackStratiUnitInterpretation(StratigraphicUnitInterpretation * stratiUnitInterpretation);
+
+		/**
+		 * Sets the horizon interpretation that contains the last (the one with the greater index)
+		 * contact interpretation within the list of contact interpretation associated to this
+		 * stratigraphic column rank interpretation.
+		 *
+		 * @exception	std::invalid_argument	If @p partOf is @c nullptr.
+		 *
+		 * @param [in]	partOf	The horizon interpretation that contains the last contact interpretation.
+		 */
+		void setHorizonOfLastContact(HorizonInterpretation * partOf);
+
+		/**
+		 * Adds a stratigraphic binary "stops" contact to this stratigraphic column rank interpretation.
+		 *
+		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
+		 *
+		 * @param [in]	subject			  	The subject of the sentence that defines how the contact was
+		 * 									constructed.
+		 * @param 	  	subjectContactMode	The subject contact mode (baselap, erosion, extended or
+		 * 									proportional).
+		 * @param [in]	directObject	  	The direct object of the sentence that defines how the
+		 * 									contact was constructed.
+		 * @param 	  	directObjectMode  	The direct object contact mode (baselap, erosion, extended or
+		 * 									proportional).
+		 * @param [in]	partOf			  	(Optional) If non-null, the horizon interpretation that
+		 * 									contains this new binary contact. Default value is @c nullptr.
+		 */
 		void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, gsoap_eml2_3::resqml22__ContactMode subjectContactMode,
 			StratigraphicUnitInterpretation* directObject, gsoap_eml2_3::resqml22__ContactMode directObjectMode,
 			HorizonInterpretation * partOf = nullptr);
-			
-		unsigned int getContactCount() const;
-		gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(unsigned int contactIndex) const;
-		gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(unsigned int contactIndex) const;
-		HorizonInterpretation* getHorizonInterpretationOfContact(unsigned int contactIndex) const;
+
+		/**
+		 * Indicates whether this stratigraphic column rank interpretation is a chrono one (it is
+		 * ordered by ages) or not. One of the consequence is that in a chrono stratigraphic column rank
+		 * interpretation, each stratigraphic unit interpretation have only one top and only one bottom.
+		 *
+		 * @returns	True if is a chrono stratigraphic column rank, false if it is not.
+		 */
 		bool isAChronoStratiRank() const;
+
+		/**
+		 * Gets the count of contacts in this stratigraphic column rank interpretation.
+		 *
+		 * @returns	The contact count.
+		 */
+		unsigned int getContactCount() const;
+
+		/**
+		 * Gets the contact mode of the subject stratigraphic unit of a contact located at a particular
+		 * index. Most of time the subject stratigraphic unit is the stratigraphic unit on top of the
+		 * contact.
+		 *
+		 * @exception	std::out_of_range	If @p contactIndex is out of range.
+		 *
+		 * @param 	contactIndex	Zero-based index of the contact for which we look for the contact
+		 * 							mode of the subject stratigraphic unit.
+		 *
+		 * @returns	Proportional contact mode by default (if no contact mode is associated to the subject
+		 * 			stratigraphic unit) or the contact mode of the subject stratigraphic unit.
+		 */
+		gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(unsigned int contactIndex) const;
+
+		/** Gets the stratigraphic unit interpretation which is the subject of a particular contact.
+		 *
+		 * @exception std::out_of_range	If @p contactIndex is out of range.
+		 * 								
+		 * @param 	contactIndex	Zero-based index of the contact for which we look for the subject 
+		 * 							stratigraphic unit interpretation.
+		 * 							
+		 * @returns The subject stratigraphic unit interpretation of the contact at position @p contactIndex
+		 * 			if it exists, else @c nullptr.
+		 */
 		StratigraphicUnitInterpretation* getSubjectOfContact(unsigned int contactIndex) const;
+
+		/**
+		 * Gets the contact mode of the direct object stratigraphic unit of a contact located at a
+		 * particular index. Most of time the direct object stratigraphic unit is the stratigraphic unit
+		 * below the contact.
+		 *
+		 * @param 	contactIndex	Zero-based index of the contact for which we look for the contact
+		 * 							mode of the direct object stratigraphic unit.
+		 *
+		 * @returns	Proportional contact mode by default (if no contact mode is associated to the direct
+		 * 			object stratigraphic unit) or the contact mode of the direct object stratigraphic
+		 * 			unit.
+		 */
+		gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(unsigned int contactIndex) const;
+
+		/** Gets the stratigraphic unit interpretation which is the direct object of a particular contact.
+		 *
+		 * @exception std::out_of_range	If @p contactIndex is out of range.
+		 *
+		 * @param 	contactIndex	Zero-based index of the contact for which we look for the direct
+		 * 							object stratigraphic unit interpretation.
+		 *
+		 * @returns The direct object stratigraphic unit interpretation of the contact at position 
+		 * 			@p contactIndex if it exists, else @c nullptr.
+		 */
 		StratigraphicUnitInterpretation* getDirectObjectOfContact(unsigned int contactIndex) const;
+
+		/**
+		 * Gets the horizon interpretation which is the contact between two stratigraphic units.
+		 *
+		 * @exception	std::out_of_range	If @p contactIndex is out of range.
+		 *
+		 * @param 	contactIndex	Zero-based index of the contact for which we want to get the
+		 * 							corresponding horizon interpretation.
+		 *
+		 * @returns	@c nullptr if the horizon corresponding to the contact at position @p contactIndex is
+		 * 			unknown, else the corresponding horizon interpretation.
+		 */
+		HorizonInterpretation* getHorizonInterpretationOfContact(unsigned int contactIndex) const;
+		
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicUnitInterpretation, StratigraphicUnitInterpretation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicOccurrenceInterpretation, StratigraphicOccurrenceInterpretation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::HorizonInterpretation, HorizonInterpretation)
@@ -2651,11 +2772,44 @@ namespace RESQML2_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_StratigraphicColumn) StratigraphicColumn;
 #endif
+	/**
+	* @brief	A global interpretation of the stratigraphy, which can be made up of several ranks of
+	* 			stratigraphic unit interpretations.
+	*/
 	class StratigraphicColumn : public COMMON_NS::AbstractObject
 	{
 	public:
+	
+		/**
+		 * Stratigraphic column ranks must be pushed back from the coarsest rank to the most detailed one.
+		 *		
+		 * Pushes a back a stratigraphic column rank interpretation into this stratigraphic column.
+		 *
+		 * @exception	std::invalid_argument	If <tt>stratiColumnRank == nullptr</tt>
+		 *
+		 * @param [in]	stratiColumnRank	A stratigraphic column rank interpretation.
+		 */
 		void pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank);
+
+		/**
+		 * Gets the count of all the stratigraphic column rank interpretations which are contained in
+		 * this stratigraphic column.
+		 *
+		 * @returns	The count of all the stratigraphic column rank interpretations which are contained in
+		 * 			this stratigraphic column.
+		 */
 		unsigned int getStratigraphicColumnRankInterpretationCount() const;
+		
+		/**
+		 * Gets the stratigraphic column rank interpretations at a particular index.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=
+		 * 									getStratigraphicColumnRankInterpretationCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the stratigraphic column rank interpretations.
+		 *
+		 * @returns	The stratigraphic column rank interpretation at position @p index.
+		 */
 		StratigraphicColumnRankInterpretation* getStratigraphicColumnRankInterpretation(unsigned int index) const;
 	};
 
@@ -4566,11 +4720,139 @@ namespace RESQML2_NS
 		 */
 		void setKCellCount(uint64_t kCount);
 
+		/**
+		 * Gets the K direction (up, down or not monotonic) of this grid.
+		 *
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
+		 *
+		 * @returns	The K direction of this grid.
+		 */
+		gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const;
+
+		/**
+		 * Set the stratigraphic organization interpretation which is associated to this grid
+		 * representation.
+		 *
+		 * @exception	std::invalid_argument	If this grid is a truncated one and thus cannot be linked
+		 * 										to a stratigraphic column in RESQML2.0.
+		 * @exception	std::invalid_argument	If @p stratiOrgInterp is null.
+		 * @exception	std::invalid_argument	If @p hdfProxy is null and no default HDF proxy is
+		 * 										provided in the associated data object repository.
+		 *
+		 * @param [in]	   	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
+		 * 										column for each interval of this grid representation.
+		 * 										Array length is the number of interval in the grids.
+		 * 										Intervals = layers + K gaps.
+		 * @param 		   	nullValue		 	The value which is used to tell that the association
+		 * 										between a grid interval and a stratigraphic unit is
+		 * 										unavailable.
+		 * @param [in]	   	stratiOrgInterp  	The stratigraphic organization interpretation which is
+		 * 										associated to this grid representation.
+		 * @param [in, out]	hdfProxy		 	(Optional) The HDF proxy where to write the values. It
+		 * 										must be already opened for writing and won't be closed in
+		 * 										this method.
+		 */
 		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(int64_t * stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy);
+		
 		RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
+
+		/**
+		 * Queries if this grid has some interval stratigraphic unit indices.
+		 *
+		 * @exception	std::logic_error	If this grid is partial or if the underlying gSOAP instance is not a RESQML2.0 one..
+		 *
+		 * @returns	true if this grid representation has got some association between stratigraphic unit
+		 * 			indices and intervals. Intervals = layers + K gaps.
+		 */
 		bool hasIntervalStratigraphicUnitIndices() const;
+
+		/**
+		 * Get the stratigraphic unit indices (regarding the associated stratigraphic organization
+		 * interpretation) of each interval of this grid representation.
+		 *
+		 * @exception	std::invalid_argument	If this grid is a truncated one.
+		 * @exception	std::invalid_argument	If this grid has no stratigraphic unit interval
+		 * 										information.
+		 *
+		 * @param [out]	stratiUnitIndices	This array must be allocated with a size equal to the
+		 * 										count of interval in this grid. Intervals = layers + K gaps.
+		 * 										It will be filled in with the stratigraphic unit indices
+		 * 										ordered as grid intervals are ordered.
+		 *
+		 * @returns	The null value. The null value is used to tell the association between a grid
+		 * 			interval and a stratigraphic unit is unavailable.
+		 */
 		int64_t getIntervalStratigraphicUnitIndices(int64_t * stratiUnitIndices);
+
+		/**
+		 * Gets the most complex pillar geometry we can find on this grid. The returned value is not
+		 * computed. It is just read from the data object attributes. Since it is denormalized
+		 * information, inconsistency (mainly due to non synchronized information) might occur. In order
+		 * to be sure the value is consistent with actual data, please compute this value again from the
+		 * pillar kind indices.
+		 *
+		 * @exception	std::invalid_argument	If this grid has no AbstractColumnLayerGridGeometry.
+		 *
+		 * @returns	The most complex pillar geometry which we can find on this grid.
+		 */
 		gsoap_resqml2_0_1::resqml20__PillarShape getMostComplexPillarGeometry() const;
+
+		/**
+		 * Gets the parent node index for each of the split nodes.
+		 *
+		 * @param [out]	splitNodeParentNodeIndices	This array must be pre-allocated with a size equal to the
+		 * 											count of split nodes. It will be filled in by this method
+		 *											and not deleted.
+		 *
+		 * @exception	std::invalid_argument	If there is no split node on this column layer grid.
+		 */
+		void getSplitNodeParentNodeIndices(uint64_t* splitNodeParentNodeIndices) const;
+
+		/**
+		 * Gets the cumulative count of cells impacted by all the split nodes. The order of
+		 * the cumulative count values corresponds to the order of the split nodes.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split node in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the cumulative count of the columns impacted by the
+		 * 										split coordinate lines are not stored within an HDF5
+		 * 										integer array.
+		 *
+		 * @param [out]	cumulativeCountOfCellsPerSplitNode	This array must be pre-allocated with a size equal to the
+		 * 													count of split nodes. It will be filled in with the cumulative
+		 * 													count of cells impacted by the split nodes.
+		 */
+		void getCumulativeCountOfCellsPerSplitNode(uint64_t* cumulativeCountOfCellsPerSplitNode) const;
+
+		/**
+		 * Gets the indices of the cells impacted by all the split nodes. They are linearized and must be read according to getCumulativeCountOfCellsPerSplitNode.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split node in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the cumulative count of the columns impacted by the
+		 * 										split coordinate lines are not stored within an HDF5
+		 * 										integer array.
+		 *
+		 * @param [out]	cellsPerSplitNode	This array must be pre-allocated with the last value of the 
+		 * 									getCumulativeCountOfCellsPerSplitNode returned value.
+		 *									It will be filled in with the cell indices impacted by the split nodes.
+		 */
+		void getCellsPerSplitNode(uint64_t* cellsPerSplitNode) const;
+
+		/**
+		* Sets all information about a split node patch of the grid. These information is related to
+		* all XYZ points which are located after the index (PillarCount + SplitPillarCount + SplitCoordinateLineCount) * (KCellCount + 1)
+		* 
+		* @param [in] splitNodeCount						The count of split nodes
+		* @param [in] splitNodeParentNodeIndices			The parent node index for each of the split nodes. Size must be splitNodeCount.
+		* @param [in] cumulativeCountOfCellsPerSplitNode	The cumulative count of cells impacted by each of the split nodes. Size must be splitNodeCount.
+		* @param [in] cellsPerSplitNode						The indices of the cells impacted by each of the split nodes.
+		*													Size must be the last value of cumulativeCountOfCellsPerSplitNode
+		*/
+		void setSplitNodePatch(uint64_t splitNodeCount, uint64_t* splitNodeParentNodeIndices,
+			uint64_t* cumulativeCountOfCellsPerSplitNode, uint64_t* cellsPerSplitNode, EML2_NS::AbstractHdfProxy* proxy = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -5074,8 +5356,6 @@ namespace RESQML2_NS
 		void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints);
 		
 		bool isNodeGeometryCompressed() const;
-		
-		gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const;
 		
 		geometryKind getGeometryKind() const;
 	};
@@ -6015,7 +6295,7 @@ namespace RESQML2_NS
 		 * @param [in]	timestamp	The single timestamps to associate to this property
 		 * @param [in]	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
 		 */
-		void setSingleTimestamp(time_t timestamp, LONG64 yearOffset = 0);
+		void setSingleTimestamp(time_t timestamp, int64_t yearOffset = 0);
 
 		/**
 		 * Get a single associated timestamp for this property.

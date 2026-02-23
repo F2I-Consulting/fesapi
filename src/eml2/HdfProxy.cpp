@@ -161,6 +161,30 @@ void HdfProxy::writeUuidAttribute()
 	}
 }
 
+namespace {
+	/**
+	* Create a file access property list restricting HDF5 item creation to the HDF5 1.8.x family of library versions.  
+	*/
+	hid_t createFileAccessProperyList() {
+		hid_t access_props;
+		if ((access_props = H5Pcreate(H5P_FILE_ACCESS)) < 0) {
+			throw runtime_error("Cannot create a new property list as an instance of a property list class.");
+		}
+
+#if H5_VERSION_GE(1, 10, 0)
+		if (H5Pset_libver_bounds(access_props, H5F_LIBVER_V18, H5F_LIBVER_V18) < 0) {
+#elif H5_VERSION_GE(1, 8, 0)
+		if (H5Pset_libver_bounds(access_props, H5F_LIBVER_LATEST, H5F_LIBVER_LATEST) < 0) {
+#else
+#error Only HDF5 1.8.x and later supported.
+#endif
+		throw runtime_error("Cannot set the HDF5 library version to 1.8");
+		}
+
+		return access_props;
+	}
+}
+
 void HdfProxy::open()
 {
 	if (hdfFile > -1) {
@@ -199,14 +223,9 @@ void HdfProxy::open()
 		}
 	}
 	else if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE) {
-		hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
-#if H5_VERSION_GE(1,10,0)
-		H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
-#endif
+		const hid_t access_props = createFileAccessProperyList();
 
-		hdfFile = H5Fcreate(fullName.c_str(), H5F_ACC_EXCL, H5P_DEFAULT, access_props);
-
-		if (hdfFile < 0) {
+		if ((hdfFile = H5Fcreate(fullName.c_str(), H5F_ACC_EXCL, H5P_DEFAULT, access_props)) < 0) {
 			openingMode = COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE;
 			open();
 			openingMode = COMMON_NS::DataObjectRepository::openingMode::READ_WRITE;
@@ -216,13 +235,9 @@ void HdfProxy::open()
 		}
 	}
 	else if (openingMode == COMMON_NS::DataObjectRepository::openingMode::OVERWRITE) {
-		hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
-#if H5_VERSION_GE(1,10,0)
-		H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
-#endif
+		const hid_t access_props = createFileAccessProperyList();
 
-		hdfFile = H5Fcreate(fullName.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, access_props);
-		if (hdfFile < 0) {
+		if ((hdfFile = H5Fcreate(fullName.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, access_props)) < 0) {
 			throw invalid_argument("Can not create HDF5 file : " + fullName);
 		}
 

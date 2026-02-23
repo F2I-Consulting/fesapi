@@ -235,6 +235,19 @@ namespace {
 	}
 }
 
+namespace {
+	/**
+	* The version in the EPC content type is just two digits delimited by a dot : https://docs.energistics.org/#EPC/EPC_TOPICS/EPC-000-023-0-C-sv1000.html
+	*/
+	std::string getEpcContentType(const COMMON_NS::AbstractObject& dataobject) {
+		const std::string& xmlNs = dataobject.getXmlNamespace();
+		const size_t xmlNsSize = xmlNs.size();
+		const std::string& xmlTag = dataobject.getXmlTag();
+		return "application/x-" + xmlNs.substr(0, xmlNsSize - 2) + "+xml;version=" + xmlNs[xmlNsSize - 2] + '.' + xmlNs[xmlNsSize - 1] +
+			";type=" + (xmlNs == "resqml20" || xmlNs == "eml20" ? "obj_" + xmlTag : xmlTag);
+	}
+}
+
 void EpcDocument::serializeFrom(DataObjectRepository& repo)
 {
 	addFakePropertyToEmptyPropertySet(repo);
@@ -256,7 +269,7 @@ void EpcDocument::serializeFrom(DataObjectRepository& repo)
 				}
 
 				// Content Type entry
-				package->addContentType(epc::ContentType(false, dataobject->getContentType(), dataobject->getPartNameInEpcDocument()));
+				package->addContentType(epc::ContentType(false, getEpcContentType(*dataobject), dataobject->getPartNameInEpcDocument()));
 			}
 		}
 	}

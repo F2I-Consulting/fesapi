@@ -63,7 +63,7 @@ namespace EML2_NS
 		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
 	}
 
-	%typemap(out) 	Activity*, ActivityTemplate*, PropertyKind*, TimeSeries*
+	%typemap(out) 	Activity*, ActivityTemplate*, PropertyKind*, TimeSeries*, ColumnBasedTable*
 #ifdef WITH_RESQML2_2
 										,GraphicalInformationSet*
 #endif

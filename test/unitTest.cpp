@@ -76,6 +76,7 @@ under the License.
 #include "resqml2_test/DiscreteProperty.h"
 #include "resqml2_test/PointsProperty.h"
 #include "resqml2_test/PropertyBySlab.h"
+#include "resqml2_test/PolylineSetRepresentation.h"
 #include "resqml2_test/Streamlines.h"
 #include "witsml2_test/WellTest.h"
 #include "witsml2_test/Trajectory.h"
@@ -83,6 +84,7 @@ under the License.
 #include "witsml2_test/WellboreGeometryTest.h"
 #include "witsml2_test/WellboreCompletion.h"
 #if WITH_RESQML2_2
+#include "eml2_3test/ColumnBasedTableTest.h"
 #include "eml2_3test/GraphicalInformationSetTest.h"
 #include "resqml2_2test/DiscreteColorMapTest.h"
 #include "resqml2_2test/ContinuousColorMapTest.h"
@@ -90,6 +92,7 @@ under the License.
 #include "resqml2_2test/WellboreRegularFrameRepresentationTest.h"
 #include "resqml2_2test/SeismicWellboreFrameRepresentationTest.h"
 #include "resqml2_2test/SeismicWellboreRegularFrameRepresentationTest.h"
+using namespace eml2_3test;
 using namespace resqml2_2test;
 #endif
 using namespace commontest;
@@ -124,6 +127,7 @@ using namespace witsml2_test;
 #endif
 
 #if WITH_RESQML2_2
+FESAPI_TEST2_2("Export and import column based table", "[column based table]", ColumnBasedTableTest)
 FESAPI_TEST2_2("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
 FESAPI_TEST2_2("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
 FESAPI_TEST2_2("Export and import continuous color map on a discrete property", "[graphical information][color map][continuous color map]", ContinuousColorMapTest)
@@ -226,6 +230,9 @@ FESAPI_TEST("Export a multi domains interpretation", "[interpretation]", Interpr
 // TRIANGULATION
 FESAPI_TEST("Export and import a single patch triangulated set fault representation", "[representation]", FaultSinglePatchTriangulatedSetRepresentationTest)
 FESAPI_TEST("Export and import a multi patch triangulated set fault representation", "[representation]", FaultMultiPatchTriangulatedSetRepresentationTest)
+
+// POLYLINE SET REPRESENTATION
+FESAPI_TEST("Export and import fault sticks and opened/closed rings", "[representation]", PolylineSetRepresentation)
 
 // ACTIVITY
 FESAPI_TEST("Export and import a generic creation activity template", "[activity]", ActivityTemplateGenericCreationTest)

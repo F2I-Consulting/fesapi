@@ -471,7 +471,9 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespaceVersion() const;
 
 		/**
-		 * Gets the content type of this instance according to EPC recommendation
+		 * Gets the content type of this instance according to Energistics Identifier Specification v4.0
+		 * https://docs.energistics.org/#EID/EID_TOPICS/EID-000-007-0-C-sv4000.html
+		 * Example here : https://docs.energistics.org/#EID/EID_TOPICS/EID-000-009-0-C-sv4000.html
 		 *
 		 * @returns	The content type of this instance.
 		 */
@@ -842,7 +844,7 @@ namespace COMMON_NS
 				gsoap_resqml2_0_1::resqml20__IntegerConstantArray const* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(arrayInput);
 				T value;
 				if constexpr (std::is_signed_v<T>) {
-					value = static_cast<T>(std::clamp(constantArray->Value,
+					value = static_cast<T>(std::clamp(static_cast<int64_t>(constantArray->Value),
 						static_cast<int64_t>((std::numeric_limits<T>::min)()), static_cast<int64_t>((std::numeric_limits<T>::max)())));
 				}
 				else {

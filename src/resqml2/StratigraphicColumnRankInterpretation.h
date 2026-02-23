@@ -31,10 +31,10 @@ namespace RESQML2_NS
 {
 	class StratigraphicUnitInterpretation;
 
-	/**
-	 * @brief	A stratigraphic column rank interpretation is a global hierarchy containing an
-	 * 			ordered list of stratigraphic unit interpretations.
-	 */
+	/** 
+	* @brief	A stratigraphic column rank interpretation contains an ordered list of stratigraphic unit interpretations.
+	*			It corresponds to a level of detail of the stratigraphic column. First indexed ranks are coarser than last indexed ranks which are more detailed.
+	*/
 	class StratigraphicColumnRankInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
 	public:
@@ -43,9 +43,13 @@ namespace RESQML2_NS
 		virtual ~StratigraphicColumnRankInterpretation() = default;
 
 		/**
-		 * Adds a stratigraphic unit interpretation to this stratigraphic column rank interpretation.
-		 * Does add the inverse relationship i.e. from the included stratigraphic unit interpretation to
-		 * this stratigraphic column rank interpretation.
+		 * Pushes back a stratigraphic unit interpretation to this stratigraphic column rank interpretation.
+		 * The stratigraphic unit interpretation must be pushed back according to the ordering criteria of the stratigraphic column rank interpretation:
+		 *  - If the (ascending) ordering criteria is age then units must be pushed back from the youngest to oldest.
+		 *	- If the (ascending) ordering criteria is apparent depth then units must be pushed back from the shallowest one to the deepest one.
+		 *	- If the (ascending) ordering criteria is measured depth then units must be pushed back
+		 *		from the first drilled trajectory stations to the latest drilled trajectory stations of the wellbore.
+		 * Remark : RESQML2.0.1 does not explicitely states that the ordering criteria is ascending but RESQML 2.2 does.
 		 *
 		 * @exception	std::invalid_argument	If @p stratiUnitInterpretation is @c nullptr.
 		 *

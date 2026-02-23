@@ -1,10 +1,10 @@
 /*
-        stdsoap2.h 2.8.139E
+        stdsoap2.h 2.8.140E
 
         gSOAP runtime engine
 
 gSOAP XML Web services tools
-Copyright (C) 2000-2025, Robert van Engelen, Genivia Inc., All Rights Reserved.
+Copyright (C) 2000-2026, Robert van Engelen, Genivia Inc., All Rights Reserved.
 This part of the software is released under ONE of the following licenses:
 
 --------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 208139
+#define GSOAP_VERSION 208140
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -552,11 +552,11 @@ extern intmax_t __strtoull(const char*, char**, int);
 # endif
 #endif
 
-/* gSOAP 2.7.15 and higher: always use FAST and retain CDATA in literal XML, unless WITH_LEAN or WITH_NOCDATA */
+/* gSOAP 2.7.15 and higher: always use FAST, retain CDATA in literal XML unless WITH_LEAN or WITH_NOCDATA */
+#ifndef WITH_FAST
+# define WITH_FAST
+#endif
 #ifndef WITH_LEAN
-# ifndef WITH_FAST
-#  define WITH_FAST
-# endif
 # ifndef WITH_NOCDATA
 #  ifndef WITH_CDATA
 #   define WITH_CDATA
@@ -1147,14 +1147,14 @@ extern "C" {
 # endif
 #endif
 #ifndef SOAP_LABLEN
-# define SOAP_LABLEN     (256) /* initial look-aside buffer length */
+# define SOAP_LABLEN    (256) /* initial look-aside buffer length */
 #endif
 #ifndef SOAP_PTRBLK
-# define SOAP_PTRBLK     (32) /* block allocation for pointer hash table chains */
+# define SOAP_PTRBLK    (256) /* block allocations for hash table chains */
 #endif
 #ifndef SOAP_PTRHASH
 # ifndef WITH_LEAN
-#  define SOAP_PTRHASH (4096) /* size of pointer analysis hash table (must be power of 2) */
+#  define SOAP_PTRHASH (2048) /* size of pointer analysis hash table (must be power of 2) */
 # else
 #  define SOAP_PTRHASH   (32)
 # endif
@@ -1189,7 +1189,7 @@ extern "C" {
 #endif
 #ifndef SOAP_TMPLEN
 # ifndef WITH_LEAN
-#  define SOAP_TMPLEN  (2048) /* maximum length of msgbuf and tmpbuf short message buffers, must be >=1024 */
+#  define SOAP_TMPLEN  (8192) /* maximum length of msgbuf and tmpbuf message buffers, must be >=1024 */
 # else
 #  define SOAP_TMPLEN  (1024)
 # endif
@@ -1210,7 +1210,7 @@ extern "C" {
 #endif
 
 #ifndef SOAP_MAXALLOCSIZE
-# define SOAP_MAXALLOCSIZE (0) /* max size that malloc() can handle, zero for no limit */
+# define SOAP_MAXALLOCSIZE (0) /* max size that malloc() can handle, zero means unlimited */
 #endif
 
 #ifndef SOAP_MAXLOGS
@@ -2032,26 +2032,24 @@ struct soap_pblk
   struct soap_plist plist[SOAP_PTRBLK];
 };
 
-#ifdef SOAP_MEM_DEBUG
-/* malloc/free tracking for debugging */
-struct soap_mlist
-{
-  struct soap_mlist *next;
-  const void *ptr;
-  const char *file;
-  int line;
-  short live;
-};
-#endif
-
-/* class allocation list */
+/* malloc and C++ class instance tracking */
 struct soap_clist
 {
   struct soap_clist *next;
-  void *ptr;
-  int type;
-  int size; /* array size */
-  int (*fdelete)(struct soap*, struct soap_clist*);
+  void *ptr; /* points to allocated memory */
+  union {
+    int (*fdelete)(struct soap*, struct soap_clist*); /* C++ class instance deleter */
+    const char *file; /* source location (of unmanaged memory alloc) */
+  } ref;
+  LONG64 size; /* malloc() size or array size of C++ objects (-1 = single) or line number (unmanaged memory, <0 when freed) */
+  int type; /* 0 (managed malloc) or SOAP_TRACK_UNMANAGED_MEM (unmanaged) or SOAP_TYPE C++ class instance type */
+};
+
+/* block allocation for allocation management */
+struct soap_cblk
+{
+  struct soap_cblk *next;
+  struct soap_clist clist[SOAP_PTRBLK];
 };
 
 /* attributes */
@@ -2704,18 +2702,15 @@ struct SOAP_CMAC soap
   struct Namespace *local_namespaces;   /* Local namespace mapping table */
   struct soap_nlist *nlist;     /* namespace stack */
   struct soap_blist *blist;     /* block allocation stack */
-  struct soap_clist *clist;     /* class instance allocation list */
-  void *alist;                  /* memory allocation (malloc) list */
 #if !defined(WITH_LEANER) || !defined(WITH_NOIDREF)
   struct soap_ilist *iht[SOAP_IDHASH];
 #endif
   struct soap_plist *pht[SOAP_PTRHASH];
   struct soap_pblk *pblk;       /* plist block allocation */
-  short pidx;                   /* plist block allocation */
-  short shaky;                  /* objects in reallocatable containers are on shaky grounds */
+  int idnum;
+  int pidx;                     /* plist block allocation */
   struct SOAP_ENV__Header *header;
   struct SOAP_ENV__Fault *fault;
-  int idnum;
   void *user;                   /* for user to pass user-defined data to callbacks */
   void *data[4];                /* extension data = {smdevp, mecevp, ...} */
   struct soap_plugin *plugins;  /* linked list of plug-in data */
@@ -2849,13 +2844,13 @@ struct SOAP_CMAC soap
   void *dh_params;
   void *rsa_params;
 #endif
-  unsigned short ssl_flags;
   const char *keyfile;
   const char *keyid;
   const char *password;
   const char *cafile;
   const char *capath;
   const char *crlfile;
+  unsigned short ssl_flags;
   char session_host[SOAP_TAGLEN];
   int session_port;
   size_t bufidx;        /* index in soap.buf[] */
@@ -2885,6 +2880,7 @@ struct SOAP_CMAC soap
   int position;
   int positions[SOAP_MAXDIMS];
   struct soap_attribute *attributes;    /* attribute list */
+  short shaky;          /* objects in reallocatable containers are on shaky grounds */
   short other;
   short root;
   short encoding;       /* when set, output encodingStyle */
@@ -2903,10 +2899,10 @@ struct SOAP_CMAC soap
   char host[SOAP_TAGLEN];
   char *action;                 /* SOAPAction string */
   const char *prolog;           /* XML declaration prolog */
+  const char *override_host;    /* to override the client-side host name/IP when connecting */
   unsigned int ip;              /* IP number retrieved from request */
   unsigned int ip6[4];          /* same for IPv6: upper in ip6[0] to lower in ip6[3] requires WITH_IPV6 */
   int port;                     /* port number */
-  const char *override_host;    /* to override the client-side host name/IP when connecting */
   int override_port;            /* to override client-side port number when connecting */
   int keep_alive;               /* connection should be kept open (-1, 0, or counts down) */
   int tcp_keep_alive;           /* enable SO_KEEPALIVE */
@@ -2914,9 +2910,9 @@ struct SOAP_CMAC soap
   unsigned int tcp_keep_intvl;  /* set TCP_KEEPINTVL */
   unsigned int tcp_keep_cnt;    /* set TCP_KEEPCNT */
   int max_keep_alive;           /* maximum keep-alive session (default=100) 0 to always keep open */
+  int proxy_port;               /* Proxy Server port (default = 8080) */
   const char *proxy_http_version;/* HTTP version of proxy "1.0" or "1.1" */
   const char *proxy_host;       /* Proxy Server host name */
-  int proxy_port;               /* Proxy Server port (default = 8080) */
   const char *proxy_userid;     /* Proxy Authorization user name */
   const char *proxy_passwd;     /* Proxy Authorization password */
   const char *proxy_from;       /* X-Forwarding-For header returned by proxy */
@@ -2940,7 +2936,9 @@ struct SOAP_CMAC soap
 #endif
   const char *logfile[SOAP_MAXLOGS];
   FILE *fdebug[SOAP_MAXLOGS];
-  struct soap_mlist *mht[SOAP_PTRHASH];
+  struct soap_clist *cht[SOAP_PTRHASH];
+  struct soap_cblk *cblk;       /* clist block allocation */
+  int cidx;                     /* clist block allocation */
 #ifndef WITH_LEAN
   const char *wsuid;            /* space-separated string of element tags */
   const char *c14nexclude;      /* space-separated string of prefixes for c14n exclusion */
@@ -3083,7 +3081,14 @@ SOAP_FMAC1 soap_wchar SOAP_FMAC2 soap_getchar(struct soap*);
 #define soap_clr_mode(soap, n) ((soap)->mode &= ~(n), (soap)->imode &= ~(n), (soap)->omode &= ~(n))
 #define soap_destroy(soap) soap_delete((soap), NULL)
 
-#define SOAP_NO_LINK_TO_DELETE (-2) /* pass to soap_link() as size n: do not manage, smart pointers are self-managing */
+#define SOAP_NO_LINK_TO_DELETE  (-2) /* pass to soap_new_link() as size n: do not manage, smart pointers are self-managing */
+
+#ifdef SOAP_MEM_DEBUG
+#define SOAP_TRACK_MALLOC               (int)((unsigned int)-1 >> 1)
+#define soap_is_unmanaged_mem(type)     ((type) == SOAP_TRACK_MALLOC)
+#else
+#define soap_is_unmanaged_mem(type)     (0)
+#endif
 
 #ifdef HAVE_STRRCHR
 # define soap_strrchr(s, t) strrchr(s, t)
@@ -3279,8 +3284,9 @@ SOAP_FMAC1 int SOAP_FMAC2 soap_begin_recv(struct soap*);
 SOAP_FMAC1 int SOAP_FMAC2 soap_end_recv(struct soap*);
 
 SOAP_FMAC1 void* SOAP_FMAC2 soap_malloc(struct soap*, size_t);
-SOAP_FMAC1 void SOAP_FMAC2 soap_dealloc(struct soap*, void*);
-SOAP_FMAC1 struct soap_clist * SOAP_FMAC2 soap_link(struct soap*, int, int, int (*fdelete)(struct soap*, struct soap_clist*));
+SOAP_FMAC1 int SOAP_FMAC2 soap_dealloc(struct soap*, void*);
+SOAP_FMAC1 struct soap_clist * SOAP_FMAC2 soap_new_link(struct soap*, int, int, int (*fdelete)(struct soap*, struct soap_clist*));
+SOAP_FMAC1 void SOAP_FMAC2 soap_set_link(struct soap*, struct soap_clist*, void*);
 SOAP_FMAC1 int SOAP_FMAC2 soap_unlink(struct soap*, const void*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_free_temp(struct soap*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_del(struct soap*);
@@ -3322,8 +3328,8 @@ SOAP_FMAC1 void SOAP_FMAC2 soap_initialize(struct soap*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_done(struct soap*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_cleanup(struct soap*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_begin(struct soap*);
-SOAP_FMAC1 void SOAP_FMAC2 soap_end(struct soap*);
-SOAP_FMAC1 void SOAP_FMAC2 soap_delete(struct soap*, void*);
+SOAP_FMAC1 int SOAP_FMAC2 soap_end(struct soap*);
+SOAP_FMAC1 int SOAP_FMAC2 soap_delete(struct soap*, void*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_delegate_deletion(struct soap*, struct soap*);
 #ifdef WITH_SELF_PIPE
 SOAP_FMAC1 void SOAP_FMAC2 soap_close_connection(struct soap*);
@@ -3478,7 +3484,7 @@ SOAP_FMAC1 int SOAP_FMAC2 soap_s2stdwchar(struct soap*, const char*, std::wstrin
 #endif
 #endif
 
-#ifndef WITH_LEAN
+#ifndef WITH_LEANER
 SOAP_FMAC1 int SOAP_FMAC2 soap_s2wchar(struct soap*, const char*, wchar_t**, int, long minlen, long maxlen, const char *pattern);
 SOAP_FMAC1 int SOAP_FMAC2 soap_s2dateTime(struct soap*, const char*, time_t*);
 #endif
@@ -3500,7 +3506,7 @@ SOAP_FMAC1 const char* SOAP_FMAC2 soap_unsignedLong2s(struct soap*, unsigned lon
 SOAP_FMAC1 const char* SOAP_FMAC2 soap_ULONG642s(struct soap*, ULONG64);
 SOAP_FMAC1 const char* SOAP_FMAC2 soap_QName2s(struct soap*, const char*);
 
-#ifndef WITH_LEAN
+#ifndef WITH_LEANER
 SOAP_FMAC1 const char* SOAP_FMAC2 soap_wchar2s(struct soap*, const wchar_t*);
 SOAP_FMAC1 const char* SOAP_FMAC2 soap_dateTime2s(struct soap*, time_t);
 #endif
@@ -3527,11 +3533,8 @@ SOAP_FMAC1 char** SOAP_FMAC2 soap_inliteral(struct soap*, const char *tag, char 
 SOAP_FMAC1 time_t* SOAP_FMAC2 soap_indateTime(struct soap*, const char *tag, time_t *p, const char *, int);
 #endif
 
-#if !defined(WITH_LEAN) || defined(WITH_COOKIES)
+#if !defined(WITH_LEANER) || defined(WITH_COOKIES)
 SOAP_FMAC1 time_t SOAP_FMAC2 soap_timegm(struct tm*);
-#endif
-
-#ifndef WITH_LEANER
 SOAP_FMAC1 wchar_t** SOAP_FMAC2 soap_inwstring(struct soap*, const char *tag, wchar_t **p, const char *, int, int, long, long, const char*);
 SOAP_FMAC1 wchar_t** SOAP_FMAC2 soap_inwliteral(struct soap*, const char *tag, wchar_t **p);
 #endif

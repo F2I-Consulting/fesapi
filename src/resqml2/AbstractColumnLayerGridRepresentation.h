@@ -126,6 +126,65 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__PillarShape getMostComplexPillarGeometry() const;
 
+		/**
+		 * Gets the parent node index for each of the split nodes.
+		 *
+		 * @param [out]	splitNodeParentNodeIndices	This array must be pre-allocated with a size equal to the
+		 * 											count of split nodes. It will be filled in by this method
+		 *											and not deleted.
+		 *
+		 * @exception	std::invalid_argument	If there is no split node on this column layer grid.
+		 */
+		DLL_IMPORT_OR_EXPORT void getSplitNodeParentNodeIndices(uint64_t* splitNodeParentNodeIndices) const;
+
+		/**
+		 * Gets the cumulative count of cells impacted by all the split nodes. The order of
+		 * the cumulative count values corresponds to the order of the split nodes.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split node in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the cumulative count of the columns impacted by the
+		 * 										split coordinate lines are not stored within an HDF5
+		 * 										integer array.
+		 *
+		 * @param [out]	cumulativeCountOfCellsPerSplitNode	This array must be pre-allocated with a size equal to the
+		 * 													count of split nodes. It will be filled in with the cumulative
+		 * 													count of cells impacted by the split nodes.
+		 */
+		DLL_IMPORT_OR_EXPORT void getCumulativeCountOfCellsPerSplitNode(uint64_t* cumulativeCountOfCellsPerSplitNode) const;
+
+		/**
+		 * Gets the indices of the cells impacted by all the split nodes. They are linearized and must be read according to getCumulativeCountOfCellsPerSplitNode.
+		 *
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If there is no geometry or no split node in
+		 * 										this grid.
+		 * @exception	std::logic_error	 	If the cumulative count of the columns impacted by the
+		 * 										split coordinate lines are not stored within an HDF5
+		 * 										integer array.
+		 *
+		 * @param [out]	cellsPerSplitNode	This array must be pre-allocated with the last value of the 
+		 * 									getCumulativeCountOfCellsPerSplitNode returned value.
+		 *									It will be filled in with the cell indices impacted by the split nodes.
+		 */
+		DLL_IMPORT_OR_EXPORT void getCellsPerSplitNode(uint64_t* cellsPerSplitNode) const;
+
+		/**
+		* Sets all information about a split node patch of the grid. These information is related to
+		* all XYZ points which are located after the index (PillarCount + SplitPillarCount + SplitCoordinateLineCount) * (KCellCount + 1)
+		* 
+		* @param [in] splitNodeCount						The count of split nodes
+		* @param [in] splitNodeParentNodeIndices			The parent node index for each of the split nodes. Size must be splitNodeCount.
+		* @param [in] cumulativeCountOfCellsPerSplitNode	The cumulative count of cells impacted by each of the split nodes. Size must be splitNodeCount.
+		* @param [in] cellsPerSplitNode						The indices of the cells impacted by each of the split nodes.
+		*													Size must be the last value of cumulativeCountOfCellsPerSplitNode
+		* @param [in]proxy									(Optional) The HDF proxy for writing the array values.
+		*													If @c nullptr (default), then the default HDF proxy will be used.
+		*/
+		DLL_IMPORT_OR_EXPORT void setSplitNodePatch(uint64_t splitNodeCount, uint64_t* splitNodeParentNodeIndices,
+			uint64_t* cumulativeCountOfCellsPerSplitNode, uint64_t* cellsPerSplitNode, EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
 	protected:
 
 		/**

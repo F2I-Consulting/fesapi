@@ -1,1 +1,0 @@
-// This is fesapi.js, a port of Fesapi to JavaScript. Apache2.0 licensed.

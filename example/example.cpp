@@ -42,6 +42,8 @@ under the License.
 #include "eml2/PropertyKind.h"
 #include "eml2/TimeSeries.h"
 
+#include "eml2_3/ColumnBasedTable.h"
+#include "eml2_3/GraphicalInformationSet.h"
 #include "eml2_3/LocalEngineeringCompoundCrs.h"
 #include "eml2_3/PropertyKind.h"
 
@@ -106,7 +108,6 @@ under the License.
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
 
 #if WITH_RESQML2_2
-#include "eml2_3/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
 #include "resqml2_2/FluidBoundaryInterpretation.h"
@@ -263,6 +264,29 @@ void serializeWitsmlWells(COMMON_NS::DataObjectRepository * repo)
 	witsmlWellboreMarker = repo->createWellboreMarker(witsmlWellbore, "08b18514-e0c8-4667-850b-4ddd1cb785b5", "WITSML marker", 350, gsoap_eml2_3::eml23__LengthUom::m);
 	witsmlWellboreMarker->setDipAngle(5, gsoap_eml2_3::eml23__PlaneAngleUom::dega);
 	witsmlWellboreMarker->setDipDirection(10, gsoap_eml2_3::eml23__PlaneAngleUom::dega);
+}
+
+void serializeColumnBasedTable(COMMON_NS::DataObjectRepository* repo, EML2_NS::AbstractHdfProxy* hdfProxy)
+{
+	auto* cbt = repo->createColumnBasedTable("866841eb-0c56-4b7d-96d6-f15f385deaf9", "KrPc");
+
+	auto* pwls3Saturation = repo->createPropertyKind("cfe9293f-d5a9-486d-815a-a957cace90b6", "saturation", gsoap_eml2_3::eml23__QuantityClassKind::dimensionless);
+	auto* pwls3RelPerm = repo->createPropertyKind("8e3c5579-7efd-40d0-ab03-bc79452dd2db", "relative permeability", gsoap_eml2_3::eml23__QuantityClassKind::unitless);
+	auto* pwls3CapPressure = repo->createPropertyKind("a816a113-1544-4f58-bc6d-7c030b65627b", "capillary pressure", gsoap_eml2_3::eml23__QuantityClassKind::pressure);
+
+	cbt->pushBackColumnHeader(true, "Water Saturation", pwls3Saturation);
+	cbt->pushBackColumnHeader(false, "Water Relative Permeability", pwls3RelPerm);
+	cbt->pushBackColumnHeader(false, "Oil Relative Permeability", pwls3RelPerm);
+	cbt->pushBackColumnHeader(false, "Oil Water Capillary Pressure", pwls3CapPressure);
+
+	double watSat[] = { 0, 0.157, 0.173, 0.174325, 0.19, 0.19165, 0.207 };
+	cbt->setDoubleValues(0, watSat, 7);
+	double watRelPerm[] = { 0, 0, 0.000356, 0.0004392, 0.0014241, 0.0015969, 0.0032041 };
+	cbt->setDoubleValues(1, watRelPerm, 7);
+	double oilRelPerm[] = { 1, 0.99, 0.886131, 0.8767012, 0.7764308, 0.765876, 0.6778755 };
+	cbt->setDoubleValues(2, oilRelPerm, 7);
+	double capPressure[] = { 0, 0, 0, 0, 0, 0, 0 };
+	cbt->setDoubleValues(3, capPressure, 7);
 }
 
 void serializeWells(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfProxy* hdfProxy)
@@ -504,7 +528,7 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * repo, EML2_NS
 	stratiColumnRank0->pushBackStratigraphicBinaryContact(stratiUnitAInterp, gsoap_eml2_3::resqml22__ContactMode::conformable, stratiUnitBInterp, gsoap_eml2_3::resqml22__ContactMode::conformable, horizon2Interp1);
 
 	// WellboreFeature marker frame
-	if (wellbore1Interp1 != nullptr) {
+	if (repo->getDefaultHdfProxy()->getXmlNamespace() == "resqml20" && wellbore1Interp1 != nullptr) {
 		RESQML2_NS::WellboreMarkerFrameRepresentation* wmf = repo->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
 		double markerMdValues[2] = { 350, 550 };
 		wmf->setMdValues(markerMdValues, 2, hdfProxy);
@@ -1172,10 +1196,12 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	/**************
 	 Points Properties
 	***************/
-	RESQML2_NS::PointsProperty* pointsProp = repo->createPointsProperty(twoCellsIjkGrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center", 1,
-		gsoap_eml2_3::eml23__IndexableElement::cells, local3dCrs);
-	double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
-	pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
+	if (repo->getDefaultHdfProxy()->getXmlNamespace() == "resqml20") {
+		RESQML2_NS::PointsProperty* pointsProp = repo->createPointsProperty(twoCellsIjkGrid, "fdf3e92b-1ac2-4589-832d-69ee7c167db7", "Cell center", 1,
+			gsoap_eml2_3::eml23__IndexableElement::cells, local3dCrs);
+		double cellCenters[6] = { 185, 75, 400, 560, 75, 450 };
+		pointsProp->pushBackArray3dOfXyzPoints(cellCenters, 2, 1, 1, hdfProxy);
+	}
 
 	/**************
 	 LGR
@@ -1229,7 +1255,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	// The cumulative count of points per face i.e. first face contains 3 points, second face contains 6-3=3 points, third face contains 9-6=3 points etc...
 	uint64_t nodeIndicesCumulativeCountPerFace[8] = { 3, // shared face
 		6, 9, 12, // faces for tetra
-		16, 20, 24, 27 //  faces for wedge
+		16, 20, 24, 27 // faces for wedge
 	};
 	// The face indices of each cell. 
 	uint64_t faceIndicesPerCell[9] = { 0, 1, 2, 3, // tetra
@@ -2539,6 +2565,7 @@ bool serialize(const string& filePath)
 	repo.setDefaultCrs(local3dCrs);
 
 	// Comment or uncomment below domains/lines you want wether to test or not
+	serializeColumnBasedTable(&repo, hdfProxy);
 	serializeWells(&repo, hdfProxy);
 	serializePerforations(&repo);
 	serializeBoundaries(&repo, hdfProxy);
@@ -2965,7 +2992,24 @@ void deserializeSealedVolumeFramework(const COMMON_NS::DataObjectRepository & re
 				showAllMetadata(svf->getRepOfExternalShellFace(regionIdx, faceIdx));
 			}
 		}
+	}
+}
 
+void deserializeColumnBasedTable(COMMON_NS::DataObjectRepository* repo)
+{
+	for (auto const* cbt : repo->getColumnBasedTableSet()) {
+		cout << "COLUMN BASED TABLE : " << cbt->getTitle() << endl;
+		for (size_t columnIdx = 0; columnIdx < cbt->getColumnCount(); ++columnIdx) {
+			cout << "PropKind : " << cbt->getPropertyKind(columnIdx)->getTitle() << endl;
+			auto datatype = cbt->getDatatype(columnIdx);
+			cout << "Datatype : " << (int)datatype << endl;
+			if (datatype == COMMON_NS::AbstractObject::numericalDatatypeEnum::DOUBLE) {
+				for (double dbl : cbt->getDoubleValues(columnIdx)) {
+					cout << dbl << " ";
+				}
+				cout << endl;
+			}
+		}
 	}
 }
 
@@ -5214,6 +5258,7 @@ void deserialize(const string & inputFile)
 	}
 	cout << endl;
 
+	deserializeColumnBasedTable(&repo);
 	deserializeGeobody(&repo);
 	deserializeFluidBoundary(repo);
 	deserializeRockFluidOrganization(repo);

@@ -38,11 +38,7 @@ under the License.
 #include "../version_config.h"
 
 #include "../eml2/Activity.h"
-#if WITH_RESQML2_2
 #include "../eml2_3/HdfProxy.h"
-#else
-#include "../eml2/AbstractHdfProxy.h"
-#endif
 
 using namespace std;
 using namespace COMMON_NS;
@@ -501,11 +497,21 @@ void AbstractObject::initMandatoryMetadata()
 	cannotBePartial();
 
 	if (gsoapProxy2_0_1 != nullptr) {
+		/* From EML2.0 Abstract.xsd, schemaVersion documentation :
+		* The specific version of a schema from which this object is derived.
+		* This string should be exactly equivalent to the version attribute of the root element of the associated XSD schema file
+		*/
 		gsoapProxy2_0_1->schemaVersion = getXmlNamespaceVersion();
 		gsoapProxy2_0_1->Citation = gsoap_resqml2_0_1::soap_new_eml20__Citation(gsoapProxy2_0_1->soap);
 	}
 	else if (gsoapProxy2_3 != nullptr) {
-		gsoapProxy2_3->schemaVersion = getXmlNamespaceVersion();
+		/* From EML2.3 Abstract.xsd, schemaVersion documentation :
+		* The version of the Energistics schema used for a data object. The schema version is the first 2 digits of an ML version. EXAMPLES: 
+		* - For WITSML v2.0 the schema version is 20
+		* - For RESQML v2.0.1 the schema version is 20
+		*/
+		const std::string& xmlNs = getXmlNamespace();
+		gsoapProxy2_3->schemaVersion = xmlNs.substr(xmlNs.size()-2);
 		gsoapProxy2_3->Citation = gsoap_eml2_3::soap_new_eml23__Citation(gsoapProxy2_3->soap);
 	}
 
@@ -1064,7 +1070,7 @@ namespace {
 		if (arrayInput->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 			auto const* hdfArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const*>(arrayInput);
 			if constexpr (std::is_signed_v<T>) {
-				nullValue = static_cast<T>(std::clamp(hdfArray->NullValue,
+				nullValue = static_cast<T>(std::clamp(static_cast<int64_t>(hdfArray->NullValue),
 					static_cast<int64_t>((std::numeric_limits<T>::min)()), static_cast<int64_t>((std::numeric_limits<T>::max)())));
 			}
 			else {
@@ -1095,7 +1101,7 @@ namespace {
 			externalDataArrayParts = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->Values->ExternalDataArrayPart;
 			const int64_t xmlNullValue = static_cast<gsoap_eml2_3::eml23__IntegerExternalArray const*>(arrayInput)->NullValue;
 			if constexpr (std::is_signed_v<T>) {
-				nullValue = static_cast<T>(std::clamp(xmlNullValue,
+				nullValue = static_cast<T>(std::clamp(static_cast<int64_t>(xmlNullValue),
 					static_cast<int64_t>((std::numeric_limits<T>::min)()), static_cast<int64_t>((std::numeric_limits<T>::max)())));
 			}
 			else {
@@ -1570,13 +1576,11 @@ EML2_NS::AbstractHdfProxy* AbstractObject::getOrCreateHdfProxyFromDataArrayPart(
 {
 	EML2_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<EML2_NS::AbstractHdfProxy>(dataArrayPart->URI);
 
-#if WITH_RESQML2_2
 	if (hdfProxy == nullptr) {
 		hdfProxy = new EML2_3_NS::HdfProxy(getRepository(), "", "Fake eml23 HDF Proxy", getEpcSourceFolder(), dataArrayPart->URI);
 		hdfProxy->setUriSource(getUriSource());
 		getRepository()->addDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{hdfProxy});
 	}
-#endif
 
 	return hdfProxy;
 }

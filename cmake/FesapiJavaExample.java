@@ -32,6 +32,7 @@ import com.f2i_consulting.fesapi.eml20__TimeUom;
 import com.f2i_consulting.fesapi.eml23__IndexableElement;
 import com.f2i_consulting.fesapi.eml23__LengthUom;
 import com.f2i_consulting.fesapi.eml23__MassPerLengthUom;
+import com.f2i_consulting.fesapi.eml23__QuantityClassKind;
 import com.f2i_consulting.fesapi.eml23__ReferencePointKind;
 import com.f2i_consulting.fesapi.eml23__WellStatus;
 import com.f2i_consulting.fesapi.fesapi;
@@ -52,6 +53,7 @@ import com.f2i_consulting.fesapi.common.DataObjectRepository.EnergisticsStandard
 import com.f2i_consulting.fesapi.common.EpcDocument;
 import com.f2i_consulting.fesapi.eml2.AbstractHdfProxy;
 import com.f2i_consulting.fesapi.eml2.AbstractLocal3dCrs;
+import com.f2i_consulting.fesapi.eml2.ColumnBasedTable;
 import com.f2i_consulting.fesapi.eml2.GraphicalInformationSet;
 import com.f2i_consulting.fesapi.eml2.PropertyKind;
 import com.f2i_consulting.fesapi.eml2_3.Eml23_LocalEngineeringCompoundCrs;
@@ -655,6 +657,84 @@ ${COMMENT_START}
 		graphicalInformationSet.setContinuousColorMap(contColMapContProp, contColMap);
 	}
 ${COMMENT_END}
+	private static void serializeColumnBasedTable(DataObjectRepository repo)
+	{
+		ColumnBasedTable cbt = repo.createColumnBasedTable("866841eb-0c56-4b7d-96d6-f15f385deaf9", "KrPc");
+	
+		PropertyKind pwls3Saturation = repo.createPropertyKind("cfe9293f-d5a9-486d-815a-a957cace90b6", "saturation", eml23__QuantityClassKind.dimensionless);
+		PropertyKind pwls3RelPerm = repo.createPropertyKind("8e3c5579-7efd-40d0-ab03-bc79452dd2db", "relative permeability", eml23__QuantityClassKind.unitless);
+		PropertyKind pwls3CapPressure = repo.createPropertyKind("a816a113-1544-4f58-bc6d-7c030b65627b", "capillary pressure", eml23__QuantityClassKind.pressure);
+	
+		cbt.pushBackColumnHeader(true, "Water Saturation", pwls3Saturation);
+		cbt.pushBackColumnHeader(false, "Water Relative Permeability", pwls3RelPerm);
+		cbt.pushBackColumnHeader(false, "Oil Relative Permeability", pwls3RelPerm);
+		cbt.pushBackColumnHeader(false, "Oil Water Capillary Pressure", pwls3CapPressure);
+	
+		SWIGTYPE_p_double watSat = fesapi.new_DoubleArray(7);
+		try {
+			fesapi.DoubleArray_setitem(watSat, 0, 0);
+			fesapi.DoubleArray_setitem(watSat, 1, 0.157);
+			fesapi.DoubleArray_setitem(watSat, 2, 0.173);
+			fesapi.DoubleArray_setitem(watSat, 3, 0.174325);
+			fesapi.DoubleArray_setitem(watSat, 4, 0.19);
+			fesapi.DoubleArray_setitem(watSat, 5, 0.19165);
+			fesapi.DoubleArray_setitem(watSat, 6, 0.207);
+
+			cbt.setDoubleValues(0, watSat, 7);
+		}
+		finally {
+			fesapi.delete_DoubleArray(watSat);
+		}
+		
+		SWIGTYPE_p_double watRelPerm = fesapi.new_DoubleArray(7);
+		try {
+			fesapi.DoubleArray_setitem(watRelPerm, 0, 0);
+			fesapi.DoubleArray_setitem(watRelPerm, 1, 0);
+			fesapi.DoubleArray_setitem(watRelPerm, 2, 0.000356);
+			fesapi.DoubleArray_setitem(watRelPerm, 3, 0.0004392);
+			fesapi.DoubleArray_setitem(watRelPerm, 4, 0.0014241);
+			fesapi.DoubleArray_setitem(watRelPerm, 5, 0.0015969);
+			fesapi.DoubleArray_setitem(watRelPerm, 6, 0.0032041);
+
+			cbt.setDoubleValues(1, watRelPerm, 7);
+		}
+		finally {
+			fesapi.delete_DoubleArray(watRelPerm);
+		}
+		
+		SWIGTYPE_p_double oilRelPerm = fesapi.new_DoubleArray(7);
+		try {
+			fesapi.DoubleArray_setitem(oilRelPerm, 0, 1);
+			fesapi.DoubleArray_setitem(oilRelPerm, 1, 0.99);
+			fesapi.DoubleArray_setitem(oilRelPerm, 2, 0.886131);
+			fesapi.DoubleArray_setitem(oilRelPerm, 3, 0.8767012);
+			fesapi.DoubleArray_setitem(oilRelPerm, 4, 0.7764308);
+			fesapi.DoubleArray_setitem(oilRelPerm, 5, 0.765876);
+			fesapi.DoubleArray_setitem(oilRelPerm, 6, 0.6778755);
+
+			cbt.setDoubleValues(2, oilRelPerm, 7);
+		}
+		finally {
+			fesapi.delete_DoubleArray(oilRelPerm);
+		}
+		
+		SWIGTYPE_p_double capPressure = fesapi.new_DoubleArray(7);
+		try {
+			fesapi.DoubleArray_setitem(capPressure, 0, 0);
+			fesapi.DoubleArray_setitem(capPressure, 1, 0);
+			fesapi.DoubleArray_setitem(capPressure, 2, 0);
+			fesapi.DoubleArray_setitem(capPressure, 3, 0);
+			fesapi.DoubleArray_setitem(capPressure, 4, 0);
+			fesapi.DoubleArray_setitem(capPressure, 5, 0);
+			fesapi.DoubleArray_setitem(capPressure, 6, 0);
+
+			cbt.setDoubleValues(3, capPressure, 7);
+		}
+		finally {
+			fesapi.delete_DoubleArray(capPressure);
+		}
+	}
+	
 	private static void serialize()
 	{		
 		try (DataObjectRepository repo = new DataObjectRepository()) {
@@ -672,6 +752,7 @@ ${COMMENT_END}
 ${COMMENT_START}
 			serializeGraphicalInformationSet(repo, hdfProxy);
 ${COMMENT_END}
+			serializeColumnBasedTable(repo);
 
 			EpcDocument pck = new EpcDocument(storageDirectory + File.separator + epcName + ".epc");
 			pck.serializeFrom(repo);
@@ -800,7 +881,8 @@ ${COMMENT_START}
 					}
 				}
 			}
-${COMMENT_END}			
+${COMMENT_END}	
+			deserializeColumnBasedTable(repo);		
 		}
 	}
 	
@@ -918,6 +1000,22 @@ ${COMMENT_END}
 			AbstractIjkGridRepresentation ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
 			System.out.println("\tIjk Grid : " + ijkGrid.getTitle());
 			showAllProperties(ijkGrid);
+		}
+	}
+
+	private static void deserializeColumnBasedTable(DataObjectRepository repo) {
+		System.out.println("COLUMN BASED TABLE");
+		long cbtCount = repo.getColumnBasedTableCount();
+		for (long cbtIdx = 0; cbtIdx < cbtCount; ++cbtIdx) {
+			ColumnBasedTable cbt = repo.getColumnBasedTable(cbtIdx);
+			System.out.println("\tCOLUMN BASED TABLE : " + cbt.getTitle());
+			for (long columnIdx = 0; columnIdx < cbt.getColumnCount(); ++columnIdx) {
+				System.out.println("\t\tPropKind : " + cbt.getPropertyKind(columnIdx).getTitle());
+				for (double dbl : cbt.getDoubleValues(columnIdx)) {
+					System.out.print(dbl + " ");
+				}
+				System.out.println();
+			}
 		}
 	}
 

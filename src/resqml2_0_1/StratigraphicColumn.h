@@ -22,7 +22,10 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	/** This class is a container for other organizations that are consistent to each others. */
+	/**
+	* @brief	A global interpretation of the stratigraphy, which can be made up of several ranks of
+	* 			stratigraphic unit interpretations.
+	*/
 	class StratigraphicColumn final : public RESQML2_NS::StratigraphicColumn
 	{
 	public:
@@ -56,6 +59,15 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicColumn() = default;
 
+		/**
+		 * Stratigraphic column ranks must be pushed back from the coarsest rank to the most detailed one.
+		 *
+		 * Pushes a back a stratigraphic column rank interpretation into this stratigraphic column.
+		 *
+		 * @exception	std::invalid_argument	If <tt>stratiColumnRank == nullptr</tt>
+		 *
+		 * @param [in]	stratiColumnRank	A stratigraphic column rank interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStratiColumnRank(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRank) final;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getStratigraphicColumnRankInterpretationCount() const final;
