@@ -40,6 +40,7 @@ GeneticBoundaryFeature::GeneticBoundaryFeature(COMMON_NS::DataObjectRepository *
 
 bool GeneticBoundaryFeature::isAnHorizon() const
 {
+	cannotBePartial();
 	return static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->GeneticBoundaryKind == gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind::horizon;
 }
 
@@ -59,6 +60,7 @@ void GeneticBoundaryFeature::setAge(unsigned int age)
 
 bool GeneticBoundaryFeature::hasAnAge() const
 {
+	cannotBePartial();
 	return static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->AbsoluteAge != nullptr;
 }
 

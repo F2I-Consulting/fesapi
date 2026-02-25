@@ -887,7 +887,7 @@ ${COMMENT_END}
 		case FRONTIERFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_FrontierFeature(cPtr, owner);
 		case GENETICBOUNDARYFEATURE :
 			com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_GeneticBoundaryFeature result = new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_GeneticBoundaryFeature(cPtr, owner);
-			return result.isAnHorizon() ? new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_Horizon(cPtr, owner) : result;
+			return !result.isPartial() && result.isAnHorizon() ? new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_Horizon(cPtr, owner) : result;
 		case GEOBODYFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_GeobodyFeature(cPtr, owner);
 		case GEOBODYBOUNDARYINTERPRETATION : return resqml2_instantiateGeobodyBoundaryInterpretation(cPtr, owner);
 		case GEOBODYINTERPRETATION : return resqml2_instantiateGeobodyInterpretation(cPtr, owner);
