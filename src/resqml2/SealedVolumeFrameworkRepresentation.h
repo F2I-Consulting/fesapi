@@ -46,7 +46,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>ssf == nullptr</tt>.
 		 *
-		 * @param [in]	ssf	The sealed surface framework representation to set.
+		 * @param[in]	ssf	The sealed surface framework representation to set.
 		 */
 		DLL_IMPORT_OR_EXPORT void setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf);
 
@@ -57,7 +57,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If <tt>stratiUnitInterp == nullptr</tt>.
 		 *
 		 * @param 	  	regionIndex			Zero-base index of the volume region.
-		 * @param [in]	stratiUnitInterp	The stratigraphic unit interpretation represented by the
+		 * @param[in]	stratiUnitInterp	The stratigraphic unit interpretation represented by the
 		 * 									region at position @p regionIndex.
 		 */
 		DLL_IMPORT_OR_EXPORT void setInterpretationOfVolumeRegion(uint64_t regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
@@ -68,7 +68,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If <tt>stratiUnitInterp == nullptr</tt>.
 		 * @exception	std::invalid_argument	If <tt>externalShellFaceCount == 0</tt>.
 		 *
-		 * @param [in]	stratiUnitInterp		 	The stratigraphic unit interpretation represented by
+		 * @param[in]	stratiUnitInterp		 	The stratigraphic unit interpretation represented by
 		 * 											this region.
 		 * @param 	  	externalShellFaceCount   	The count of faces composing the region external
 		 * 											shell.
@@ -308,7 +308,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*
-		* @param [in,out]	partialObject	If non-null, the partial object.
+		* @param[in,out]	partialObject	If non-null, the partial object.
 		*
 		* 
 		*/
@@ -322,14 +322,14 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*
-		* @param [in,out]	fromGsoap	If non-null, from gsoap.
+		* @param[in,out]	fromGsoap	If non-null, from gsoap.
 		*/
 		SealedVolumeFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation* fromGsoap) : RepresentationSetRepresentation(fromGsoap) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*
-		* @param [in,out]	fromGsoap	If non-null, from gsoap.
+		* @param[in,out]	fromGsoap	If non-null, from gsoap.
 		*/
 		SealedVolumeFrameworkRepresentation(gsoap_eml2_3::_resqml22__SealedVolumeFrameworkRepresentation* fromGsoap) : RepresentationSetRepresentation(fromGsoap) {}
 
@@ -343,7 +343,7 @@ namespace RESQML2_NS
 		/**
 		 * Sets XML sealed surface framework
 		 *
-		 * @param [in,out]	ssf	If non-null, the ssf.
+		 * @param[in,out]	ssf	If non-null, the ssf.
 		 */
 		virtual void setXmlSealedSurfaceFramework(class SealedSurfaceFrameworkRepresentation* ssf) = 0;
 
@@ -351,7 +351,7 @@ namespace RESQML2_NS
 		 * Sets XML interpretation of volume region
 		 *
 		 * @param 		  	regionIndex			Zero-based index of the region.
-		 * @param [in,out]	stratiUnitInterp	If non-null, the strati unit interp.
+		 * @param[in,out]	stratiUnitInterp	If non-null, the strati unit interp.
 		 */
 		virtual void setXmlInterpretationOfVolumeRegion(uint64_t regionIndex, class StratigraphicUnitInterpretation * stratiUnitInterp) = 0;
 	};

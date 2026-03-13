@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -53,14 +53,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		CulturalFeature(gsoap_resqml2_0_1::_resqml20__FrontierFeature* fromGsoap): RESQML2_NS::AbstractTechnicalFeature(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		CulturalFeature(gsoap_eml2_3::_resqml22__CulturalFeature* fromGsoap) : RESQML2_NS::AbstractTechnicalFeature(fromGsoap) {}
 	};

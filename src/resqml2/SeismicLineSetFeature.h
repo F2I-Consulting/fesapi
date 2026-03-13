@@ -43,7 +43,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -57,14 +57,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SeismicLineSetFeature(gsoap_resqml2_0_1::_resqml20__SeismicLineSetFeature* fromGsoap) : AbstractTechnicalFeature(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SeismicLineSetFeature(gsoap_eml2_3::_resqml22__SeismicLineSetFeature* fromGsoap) : AbstractTechnicalFeature(fromGsoap) {}
 	};

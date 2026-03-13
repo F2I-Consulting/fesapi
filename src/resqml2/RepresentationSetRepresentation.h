@@ -111,12 +111,12 @@ namespace RESQML2_NS
 
 		/**
 		 * Pushes back a representation into this representation set. The value of the @c
-		 * IsHomogeneous attribute is updated if required (see {@link isHomogeneous}).
+		 * IsHomogeneous attribute is updated if required (see \link isHomogeneous \endlink).
 		 *
 		 * @exception	std::invalid_argument	If @p rep is nullptr.
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
-		 * @param [in]	rep	The representation to push in this representation set.
+		 * @param[in]	rep	The representation to push in this representation set.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBack(RESQML2_NS::AbstractRepresentation* rep);
 
@@ -140,7 +140,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject) {}
@@ -148,14 +148,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		RepresentationSetRepresentation(gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		RepresentationSetRepresentation(gsoap_eml2_3::_resqml22__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 

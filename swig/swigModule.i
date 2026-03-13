@@ -1018,7 +1018,7 @@ import com.f2i_consulting.fesapi.*;
 		 * Sets a default CRS for writing. It will be used in all writing methods if no explicit CRS is
 		 * provided
 		 *
-		 * @param [in]	crs	If non-null, the default CRS.
+		 * @param[in]	crs	If non-null, the default CRS.
 		 */
 		void setDefaultCrs(EML2_NS::AbstractLocal3dCrs* crs);
 
@@ -1034,14 +1034,14 @@ import com.f2i_consulting.fesapi.*;
 		 * Sets a default HDF5 file proxy for writing. It will be used in all writing methods if no
 		 * explicit HDF5 file proxy is provided.
 		 *
-		 * @param [in]	hdfProxy	If non-null, the HDF5 file proxy.
+		 * @param[in]	hdfProxy	If non-null, the HDF5 file proxy.
 		 */
 		void setDefaultHdfProxy(EML2_NS::AbstractHdfProxy* hdfProxy);
 
 		/**
 		* Set the factory used to create HDF proxy and takes ownership of this HDF Proxy factory (don't delete it!)
 		* 
-		* @param [in]	factory	If non-null, the factory.
+		* @param[in]	factory	If non-null, the factory.
 		*/
 		void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
 
@@ -1077,7 +1077,7 @@ import com.f2i_consulting.fesapi.*;
 		* Remark : it is mainly used to delete properties because usually no dataobject points to them.
 		* For now, this method only deletes the XML part of the dataobject, not the HDF5 part.
 		*
-		* @param [in]	proxy	The data object to delete.
+		* @param[in]	proxy	The data object to delete.
 		* @return				The count of deleted objects
 		*/
 		uint64_t cascadeDeleteDataObject(COMMON_NS::AbstractObject* proxy);
@@ -1501,7 +1501,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 											guid will be generated.
 		 * @param 	  	title					 	The title to set to the reference point. If empty then
 		 * 											\"unknown\" title will be set.
-		 * @param [in]	locCrs					 	The local 3d CRS associated to this reference point if non-null,
+		 * @param[in]	locCrs					 	The local 3d CRS associated to this reference point if non-null,
 		 * 											else the default local 3d CRS.
 		 * @param 	  	originKind				 	The reference location of the reference point.
 		 * @param 	  	referenceLocationOrdinal1	The first reference location ordinal relative to the
@@ -1534,7 +1534,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use \link createBoundaryFeature() \endlink method for RESQML post v2.0.1 Creates
 		 * 			a horizon into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1547,7 +1547,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::BoundaryFeature* createHorizon(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use \link createBoundaryFeature() \endlink method for RESQML post v2.0.1 Creates
 		 * 			a geobody boundary feature into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1576,7 +1576,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::RockVolumeFeature* createGeobodyFeature(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use \link createBoundaryFeature() \endlink method for RESQML post v2.0.1 Creates
 		 * 			a fault into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1589,7 +1589,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::BoundaryFeature* createFault(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	Use {@link createBoundaryFeature()} method for RESQML post v2.0.1 Creates
+		 * @brief	Use \link createBoundaryFeature() \endlink method for RESQML post v2.0.1 Creates
 		 * 			a fracture into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1715,7 +1715,7 @@ import com.f2i_consulting.fesapi.*;
 			gsoap_eml2_3::resqml22__CulturalFeatureKind kind = gsoap_eml2_3::resqml22__CulturalFeatureKind::project_x0020boundaries);
 
 		/**
-		 * @brief	Use {@link createRockVolumeFeature()} method for RESQML post v2.0.1
+		 * @brief	Use \link createRockVolumeFeature() \endlink method for RESQML post v2.0.1
 		 * 			Creates a stratigraphic unit into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1735,7 +1735,7 @@ import com.f2i_consulting.fesapi.*;
 #endif
 
 		/**
-		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates a
+		 * @brief	Use \link createModel() \endlink method for RESQML post v2.0.1 Creates a
 		 * 			structural model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1750,7 +1750,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::Model* createStructuralModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates a
+		 * @brief	Use \link createModel() \endlink method for RESQML post v2.0.1 Creates a
 		 * 			stratigraphic model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1765,7 +1765,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::Model* createStratigraphicModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates a rock
+		 * @brief	Use \link createModel() \endlink method for RESQML post v2.0.1 Creates a rock
 		 * 			fluid model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1780,7 +1780,7 @@ import com.f2i_consulting.fesapi.*;
 		RESQML2_NS::Model* createRockFluidModel(const std::string & guid, const std::string & title);
 
 		/**
-		 * @brief	Use {@link createModel()} method for RESQML post v2.0.1 Creates an earth
+		 * @brief	Use \link createModel() \endlink method for RESQML post v2.0.1 Creates an earth
 		 * 			model into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1815,8 +1815,8 @@ import com.f2i_consulting.fesapi.*;
 		 * @param 		  	title			   	The title to set to the rock fluid unit. If empty then
 		 * 										\"unknown\" title will be set.
 		 * @param 		  	phase			   	The phase to set to the rock fluid unit.
-		 * @param [in]		fluidBoundaryTop   	The rock fluid unit top boundary. It cannot be null.
-		 * @param [in]		fluidBoundaryBottom	The rock fluid unit bottom boundary. It cannot be null.
+		 * @param[in]		fluidBoundaryTop   	The rock fluid unit top boundary. It cannot be null.
+		 * @param[in]		fluidBoundaryBottom	The rock fluid unit bottom boundary. It cannot be null.
 		 *
 		 * @returns	A pointer to the new rock fluid unit.
 		 */
@@ -1830,7 +1830,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>feature == nullptr</tt>.
 		 *
-		 * @param [in]	feature	The interpreted feature. It cannot be null.
+		 * @param[in]	feature	The interpreted feature. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the generic feature interpretation. If empty then a
 		 * 						new guid will be generated.
 		 * @param 	  	title  	The title to set to the generic feature interpretation. If empty then
@@ -1846,7 +1846,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p feature is @c nullptr.
 		 *
-		 * @param [in]	feature	The interpreted boundary feature. It cannot be null.
+		 * @param[in]	feature	The interpreted boundary feature. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the boundary feature interpretation. If empty then a
 		 * 						new guid will be generated.
 		 * @param 	  	title  	The title to set to the boundary feature interpretation. If empty then
@@ -1862,7 +1862,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>horizon == nullptr</tt>.
 		 *
-		 * @param [in]	horizon	The interpreted horizon. It cannot be null.
+		 * @param[in]	horizon	The interpreted horizon. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the horizon interpretation. If empty then a new guid
 		 * 						will be generated.
 		 * @param 	  	title  	The title to set to the horizon interpretation. If empty then \"unknown\"
@@ -1878,7 +1878,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>geobodyBoundary == nullptr</tt>.
 		 *
-		 * @param [in]	geobodyBoundary	The interpreted geobody boundary. It cannot be null.
+		 * @param[in]	geobodyBoundary	The interpreted geobody boundary. It cannot be null.
 		 * @param 	  	guid		   	The guid to set to the geobody boundary interpretation. If empty
 		 * 								then a new guid will be generated.
 		 * @param 	  	title		   	The title to set to the geobody boundary interpretation. If empty
@@ -1894,7 +1894,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>fault == nullptr</tt>.
 		 *
-		 * @param [in]	fault	The interpreted fault. It cannot be null.
+		 * @param[in]	fault	The interpreted fault. It cannot be null.
 		 * @param 	  	guid 	The guid to set to the fault interpretation. If empty then a new guid
 		 * 						will be generated.
 		 * @param 	  	title	The title to set to the fault interpretation. If empty then \"unknown\"
@@ -1910,7 +1910,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>fault == nullptr</tt>.
 		 *
-		 * @param [in]	boundary		The interpreted boundary. It cannot be null.
+		 * @param[in]	boundary		The interpreted boundary. It cannot be null.
 		 * @param 	  	guid 			The guid to set to the interpretation. If empty then a new guid
 		 * 								will be generated.
 		 * @param 	  	title			The title to set to the interpretation. If empty then \"unknown\"
@@ -1927,7 +1927,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p wellbore is @c nullptr.
 		 *
-		 * @param [in]	wellbore 	The interpreted wellbore feature. It cannot be null.
+		 * @param[in]	wellbore 	The interpreted wellbore feature. It cannot be null.
 		 * @param 	  	guid	 	The guid to set to the wellbore interpretation. If empty then a new
 		 * 							guid will be generated.
 		 * @param 	  	title	 	The title to set to the wellbore interpretation. If empty then
@@ -1945,7 +1945,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt>.
 		 *
-		 * @param [in]	orgFeat	The interpreted organization. It cannot be null.
+		 * @param[in]	orgFeat	The interpreted organization. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the earth model interpretation. If empty then a new
 		 * 						guid will be generated.
 		 * @param 	  	title  	The title to set to the earth model interpretation. If empty then
@@ -1962,7 +1962,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a structural organization.
 		 *
-		 * @param [in]	orgFeat	The interpreted organization. It cannot be null.
+		 * @param[in]	orgFeat	The interpreted organization. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the structural organization interpretation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title  	The title to set to the structural organization interpretation. If empty
@@ -1980,7 +1980,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a structural organization.
 		 *
-		 * @param [in]	orgFeat	The interpreted organization. It cannot be null.
+		 * @param[in]	orgFeat	The interpreted organization. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the structural organization interpretation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title  	The title to set to the structural organization interpretation. If empty
@@ -1998,7 +1998,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a structural organization.
 		 *
-		 * @param [in]	orgFeat	The interpreted organization. It cannot be null.
+		 * @param[in]	orgFeat	The interpreted organization. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the structural organization interpretation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title  	The title to set to the structural organization interpretation. If empty
@@ -2015,7 +2015,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a fluid organization.
 		 *
-		 * @param [in]	orgFeat	The interpreted organization. It cannot be null.
+		 * @param[in]	orgFeat	The interpreted organization. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the rock fluid organization interpretation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title  	The title to set to the rock fluid organization interpretation. If empty
@@ -2031,7 +2031,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>feature == nullptr</tt>.
 		 *
-		 * @param [in]	rockFluidUnitFeature	The interpreted rock fluid unit. It cannot be null.
+		 * @param[in]	rockFluidUnitFeature	The interpreted rock fluid unit. It cannot be null.
 		 * @param 	  	guid					The guid to set to the rock fluid unit interpretation. If
 		 * 										empty then a new guid will be generated.
 		 * @param 	  	title					The title to set to the rock fluid unit interpretation.
@@ -2048,7 +2048,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>geobody == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p geobody is not an actual geobody feature.
 		 *
-		 * @param [in]	geobody	The interpreted geobody. It cannot be null.
+		 * @param[in]	geobody	The interpreted geobody. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the geobody interpretation. If empty then a new guid
 		 * 						will be generated.
 		 * @param 	  	title  	The title to set to the geobody interpretation. If empty then \"unknown\"
@@ -2064,7 +2064,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>stratiUnitFeature == nullptr</tt>.
 		 *
-		 * @param [in]	stratiUnitFeature	The interpreted stratigraphic unit. It cannot be null.
+		 * @param[in]	stratiUnitFeature	The interpreted stratigraphic unit. It cannot be null.
 		 * @param 	  	guid			 	The guid to set to the stratigraphic unit interpretation. If
 		 * 									empty then a new guid will be generated.
 		 * @param 	  	title			 	The title to set to the stratigraphic unit interpretation. If
@@ -2095,7 +2095,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a stratigraphic organization.
 		 *
-		 * @param [in]	orgFeat	The interpreted organization. It cannot be null.
+		 * @param[in]	orgFeat	The interpreted organization. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the stratigraphic column rank interpretation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title  	The title to set to the stratigraphic column rank interpretation. If
@@ -2113,7 +2113,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a stratigraphic organization.
 		 *
-		 * @param [in]	orgFeat	The interpreted organization. It cannot be null.
+		 * @param[in]	orgFeat	The interpreted organization. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the stratigraphic column rank interpretation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title  	The title to set to the stratigraphic column rank interpretation. If
@@ -2131,7 +2131,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a stratigraphic organization.
 		 *
-		 * @param [in]	orgFeat	The interpreted organization. It cannot be null.
+		 * @param[in]	orgFeat	The interpreted organization. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the stratigraphic occurrence interpretation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title  	The title to set to the stratigraphic occurrence interpretation. If empty
@@ -2149,7 +2149,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if in a RESQML v2.0
 		 * 										context, @p orgFeat is not a stratigraphic organization.
 		 *
-		 * @param [in]	orgFeat	The interpreted organization. It cannot be null.
+		 * @param[in]	orgFeat	The interpreted organization. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the stratigraphic occurrence interpretation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title  	The title to set to the stratigraphic occurrence interpretation. If empty
@@ -2181,8 +2181,8 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
-		 * 						use {@link  createTriangulatedSetRepresentation} if no interpretation is
+		 * @param[in]	interp	The represented interpretation. It cannot be null. You can alternatively
+		 * 						use \link createTriangulatedSetRepresentation \endlink if no interpretation is
 		 * 						associated to this representation.
 		 * @param 	  	guid  	The guid to set to the triangulated set representation. If empty then a
 		 * 						new guid will be generated.
@@ -2214,8 +2214,8 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
-		 * 						use {@link  createPolylineSetRepresentation} if no interpretation is
+		 * @param[in]	interp	The represented interpretation. It cannot be null. You can alternatively
+		 * 						use \link createPolylineSetRepresentation \endlink if no interpretation is
 		 * 						associated to this representation.
 		 * @param 	  	guid  	The guid to set to the polyline set representation. If empty then a new
 		 * 						guid will be generated.
@@ -2235,8 +2235,8 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If in a RESQML v2.0 context, @p roleKind is a break line
 		 * 										role.
 		 *
-		 * @param [in]	interp  	The represented interpretation. It cannot be null. You can
-		 * 							alternatively use {@link  createPolylineSetRepresentation} if no
+		 * @param[in]	interp  	The represented interpretation. It cannot be null. You can
+		 * 							alternatively use \link createPolylineSetRepresentation \endlink if no
 		 * 							interpretation is associated to this representation.
 		 * @param 	  	guid		The guid to set to the polyline set representation. If empty then a
 		 * 							new guid will be generated.
@@ -2269,7 +2269,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the point set representation. If empty then a new guid
 		 * 						will be generated.
 		 * @param 	  	title 	The title to set to the point set representation. If empty then
@@ -2286,7 +2286,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the plane set representation. If empty then a new guid
 		 * 						will be generated.
 		 * @param 	  	title 	The title to set to the plane set representation. If empty then
@@ -2318,8 +2318,8 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp  	The represented interpretation. It cannot be null. You can
-		 * 							alternatively use {@link  createPolylineRepresentation} if no
+		 * @param[in]	interp  	The represented interpretation. It cannot be null. You can
+		 * 							alternatively use \link createPolylineRepresentation \endlink if no
 		 * 							interpretation is associated to this representation.
 		 * @param 	  	guid		The guid to set to the polyline representation. If empty then a new
 		 * 							guid will be generated.
@@ -2339,8 +2339,8 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp  	The represented interpretation. It cannot be null. You can
-		 * 									alternatively use {@link  createPolylineRepresentation} if no
+		 * @param[in]	interp  	The represented interpretation. It cannot be null. You can
+		 * 									alternatively use \link createPolylineRepresentation \endlink if no
 		 * 									interpretation is associated to this representation.
 		 * @param 	  	guid		The guid to set to the polyline representation. If empty then a new
 		 * 							guid will be generated.
@@ -2361,7 +2361,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the 2d grid representation. If empty then a new guid
 		 * 						will be generated.
 		 * @param 	  	title 	The title to set to the 2d grid representation. If empty then \"unknown\"
@@ -2378,12 +2378,12 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p interp or @p mdInfo is @c nullptr.
 		 *
-		 * @param [in]	interp		The represented wellbore interpretation. It cannot be null.
+		 * @param[in]	interp		The represented wellbore interpretation. It cannot be null.
 		 * @param 	  	guid  		The guid to set to the wellbore trajectory representation. If empty then
 		 * 							a new guid will be generated.
 		 * @param 	  	title 		The title to set to the wellbore trajectory representation. If empty then
 		 * 							\"unknown\" title will be set.
-		 * @param [in]	mdDatum		The MD datum of the trajectory, mainly the well reference point. It cannot be null.
+		 * @param[in]	mdDatum		The MD datum of the trajectory, mainly the well reference point. It cannot be null.
 		 *
 		 * @returns	A pointer to the new wellbore trajectory representation.
 		 */
@@ -2396,12 +2396,12 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p interp or @p deviationSurvey is @c nullptr.
 		 *
-		 * @param [in]	interp		   	The represented interpretation. It cannot be null.
+		 * @param[in]	interp		   	The represented interpretation. It cannot be null.
 		 * @param 	  	guid		   	The guid to set to the wellbore trajectory representation. If
 		 * 								empty then a new guid will be generated.
 		 * @param 	  	title		   	The title to set to the wellbore trajectory representation. If
 		 * 								empty then \"unknown\" title will be set.
-		 * @param [in]	deviationSurvey	The deviation survey on which this wellbore trajectory relies on.
+		 * @param[in]	deviationSurvey	The deviation survey on which this wellbore trajectory relies on.
 		 * 								MD data will be retrieve from it. It cannot be null.
 		 *
 		 * @returns	A pointer to the new wellbore trajectory representation.
@@ -2415,14 +2415,14 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt> or <tt>mdInfo ==
 		 * 												nullptr</tt>.
 		 *
-		 * @param [in]	interp 		The represented interpretation. It cannot be null.
+		 * @param[in]	interp 		The represented interpretation. It cannot be null.
 		 * @param 	  	guid   		The guid to set to the deviation survey representation. If empty then a
 		 * 							new guid will be generated.
 		 * @param 	  	title  		The title to set to the deviation survey representation. If empty then
 		 * 							\"unknown\" title will be set.
 		 * @param 	  	isFinal		Used to indicate that this is a final version of the deviation survey
 		 * 							(true), as distinct from the interim interpretations (false).
-		 * @param [in]	refPoint 	The reference point which acts as a datum for this deviation survey representation.
+		 * @param[in]	refPoint 	The reference point which acts as a datum for this deviation survey representation.
 		 *							It canot be null.
 		 *
 		 * @returns	A pointer to the new deviation survey representation.
@@ -2435,12 +2435,12 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p interp or @p traj is @c nullptr.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the wellbore frame representation. If empty then a new
 		 * 						guid will be generated.
 		 * @param 	  	title 	The title to set to the wellbore frame representation. If empty then
 		 * 						\"unknown\" title will be set.
-		 * @param [in]	traj  	The wellbore trajectory that refers this wellbore frame. It cannot be
+		 * @param[in]	traj  	The wellbore trajectory that refers this wellbore frame. It cannot be
 		 * 						null.
 		 *
 		 * @returns	A pointer to the new wellbore frame representation.
@@ -2452,20 +2452,20 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If @p interp, @p traj or @p crs is @c nullptr.
 		 *
-		 * @param [in]	interp				 	The represented interpretation. It cannot be null.
+		 * @param[in]	interp				 	The represented interpretation. It cannot be null.
 		 * @param 	  	guid				 	The guid to set to the seismic wellbore frame
 		 * 										representation. If empty then a new guid will be
 		 * 										generated.
 		 * @param 	  	title				 	The title to set to the seismic wellbore frame
 		 * 										representation. If empty then \"unknown\" title will be
 		 * 										set.
-		 * @param [in]	traj				 	The wellbore trajectory that refers this seismic wellbore
+		 * @param[in]	traj				 	The wellbore trajectory that refers this seismic wellbore
 		 * 										frame. It cannot be null.
 		 * @param 	  	seismicReferenceDatum	The Z value where the seismic time is equal to zero for
 		 * 										this survey wellbore frame.
 		 * @param 	  	weatheringVelocity   	The weathering velocity. Sometimes also called seismic
 		 * 										velocity replacement.
-		 * @param [in]	crs					 	The local time 3d CRS that refers this seismic wellbore
+		 * @param[in]	crs					 	The local time 3d CRS that refers this seismic wellbore
 		 * 										frame.
 		 *
 		 * @returns	A pointer to the new seismic wellbore frame representation.
@@ -2484,12 +2484,12 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p interp of @p traj is @c nullptr.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the wellbore marker frame representation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title 	The title to set to the wellbore marker frame representation. If empty
 		 * 						then \"unknown\" title will be set.
-		 * @param [in]	traj  	The wellbore trajectory that refers this wellbore marker frame. It cannot
+		 * @param[in]	traj  	The wellbore trajectory that refers this wellbore marker frame. It cannot
 		 * 						be null.
 		 *
 		 * @returns	A pointer to the new wellbore marker frame representation.
@@ -2501,7 +2501,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If <tt>wellboreMarkerFrame == nullptr</tt>.
 		 *
-		 * @param [in]	wellboreMarkerFrame	The wellbore marker frame representation where to push back
+		 * @param[in]	wellboreMarkerFrame	The wellbore marker frame representation where to push back
 		 * 									the wellbore marker.
 		 * @param 	  	guid			   	The guid to set to the wellbore marker. If empty then a new
 		 * 									guid will be generated.
@@ -2517,7 +2517,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If <tt>wellboreMarkerFrame == nullptr</tt>.
 		 *
-		 * @param [in]	wellboreMarkerFrame 	The wellbore marker frame representation where to push
+		 * @param[in]	wellboreMarkerFrame 	The wellbore marker frame representation where to push
 		 * 										back the wellbore marker.
 		 * @param 	  	guid					The guid to set to the wellbore marker. If empty then a
 		 * 										new guid will be generated.
@@ -2535,12 +2535,12 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>traj == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the blocked wellbore representation. If empty then a
 		 * 						new guid will be generated.
 		 * @param 	  	title 	The title to set to the blocked wellbore representation. If empty then
 		 * 						\"unknown\" title will be set.
-		 * @param [in]	traj  	The wellbore trajectory that refers this blocked wellbore representation.
+		 * @param[in]	traj  	The wellbore trajectory that refers this blocked wellbore representation.
 		 * 						It cannot be null.
 		 *
 		 * @returns	A pointer to the new blocked wellbore representation.
@@ -2554,8 +2554,8 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
-		 * 						use {@link  createRepresentationSetRepresentation} if no interpretation
+		 * @param[in]	interp	The represented interpretation. It cannot be null. You can alternatively
+		 * 						use \link createRepresentationSetRepresentation \endlink if no interpretation
 		 * 						is associated to this representation.
 		 * @param 	  	guid  	The guid to set to the representation set representation. If empty then a
 		 * 						new guid will be generated.
@@ -2591,7 +2591,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the non sealed surface framework representation. If
 		 * 						empty then a new guid will be generated.
 		 * @param 	  	title 	The title to set to the non sealed surface framework representation. If
@@ -2610,7 +2610,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the sealed surface framework representation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title 	The title to set to the sealed surface framework representation. If empty
@@ -2629,12 +2629,12 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt> or <tt>ssf == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the sealed volume framework representation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title 	The title to set to the sealed volume framework representation. If empty
 		 * 						then \"unknown\" title will be set.
-		 * @param [in]	ssf   	The sealed surface framework that refers this sealed volume framework. It
+		 * @param[in]	ssf   	The sealed surface framework that refers this sealed volume framework. It
 		 * 						cannot be null.
 		 *
 		 * @returns	A pointer to the new sealed volume framework representation.
@@ -2681,7 +2681,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *						TRUE if there is a gap after the corresponding layer.
 		 *						Won't be freed by FESAPI.
-		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 						values. If @c nullptr (default), then the default HDF proxy will be
 		 * 						used.
 		 *
@@ -2696,7 +2696,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the ijk grid explicit representation. If empty then a
 		 * 						new guid will be generated.
 		 * @param 	  	title 	The title to set to the ijk grid explicit representation. If empty then
@@ -2707,7 +2707,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *						TRUE if there is a gap after the corresponding layer.
 		 *						Won't be freed by FESAPI.
-		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 						values. If @c nullptr (default), then the default HDF proxy will be
 		 * 						used.
 		 *
@@ -2732,7 +2732,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *						TRUE if there is a gap after the corresponding layer.
 		 *						Won't be freed by FESAPI.
-		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 						values. If @c nullptr (default), then the default HDF proxy will be
 		 * 						used.
 		 *
@@ -2747,7 +2747,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the ijk grid parametric representation. If empty then
 		 * 						a new guid will be generated.
 		 * @param 	  	title 	The title to set to the ijk grid parametric representation. If empty then
@@ -2758,7 +2758,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *						TRUE if there is a gap after the corresponding layer.
 		 *						Won't be freed by FESAPI.
-		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 						values. If @c nullptr (default), then the default HDF proxy will be
 		 * 						used.
 		 *
@@ -2792,7 +2792,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the ijk grid lattice representation. If empty then a
 		 * 						new guid will be generated.
 		 * @param 	  	title 	The title to set to the ijk grid lattice representation. If empty then
@@ -2822,7 +2822,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *						TRUE if there is a gap after the corresponding layer.
 		 *						Won't be freed by FESAPI.
-		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 						values. If @c nullptr (default), then the default HDF proxy will be
 		 * 						used.
 		 *
@@ -2838,7 +2838,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the ijk grid with no geometry representation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title 	The title to set to the ijk grid with no geometry representation. If
@@ -2849,7 +2849,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @param		kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *						TRUE if there is a gap after the corresponding layer.
 		 *						Won't be freed by FESAPI.
-		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 						values. If @c nullptr (default), then the default HDF proxy will be
 		 * 						used.
 		 *
@@ -2879,7 +2879,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	guid	 	The guid to set to the unstructured grid representation. If empty then a
 		 * 						new guid will be generated.
 		 * @param 	title	 	The title to set to the unstructured grid representation. If empty then
@@ -2911,8 +2911,8 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
-		 * 						use {@link createSubRepresentation} if no interpretation is associated
+		 * @param[in]	interp	The represented interpretation. It cannot be null. You can alternatively
+		 * 						use \link createSubRepresentation \endlink if no interpretation is associated
 		 * 						to this representation.
 		 * @param 	  	guid  	The guid to set to the sub-representation. If empty then a new guid will
 		 * 						be generated.
@@ -2944,8 +2944,8 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
-		 * 						use {@link createGridConnectionSetRepresentation} if no interpretation
+		 * @param[in]	interp	The represented interpretation. It cannot be null. You can alternatively
+		 * 						use \link createGridConnectionSetRepresentation \endlink if no interpretation
 		 * 						is associated to this representation.
 		 * @param 	  	guid  	The guid to set to the grid connection set representation. If empty then
 		 * 						a new guid will be generated.
@@ -2978,12 +2978,12 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 *
-		 * @param [in]	interp		The represented interpretation. It cannot be null.
-		 * @param [in]	guid 		The guid to set to the streamlines representation. If empty then a new guid will be
+		 * @param[in]	interp		The represented interpretation. It cannot be null.
+		 * @param[in]	guid 		The guid to set to the streamlines representation. If empty then a new guid will be
 		 * 							generated.
-		 * @param [in]	title		The title to set to the streamlines representation. If empty then \"unknown\" title
+		 * @param[in]	title		The title to set to the streamlines representation. If empty then \"unknown\" title
 		 * 							will be set.
-		 * @param [in]	lineCount	The count of line in this representation
+		 * @param[in]	lineCount	The count of line in this representation
 		 *
 		 * @returns	A pointer to the new wellbore feature.
 		 */
@@ -3087,7 +3087,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 								units of measure catalog.
 		 * @param 	  	isAbstract		Indicates whether the property kind should be used
 		 * 								as a real (default) property or not.
-		 * @param [in]	parentPropType	The parent property kind. It cannot be null.
+		 * @param[in]	parentPropType	The parent property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
@@ -3129,7 +3129,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @param 	  	nonStandardUom	The property kind unit of measure.
 		 * @param 	  	isAbstract		Indicates whether the property kind should be used
 		 * 								as a real (default) property or not.
-		 * @param [in]	parentPropType	The parent property kind. It cannot be null.
+		 * @param[in]	parentPropType	The parent property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new property kind.
 		 */
@@ -3150,7 +3150,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 									Energistics units of measure dictionary.
 		 * @param 	  	isAbstract		  	(Optional) Indicates whether the property kind should be used
 		 * 									as a real (default) property or not. False by default.
-		 * @param [in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
+		 * @param[in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
 		 * 									default partial parent property kind will be created.
 		 *
 		 * @returns	A pointer to the new property kind.
@@ -3172,7 +3172,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 									Energistics units of measure dictionary or in another dictionary.
 		 * @param 	  	isAbstract		  	(Optional) Indicates whether the property kind should be used
 		 * 									as a real (default) property or not. False by default.
-		 * @param [in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
+		 * @param[in]	parentPropertyKind	(Optional) If non-null, the parent property kind. If null, a
 		 * 									default partial parent property kind will be created.
 		 *
 		 * @returns	A pointer to the new property kind.
@@ -3209,7 +3209,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * @param[in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
 		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
 		 * 										will be generated.
@@ -3232,7 +3232,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p rep or @p localPropKind is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -3240,7 +3240,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 								will be set.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * @param[in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new comment property.
@@ -3254,7 +3254,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * @param[in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
 		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
 		 * 										will be generated.
@@ -3285,7 +3285,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p rep or @p localPropType is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -3297,7 +3297,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 								units of measure catalog. Please check
 		 * 								COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure in order
 		 * 								to minimize the use of non standard unit of measure.
-		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * @param[in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 * @param 	  	dimensions	   	The dimensions of each value of this property. If this parameter
 		 *								is empty, then it is assumed this property is a scalar one.
@@ -3313,7 +3313,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * @param[in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
 		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
 		 * 										will be generated.
@@ -3345,7 +3345,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p rep or @p localPropType is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -3356,7 +3356,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @param 	  	nonStandardUom	The property unit of measure. Please check
 		 * 								COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure in order
 		 * 								to minimize the use of non standard unit of measure.
-		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * @param[in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 * @param 	  	dimensions	   			The dimensions of each value of this property. If this parameter
 		 *										is empty, then it is assumed this property is a scalar one.
@@ -3372,7 +3372,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * @param[in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
 		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
 		 * 										will be generated.
@@ -3401,7 +3401,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -3409,7 +3409,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 								will be set.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * @param[in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 * @param 	  	dimensions	   	The dimensions of each value of this property. If this parameter
 		 *								is empty, then it is assumed this property is a scalar one.
@@ -3425,7 +3425,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
 		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * @param[in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
 		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
 		 * 										will be generated.
@@ -3435,7 +3435,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
-		 * @param [in]	strLookup			   	The string lookup which defines the possible string
+		 * @param[in]	strLookup			   	The string lookup which defines the possible string
 		 * 										values and their keys.
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
@@ -3453,7 +3453,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
 		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * @param[in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
 		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
 		 * 										will be generated.
@@ -3463,7 +3463,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
-		 * @param [in]	dblLookup			   	The double lookup which defines a discrete function associated with the property values.
+		 * @param[in]	dblLookup			   	The double lookup which defines a discrete function associated with the property values.
 		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
@@ -3480,7 +3480,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -3490,9 +3490,9 @@ import com.f2i_consulting.fesapi.*;
 		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param [in]	strLookup	  	The string lookup which defines the possible string values and
+		 * @param[in]	strLookup	  	The string lookup which defines the possible string values and
 		 * 								their keys. It cannot be null.
-		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * @param[in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new categorical property.
@@ -3507,7 +3507,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -3517,8 +3517,8 @@ import com.f2i_consulting.fesapi.*;
 		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param [in]	dblLookup		The double lookup which defines a discrete function associated with the property values.
-		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * @param[in]	dblLookup		The double lookup which defines a discrete function associated with the property values.
+		 * @param[in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new categorical property.
@@ -3533,7 +3533,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * @param[in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
 		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
 		 * 										will be generated.
@@ -3559,7 +3559,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
 		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -3569,7 +3569,7 @@ import com.f2i_consulting.fesapi.*;
 		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * @param[in]	localPropType 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new points property.
@@ -3600,7 +3600,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @exception	std::invalid_argument	If the default EML version is unrecognized.
 		 * @exception	std::invalid_argument	If <tt>activityTemplate == nullptr</tt>.
 		 *
-		 * @param [in]	activityTemplate	The activity template on which this activity is based on.
+		 * @param[in]	activityTemplate	The activity template on which this activity is based on.
 		 * @param 	  	guid				The guid to set to the activity. If empty then a new guid
 		 * 									will be generated.
 		 * @param 	  	title				The title to set to the activity. If empty then \"unknown\"
@@ -3650,7 +3650,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWell	The well associated to this wellbore. It cannot be null.
+		 * @param[in]	witsmlWell	The well associated to this wellbore. It cannot be null.
 		 * @param 	  	guid	  	The guid to set to the wellbore. If empty then a new guid will be
 		 * 							generated.
 		 * @param 	  	title	  	The title to set to the wellbore. If empty then \"unknown\" title
@@ -3669,7 +3669,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWell	  	The well associated to this wellbore. It cannot be null.
+		 * @param[in]	witsmlWell	  	The well associated to this wellbore. It cannot be null.
 		 * @param 	  	guid		  	The guid to set to the wellbore. If empty then a new guid will be
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the wellbore. If empty then \"unknown\" title
@@ -3694,7 +3694,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWell	The well associated to this well completion. It cannot be null.
+		 * @param[in]	witsmlWell	The well associated to this well completion. It cannot be null.
 		 * @param 	  	guid	  	The guid to set to the well completion. If empty then a new guid will
 		 * 							be generated.
 		 * @param 	  	title	  	The title to set to the well completion. If empty then \"unknown\"
@@ -3709,7 +3709,7 @@ import com.f2i_consulting.fesapi.*;
 		/**
 		 * Creates a wellbore completion into this repository
 		 *
-		 * @param [in]	witsmlWellbore	  	The wellbore associated to this wellbore completion. It
+		 * @param[in]	witsmlWellbore	  	The wellbore associated to this wellbore completion. It
 		 * 									cannot be null.
 		 * @param 	  	guid			  	The guid to set to the wellbore completion. If empty then a new guid will be
 		 * 									generated.
@@ -3728,7 +3728,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWellbore	The wellbore associated to this wellbore geometry. It cannot be
+		 * @param[in]	witsmlWellbore	The wellbore associated to this wellbore geometry. It cannot be
 		 * 								null.
 		 * @param 	  	guid		  	The guid to set to the geometry. If empty then a new guid will be
 		 * 								generated.
@@ -3748,7 +3748,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWellbore	The wellbore associated to this wellbore trajectory. It cannot be
+		 * @param[in]	witsmlWellbore	The wellbore associated to this wellbore trajectory. It cannot be
 		 * 								null.
 		 * @param 	  	guid		  	The guid to set to the trajectory. If empty then a new guid will
 		 * 								be generated.
@@ -3768,7 +3768,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWellbore	The wellbore associated to this log. It cannot be null.
+		 * @param[in]	witsmlWellbore	The wellbore associated to this log. It cannot be null.
 		 * @param 		guid			The guid to set to the log. If empty then a new guid will be
 		 * 								generated.
 		 * @param 		title			The title to set to the log. If empty then \"unknown\" title will
@@ -3801,7 +3801,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If <tt>propertyKind == nullptr</tt>.
 		 *
-		 * @param [in]	propertyKind	  	The property kind associated to this channel. It cannot be
+		 * @param[in]	propertyKind	  	The property kind associated to this channel. It cannot be
 		 * 									null.
 		 * @param 	  	guid			  	The guid to set to the channel. If empty then a new guid will
 		 * 									be generated.
@@ -3840,7 +3840,7 @@ import com.f2i_consulting.fesapi.*;
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWellbore	The wellbore associated to this marker. It cannot be null.
+		 * @param[in]	witsmlWellbore	The wellbore associated to this marker. It cannot be null.
 		 * @param 	  	guid		  	The guid to set to the marker. If empty then a new guid will be
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the marker. If empty then \"unknown\" title will
@@ -4098,7 +4098,7 @@ import com.f2i_consulting.fesapi.*;
 		/**
 		 * Deserializes this package (data objects and relationships) into a data object repository
 		 *
-		 * @param [in,out]	repo			   	A data object repository.
+		 * @param[in,out]	repo			   	A data object repository.
 		 * @param 		  	hdfPermissionAccess	(Optional) The HDF5 file permission access. It is read
 		 * 										only by default.
 		 *

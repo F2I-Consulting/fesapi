@@ -35,14 +35,14 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT StreamlinesFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::StreamlinesFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		StreamlinesFeature(gsoap_resqml2_0_1::_resqml20__StreamlinesFeature* fromGsoap): RESQML2_NS::StreamlinesFeature(fromGsoap) {}
 

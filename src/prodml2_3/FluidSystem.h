@@ -106,7 +106,7 @@ namespace PRODML2_3_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -117,7 +117,7 @@ namespace PRODML2_3_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
 		 *
-		 * @param [in,out]	repo			  	The dataobject repo where the underlying gsoap proxy is
+		 * @param[in,out]	repo			  	The dataobject repo where the underlying gsoap proxy is
 		 * 										going to be created.
 		 * @param 		  	guid			  	The guid to set to this instance. If empty then a new
 		 * 										guid will be generated.
@@ -143,7 +143,7 @@ namespace PRODML2_3_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
 		 *
-		 * @param [in,out]	repo			  	The dataobject repo where the underlying gsoap proxy is
+		 * @param[in,out]	repo			  	The dataobject repo where the underlying gsoap proxy is
 		 * 										going to be created.
 		 * @param 		  	guid			  	The guid to set to this instance. If empty then a new
 		 * 										guid will be generated.
@@ -163,7 +163,7 @@ namespace PRODML2_3_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		FluidSystem(gsoap_eml2_3::prodml23__FluidSystem* fromGsoap):AbstractObject(fromGsoap)  {}
 
@@ -283,7 +283,7 @@ namespace PRODML2_3_NS
 		/**
 		* Sets the associated Rock fluid organization
 		*
-		* @param [in,out]	rockFluidOrg	If non-null, the rock fluid organization interpretation to set.
+		* @param[in,out]	rockFluidOrg	If non-null, the rock fluid organization interpretation to set.
 		*/
 		DLL_IMPORT_OR_EXPORT void setRockFluidOrganization(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrg);
 

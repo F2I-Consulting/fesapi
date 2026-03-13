@@ -41,7 +41,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p seisLineSet is @c nullptr.
 		 *
-		 * @param [in]	seisLineSet	The seismic line set this seismic line belongs to.
+		 * @param[in]	seisLineSet	The seismic line set this seismic line belongs to.
 		 */
 		DLL_IMPORT_OR_EXPORT void setSeismicLineSet(SeismicLineSetFeature * seisLineSet);
 
@@ -78,8 +78,8 @@ namespace RESQML2_NS
 		/**
 		 * Sets the trace labels.
 		 *
-		 * @param [in]	values	The labels to set.
-		 * @param [in]	proxy	The proxy where to write the labels.
+		 * @param[in]	values	The labels to set.
+		 * @param[in]	proxy	The proxy where to write the labels.
 		 */
 		DLL_IMPORT_OR_EXPORT void setTraceLabels(const std::vector<std::string> & values, EML2_NS::AbstractHdfProxy * proxy);
 
@@ -88,7 +88,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -102,7 +102,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractSeismicLineFeature(gsoap_resqml2_0_1::_resqml20__SeismicLineFeature* fromGsoap) :
 			AbstractTechnicalFeature(fromGsoap) {}
@@ -110,7 +110,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractSeismicLineFeature(gsoap_eml2_3::resqml22__AbstractSeismicLineFeature* fromGsoap) :
 			AbstractTechnicalFeature(fromGsoap) {}

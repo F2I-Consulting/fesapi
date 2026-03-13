@@ -30,7 +30,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,7 +41,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>fault == nullptr</tt>.
 		 *
-		 * @param [in]	fault	The feature the instance interprets.
+		 * @param[in]	fault	The feature the instance interprets.
 		 * @param 	  	guid 	The guid to set to the new instance. If empty then a new guid will be
 		 * 						generated.
 		 * @param 	  	title	A title for the instance to create.
@@ -51,13 +51,13 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	fault	 	The feature the instance interprets.
+		 * @param[in,out]	fault	 	The feature the instance interprets.
 		 * @param 		  	guid	 	The guid to set to the new instance. If empty then a new guid
 		 * 								will be generated.
 		 * @param 		  	title	 	A title for the instance to create.
-		 * @param [in,out]	chronoTop	The genetic feature which represent the time end of the fault
+		 * @param[in,out]	chronoTop	The genetic feature which represent the time end of the fault
 		 * 								activity.
-		 * @param [in,out]	chronoBtm	The genetic feature which represent the time beginning of the
+		 * @param[in,out]	chronoBtm	The genetic feature which represent the time beginning of the
 		 * 								fault activity.
 		 */
 		FaultInterpretation(RESQML2_NS::BoundaryFeature * fault, const std::string & guid, const std::string & title,
@@ -66,7 +66,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		FaultInterpretation(gsoap_eml2_3::_resqml22__FaultInterpretation* fromGsoap): RESQML2_NS::FaultInterpretation(fromGsoap) {}
 

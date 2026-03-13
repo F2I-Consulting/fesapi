@@ -35,7 +35,7 @@ namespace RESQML2_NS
 		/**
 		 * Sets the ShotPointLine.
 		 *
-		 * @param [in]	shotPointLine	The ShotPointLine to set.
+		 * @param[in]	shotPointLine	The ShotPointLine to set.
 		 */
 		DLL_IMPORT_OR_EXPORT void setShotPointLine(class ShotPointLineFeature* shotPointLine);
 		
@@ -63,14 +63,14 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		CmpLineFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSeismicLineFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		CmpLineFeature(gsoap_eml2_3::_resqml22__CmpLineFeature* fromGsoap) :
 			AbstractSeismicLineFeature(fromGsoap) {}

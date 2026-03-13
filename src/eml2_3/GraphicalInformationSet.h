@@ -30,7 +30,7 @@ namespace EML2_3_NS
 		/**
 		 * Constructor. Only to be used in partial transfer context
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param[in]	partialObject	If non-null, the partial object.
 		 */
 		GraphicalInformationSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject): EML2_NS::GraphicalInformationSet(partialObject) {}
 
@@ -39,7 +39,7 @@ namespace EML2_3_NS
 		 *
 		 * @exception	std::invalid_argument	If @p repo is null.
 		 *
-		 * @param [in,out]	repo 	The repository where the underlying gSOAP proxy is going to be
+		 * @param[in,out]	repo 	The repository where the underlying gSOAP proxy is going to be
 		 * 							created.
 		 * @param 		  	guid 	The guid to set to graphical information set. If empty then a new
 		 * 							guid will be generated.
@@ -51,7 +51,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		GraphicalInformationSet(gsoap_eml2_3::_eml23__GraphicalInformationSet* fromGsoap) :
 			EML2_NS::GraphicalInformationSet(fromGsoap) {}

@@ -41,7 +41,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p stratiOccurenceInterp is @c nullptr.
 		 *
-		 * @param [in]	stratiOccurrenceInterp	The stratigraphic occurrence interpretation to set.
+		 * @param[in]	stratiOccurrenceInterp	The stratigraphic occurrence interpretation to set.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setStratigraphicOccurrenceInterpretation(StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp) = 0;
 
@@ -53,7 +53,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p stratiUnitIndices, @p stratiOccurenceInterp or @p
 		 * 										proxy is @c nullptr.
 		 *
-		 * @param [in]	  	stratiUnitIndices	  	The index of the stratigraphic unit per interval, of
+		 * @param[in]	  	stratiUnitIndices	  	The index of the stratigraphic unit per interval, of
 		 * 											a given stratigraphic column. The count must be equal
 		 * 											to the count of wellbore marker intervals
 		 * 											(getWellboreMarkerCount() <tt> - 1
@@ -62,10 +62,10 @@ namespace RESQML2_NS
 		 * 											correspondence between stratigraphic units and a
 		 * 											particular interval (e.g., within salt, use this null
 		 * 											value).
-		 * @param [in]	  	stratiOccurrenceInterp	The stratigraphic occurrence interpretation to
+		 * @param[in]	  	stratiOccurrenceInterp	The stratigraphic occurrence interpretation to
 		 * 											associate to this wellbore marker frame
 		 * 											representation.
-		 * @param [in,out]	proxy				  	The HDF proxy where the numerical values (indices)
+		 * @param[in,out]	proxy				  	The HDF proxy where the numerical values (indices)
 		 * 											are stored.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setIntervalStratigraphicUnits(unsigned int const* stratiUnitIndices, unsigned int nullValue, StratigraphicOccurrenceInterpretation* stratiOccurrenceInterp, EML2_NS::AbstractHdfProxy* proxy) = 0;
@@ -98,7 +98,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			WellboreFrameRepresentation(partialObject) {}
@@ -111,7 +111,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreMarkerFrameRepresentation* fromGsoap) :
 			WellboreFrameRepresentation(fromGsoap) {}

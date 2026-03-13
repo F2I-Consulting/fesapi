@@ -39,7 +39,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Constructor for partial transfer
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -51,7 +51,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		ChannelIndexDataObject(gsoap_eml2_3::eml23__AbstractObject* fromGsoap) : ChannelMetaDataObject<T>(fromGsoap) {}
 

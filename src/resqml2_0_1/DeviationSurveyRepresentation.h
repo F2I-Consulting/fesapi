@@ -44,7 +44,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT DeviationSurveyRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
 
@@ -54,20 +54,20 @@ namespace RESQML2_0_1_NS
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt> or <tt>mdInfo ==
 		 * 										nullptr</tt>.
 		 *
-		 * @param [in]	interp 	The WellboreFeature interpretation the instance represents.
+		 * @param[in]	interp 	The WellboreFeature interpretation the instance represents.
 		 * @param 	  	guid   	The guid to set to the new instance. If empty then a new guid will be
 		 * 						generated.
 		 * @param 	  	title  	A title for the instance to create.
 		 * @param 	  	isFinal	Used to indicate that this is a final version of the deviation survey, as
 		 * 						distinct from the interim interpretations.
-		 * @param [in]	mdInfo 	The MD information of the survey, mainly the well reference point.
+		 * @param[in]	mdInfo 	The MD information of the survey, mainly the well reference point.
 		 */
 		DeviationSurveyRepresentation(class RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, bool isFinal, RESQML2_NS::MdDatum* mdInfo);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		DeviationSurveyRepresentation(gsoap_resqml2_0_1::_resqml20__DeviationSurveyRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
@@ -99,7 +99,7 @@ namespace RESQML2_0_1_NS
 		 * 											stationCount.
 		 * @param 		  	inclinations			Inclination (or dip) angle for each station. Array
 		 * 											length equals @p stationCount.
-		 * @param [in,out]	proxy					The HDF proxy where the numerical values will be
+		 * @param[in,out]	proxy					The HDF proxy where the numerical values will be
 		 * 											stored. It must be already opened for writing and won't
 		 * 											be closed. If @c nullptr, then the default HDF proxy of
 		 * 											the repository will be used.
@@ -114,7 +114,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>mdDatum == nullptr</tt>.
 		 *
-		 * @param [in]	mdDatum	The MD datum to set.
+		 * @param[in]	mdDatum	The MD datum to set.
 		 */
 		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum* mdDatum);
 
@@ -165,7 +165,7 @@ namespace RESQML2_0_1_NS
 		 * @exception	logic_error	If the data structure used to store the MD values cannot be read for
 		 * 							now by fesapi.
 		 *
-		 * @param [out]	values	An array to receive the MD double values. It must preallocated with a
+		 * @param[out]	values	An array to receive the MD double values. It must preallocated with a
 		 * 						count of <tt>getXyzPointCountOfPatch(0)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const;
@@ -177,7 +177,7 @@ namespace RESQML2_0_1_NS
 		 * @exception	logic_error	If the data structure used to store the inclination values cannot be
 		 * 							read for now by fesapi.
 		 *
-		 * @param [out]	values	An array to receive the inclination double values. It must preallocated
+		 * @param[out]	values	An array to receive the inclination double values. It must preallocated
 		 * 						with a count of <tt>getXyzPointCountOfPatch(0)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT void getInclinations(double* values) const;
@@ -190,7 +190,7 @@ namespace RESQML2_0_1_NS
 		 * @exception	logic_error	If the data structure used to store the azimuth values cannot be read
 		 * 							for now by fesapi.
 		 *
-		 * @param [out]	values	An array to receive the azimuth double values. It must preallocated with
+		 * @param[out]	values	An array to receive the azimuth double values. It must preallocated with
 		 * 						a count of <tt>getXyzPointCountOfPatch(0)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values) const;

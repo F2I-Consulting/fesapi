@@ -58,7 +58,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -67,7 +67,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	feature	The feature the instance interprets.
+		 * @param[in,out]	feature	The feature the instance interprets.
 		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
 		 * 							be generated.
 		 * @param 		  	title  	A title for the instance to create.
@@ -77,14 +77,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		StratigraphicUnitInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicUnitInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		StratigraphicUnitInterpretation(gsoap_eml2_3::_resqml22__StratigraphicUnitInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
 	};

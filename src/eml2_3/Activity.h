@@ -37,7 +37,7 @@ namespace EML2_3_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -48,7 +48,7 @@ namespace EML2_3_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>activityTemplate == nullptr</tt>.
 		 *
-		 * @param [in]	activityTemplate	If non-null, the activity template.
+		 * @param[in]	activityTemplate	If non-null, the activity template.
 		 * @param 	  	guid				The guid to set to the boundary horizon. If empty then a new
 		 * 									guid will be generated.
 		 * @param 	  	title				A title for the instance to create.
@@ -58,7 +58,7 @@ namespace EML2_3_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		Activity(gsoap_eml2_3::_eml23__Activity* fromGsoap) : EML2_NS::Activity(fromGsoap) {}
 
@@ -101,7 +101,7 @@ namespace EML2_3_NS
 		 * associated activity template.
 		 *
 		 * @param 		  	title			The title.
-		 * @param [in,out]	resqmlObject	If non-null, the resqml object.
+		 * @param[in,out]	resqmlObject	If non-null, the resqml object.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string& title,
 			AbstractObject* resqmlObject) final;
@@ -305,7 +305,7 @@ namespace EML2_3_NS
 		/**
 		 * Set the activity template of the activity
 		 *
-		 * @param [in,out]	activityTemplate	If non-null, the activity template.
+		 * @param[in,out]	activityTemplate	If non-null, the activity template.
 		 */
 		DLL_IMPORT_OR_EXPORT void setActivityTemplate(EML2_NS::ActivityTemplate* activityTemplate) final;
 

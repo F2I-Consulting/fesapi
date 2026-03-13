@@ -54,7 +54,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the z values cannot be get from this 2d grid
 		 * 									representation.
 		 *
-		 * @param [out]	values	A preallocated array to receive the z values. Its size must be equal to
+		 * @param[out]	values	A preallocated array to receive the z values. Its size must be equal to
 		 * 						getNodeCountAlongIAxis() @c * getNodeCountAlongJAxis() and it will not be
 		 * 						freed by this method. The I dimension is the fastest.
 		 */
@@ -67,7 +67,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the z values cannot be get from this 2d grid
 		 * 									representation.
 		 *
-		 * @param [out]	values	A preallocated array to receive the z values. Its size must be equal to
+		 * @param[out]	values	A preallocated array to receive the z values. Its size must be equal to
 		 * 						getNodeCountAlongIAxis() @c * getNodeCountAlongJAxis() and it will not be
 		 * 						freed by this method. The I dimension is the fastest.
 		 */
@@ -286,7 +286,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the HDF proxy is missing of if the J spacings cannot be
 		 * 									get.
 		 *
-		 * @param [out]	jSpacings	A preallocated array to receive the J spacings. The count of this
+		 * @param[out]	jSpacings	A preallocated array to receive the J spacings. The count of this
 		 * 							array must be getNodeCountAlongJAxis() <tt>- 1</tt> and it will not
 		 * 							be freed by this method.
 		 */
@@ -307,7 +307,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the HDF proxy is missing of if the I spacings cannot be
 		 * 									get.
 		 *
-		 * @param [out]	iSpacings	A preallocated array to receive the I spacings. The count of this
+		 * @param[out]	iSpacings	A preallocated array to receive the I spacings. The count of this
 		 * 							array must be getNodeCountAlongJAxis() <tt>- 1</tt> and it will not
 		 * 							be freed by this method.
 		 */
@@ -333,7 +333,7 @@ namespace RESQML2_NS
 		 * @param 	  	zOffsetInSlowestDirection  	The z offset in the slowest direction.
 		 * @param 	  	spacingInFastestDirection  	The spacing in the fastest direction.
 		 * @param 	  	spacingInSlowestDirection  	The spacing in the slowest direction.
-		 * @param [in]	localCrs				   	(Optional) If non-null, the local CRS. If @c nullptr
+		 * @param[in]	localCrs				   	(Optional) If non-null, the local CRS. If @c nullptr
 		 * 											(default), the repository default CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsArray2dOfLatticePoints3d(
@@ -353,16 +353,16 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	zValues						  	An array of <tt>numI * numJ</tt> z values.
+		 * @param[in]	  	zValues						  	An array of <tt>numI * numJ</tt> z values.
 		 * @param 		  	numI						  	The number of points in the I (fastest)
 		 * 													direction.
 		 * @param 		  	numJ						  	The number of points in the J (slowest)
 		 * 													direction.
-		 * @param [in,out]	proxy						  	The HDF proxy where to store the z values. If
+		 * @param[in,out]	proxy						  	The HDF proxy where to store the z values. If
 		 * 													@c nullptr, the repository default HDF proxy
 		 * 													will be used.
-		 * @param [in]	  	supportingGrid2dRepresentation	The supporting 2d grid representation.
-		 * @param [in]	  	localCrs					  	(Optional) If non-null, the local CRS. If @c
+		 * @param[in]	  	supportingGrid2dRepresentation	The supporting 2d grid representation.
+		 * @param[in]	  	localCrs					  	(Optional) If non-null, the local CRS. If @c
 		 * 													nullptr (default), the repository default CRS
 		 * 													will be used.
 		 * @param 		  	startIndexI					  	(Optional) The start index in the I (fastest)
@@ -390,12 +390,12 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	zValues 	An array of <tt>numI * numJ</tt> z values.
+		 * @param[in]	  	zValues 	An array of <tt>numI * numJ</tt> z values.
 		 * @param 		  	numI		The number of points in the I (fastest)
 		 * 								direction.
 		 * @param 		  	numJ		The number of points in the J (slowest)
 		 * 								direction.
-		 * @param [in,out]	proxy   	The HDF proxy where to store the z values. If
+		 * @param[in,out]	proxy   	The HDF proxy where to store the z values. If
 		 * 								@c nullptr, the repository default HDF proxy
 		 * 								will be used.
 		 * @param 		  	originX 	The origin x coordinate.
@@ -409,7 +409,7 @@ namespace RESQML2_NS
 		 * @param 		  	offsetJY	The y offset in the J (slowest) direction.
 		 * @param 		  	offsetJZ	The z offset in the J (slowest) direction.
 		 * @param 		  	spacingJ	The spacing in the J (slowest) direction.
-		 * @param [in]	  	localCrs	(Optional) If non-null, the local CRS. If @c nullptr (default),
+		 * @param[in]	  	localCrs	(Optional) If non-null, the local CRS. If @c nullptr (default),
 		 * 								the repository default local CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsArray2dOfExplicitZ(
@@ -501,7 +501,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -515,14 +515,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		Grid2dRepresentation(gsoap_resqml2_0_1::_resqml20__Grid2dRepresentation* fromGsoap) : AbstractSurfaceRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		Grid2dRepresentation(gsoap_eml2_3::_resqml22__Grid2dRepresentation* fromGsoap) : AbstractSurfaceRepresentation(fromGsoap) {}
 

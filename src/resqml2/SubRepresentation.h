@@ -94,9 +94,9 @@ namespace RESQML2_NS
 		 * 									getting the indices of the left elements of the pair;
 		 * 									one call with <tt>elementIndices = 1</tt> for getting the
 		 * 									indices of the right elements of the pair.  
-		 * @param [out]	elementIndices	   	Output array for collecting the indices of the selected
+		 * @param[out]	elementIndices	   	Output array for collecting the indices of the selected
 		 * 									elements. It must be preallocated with
-		 * 									{@link getElementCountOfPatch()} size.
+		 * 									\link getElementCountOfPatch() \endlink size.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex, uint64_t* elementIndices) const = 0;
 
@@ -107,7 +107,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
 		 *
 		 * @param 	   	patchIndex					   	Zero-based index of the patch.
-		 * @param [out]	supportingRepresentationIndices	Output array for collecting the supporting
+		 * @param[out]	supportingRepresentationIndices	Output array for collecting the supporting
 		 * 												representations indices. This array must be
 		 * 												preallocated with getElementCountOfPatch()
 		 * 												size. The index at a given position is the index
@@ -266,11 +266,11 @@ namespace RESQML2_NS
 		 * 										sub-representation patch.
 		 * @param 	  	elementCount			The count of elements which constitutes the sub-
 		 * 										representation patch.
-		 * @param [in]	elementIndices			The indices of the elements in the supporting
+		 * @param[in]	elementIndices			The indices of the elements in the supporting
 		 * 										representation.
-		 * @param [in]	proxy					The HDF proxy where the numerical values (indices)
+		 * @param[in]	proxy					The HDF proxy where the numerical values (indices)
 		 * 										are stored.
-		 * @param [in]	supportingRepIndices	(Optional) The indices of the supporting representation
+		 * @param[in]	supportingRepIndices	(Optional) The indices of the supporting representation
 		 * 										corresponding to the element indices. The count must be
 		 * 										elementCount.
 		 */
@@ -283,9 +283,9 @@ namespace RESQML2_NS
 		 *
 		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
 		 * 										sub-representation patch.
-		 * @param [in]	elementIndices			The indices of the elements in the supporting
+		 * @param[in]	elementIndices			The indices of the elements in the supporting
 		 * 										representation.
-		 * @param [in]	proxy					The HDF proxy where the numerical values (indices)
+		 * @param[in]	proxy					The HDF proxy where the numerical values (indices)
 		 * 										are stored.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount,
@@ -299,10 +299,10 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param [in]	  	elementIndices		  	All the element indices to set in the already created SubRepresentationPatch.
+		 * @param[in]	  	elementIndices		  	All the element indices to set in the already created SubRepresentationPatch.
 		 * @param 		  	elementCount			The number of elements to write.
 		 * @param 		  	offset	  				The offset value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the element
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the element
 		 * 											indices. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default value), a default HDF proxy must be defined
@@ -330,11 +330,11 @@ namespace RESQML2_NS
 		 * 									part of the pair of elements of the sub-representation patch.
 		 * @param 		  	elementCount   	The count of elements which constitutes the sub-
 		 * 									representation patch.
-		 * @param [in,out]	elementIndices0	The indices of the first part of the element pairs in the
+		 * @param[in,out]	elementIndices0	The indices of the first part of the element pairs in the
 		 * 									supporting representation.
-		 * @param [in,out]	elementIndices1	The indices of the second part of the element pairs in the
+		 * @param[in,out]	elementIndices1	The indices of the second part of the element pairs in the
 		 * 									supporting representation.
-		 * @param [in,out]	proxy		   	The HDF proxy where the numerical values (indices) are stored.
+		 * @param[in,out]	proxy		   	The HDF proxy where the numerical values (indices) are stored.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
 			uint64_t elementCount,
@@ -343,7 +343,7 @@ namespace RESQML2_NS
 
 		/**
 		 * Pushes back a new patch (without pairwise elements) in this sub-representation where the
-		 * indices values have not to yet been written in the HDF5 file. The reason can be that the
+		 * indices values have not been written in the HDF5 file yet. The reason can be that the
 		 * indices values already exist in an external file (only HDF5 for now) or that the writing of
 		 * these indices values in the external file is postponed in time.
 		 *
@@ -358,7 +358,7 @@ namespace RESQML2_NS
 		 * 										patchIndex;</tt>
 		 * @param 	  	nullValue				The null value which has been chosen in the referenced
 		 * 										HDF5 dataset.
-		 * @param [in]	proxy					The HDF5 proxy where the values are already stored or
+		 * @param[in]	proxy					The HDF5 proxy where the values are already stored or
 		 * 										will be stored.
 		 * @param 	  	supportingRepDataset	(Optional) The HDF5 dataset name where the element
 		 * 										indices are stored. If empty (default), no information about
@@ -388,7 +388,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p supportingRep is nullptr.
 		 *
-		 * @param [in]	supportingRep	If representation to set as a supporting representation of this
+		 * @param[in]	supportingRep	If representation to set as a supporting representation of this
 		 * 								sub-representation.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackSupportingRepresentation(AbstractRepresentation * supportingRep);
@@ -443,7 +443,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -456,14 +456,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SubRepresentation(gsoap_resqml2_0_1::_resqml20__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SubRepresentation(gsoap_eml2_3::_resqml22__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 

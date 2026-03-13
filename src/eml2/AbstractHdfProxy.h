@@ -549,7 +549,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of double values ordered firstly by fastest direction. The
+		 * @param[out]	values	   	1d array of double values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) = 0;
@@ -560,7 +560,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
 		 * @param 	   	datasetName					The name of the nd array dataset.
-		 * @param [out]	values						1d array of double values ordered firstly by fastest
+		 * @param[out]	values						1d array of double values ordered firstly by fastest
 		 * 											direction. The values must be pre-allocated and won't be
 		 * 											freed by this method.
 		 * @param 	   	numValuesInEachDimension	Number of values in each dimension of the nd array to
@@ -586,7 +586,7 @@ namespace EML2_NS
 		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
 		 * @param 	   	datasetName					The name of the nd array dataset.
-		 * @param [out]	values						1d array of double values ordered firstly by fastest
+		 * @param[out]	values						1d array of double values ordered firstly by fastest
 		 * 											direction. The values must be pre-allocated and won't be
 		 * 											freed by this method.
 		 * @param 	   	blockCountPerDimension  	Number of blocks to select from the dataspace, in
@@ -634,10 +634,10 @@ namespace EML2_NS
 		 * @param 		  	numDimensions				The number of the dimensions (n) of the nd array
 		 * 												to read.
 		 * @param 		  	newSelection				true if creating a new selected region else false.
-		 * @param [in,out]	dataset						Input dataset ID if adding a new hyperslab region
+		 * @param[in,out]	dataset						Input dataset ID if adding a new hyperslab region
 		 * 												to an existing selected region, output dataset ID if
 		 * 												creating a new selected region.
-		 * @param [in,out]	filespace					Input selected region ID if adding a new
+		 * @param[in,out]	filespace					Input selected region ID if adding a new
 		 * 												hyperslab region to an existing selected region,
 		 * 												output selected region ID if creating a new selected
 		 * 												region.
@@ -661,7 +661,7 @@ namespace EML2_NS
 		 *
 		 * @param 	   	dataset  	ID of the dataset to read from.
 		 * @param 	   	filespace	ID of the selected region.
-		 * @param [out]	values   	1d array of double values ordered firstly by fastest direction. The
+		 * @param[out]	values   	1d array of double values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 * @param 	   	slabSize 	Number of values to read.
 		 */
@@ -677,7 +677,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of float values ordered firstly by fastest direction. The
+		 * @param[out]	values	   	1d array of float values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfFloatValues(const std::string & datasetName, float* values) = 0;
@@ -688,7 +688,7 @@ namespace EML2_NS
 		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
 		 * @param 	   	datasetName					The name of the nd array dataset.
-		 * @param [out]	values						1d array of float values ordered firstly by fastest
+		 * @param[out]	values						1d array of float values ordered firstly by fastest
 		 * 											direction. The values must be pre-allocated and won't be
 		 * 											freed by this method.
 		 * @param 	   	numValuesInEachDimension	Number of values in each dimension of the nd array to
@@ -714,7 +714,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of long values ordered firstly by fastest direction. The
+		 * @param[out]	values	   	1d array of long values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfInt64Values(const std::string & datasetName, int64_t* values) = 0;
@@ -725,7 +725,7 @@ namespace EML2_NS
 		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
 		 * @param 	   	datasetName					The name of the nd array dataset.
-		 * @param [out]	values						1d array of long values ordered firstly by fastest
+		 * @param[out]	values						1d array of long values ordered firstly by fastest
 		 * 											direction. The values must be pre-allocated and won't be
 		 * 											freed by this method.
 		 * @param 	   	numValuesInEachDimension	Number of values in each dimension of the nd array to
@@ -750,7 +750,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of unsigned long values ordered firstly by fastest
+		 * @param[out]	values	   	1d array of unsigned long values ordered firstly by fastest
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
@@ -762,7 +762,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of int values ordered firstly by fastest direction. The
+		 * @param[out]	values	   	1d array of int values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfIntValues(const std::string & datasetName, int* values) = 0;
@@ -773,7 +773,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
 		 * @param 	   	datasetName					The name of the nd array dataset.
-		 * @param [out]	values						1d array of int values ordered firstly by fastest
+		 * @param[out]	values						1d array of int values ordered firstly by fastest
 		 * 											direction. The values must be pre-allocated and won't be
 		 * 											freed by this method.
 		 * @param 	   	numValuesInEachDimension	Number of values in each dimension of the nd array to
@@ -799,7 +799,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of unsigned int values ordered firstly by fastest direction.
+		 * @param[out]	values	   	1d array of unsigned int values ordered firstly by fastest direction.
 		 * 							The values must be pre-allocated and won't be freed by this method.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) = 0;
@@ -810,7 +810,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of short values ordered firstly by fastest direction. The
+		 * @param[out]	values	   	1d array of short values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfShortValues(const std::string & datasetName, short* values) = 0;
@@ -821,7 +821,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of unsigned short values ordered firstly by fastest
+		 * @param[out]	values	   	1d array of unsigned short values ordered firstly by fastest
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
@@ -833,7 +833,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of int 8 bits values ordered firstly by fastest direction. The
+		 * @param[out]	values	   	1d array of int 8 bits values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void readArrayNdOfInt8Values(const std::string & datasetName, int8_t* values) = 0;
@@ -844,7 +844,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of unsigned int 8 bits values ordered firstly by fastest
+		 * @param[out]	values	   	1d array of unsigned int 8 bits values ordered firstly by fastest
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
@@ -897,7 +897,7 @@ namespace EML2_NS
 		 * This method is defined in order to be used in derived class without having to link to generated gsoap files.
 		 * It is public in order for the user to be able to call it in other languages (C#, Java, etc.) thanks to Swig.
 		 *
-		 * @param [in,out]	repo		The repository where the underlying gsoap proxy is going to be initialized.
+		 * @param[in,out]	repo		The repository where the underlying gsoap proxy is going to be initialized.
 		 * @param 		  	guid		The guid of the underlying gsoap proxy to be initialized.
 		 * @param 		  	title		The title of the underlying gsoap proxy to be initialized.
 		 * @param 			emlVersion	Desired eml Version such as 20 (for v2.0) or 23 (for v2.3) etc...
@@ -911,7 +911,7 @@ namespace EML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EpcExternalPartReference(partialObject) {}
 		AbstractHdfProxy(const COMMON_NS::DataObjectReference& dor) : EpcExternalPartReference(dor) {}

@@ -32,7 +32,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Constructor for partial transfer
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreMarker(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::WellboreObject(partialObject) {}
 
@@ -57,7 +57,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWellbore	If non-null, the witsml wellbore.
+		 * @param[in]	witsmlWellbore	If non-null, the witsml wellbore.
 		 * @param 	  	guid		  	Unique identifier.
 		 * @param 	  	title		  	The title.
 		 * @param 	  	md		  		The Measured Depth to set to this marker.
@@ -71,7 +71,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		WellboreMarker(gsoap_eml2_3::witsml21__WellboreMarker* fromGsoap) : WITSML2_NS::WellboreObject(fromGsoap) {}
 

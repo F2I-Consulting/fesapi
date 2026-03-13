@@ -51,21 +51,21 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractTechnicalFeature(partialObject) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreFeature(gsoap_resqml2_0_1::_resqml20__WellboreFeature* fromGsoap): AbstractTechnicalFeature(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreFeature(gsoap_eml2_3::_resqml22__WellboreFeature* fromGsoap) : AbstractTechnicalFeature(fromGsoap) {}
 
@@ -98,7 +98,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If the WITSML wellbore to set is NULL.
 		 *
-		 * @param [in]	wellbore	The WITSML wellbore to associate to this wellbore. It cannot be null.
+		 * @param[in]	wellbore	The WITSML wellbore to associate to this wellbore. It cannot be null.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setWitsmlWellbore(WITSML2_NS::Wellbore * wellbore) = 0;
 

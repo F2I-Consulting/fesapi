@@ -58,7 +58,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets a particular grid connection set representation associated to this grid representation.
 		 *
-		 * @exception	std::out_of_range	If @p index is out of range (greater than {@link getGridConnectionSetRepresentationCount()}).
+		 * @exception	std::out_of_range	If @p index is out of range (greater than \link getGridConnectionSetRepresentationCount() \endlink).
 		 *
 		 * @param 	index	Zero-based index of the grid connection set representation we look for.
 		 *
@@ -129,11 +129,11 @@ namespace RESQML2_NS
 		 * 										nullptr and no default HDF proxy is defined in the
 		 * 										repository.
 		 *
-		 * @param [in]	  	cellIndices   	Identifies the cells (of the parent grid) which are regridded.
+		 * @param[in]	  	cellIndices   	Identifies the cells (of the parent grid) which are regridded.
 		 * @param 		  	cellIndexCount	Identifies the count of cells (of the parent grid) which are
 		 * 									regridded.
-		 * @param [in]	  	parentGrid	  	The parent grid which is regridded.
-		 * @param [in,out]	proxy		  	(Optional) The HDF proxy where to store the numerical values.
+		 * @param[in]	  	parentGrid	  	The parent grid which is regridded.
+		 * @param[in,out]	proxy		  	(Optional) The HDF proxy where to store the numerical values.
 		 * 									If nullptr (default), then the proxy will be the default
 		 * 									proxy of the repository. This parameter is unused if @p
 		 * 									cellIndexCount is 1 since no numerical value need to be store
@@ -154,28 +154,28 @@ namespace RESQML2_NS
 		 * 										@p proxy is nullptr and no default HDF proxy is defined
 		 * 										in the repository.
 		 *
-		 * @param [in]	  	columnIndices			  	Identifies the columns (of the parent grid) which
+		 * @param[in]	  	columnIndices			  	Identifies the columns (of the parent grid) which
 		 * 												are regridded. The size is @p columnIndexCount.
 		 * @param 		  	columnIndexCount		  	Identifies the count of columns (of the parent
 		 * 												grid) which are regridded.
 		 * @param 		  	kLayerIndexRegridStart	  	K index of the first K layer of all above parent
 		 * 												grid columns to be regridded.
-		 * @param [in]	  	childCellCountPerInterval 	The count of cells per K interval in this (child)
+		 * @param[in]	  	childCellCountPerInterval 	The count of cells per K interval in this (child)
 		 * 												grid. The size is @p intervalCount.
-		 * @param [in]	  	parentCellCountPerInterval	The count of cells per K interval in the parent
+		 * @param[in]	  	parentCellCountPerInterval	The count of cells per K interval in the parent
 		 * 												grid. The size is @p intervalCount.
 		 * @param 		  	intervalCount			  	The count of intervals on K dimension. Intervals
 		 * 												are portions of cells to regrid which does not
 		 * 												overlap with each others. Intervals are the same
 		 * 												for all the regridded columns.
-		 * @param [in]	  	parentGrid				  	The parent grid which is regridded.
-		 * @param [in,out]	proxy					  	(Optional) The HDF proxy where to store the
+		 * @param[in]	  	parentGrid				  	The parent grid which is regridded.
+		 * @param[in,out]	proxy					  	(Optional) The HDF proxy where to store the
 		 * 												numerical values. If nullptr (default), then the
 		 * 												proxy will be the default proxy of the
 		 * 												repository. This parameter is unused if no
 		 * 												numerical value need to be store in an HDF proxy
 		 * 												(pure XML).
-		 * @param [in]	  	childCellWeights		  	(Optional) The weights that are proportional to
+		 * @param[in]	  	childCellWeights		  	(Optional) The weights that are proportional to
 		 * 												the relative K sizes of child cells within each K
 		 * 												interval. This is useful to set up child cells of
 		 * 												different K sizes inside the intervals. The
@@ -207,39 +207,39 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	iCellIndexRegridStart	   	I index of the first parent grid cell to be
 		 * 												regridded.
-		 * @param [in]	  	childCellCountPerIInterval 	The count of cells per I interval in this (child)
+		 * @param[in]	  	childCellCountPerIInterval 	The count of cells per I interval in this (child)
 		 * 												grid. The size is @p iIntervalCount.
-		 * @param [in]	  	parentCellCountPerIInterval	The count of cells per I interval in the parent
+		 * @param[in]	  	parentCellCountPerIInterval	The count of cells per I interval in the parent
 		 * 												grid. The size is @p iIntervalCount.
 		 * @param 		  	iIntervalCount			   	The count of intervals on I dimension. Intervals
 		 * 												are portions of cells to regrid which does not
 		 * 												overlap with each others.
 		 * @param 		  	jCellIndexRegridStart	   	J index of the first parent grid cell to be
 		 * 												regridded.
-		 * @param [in]	  	childCellCountPerJInterval 	The count of cells per J interval in this (child)
+		 * @param[in]	  	childCellCountPerJInterval 	The count of cells per J interval in this (child)
 		 * 												grid. The size is @p jIntervalCount.
-		 * @param [in]	  	parentCellCountPerJInterval	The count of cells per J interval in the parent
+		 * @param[in]	  	parentCellCountPerJInterval	The count of cells per J interval in the parent
 		 * 												grid. The size is @p jIntervalCount.
 		 * @param 		  	jIntervalCount			   	The count of intervals on J dimension. Intervals
 		 * 												are portions of cells to regrid which does not
 		 * 												overlap with each others.
 		 * @param 		  	kCellIndexRegridStart	   	K index of the first parent grid cell to be
 		 * 												regridded.
-		 * @param [in]	  	childCellCountPerKInterval 	The count of cells per K interval in this (child)
+		 * @param[in]	  	childCellCountPerKInterval 	The count of cells per K interval in this (child)
 		 * 												grid. The size is @p kIntervalCount.
-		 * @param [in]	  	parentCellCountPerKInterval	The count of cells per K interval in the parent
+		 * @param[in]	  	parentCellCountPerKInterval	The count of cells per K interval in the parent
 		 * 												grid. The size is @p kIntervalCount.
 		 * @param 		  	kIntervalCount			   	The count of intervals on K dimension. Intervals
 		 * 												are portions of cells to regrid which does not
 		 * 												overlap with each others.
-		 * @param [in]	  	parentGrid				   	The parent grid which is regridded.
-		 * @param [in,out]	proxy					   	(Optional) The HDF proxy where to store the
+		 * @param[in]	  	parentGrid				   	The parent grid which is regridded.
+		 * @param[in,out]	proxy					   	(Optional) The HDF proxy where to store the
 		 * 												numerical values. If nullptr (default), then the
 		 * 												proxy will be the default proxy of the
 		 * 												repository. This parameter is unused if no
 		 * 												numerical value need to be store in an HDF proxy
 		 * 												(pure XML).
-		 * @param [in]	  	iChildCellWeights		   	(Optional) The weights that are proportional to
+		 * @param[in]	  	iChildCellWeights		   	(Optional) The weights that are proportional to
 		 * 												the relative I sizes of child cells within each I
 		 * 												interval. This is useful to set up child cells of
 		 * 												different I sizes inside the intervals. The
@@ -247,7 +247,7 @@ namespace RESQML2_NS
 		 * 												double values must be equal to the count of all
 		 * 												child cells on I dimension (sum of child cells
 		 * 												per interval). Default value is nullptr.
-		 * @param [in]	  	jChildCellWeights		   	(Optional) The weights that are proportional to
+		 * @param[in]	  	jChildCellWeights		   	(Optional) The weights that are proportional to
 		 * 												the relative J sizes of child cells within each J
 		 * 												interval. This is useful to set up child cells of
 		 * 												different J sizes inside the intervals. The
@@ -255,7 +255,7 @@ namespace RESQML2_NS
 		 * 												double values must be equal to the count of all
 		 * 												child cells on J dimension (sum of child cells
 		 * 												per interval). Default value is nullptr.
-		 * @param [in]	  	kChildCellWeights		   	(Optional) The weights that are proportional to
+		 * @param[in]	  	kChildCellWeights		   	(Optional) The weights that are proportional to
 		 * 												the relative K sizes of child cells within each K
 		 * 												interval. This is useful to set up child cells of
 		 * 												different K sizes inside the intervals. The
@@ -317,15 +317,15 @@ namespace RESQML2_NS
 		 * @param 		  	kIntervalCount					   	The count of intervals on K dimension.
 		 * 														Intervals are portions of cells to regrid
 		 * 														which does not overlap with each others.
-		 * @param [in]	  	parentGrid						   	The parent grid which is regridded.
-		 * @param [in,out]	proxy							   	(Optional) The HDF proxy where to store
+		 * @param[in]	  	parentGrid						   	The parent grid which is regridded.
+		 * @param[in,out]	proxy							   	(Optional) The HDF proxy where to store
 		 * 														the numerical values. If nullptr
 		 * 														(default), then the proxy will be the
 		 * 														default proxy of the repository. This
 		 * 														parameter is unused if no numerical value
 		 * 														need to be store in an HDF proxy (pure
 		 * 														XML).
-		 * @param [in]	  	iChildCellWeights				   	(Optional) The weights that are
+		 * @param[in]	  	iChildCellWeights				   	(Optional) The weights that are
 		 * 														proportional to the relative I sizes of
 		 * 														child cells within each I interval. This
 		 * 														is useful to set up child cells of
@@ -337,7 +337,7 @@ namespace RESQML2_NS
 		 * 														(<tt>constantChildCellCountPerIInterval *
 		 * 														iIntervalCount</tt>). Default value is
 		 * 														nullptr.
-		 * @param [in]	  	jChildCellWeights				   	(Optional) The weights that are
+		 * @param[in]	  	jChildCellWeights				   	(Optional) The weights that are
 		 * 														proportional to the relative J sizes of
 		 * 														child cells within each J interval. This
 		 * 														is useful to set up child cells of
@@ -348,7 +348,7 @@ namespace RESQML2_NS
 		 * 														dimension
 		 * 														(<tt>constantChildCellCountPerJInterval</tt>
 		 * 														<tt>* jIntervalCount</tt>).
-		 * @param [in]	  	kChildCellWeights				   	(Optional) The weights that are
+		 * @param[in]	  	kChildCellWeights				   	(Optional) The weights that are
 		 * 														proportional to the relative K sizes of
 		 * 														child cells within each K interval. This
 		 * 														is useful to set up child cells of
@@ -397,25 +397,25 @@ namespace RESQML2_NS
 		 * 											(child) grid.
 		 * @param 		  	kParentCellCount	 	The count of cells for the unique K interval in the
 		 * 											parent grid.
-		 * @param [in]	  	parentGrid			 	The parent grid which is regridded.
-		 * @param [in,out]	proxy				 	(Optional) The HDF proxy where to store the numerical
+		 * @param[in]	  	parentGrid			 	The parent grid which is regridded.
+		 * @param[in,out]	proxy				 	(Optional) The HDF proxy where to store the numerical
 		 * 											values. If nullptr (default), then the proxy will be
 		 * 											the default proxy of the repository. This parameter
 		 * 											is unused if no numerical value need to be store in
 		 * 											an HDF proxy (pure XML).
-		 * @param [in]	  	iChildCellWeights	 	(Optional) The weights that are proportional to the
+		 * @param[in]	  	iChildCellWeights	 	(Optional) The weights that are proportional to the
 		 * 											relative I sizes of child cells. This is useful to
 		 * 											set up child cells of different I sizes inside the
 		 * 											unique interval. The weights need not to be
 		 * 											normalized. The count of double values must be equal
 		 * 											to @p iChildCellCount. Default value is nullptr.
-		 * @param [in]	  	jChildCellWeights	 	(Optional) The weights that are proportional to the
+		 * @param[in]	  	jChildCellWeights	 	(Optional) The weights that are proportional to the
 		 * 											relative J sizes of child cells. This is useful to
 		 * 											set up child cells of different J sizes inside the
 		 * 											unique interval. The weights need not to be
 		 * 											normalized. The count of double values must be equal
 		 * 											to @p jChildCellCount. Default value is nullptr.
-		 * @param [in]	  	kChildCellWeights	 	(Optional) The weights that are proportional to the
+		 * @param[in]	  	kChildCellWeights	 	(Optional) The weights that are proportional to the
 		 * 											relative K sizes of child cells. This is useful to
 		 * 											set up child cells of different K sizes inside the
 		 * 											unique interval. The weights need not to be
@@ -440,7 +440,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If an HDF proxy is required and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	cellIndices   	The indices of the parent cells to be noted as non regridded. The
+		 * @param[in]	cellIndices   	The indices of the parent cells to be noted as non regridded. The
 		 * 								size is @p cellIndexCount.
 		 * @param 	  	cellIndexCount	Number of cells to be noted as non regridded.
 		 */
@@ -460,14 +460,14 @@ namespace RESQML2_NS
 		 *
 		 * @param 	  	parentChildCellPairCount	Number of (parent cell, child cell) pairs that
 		 * 											overlap.
-		 * @param [in]	parentChildCellPair			The (parent cell index, child cell index) pair for
+		 * @param[in]	parentChildCellPair			The (parent cell index, child cell index) pair for
 		 * 											each overlap. The size is <tt>2 *
 		 * 											parentChildCellPairCount</tt>.
 		 * 											<tt>parentChildCellPair[2i]</tt> are parent cell indices
 		 * 											and <tt>parentChildCellPair[2i+1]</tt> are child cell
 		 * 											indices.
 		 * @param 	  	volumeUom					The volume unit of measure.
-		 * @param [in]	overlapVolumes				(Optional) The overlapping volume for each (parent
+		 * @param[in]	overlapVolumes				(Optional) The overlapping volume for each (parent
 		 * 											cell, child cell) that overlaps. Size is @p
 		 * 											parentChildCellPairCount. Default value is nullptr.
 		 */
@@ -498,7 +498,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the list of regridded cells is not stored in an HDF5
 		 * 										file.
 		 *
-		 * @param [out]	parentCellIndices	An array for receiving the regridded cells indices. This
+		 * @param[out]	parentCellIndices	An array for receiving the regridded cells indices. This
 		 * 									array must have been preallocated with a size of 
 		 * 									getParentCellIndexCount().
 		 */
@@ -528,7 +528,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the list of regridded cells is not stored in an HDF5
 		 * 										file.
 		 *
-		 * @param [out]	parentColumnIndices	An array for collecting the regridded column indices. This
+		 * @param[out]	parentColumnIndices	An array for collecting the regridded column indices. This
 		 * 									array must have been preallocated with a size of
 		 * 										getParentColumnIndexCount().
 		 */
@@ -660,7 +660,7 @@ namespace RESQML2_NS
 		 * 											either 'i', 'j' ou 'k' (upper or lower case) for an
 		 * 											IJK parent grid or 'k' for a strict column layer
 		 * 											parent grid.
-		 * @param [in]	childCellCountPerInterval	An array to receive the regrid cell count per
+		 * @param[in]	childCellCountPerInterval	An array to receive the regrid cell count per
 		 * 											interval. It must have been preallocated with a size
 		 * 											of getRegridIntervalCount().
 		 * @param 	  	childVsParentCellCount   	If true, gets the child cell count per interval. If
@@ -713,7 +713,7 @@ namespace RESQML2_NS
 		 * 										weights. It must be either 'i', 'j' ou 'k' (upper or lower
 		 * 										case) for an IJK parent grid or 'k' for a strict column layer
 		 * 										parent grid.
-		 * @param [in,out]	childCellWeights	An array for receiving the regrid child cell weights. It
+		 * @param[in,out]	childCellWeights	An array for receiving the regrid child cell weights. It
 		 * 										must have been preallocated with a size equal to the sum of
 		 * 										regrid child cell count per interval (using
 		 * 										getRegridCellCountPerInterval()).
@@ -743,12 +743,12 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If no default HDF proxy is defined in the repository.
 		 *
-		 * @param [in]	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
+		 * @param[in]	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
 		 * 									column for each cell. Array length is the number of cells in
 		 * 									the grid or the blocked well.
 		 * @param 	  	nullValue		 	The value which is used to tell the association between a
 		 * 									cell and a stratigraphic unit is unavailable.
-		 * @param [in]	stratiOrgInterp  	The stratigraphic organization interpretation which is
+		 * @param[in]	stratiOrgInterp  	The stratigraphic organization interpretation which is
 		 * 									associated to this grid representation.
 		 */
 		DLL_IMPORT_OR_EXPORT void setCellAssociationWithStratigraphicOrganizationInterpretation(int64_t* stratiUnitIndices, int64_t nullValue, class AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
@@ -797,7 +797,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the cells of this grid are not associated with
 		 * 										stratigraphic units indices.
 		 *
-		 * @param [out]	stratiUnitIndices	An array to receive the stratigraphic unit indices associated
+		 * @param[out]	stratiUnitIndices	An array to receive the stratigraphic unit indices associated
 		 * 									to the cells of this grid. It must be preallocated with a
 		 * 									count equal to getCellCount(). It will be filled in with the
 		 * 									stratigraphic unit indices ordered as grid cells are ordered.
@@ -818,12 +818,12 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If no default HDF proxy is defined in the repository.
 		 *
-		 * @param [in]	rockFluidUnitIndices	Index of the rock fluid unit of a given rock fluid column
+		 * @param[in]	rockFluidUnitIndices	Index of the rock fluid unit of a given rock fluid column
 		 * 										for each cell. Array length is the number of cells in the
 		 * 										grid or the blocked well.
 		 * @param 	  	nullValue				The value which is used to tell the association between a
 		 * 										cell and a rock fluid unit is unavailable.
-		 * @param [in]	rockFluidOrgInterp  	The rock fluid organization interpretation which is
+		 * @param[in]	rockFluidOrgInterp  	The rock fluid organization interpretation which is
 		 * 										associated to this grid representation.
 		 */
 		DLL_IMPORT_OR_EXPORT void setCellAssociationWithRockFluidOrganizationInterpretation(int64_t* rockFluidUnitIndices, int64_t nullValue, class RockFluidOrganizationInterpretation* rockFluidOrgInterp);
@@ -872,7 +872,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the cells of this grid are not associated with rock
 		 * 										fluid units indices.
 		 *
-		 * @param [out]	rockfluidUnitIndices	An array to receive the rock fluid unit indices
+		 * @param[out]	rockfluidUnitIndices	An array to receive the rock fluid unit indices
 		 * 										associated to the cells of this grid? It must be allocated
 		 * 										with a count equal to getCellCount(). It will be filled in
 		 * 										with the rock fluid unit indices ordered as grid cells are
@@ -914,7 +914,7 @@ namespace RESQML2_NS
 		 * 										in a HDF5 integer array.
 		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
-		 * @param [out]	nodeIndices	An array to receive the node indices of the truncated faces. It must
+		 * @param[out]	nodeIndices	An array to receive the node indices of the truncated faces. It must
 		 * 							be preallocated with the last value returned by
 		 * 							getCumulativeNodeCountOfTruncatedFaces().
 		 */
@@ -932,7 +932,7 @@ namespace RESQML2_NS
 		 * @exception	std::range_error	 	If the cumulative length of nodes count per cells is
 		 * 										constant (it is stored in a constant integer array).
 		 *
-		 * @param [in]	nodeCountPerFace	An array to receive the cumulative node count per truncated
+		 * @param[in]	nodeCountPerFace	An array to receive the cumulative node count per truncated
 		 * 									face. It must be preallocated with getTruncatedFaceCount()
 		 * 									(equals to last value of
 		 * 									getCumulativeTruncatedFaceCountPerTruncatedCell())
@@ -949,7 +949,7 @@ namespace RESQML2_NS
 		 * @exception	std::range_error	 	If the cumulative length of nodes count per cells is
 		 * 										constant (it is stored in a constant integer array).
 		 *
-		 * @param [out]	nodeCountPerFace	An array to receive the node count per truncated face. It
+		 * @param[out]	nodeCountPerFace	An array to receive the node count per truncated face. It
 		 * 									must be preallocated with getTruncatedFaceCount() (equals to last
 		 * 									value of getCumulativeTruncatedFaceCountPerTruncatedCell()).
 		 */
@@ -973,7 +973,7 @@ namespace RESQML2_NS
 		 * 										integer array nor in a constant integer array.
 		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
-		 * @param [out]	cellIndices	An array to receive the parent cell index of each truncation cell. It
+		 * @param[out]	cellIndices	An array to receive the parent cell index of each truncation cell. It
 		 * 							must be preallocated with getTruncatedCellCount.
 		 */
 		DLL_IMPORT_OR_EXPORT void getTruncatedCellIndices(uint64_t* cellIndices) const;
@@ -989,7 +989,7 @@ namespace RESQML2_NS
 		 * 										integer array.
 		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
-		 * @param [out]	faceIndices	An array to receive the truncated face indices of all the truncated
+		 * @param[out]	faceIndices	An array to receive the truncated face indices of all the truncated
 		 * 							cells. It must be preallocated with the last value returned by
 		 * 							getCumulativeTruncatedFaceCountPerTruncatedCell()
 		 */
@@ -1009,7 +1009,7 @@ namespace RESQML2_NS
 		 * 										cells is constant (it is stored in a constant integer
 		 * 										array) while there is more than one cell in the grid.
 		 *
-		 * @param [out]	cumulativeFaceCountPerCell	An array to receive the cumulative truncated face
+		 * @param[out]	cumulativeFaceCountPerCell	An array to receive the cumulative truncated face
 		 * 											count per truncated cell. It must be pre allocated
 		 * 											with getTruncatedCellCount().
 		 */
@@ -1026,7 +1026,7 @@ namespace RESQML2_NS
 		 * 										constant (it is stored in a constant integer array) while
 		 * 										there is more than one cell in the grid.
 		 *
-		 * @param [out]	faceCountPerCell	An array to receive the truncated face count per truncated
+		 * @param[out]	faceCountPerCell	An array to receive the truncated face count per truncated
 		 * 									cell. It must be preallocated with getTruncatedCellCount()
 		 */
 		DLL_IMPORT_OR_EXPORT void getTruncatedFaceCountPerTruncatedCell(uint64_t * faceCountPerCell) const;
@@ -1042,7 +1042,7 @@ namespace RESQML2_NS
 		 * 										HDF5 integer array.
 		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
-		 * @param [out]	faceIndices	An array to receive the non truncated face indices of all the
+		 * @param[out]	faceIndices	An array to receive the non truncated face indices of all the
 		 * 							truncated cells.It must be pre allocated with the last value returned
 		 * 							by getCumulativeNonTruncatedFaceCountPerTruncatedCell()
 		 */
@@ -1062,7 +1062,7 @@ namespace RESQML2_NS
 		 * 										cells is constant (it is stored in a constant integer
 		 * 										array) while there is more than one cell in the grid.
 		 *
-		 * @param [out]	cumulativeFaceCountPerCell	An array to receive the cumulative non truncated face
+		 * @param[out]	cumulativeFaceCountPerCell	An array to receive the cumulative non truncated face
 		 * 											count per truncated cell. It must be preallocated with
 		 * 												getTruncatedCellCount()
 		 */
@@ -1079,7 +1079,7 @@ namespace RESQML2_NS
 		 * 										cells is constant (it is stored in a constant integer
 		 * 										array) while there is more than one cell in the grid.
 		 *
-		 * @param [out]	faceCountPerCell	An array to receive the non truncated face count per
+		 * @param[out]	faceCountPerCell	An array to receive the non truncated face count per
 		 * 									truncated cell. It must be pre allocated with
 		 * 									getTruncatedCellCount()
 		 */
@@ -1095,7 +1095,7 @@ namespace RESQML2_NS
 		 * 										array.
 		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
-		 * @param [out]	cellFaceIsRightHanded	An array to receive the orientation of truncated faces.
+		 * @param[out]	cellFaceIsRightHanded	An array to receive the orientation of truncated faces.
 		 * 										Value '0' means left handed and value other than '0'
 		 * 										means right handed. It must be preallocated with
 		 * 										getTruncatedFaceCount()
@@ -1113,7 +1113,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject			If non-null, the partial object.
+		 * @param[in,out]	partialObject			If non-null, the partial object.
 		 * @param 		  	withTruncatedPillars	True to with truncated pillars.
 		 */
 		AbstractGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :AbstractRepresentation(partialObject), withTruncatedPillars(withTruncatedPillars) {}
@@ -1128,7 +1128,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap				If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap				If non-null, from gsoap.
 		 * @param 		  	withTruncatedPillars	True to with truncated pillars.
 		 */
 		AbstractGridRepresentation(gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}

@@ -68,16 +68,16 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p hdfProxy is null and no default HDF proxy is
 		 * 										provided in the associated data object repository.
 		 *
-		 * @param [in]	   	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
+		 * @param[in]	   	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
 		 * 										column for each interval of this grid representation.
 		 * 										Array length is the number of interval in the grids.
 		 * 										Intervals = layers + K gaps.
 		 * @param 		   	nullValue		 	The value which is used to tell that the association
 		 * 										between a grid interval and a stratigraphic unit is
 		 * 										unavailable.
-		 * @param [in]	   	stratiOrgInterp  	The stratigraphic organization interpretation which is
+		 * @param[in]	   	stratiOrgInterp  	The stratigraphic organization interpretation which is
 		 * 										associated to this grid representation.
-		 * @param [in, out]	hdfProxy		 	(Optional) The HDF proxy where to write the values. It
+		 * @param[in, out]	hdfProxy		 	(Optional) The HDF proxy where to write the values. It
 		 * 										must be already opened for writing and won't be closed in
 		 * 										this method.
 		 */
@@ -103,7 +103,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If this grid has no stratigraphic unit interval
 		 * 										information.
 		 *
-		 * @param [out]	stratiUnitIndices	This array must be allocated with a size equal to the
+		 * @param[out]	stratiUnitIndices	This array must be allocated with a size equal to the
 		 * 										count of interval in this grid. Intervals = layers + K gaps.
 		 * 										It will be filled in with the stratigraphic unit indices
 		 * 										ordered as grid intervals are ordered.
@@ -129,7 +129,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets the parent node index for each of the split nodes.
 		 *
-		 * @param [out]	splitNodeParentNodeIndices	This array must be pre-allocated with a size equal to the
+		 * @param[out]	splitNodeParentNodeIndices	This array must be pre-allocated with a size equal to the
 		 * 											count of split nodes. It will be filled in by this method
 		 *											and not deleted.
 		 *
@@ -148,7 +148,7 @@ namespace RESQML2_NS
 		 * 										split coordinate lines are not stored within an HDF5
 		 * 										integer array.
 		 *
-		 * @param [out]	cumulativeCountOfCellsPerSplitNode	This array must be pre-allocated with a size equal to the
+		 * @param[out]	cumulativeCountOfCellsPerSplitNode	This array must be pre-allocated with a size equal to the
 		 * 													count of split nodes. It will be filled in with the cumulative
 		 * 													count of cells impacted by the split nodes.
 		 */
@@ -164,7 +164,7 @@ namespace RESQML2_NS
 		 * 										split coordinate lines are not stored within an HDF5
 		 * 										integer array.
 		 *
-		 * @param [out]	cellsPerSplitNode	This array must be pre-allocated with the last value of the 
+		 * @param[out]	cellsPerSplitNode	This array must be pre-allocated with the last value of the 
 		 * 									getCumulativeCountOfCellsPerSplitNode returned value.
 		 *									It will be filled in with the cell indices impacted by the split nodes.
 		 */
@@ -174,12 +174,12 @@ namespace RESQML2_NS
 		* Sets all information about a split node patch of the grid. These information is related to
 		* all XYZ points which are located after the index (PillarCount + SplitPillarCount + SplitCoordinateLineCount) * (KCellCount + 1)
 		* 
-		* @param [in] splitNodeCount						The count of split nodes
-		* @param [in] splitNodeParentNodeIndices			The parent node index for each of the split nodes. Size must be splitNodeCount.
-		* @param [in] cumulativeCountOfCellsPerSplitNode	The cumulative count of cells impacted by each of the split nodes. Size must be splitNodeCount.
-		* @param [in] cellsPerSplitNode						The indices of the cells impacted by each of the split nodes.
+		* @param[in] splitNodeCount						The count of split nodes
+		* @param[in] splitNodeParentNodeIndices			The parent node index for each of the split nodes. Size must be splitNodeCount.
+		* @param[in] cumulativeCountOfCellsPerSplitNode	The cumulative count of cells impacted by each of the split nodes. Size must be splitNodeCount.
+		* @param[in] cellsPerSplitNode						The indices of the cells impacted by each of the split nodes.
 		*													Size must be the last value of cumulativeCountOfCellsPerSplitNode
-		* @param [in]proxy									(Optional) The HDF proxy for writing the array values.
+		* @param[in]proxy									(Optional) The HDF proxy for writing the array values.
 		*													If @c nullptr (default), then the default HDF proxy will be used.
 		*/
 		DLL_IMPORT_OR_EXPORT void setSplitNodePatch(uint64_t splitNodeCount, uint64_t* splitNodeParentNodeIndices,

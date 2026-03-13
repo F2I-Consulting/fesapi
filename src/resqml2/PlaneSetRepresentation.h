@@ -52,7 +52,7 @@ namespace RESQML2_NS
 		 * 										defined in the repository.
 		 *
 		 * @param 	  	zCoordinate	The z coordinate of the horizontal plane.
-		 * @param [in]	localCrs   	(Optional) If non-null, the local CRS. If @c nullptr (default), the
+		 * @param[in]	localCrs   	(Optional) If non-null, the local CRS. If @c nullptr (default), the
 		 * 							repository default local CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackHorizontalPlaneGeometryPatch(double zCoordinate, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
@@ -73,7 +73,7 @@ namespace RESQML2_NS
 		 * @param 	  	x3			The x value of the third point.
 		 * @param 	  	y3			The y value of the third point.
 		 * @param 	  	z3			The z value of the third point.
-		 * @param [in]	localCrs	(Optional) If non-null, the local CRS. If @c nullptr (default), the
+		 * @param[in]	localCrs	(Optional) If non-null, the local CRS. If @c nullptr (default), the
 		 * 							repository default local CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackTiltedPlaneGeometryPatch(
@@ -92,7 +92,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -106,14 +106,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PlaneSetRepresentation(gsoap_resqml2_0_1::_resqml20__PlaneSetRepresentation* fromGsoap) : AbstractSurfaceRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PlaneSetRepresentation(gsoap_eml2_3::_resqml22__PlaneSetRepresentation* fromGsoap) : AbstractSurfaceRepresentation(fromGsoap) {}
 	};

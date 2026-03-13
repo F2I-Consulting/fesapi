@@ -52,7 +52,7 @@ namespace timeTools
 	/**
 	 * Converts a UTC time represented by a tm``struct to a UTC time represented by a time_t type.
 	 *
-	 * @param [in,out]	tm	If non-null, the time.
+	 * @param[in,out]	tm	If non-null, the time.
 	 *
 	 * @returns	A time_t.
 	 */
@@ -62,7 +62,7 @@ namespace timeTools
 	 * Converts a UTC time represented by a point in time to the same UTC time represented by tm``struct.
 	 * From https://github.com/HowardHinnant/date/wiki/Examples-and-Recipes#components_to_time_point
 	 *
-	 * @param [in,out]	tp	The point in time to convert.
+	 * @param[in,out]	tp	The point in time to convert.
 	 *
 	 * @returns	the same point in time in a tm``struct.
 	 */

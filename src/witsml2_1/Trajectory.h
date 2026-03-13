@@ -32,7 +32,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Constructor for partial transfer
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -43,7 +43,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWellbore == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWellbore	If non-null, the witsml wellbore.
+		 * @param[in]	witsmlWellbore	If non-null, the witsml wellbore.
 		 * @param 	  	guid		  	Unique identifier.
 		 * @param 	  	title		  	The title.
 		 * @param 	  	isActive	  	True if is active, false if not.
@@ -56,7 +56,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		Trajectory(gsoap_eml2_3::witsml21__Trajectory* fromGsoap) : WITSML2_NS::Trajectory(fromGsoap) {}
 

@@ -34,7 +34,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -45,7 +45,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWell	If non-null, the witsml well.
+		 * @param[in]	witsmlWell	If non-null, the witsml well.
 		 * @param 	  	guid	  	Unique identifier.
 		 * @param 	  	title	  	The title.
 		 */
@@ -56,7 +56,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		WellCompletion(gsoap_eml2_3::witsml21__WellCompletion* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
@@ -74,7 +74,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Set the well of this well completion.
 		 *
-		 * @param [in,out]	witsmlWell	If non-null, the witsml well.
+		 * @param[in,out]	witsmlWell	If non-null, the witsml well.
 		 */
 		DLL_IMPORT_OR_EXPORT void setWell(WITSML2_NS::Well* witsmlWell);
 

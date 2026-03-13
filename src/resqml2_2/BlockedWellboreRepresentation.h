@@ -30,7 +30,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,10 +41,10 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>traj == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The interpretation the instance represents.
+		 * @param[in]	interp	The interpretation the instance represents.
 		 * @param 	  	guid  	A guid for the instance to create.
 		 * @param 	  	title 	A title for the instance to create.
-		 * @param [in]	traj  	The wellbore trajectory this intance is based on.
+		 * @param[in]	traj  	The wellbore trajectory this intance is based on.
 		 */
 		BlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
 			const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
@@ -52,7 +52,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		BlockedWellboreRepresentation(gsoap_eml2_3::_resqml22__BlockedWellboreRepresentation* fromGsoap) : RESQML2_NS::BlockedWellboreRepresentation(fromGsoap) {}
 
@@ -93,7 +93,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @param 		  	guid 	Unique identifier.
 		 * @param 		  	title	The title.
-		 * @param [in,out]	traj 	If non-null, the traj.
+		 * @param[in,out]	traj 	If non-null, the traj.
 		 */
 		void init(const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
 	};

@@ -35,7 +35,7 @@ namespace COMMON_NS
 		 *
 		 * @exception	std::logic_error	Raised when a logic error condition occurs.
 		 *
-		 * @param [in]	dor	If non-null, the dor.
+		 * @param[in]	dor	If non-null, the dor.
 		 *
 		 * @returns	A pointer to an instantiated HDF5 file proxy.
 		 */
@@ -44,7 +44,7 @@ namespace COMMON_NS
 		/**
 		 * Creates an instance of HDF5 file proxy by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 *
 		 * @returns	A pointer to an instantiated HDF5 file proxy.
 		 */
@@ -58,7 +58,7 @@ namespace COMMON_NS
 		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
 		 * @exception	std::invalid_argument	If the Energistics standard is unrecognized.
 		 *
-		 * @param [in]	repo				  	A non-null data object repository.
+		 * @param[in]	repo				  	A non-null data object repository.
 		 * @param 	  	guid				  	The guid to set to the HDF5 file proxy. If empty then a
 		 * 										new guid will be generated.
 		 * @param 	  	title				  	The title to set to the HDF5 file proxy. If empty then

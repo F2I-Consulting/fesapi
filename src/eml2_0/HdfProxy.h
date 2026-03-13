@@ -30,7 +30,7 @@ namespace EML2_0_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::HdfProxy(partialObject) {}
 
@@ -44,7 +44,7 @@ namespace EML2_0_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo				  	The repo where the underlying gsoap proxy is going to
+		 * @param[in,out]	repo				  	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
 		 * @param 		  	guid				  	The guid of the underlying gsoap proxy to be created.
 		 * @param 		  	title				  	The title of the underlying gsoap proxy to be created.
@@ -66,7 +66,7 @@ namespace EML2_0_NS
 		/**
 		 * Hdf proxy
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 *
 		 * 
 		 */

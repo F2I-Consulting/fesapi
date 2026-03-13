@@ -346,7 +346,7 @@ namespace RESQML2_NS
 		 * @param 	  	directionKY				 	The Y coordinate of the K offset.
 		 * @param 	  	directionKZ				 	The Z coordinate of the K offset.
 		 * @param 	  	spacingK				 	The spacing in the K direction.
-		 * @param [in]	localCrs				 	(Optional) The local CRS where the points are given.
+		 * @param[in]	localCrs				 	(Optional) The local CRS where the points are given.
 		 * 											If @c nullptr (default) then the default CRS of the
 		 * 											repository will be used.
 		 */
@@ -376,7 +376,7 @@ namespace RESQML2_NS
 		 * @param 	  	incrCrossline 	The crossline increment.
 		 * @param 	  	countCrossline	The count of crosslines.
 		 * @param 	  	countSample   	The count of samples.
-		 * @param [in]	seismicSupport	The seismic support of the patch to push.
+		 * @param[in]	seismicSupport	The seismic support of the patch to push.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void addSeismic3dCoordinatesToPatch(
 			uint64_t patchIndex,

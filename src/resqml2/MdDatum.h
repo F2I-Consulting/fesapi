@@ -40,7 +40,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT MdDatum(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractObject(partialObject) {}
 
@@ -145,7 +145,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		MdDatum(gsoap_resqml2_0_1::_resqml20__MdDatum* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 		
@@ -155,7 +155,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p localCrs is nullptr and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	localCrs	If non-nullptr, the local CRS. If nullptr, the data object repository
+		 * @param[in]	localCrs	If non-nullptr, the local CRS. If nullptr, the data object repository
 		 * 							default CRS is set.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setLocalCrs(EML2_NS::AbstractLocal3dCrs * localCrs) = 0;

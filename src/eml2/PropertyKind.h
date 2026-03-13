@@ -83,7 +83,7 @@ namespace EML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @c parentPropertyKind is null.
 		 *
-		 * @param [in]	parentPropertyKind	The parent property kind to set to this property kind.
+		 * @param[in]	parentPropertyKind	The parent property kind to set to this property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT void setParentPropertyKind(PropertyKind* parentPropertyKind);
 
@@ -114,28 +114,28 @@ namespace EML2_NS
 		/**
 		 * Constructor. Only to be used in partial transfer context
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param[in]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PropertyKind(gsoap_resqml2_0_1::_resqml20__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PropertyKind(gsoap_eml2_3::eml23__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		 * Sets XML parent property kind
 		 *
-		 * @param [in,out]	parentPropertyKind	If non-null, the parent property kind.
+		 * @param[in,out]	parentPropertyKind	If non-null, the parent property kind.
 		 */
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;
 	};

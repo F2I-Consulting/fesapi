@@ -33,7 +33,7 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]	repo	The repo where the underlying gsoap proxy is going to be created.
+		 * @param[in]	repo	The repo where the underlying gsoap proxy is going to be created.
 		 * @param 	  	guid	Unique identifier.
 		 * @param 	  	title	The title.
 		 * @param 	  	iCount	Number of cell in I direction.
@@ -42,7 +42,7 @@ namespace RESQML2_2_NS
 		 * @param 		kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *						TRUE if there is a gap after the corresponding layer.
 		 *						Won't be freed by FESAPI.
-		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 						values. If @c nullptr (default), then the default HDF proxy will be
 		 * 						used.
 		 */
@@ -55,7 +55,7 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]	interp	If non-nullptr, the interp.
+		 * @param[in]	interp	If non-nullptr, the interp.
 		 * @param 	  	guid	Unique identifier.
 		 * @param 	  	title	The title.
 		 * @param 	  	iCount	Number of cell in I direction.
@@ -64,7 +64,7 @@ namespace RESQML2_2_NS
 		 * @param 		kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *						TRUE if there is a gap after the corresponding layer.
 		 *						Won't be freed by FESAPI.
-		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 						values. If @c nullptr (default), then the default HDF proxy will be
 		 * 						used.
 		 */
@@ -77,14 +77,14 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-nullptr, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-nullptr, from gsoap.
 		 */
 		IjkGridExplicitRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridExplicitRepresentation(fromGsoap) {}
 
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in,out]	fromGsoap	If non-nullptr, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-nullptr, from gsoap.
 		 */
 		IjkGridExplicitRepresentation(gsoap_eml2_3::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridExplicitRepresentation(fromGsoap) {}
 

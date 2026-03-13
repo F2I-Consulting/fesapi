@@ -35,7 +35,7 @@ namespace EML2_0_NS
 		/**
 		 * @brief	Only to be used in partial transfer context
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 * @param 	  	secretId	 	(Optional) Identifier for the secret.
 		 * @param 	  	secretKey_   	(Optional) The secret key.
 		 */
@@ -47,7 +47,7 @@ namespace EML2_0_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]	fromGsoap 	If non-nullptr, from gsoap.
+		 * @param[in]	fromGsoap 	If non-nullptr, from gsoap.
 		 * @param 	  	secretId  	(Optional) Identifier for the secret.
 		 * @param 	  	secretKey_	(Optional) The secret key.
 		 */

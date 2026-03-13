@@ -78,20 +78,20 @@ namespace RESQML2_NS
 		 * 																right handed, as determined by the
 		 * 																triple product of tangent vectors in
 		 * 																the I, J, and K directions.
-		 * @param [in]	  	points										XYZ double triplets ordered by i
+		 * @param[in]	  	points										XYZ double triplets ordered by i
 		 * 																then j then split then k. Count must
 		 * 																be <tt>((iCellCount+1) *
 		 * 																(jCellCount+1) +
 		 * 																splitCoordinateLineCount) *
 		 * 																kCellCount</tt>.
-		 * @param [in,out]	proxy										(Optional) The HDF proxy where
+		 * @param[in,out]	proxy										(Optional) The HDF proxy where
 		 * 																all numerical values will be stored.
 		 * 																If @c nullptr, then the default HDF
 		 * 																proxy of the repository will be used.
 		 * @param 		  	splitCoordinateLineCount					(Optional) The count of split
 		 * 																coordinate line. A grid pillar is
 		 * 																splitted in up to 4 coordinate lines.
-		 * @param [in]	  	pillarOfCoordinateLine						(Optional) For each split
+		 * @param[in]	  	pillarOfCoordinateLine						(Optional) For each split
 		 * 																coordinate line, indicates which
 		 * 																pillar it belongs to. Pillars are
 		 * 																identified by their absolute 1d index
@@ -100,7 +100,7 @@ namespace RESQML2_NS
 		 * 																<tt>iPillarCount ==
 		 * 																iCellCount+1</tt>. Count is
 		 * 																splitCoordinateLineCount.
-		 * @param [in]	  	splitCoordinateLineColumnCumulativeCount	(Optional) For each split
+		 * @param[in]	  	splitCoordinateLineColumnCumulativeCount	(Optional) For each split
 		 * 																coordinate line, indicates how many
 		 * 																columns of the ijk grid are incident
 		 * 																to it (minimum is one and maximum is
@@ -116,7 +116,7 @@ namespace RESQML2_NS
 		 * 																incident to <tt>6 - 4 = 2</tt>
 		 * 																columns. Count is
 		 * 																splitCoordinateLineCount.
-		 * @param [in]	  	splitCoordinateLineColumns					(Optional) For each split
+		 * @param[in]	  	splitCoordinateLineColumns					(Optional) For each split
 		 * 																coordinate line, indicates which
 		 * 																columns are incident to it. Count is
 		 * 																the last value in the
@@ -127,14 +127,14 @@ namespace RESQML2_NS
 		 * 																<tt> + jColumn * iColumnCount)</tt>
 		 * 																where
 		 * 																Column == Cell.
-		 * @param [in]	  	definedPillars								(Optional) For each pillar : 0 if
+		 * @param[in]	  	definedPillars								(Optional) For each pillar : 0 if
 		 * 																pillar is not defined (i.e points
 		 * 																equal to NaN) else the pillar is
 		 * 																defined.  This information overrides
 		 * 																any pillar geometry information. If
 		 * 																null, then all pillars are assumed to
 		 * 																be defined.
-		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * @param[in]	  	localCrs									(Optional) The local CRS where
 		 * 																the points are given. If @c nullptr
 		 * 																(default) then the default CRS of the
 		 * 																repository will be used.

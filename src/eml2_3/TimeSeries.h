@@ -30,7 +30,7 @@ namespace EML2_3_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -40,7 +40,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates a time series
 		 *
-		 * @param [in,out]	repo 	the repo where this intance will be stored.
+		 * @param[in,out]	repo 	the repo where this intance will be stored.
 		 * @param 		  	guid 	The guid to set to the local 3d crs. If empty then a new guid will be
 		 * 							generated.
 		 * @param 		  	title	The title of the instance.
@@ -50,7 +50,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		TimeSeries(gsoap_eml2_3::_eml23__TimeSeries* fromGsoap) : EML2_NS::TimeSeries(fromGsoap) {}
 

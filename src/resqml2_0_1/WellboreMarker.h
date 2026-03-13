@@ -33,7 +33,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p wellboreMarkerFrame is @c nullptr.
 		 *
-		 * @param [in,out]	wellboreMarkerFrame	The wellbore marker frame representation which contains
+		 * @param[in,out]	wellboreMarkerFrame	The wellbore marker frame representation which contains
 		 * 										the wellbore marker to contruct. It cannot be null.
 		 * @param 		  	guid			   	The guid to set to this wellbore marker. If empty then a
 		 * 										new guid will be generated.
@@ -47,7 +47,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p wellboreMarkerFrame is @c nullptr.
 		 *
-		 * @param [in,out]	wellboreMarkerFrame 	The wellbore marker frame representation which
+		 * @param[in,out]	wellboreMarkerFrame 	The wellbore marker frame representation which
 		 * 											contains the wellbore marker to contruct. It cannot be
 		 * 											null.
 		 * @param 		  	guid					The guid to set to this wellbore marker. If empty
@@ -61,7 +61,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreMarker(gsoap_resqml2_0_1::resqml20__WellboreMarker* fromGsoap) : RESQML2_NS::WellboreMarker(fromGsoap)  {}
 

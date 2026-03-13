@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p stratiColumnRankInterp is @c nullptr.
 		 *
-		 * @param [in]	stratiColumnRankInterp	The stratigraphic column rank interpretation this
+		 * @param[in]	stratiColumnRankInterp	The stratigraphic column rank interpretation this
 		 * 										stratigraphic occurrence interpretation is an occurrence
 		 * 										of.
 		 */

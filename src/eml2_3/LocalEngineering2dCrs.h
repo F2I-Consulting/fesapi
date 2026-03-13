@@ -30,7 +30,7 @@ namespace EML2_3_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -39,7 +39,7 @@ namespace EML2_3_NS
 		/**
 		 * Construct a LocalEngineering2dCrs deriving from an EPSG projected CRS
 		 *
-		 * @param [in,out]	repo		  		If non-null, the repo.
+		 * @param[in,out]	repo		  		If non-null, the repo.
 		 * @param 		  	guid		  		Unique identifier.
 		 * @param 		  	title		  		The title.
 		 * @param 		  	projectedEpsgCode	The EPSG code of the projected CRS
@@ -60,7 +60,7 @@ namespace EML2_3_NS
 		/**
 		 * Construct a LocalEngineering2dCrs deriving from an unknown projected CRS
 		 *
-		 * @param [in,out]	repo		  		If non-null, the repo.
+		 * @param[in,out]	repo		  		If non-null, the repo.
 		 * @param 		  	guid		  		Unique identifier.
 		 * @param 		  	title		  		The title.
 		 * @param 			projectedDefinition	If starting with "PROJCRS" or "PROJCS" then it gives the WKT definition of the projected CRS.
@@ -82,7 +82,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		LocalEngineering2dCrs(gsoap_eml2_3::_eml23__LocalEngineering2dCrs* fromGsoap): COMMON_NS::AbstractObject(fromGsoap) {}
 

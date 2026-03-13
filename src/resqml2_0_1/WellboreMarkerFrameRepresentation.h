@@ -32,7 +32,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::WellboreMarkerFrameRepresentation(partialObject) {}
@@ -42,12 +42,12 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p interp of @p traj is @c nullptr.
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @param[in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the wellbore marker frame representation. If empty
 		 * 						then a new guid will be generated.
 		 * @param 	  	title 	The title to set to the wellbore marker frame representation. If empty
 		 * 						then \"unknown\" title will be set.
-		 * @param [in]	traj  	The wellbore trajectory that refers this wellbore marker frame. It cannot
+		 * @param[in]	traj  	The wellbore trajectory that refers this wellbore marker frame. It cannot
 		 * 						be null.
 		 */
 		WellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
@@ -55,7 +55,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreMarkerFrameRepresentation* fromGsoap) : RESQML2_NS::WellboreMarkerFrameRepresentation(fromGsoap) {}
 
@@ -86,14 +86,14 @@ namespace RESQML2_0_1_NS
 		 * Pushes back a new WellboreFeature marker to this WellboreFeature marker frame. One
 		 * WellboreFeature marker must be added per MD of the WellboreFeature marker frame.
 		 *
-		 * @param [in,out]	marker	If non-null, the marker.
+		 * @param[in,out]	marker	If non-null, the marker.
 		 */
 		void pushBackNewWellboreMarker(std::unique_ptr<RESQML2_0_1_NS::WellboreMarker> marker);
 
 		/**
 		 * Wellbore marker
 		 *
-		 * @param [in,out]	wellboreMarkerFrame	If non-null, the wellbore marker frame.
+		 * @param[in,out]	wellboreMarkerFrame	If non-null, the wellbore marker frame.
 		 * @param 		  	guid			   	Unique identifier.
 		 * @param 		  	title			   	The title.
 		 *
@@ -104,7 +104,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Wellbore marker
 		 *
-		 * @param [in,out]	wellboreMarkerFrame 	If non-null, the wellbore marker frame.
+		 * @param[in,out]	wellboreMarkerFrame 	If non-null, the wellbore marker frame.
 		 * @param 		  	guid					Unique identifier.
 		 * @param 		  	title					The title.
 		 * @param 		  	geologicBoundaryKind	The geologic boundary kind.

@@ -999,7 +999,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p deviationSurvey is @c nullptr.
 		 *
-		 * @param [in]	deviationSurvey	The deviation survey to set as a source of this trajectory.
+		 * @param[in]	deviationSurvey	The deviation survey to set as a source of this trajectory.
 		 */
 		void setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey);
 
@@ -1058,7 +1058,7 @@ namespace RESQML2_0_1_NS
 		 * 											stationCount.
 		 * @param 		  	inclinations			Inclination (or dip) angle for each station. Array
 		 * 											length equals @p stationCount.
-		 * @param [in,out]	proxy					The HDF proxy where the numerical values will be
+		 * @param[in,out]	proxy					The HDF proxy where the numerical values will be
 		 * 											stored. It must be already opened for writing and won't
 		 * 											be closed. If @c nullptr, then the default HDF proxy of
 		 * 											the repository will be used.
@@ -1073,7 +1073,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>mdDatum == nullptr</tt>.
 		 *
-		 * @param [in]	mdDatum	The MD datum to set.
+		 * @param[in]	mdDatum	The MD datum to set.
 		 */
 		void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
 		
@@ -1113,7 +1113,7 @@ namespace RESQML2_0_1_NS
 		 * @exception	logic_error	If the data structure used to store the MD values cannot be read for
 		 * 							now by fesapi.
 		 *
-		 * @param [out]	values	An array to receive the MD double values. It must preallocated with a
+		 * @param[out]	values	An array to receive the MD double values. It must preallocated with a
 		 * 						count of <tt>getXyzPointCountOfPatch(0)</tt>.
 		 */
 		void getMdValues(double* values) const;
@@ -1125,7 +1125,7 @@ namespace RESQML2_0_1_NS
 		 * @exception	logic_error	If the data structure used to store the inclination values cannot be
 		 * 							read for now by fesapi.
 		 *
-		 * @param [out]	values	An array to receive the inclination double values. It must preallocated
+		 * @param[out]	values	An array to receive the inclination double values. It must preallocated
 		 * 						with a count of <tt>getXyzPointCountOfPatch(0)</tt>.
 		 */
 		void getInclinations(double* values) const;
@@ -1138,7 +1138,7 @@ namespace RESQML2_0_1_NS
 		 * @exception	logic_error	If the data structure used to store the azimuth values cannot be read
 		 * 							for now by fesapi.
 		 *
-		 * @param [out]	values	An array to receive the azimuth double values. It must preallocated with
+		 * @param[out]	values	An array to receive the azimuth double values. It must preallocated with
 		 * 						a count of <tt>getXyzPointCountOfPatch(0)</tt>.
 		 */
 		void getAzimuths(double* values) const;
@@ -1365,7 +1365,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p parent is nullptr.
 		 *
-		 * @param [in]	parent	The parent to set to this instance.
+		 * @param[in]	parent	The parent to set to this instance.
 		 */
 		void setParent(PropertySet * parent);
 
@@ -1399,7 +1399,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p prop is nullptr.
 		 *
-		 * @param [in]	prop	The property to push into this property set.
+		 * @param[in]	prop	The property to push into this property set.
 		 */
 		void pushBackProperty(RESQML2_NS::AbstractProperty * prop);
 

@@ -69,7 +69,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the reading of the control points of this grid is not
 		 * 										supported yet.
 		 *
-		 * @param [out]	controlPoints	An array for receiving the control points. It must be
+		 * @param[out]	controlPoints	An array for receiving the control points. It must be
 		 * 								preallocated with a size of <tt>(getICellCount() + 1) *
 		 * 								(getJCellCount() + 1) * getControlPointMaxCountPerPillar() *
 		 * 								3</tt>. They are ordered first (quickest) by pillar and then
@@ -104,7 +104,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the reading of the control point parameters of this
 		 * 										grid is not supported yet.
 		 *
-		 * @param [out]	controlPointParameters	An array for receiving the control point parameters. It
+		 * @param[out]	controlPointParameters	An array for receiving the control point parameters. It
 		 * 										must be preallocated with a size of
 		 * 										<tt>(getICellCount()</tt>
 		 * 										<tt> + 1) *	(getJCellCount() + 1) * </tt>
@@ -156,7 +156,7 @@ namespace RESQML2_NS
 		 * 										@€xception std::logic_error If getting the parametric
 		 * 										lines kind is not yet supported for this grid.
 		 *
-		 * @param [out]	pillarKind  	An array for receiving the parametric lines kind. It must be
+		 * @param[out]	pillarKind  	An array for receiving the parametric lines kind. It must be
 		 * 								preallocated with a size of <tt>(getICellCount() + 1) *
 		 * 								(getJCellCount() + 1)</tt>. Semantic of values is: 0 = vertical, 1 =
 		 * 								linear spline, 2 = natural cubic spline, 3 = cubic spline, 4 = Z
@@ -177,7 +177,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the reading of nodes parameters is not yet supported
 		 * 										for this grid.
 		 *
-		 * @param [out]	parameters  	An array for receiving the parameter of each node. It must be
+		 * @param[out]	parameters  	An array for receiving the parameter of each node. It must be
 		 * 								preallocated with a size of <tt>((getICellCount() + 1) *
 		 * 								(getJCellCount() + 1) + getSplitCoordinateLineCount()) *
 		 * 								(getKCellCount() + 1)</tt>. They are ordered first (quickest) by
@@ -204,7 +204,7 @@ namespace RESQML2_NS
 		 * 								getKCellCount().
 		 * @param 	   	kInterfaceEnd  	The K index of the ending interface taken from zero to
 		 * 								getKCellCount().
-		 * @param [out]	parameters	   	An array for receiving the parameter of each node. It must be pre
+		 * @param[out]	parameters	   	An array for receiving the parameter of each node. It must be pre
 		 * 								allocated with a size of
 		 * 								<tt>getXyzPointCountOfKInterface() * (kInterfaceEnd -
 		 * 								kInterfaceStart + 1)</tt>. They are ordered first (quickest) by
@@ -228,30 +228,30 @@ namespace RESQML2_NS
 		 * @param 		  	isRightHanded				 	Indicates that this IJK grid is right handed,
 		 * 													as determined by the triple product of
 		 * 													tangent vectors in the I, J, and K directions.
-		 * @param [in]	  	parameters					 	The parameter values (regarding the pillars)
+		 * @param[in]	  	parameters					 	The parameter values (regarding the pillars)
 		 * 													of each node of the grid.
-		 * @param [in]	  	controlPoints				 	The control points of the pillars of the
+		 * @param[in]	  	controlPoints				 	The control points of the pillars of the
 		 * 													grid. They are ordered first (quickest) by
 		 * 													pillar and then (slowest) by control point :
 		 * 													cp0 of pillar0, cp0 of pillar1, cp0 of
 		 * 													pillar3, ..., cp0 of pillarCount-1, cp1 of
 		 * 													pillar0, cp1 of pillar1, etc... Pad with nan
 		 * 													values if necessary.
-		 * @param [in]	  	controlPointParameters		 	The value of the parameter at each control
+		 * @param[in]	  	controlPointParameters		 	The value of the parameter at each control
 		 * 													points. It must be @c nullptr for vertical
 		 * 													and Z linear cubic parametric lines grid.
 		 * @param 		  	controlPointMaxCountPerPillar	The maximum count of control points which
 		 * 													defines a pillar of this grid.
-		 * @param [in]	  	pillarKind					 	The kind of each pillar: 0 = vertical, 1 =
+		 * @param[in]	  	pillarKind					 	The kind of each pillar: 0 = vertical, 1 =
 		 * 													linear spline, 2 = natural cubic spline, 3 =
 		 * 													cubic spline, 4 = Z linear cubic spline, 5 =
 		 * 													minimum-curvature spline, (-1) = null: no
 		 * 													line.
-		 * @param [in,out]	proxy						 	(Optional) The HDF proxy where all numerical
+		 * @param[in,out]	proxy						 	(Optional) The HDF proxy where all numerical
 		 * 													values will be stored. If @c nullptr
 		 * 													(default), then the default HDF proxy of the
 		 * 													repository will be used.
-		 * @param [in]	  	localCrs					 	(Optional) The local CRS where the points are
+		 * @param[in]	  	localCrs					 	(Optional) The local CRS where the points are
 		 * 													given. If @c nullptr (default) then the
 		 * 													default CRS of the repository will be used.
 		 */
@@ -296,11 +296,11 @@ namespace RESQML2_NS
 		 * 													i.e pillarKind == -1) else the pillar is
 		 * 													defined. This information overrides any
 		 * 													pillar geometry information.
-		 * @param [in,out]	proxy						 	(Optional) The HDF proxy where all numerical
+		 * @param[in,out]	proxy						 	(Optional) The HDF proxy where all numerical
 		 * 													values will be stored. If @c nullptr
 		 * 													(default), then the default HDF proxy of the
 		 * 													repository will be used.
-		 * @param [in]	  	localCrs					 	(Optional) The local CRS where the points are
+		 * @param[in]	  	localCrs					 	(Optional) The local CRS where the points are
 		 * 													given. If @c nullptr (default) then the
 		 * 													default CRS of the repository will be used.
 		 */
@@ -326,10 +326,10 @@ namespace RESQML2_NS
 		 * 																right handed, as determined by the
 		 * 																triple product of tangent vectors in
 		 * 																the I, J, and K directions.
-		 * @param [in]	  	parameters									The parameter values (regarding
+		 * @param[in]	  	parameters									The parameter values (regarding
 		 * 																the pillars) of each node of the
 		 * 																grid.
-		 * @param [in]	  	controlPoints								The control points of the pillars
+		 * @param[in]	  	controlPoints								The control points of the pillars
 		 * 																of the grid. They are ordered first
 		 * 																(quickest) by pillar and then
 		 * 																(slowest) by control point : cp0 of
@@ -338,20 +338,20 @@ namespace RESQML2_NS
 		 * 																cp1 of pillar0, cp1 of pillar1,
 		 * 																etc... Pad with nan values if
 		 * 																necessary.
-		 * @param [in]	  	controlPointParameters						The value of the parameter at
+		 * @param[in]	  	controlPointParameters						The value of the parameter at
 		 * 																each control points. It must be
 		 * 																nullptr for vertical and Z linear
 		 * 																cubic parametric lines grid.
 		 * @param 		  	controlPointMaxCountPerPillar				The maximum count of control
 		 * 																points which defines a pillar of this
 		 * 																grid.
-		 * @param [in]	  	pillarKind									The kind of each pillar : 0 =
+		 * @param[in]	  	pillarKind									The kind of each pillar : 0 =
 		 * 																vertical, 1 = linear spline, 2 =
 		 * 																natural cubic spline, 3 = cubic
 		 * 																spline, 4 = Z linear cubic spline, 5
 		 * 																= minimum-curvature spline, (-1) =
 		 * 																null: no line.
-		 * @param [in,out]	proxy										The HDF proxy where all numerical
+		 * @param[in,out]	proxy										The HDF proxy where all numerical
 		 * 																values will be stored. If @c nullptr,
 		 * 																then the default HDF proxy of the
 		 * 																repository will be used.
@@ -360,16 +360,16 @@ namespace RESQML2_NS
 		 * 																splitted by a maximum of 3 split
 		 * 																coordinate lines (one coordinate line
 		 * 																is always non splitted)
-		 * @param [in]	  	pillarOfCoordinateLine						For each split coordinate line,
+		 * @param[in]	  	pillarOfCoordinateLine						For each split coordinate line,
 		 * 																indicates the pillar it belongs to.
-		 * @param [in]	  	splitCoordinateLineColumnCumulativeCount	For each split coordinate line,
+		 * @param[in]	  	splitCoordinateLineColumnCumulativeCount	For each split coordinate line,
 		 * 																indicates the count of grid column
 		 * 																which are splitted by this
 		 * 																coordinate line.
-		 * @param [in]	  	splitCoordinateLineColumns					For each split coordinate line,
+		 * @param[in]	  	splitCoordinateLineColumns					For each split coordinate line,
 		 * 																indicates the grid columns which are
 		 * 																splitted by this coordinate line.
-		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * @param[in]	  	localCrs									(Optional) The local CRS where
 		 * 																the points are given. If @c nullptr
 		 * 																(default) then the default CRS of the
 		 * 																repository will be used.
@@ -423,7 +423,7 @@ namespace RESQML2_NS
 		 * 																is defined.  This information
 		 * 																overrides any pillar geometry
 		 * 																information.
-		 * @param [in,out]	proxy										The HDF proxy where all numerical
+		 * @param[in,out]	proxy										The HDF proxy where all numerical
 		 * 																values will be stored. If @c nullptr,
 		 * 																then the default HDF proxy of the
 		 * 																repository will be used.
@@ -443,7 +443,7 @@ namespace RESQML2_NS
 		 * 																indicating for each split coordinate
 		 * 																line, the grid columns which are
 		 * 																splitted by this coordinate line.
-		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * @param[in]	  	localCrs									(Optional) The local CRS where
 		 * 																the points are given. If @c nullptr
 		 * 																(default) then the default CRS of the
 		 * 																repository will be used.
@@ -470,9 +470,9 @@ namespace RESQML2_NS
 		 * 																right handed, as determined by the
 		 * 																triple product of tangent vectors in
 		 * 																the I, J, and K directions.
-		 * @param [in]	  	parameters									The parameter values (regarding
+		 * @param[in]	  	parameters									The parameter values (regarding
 		 * 																the pillars) of each node of the grid.
-		 * @param [in]	  	controlPoints								The control points of the pillars
+		 * @param[in]	  	controlPoints								The control points of the pillars
 		 * 																of the grid. They are ordered first
 		 * 																(quickest) by pillar and then
 		 * 																(slowest) by control point : cp0 of
@@ -481,7 +481,7 @@ namespace RESQML2_NS
 		 * 																cp1 of pillar0, cp1 of pillar1,
 		 * 																etc... Pad with nan values if
 		 * 																necessary.
-		 * @param [in]	  	controlPointParameters						The value of the parameter at
+		 * @param[in]	  	controlPointParameters						The value of the parameter at
 		 * 																each control points. It must be
 		 * 																nullptr for vertical and Z linear
 		 * 																cubic parametric lines grid.
@@ -494,7 +494,7 @@ namespace RESQML2_NS
 		 * 																spline, 4 = Z linear cubic spline, 5
 		 * 																= minimum-curvature spline, (-1) =
 		 * 																null: no line.
-		 * @param [in,out]	proxy										The HDF proxy where all numerical
+		 * @param[in,out]	proxy										The HDF proxy where all numerical
 		 * 																values will be stored. If @c nullptr,
 		 * 																then the default HDF proxy of the
 		 * 																repository will be used.
@@ -503,16 +503,16 @@ namespace RESQML2_NS
 		 * 																splitted by a maximum of 3 split
 		 * 																coordinate lines (one coordinate line
 		 * 																is always non splitted)
-		 * @param [in]	  	pillarOfCoordinateLine						For each split coordinate line,
+		 * @param[in]	  	pillarOfCoordinateLine						For each split coordinate line,
 		 * 																indicates the pillar it belongs to.
-		 * @param [in]	  	splitCoordinateLineColumnCumulativeCount	For each split coordinate line,
+		 * @param[in]	  	splitCoordinateLineColumnCumulativeCount	For each split coordinate line,
 		 * 																indicates the count of grid column
 		 * 																which are splitted by this coordinate
 		 * 																line.
-		 * @param [in]	  	splitCoordinateLineColumns					For each split coordinate line,
+		 * @param[in]	  	splitCoordinateLineColumns					For each split coordinate line,
 		 * 																indicates the grid columns which are
 		 * 																splitted by this coordinate line.
-		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * @param[in]	  	localCrs									(Optional) The local CRS where
 		 * 																the points are given. If @c nullptr
 		 * 																(default) then the default CRS of the
 		 * 																repository will be used.
@@ -559,7 +559,7 @@ namespace RESQML2_NS
 		 * 																spline, 4 = Z linear cubic spline, 5
 		 * 																= minimum-curvature spline, (-1) =
 		 * 																null: no line.
-		 * @param [in,out]	proxy										The HDF proxy where all numerical
+		 * @param[in,out]	proxy										The HDF proxy where all numerical
 		 * 																values will be stored. If @c nullptr,
 		 * 																then the default HDF proxy of the
 		 * 																repository will be used.
@@ -579,7 +579,7 @@ namespace RESQML2_NS
 		 * 																indicating for each split coordinate
 		 * 																line, the grid columns which are
 		 * 																splitted by this coordinate line.
-		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * @param[in]	  	localCrs									(Optional) The local CRS where
 		 * 																the points are given. If @c nullptr
 		 * 																(default) then the default CRS of the
 		 * 																repository will be used.

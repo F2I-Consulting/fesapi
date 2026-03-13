@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -39,7 +39,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	interp	The interpretation this representation represents.
+		 * @param[in,out]	interp	The interpretation this representation represents.
 		 * @param 		  	guid  	The guid to set to the new instance. If empty then a new guid will be
 		 * 							generated.
 		 * @param 		  	title 	A title for the instance to create.
@@ -50,7 +50,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		Grid2dRepresentation(gsoap_resqml2_0_1::_resqml20__Grid2dRepresentation* fromGsoap): RESQML2_NS::Grid2dRepresentation(fromGsoap) {}
 
@@ -151,7 +151,7 @@ namespace RESQML2_0_1_NS
 		 * Try to get a Point3dFromRepresentationLatticeArray from the geometry of a patch of the
 		 * representation.
 		 *
-		 * @param [in,out]	patch	If non-null, the patch.
+		 * @param[in,out]	patch	If non-null, the patch.
 		 *
 		 * @returns	nullptr if the geoemtry does not contain such an information.
 		 */
@@ -173,7 +173,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	zOffsetInSlowestDirection  	The offset in slowest direction.
 		 * @param 		  	spacingInFastestDirection  	The spacing in fastest direction.
 		 * @param 		  	spacingInSlowestDirection  	The spacing in slowest direction.
-		 * @param [in,out]	localCrs				   	If non-null, the local crs.
+		 * @param[in,out]	localCrs				   	If non-null, the local crs.
 		 *
 		 * @returns	Null if it fails, else the new array 2D of lattice points 3D.
 		 */
@@ -189,16 +189,16 @@ namespace RESQML2_0_1_NS
 		 * representation.
 		 *
 		 * @param 		  	patchIndex					Zero-based index of the patch.
-		 * @param [in,out]	zValues						All the z values to add. It must be numI * numJ
+		 * @param[in,out]	zValues						All the z values to add. It must be numI * numJ
 		 * 												count.
-		 * @param [in,out]	localCrs					The lcoal cRS where the Z values are.
+		 * @param[in,out]	localCrs					The lcoal cRS where the Z values are.
 		 * @param 		  	numI						Number of z values in the first dimension of the
 		 * 												array to add.
 		 * @param 		  	numJ						Number of z values in the second dimension of the
 		 * 												array to add.
-		 * @param [in,out]	proxy						The hdf proxy which indicates the hdf file where
+		 * @param[in,out]	proxy						The hdf proxy which indicates the hdf file where
 		 * 												the values will be stored.
-		 * @param [in,out]	supportingRepresentation	The lattice grid representation these Z values
+		 * @param[in,out]	supportingRepresentation	The lattice grid representation these Z values
 		 * 												use as a support.
 		 * @param 		  	startGlobalIndex			(Optional) The first global (representation)
 		 * 												index of the baseLatticeGridRepresentation where a z
@@ -226,11 +226,11 @@ namespace RESQML2_0_1_NS
 		 * geoemtry does not derive from another existing grid 2d representation.
 		 *
 		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	zValues   	All the z values to add. It must be numI * numJ count.
-		 * @param [in,out]	localCrs  	The lcoal cRS where the Z values are.
+		 * @param[in,out]	zValues   	All the z values to add. It must be numI * numJ count.
+		 * @param[in,out]	localCrs  	The lcoal cRS where the Z values are.
 		 * @param 		  	numI	  	Number of z values in the first dimension of the array to add.
 		 * @param 		  	numJ	  	Number of z values in the second dimension of the array to add.
-		 * @param [in,out]	proxy	  	The hdf proxy which indicates the hdf file where the values will
+		 * @param[in,out]	proxy	  	The hdf proxy which indicates the hdf file where the values will
 		 * 								be stored.
 		 * @param 		  	originX   	The origin x coordinate.
 		 * @param 		  	originY   	The origin y coordinate.

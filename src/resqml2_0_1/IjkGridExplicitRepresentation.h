@@ -33,7 +33,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in]	repo	The repo where the underlying gsoap proxy is going to
+		 * @param[in]	repo	The repo where the underlying gsoap proxy is going to
 		 * 						be created.
 		 * @param		guid	Unique identifier.
 		 * @param 		title	The title.
@@ -43,7 +43,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *						TRUE if there is a gap after the corresponding layer.
 		 *						Won't be freed by FESAPI.
-		 * @param [in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]	proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 						values. If @c nullptr (default), then the default HDF proxy will be
 		 * 						used.
 		 */
@@ -55,7 +55,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in]		interp	If non-null, the interp.
+		 * @param[in]		interp	If non-null, the interp.
 		 * @param 	  		guid	Unique identifier.
 		 * @param 			title	The title.
 		 * @param 			iCount	Number of cell in I direction.
@@ -64,7 +64,7 @@ namespace RESQML2_0_1_NS
 		 * @param 			kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *							TRUE if there is a gap after the corresponding layer.
 		 *							Won't be freed by FESAPI.
-		 * @param [in]		proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]		proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 							values. If @c nullptr (default), then the default HDF proxy will be
 		 * 							used.
 		 */
@@ -76,14 +76,14 @@ namespace RESQML2_0_1_NS
 		/**
 		 * @brief	Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridExplicitRepresentation(fromGsoap) {}
 
 		/**
 		 * @brief	Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridExplicitRepresentation(fromGsoap) {}
 

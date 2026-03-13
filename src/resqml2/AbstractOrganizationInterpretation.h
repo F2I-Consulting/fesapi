@@ -55,11 +55,11 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
 		 *
-		 * @param [in]	subject			The subject of the sentence that defines how the contact was
+		 * @param[in]	subject			The subject of the sentence that defines how the contact was
 		 * 								constructed.
 		 * @param 	  	verb			The verb of the sentence that defines how the contact was
 		 * 								constructed.
-		 * @param [in]	directObject	The direct object of the sentence that defines how the contact
+		 * @param[in]	directObject	The direct object of the sentence that defines how the contact
 		 * 								was constructed.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject);
@@ -69,13 +69,13 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
 		 *
-		 * @param [in]	subject			The subject of the sentence that defines how the contact was
+		 * @param[in]	subject			The subject of the sentence that defines how the contact was
 		 * 								constructed.
 		 * @param 	  	verb			The verb of the sentence that defines how the contact was
 		 * 								constructed.
-		 * @param [in]	directObject	The direct object of the sentence that defines how the contact
+		 * @param[in]	directObject	The direct object of the sentence that defines how the contact
 		 * 								was constructed.
-		 * @param [in]	partOf			indicates the interpertation this contact is part of
+		 * @param[in]	partOf			indicates the interpertation this contact is part of
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject, AbstractFeatureInterpretation* partOf);
 
@@ -85,11 +85,11 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
 		 *
-		 * @param [in]	subject				 	The subject of the sentence that defines how the contact
+		 * @param[in]	subject				 	The subject of the sentence that defines how the contact
 		 * 										was constructed.
 		 * @param 	  	verb				 	The verb of the sentence that defines how the contact was
 		 * 										constructed.
-		 * @param [in]	directObject		 	The direct object of the sentence that defines how the
+		 * @param[in]	directObject		 	The direct object of the sentence that defines how the
 		 * 										contact was constructed.
 		 * @param 	  	directObjectQualifier	The direct object qualifier defining its contact side
 		 * 										(footwall, hanging wall, north, south, etc.).
@@ -103,13 +103,13 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
 		 *
-		 * @param [in]	subject				 	The subject of the sentence that defines how the contact
+		 * @param[in]	subject				 	The subject of the sentence that defines how the contact
 		 * 										was constructed.
 		 * @param 	  	subjectQualifier	 	The subject qualifier defining its contact side (footwall,
 		 * 										hanging wall, north, south, etc.).
 		 * @param 	  	verb				 	The verb of the sentence that defines how the contact was
 		 * 										constructed.
-		 * @param [in]	directObject		 	The direct object of the sentence that defines how the
+		 * @param[in]	directObject		 	The direct object of the sentence that defines how the
 		 * 										contact was constructed.
 		 * @param 	  	directObjectQualifier	The direct object qualifier defining its contact side
 		 * 										(footwall, hanging wall, north, south, etc.).

@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::WellboreFeature(partialObject) {}
 
@@ -39,7 +39,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p repo si @c nullptr.
 		 *
-		 * @param [in,out]	repo 	A repository which will manage the memory of this instance.
+		 * @param[in,out]	repo 	A repository which will manage the memory of this instance.
 		 * @param 		  	guid 	The guid to set to the wellbore feature. If empty then a new guid
 		 * 							will be generated.
 		 * @param 		  	title	The title to set to the wellbore feature. If empty then \"unknown\"
@@ -50,7 +50,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreFeature(gsoap_resqml2_0_1::_resqml20__WellboreFeature* fromGsoap): RESQML2_NS::WellboreFeature(fromGsoap) {}
 

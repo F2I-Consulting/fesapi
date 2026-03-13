@@ -48,7 +48,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	  	values	All the property values to set ordered according the topology of the
 		 * 						representation it is based on.
-		 * @param [in]	proxy 	The HDF proxy where to write the property values. It must be already
+		 * @param[in]	proxy 	The HDF proxy where to write the property values. It must be already
 		 * 						opened for writing and won't be closed in this method. If null then a
 		 * 						default HDF proxy must be defined in the data object repository.
 		 */
@@ -61,7 +61,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p hdfProxy is null.
 		 *
-		 * @param [in]	hdfProxy   	The HDF5 proxy where the values are already or will be stored. It
+		 * @param[in]	hdfProxy   	The HDF5 proxy where the values are already or will be stored. It
 		 * 							cannot be null.
 		 * @param 	  	datasetName	(Optional) If not provided during the method call, the dataset will
 		 * 							be named the same as the dataset naming convention of fesapi:
@@ -92,7 +92,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param[in]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT CommentProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractValuesProperty(partialObject) {}
 
@@ -101,14 +101,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		CommentProperty(gsoap_resqml2_0_1::_resqml20__CommentProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSoap RESQML2.2 instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		CommentProperty(gsoap_eml2_3::_resqml22__CommentProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 

@@ -43,22 +43,22 @@ namespace RESQML2_NS
 		 * 										id defined in the repository.
 		 *
 		 * @param 		  	nodeCount		   	The node count in this patch.
-		 * @param [in]	  	nodes			   	An array of size <tt>3 * nodeCount</tt> containing the
+		 * @param[in]	  	nodes			   	An array of size <tt>3 * nodeCount</tt> containing the
 		 * 										xyz values of the nodes. It is ordered first by xyz and
 		 * 										then by nodes.
 		 * @param 		  	triangleCount	   	The triangle count in this patch.
-		 * @param [in]	  	triangleNodeIndices	An array of size <tt>3 * triangleCount</tt> containing
+		 * @param[in]	  	triangleNodeIndices	An array of size <tt>3 * triangleCount</tt> containing
 		 * 										the definition of the triangles of the triangulated
 		 * 										topology by means of the indices of their vertices in the
 		 * 										node list. The three first values give the 3 indices of
 		 * 										the 3 vertices of the first triangle. The three following
 		 * 										values define the 3 vertices of the second triangle and
 		 * 										so on.
-		 * @param [in,out]	proxy			   	(Optional) The HDF proxy which defines where the nodes
+		 * @param[in,out]	proxy			   	(Optional) The HDF proxy which defines where the nodes
 		 * 										and triangle indices will be stored. If @c nullptr
 		 * 										(default), then the repository default HDF proxy will be
 		 * 										used.
-		 * @param [in]	  	localCrs		   	(Optional) The local CRS where the nodes are defined. If
+		 * @param[in]	  	localCrs		   	(Optional) The local CRS where the nodes are defined. If
 		 * 										@c nullptr (default value), then the repository default
 		 * 										local CRS will be used.
 		 */
@@ -84,14 +84,14 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets all the triangle node indices of a particular patch of this representation. See
-		 * {@link resqml2::AbstractRepresentation::getXyzPointsOfPatch} method to read the xyz coordinates
+		 * \link resqml2::AbstractRepresentation::getXyzPointsOfPatch \endlink method to read the xyz coordinates
 		 * of the triangle nodes.
 		 *
 		 * @exception	std::out_of_range	If <tt>patchIndex &gt;=</tt> getPatchCount().
 		 *
 		 * @param 	   	patchIndex		   	The index of the patch which contains the triangle node
 		 * 									indices we want to get.
-		 * @param [out]	triangleNodeIndices	A preallocated array of size <tt>3 *
+		 * @param[out]	triangleNodeIndices	A preallocated array of size <tt>3 *
 		 * 									getTriangleCountOfPatch(patchIndex)</tt> to receive the
 		 * 									triangle node indices. The three first values give the 3
 		 * 									indices of the 3 vertices of the first triangle. The three
@@ -102,10 +102,10 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets all the triangle node indices of all patches of this representation. See
-		 * {@link resqml2::AbstractRepresentation::getXyzPointsOfPatch} method to read the xyz coordinates
+		 * \link resqml2::AbstractRepresentation::getXyzPointsOfPatch \endlink method to read the xyz coordinates
 		 * of the triangle nodes.
 		 *
-		 * @param [out]	triangleNodeIndices	A preallocated array of size <tt>3 *
+		 * @param[out]	triangleNodeIndices	A preallocated array of size <tt>3 *
 		 * 									getTriangleCountOfAllPatches()</tt> to receive the triangle
 		 * 									node indices. It is ordered first by nodes, then by
 		 * 									triangles and then by patches.
@@ -124,7 +124,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -138,14 +138,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		TriangulatedSetRepresentation(gsoap_resqml2_0_1::_resqml20__TriangulatedSetRepresentation* fromGsoap) : AbstractSurfaceRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		TriangulatedSetRepresentation(gsoap_eml2_3::_resqml22__TriangulatedSetRepresentation* fromGsoap) : AbstractSurfaceRepresentation(fromGsoap) {}
 	};

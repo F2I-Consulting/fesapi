@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -44,13 +44,13 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo  	The repo which will contain the instance.
+		 * @param[in,out]	repo  	The repo which will contain the instance.
 		 * @param 		  	guid  	The guid to set to the horizon. If empty then a new guid will be
 		 * 							generated.
 		 * @param 		  	title 	A title for the instance to create.
 		 * @param 		  	phase 	The phase.
-		 * @param [in,out]	top   	If non-null, the top.
-		 * @param [in,out]	bottom	If non-null, the bottom.
+		 * @param[in,out]	top   	If non-null, the top.
+		 * @param[in,out]	bottom	If non-null, the bottom.
 		 */
 		RockFluidUnitFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__Phase phase,
 							 class BoundaryFeature* top, class BoundaryFeature* bottom);
@@ -58,7 +58,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		RockFluidUnitFeature(gsoap_resqml2_0_1::_resqml20__RockFluidUnitFeature* fromGsoap): GeologicUnitFeature(fromGsoap) {}
 
@@ -68,7 +68,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Sets a top
 		 *
-		 * @param [in,out]	top	If non-null, the top.
+		 * @param[in,out]	top	If non-null, the top.
 		 */
 		DLL_IMPORT_OR_EXPORT void setTop(class BoundaryFeature* top);
 		/** A boundary feature*. */
@@ -77,7 +77,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Sets a bottom
 		 *
-		 * @param [in,out]	bottom	If non-null, the bottom.
+		 * @param[in,out]	bottom	If non-null, the bottom.
 		 */
 		DLL_IMPORT_OR_EXPORT void setBottom(class BoundaryFeature* bottom);
 		/** A boundary feature*. */

@@ -42,7 +42,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p repo is @c nullptr.
 		 *
-		 * @param [in,out]	repo				A repository which will manage the memory of this
+		 * @param[in,out]	repo				A repository which will manage the memory of this
 		 * 										instance. It cannot be null.
 		 * @param 		  	guid				The guid to set to the ijk grid with no geometry
 		 * 										representation. If empty then a new guid will be
@@ -56,7 +56,7 @@ namespace RESQML2_NS
 		 * @param 		  	kGaps				(Optional) Boolean array of length KCellCount-1.
 		 *										TRUE if there is a gap after the corresponding layer.
 		 *										Won't be freed by FESAPI.
-		 * @param [in]		proxy				(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]		proxy				(Optional) The HDF proxy for writing the @p enabledCells
 		 * 										values. If @c nullptr (default), then the default HDF proxy will be
 		 * 										used.
 		 */
@@ -69,7 +69,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
 		 *
-		 * @param [in]	interp					The interpretation this IJK grid represents. It cannot be
+		 * @param[in]	interp					The interpretation this IJK grid represents. It cannot be
 		 * 										null.
 		 * @param 	  	guid					The guid to set to the ijk grid with no geometry
 		 * 										representation. If empty then a new guid will be generated.
@@ -81,7 +81,7 @@ namespace RESQML2_NS
 		 * @param 	  	kGaps					(Optional) Boolean array of length KCellCount-1.
 		 *										TRUE if there is a gap after the corresponding layer.
 		 *										Won't be freed by FESAPI.
-		 * @param [in]	proxy					(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]	proxy					(Optional) The HDF proxy for writing the @p enabledCells
 		 * 										values. If @c nullptr (default), then the default HDF proxy will be
 		 * 										used.
 		 */
@@ -94,7 +94,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p repo is @c nullptr.
 		 *
-		 * @param [in,out]	repo					A repository which will manage the memory of this
+		 * @param[in,out]	repo					A repository which will manage the memory of this
 		 * 											instance. It cannot be null.
 		 * @param 		  	guid					The guid to set to the ijk grid with no geometry
 		 * 											representation. If empty then a new guid will be
@@ -123,7 +123,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
 		 *
-		 * @param [in]	interp					The interpretation this IJK grid represents. It cannot be
+		 * @param[in]	interp					The interpretation this IJK grid represents. It cannot be
 		 * 										null.
 		 * @param 	  	guid					The guid to set to the ijk grid with no geometry
 		 * 										representation. If empty then a new guid will be generated.
@@ -144,7 +144,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject			If non-nullptr, the partial object.
+		 * @param[in]	partialObject			If non-nullptr, the partial object.
 		 * @param 	  	withTruncatedPillars	(Optional) True to with truncated pillars.
 		 */
 		DLL_IMPORT_OR_EXPORT explicit AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars = false);
@@ -239,7 +239,7 @@ namespace RESQML2_NS
 		/**
 		* For each K Layer except the last one, indicate wether there is a layer or not after it.
 		*
-		* @param [out]	kGaps	An array for receiving the information about kGaps.
+		* @param[out]	kGaps	An array for receiving the information about kGaps.
 		*						It must have a count of getKCellCount() - 1. It won't be free. A false value in
 		* 						@p kGaps means that the corresponding k layer has no gaps just after it.
 		*						A true value means that the corresponding k layer has a gap just after it.
@@ -409,7 +409,7 @@ namespace RESQML2_NS
 		 * 										coordinate lines are not stored within an HDF5 integer
 		 * 										array.
 		 *
-		 * @param [out]	pillarIndices	An array for receiving the indices of the pillars corresponding
+		 * @param[out]	pillarIndices	An array for receiving the indices of the pillars corresponding
 		 * 								to the split coordinate lines. It must be preallocated with a
 		 * 								size of getSplitCoordinateLineCount().
 		 * @param 	   	reverseIAxis 	(Optional) True to reverse I axis. Default value is false.
@@ -428,7 +428,7 @@ namespace RESQML2_NS
 		 * 										coordinate lines are not stored within an HDF5 integer
 		 * 										array.
 		 *
-		 * @param [out]	columnIndices	An array for receiving the indices of the columns impacted by the
+		 * @param[out]	columnIndices	An array for receiving the indices of the columns impacted by the
 		 * 								split coordinate lines. It must be preallocated with a size equal
 		 * 								to the last value of the array outputted from
 		 * 								getColumnCountOfSplitCoordinateLines().
@@ -448,7 +448,7 @@ namespace RESQML2_NS
 		 * 										split coordinate lines are not stored within an HDF5
 		 * 										integer array.
 		 *
-		 * @param [out]	columnIndexCountPerSplitCoordinateLine	An array for receiving the cumulative
+		 * @param[out]	columnIndexCountPerSplitCoordinateLine	An array for receiving the cumulative
 		 * 														count of columns impacted by the split
 		 * 														coordinate lines.
 		 */
@@ -496,7 +496,7 @@ namespace RESQML2_NS
 		 * 										is defined are neither stored in an HDF5 boolean array
 		 * 										nor in a boolean constant array.
 		 *
-		 * @param [out]	pillarGeometryIsDefined	An array for receiving a boolean value for each pillar
+		 * @param[out]	pillarGeometryIsDefined	An array for receiving a boolean value for each pillar
 		 * 										indicating if its geometry is defined or not. It must be
 		 * 										preallocated with a size of getPillarCount().
 		 * @param 	   	reverseIAxis		   	(Optional) True to reverse i axis. Default value is false.
@@ -523,7 +523,7 @@ namespace RESQML2_NS
 		 * 										stored in an HDF5 boolean array nor in a boolean constant
 		 * 										array.
 		 *
-		 * @param [out]	cellGeometryIsDefinedFlags	An array for receiving the CellGeometryIsDefined flags.
+		 * @param[out]	cellGeometryIsDefinedFlags	An array for receiving the CellGeometryIsDefined flags.
 		 *								It must have a count of getCellCount() and must follow the
 		 * 								index ordering I then J then K. It won't be free. A zero value in
 		 * 								@p cellGeometryIsDefinedFlags means that the corresponding cell geometry is not defined. A non
@@ -543,12 +543,12 @@ namespace RESQML2_NS
 		 * 										defined in the repository.
 		 * @exception	std::invalid_argument	If this grid has no geometry.
 		 *
-		 * @param [in]	  	cellGeometryIsDefinedFlags	An array containing the CellGeometryIsDefined flags.
+		 * @param[in]	  	cellGeometryIsDefinedFlags	An array containing the CellGeometryIsDefined flags.
 		 *									It must have a count of getCellCount() and must follow the
 		 * 									index ordering I then J then K. A zero value in
 		 * 									@p cellGeometryIsDefinedFlags means that the corresponding cell geometry is not defined. A non
 		 * 									zero value means that the corresponding cell geometry is defined.
-		 * @param [in]		proxy			(Optional) The HDF proxy for writing the @p cellGeometryIsDefinedFlags
+		 * @param[in]		proxy			(Optional) The HDF proxy for writing the @p cellGeometryIsDefinedFlags
 		 * 									values. If @c nullptr (default), then the default HDF proxy will be
 		 * 									used.
 		 */
@@ -660,9 +660,9 @@ namespace RESQML2_NS
 		 * 							1).
 		 * @param 	   	xyzPoints	The XYZ points of the block (resulting from a call to
 		 * 							getXyzPointsOfBlock()).
-		 * @param [out]	x		 	The x value of the corner we look for.
-		 * @param [out]	y		 	The y value of the corner we look for.
-		 * @param [out]	z		 	The z value of the corner we look for.
+		 * @param[out]	x		 	The x value of the corner we look for.
+		 * @param[out]	y		 	The y value of the corner we look for.
+		 * @param[out]	z		 	The z value of the corner we look for.
 		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointOfBlockFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner,
 			const double* xyzPoints, double & x, double & y, double & z) const;
@@ -696,7 +696,7 @@ namespace RESQML2_NS
 		 * information but to get it as input.
 		 *
 		 * @param 		  	kInterface	The K interface index starting from zero to kCellCount.
-		 * @param [out]	xyzPoints 		A linearized 2d array where the first (quickest) dimension is
+		 * @param[out]	xyzPoints 		A linearized 2d array where the first (quickest) dimension is
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated with a size of
 		 * 								<tt>3 * getXyzPointCountOfKInterface()</tt>.
@@ -716,7 +716,7 @@ namespace RESQML2_NS
 		 * 								getKCellCount().
 		 * @param 	   	kInterfaceEnd  	The K index of the ending interface taken from zero to
 		 * 								getKCellCount() + getKGapsCount().
-		 * @param [out]	xyzPoints	   	A linearized 2d array where the first (quickest) dimension is
+		 * @param[out]	xyzPoints	   	A linearized 2d array where the first (quickest) dimension is
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be preallocated with a size of
 		 * 								<tt>3 *</tt> getXyzPointCountOfKInterface() <tt>*
@@ -731,7 +731,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the block information is not loaded.
 		 * @exception	std::invalid_argument	If @p xyzPoints is @c nullptr.
 		 *
-		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is
+		 * @param[out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is
 		 * 							coordinate dimension (XYZ) and second dimension is vertex dimension.
 		 * 							It must be pre allocated with a size of
 		 * 							<tt>3 *</tt> getXyzPointCountOfBlock().
@@ -805,14 +805,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		explicit AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false) {}
 
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		explicit AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true) {}
 		explicit AbstractIjkGridRepresentation(gsoap_eml2_3::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false) {}
@@ -896,7 +896,7 @@ namespace RESQML2_NS
 		/**
 		 * Initializes this object
 		 *
-		 * @param [in,out]	repo  	The soap context where the underlying gsoap proxy is going to be
+		 * @param[in,out]	repo  	The soap context where the underlying gsoap proxy is going to be
 		 * 							created.
 		 * @param 		  	guid  	Unique identifier.
 		 * @param 		  	title 	The title.
@@ -906,7 +906,7 @@ namespace RESQML2_NS
 		 * @param 		  	kGaps	(Optional) Boolean array of length KCellCount-1.
 		 *							TRUE if there is a gap after the corresponding layer.
 		 *							Won't be freed by FESAPI.
-		 * @param [in]		proxy	(Optional) The HDF proxy for writing the @p enabledCells
+		 * @param[in]		proxy	(Optional) The HDF proxy for writing the @p enabledCells
 		 * 							alues. If @c nullptr (default), then the default HDF proxy will be	used.
 		 */
 		void init(COMMON_NS::DataObjectRepository * repo,

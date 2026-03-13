@@ -76,7 +76,7 @@ namespace RESQML2_NS
 		 * 															indicate that it corresponds to a missing
 		 * 															intersection, e.g., when a trajectory
 		 * 															originates or terminates within a cell.
-		 * @param [in,out]	hdfProxy								The HDF proxy where the numerical
+		 * @param[in,out]	hdfProxy								The HDF proxy where the numerical
 		 * 															values will be stored. If set to nullptr,
 		 *															the default HdfProxy will be used instead.
 		 */
@@ -99,7 +99,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the grid indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	gridIndices	An array for receiving the grids indices. The size of this array is
+		 * @param[out]	gridIndices	An array for receiving the grids indices. The size of this array is
 		 * 							the interval count of the wellbore frame representation. The
 		 * 							associated grids (and there indices) are defined using
 		 * 							pushBackSupportingGridRepresentation() method.
@@ -118,7 +118,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the cell indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	cellIndices	An array for receiving the cell indices. The size of this array is
+		 * @param[out]	cellIndices	An array for receiving the cell indices. The size of this array is
 		 * 							the interval count of the wellbore frame representation.
 		 *
 		 * @returns	The null value used in @p cellIndices in order to indicate that an interval does not
@@ -135,7 +135,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the local face indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	localFacePairPerCellIndices	An array for receiving the local face indices. The size of this array is twice
+		 * @param[out]	localFacePairPerCellIndices	An array for receiving the local face indices. The size of this array is twice
 		 * 											the interval count of the wellbore frame representation.
 		 *
 		 * @returns	The null value used in @p localFacePairPerCellIndices in order to indicate that no face is intersected.
@@ -147,7 +147,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>supportingGridRep == nullptr</tt>.
 		 *
-		 * @param [in]	supportingGridRep	The supporting grid representation to push back.
+		 * @param[in]	supportingGridRep	The supporting grid representation to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep) = 0;
 
@@ -197,7 +197,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -211,14 +211,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		BlockedWellboreRepresentation(gsoap_resqml2_0_1::_resqml20__BlockedWellboreRepresentation* fromGsoap) : WellboreFrameRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		BlockedWellboreRepresentation(gsoap_eml2_3::_resqml22__BlockedWellboreRepresentation* fromGsoap) : WellboreFrameRepresentation(fromGsoap) {}
 

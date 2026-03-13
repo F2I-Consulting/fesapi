@@ -80,7 +80,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue	The maximum value of the values to add. If @c NaN is
 		 * 									provided then both maximum and minimum values will be computed
 		 * 									from the values.
-		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the property values.
+		 * @param[in,out]	proxy			(Optional) The HDF proxy where to write the property values.
 		 * 									It must be already opened for writing and won't be closed in this
 		 * 									method. If @c nullptr (default value), then a default HDF proxy
 		 * 									must be defined in the repository.
@@ -107,7 +107,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
 		 * 											@c NaN is provided then both maximum and minimum
 		 * 											values will be computed from the values.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default value), then a default HDF proxy must be
@@ -137,7 +137,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
 		 * 											@c NaN is provided then both maximum and minimum
 		 * 											values will be computed from the values.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default value), then a default HDF proxy must be
@@ -160,16 +160,16 @@ namespace RESQML2_NS
 		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @c nullptr (default value),
 		 * 										then a default HDF proxy must be defined in the
 		 * 										repository.
-		 * @param [in]	  	minimumValue	  	The minimum value (or value vector) of the
+		 * @param[in]	  	minimumValue	  	The minimum value (or value vector) of the
 		 * 										values to add. If @c nullptr is provided for both @p
 		 * 										minimumValue and @p maximumValue then both minimum and
 		 *										maximum values will be computed from the values.
-		 * @param [in]	  	maximumValue	  	The maximum value (or value vector) of the
+		 * @param[in]	  	maximumValue	  	The maximum value (or value vector) of the
 		 * 										values to add. If @ nullptr is provided for both @p
 		 * 										maximumValue and @p minimumValue then both minimum and
 		 *										maximum values will be computed from the values.
@@ -284,13 +284,13 @@ namespace RESQML2_NS
 		 * 										array to write.  It is ordered from slowest dimension to
 		 * 										fastest dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in]	  	minimumValue	  	The minimum value (or value vector) of the
+		 * @param[in]	  	minimumValue	  	The minimum value (or value vector) of the
 		 * 										values to add. If @c nullptr (default) is provided then
 		 * 										neither minimum nor maximum value will be set.
-		 * @param [in]	  	maximumValue	  	The maximum value (or value vector) of the
+		 * @param[in]	  	maximumValue	  	The maximum value (or value vector) of the
 		 * 										values to add. If @c nullptr (default) is provided then
 		 * 										neither maximum nor minimum value will be set.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @c nullptr (default), a
 		 * 										default HDF proxy must be defined into the data object
@@ -320,7 +320,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		The maximum value of the values to add. If
 		 * 										@c NaN is provided (default) then neither maximum nor
 		 * 										minimum value will be set.
-		 * @param [in,out]	proxy				(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and
 		 * 										won't be closed in this method. If @c nullptr
 		 * 										(default), a default HDF proxy must be defined into
@@ -352,7 +352,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
 		 * 											@c NaN is provided (default) then neither maximum nor
 		 * 											minimum value will be set.
-		 * @param [in,out]	proxy					(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy					(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -387,7 +387,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
 		 * 											@c NaN is provided (default) then neither maximum nor
 		 * 											minimum value will be set.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -430,7 +430,7 @@ namespace RESQML2_NS
 		 * @param 		  	computeMinMax		  	True if FESAPI needs to compute
 		 * 											the min and  max from the given @p values in order to
 		 * 											set them.
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -491,7 +491,7 @@ namespace RESQML2_NS
 		 * @param 		  	computeMinMax	  	True if FESAPI needs to compute the
 		 * 										min and  max from the given @p values in order to set
 		 * 										them.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @p nullptr (default), a
 		 * 										default HDF proxy must be defined into the data object
@@ -534,7 +534,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT ContinuousProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
@@ -544,14 +544,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		ContinuousProperty(gsoap_resqml2_0_1::_resqml20__ContinuousProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSoap RESQML2.2 instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		ContinuousProperty(gsoap_eml2_3::_resqml22__ContinuousProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
@@ -569,10 +569,10 @@ namespace RESQML2_NS
 		 * @param 		  	values						The array of values.
 		 * @param 		  	numValuesInEachDimension	The number of property values in each dimension.
 		 * @param 		  	numArrayDimensions			The number of dimensions of the array.
-		 * @param [in,out]	minimumValue				(Optional) If this value and \p maximumValue are
+		 * @param[in,out]	minimumValue				(Optional) If this value and \p maximumValue are
 		 * 												defined then the method does not compute the min but
 		 * 												forces it to this value.
-		 * @param [in,out]	maximumValue				(Optional) If this value and \p minimumValue are
+		 * @param[in,out]	maximumValue				(Optional) If this value and \p minimumValue are
 		 * 												defined then the method does not compute the max but
 		 * 												forces it to this value.
 		 */

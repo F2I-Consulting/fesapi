@@ -31,7 +31,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		 * Creates a local property type which uses a standard uom and which derives from a standard
 		 * Energistics property type.
 		 *
-		 * @param [in,out]	repo						 	The repo where the underlying gsoap proxy is
+		 * @param[in,out]	repo						 	The repo where the underlying gsoap proxy is
 		 * 													going to be created.
 		 * @param 		  	guid						 	The guid to set to the local 3d crs. If empty
 		 * 													then a new guid will be generated.
@@ -71,7 +71,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	uom			  	The unit of measure of the property type.
 		 * @param 			isAbstract		Indicates whether the property kind should be used
 		 * 									as a real (default) property or not.
-		 * @param [in,out]	parentPropType	The local parent property type in the EPC document.
+		 * @param[in,out]	parentPropType	The local parent property type in the EPC document.
 		 */
 		PropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, bool isAbstract, EML2_NS::PropertyKind * parentPropType);
@@ -80,7 +80,7 @@ namespace RESQML2_0_1_NS
 		 * @brief	Creates a local property type which uses a non standard uom and which derives from a
 		 * 			standard Energistics property type.
 		 *
-		 * @param [in,out]	repo						 	The repo where the underlying gsoap proxy is
+		 * @param[in,out]	repo						 	The repo where the underlying gsoap proxy is
 		 * 													going to be created.
 		 * @param 		  	guid						 	The guid to set to the local 3d crs. If empty
 		 * 													then a new guid will be generated.
@@ -108,7 +108,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	nonStandardUom	The non standard uom of the values.
 		 * @param 	  		isAbstract		Indicates whether the property kind should be used
 		 * 									as a real (default) property or not.
-		 * @param [in,out]	parentPropType	The local parent property type in the EPC document.
+		 * @param[in,out]	parentPropType	The local parent property type in the EPC document.
 		 */
 		PropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const std::string & nonStandardUom, bool isAbstract, EML2_NS::PropertyKind * parentPropType);
@@ -116,7 +116,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PropertyKind(gsoap_resqml2_0_1::_resqml20__PropertyKind* fromGsoap) :EML2_NS::PropertyKind(fromGsoap) {}
 
@@ -205,7 +205,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Sets XML parent property kind
 		 *
-		 * @param [in,out]	parentPropertyKind	If non-null, the parent property kind.
+		 * @param[in,out]	parentPropertyKind	If non-null, the parent property kind.
 		 */
 		void setXmlParentPropertyKind(EML2_NS::PropertyKind* parentPropertyKind);
 
@@ -232,7 +232,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Initializes this object
 		 *
-		 * @param [in,out]	repo			If non-null, the repo.
+		 * @param[in,out]	repo			If non-null, the repo.
 		 * @param 		  	guid			Unique identifier.
 		 * @param 		  	title			The title.
 		 * @param 		  	namingSystem	The naming system.

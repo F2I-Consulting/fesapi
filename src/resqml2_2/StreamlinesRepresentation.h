@@ -40,14 +40,14 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT StreamlinesRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::StreamlinesRepresentation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		StreamlinesRepresentation(gsoap_eml2_3::resqml22__StreamlinesRepresentation* fromGsoap) : RESQML2_NS::StreamlinesRepresentation(fromGsoap) {}
 
@@ -56,7 +56,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp		The interpretation this representation represents.
+		 * @param[in]	interp		The interpretation this representation represents.
 		 * @param 	  	guid  		The guid to set to the new instance. If empty then a new guid will be
 		 * 							generated.
 		 * @param 	  	title 		A title for the instance to create.
@@ -109,7 +109,7 @@ namespace RESQML2_2_NS
 		 * @brief	Gets all the wellbore indices which are injectors.
 		 *			Null values signify that that line does not initiate at an injector, e.g., it may come from fluid expansion or an aquifer.
 		 *
-		 * @param [in/out]	injectorPerLine 	The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
+		 * @param[in/out]	injectorPerLine 	The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
 		 *										It must be preallocated with a size getWellboreTrajectories().size() and it won't be freed by FESAPI.
 		 *
 		 * @returns	The null value used in injectorPerLine.
@@ -120,7 +120,7 @@ namespace RESQML2_2_NS
 		 * @brief	Gets all the wellbore indices which are producers.
 		 *			Null values signify that that line does not terminate at a producer, e.g., it may approach a stagnation area.
 		 *
-		 * @param [in/out]	injectorPerLine 	The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
+		 * @param[in/out]	injectorPerLine 	The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
 		 *										It must be preallocated with a size getWellboreTrajectories().size() and it won't be freed by FESAPI.
 		 *
 		 * @returns	The null value used in producerPerLine.
@@ -130,13 +130,13 @@ namespace RESQML2_2_NS
 		/**
 		 * Specify the wellbores on which streamlines may originate or terminate.
 		 *
-		 * @param [in]	injectorPerLine			The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
+		 * @param[in]	injectorPerLine			The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
 		 *										Null values signify that that line does not initiate at an injector, e.g., it may come from fluid expansion or an aquifer.
-		 * @param [in]	producerPerLine			The 0-based producer wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
+		 * @param[in]	producerPerLine			The 0-based producer wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
 		 *										Null values signify that that line does not terminate at a producer, e.g., it may approach a stagnation area.
-		 * @param [in]	wellboreTrajectories	The list of WellboreTrajectoryRepresentation references.
-		 * @param [in]	nullValue				The null value used in injectorPerLine and producerPerLine.
-		 * @param [in]	hdfProxy				(Optional) The HDF proxy which defines where the
+		 * @param[in]	wellboreTrajectories	The list of WellboreTrajectoryRepresentation references.
+		 * @param[in]	nullValue				The null value used in injectorPerLine and producerPerLine.
+		 * @param[in]	hdfProxy				(Optional) The HDF proxy which defines where the
 		 * 										nodes will be stored. If @c nullptr (default), then
 		 * 										the repository default HDF proxy will be used.
 		 */
@@ -150,7 +150,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Gets the node count per line.
 		 *
-		 * @param [out]	nodeCountPerPolyline	A preallocated array to receive the node count per
+		 * @param[out]	nodeCountPerPolyline	A preallocated array to receive the node count per
 		 * 										line. Its size must be
 		 * 										<tt>getLineCount(patchIndex)</tt>.
 		 */
@@ -169,16 +169,16 @@ namespace RESQML2_2_NS
 		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
 		 * 										id defined in the repository.
 		 *
-		 * @param [in]	  	nodeCountPerPolyline  	The node count per polyline in this representation. It is
+		 * @param[in]	  	nodeCountPerPolyline  	The node count per polyline in this representation. It is
 		 * 											ordered by polyline. There must be getLineCount()
 		 * 											values in this array.
-		 * @param [in]	  	xyzPoints			  	The xyz values of the nodes. Ordered by xyz, then by
+		 * @param[in]	  	xyzPoints			  	The xyz values of the nodes. Ordered by xyz, then by
 		 * 											node and then by polyline. It must be three times the
 		 * 											total count of nodes. It must be set to nullptr in RESQML2.0.1
-		 * @param [in,out]	hdfProxy			  	(Optional) The HDF proxy which defines where the
+		 * @param[in,out]	hdfProxy			  	(Optional) The HDF proxy which defines where the
 		 * 											nodes will be stored. If @c nullptr (default), then
 		 * 											the repository default HDF proxy will be used.
-		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the points are
+		 * @param[in]	  	localCrs			  	(Optional) The local CRS where the points are
 		 * 											defined. If @c nullptr (default value), then the
 		 * 											repository default local CRS will be used.
 		 */
@@ -224,7 +224,7 @@ namespace RESQML2_2_NS
 		 * 															indicate that it corresponds to a missing
 		 * 															intersection, e.g., when a line
 		 * 															originates or terminates within a cell.
-		 * @param [in,out]	hdfProxy								The HDF proxy where the numerical
+		 * @param[in,out]	hdfProxy								The HDF proxy where the numerical
 		 * 															values will be stored. It must be already
 		 * 															opened for writing and won't be closed.It
 		 * 															cannot be @c nullptr.
@@ -243,7 +243,7 @@ namespace RESQML2_2_NS
 		 * @exception	std::logic_error	If the grid indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	gridIndices	An array for receiving the grids indices. The size of this array is
+		 * @param[out]	gridIndices	An array for receiving the grids indices. The size of this array is
 		 * 							getIntervalCount.
 		 *
 		 * @returns	The null value used in @p gridIndices in order to indicate that an interval does not
@@ -260,7 +260,7 @@ namespace RESQML2_2_NS
 		 * @exception	std::logic_error	If the * indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	cellIndices	An array for receiving the cell indices. The size of this array is
+		 * @param[out]	cellIndices	An array for receiving the cell indices. The size of this array is
 		 * 							getIntervalCount.
 		 *
 		 * @returns	The null value used in @p cellIndices in order to indicate that an interval does not
@@ -276,7 +276,7 @@ namespace RESQML2_2_NS
 		 * @exception	std::logic_error	If the grid indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	gridIndices	An array for receiving the local Face Pair Per Cell Indices. The size of this array is twice
+		 * @param[out]	gridIndices	An array for receiving the local Face Pair Per Cell Indices. The size of this array is twice
 		 * 							getIntervalCount.
 		 *
 		 * @returns	The null value used in @p localFacePairPerCellIndices in order to indicate that a line interval does not intersect a face in this cell.

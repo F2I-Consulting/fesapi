@@ -30,7 +30,7 @@ namespace PRODML2_3_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		CompositionalViscositySpecification(gsoap_eml2_3::prodml23__AbstractCompositionalViscosityModel* fromGsoap) :CompositionalSpecification(fromGsoap) {}
 

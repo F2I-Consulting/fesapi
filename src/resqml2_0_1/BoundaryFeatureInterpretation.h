@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT BoundaryFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::BoundaryFeatureInterpretation(partialObject) {}
 
@@ -39,7 +39,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p feature is @c nullptr.
 		 *
-		 * @param [in]	feature	The interpreted boundary feature. It cannot be null.
+		 * @param[in]	feature	The interpreted boundary feature. It cannot be null.
 		 * @param 	  	guid   	The guid to set to the boundary feature interpretation. If empty then a
 		 * 						new guid will be generated.
 		 * @param 	  	title  	The title to set to the boundary feature interpretation. If empty then
@@ -50,7 +50,7 @@ namespace RESQML2_0_1_NS
 		/*
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml20__BoundaryFeatureInterpretation* fromGsoap) : RESQML2_NS::BoundaryFeatureInterpretation(fromGsoap) {}
 

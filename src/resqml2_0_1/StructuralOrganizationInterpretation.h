@@ -38,7 +38,7 @@ namespace RESQML2_0_1_NS
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if @p orgFeat is not a
 		 * 										structural organization.
 		 *
-		 * @param [in]	orgFeat				The feature the instance interprets. It must be a
+		 * @param[in]	orgFeat				The feature the instance interprets. It must be a
 		 * 										structural organization feature.
 		 * @param 	  	guid				The guid to set to the interpretation. If empty then a new
 		 * 									guid will be generated.
@@ -50,7 +50,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		StructuralOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__StructuralOrganizationInterpretation* fromGsoap): RESQML2_NS::StructuralOrganizationInterpretation(fromGsoap) {}
 

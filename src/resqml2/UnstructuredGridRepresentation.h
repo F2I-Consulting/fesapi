@@ -33,7 +33,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT UnstructuredGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
 			AbstractGridRepresentation(partialObject, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
@@ -49,7 +49,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		UnstructuredGridRepresentation(gsoap_resqml2_0_1::_resqml20__UnstructuredGridRepresentation* fromGsoap) :
 			RESQML2_NS::AbstractGridRepresentation(fromGsoap, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
@@ -59,7 +59,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		UnstructuredGridRepresentation(gsoap_eml2_3::_resqml22__UnstructuredGridRepresentation* fromGsoap) :
 			RESQML2_NS::AbstractGridRepresentation(fromGsoap, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
@@ -91,7 +91,7 @@ namespace RESQML2_NS
 		 * 										the cells is not already supported by fesapi.
 		 * @exception	std::invalid_argument	If a required HDF proxy is missing.
 		 *
-		 * @param [out]	faceIndices	Preallocated array to receive all the face indices of all the cells.
+		 * @param[out]	faceIndices	Preallocated array to receive all the face indices of all the cells.
 		 * 							It size must be the last value outputted by
 		 * 							getCumulativeFaceCountPerCell(). It is ordered first by faces and
 		 * 							then by cells.
@@ -110,7 +110,7 @@ namespace RESQML2_NS
 		 * 										integer constant array while there is more than one cell
 		 * 										in this grid.
 		 *
-		 * @param [out]	cumulativeFaceCountPerCell_	Preallocated array of size getCellCount() to receive
+		 * @param[out]	cumulativeFaceCountPerCell_	Preallocated array of size getCellCount() to receive
 		 * 											the cumulative face count per cell. First value is
 		 * 											the count of faces in the first cell. Second value is
 		 * 											the count of faces in the first and in the second
@@ -148,7 +148,7 @@ namespace RESQML2_NS
 		 * 										integer constant array while there is more than one cell
 		 * 										in this grid.
 		 *
-		 * @param [out]	faceCountPerCell	Preallocated array of size getCellCount() to receive the face
+		 * @param[out]	faceCountPerCell	Preallocated array of size getCellCount() to receive the face
 		 * 									count per cell. First value is the count of faces in the first
 		 * 									cell. Second value is the count of faces in the second cell. And
 		 * 									so on.
@@ -195,7 +195,7 @@ namespace RESQML2_NS
 		 * 										the faces is not already supported by fesapi.
 		 * @exception	std::invalid_argument	If a required HDF proxy is missing.
 		 *
-		 * @param [out]	nodeIndices	Preallocated array to receive all the node indices of all the faces.
+		 * @param[out]	nodeIndices	Preallocated array to receive all the node indices of all the faces.
 		 * 							It size must be the last value outputted by
 		 * 							getCumulativeNodeCountPerFace(). It is ordered first by nodes, then
 		 * 							by faces and then by cells.
@@ -213,7 +213,7 @@ namespace RESQML2_NS
 		 * @exception	std::range_error	 	If the cumulative node count per face is stored in a
 		 * 										integer constant array.
 		 *
-		 * @param [out]	nodeCountPerFace	Preallocated array to receive the cumulative node count per
+		 * @param[out]	nodeCountPerFace	Preallocated array to receive the cumulative node count per
 		 * 									face. Its size must be getFaceCount(). First value is the count
 		 * 									of nodes in the first face. Second value is the count of nodes in
 		 * 									the first and in the second face. Third value is the count of
@@ -234,7 +234,7 @@ namespace RESQML2_NS
 		 * @exception	std::range_error	 	If the cumulative node count per face is stored in a
 		 * 										integer constant array.
 		 *
-		 * @param [out]	nodeCountPerFace	Preallocated array of size getFaceCount() to receive the node
+		 * @param[out]	nodeCountPerFace	Preallocated array of size getFaceCount() to receive the node
 		 * 									count per face. First value is the count of nodes in the first
 		 * 									face. Second value is the count of nodes in the second face. And
 		 * 									so on.
@@ -373,7 +373,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the data structure used to store the orientation of the
 		 * 									cell is not already supported by fesapi.
 		 *
-		 * @param [out]	cellFaceIsRightHanded	Preallocated array for receiving the orientation of each
+		 * @param[out]	cellFaceIsRightHanded	Preallocated array for receiving the orientation of each
 		 * 										cell face. The size is the last value returned by
 		 * 										getCumulativeFaceCountPerCell().
 		 */
@@ -407,7 +407,7 @@ namespace RESQML2_NS
 		 * 														<tt>pointCount * 3</tt>.
 		 * @param 		  	pointCount						 	The count of points defining the nodes of
 		 * 														this unstructured grid.
-		 * @param [in,out]	proxy							 	The HDF proxy which contains the datasets
+		 * @param[in,out]	proxy							 	The HDF proxy which contains the datasets
 		 * 														given in this method by means of paths.
 		 * 														If @c nullptr, then the repository
 		 * 														default HDF proxy will be used.
@@ -443,7 +443,7 @@ namespace RESQML2_NS
 		 * 														which gives quick access to the most
 		 * 														complex shape of polyhedron encountered
 		 * 														in this unstructured grid.
-		 * @param [in]	  	localCrs						 	(Optional) The local CRS. If @c nullptr
+		 * @param[in]	  	localCrs						 	(Optional) The local CRS. If @c nullptr
 		 * 														(default), then the repository default
 		 * 														local CRS will be used.
 		 */
@@ -465,26 +465,26 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
 		 * 										is defined in the repository.
 		 *
-		 * @param [in]	  	cellFaceIsRightHanded			 	Boolean mask used to indicate which cell
+		 * @param[in]	  	cellFaceIsRightHanded			 	Boolean mask used to indicate which cell
 		 * 														faces have an outwardly directed normal
 		 * 														following a right hand rule. Array length
 		 * 														is the sum of the cell face count per
 		 * 														cell, and the data follows the order of
 		 * 														the faces per cell RESQMLlist-of-lists.
-		 * @param [in]	  	points							 	All the XYZ points defining the nodes of
+		 * @param[in]	  	points							 	All the XYZ points defining the nodes of
 		 * 														the unstructured grid. There must a
 		 * 														double count of <tt>pointCount * 3</tt>.
 		 * @param 		  	pointCount						 	The count of points defining the nodes of
 		 * 														this unstructured grid.
-		 * @param [in,out]	proxy							 	The HDF proxy which will store all the
+		 * @param[in,out]	proxy							 	The HDF proxy which will store all the
 		 * 														numerical values of this unstructured
 		 * 														grid. If @c nullptr, then the repository
 		 * 														default HDF proxy will be used.
-		 * @param [in]	  	faceIndicesPerCell				 	Each item defines the index of the face
+		 * @param[in]	  	faceIndicesPerCell				 	Each item defines the index of the face
 		 * 														of a cell. There must be a count of the
 		 * 														last value in
 		 * 														@p faceIndicesCumulativeCountPerCell.
-		 * @param [in]	  	faceIndicesCumulativeCountPerCell	Each item defines the cumulative count of
+		 * @param[in]	  	faceIndicesCumulativeCountPerCell	Each item defines the cumulative count of
 		 * 														faces. The count of this array must be
 		 * 														equal to the count of cells in this
 		 * 														unstructured grid. For example if the
@@ -497,18 +497,18 @@ namespace RESQML2_NS
 		 * 														have less faceCount than the last value
 		 * 														of @p faceIndicesCumulativeCountPerCell
 		 * 														which is the count of faces per cell.
-		 * @param [in]	  	nodeIndicesPerFace				 	Each item defines the index of the node
+		 * @param[in]	  	nodeIndicesPerFace				 	Each item defines the index of the node
 		 * 														of a face. There must be a count of the
 		 * 														last value in
 		 * 														@p nodeIndicesCumulativeCountPerFace.
-		 * @param [in]	  	nodeIndicesCumulativeCountPerFace	Each item defines the cumulative count of
+		 * @param[in]	  	nodeIndicesCumulativeCountPerFace	Each item defines the cumulative count of
 		 * 														nodes. The count of this array must be
 		 * 														equal to @p faceCount.
 		 * @param 		  	cellShape						 	A denormalization of the information
 		 * 														which gives quick access to the most
 		 * 														complex shape of polyhedron encountered
 		 * 														in this unstructured grid.
-		 * @param [in]	  	localCrs						 	(Optional) The local CRS. If @c nullptr
+		 * @param[in]	  	localCrs						 	(Optional) The local CRS. If @c nullptr
 		 * 														(default), then the repository default
 		 * 														local CRS will be used.
 		 */
@@ -542,7 +542,7 @@ namespace RESQML2_NS
 		 * 											unstructured grid.
 		 * @param 		  	faceCount			 	The count of faces in this unstructured grid. Be
 		 * 											aware this count does not duplicate cell-shared faces.
-		 * @param [in,out]	proxy				 	The HDF proxy which contains the datasets given in
+		 * @param[in,out]	proxy				 	The HDF proxy which contains the datasets given in
 		 * 											this method by means of paths. If @c nullptr, then
 		 * 											the repository default HDF proxy will be used.
 		 * @param 		  	faceIndicesPerCell   	The path to the HDF5 dataset in the HDF proxy where
@@ -553,7 +553,7 @@ namespace RESQML2_NS
 		 * 											each item defines the index of the node of a face.
 		 * 											There must be a count of <tt>nodeCountPerFace *
 		 * 											faceCount</tt>.
-		 * @param [in]	  	localCrs			 	(Optional) The local CRS. If @c nullptr (default),
+		 * @param[in]	  	localCrs			 	(Optional) The local CRS. If @c nullptr (default),
 		 * 											then the repository default local CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
@@ -572,28 +572,28 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
 		 * 										is defined in the repository.
 		 *
-		 * @param [in]	  	cellFaceIsRightHanded	Boolean mask used to indicate which cell faces have
+		 * @param[in]	  	cellFaceIsRightHanded	Boolean mask used to indicate which cell faces have
 		 * 												an outwardly directed normal following a right hand
 		 * 												rule. Array length is the sum of the cell face count
 		 * 												per cell, and the data follows the order of the
 		 * 												faces per cell RESQMLlist-of-lists.
-		 * @param [in]	  	points				 	All the xyz points defining the nodes of the
+		 * @param[in]	  	points				 	All the xyz points defining the nodes of the
 		 * 												unstructured grid. There must a double count of
 		 * 												<tt>pointCount * 3</tt>.
 		 * @param 		  	pointCount			 	The count of points defining the nodes of this
 		 * 											unstructured grid.
 		 * @param 		  	faceCount			 	The count of faces in this unstructured grid. Be
 		 * 											aware this count does not duplicate cell-shared faces.
-		 * @param [in,out]	proxy				 	The hdf proxy which contains the datasets given in
+		 * @param[in,out]	proxy				 	The hdf proxy which contains the datasets given in
 		 * 											this method by means of paths. If @c nullptr, then
 		 * 											the repository default HDF proxy will be used.
-		 * @param [in]	  	faceIndicesPerCell   	Each item defines the index of the face of a cell.
+		 * @param[in]	  	faceIndicesPerCell   	Each item defines the index of the face of a cell.
 		 * 												There must be a count of <tt>faceCountPerCell *
 		 * 												cellCount</tt>.
-		 * @param [in]	  	nodeIndicesPerFace   	Each item defines the index of the node of a face.
+		 * @param[in]	  	nodeIndicesPerFace   	Each item defines the index of the node of a face.
 		 * 												There must be a count of <tt>nodeCountPerFace *
 		 * 												faceCount</tt>.
-		 * @param [in]	  	localCrs			 	(Optional) The local CRS. If @c nullptr (default),
+		 * @param[in]	  	localCrs			 	(Optional) The local CRS. If @c nullptr (default),
 		 * 												then the repository default local CRS will be used.
 		 */
 		DLL_IMPORT_OR_EXPORT void setTetrahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,

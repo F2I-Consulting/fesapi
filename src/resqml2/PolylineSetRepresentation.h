@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	   	patchIndex				Zero-based index of the patch for which we want to count
 		 * 										the nodes per polyline.
-		 * @param [out]	nodeCountPerPolyline	A preallocated array to receive the node count per
+		 * @param[out]	nodeCountPerPolyline	A preallocated array to receive the node count per
 		 * 										polyline. It is ordered by polyline in the patch @p
 		 * 										patchIndex. Its size must be
 		 * 										<tt>getPolylineCountOfPatch(patchIndex)</tt>.
@@ -73,7 +73,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets all the node count per polyline for all the patches of this representation.
 		 *
-		 * @param [out]	NodeCountPerPolyline	A preallocated array to receive the node count per
+		 * @param[out]	NodeCountPerPolyline	A preallocated array to receive the node count per
 		 * 										polyline per patch. It is ordered first by polyline and then
 		 * 										by patch. Its size must be getPolylineCountOfAllPatches().
 		 */
@@ -90,18 +90,18 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
 		 * 										id defined in the repository.
 		 *
-		 * @param [in]	  	nodeCountPerPolyline  	The node count per polyline in this patch. It is
+		 * @param[in]	  	nodeCountPerPolyline  	The node count per polyline in this patch. It is
 		 * 											ordered by polyline. There must be @p polylineCount
 		 * 											values in this array.
-		 * @param [in]	  	nodes				  	The xyz values of the nodes. Ordered by xyz, then by
+		 * @param[in]	  	nodes				  	The xyz values of the nodes. Ordered by xyz, then by
 		 * 											node and then by polyline. It must be three times the
 		 * 											total count of nodes.
 		 * @param 		  	polylineCount		  	The polyline count in this patch.
 		 * @param 		  	allPolylinesClosedFlag	Indicates the closed flags of all the polylines.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy which defines where the
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy which defines where the
 		 * 											nodes will be stored. If @c nullptr (default), then
 		 * 											the repository default HDF proxy will be used.
-		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the points are
+		 * @param[in]	  	localCrs			  	(Optional) The local CRS where the points are
 		 * 											defined. If @c nullptr (default value), then the
 		 * 											repository default local CRS will be used.
 		 */
@@ -118,19 +118,19 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
 		 * 										id defined in the repository.
 		 *
-		 * @param [in]	  	nodeCountPerPolyline	The node count per polyline in this patch. It is
+		 * @param[in]	  	nodeCountPerPolyline	The node count per polyline in this patch. It is
 		 * 											ordered by polyline. There must be @p polylineCount
 		 * 											values in this array.
-		 * @param [in]	  	nodes					The xyz values of the nodes. Ordered by xyz, then by
+		 * @param[in]	  	nodes					The xyz values of the nodes. Ordered by xyz, then by
 		 * 											node and then by polyline. It must be three times the
 		 * 											total count of nodes.
 		 * @param 		  	polylineCount			The polyline count in this patch.
-		 * @param [in]	  	polylineClosedFlags 	Indicates the closed flags for each of the polyline.
+		 * @param[in]	  	polylineClosedFlags 	Indicates the closed flags for each of the polyline.
 		 * 											The count of this array must be @p polylineCount.
-		 * @param [in,out]	proxy					(Optional) The HDF proxy which defines where the
+		 * @param[in,out]	proxy					(Optional) The HDF proxy which defines where the
 		 * 											nodes will be stored. If @c nullptr (default), then the
 		 * 											repository default HDF proxy will be used.
-		 * @param [in]	  	localCrs				(Optional) The local CRS where the points are
+		 * @param[in]	  	localCrs				(Optional) The local CRS where the points are
 		 * 											defined. If @c nullptr (default value), then the
 		 * 											repository default local CRS will be used.
 		 */
@@ -192,7 +192,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	   	patchIndex			 	The index of the patch for which we want to get the
 		 * 										closed flag of the polylines.
-		 * @param [out]	closedFlagPerPolyline	A preallocated array to receive the closed flags. It is
+		 * @param[out]	closedFlagPerPolyline	A preallocated array to receive the closed flags. It is
 		 * 										ordered by polyline. Its size must be
 		 * 										<tt>getPolylineCountOfPatch(patchIndex)</tt>.
 		 */
@@ -201,7 +201,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets the closed flag of all polylines of all patches.
 		 *
-		 * @param [out]	closedFlagPerPolyline	A preallocated array to receive the closed flags. It is
+		 * @param[out]	closedFlagPerPolyline	A preallocated array to receive the closed flags. It is
 		 * 										ordered first by polyline then by patch. Its size must be
 		 * 										getPolylineCountOfAllPatches().
 		 */
@@ -240,7 +240,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -254,14 +254,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PolylineSetRepresentation(gsoap_resqml2_0_1::_resqml20__PolylineSetRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PolylineSetRepresentation(gsoap_eml2_3::_resqml22__PolylineSetRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 	};

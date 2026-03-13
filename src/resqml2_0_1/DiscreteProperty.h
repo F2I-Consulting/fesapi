@@ -34,7 +34,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param[in]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT DiscreteProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::DiscreteProperty(partialObject) {}
 
@@ -43,7 +43,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
-		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * @param[in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
 		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
 		 * 										will be generated.
@@ -65,7 +65,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -75,7 +75,7 @@ namespace RESQML2_0_1_NS
 		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
+		 * @param[in]	localPropKind 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		DiscreteProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
@@ -84,7 +84,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		DiscreteProperty(gsoap_resqml2_0_1::_resqml20__DiscreteProperty* fromGsoap): RESQML2_NS::DiscreteProperty(fromGsoap) {}
 

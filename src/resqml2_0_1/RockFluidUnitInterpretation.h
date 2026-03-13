@@ -37,7 +37,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>feature == nullptr</tt>.
 		 *
-		 * @param [in]	feature	The feature the instance interprets.
+		 * @param[in]	feature	The feature the instance interprets.
 		 * @param 	  	guid   	The guid to set to the interpretation. If empty then a new guid will be
 		 * 						generated.
 		 * @param 	  	title  	A title for the instance to create.

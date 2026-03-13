@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -42,7 +42,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The interpretation the instance represents.
+		 * @param[in]	interp	The interpretation the instance represents.
 		 * @param 	  	guid  	A guid for the instance to create.
 		 * @param 	  	title 	A title for the instance to create.
 		 */
@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo 	The repo where this instance will be stored.
+		 * @param[in,out]	repo 	The repo where this instance will be stored.
 		 * @param 		  	guid 	A guid for the instance to create.
 		 * @param 		  	title	A title for the instance to create.
 		 */
@@ -62,7 +62,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml20__GridConnectionSetRepresentation* fromGsoap) : RESQML2_NS::GridConnectionSetRepresentation(fromGsoap) {}
 
@@ -127,7 +127,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Initializes this object
 		 *
-		 * @param [in,out]	repo 	If non-null, the repo.
+		 * @param[in,out]	repo 	If non-null, the repo.
 		 * @param 		  	guid 	Unique identifier.
 		 * @param 		  	title	The title.
 		 */
@@ -136,7 +136,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Pushes back an interpretation which can be mapped with some connections.
 		 *
-		 * @param [in,out]	interp	The interpration to push back.
+		 * @param[in,out]	interp	The interpration to push back.
 		 */
 		void pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp);
 
@@ -145,7 +145,7 @@ namespace RESQML2_0_1_NS
 		 * push back this representation as a grid connection information of the grid representation as
 		 * well.
 		 *
-		 * @param [in,out]	supportingGridRep	If non-null, the supporting grid rep.
+		 * @param[in,out]	supportingGridRep	If non-null, the supporting grid rep.
 		 */
 		void pushBackXmlSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
 	};

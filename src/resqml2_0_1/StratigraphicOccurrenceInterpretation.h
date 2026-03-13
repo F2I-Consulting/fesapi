@@ -40,7 +40,7 @@ namespace RESQML2_0_1_NS
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt> or if @p orgFeat is not a
 		 * 										stratigraphic organization.
 		 *
-		 * @param [in]	orgFeat				The feature the instance interprets. It must be a
+		 * @param[in]	orgFeat				The feature the instance interprets. It must be a
 		 * 										stratigraphic organization feature.
 		 * @param 	  	guid				The guid to set to the interpretation. If empty then a new
 		 * 									guid will be generated.

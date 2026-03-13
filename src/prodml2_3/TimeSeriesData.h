@@ -36,7 +36,7 @@ namespace PRODML2_3_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -47,7 +47,7 @@ namespace PRODML2_3_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
 		 *
-		 * @param [in,out]	repo			  	The dataobject repo where the underlying gsoap proxy is
+		 * @param[in,out]	repo			  	The dataobject repo where the underlying gsoap proxy is
 		 * 										going to be created.
 		 * @param 		  	guid			  	The guid to set to this instance. If empty then a new
 		 * 										guid will be generated.
@@ -60,7 +60,7 @@ namespace PRODML2_3_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		TimeSeriesData(gsoap_eml2_3::prodml23__TimeSeriesData* fromGsoap):AbstractObject(fromGsoap)  {}
 

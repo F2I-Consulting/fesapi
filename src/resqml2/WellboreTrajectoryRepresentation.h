@@ -53,7 +53,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	controlPoints	 	All the control points of the cubic parametric line in
+		 * @param[in]	  	controlPoints	 	All the control points of the cubic parametric line in
 		 * 										the order of the MDs. Count is <tt>controlPointCount *
 		 * 										3</tt> and for each control point <tt>(x,y,z) =
 		 * 										(controlPoints[2i], controlPoints[2i+1],
@@ -66,13 +66,13 @@ namespace RESQML2_NS
 		 * 										vertical, 1 for linear spline, 2 for natural cubic spline,
 		 * 										3 for cubic spline, 4 for z linear cubic spline, 5 for
 		 * 										minimum-curvature spline, (-1) for null: no line.
-		 * @param [in,out]	proxy			 	(Optional) The HDF proxy which indicates in which HDF5
+		 * @param[in,out]	proxy			 	(Optional) The HDF proxy which indicates in which HDF5
 		 * 										file the control points and its parameters will be
 		 * 										stored. It must be already opened for writing and won't
 		 * 										be closed. If null, then the default HDF Proxy of the
 		 * 										data object repository will be arbitrarily selected for
 		 * 										writing.
-		 * @param [in]	  	localCrs		 	(Optional) The local CRS where the control points are
+		 * @param[in]	  	localCrs		 	(Optional) The local CRS where the control points are
 		 * 										given. If @c nullptr (default), then the default Local
 		 * 										CRS of the data object repository will be arbitrarily
 		 * 										selected.
@@ -90,12 +90,12 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	controlPoints		  	All the control points of the cubic parametric line
+		 * @param[in]	  	controlPoints		  	All the control points of the cubic parametric line
 		 * 											in the order of the MDs. Count is
 		 * 											<tt>controlPointCount * 3</tt> and for each control
 		 * 											point <tt>(x,y, z) = (controlPoints[2i],
 		 * 											controlPoints[2i+1], controlPoints[2i+2])</tt>.
-		 * @param [in]	  	controlPointParameters	The arrays of control point parameters (ordered
+		 * @param[in]	  	controlPointParameters	The arrays of control point parameters (ordered
 		 * 											regarding the control points). It corresponds to the
 		 * 											MD values in a WellboreFeature context. Count is @p
 		 * 											controlPointCount.
@@ -106,13 +106,13 @@ namespace RESQML2_NS
 		 * 											spline, 3 for cubic spline, 4 for z linear cubic
 		 * 											spline, 5 for minimum-curvature spline, (-1) for
 		 * 											null: no line.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
 		 * 											HDF5 file the control points and its parameters will
 		 * 											be stored. It must be already opened for writing and
 		 * 											won't be closed. If null, then the default HDF Proxy
 		 * 											of the DataObject repository will be arbitrarily
 		 * 											selected for writing.
-		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the control points are
+		 * @param[in]	  	localCrs			  	(Optional) The local CRS where the control points are
 		 * 											given. If @c nullptr (default), then the default
 		 * 											Local CRS of the DataObject repository will be
 		 * 											arbitrarily selected.
@@ -133,18 +133,18 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	controlPoints		  	All the control points of the cubic parametric line
+		 * @param[in]	  	controlPoints		  	All the control points of the cubic parametric line
 		 * 											in the ascending order of the MDs. Count is
 		 * 											<tt>controlPointCount * 3</tt> and for each control
 		 * 											point <tt>(x,y, z) = (controlPoints[2i],
 		 * 											controlPoints[2i+1], controlPoints[2i+2])</tt>.
-		 * @param [in]	  	tangentVectors		  	All the tangent vectors of all the control points of
+		 * @param[in]	  	tangentVectors		  	All the tangent vectors of all the control points of
 		 * 											all the cubic parametric lines. They are ordered
 		 * 											according to the control points. Count is
 		 * 											<tt>controlPointCount * 3</tt> and for each tangent
 		 * 											vector <tt>(u,v, w) = (tangentVectors[2i],
 		 * 											tangentVectors[2i+1], tangentVectors[2i+2])</tt>.
-		 * @param [in]	  	controlPointParameters	The arrays of control point parameters (ordered
+		 * @param[in]	  	controlPointParameters	The arrays of control point parameters (ordered
 		 * 											regarding the control points). It corresponds to the
 		 * 											MD values in this context. Count is @p controlPointCount.
 		 * @param 		  	controlPointCount	  	The count of control points and control point
@@ -155,13 +155,13 @@ namespace RESQML2_NS
 		 * 											spline, 3 for cubic spline, 4 for z linear cubic
 		 * 											spline, 5 for minimum-curvature spline, (-1) for
 		 * 											null: no line.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
 		 * 											HDF5 file the parameters and the tangent vectors will
 		 * 											be stored. It must be already opened for writing and
 		 * 											won't be closed. If null, then the default HDF Proxy
 		 * 											of the DataObject repository will be arbitrarily
 		 * 											selected for writing.
-		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the control points are
+		 * @param[in]	  	localCrs			  	(Optional) The local CRS where the control points are
 		 * 											given. If @c nullptr, then the default Local CRS of
 		 * 											the DataObject repository will be arbitrarily
 		 * 											selected.
@@ -183,18 +183,18 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	controlPoints		  	All the control points of the cubic parametric line
+		 * @param[in]	  	controlPoints		  	All the control points of the cubic parametric line
 		 * 											in the ascending order of the MDs. Count is
 		 * 											<tt>controlPointCount * 3</tt> and for each control
 		 * 											point <tt>(x,y, z) = (controlPoints[2i],
 		 * 											controlPoints[2i+1], controlPoints[2i+2])</tt>.
-		 * @param [in]	  	inclinations		  	All the inclinations (angle against vertical) in radians of all the trajectory stations
+		 * @param[in]	  	inclinations		  	All the inclinations (angle against vertical) in radians of all the trajectory stations
 		 *											of the cubic parametric line. They are ordered
 		 * 											according to the control points. Count is <tt>controlPointCount</tt>.
-		 * @param [in]	  	azimuths			  	All the azimuths (clockwise angle against grid north) in radians of all the trajectory stations
+		 * @param[in]	  	azimuths			  	All the azimuths (clockwise angle against grid north) in radians of all the trajectory stations
 		 *											of the cubic parametric line. They are ordered
 		 * 											according to the control points. Count is <tt>controlPointCount</tt>.
-		 * @param [in]	  	controlPointParameters	The arrays of control point parameters (ordered
+		 * @param[in]	  	controlPointParameters	The arrays of control point parameters (ordered
 		 * 											regarding the control points). It corresponds to the
 		 * 											MD values in this context. Count is @p controlPointCount.
 		 * @param 		  	controlPointCount	  	The count of control points and control point
@@ -205,13 +205,13 @@ namespace RESQML2_NS
 		 * 											spline, 3 for cubic spline, 4 for z linear cubic
 		 * 											spline, 5 for minimum-curvature spline, (-1) for
 		 * 											null: no line.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
 		 * 											HDF5 file the parameters and the tangent vectors will
 		 * 											be stored. It must be already opened for writing and
 		 * 											won't be closed. If null, then the default HDF Proxy
 		 * 											of the DataObject repository will be arbitrarily
 		 * 											selected for writing.
-		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the control points are
+		 * @param[in]	  	localCrs			  	(Optional) The local CRS where the control points are
 		 * 											given. If @c nullptr, then the default Local CRS of
 		 * 											the DataObject repository will be arbitrarily
 		 * 											selected.
@@ -238,7 +238,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p mdDatum is @c nullptr.
 		 *
-		 * @param [in]	mdDatum	The MD damtum to set to this trajectory. It cannot be null.
+		 * @param[in]	mdDatum	The MD damtum to set to this trajectory. It cannot be null.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setMdDatum(MdDatum * mdDatum) = 0;
 
@@ -288,7 +288,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If MD values are not defined using the right data
 		 * 										structure.
 		 *
-		 * @param [out]	values	A buffer for receiving the MD values. It must be preallocated with size
+		 * @param[out]	values	A buffer for receiving the MD values. It must be preallocated with size
 		 * 						of getXyzPointCountOfAllPatches().
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getMdValues(double* values) const = 0;
@@ -296,9 +296,9 @@ namespace RESQML2_NS
 		/**
 		 * Converts an array MD values an array of corresponding XYZ points according to this trajectory.
 		 *
-		 * @param [in]	mdValues	An array containing all MD values we want to convert.
-		 * @param [in]	mdCount		The count of MD values in @p mdValues
-		 * @param [out]	xyzPoints	A buffer for receiving the XYZ points converted from @p mdValues. It must be preallocated with a size of 3*mdCount.
+		 * @param[in]	mdValues	An array containing all MD values we want to convert.
+		 * @param[in]	mdCount		The count of MD values in @p mdValues
+		 * @param[out]	xyzPoints	A buffer for receiving the XYZ points converted from @p mdValues. It must be preallocated with a size of 3*mdCount.
 		 */
 		DLL_IMPORT_OR_EXPORT void convertMdValuesToXyzValues(double* mdValues, uint64_t mdCount, double* xyzPoints) const;
 
@@ -334,7 +334,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If this trajectory has no tangent vector.
 		 * @exception	std::invalid_argument	If the HDF proxy is missing.
 		 *
-		 * @param [out]	tangentVectors	A buffer for receiving the tangent vectors. It must be
+		 * @param[out]	tangentVectors	A buffer for receiving the tangent vectors. It must be
 		 * 								preallocated with size of <tt>3 * </tt>
 		 * 								getXyzPointCountOfAllPatches(). It won't be freed by FESAPI.
 		 */
@@ -347,10 +347,10 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If this trajectory has no tangent vector.
 		 * @exception	std::invalid_argument	If the HDF proxy is missing.
 		 *
-		 * @param [out]	inclinations	A buffer for receiving the inclinations. It must be
+		 * @param[out]	inclinations	A buffer for receiving the inclinations. It must be
 		 * 								preallocated with size getXyzPointCountOfAllPatches().
 		 *								It won't be freed by FESAPI.
-		 * @param [out]	azimuths		A buffer for receiving the azimuths. It must be
+		 * @param[out]	azimuths		A buffer for receiving the azimuths. It must be
 		 * 								preallocated with size getXyzPointCountOfAllPatches().
 		 *								It won't be freed by FESAPI.
 		 */
@@ -368,7 +368,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	  	kickoffMd	 	The kickoff MD.
 		 * @param 	  	parentMd	 	The MD on the parent wellbore trajectory where this trajectory is starting. It can be NaN if same as kickoffMd.
-		 * @param [in]	parentTrajRep	The parent trajectory.
+		 * @param[in]	parentTrajRep	The parent trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT void virtual addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep) = 0;
 

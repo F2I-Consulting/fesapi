@@ -49,13 +49,13 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
 		 * 										id defined in the repository.
 		 *
-		 * @param [in]	  	points	  	The points which constitute the polyline. Ordered by xyz and then
+		 * @param[in]	  	points	  	The points which constitute the polyline. Ordered by xyz and then
 		 * 								points. Size is <tt>3 * pointCount</tt>.
 		 * @param 		  	pointCount	The count of points in the polyline.
-		 * @param [in,out]	proxy	  	(Optional) The HDF proxy which defines where the xyz points will
+		 * @param[in,out]	proxy	  	(Optional) The HDF proxy which defines where the xyz points will
 		 * 								be stored. If @c nullptr (default), then the repository default
 		 * 								HDF proxy will be used.
-		 * @param [in]	  	localCrs  	(Optional) The local CRS where the points are given. If @c
+		 * @param[in]	  	localCrs  	(Optional) The local CRS where the points are given. If @c
 		 * 								nullptr (default), then the repository default local CRS will be
 		 * 								used.
 		 */
@@ -119,7 +119,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -133,21 +133,21 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PolylineRepresentation(gsoap_resqml2_0_1::_resqml20__PolylineRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PolylineRepresentation(gsoap_eml2_3::_resqml22__PolylineRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		/**
 		 * Initializes this object
 		 *
-		 * @param [in,out]	repo		If non-null, the repo.
+		 * @param[in,out]	repo		If non-null, the repo.
 		 * @param 		  	guid		Unique identifier.
 		 * @param 		  	title   	The title.
 		 * @param 		  	isClosed	(Optional) True if is closed, false if not.

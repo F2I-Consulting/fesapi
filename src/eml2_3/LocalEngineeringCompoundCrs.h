@@ -33,7 +33,7 @@ namespace EML2_3_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT LocalEngineeringCompoundCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : EML2_NS::AbstractLocal3dCrs(partialObject) {}
 
@@ -43,7 +43,7 @@ namespace EML2_3_NS
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0 || verticalEpsgCode ==
 		 * 										0</tt>.
 		 *
-		 * @param [in,out]	repo			 	The repo where the underlying gsoap proxy is going to be
+		 * @param[in,out]	repo			 	The repo where the underlying gsoap proxy is going to be
 		 * 										created.
 		 * @param 		  	guid			 	The guid to set to the local 3d crs. If empty then a new
 		 * 										guid will be generated.
@@ -70,7 +70,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates a local depth 3d CRS which is fully defined by a string representation.
 		 *
-		 * @param [in,out]	repo				  	The repo where the underlying gsoap proxy is going to
+		 * @param[in,out]	repo				  	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
 		 * @param 		  	guid				  	The guid to set to the local 3d crs. If empty then a
 		 * 											new guid will be generated.
@@ -104,7 +104,7 @@ namespace EML2_3_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0</tt>.
 		 *
-		 * @param [in,out]	repo				 	The repo where the underlying gsoap proxy is going to
+		 * @param[in,out]	repo				 	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
 		 * @param 		  	guid				 	The guid to set to the local 3d crs. If empty then a
 		 * 											new guid will be generated.
@@ -137,7 +137,7 @@ namespace EML2_3_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>verticalEpsgCode == 0</tt>.
 		 *
-		 * @param [in]	repo				  	The repo where the underlying gsoap proxy is going to
+		 * @param[in]	repo				  	The repo where the underlying gsoap proxy is going to
 		 * 										be created.
 		 * @param 	  	guid				  	The guid to set to the local 3d crs. If empty then a new
 		 * 										guid will be generated.
@@ -168,7 +168,7 @@ namespace EML2_3_NS
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0 || verticalEpsgCode ==
 		 * 										0</tt>.
 		 *
-		 * @param [in]	repo			 	The repo where the underlying gsoap proxy is going to be
+		 * @param[in]	repo			 	The repo where the underlying gsoap proxy is going to be
 		 * 									created.
 		 * @param 	  	guid			 	The guid to set to the local 3d crs. If empty then a new guid
 		 * 									will be generated.
@@ -196,7 +196,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates a local time 3d CRS which is fully defined by a string representation.
 		 *
-		 * @param [in,out]	repo				  	The repo where the underlying gsoap proxy is going to
+		 * @param[in,out]	repo				  	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
 		 * @param 		  	guid				  	The guid to set to the local 3d crs. If empty then a
 		 * 											new guid will be generated.
@@ -232,7 +232,7 @@ namespace EML2_3_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0</tt>.
 		 *
-		 * @param [in]	repo				 	The repo where the underlying gsoap proxy is going to
+		 * @param[in]	repo				 	The repo where the underlying gsoap proxy is going to
 		 * 										be created.
 		 * @param 	  	guid				 	The guid to set to the local 3d crs. If empty then a new
 		 * 										guid will be generated.
@@ -265,7 +265,7 @@ namespace EML2_3_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>verticalEpsgCode == 0</tt>.
 		 *
-		 * @param [in]	repo				  	The repo where the underlying gsoap proxy is going to
+		 * @param[in]	repo				  	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
 		 * @param 	  	guid				  	The guid to set to the local 3d crs. If empty then a new
 		 * 										guid will be generated.
@@ -295,7 +295,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		LocalEngineeringCompoundCrs(gsoap_eml2_3::_eml23__LocalEngineeringCompoundCrs* fromGsoap): EML2_NS::AbstractLocal3dCrs(fromGsoap) {}
 
@@ -333,7 +333,7 @@ namespace EML2_3_NS
 		/**
 		 * Initializes this object
 		 *
-		 * @param [in,out]	repo		  			If non-null, the repo.
+		 * @param[in,out]	repo		  			If non-null, the repo.
 		 * @param 		  	guid		  			Unique identifier.
 		 * @param 		  	title		  			The title.
 		 * @param 		  	projectedEpsgCode		The EPSG code of the associated projected CRS. Ignored if @p unknownProjectedReason is not empty.
@@ -363,7 +363,7 @@ namespace EML2_3_NS
 		/**
 		 * Initializes this object
 		 *
-		 * @param [in,out]	repo		  			If non-null, the repo.
+		 * @param[in,out]	repo		  			If non-null, the repo.
 		 * @param 		  	guid		  			Unique identifier.
 		 * @param 		  	title		  			The title.
 		 * @param 		  	projectedEpsgCode		The EPSG code of the associated projected CRS. Ignored if @p unknownProjectedReason is not empty.

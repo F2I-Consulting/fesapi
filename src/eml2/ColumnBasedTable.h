@@ -184,28 +184,28 @@ namespace EML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT ColumnBasedTable(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		ColumnBasedTable(gsoap_resqml2_0_1::_resqml20__StringTableLookup* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		ColumnBasedTable(gsoap_resqml2_0_1::_resqml20__DoubleTableLookup* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		ColumnBasedTable(gsoap_eml2_3::_eml23__ColumnBasedTable* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 	};

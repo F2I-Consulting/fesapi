@@ -40,7 +40,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt>.
 		 *
-		 * @param [in]	orgFeat				The feature the instance interprets. It must be a
+		 * @param[in]	orgFeat				The feature the instance interprets. It must be a
 		 * 									stratigraphic organization feature.
 		 * @param 	  	guid				The guid to set to the interpretation. If empty then a new
 		 * 									guid will be generated.
@@ -72,7 +72,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p stratiUnitInterpretation is @c nullptr.
 		 *
-		 * @param [in]	stratiUnitInterpretation	The stratigraphic unit interpretation to add.
+		 * @param[in]	stratiUnitInterpretation	The stratigraphic unit interpretation to add.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStratiUnitInterpretation(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterpretation) final;
 

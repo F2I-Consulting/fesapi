@@ -75,7 +75,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error 	If this property is partial.
 		 *
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
-		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
@@ -89,7 +89,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
 		 *
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
-		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
@@ -100,7 +100,7 @@ namespace RESQML2_NS
 		 * @brief Gets all the xyz points of all patches of this property. xyz points are given in the
 		 * local CRS.
 		 *
-		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfAllPatches()</tt>.
@@ -111,7 +111,7 @@ namespace RESQML2_NS
 		 * Gets all the xyz points of all patches of this property. xyz points are
 		 * given in the global CRS.
 		 *
-		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or Z) and second dimension is vertex
 		 * 							dimension. Thus, its size is 3*(3*[count of all xyz points]). It must
 		 * 							be preallocated.
@@ -127,7 +127,7 @@ namespace RESQML2_NS
 		 * @param 		  	xyzPoints		All the property values to set ordered according the topology
 		 * 									of the representation it is based on.
 		 * @param 		  	pointCount  	The number of points to write.
-		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the property points.
+		 * @param[in,out]	proxy			(Optional) The HDF proxy where to write the property points.
 		 * 									It must be already opened for writing and won't be closed in this
 		 * 									method. If @c nullptr (default value), then a default HDF proxy
 		 * 									must be defined in the repository.
@@ -146,7 +146,7 @@ namespace RESQML2_NS
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	pointCountInSlowestDim	The number of points to write in the slowest
 		 * 											dimension (mainly J dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											points. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default value), then a default HDF proxy must be
@@ -168,7 +168,7 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	pointCountInSlowestDim	The number of points to write in the slowest
 		 * 											dimension (mainly K dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											points. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default value), then a default HDF proxy must be
@@ -187,7 +187,7 @@ namespace RESQML2_NS
 		 * @param 		  	pointCountByDimension	The number of property points ordered by dimension of the
 		 * 											array to write.
 		 * @param 		  	numArrayDimensions		The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  		(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  		(Optional) The HDF proxy where to write the property
 		 * 											points. It must be already opened for writing and won't
 		 * 											be closed in this method. If @c nullptr (default value),
 		 * 											then a default HDF proxy must be defined in the
@@ -203,7 +203,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
+		 * @param[in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
 		 * 							@c nullptr, then a default HDF proxy must be defined in the
 		 * 							repository.
 		 * @param 	  	datasetName	(Optional) The HDF5 dataset name where the values are stored. If
@@ -219,7 +219,7 @@ namespace RESQML2_NS
 		 * Checks if it is allowed to associate a given property kind to this property.
 		 * TODO : think about how to validate such a property.
 		 *
-		 * @param [in]	pk	The local property kind to check.
+		 * @param[in]	pk	The local property kind to check.
 		 *
 		 * @returns	True if it is allowed, false if it is not.
 		 */
@@ -249,7 +249,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT PointsProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractProperty(partialObject) {}
 
@@ -262,7 +262,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PointsProperty(gsoap_resqml2_0_1::_resqml20__PointsProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
 		PointsProperty(gsoap_eml2_3::resqml22__PointsProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}

@@ -32,7 +32,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT Wellbore(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::Wellbore(partialObject) {}
 
@@ -41,7 +41,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWell	If non-null, the witsml well.
+		 * @param[in]	witsmlWell	If non-null, the witsml well.
 		 * @param 	  	guid	  	The guid to set to this instance. If empty then a new guid will be
 		 * 							generated.
 		 * @param 	  	title	  	The title.
@@ -57,7 +57,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>witsmlWell == nullptr</tt>.
 		 *
-		 * @param [in]	witsmlWell	  	If non-null, the witsml well.
+		 * @param[in]	witsmlWell	  	If non-null, the witsml well.
 		 * @param 	  	guid		  	Unique identifier.
 		 * @param 	  	title		  	The title.
 		 * @param 	  	statusWellbore	The status wellbore.
@@ -75,7 +75,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		Wellbore(gsoap_eml2_3::witsml21__Wellbore* fromGsoap) : WITSML2_NS::Wellbore(fromGsoap) {}
 
@@ -92,7 +92,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Sets a well
 		 *
-		 * @param [in,out]	witsmlWell	If non-null, the witsml well.
+		 * @param[in,out]	witsmlWell	If non-null, the witsml well.
 		 */
 		DLL_IMPORT_OR_EXPORT void setWell(WITSML2_NS::Well* witsmlWell) final;
 

@@ -34,7 +34,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -43,7 +43,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	repo 	If non-null, the repo.
+		 * @param[in,out]	repo 	If non-null, the repo.
 		 * @param 		  	guid 	Unique identifier.
 		 * @param 		  	title	The title.
 		 */
@@ -55,7 +55,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The interpretation this representation represents.
+		 * @param[in]	interp	The interpretation this representation represents.
 		 * @param 	  	guid  	The guid to set to the new instance. If empty then a new guid will be
 		 * 						generated.
 		 * @param 	  	title 	A title for the instance to create.
@@ -66,7 +66,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		TriangulatedSetRepresentation(gsoap_eml2_3::_resqml22__TriangulatedSetRepresentation* fromGsoap): RESQML2_NS::TriangulatedSetRepresentation(fromGsoap) {}
 

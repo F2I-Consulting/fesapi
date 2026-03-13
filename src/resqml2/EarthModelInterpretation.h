@@ -78,7 +78,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>structOrganization == nullptr</tt>.
 		 *
-		 * @param [in]	structOrganization	The structural organization interpretation to push back.
+		 * @param[in]	structOrganization	The structural organization interpretation to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization) = 0;
 
@@ -96,7 +96,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>stratiColumn == nullptr</tt>.
 		 *
-		 * @param [in]	stratiColumn	The stratigraphic column to set.
+		 * @param[in]	stratiColumn	The stratigraphic column to set.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setStratiColumn(StratigraphicColumn * stratiColumn) = 0;
 
@@ -156,7 +156,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>stratiOccurrence == nullptr</tt>.
 		 *
-		 * @param [in]	stratiOccurence	The stratigraphic occurrence interpretation to push back.
+		 * @param[in]	stratiOccurence	The stratigraphic occurrence interpretation to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackStratiOccurrence(StratigraphicOccurrenceInterpretation * stratiOccurence) = 0;
 
@@ -173,7 +173,7 @@ namespace RESQML2_NS
 		  *
 		  * @exception	std::invalid_argument	If <tt>rockFluid == nullptr</tt>.
 		  *
-		  * @param [in]	rockFluid	The rock fluid organization interpretation to push back.
+		  * @param[in]	rockFluid	The rock fluid organization interpretation to push back.
 		  */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackRockFluidOrganizationInterpretation(RockFluidOrganizationInterpretation* rockFluid) = 0;
 
@@ -213,7 +213,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -227,14 +227,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml20__EarthModelInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		EarthModelInterpretation(gsoap_eml2_3::_resqml22__EarthModelInterpretation* fromGsoap) : AbstractFeatureInterpretation(fromGsoap) {}
 

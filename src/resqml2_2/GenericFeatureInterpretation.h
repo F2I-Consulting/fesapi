@@ -30,7 +30,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,7 +41,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>feature == nullptr</tt>.
 		 *
-		 * @param [in]	feature	The feature the instance interprets.
+		 * @param[in]	feature	The feature the instance interprets.
 		 * @param 	  	guid   	The guid to set to the interpretation. If empty then a new guid will be
 		 * 						generated.
 		 * @param 	  	title  	A title for the instance to create.
@@ -51,7 +51,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		GenericFeatureInterpretation(gsoap_eml2_3::_resqml22__GenericFeatureInterpretation* fromGsoap) : RESQML2_NS::GenericFeatureInterpretation(fromGsoap) {}
 

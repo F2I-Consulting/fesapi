@@ -32,7 +32,7 @@ namespace EML2_NS
 		/**
 		 * Constructor. Only to be used in partial transfer context
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param[in]	partialObject	If non-null, the partial object.
 		 */
 		HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractHdfProxy(partialObject) {}
 
@@ -232,7 +232,7 @@ namespace EML2_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
 			AbstractHdfProxy(fromGsoap) {}
@@ -254,7 +254,7 @@ namespace EML2_NS
 		 * Read an nd array of values stored in a specific dataset.
 		 *
 		 * @param 		  	datasetName	The absolute dataset name where to read the values.
-		 * @param [in,out]	values	   	The values must be pre-allocated.
+		 * @param[in,out]	values	   	The values must be pre-allocated.
 		 * @param 		  	datatype   	The hdf datatype of the values to read. If the values are not
 		 * 								stored in this particular datatype, then hdf library will try to
 		 * 								do a conversion.
@@ -266,7 +266,7 @@ namespace EML2_NS
 		 *
 		 * @param 		  	datasetName					The name of the array (potentially with multi
 		 * 												dimensions).
-		 * @param [in,out]	values						1d array output of double values ordered firstly
+		 * @param[in,out]	values						1d array output of double values ordered firstly
 		 * 												by fastest direction.
 		 * @param 		  	numValuesInEachDimension	Number of values in each dimension of the array
 		 * 												to read. They are ordered from fastest index to
@@ -292,7 +292,7 @@ namespace EML2_NS
 		 *
 		 * @param 		  	datasetName					The name of the array (potentially with multi
 		 * 												dimensions).
-		 * @param [in,out]	values						1d array output of values ordered firstly by
+		 * @param[in,out]	values						1d array output of values ordered firstly by
 		 * 												fastest direction.
 		 * @param 		  	blockCountPerDimension  	Number of blocks to select from the dataspace, in
 		 * 												each dimension. They are ordered from fastest index
@@ -326,7 +326,7 @@ namespace EML2_NS
 		 *
 		 * @param 		  	dataset  	ID of the dataset to read from.
 		 * @param 		  	filespace	ID of the selected region.
-		 * @param [in,out]	values   	1d array output of double values ordered firstly by fastest
+		 * @param[in,out]	values   	1d array output of double values ordered firstly by fastest
 		 * 								direction.
 		 * @param 		  	slabSize 	Number of values to read.
 		 * @param 		  	datatype 	The hdf datatype of the values to read. If the values are not

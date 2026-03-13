@@ -34,7 +34,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Initializes this object
 		 *
-		 * @param [in,out]	repo		  	If non-null, the repo.
+		 * @param[in,out]	repo		  	If non-null, the repo.
 		 * @param 		  	guid		  	Unique identifier.
 		 * @param 		  	title		  	The title.
 		 * @param 		  	originOrdinal1	The first origin ordinal.
@@ -63,7 +63,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 *
 		 */
@@ -73,7 +73,7 @@ namespace RESQML2_0_1_NS
 		 * Creates a local depth 3d CRS which is fully identified by means of EPSG code.
 		 * Projected CRS (and consequently local CRS) is supposed to be an easting northing one for now.
 		 *
-		 * @param [in,out]	repo			 	The repo where the underlying gsoap proxy is going to be
+		 * @param[in,out]	repo			 	The repo where the underlying gsoap proxy is going to be
 		 * 										created.
 		 * @param 		  	guid			 	The guid to set to the local 3d crs. If empty then a new
 		 * 										guid will be generated.
@@ -101,7 +101,7 @@ namespace RESQML2_0_1_NS
 		 * Creates a local depth 3d CRS which is fully defined by a string representation.
 		 * Projected CRS (and consequently local CRS) is supposed to be an easting northing one for now.
 		 *
-		 * @param [in,out]	repo				  	The repo where the underlying gsoap proxy is going to
+		 * @param[in,out]	repo				  	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
 		 * @param 		  	guid				  	The guid to set to the local 3d crs. If empty then a
 		 * 											new guid will be generated.
@@ -138,7 +138,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>projectedEpsgCode == 0</tt>.
 		 *
-		 * @param [in,out]	repo				 	The repo where the underlying gsoap proxy is going to
+		 * @param[in,out]	repo				 	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
 		 * @param 		  	guid				 	The guid to set to the local 3d crs. If empty then a
 		 * 											new guid will be generated.
@@ -172,7 +172,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>verticalEpsgCode == 0</tt>.
 		 *
-		 * @param [in]	repo				  	The repo where the underlying gsoap proxy is going to
+		 * @param[in]	repo				  	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
 		 * @param 	  	guid				  	The guid to set to the local 3d crs. If empty then a new
 		 * 										guid will be generated.
@@ -200,7 +200,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		LocalDepth3dCrs(gsoap_resqml2_0_1::_resqml20__LocalDepth3dCrs* fromGsoap) : EML2_NS::AbstractLocal3dCrs(fromGsoap) {}
 

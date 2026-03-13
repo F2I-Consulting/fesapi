@@ -30,7 +30,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo				  	The repo where the underlying gsoap proxy is going to
+		 * @param[in,out]	repo				  	The repo where the underlying gsoap proxy is going to
 		 * 											be created.
 		 * @param 		  	guid				  	The guid of the underlying gsoap proxy to be created.
 		 * @param 		  	title				  	The title of the underlying gsoap proxy to be created.

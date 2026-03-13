@@ -30,7 +30,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,7 +41,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp  	The interpretation which this representation represents.
+		 * @param[in]	interp  	The interpretation which this representation represents.
 		 * @param 	  	guid		The guid to set to the new instance. If empty then a new guid will be
 		 * 							generated.
 		 * @param 	  	title   	A title for the instance to create.
@@ -55,7 +55,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo		If non-null, the repo.
+		 * @param[in,out]	repo		If non-null, the repo.
 		 * @param 		  	guid		The guid to set to the new instance. If empty then a new guid
 		 * 								will be generated.
 		 * @param 		  	title   	A title for the instance to create.
@@ -70,7 +70,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp  	The interpretation which this representation represents.
+		 * @param[in]	interp  	The interpretation which this representation represents.
 		 * @param 	  	guid		The guid to set to the new instance. If empty then a new guid will be
 		 * 							generated.
 		 * @param 	  	title   	A title for the instance to create.
@@ -82,7 +82,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PolylineRepresentation(gsoap_eml2_3::_resqml22__PolylineRepresentation* fromGsoap) : RESQML2_NS::PolylineRepresentation(fromGsoap) {}
 
@@ -121,7 +121,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Initializes this object
 		 *
-		 * @param [in,out]	repo		If non-null, the repo.
+		 * @param[in,out]	repo		If non-null, the repo.
 		 * @param 		  	guid		Unique identifier.
 		 * @param 		  	title   	The title.
 		 * @param 		  	isClosed	(Optional) True if is closed, false if not.

@@ -85,7 +85,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
 		 *
-		 * @param [in]	interp	The boundary feature interpretation to link to this well marker. It
+		 * @param[in]	interp	The boundary feature interpretation to link to this well marker. It
 		 * 						cannot be null.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp) = 0;
@@ -114,7 +114,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If the WITSML wellbore marker to set is NULL.
 		 *
-		 * @param [in]	wellbore	The WITSML wellbore marker to associate to this wellbore. It cannot be null.
+		 * @param[in]	wellbore	The WITSML wellbore marker to associate to this wellbore. It cannot be null.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setWitsmlWellboreMarker(WITSML2_1_NS::WellboreMarker * wellboreMarker) = 0;
 
@@ -203,7 +203,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreMarker(gsoap_resqml2_0_1::resqml20__WellboreMarker* fromGsoap) : AbstractObject(fromGsoap) {}
 

@@ -50,7 +50,7 @@ namespace WITSML2_NS
 		/**
 		 * Set the wellbore linked with this data object.
 		 *
-		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
+		 * @param[in,out]	witsmlWellbore	If non-null, the witsml wellbore.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setWellbore(Wellbore* witsmlWellbore) = 0;
 
@@ -64,7 +64,7 @@ namespace WITSML2_NS
 		/**
 		 * Constructor for partial transfer
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
@@ -74,7 +74,7 @@ namespace WITSML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		WellboreObject(gsoap_eml2_3::eml23__AbstractObject* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 	};

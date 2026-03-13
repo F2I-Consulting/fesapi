@@ -33,14 +33,14 @@ namespace WITSML2_1_NS
 		/**
 		 * Constructor for partial transfer
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT ChannelSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ChannelIndexDataObject<gsoap_eml2_3::witsml21__ChannelSet>(partialObject) {}
 
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	repo 	If non-null, the repo.
+		 * @param[in,out]	repo 	If non-null, the repo.
 		 * @param 		  	guid 	Unique identifier.
 		 * @param 		  	title	The title.
 		 * @param 	  	isActive	  	True if is active, false if not.
@@ -50,7 +50,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		ChannelSet(gsoap_eml2_3::witsml21__ChannelSet* fromGsoap) : ChannelIndexDataObject<gsoap_eml2_3::witsml21__ChannelSet>(fromGsoap) {}
 
@@ -71,7 +71,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Pushes a back channel
 		 *
-		 * @param [in,out]	channel	If non-null, the channel.
+		 * @param[in,out]	channel	If non-null, the channel.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackChannel(class Channel * channel);
 

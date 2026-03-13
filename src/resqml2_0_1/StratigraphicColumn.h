@@ -33,7 +33,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -42,7 +42,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo 	The repo which will contain the instance.
+		 * @param[in,out]	repo 	The repo which will contain the instance.
 		 * @param 		  	guid 	The guid to set to the interpretation. If empty then a new guid will
 		 * 							be generated.
 		 * @param 		  	title	A title for the instance to create.
@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		StratigraphicColumn(gsoap_resqml2_0_1::_resqml20__StratigraphicColumn* fromGsoap) : RESQML2_NS::StratigraphicColumn(fromGsoap) {}
 
@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>stratiColumnRank == nullptr</tt>
 		 *
-		 * @param [in]	stratiColumnRank	A stratigraphic column rank interpretation.
+		 * @param[in]	stratiColumnRank	A stratigraphic column rank interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStratiColumnRank(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRank) final;
 

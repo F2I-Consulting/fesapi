@@ -45,7 +45,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>faultInterpretation == nullptr</tt>.
 		 *
-		 * @param [in]	faultInterpretation	A fault interpretation.
+		 * @param[in]	faultInterpretation	A fault interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackFaultInterpretation(FaultInterpretation * faultInterpretation) = 0;
 
@@ -86,7 +86,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>horizonInterpretation == nullptr</tt>.
 		 *
-		 * @param [in]	horizonInterpretation	A horizon interpretation.
+		 * @param[in]	horizonInterpretation	A horizon interpretation.
 		 * @param 	  	stratigraphicRank	 	The rank of the horizon interpretation within this
 		 * 										structural organization.
 		 */
@@ -129,7 +129,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>topFrontierInterpretation == nullptr</tt>.
 		 *
-		 * @param [in]	topFrontierInterpretation	A top frontier interpretation.
+		 * @param[in]	topFrontierInterpretation	A top frontier interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation) = 0;
 
@@ -171,7 +171,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>bottomFrontierInterpretation == nullptr</tt>.
 		 *
-		 * @param [in]	bottomFrontierInterpretation	A bottom frontier interpretation.
+		 * @param[in]	bottomFrontierInterpretation	A bottom frontier interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackBottomFrontierInterpretation(AbstractFeatureInterpretation * bottomFrontierInterpretation) = 0;
 
@@ -215,7 +215,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>sideFrontierInterpretation == nullptr</tt>.
 		 *
-		 * @param [in]	sideFrontierInterpretation	A side frontier interpretation.
+		 * @param[in]	sideFrontierInterpretation	A side frontier interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation) = 0;
 
@@ -269,7 +269,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	orgFeat				The feature the instance interprets. It must be a
+		 * @param[in,out]	orgFeat				The feature the instance interprets. It must be a
 		 * 										structural organization feature.
 		 * @param 		  	guid				The guid to set to the interpretation. If empty then a
 		 * 										new guid will be generated.
@@ -281,14 +281,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		StructuralOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__StructuralOrganizationInterpretation* fromGsoap): AbstractOrganizationInterpretation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		StructuralOrganizationInterpretation(gsoap_eml2_3::_resqml22__StructuralOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
 		

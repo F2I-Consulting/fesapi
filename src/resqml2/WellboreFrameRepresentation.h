@@ -47,7 +47,7 @@ namespace RESQML2_NS
 		 * @param 		  	mdValues		All the MD values to set from top to bottom of the wellbore
 		 * 									trajectory. Size if @p mdValueCount.
 		 * @param 		  	mdValueCount	The MD values count.
-		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the MD values. It
+		 * @param[in,out]	proxy			(Optional) The HDF proxy where to write the MD values. It
 		 * 									must be already opened for writing and won't be closed in this
 		 * 									method. If @c nullptr, then a default HDF proxy must be defined
 		 * 									in the repository.
@@ -141,7 +141,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
 		 * 										the HDF proxy is missing.
 		 *
-		 * @param [out]	values	A buffer to receive the MD values ordered from top to bottom of the
+		 * @param[out]	values	A buffer to receive the MD values ordered from top to bottom of the
 		 * 						wellbore trajectory. It must be preallocated with size of
 		 * 						getMdValuesCount().
 		 */
@@ -156,7 +156,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
 		 * 										the HDF proxy is missing.
 		 *
-		 * @param [out]	values	A buffer to receive the MD values ordered from top to bottom of the
+		 * @param[out]	values	A buffer to receive the MD values ordered from top to bottom of the
 		 * 						wellbore trajectory. It must be preallocated with size of
 		 * 						getMdValuesCount().
 		 */
@@ -200,7 +200,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*
-		* @param [in,out]	partialObject	If non-null, the partial object.
+		* @param[in,out]	partialObject	If non-null, the partial object.
 		*/
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject) {}
@@ -208,7 +208,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*
-		* @param [in,out]	fromGsoap	If non-null, from gsoap.
+		* @param[in,out]	fromGsoap	If non-null, from gsoap.
 		*/
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
@@ -216,7 +216,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*
-		* @param [in,out]	fromGsoap	If non-null, from gsoap.
+		* @param[in,out]	fromGsoap	If non-null, from gsoap.
 		*/
 		WellboreFrameRepresentation(gsoap_eml2_3::resqml22__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}

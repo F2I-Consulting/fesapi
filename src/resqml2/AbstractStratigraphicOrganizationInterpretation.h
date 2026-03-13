@@ -78,7 +78,7 @@ namespace RESQML2_NS
 		 * Checks whether a given grid representation is associated to this stratigraphic organization
 		 * interpretation or not.
 		 *
-		 * @param [in]	gridRep	The grid representation fro which we want to check its association
+		 * @param[in]	gridRep	The grid representation fro which we want to check its association
 		 * 							with this stratigraphic organization interpretation.
 		 *
 		 * @returns	True if @p gridRep is associated to this stratigraphic organization interpretation or
@@ -91,7 +91,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 *
 		 */
@@ -103,7 +103,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractStratigraphicOrganizationInterpretation(gsoap_resqml2_0_1::resqml20__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
 		AbstractStratigraphicOrganizationInterpretation(gsoap_eml2_3::resqml22__AbstractGeologicUnitOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}

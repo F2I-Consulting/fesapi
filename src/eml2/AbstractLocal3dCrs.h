@@ -251,7 +251,7 @@ namespace EML2_NS
 		/**
 		 * Convert some xyz points from local to global CRS.
 		 *
-		 * @param [in,out]	xyzPoints		  	An array of xyz points. The i-th point is defined by
+		 * @param[in,out]	xyzPoints		  	An array of xyz points. The i-th point is defined by
 		 * 										<tt>(x, y, z) = (xyzPoints[i], xyzPoints[i+1],
 		 * 										xyzPoints[i+2])</tt>.
 		 * @param 		  	xyzPointCount	  	The number of xyz points. Must be equal to the size of @p
@@ -266,7 +266,7 @@ namespace EML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -278,7 +278,7 @@ namespace EML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractLocal3dCrs(gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs* fromGsoap) :
 			COMMON_NS::AbstractObject(fromGsoap) {}
@@ -286,7 +286,7 @@ namespace EML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractLocal3dCrs(gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs* fromGsoap) :
 			COMMON_NS::AbstractObject(fromGsoap) {}

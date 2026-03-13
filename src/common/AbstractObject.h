@@ -103,7 +103,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT time_t getCreation() const;
 
 		/**
-		 * Same as {@link getCreation()}. Please use this method if you want to read some dates out of
+		 * Same as \link getCreation() \endlink. Please use this method if you want to read some dates out of
 		 * the range of @c time_t
 		 *
 		 * @exception	std::invalid_argument	If this instance is actually a partial object or if no
@@ -153,7 +153,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT time_t getLastUpdate() const;
 
 		/**
-		 * Same as {@link getLastUpdate()}. Please use this method if you want to read some dates out of
+		 * Same as \link getLastUpdate() \endlink. Please use this method if you want to read some dates out of
 		 * the range of @c time_t
 		 *
 		 * @exception	std::invalid_argument	If this instance is actually a partial object.
@@ -236,7 +236,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void setCreation(time_t creation);
 
 		/**
-		 * Same as {@link setCreation()}. Please use this method if you want to set some dates out of
+		 * Same as \link setCreation() \endlink. Please use this method if you want to set some dates out of
 		 * the range of @c time_t
 		 *
 		 * @exception	std::invalid_argument	If this instance is actually a partial object.
@@ -286,7 +286,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void setLastUpdate(time_t lastUpdate);
 
 		/**
-		 * Same as {@link setLastUpdate()}. Please use this method if you want to read some dates out of
+		 * Same as \link setLastUpdate() \endlink. Please use this method if you want to read some dates out of
 		 * the range of @c time_t
 		 *
 		 * @param 	lastUpdate	The last update date and time to set to this data object.
@@ -367,7 +367,7 @@ namespace COMMON_NS
 		 * @exception	std::invalid_argument	If this instance is actually a partial object or if @p
 		 * 										stream is null.
 		 *
-		 * @param [out]	stream	A stream. It must be opened for writing and won't be closed.
+		 * @param[out]	stream	A stream. It must be opened for writing and won't be closed.
 		 */
 		DLL_IMPORT_OR_EXPORT void serializeIntoStream(std::ostream * stream);
 
@@ -380,7 +380,7 @@ namespace COMMON_NS
 		/**
 		 * Sets the underlying RESQML2.0 gSOAP proxy of this data object
 		 *
-		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
+		 * @param[in]	gsoapProxy	If non-null, the gSOAP proxy.
 		 */
 		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) { gsoapProxy2_0_1 = gsoapProxy; }
 
@@ -393,7 +393,7 @@ namespace COMMON_NS
 		/**
 		 * Sets the underlying EML2.3 gSOAP proxy of this data object
 		 *
-		 * @param [in]	gsoapProxy	If non-null, the gSOAP proxy.
+		 * @param[in]	gsoapProxy	If non-null, the gSOAP proxy.
 		 */
 		void setGsoapProxy(gsoap_eml2_3::eml23__AbstractObject* gsoapProxy) { gsoapProxy2_3 = gsoapProxy; }
 
@@ -709,7 +709,7 @@ namespace COMMON_NS
 		/**
 		 * Constructor for partial transfer
 		 *
-		 * @param [in,out]	partialObject_	If non-null, the partial object.
+		 * @param[in,out]	partialObject_	If non-null, the partial object.
 		 */
 		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) :
 			partialObject(partialObject_),
@@ -725,7 +725,7 @@ namespace COMMON_NS
 		/**
 		 * Constructor when importing EML 2.0 (i.e RESQML2.0.1) dataobjects
 		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
+		 * @param[in,out]	proxy	If non-null, the proxy.
 		 */
 		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) :
 			partialObject(nullptr),
@@ -736,7 +736,7 @@ namespace COMMON_NS
 		/**
 		 * Constructor when importing EML 2.3 dataobjects
 		 *
-		 * @param [in,out]	proxy	If non-null, the proxy.
+		 * @param[in,out]	proxy	If non-null, the proxy.
 		 */
 		AbstractObject(gsoap_eml2_3::eml23__AbstractObject* proxy) :
 			partialObject(nullptr),
@@ -783,8 +783,8 @@ namespace COMMON_NS
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
+		 * @param[in]	arrayInput 	If non-null, the array input.
+		 * @param[out]	arrayOutput	If non-null, the array output.
 		 */
 		DLL_IMPORT_OR_EXPORT void readArrayNdOfFloatValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const* arrayInput, float* arrayOutput) const;
 
@@ -792,8 +792,8 @@ namespace COMMON_NS
 		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
+		 * @param[in]	arrayInput 	If non-null, the array input.
+		 * @param[out]	arrayOutput	If non-null, the array output.
 		 */
 		DLL_IMPORT_OR_EXPORT void readArrayNdOfFloatValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray const* arrayInput, float* arrayOutput) const;
 
@@ -801,8 +801,8 @@ namespace COMMON_NS
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
+		 * @param[in]	arrayInput 	If non-null, the array input.
+		 * @param[out]	arrayOutput	If non-null, the array output.
 		 */
 		DLL_IMPORT_OR_EXPORT void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray const* arrayInput, double * arrayOutput) const;
 
@@ -810,8 +810,8 @@ namespace COMMON_NS
 		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
+		 * @param[in]	arrayInput 	If non-null, the array input.
+		 * @param[out]	arrayOutput	If non-null, the array output.
 		 */
 		DLL_IMPORT_OR_EXPORT void readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloatingPointArray const* arrayInput, double * arrayOutput) const;
 
@@ -961,8 +961,8 @@ namespace COMMON_NS
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
+		 * @param[in]	arrayInput 	If non-null, the array input.
+		 * @param[out]	arrayOutput	If non-null, the array output.
 		 *
 		 * @returns	The null value of this array. Default returned value is uint16_t::max
 		 */
@@ -972,8 +972,8 @@ namespace COMMON_NS
 		 * Read an input array which come from EML 2.0 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
+		 * @param[in]	arrayInput 	If non-null, the array input.
+		 * @param[out]	arrayOutput	If non-null, the array output.
 		 *
 		 * @returns	The null value of this array. Default returned value is the max numeric limits of T.
 		 */
@@ -984,8 +984,8 @@ namespace COMMON_NS
 		 * Read an input array which come from EML 2.3 (and potentially HDF5) and store it into a
 		 * preallocated output array in memory. It does not allocate or deallocate memory.
 		 *
-		 * @param [in]	arrayInput 	If non-null, the array input.
-		 * @param [out]	arrayOutput	If non-null, the array output.
+		 * @param[in]	arrayInput 	If non-null, the array input.
+		 * @param[out]	arrayOutput	If non-null, the array output.
 		 *
 		 * @returns	The null value of this array. Default returned value is the max numeric limits of T.
 		 */
@@ -995,7 +995,7 @@ namespace COMMON_NS
 		/**
 		 * Get the count of item in an array of integer
 		 *
-		 * @param [in,out]	arrayInput	The array of integer.
+		 * @param[in,out]	arrayInput	The array of integer.
 		 *
 		 * @returns	The count of item in the array of integer.
 		 */
@@ -1004,7 +1004,7 @@ namespace COMMON_NS
 		/**
 		 * Get the count of item in an array
 		 *
-		 * @param [in,out]	arrayInput	The array.
+		 * @param[in,out]	arrayInput	The array.
 		 *
 		 * @returns	The count of item in the array.
 		 */

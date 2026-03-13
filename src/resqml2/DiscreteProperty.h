@@ -46,7 +46,7 @@ namespace RESQML2_NS
 		 * @param 		  	values			All the property values to set ordered according to the
 		 * 									topology of the representation it is based on.
 		 * @param 		  	valueCount  	The number of values to write.
-		 * @param [in,out]	proxy			The HDF proxy where to write the property values. It must be
+		 * @param[in,out]	proxy			The HDF proxy where to write the property values. It must be
 		 * 									already opened for writing and won't be closed in this method. If
 		 * 									@c nullptr, then a default HDF proxy must be defined in the
 		 * 									repository.
@@ -101,7 +101,7 @@ namespace RESQML2_NS
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly J dimension).
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * @param[in,out]	proxy				  	The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be
 		 * 											closed in this method. If @c nullptr, then a default
 		 * 											HDF proxy must be defined in the repository.
@@ -163,7 +163,7 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly K dimension).
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * @param[in,out]	proxy				  	The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be
 		 * 											closed in this method. If @c nullptr, then a default
 		 * 											HDF proxy must be defined in the repository.
@@ -219,10 +219,10 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	values					All the property values to set ordered according the
 		 * 											topology of the representation it is based on.
-		 * @param [in]	  	numValues				The number of property values ordered by dimension of
+		 * @param[in]	  	numValues				The number of property values ordered by dimension of
 		 * 											the array to write.
 		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
-		 * @param [in,out]	proxy					The HDF proxy where to write the property values. It
+		 * @param[in,out]	proxy					The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be closed in
 		 * 											this method. If @c nullptr, then a default HDF proxy must
 		 * 											be defined in the repository.
@@ -266,10 +266,10 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	values					All the property values to set ordered according the
 		 * 											topology of the representation it is based on.
-		 * @param [in]	  	numValues				The number of property values ordered by dimension of
+		 * @param[in]	  	numValues				The number of property values ordered by dimension of
 		 * 											the array to write.
 		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
-		 * @param [in,out]	proxy					The HDF proxy where to write the property values. It
+		 * @param[in,out]	proxy					The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be closed in
 		 * 											this method. If @c nullptr, then a default HDF proxy must
 		 * 											be defined in the repository.
@@ -324,7 +324,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	proxy			The HDF5 proxy where the values are already or will be stored. If
+		 * @param[in]	proxy			The HDF5 proxy where the values are already or will be stored. If
 		 * 								@c nullptr, then a default HDF proxy must be defined in the
 		 * 								repository.
 		 * @param 	  	datasetName 	The HDF5 dataset name where the values are stored. If empty, the
@@ -355,19 +355,19 @@ namespace RESQML2_NS
 		 * 										defined into the data object repository.
 		 *
 		 * @param 			datatype			The datatype of the values 
-		 * @param [in]	  	numValues		  	The number of property values ordered by dimension of the
+		 * @param[in]	  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write. It is ordered from slowest dimension to
 		 * 										fastest dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in]	  	minimumValue	  	If non-nullptr, a pointer to the minimum values. If non-
+		 * @param[in]	  	minimumValue	  	If non-nullptr, a pointer to the minimum values. If non-
 		 * 										nullptr, the count of minimum values is this property
 		 * 										count.
-		 * @param [in]	  	maximumValue	  	If non-nullptr, a pointer to the maximum values. If non-
+		 * @param[in]	  	maximumValue	  	If non-nullptr, a pointer to the maximum values. If non-
 		 * 										nullptr, the count of maximum values is this property
 		 * 										count.
 		 * @param 		  	nullValue		  	(Optional) The null value. Default value is int 64 bits
 		 * 										maximum value.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @c nullptr (default), a
 		 * 										default HDF proxy must be defined into the data object
@@ -396,7 +396,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
 		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -427,7 +427,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
 		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -461,7 +461,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
 		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -487,7 +487,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param [in]	  	values				  	All the property values to set ordered according to
+		 * @param[in]	  	values				  	All the property values to set ordered according to
 		 * 											the topology of the representation it is based on.
 		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
 		 * 											dimension (mainly I dimension).
@@ -503,7 +503,7 @@ namespace RESQML2_NS
 		 * 											(mainly K dimension).
 		 * @param 		  	computeMinMax		  	True if FESAPI needs to compute the min and  max from
 		 * 											the given @p values in order to set them.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -550,7 +550,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param [in]	  	values			  	All the property values to set ordered according to the
+		 * @param[in]	  	values			  	All the property values to set ordered according to the
 		 * 										topology of the representation it is based on.
 		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write. It is ordered from slowest dimension to
@@ -560,7 +560,7 @@ namespace RESQML2_NS
 		 * 										dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
 		 * @param 		  	computeMinMax	  	True to compute and to set minimum and maximum values.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If null (default value), a
 		 * 										default HDF proxy must be defined into the data object
@@ -690,7 +690,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param[in]	partialObject	If non-null, the partial object.
 		 */
 		DiscreteProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
@@ -700,14 +700,14 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gSOAP instance.
 		*
-		* @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		* @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		*/
 		DiscreteProperty(gsoap_resqml2_0_1::_resqml20__DiscreteProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gSOAP instance.
 		*
-		* @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		* @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		*/
 		DiscreteProperty(gsoap_eml2_3::_resqml22__DiscreteProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 

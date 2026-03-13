@@ -2037,9 +2037,9 @@ namespace RESQML2_NS
 		* @param indices		array (of size colorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices 
 		* @param colorTitles	vector (of size colorCount) of color titles. Titles are not set if colorTitles is empty (default value)= nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
-		virtual void setHsvColors(uint64_t colorCount,
+		void setHsvColors(uint64_t colorCount,
 			double const* hsvColors, double const* alphas = nullptr, double const* indices = nullptr,
-			std::vector<std::string> const& colorTitles = std::vector<std::string>()) = 0;
+			std::vector<std::string> const& colorTitles = std::vector<std::string>());
 
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space
@@ -2535,11 +2535,11 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
 		 *
-		 * @param [in]	subject			The subject of the sentence that defines how the contact was
+		 * @param[in]	subject			The subject of the sentence that defines how the contact was
 		 * 								constructed.
 		 * @param 	  	verb			The verb of the sentence that defines how the contact was
 		 * 								constructed.
-		 * @param [in]	directObject	The direct object of the sentence that defines how the contact
+		 * @param[in]	directObject	The direct object of the sentence that defines how the contact
 		 * 								was constructed.
 		 */
 		void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject);
@@ -2549,13 +2549,13 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
 		 *
-		 * @param [in]	subject			The subject of the sentence that defines how the contact was
+		 * @param[in]	subject			The subject of the sentence that defines how the contact was
 		 * 								constructed.
 		 * @param 	  	verb			The verb of the sentence that defines how the contact was
 		 * 								constructed.
-		 * @param [in]	directObject	The direct object of the sentence that defines how the contact
+		 * @param[in]	directObject	The direct object of the sentence that defines how the contact
 		 * 								was constructed.
-		 * @param [in]	partOf			indicates the interpertation this contact is part of
+		 * @param[in]	partOf			indicates the interpertation this contact is part of
 		 */
 		void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_3::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject, AbstractFeatureInterpretation* partOf);
 		
@@ -2566,11 +2566,11 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
 		 *
-		 * @param [in]	subject				 	The subject of the sentence that defines how the contact
+		 * @param[in]	subject				 	The subject of the sentence that defines how the contact
 		 * 										was constructed.
 		 * @param 	  	verb				 	The verb of the sentence that defines how the contact was
 		 * 										constructed.
-		 * @param [in]	directObject		 	The direct object of the sentence that defines how the
+		 * @param[in]	directObject		 	The direct object of the sentence that defines how the
 		 * 										contact was constructed.
 		 * @param 	  	directObjectQualifier	The direct object qualifier defining its contact side
 		 * 										(footwall, hanging wall, north, south, etc.).
@@ -2584,13 +2584,13 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
 		 *
-		 * @param [in]	subject				 	The subject of the sentence that defines how the contact
+		 * @param[in]	subject				 	The subject of the sentence that defines how the contact
 		 * 										was constructed.
 		 * @param 	  	subjectQualifier	 	The subject qualifier defining its contact side (footwall,
 		 * 										hanging wall, north, south, etc.).
 		 * @param 	  	verb				 	The verb of the sentence that defines how the contact was
 		 * 										constructed.
-		 * @param [in]	directObject		 	The direct object of the sentence that defines how the
+		 * @param[in]	directObject		 	The direct object of the sentence that defines how the
 		 * 										contact was constructed.
 		 * @param 	  	directObjectQualifier	The direct object qualifier defining its contact side
 		 * 										(footwall, hanging wall, north, south, etc.).
@@ -2635,7 +2635,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p stratiUnitInterpretation is @c nullptr.
 		 *
-		 * @param [in]	stratiUnitInterpretation	The stratigraphic unit interpretation to add.
+		 * @param[in]	stratiUnitInterpretation	The stratigraphic unit interpretation to add.
 		 */
 		void pushBackStratiUnitInterpretation(StratigraphicUnitInterpretation * stratiUnitInterpretation);
 
@@ -2646,7 +2646,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p partOf is @c nullptr.
 		 *
-		 * @param [in]	partOf	The horizon interpretation that contains the last contact interpretation.
+		 * @param[in]	partOf	The horizon interpretation that contains the last contact interpretation.
 		 */
 		void setHorizonOfLastContact(HorizonInterpretation * partOf);
 
@@ -2655,15 +2655,15 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
 		 *
-		 * @param [in]	subject			  	The subject of the sentence that defines how the contact was
+		 * @param[in]	subject			  	The subject of the sentence that defines how the contact was
 		 * 									constructed.
 		 * @param 	  	subjectContactMode	The subject contact mode (baselap, erosion, extended or
 		 * 									proportional).
-		 * @param [in]	directObject	  	The direct object of the sentence that defines how the
+		 * @param[in]	directObject	  	The direct object of the sentence that defines how the
 		 * 									contact was constructed.
 		 * @param 	  	directObjectMode  	The direct object contact mode (baselap, erosion, extended or
 		 * 									proportional).
-		 * @param [in]	partOf			  	(Optional) If non-null, the horizon interpretation that
+		 * @param[in]	partOf			  	(Optional) If non-null, the horizon interpretation that
 		 * 									contains this new binary contact. Default value is @c nullptr.
 		 */
 		void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, gsoap_eml2_3::resqml22__ContactMode subjectContactMode,
@@ -2787,7 +2787,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>stratiColumnRank == nullptr</tt>
 		 *
-		 * @param [in]	stratiColumnRank	A stratigraphic column rank interpretation.
+		 * @param[in]	stratiColumnRank	A stratigraphic column rank interpretation.
 		 */
 		void pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank);
 
@@ -2876,7 +2876,7 @@ namespace RESQML2_NS
 		/**
 		 * Checks whether a given grid representation is associated to this rock fluid organization.
 		 *
-		 * @param [in]	gridRep	The grid representation for which we want to know if it is associated to
+		 * @param[in]	gridRep	The grid representation for which we want to know if it is associated to
 		 * 						this rock fluid organization.
 		 *
 		 * @returns	True if @p gridRep is associated to this rock fluid organization, false if not.
@@ -2888,7 +2888,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>rockFluidUnitInterpretation == nullptr</tt>.
 		 *
-		 * @param [in]	rockFluidUnitInterpretation	The rock fluid unit interpretation to push back.
+		 * @param[in]	rockFluidUnitInterpretation	The rock fluid unit interpretation to push back.
 		 */
 		void pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation* rockFluidUnitInterpretation);
 
@@ -3053,7 +3053,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error 	If this representation is partial.
 		 *
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
-		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
@@ -3067,7 +3067,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
 		 *
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
-		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
@@ -3078,7 +3078,7 @@ namespace RESQML2_NS
 		 * @brief Gets all the xyz points of all patches of this representation. xyz points are given in the
 		 * local CRS.
 		 *
-		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfAllPatches()</tt>.
@@ -3105,7 +3105,7 @@ namespace RESQML2_NS
 		 * Gets all the xyz points of all patches of this individual representation. xyz points are
 		 * given in the global CRS.
 		 *
-		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or Z) and second dimension is vertex
 		 * 							dimension. Thus, its size is 3*(3*[count of all xyz points]). It must
 		 * 							be preallocated.
@@ -3139,7 +3139,7 @@ namespace RESQML2_NS
 		 * 										information.
 		 *
 		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
-		 * @param [out]	values	  	The array where the abscissa are going to be stored. The count of
+		 * @param[out]	values	  	The array where the abscissa are going to be stored. The count of
 		 * 							this array must be equal to <tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
 		void getSeismicLineAbscissaOfPointsOfPatch(uint64_t patchIndex, double* values) const;
@@ -3154,11 +3154,11 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	patchIndex	  	The index of the geometry patch which receives the seismic
 		 * 									coordinates.
-		 * @param [in,out]	lineAbscissa  	The abscissa of each points of the patch on the seismic line.
+		 * @param[in,out]	lineAbscissa  	The abscissa of each points of the patch on the seismic line.
 		 * 									The count of this array must be equal to
 		 * 									<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
-		 * @param [in,out]	seismicSupport	The representation of the seismic line.
-		 * @param [in,out]	proxy		  	The HDF proxy where to write the @p lineAbscissa values. It
+		 * @param[in,out]	seismicSupport	The representation of the seismic line.
+		 * @param[in,out]	proxy		  	The HDF proxy where to write the @p lineAbscissa values. It
 		 * 									must be already opened for writing and won't be closed in
 		 * 									this method.
 		 */
@@ -3173,7 +3173,7 @@ namespace RESQML2_NS
 		 * 										information.
 		 *
 		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
-		 * @param [out]	values	  	The array where the inlines coordinates are going to be stored. The
+		 * @param[out]	values	  	The array where the inlines coordinates are going to be stored. The
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
@@ -3188,7 +3188,7 @@ namespace RESQML2_NS
 		 * 										information.
 		 *
 		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
-		 * @param [out]	values	  	The array where the crossline coordinates are going to be stored. The
+		 * @param[out]	values	  	The array where the crossline coordinates are going to be stored. The
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
@@ -3204,16 +3204,16 @@ namespace RESQML2_NS
 		 *
 		 * @param 		   	patchIndex	  	The index of the geometry patch which receives the seismic
 		 * 									coordinates.
-		 * @param [in]	   	inlines		  	The sequence of trace or inter-trace inline positions that
+		 * @param[in]	   	inlines		  	The sequence of trace or inter-trace inline positions that
 		 * 									correspond to the geometry coordinates. It must be in the
 		 * 									same order than @p crosslines.
-		 * @param [in]	   	crosslines	  	The sequence of trace or inter-trace crossline positions that
+		 * @param[in]	   	crosslines	  	The sequence of trace or inter-trace crossline positions that
 		 * 									correspond to the geometry coordinates. It must be in the
 		 * 									same order than @p inlines.
 		 * @param 		   	pointCount	  	Number of points. It is the size of both @p inlines and @p
 		 * 									crosslines.
-		 * @param [in]	   	seismicSupport	The representation of the seismic line.
-		 * @param [in, out]	proxy		  	The HDF proxy where to write the @p inlines and @p crosslines
+		 * @param[in]	   	seismicSupport	The representation of the seismic line.
+		 * @param[in, out]	proxy		  	The HDF proxy where to write the @p inlines and @p crosslines
 		 * 									values. It must be already opened for writing and won't be
 		 * 									closed in this method.
 		 */
@@ -3236,7 +3236,7 @@ namespace RESQML2_NS
 		 * @param 	  	startCrossline	The first crossline.
 		 * @param 	  	incrCrossline 	The crossline increment.
 		 * @param 	  	countCrossline	The crossline count.
-		 * @param [in]	seismicSupport	The representation of the seismic line.
+		 * @param[in]	seismicSupport	The representation of the seismic line.
 		 */
 		void addSeismic3dCoordinatesToPatch(uint64_t patchIndex, double startInline, double incrInline, unsigned int countInline,
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
@@ -3247,7 +3247,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p repSet is null.
 		 *
-		 * @param [in]	repSet	The representation set representation which will contain this
+		 * @param[in]	repSet	The representation set representation which will contain this
 		 * 							representation.
 		 */
 		void pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet);
@@ -3427,18 +3427,18 @@ namespace RESQML2_NS
 		 * 										is defined in the repository.
 		 *
 		 * @param 		  	xyzPointCount	The xyz points count in this patch.
-		 * @param [in]	  	xyzPoints	 	The xyz values of the points of the patch. Ordered by xyz and
+		 * @param[in]	  	xyzPoints	 	The xyz values of the points of the patch. Ordered by xyz and
 		 * 									then by @p xyzPointCount. Size is <tt>3 * xyzPointCount</tt>.
-		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the xyz points
+		 * @param[in,out]	proxy		 	(Optional) The HDF proxy which defines where the xyz points
 		 * 									will be stored. If @c nullptr (default), then the repository
 		 * 									default HDF proxy will be used.
-		 * @param [in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
+		 * @param[in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
 		 * 									nullptr (default), then the repository default local CRS will
 		 * 									be used.
 		 */
-		virtual void pushBackXyzGeometryPatch(
+		void pushBackXyzGeometryPatch(
 			uint64_t xyzPointCount, double const * xyzPoints,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		 * Pushes back a new patch of XY points.
@@ -3449,36 +3449,36 @@ namespace RESQML2_NS
 		 * 										is defined in the repository.
 		 *
 		 * @param 		  	xyPointCount	The xy points count in this patch.
-		 * @param [in]	  	xyPoints	 	The xy values of the points of the patch. Ordered by xy and
+		 * @param[in]	  	xyPoints	 	The xy values of the points of the patch. Ordered by xy and
 		 * 									then by @p xyPointCount. Size is <tt>2 * xyPointCount</tt>.
-		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the xy points
+		 * @param[in,out]	proxy		 	(Optional) The HDF proxy which defines where the xy points
 		 * 									will be stored. If @c nullptr (default), then the repository
 		 * 									default HDF proxy will be used.
-		 * @param [in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
+		 * @param[in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
 		 * 									nullptr (default), then the repository default local CRS will
 		 * 									be used.
 		 */
-		virtual void pushBackXyGeometryPatch(
+		void pushBackXyGeometryPatch(
 			uint64_t xyPointCount, double const* xyPoints,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr) = 0;
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, EML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		 * Check if a point set representation patch is in 2 dimensions (i.e XY) instead of 3 dimensions (i.e XYZ)
 		 * 
-		 * @param [in]	  	patchIndex	 	The index of the patch 
+		 * @param[in]	  	patchIndex	 	The index of the patch 
 		 */
-		virtual bool isIn2D(uint64_t patchIndex) const = 0;
+		bool isIn2D(uint64_t patchIndex) const;
 		
 		/**
 		 * Get all the XY points of a particular patch of this representation. XY points are given in
 		 * the local CRS. You probably want to check first if the patch in in 2D using method bool isIn2D(uint64_t patchIndex).
 		 *
 		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyPoints 	A linearized 2d array where the first (quickest) dimension is
+		 * @param[in,out]	xyPoints 	A linearized 2d array where the first (quickest) dimension is
 		 * 								coordinate dimension (XY) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
-		virtual void getXyPointsOfPatch(uint64_t patchIndex, double* xyPoints) const = 0;
+		void getXyPointsOfPatch(uint64_t patchIndex, double* xyPoints) const;
 	};
 	
 #ifdef SWIGPYTHON
@@ -3556,15 +3556,241 @@ namespace RESQML2_NS
 	class SubRepresentation : public AbstractRepresentation
 	{
 	public:
+		/**
+		 * Gets the kind of the selected elements for a particular patch of this sub-representation.
+		 *
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::out_of_range	 	If @p elementIndicesIndex is out of range. Must be: 0 for
+		 * 										non pairwise element indices; 0 or 1 for pairwise element
+		 * 										indices (0 for the left and 1 for the right part of the
+		 * 										pairs).
+		 * @exception	std::invalid_argument	If the kind of the selected elements we look for is not
+		 * 										supported (the kind is neither a node, edge, face, volume
+		 * 										nor pillar).
+		 *
+		 * @param 	patchIndex		   	Zero-based index of the patch.
+		 * @param 	elementIndicesIndex	Must be equal to 0 if the element indices are not pairwise. This
+		 * 								method must be called twice if the element indices are pairwise:
+		 * 								one call with <tt>elementIndicesIndex = 0</tt> for getting the
+		 * 								kind of the left elements of the pair; one call with
+		 * 								<tt>elementIndices = 1</tt> for getting the kind of the right
+		 * 								elements of the pair.
+		 *
+		 * @returns	The kind of the selected elements.
+		 */
+		gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex) const;
+
+		/**
+		 * Gets the count of the selected elements of a particular patch of this sub-representation.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch from which we want to count the selected
+		 * 						elements.
+		 *
+		 * @returns	The count of the selected elements.
+		 */
+		uint64_t getElementCountOfPatch(uint64_t patchIndex) const;
+
+		/**
+		 * Gets the indices of the selected elements for a particular patch of this sub-representation.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	std::out_of_range	If @p elementIndicesIndex is out of range. Must be: 0 for non
+		 * 									pairwise element indices; 0 or 1 for pairwise element indices
+		 * 									(0 for the left and 1 for the right part of the pairs).
+		 * @exception	logic_error		 	If the selected elements indices of the patch are not stored
+		 * 									in a HDF5 integer array.
+		 *
+		 * @param 	   	patchIndex		   	Zero-based index of the patch.
+		 * @param 	   	elementIndicesIndex	Must be equal to 0 if the element indices are not pairwise.
+		 * 									This method must be called twice if the element indices are
+		 * 									pairwise: one call with <tt>elementIndicesIndex = 0</tt> for
+		 * 									getting the indices of the left elements of the pair;
+		 * 									one call with <tt>elementIndices = 1</tt> for getting the
+		 * 									indices of the right elements of the pair.  
+		 * @param[out]	elementIndices	   	Output array for collecting the indices of the selected
+		 * 									elements. It must be preallocated with
+		 * 									\link getElementCountOfPatch() \endlink size.
+		 */
+		void getElementIndicesOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex, uint64_t* elementIndices) const;
+
+		/**
+		 * @brief	Gets the indices of the supporting representations that refer the selected elements
+		 * 			indices of a particular patch of this sub-representation.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 *
+		 * @param 	   	patchIndex					   	Zero-based index of the patch.
+		 * @param[out]	supportingRepresentationIndices	Output array for collecting the supporting
+		 * 												representations indices. This array must be
+		 * 												preallocated with getElementCountOfPatch()
+		 * 												size. The index at a given position is the index
+		 * 												of the supporting representation associated to
+		 * 												the selected element (or the selected pair of
+		 * 												elements) at the same position in the sub-
+		 * 												elements) at the same position in the sub-
+		 * 												representation patch.
+		 */
+		void getSupportingRepresentationIndicesOfPatch(uint64_t patchIndex, short* supportingRepresentationIndices) const;
+
+		/**
+		 * Checks if the element indices of a particular patch are pairwise or not.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	True if the elements indices are pairwise, false if not.
+		 */
+		bool areElementIndicesPairwise(uint64_t patchIndex) const;
+
+		/**
+		 * Checks if the element indices of a particular patch are based on a lattice or not.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 * @exception	std::out_of_range	If @p elementIndicesIndex is out of range. Must be: 0 for non
+		 * 									pairwise element indices; 0 or 1 for pairwise element indices
+		 * 									(0 for the left and 1 for the right part of the pairs).
+		 *
+		 * @param 	patchIndex		   	Zero-based index of the patch.
+		 * @param 	elementIndicesIndex	(Optional) In case of pairwise elements, allows to select the
+		 * 								first (<tt>elementIndicesIndex = 0</tt>)
+		 * 								or second (<tt>elementIndicesIndex = 1</tt>) element index of the
+		 * 								pair. Default value is @c 0, corresponding to both non-pairwise
+		 * 								elements and first element of a pair.
+		 *
+		 * @returns	True if element indices based on lattice, false if not.
+		 */
+		bool areElementIndicesBasedOnLattice(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+
+		/**
+		 * Gets the start value of the lattice the element indices of a particular patch are based on.
+		 *
+		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::out_of_range	 	If @p elementIndicesIndex is out of range. Must be: 0 for
+		 * 										non pairwise element indices; 0 or 1 for pairwise element
+		 * 										indices (0 for the left and 1 for the right part of the
+		 * 										pairs).
+		 *
+		 * @param 	patchIndex		   	Zero-based index of the patch.
+		 * @param 	elementIndicesIndex	(Optional) In case of pairwise elements, allow to select the
+		 * 								first (<tt>elementIndicesIndex = 0</tt>)
+		 * 								or second (<tt>elementIndicesIndex = 1</tt>) element index of the
+		 * 								pair. Default value is @c 0, corresponding to both non-pairwise
+		 * 								elements and first element of a pair.
+		 *
+		 * @returns	The lattice start value.
+		 */
+		int64_t getLatticeElementIndicesStartValue(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+
+		/**
+		 * Gets the dimension count of the lattice the element indices of a particular patch are based
+		 * on.
+		 *
+		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::out_of_range	 	If @p elementIndicesIndex is out of range. Must be: 0 for
+		 * 										non pairwise element indices; 0 or 1 for pairwise element
+		 * 										indices (0 for the left and 1 for the right part of the
+		 * 										pairs).
+		 *
+		 * @param 	patchIndex		   	Zero-based index of the patch.
+		 * @param 	elementIndicesIndex	(Optional) In case of pairwise elements, allow to select the
+		 * 								first (<tt>elementIndicesIndex = 0</tt>)
+		 * 								or second (<tt>elementIndicesIndex = 1</tt>) element index of the
+		 * 								pair. Default value is @c 0, corresponding to both non-pairwise
+		 * 								elements and first element of a pair.
+		 *
+		 * @returns	The lattice dimension count.
+		 */
+		uint64_t getLatticeElementIndicesDimensionCount(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+
+		/**
+		 * Gets the offset value at a given dimension of the lattice the element indices of a particular
+		 * patch are based on.
+		 *
+		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
+		 * @exception	std::out_of_range	 	If @p latticeDimensionIndex is out of range.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::out_of_range	 	If @p elementIndicesIndex is out of range. Must be: 0 for
+		 * 										non pairwise element indices; 0 or 1 for pairwise element
+		 * 										indices (0 for the left and 1 for the right part of the
+		 * 										pairs).
+		 *
+		 * @param 	latticeDimensionIndex	Zero-based index of the lattice dimension.
+		 * @param 	patchIndex			 	Zero-based index of the patch.
+		 * @param 	elementIndicesIndex  	(Optional) In case of pairwise elements, allow to select the
+		 * 									first (<tt>elementIndicesIndex = 0</tt>)
+		 * 									or second (<tt>elementIndicesIndex = 1</tt>) element index of
+		 * 									the pair. Default value is @c 0, corresponding to both non-
+		 * 									pairwise elements and first element of a pair.
+		 *
+		 * @returns	The offset value.
+		 */
+		int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+
+		/**
+		 * Gets the offset count at a given dimension of the lattice the element indices of a particular
+		 * patch are based on.
+		 *
+		 * @exception	std::invalid_argument	If the element indices are not based on a lattice.
+		 * @exception	std::out_of_range	 	If @p latticeDimensionIndex is out of range.
+		 * @exception	std::out_of_range	 	If @p patchIndex is out of range.
+		 * @exception	std::out_of_range	 	If @p elementIndicesIndex is out of range. Must be: 0 for
+		 * 										non pairwise element indices; 0 or 1 for pairwise element
+		 * 										indices (0 for the left and 1 for the right part of the
+		 * 										pairs).
+		 *
+		 * @param 	latticeDimensionIndex	Zero-based index of the lattice dimension.
+		 * @param 	patchIndex			 	Zero-based index of the patch.
+		 * @param 	elementIndicesIndex  	(Optional) In case of pairwise elements, allow to select the
+		 * 									first (<tt>elementIndicesIndex = 0</tt>)
+		 * 									or second (<tt>elementIndicesIndex = 1</tt>) element index of
+		 * 									the pair. Default value is @c 0, corresponding to both non-
+		 * 									pairwise elements and first element of a pair.
+		 *
+		 * @returns	The offset count.
+		 */
+		uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+
+		/**
+		 * Pushes back a new lattice-based patch (without pairwise elements) in this sub-representation.
+		 * The offset value is set to 1 in each dimension of the lattice.
+		 *
+		 * @param 	elementKind					  	The kind of (indexable) elements which constitutes
+		 * 											the sub-representation patch.
+		 * @param 	originIndex					  	The index of the origin (its start value).
+		 * @param 	elementCountInSlowestDimension	The number of elements in the slowest dimension
+		 * 											(commonly in K dimension).
+		 * @param 	elementCountInMiddleDimension 	The number of elements in the middle dimension
+		 * 											(commonly in J dimension).
+		 * @param 	elementCountInFastestDimension	The number of elements in the fastest dimension
+		 * 											(commonly in I dimension).
+		 */
 		void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t originIndex,
 			unsigned int elementCountInSlowestDimension,
 			unsigned int elementCountInMiddleDimension,
 			unsigned int elementCountInFastestDimension);
-		void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices, EML2_NS::AbstractHdfProxy* proxy = nullptr, short* supportingRepIndices = nullptr);
-		void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
-			uint64_t elementCount,
-			uint64_t * elementIndices0, uint64_t * elementIndices1,
-			EML2_NS::AbstractHdfProxy* proxy = nullptr);
+
+		/**
+		 * Pushes back a new patch (without pairwise elements) in this sub-representation.
+		 *
+		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
+		 * 										sub-representation patch.
+		 * @param 	  	elementCount			The count of elements which constitutes the sub-
+		 * 										representation patch.
+		 * @param[in]	elementIndices			The indices of the elements in the supporting
+		 * 										representation.
+		 * @param[in]	proxy					The HDF proxy where the numerical values (indices)
+		 * 										are stored.
+		 * @param[in]	supportingRepIndices	(Optional) The indices of the supporting representation
+		 * 										corresponding to the element indices. The count must be
+		 * 										elementCount.
+		 */
+		void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, uint64_t* elementIndices,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr, short* supportingRepIndices = nullptr);
 
 		/**
 		 * Pushes back a new patch (without pairwise elements) in this sub-representation.
@@ -3572,9 +3798,9 @@ namespace RESQML2_NS
 		 *
 		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
 		 * 										sub-representation patch.
-		 * @param [in]	elementIndices			The indices of the elements in the supporting
+		 * @param[in]	elementIndices			The indices of the elements in the supporting
 		 * 										representation.
-		 * @param [in]	proxy					The HDF proxy where the numerical values (indices)
+		 * @param[in]	proxy					The HDF proxy where the numerical values (indices)
 		 * 										are stored.
 		 */
 		void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount,
@@ -3588,10 +3814,10 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param [in]	  	elementIndices		  	All the element indices to set in the already created SubRepresentationPatch.
+		 * @param[in]	  	elementIndices		  	All the element indices to set in the already created SubRepresentationPatch.
 		 * @param 		  	elementCount			The number of elements to write.
 		 * @param 		  	offset	  				The offset value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the element
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the element
 		 * 											indices. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default value), a default HDF proxy must be defined
@@ -3608,21 +3834,87 @@ namespace RESQML2_NS
 			uint64_t offset,
 			EML2_NS::AbstractHdfProxy* proxy = nullptr,
 			uint64_t patchIndex = std::numeric_limits<unsigned int>::max());
+		
+		/**
+		 * Pushes back a new patch in this sub-representation which is constituted by means of pairwise
+		 * elements.
+		 *
+		 * @param 		  	elementKind0   	The kind of (indexable) elements which constitutes the first
+		 * 									part of the pair of elements of the sub-representation patch.
+		 * @param 		  	elementKind1   	The kind of (indexable) elements which constitutes the second
+		 * 									part of the pair of elements of the sub-representation patch.
+		 * @param 		  	elementCount   	The count of elements which constitutes the sub-
+		 * 									representation patch.
+		 * @param[in,out]	elementIndices0	The indices of the first part of the element pairs in the
+		 * 									supporting representation.
+		 * @param[in,out]	elementIndices1	The indices of the second part of the element pairs in the
+		 * 									supporting representation.
+		 * @param[in,out]	proxy		   	The HDF proxy where the numerical values (indices) are stored.
+		 */
+		void pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__IndexableElement elementKind0, gsoap_eml2_3::eml23__IndexableElement elementKind1,
+			uint64_t elementCount,
+			uint64_t * elementIndices0, uint64_t * elementIndices1,
+			EML2_NS::AbstractHdfProxy* proxy = nullptr);
 
-		bool areElementIndicesPairwise(uint64_t patchIndex) const;
-		bool areElementIndicesBasedOnLattice(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
+		/**
+		 * Pushes back a new patch (without pairwise elements) in this sub-representation where the
+		 * indices values have not been written in the HDF5 file yet. The reason can be that the
+		 * indices values already exist in an external file (only HDF5 for now) or that the writing of
+		 * these indices values in the external file is postponed in time.
+		 *
+		 * @param 	  	elementKind				The kind of (indexable) elements which constitutes the
+		 * 										sub-representation patch.
+		 * @param 	  	elementCount			The count of elements which constitutes the sub-
+		 * 										representation patch.
+		 * @param 	  	elementDataset			The HDF5 dataset name where the element indices are
+		 * 										stored. If empty, the dataset will be named the same as the
+		 * 										dataset naming convention fesapi : <tt>getHdfGroup() + subRep-
+		 * 										&gt;uuid + "/subrepresentation_elementIndices0_patch" +
+		 * 										patchIndex;</tt>
+		 * @param 	  	nullValue				The null value which has been chosen in the referenced
+		 * 										HDF5 dataset.
+		 * @param[in]	proxy					The HDF5 proxy where the values are already stored or
+		 * 										will be stored.
+		 * @param 	  	supportingRepDataset	(Optional) The HDF5 dataset name where the element
+		 * 										indices are stored. If empty (default), no information about
+		 * 										suppporting representation will be exported since there is
+		 * 										only one suppporting representation for this whole patch.
+		 */
+		void pushBackRefToExistingDataset(gsoap_eml2_3::eml23__IndexableElement elementKind, uint64_t elementCount, const std::string& elementDataset,
+			int64_t nullValue, EML2_NS::AbstractHdfProxy* proxy, const std::string& supportingRepDataset = "");
 
-		int64_t getLatticeElementIndicesStartValue(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
-		uint64_t getLatticeElementIndicesDimensionCount(uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
-		int64_t getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
-		uint64_t getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, uint64_t patchIndex, unsigned int elementIndicesIndex = 0) const;
-
-		gsoap_eml2_3::eml23__IndexableElement getElementKindOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex) const;
-		uint64_t getElementCountOfPatch(uint64_t patchIndex) const;
-		void getElementIndicesOfPatch(uint64_t patchIndex, unsigned int elementIndicesIndex, uint64_t * elementIndices) const;
-
+		/**
+		 * Pushes back a representation which is one of the support of this sub-representation. And push
+		 * back this sub-representation as a subrepresentation of the representation as well.
+		 *
+		 * @exception	std::invalid_argument	If @p supportingRep is nullptr.
+		 *
+		 * @param[in]	supportingRep	If representation to set as a supporting representation of this
+		 * 								sub-representation.
+		 */
 		void pushBackSupportingRepresentation(AbstractRepresentation * supportingRep);
+
+		/**
+		 * Gets the count of supporting representations of this sub-representation.
+		 *
+		 * @returns	The supporting representation count if successful, otherwise 0 if no supporting
+		 * 			representation is associated to this sub-representation. This should not happened in
+		 * 			a serialized state but can occur after creating a sub-representation and before
+		 * 			associating any supporting representation to it.
+		 */
 		uint64_t getSupportingRepresentationCount() const;
+
+		/**
+		 * Gets the supporting representation located at a specific index of this sub-representation.
+		 *
+		 * @exception	std::invalid_argument	If no supporting representation is already associated to
+		 * 										this sub-representation.
+		 * @exception	std::out_of_range	 	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the supporting representation we look for.
+		 *
+		 * @returns	The supporting representation at position @p index.
+		 */
 		AbstractRepresentation* getSupportingRepresentation(uint64_t index) const;
 	};
 	
@@ -3703,7 +3995,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets a particular grid connection set representation associated to this grid representation.
 		 *
-		 * @exception	std::out_of_range	If @p index is out of range (greater than {@link getGridConnectionSetRepresentationCount()}).
+		 * @exception	std::out_of_range	If @p index is out of range (greater than \link getGridConnectionSetRepresentationCount() \endlink).
 		 *
 		 * @param 	index	Zero-based index of the grid connection set representation we look for.
 		 *
@@ -3763,11 +4055,11 @@ namespace RESQML2_NS
 		 * 										nullptr and no default HDF proxy is defined in the
 		 * 										repository.
 		 *
-		 * @param [in]	  	cellIndices   	Identifies the cells (of the parent grid) which are regridded.
+		 * @param[in]	  	cellIndices   	Identifies the cells (of the parent grid) which are regridded.
 		 * @param 		  	cellIndexCount	Identifies the count of cells (of the parent grid) which are
 		 * 									regridded.
-		 * @param [in]	  	parentGrid	  	The parent grid which is regridded.
-		 * @param [in,out]	proxy		  	(Optional) The HDF proxy where to store the numerical values.
+		 * @param[in]	  	parentGrid	  	The parent grid which is regridded.
+		 * @param[in,out]	proxy		  	(Optional) The HDF proxy where to store the numerical values.
 		 * 									If nullptr (default), then the proxy will be the default
 		 * 									proxy of the repository. This parameter is unused if @p
 		 * 									cellIndexCount is 1 since no numerical value need to be store
@@ -3788,28 +4080,28 @@ namespace RESQML2_NS
 		 * 										@p proxy is nullptr and no default HDF proxy is defined
 		 * 										in the repository.
 		 *
-		 * @param [in]	  	columnIndices			  	Identifies the columns (of the parent grid) which
+		 * @param[in]	  	columnIndices			  	Identifies the columns (of the parent grid) which
 		 * 												are regridded. The size is @p columnIndexCount.
 		 * @param 		  	columnIndexCount		  	Identifies the count of columns (of the parent
 		 * 												grid) which are regridded.
 		 * @param 		  	kLayerIndexRegridStart	  	K index of the first K layer of all above parent
 		 * 												grid columns to be regridded.
-		 * @param [in]	  	childCellCountPerInterval 	The count of cells per K interval in this (child)
+		 * @param[in]	  	childCellCountPerInterval 	The count of cells per K interval in this (child)
 		 * 												grid. The size is @p intervalCount.
-		 * @param [in]	  	parentCellCountPerInterval	The count of cells per K interval in the parent
+		 * @param[in]	  	parentCellCountPerInterval	The count of cells per K interval in the parent
 		 * 												grid. The size is @p intervalCount.
 		 * @param 		  	intervalCount			  	The count of intervals on K dimension. Intervals
 		 * 												are portions of cells to regrid which does not
 		 * 												overlap with each others. Intervals are the same
 		 * 												for all the regridded columns.
-		 * @param [in]	  	parentGrid				  	The parent grid which is regridded.
-		 * @param [in,out]	proxy					  	(Optional) The HDF proxy where to store the
+		 * @param[in]	  	parentGrid				  	The parent grid which is regridded.
+		 * @param[in,out]	proxy					  	(Optional) The HDF proxy where to store the
 		 * 												numerical values. If nullptr (default), then the
 		 * 												proxy will be the default proxy of the
 		 * 												repository. This parameter is unused if no
 		 * 												numerical value need to be store in an HDF proxy
 		 * 												(pure XML).
-		 * @param [in]	  	childCellWeights		  	(Optional) The weights that are proportional to
+		 * @param[in]	  	childCellWeights		  	(Optional) The weights that are proportional to
 		 * 												the relative K sizes of child cells within each K
 		 * 												interval. This is useful to set up child cells of
 		 * 												different K sizes inside the intervals. The
@@ -3841,39 +4133,39 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	iCellIndexRegridStart	   	I index of the first parent grid cell to be
 		 * 												regridded.
-		 * @param [in]	  	childCellCountPerIInterval 	The count of cells per I interval in this (child)
+		 * @param[in]	  	childCellCountPerIInterval 	The count of cells per I interval in this (child)
 		 * 												grid. The size is @p iIntervalCount.
-		 * @param [in]	  	parentCellCountPerIInterval	The count of cells per I interval in the parent
+		 * @param[in]	  	parentCellCountPerIInterval	The count of cells per I interval in the parent
 		 * 												grid. The size is @p iIntervalCount.
 		 * @param 		  	iIntervalCount			   	The count of intervals on I dimension. Intervals
 		 * 												are portions of cells to regrid which does not
 		 * 												overlap with each others.
 		 * @param 		  	jCellIndexRegridStart	   	J index of the first parent grid cell to be
 		 * 												regridded.
-		 * @param [in]	  	childCellCountPerJInterval 	The count of cells per J interval in this (child)
+		 * @param[in]	  	childCellCountPerJInterval 	The count of cells per J interval in this (child)
 		 * 												grid. The size is @p jIntervalCount.
-		 * @param [in]	  	parentCellCountPerJInterval	The count of cells per J interval in the parent
+		 * @param[in]	  	parentCellCountPerJInterval	The count of cells per J interval in the parent
 		 * 												grid. The size is @p jIntervalCount.
 		 * @param 		  	jIntervalCount			   	The count of intervals on J dimension. Intervals
 		 * 												are portions of cells to regrid which does not
 		 * 												overlap with each others.
 		 * @param 		  	kCellIndexRegridStart	   	K index of the first parent grid cell to be
 		 * 												regridded.
-		 * @param [in]	  	childCellCountPerKInterval 	The count of cells per K interval in this (child)
+		 * @param[in]	  	childCellCountPerKInterval 	The count of cells per K interval in this (child)
 		 * 												grid. The size is @p kIntervalCount.
-		 * @param [in]	  	parentCellCountPerKInterval	The count of cells per K interval in the parent
+		 * @param[in]	  	parentCellCountPerKInterval	The count of cells per K interval in the parent
 		 * 												grid. The size is @p kIntervalCount.
 		 * @param 		  	kIntervalCount			   	The count of intervals on K dimension. Intervals
 		 * 												are portions of cells to regrid which does not
 		 * 												overlap with each others.
-		 * @param [in]	  	parentGrid				   	The parent grid which is regridded.
-		 * @param [in,out]	proxy					   	(Optional) The HDF proxy where to store the
+		 * @param[in]	  	parentGrid				   	The parent grid which is regridded.
+		 * @param[in,out]	proxy					   	(Optional) The HDF proxy where to store the
 		 * 												numerical values. If nullptr (default), then the
 		 * 												proxy will be the default proxy of the
 		 * 												repository. This parameter is unused if no
 		 * 												numerical value need to be store in an HDF proxy
 		 * 												(pure XML).
-		 * @param [in]	  	iChildCellWeights		   	(Optional) The weights that are proportional to
+		 * @param[in]	  	iChildCellWeights		   	(Optional) The weights that are proportional to
 		 * 												the relative I sizes of child cells within each I
 		 * 												interval. This is useful to set up child cells of
 		 * 												different I sizes inside the intervals. The
@@ -3881,7 +4173,7 @@ namespace RESQML2_NS
 		 * 												double values must be equal to the count of all
 		 * 												child cells on I dimension (sum of child cells
 		 * 												per interval). Default value is nullptr.
-		 * @param [in]	  	jChildCellWeights		   	(Optional) The weights that are proportional to
+		 * @param[in]	  	jChildCellWeights		   	(Optional) The weights that are proportional to
 		 * 												the relative J sizes of child cells within each J
 		 * 												interval. This is useful to set up child cells of
 		 * 												different J sizes inside the intervals. The
@@ -3889,7 +4181,7 @@ namespace RESQML2_NS
 		 * 												double values must be equal to the count of all
 		 * 												child cells on J dimension (sum of child cells
 		 * 												per interval). Default value is nullptr.
-		 * @param [in]	  	kChildCellWeights		   	(Optional) The weights that are proportional to
+		 * @param[in]	  	kChildCellWeights		   	(Optional) The weights that are proportional to
 		 * 												the relative K sizes of child cells within each K
 		 * 												interval. This is useful to set up child cells of
 		 * 												different K sizes inside the intervals. The
@@ -3951,15 +4243,15 @@ namespace RESQML2_NS
 		 * @param 		  	kIntervalCount					   	The count of intervals on K dimension.
 		 * 														Intervals are portions of cells to regrid
 		 * 														which does not overlap with each others.
-		 * @param [in]	  	parentGrid						   	The parent grid which is regridded.
-		 * @param [in,out]	proxy							   	(Optional) The HDF proxy where to store
+		 * @param[in]	  	parentGrid						   	The parent grid which is regridded.
+		 * @param[in,out]	proxy							   	(Optional) The HDF proxy where to store
 		 * 														the numerical values. If nullptr
 		 * 														(default), then the proxy will be the
 		 * 														default proxy of the repository. This
 		 * 														parameter is unused if no numerical value
 		 * 														need to be store in an HDF proxy (pure
 		 * 														XML).
-		 * @param [in]	  	iChildCellWeights				   	(Optional) The weights that are
+		 * @param[in]	  	iChildCellWeights				   	(Optional) The weights that are
 		 * 														proportional to the relative I sizes of
 		 * 														child cells within each I interval. This
 		 * 														is useful to set up child cells of
@@ -3971,7 +4263,7 @@ namespace RESQML2_NS
 		 * 														(<tt>constantChildCellCountPerIInterval *
 		 * 														iIntervalCount</tt>). Default value is
 		 * 														nullptr.
-		 * @param [in]	  	jChildCellWeights				   	(Optional) The weights that are
+		 * @param[in]	  	jChildCellWeights				   	(Optional) The weights that are
 		 * 														proportional to the relative J sizes of
 		 * 														child cells within each J interval. This
 		 * 														is useful to set up child cells of
@@ -3982,7 +4274,7 @@ namespace RESQML2_NS
 		 * 														dimension
 		 * 														(<tt>constantChildCellCountPerJInterval</tt>
 		 * 														<tt>* jIntervalCount</tt>).
-		 * @param [in]	  	kChildCellWeights				   	(Optional) The weights that are
+		 * @param[in]	  	kChildCellWeights				   	(Optional) The weights that are
 		 * 														proportional to the relative K sizes of
 		 * 														child cells within each K interval. This
 		 * 														is useful to set up child cells of
@@ -4031,25 +4323,25 @@ namespace RESQML2_NS
 		 * 											(child) grid.
 		 * @param 		  	kParentCellCount	 	The count of cells for the unique K interval in the
 		 * 											parent grid.
-		 * @param [in]	  	parentGrid			 	The parent grid which is regridded.
-		 * @param [in,out]	proxy				 	(Optional) The HDF proxy where to store the numerical
+		 * @param[in]	  	parentGrid			 	The parent grid which is regridded.
+		 * @param[in,out]	proxy				 	(Optional) The HDF proxy where to store the numerical
 		 * 											values. If nullptr (default), then the proxy will be
 		 * 											the default proxy of the repository. This parameter
 		 * 											is unused if no numerical value need to be store in
 		 * 											an HDF proxy (pure XML).
-		 * @param [in]	  	iChildCellWeights	 	(Optional) The weights that are proportional to the
+		 * @param[in]	  	iChildCellWeights	 	(Optional) The weights that are proportional to the
 		 * 											relative I sizes of child cells. This is useful to
 		 * 											set up child cells of different I sizes inside the
 		 * 											unique interval. The weights need not to be
 		 * 											normalized. The count of double values must be equal
 		 * 											to @p iChildCellCount. Default value is nullptr.
-		 * @param [in]	  	jChildCellWeights	 	(Optional) The weights that are proportional to the
+		 * @param[in]	  	jChildCellWeights	 	(Optional) The weights that are proportional to the
 		 * 											relative J sizes of child cells. This is useful to
 		 * 											set up child cells of different J sizes inside the
 		 * 											unique interval. The weights need not to be
 		 * 											normalized. The count of double values must be equal
 		 * 											to @p jChildCellCount. Default value is nullptr.
-		 * @param [in]	  	kChildCellWeights	 	(Optional) The weights that are proportional to the
+		 * @param[in]	  	kChildCellWeights	 	(Optional) The weights that are proportional to the
 		 * 											relative K sizes of child cells. This is useful to
 		 * 											set up child cells of different K sizes inside the
 		 * 											unique interval. The weights need not to be
@@ -4074,7 +4366,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If an HDF proxy is required and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	cellIndices   	The indices of the parent cells to be noted as non regridded. The
+		 * @param[in]	cellIndices   	The indices of the parent cells to be noted as non regridded. The
 		 * 								size is @p cellIndexCount.
 		 * @param 	  	cellIndexCount	Number of cells to be noted as non regridded.
 		 */
@@ -4094,14 +4386,14 @@ namespace RESQML2_NS
 		 *
 		 * @param 	  	parentChildCellPairCount	Number of (parent cell, child cell) pairs that
 		 * 											overlap.
-		 * @param [in]	parentChildCellPair			The (parent cell index, child cell index) pair for
+		 * @param[in]	parentChildCellPair			The (parent cell index, child cell index) pair for
 		 * 											each overlap. The size is <tt>2 *
 		 * 											parentChildCellPairCount</tt>.
 		 * 											<tt>parentChildCellPair[2i]</tt> are parent cell indices
 		 * 											and <tt>parentChildCellPair[2i+1]</tt> are child cell
 		 * 											indices.
 		 * @param 	  	volumeUom					The volume unit of measure.
-		 * @param [in]	overlapVolumes				(Optional) The overlapping volume for each (parent
+		 * @param[in]	overlapVolumes				(Optional) The overlapping volume for each (parent
 		 * 											cell, child cell) that overlaps. Size is @p
 		 * 											parentChildCellPairCount. Default value is nullptr.
 		 */
@@ -4132,7 +4424,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the list of regridded cells is not stored in an HDF5
 		 * 										file.
 		 *
-		 * @param [out]	parentCellIndices	An array for receiving the regridded cells indices. This
+		 * @param[out]	parentCellIndices	An array for receiving the regridded cells indices. This
 		 * 									array must have been preallocated with a size of 
 		 * 									getParentCellIndexCount().
 		 */
@@ -4162,7 +4454,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the list of regridded cells is not stored in an HDF5
 		 * 										file.
 		 *
-		 * @param [out]	parentColumnIndices	An array for collecting the regridded column indices. This
+		 * @param[out]	parentColumnIndices	An array for collecting the regridded column indices. This
 		 * 									array must have been preallocated with a size of
 		 * 										getParentColumnIndexCount().
 		 */
@@ -4294,7 +4586,7 @@ namespace RESQML2_NS
 		 * 											either 'i', 'j' ou 'k' (upper or lower case) for an
 		 * 											IJK parent grid or 'k' for a strict column layer
 		 * 											parent grid.
-		 * @param [in]	childCellCountPerInterval	An array to receive the regrid cell count per
+		 * @param[in]	childCellCountPerInterval	An array to receive the regrid cell count per
 		 * 											interval. It must have been preallocated with a size
 		 * 											of getRegridIntervalCount().
 		 * @param 	  	childVsParentCellCount   	If true, gets the child cell count per interval. If
@@ -4347,7 +4639,7 @@ namespace RESQML2_NS
 		 * 										weights. It must be either 'i', 'j' ou 'k' (upper or lower
 		 * 										case) for an IJK parent grid or 'k' for a strict column layer
 		 * 										parent grid.
-		 * @param [in,out]	childCellWeights	An array for receiving the regrid child cell weights. It
+		 * @param[in,out]	childCellWeights	An array for receiving the regrid child cell weights. It
 		 * 										must have been preallocated with a size equal to the sum of
 		 * 										regrid child cell count per interval (using
 		 * 										getRegridCellCountPerInterval()).
@@ -4373,12 +4665,12 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If no default HDF proxy is defined in the repository.
 		 *
-		 * @param [in]	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
+		 * @param[in]	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
 		 * 									column for each cell. Array length is the number of cells in
 		 * 									the grid or the blocked well.
 		 * @param 	  	nullValue		 	The value which is used to tell the association between a
 		 * 									cell and a stratigraphic unit is unavailable.
-		 * @param [in]	stratiOrgInterp  	The stratigraphic organization interpretation which is
+		 * @param[in]	stratiOrgInterp  	The stratigraphic organization interpretation which is
 		 * 									associated to this grid representation.
 		 */
 		void setCellAssociationWithStratigraphicOrganizationInterpretation(int64_t * stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
@@ -4415,7 +4707,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the cells of this grid are not associated with
 		 * 										stratigraphic units indices.
 		 *
-		 * @param [out]	stratiUnitIndices	An array to receive the stratigraphic unit indices associated
+		 * @param[out]	stratiUnitIndices	An array to receive the stratigraphic unit indices associated
 		 * 									to the cells of this grid. It must be preallocated with a
 		 * 									count equal to getCellCount(). It will be filled in with the
 		 * 									stratigraphic unit indices ordered as grid cells are ordered.
@@ -4451,7 +4743,7 @@ namespace RESQML2_NS
 		 * 										in a HDF5 integer array.
 		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
-		 * @param [out]	nodeIndices	An array to receive the node indices of the truncated faces. It must
+		 * @param[out]	nodeIndices	An array to receive the node indices of the truncated faces. It must
 		 * 							be preallocated with the last value returned by
 		 * 							getCumulativeNodeCountOfTruncatedFaces().
 		 */
@@ -4469,7 +4761,7 @@ namespace RESQML2_NS
 		 * @exception	std::range_error	 	If the cumulative length of nodes count per cells is
 		 * 										constant (it is stored in a constant integer array).
 		 *
-		 * @param [in]	nodeCountPerFace	An array to receive the cumulative node count per truncated
+		 * @param[in]	nodeCountPerFace	An array to receive the cumulative node count per truncated
 		 * 									face. It must be preallocated with getTruncatedFaceCount()
 		 * 									(equals to last value of
 		 * 									getCumulativeTruncatedFaceCountPerTruncatedCell())
@@ -4486,7 +4778,7 @@ namespace RESQML2_NS
 		 * @exception	std::range_error	 	If the cumulative length of nodes count per cells is
 		 * 										constant (it is stored in a constant integer array).
 		 *
-		 * @param [out]	nodeCountPerFace	An array to receive the node count per truncated face. It
+		 * @param[out]	nodeCountPerFace	An array to receive the node count per truncated face. It
 		 * 									must be preallocated with getTruncatedFaceCount() (equals to last
 		 * 									value of getCumulativeTruncatedFaceCountPerTruncatedCell()).
 		 */
@@ -4510,7 +4802,7 @@ namespace RESQML2_NS
 		 * 										integer array nor in a constant integer array.
 		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
-		 * @param [out]	cellIndices	An array to receive the parent cell index of each truncation cell. It
+		 * @param[out]	cellIndices	An array to receive the parent cell index of each truncation cell. It
 		 * 							must be preallocated with getTruncatedCellCount.
 		 */
 		void getTruncatedCellIndices(uint64_t* cellIndices) const;
@@ -4526,7 +4818,7 @@ namespace RESQML2_NS
 		 * 										integer array.
 		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
-		 * @param [out]	faceIndices	An array to receive the truncated face indices of all the truncated
+		 * @param[out]	faceIndices	An array to receive the truncated face indices of all the truncated
 		 * 							cells. It must be preallocated with the last value returned by
 		 * 							getCumulativeTruncatedFaceCountPerTruncatedCell()
 		 */
@@ -4546,7 +4838,7 @@ namespace RESQML2_NS
 		 * 										cells is constant (it is stored in a constant integer
 		 * 										array) while there is more than one cell in the grid.
 		 *
-		 * @param [out]	cumulativeFaceCountPerCell	An array to receive the cumulative truncated face
+		 * @param[out]	cumulativeFaceCountPerCell	An array to receive the cumulative truncated face
 		 * 											count per truncated cell. It must be pre allocated
 		 * 											with getTruncatedCellCount().
 		 */
@@ -4563,7 +4855,7 @@ namespace RESQML2_NS
 		 * 										constant (it is stored in a constant integer array) while
 		 * 										there is more than one cell in the grid.
 		 *
-		 * @param [out]	faceCountPerCell	An array to receive the truncated face count per truncated
+		 * @param[out]	faceCountPerCell	An array to receive the truncated face count per truncated
 		 * 									cell. It must be preallocated with getTruncatedCellCount()
 		 */
 		void getTruncatedFaceCountPerTruncatedCell(uint64_t * faceCountPerCell) const;
@@ -4579,7 +4871,7 @@ namespace RESQML2_NS
 		 * 										HDF5 integer array.
 		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
-		 * @param [out]	faceIndices	An array to receive the non truncated face indices of all the
+		 * @param[out]	faceIndices	An array to receive the non truncated face indices of all the
 		 * 							truncated cells.It must be pre allocated with the last value returned
 		 * 							by getCumulativeNonTruncatedFaceCountPerTruncatedCell()
 		 */
@@ -4599,7 +4891,7 @@ namespace RESQML2_NS
 		 * 										cells is constant (it is stored in a constant integer
 		 * 										array) while there is more than one cell in the grid.
 		 *
-		 * @param [out]	cumulativeFaceCountPerCell	An array to receive the cumulative non truncated face
+		 * @param[out]	cumulativeFaceCountPerCell	An array to receive the cumulative non truncated face
 		 * 											count per truncated cell. It must be preallocated with
 		 * 												getTruncatedCellCount()
 		 */
@@ -4616,7 +4908,7 @@ namespace RESQML2_NS
 		 * 										cells is constant (it is stored in a constant integer
 		 * 										array) while there is more than one cell in the grid.
 		 *
-		 * @param [out]	faceCountPerCell	An array to receive the non truncated face count per
+		 * @param[out]	faceCountPerCell	An array to receive the non truncated face count per
 		 * 									truncated cell. It must be pre allocated with
 		 * 									getTruncatedCellCount()
 		 */
@@ -4632,7 +4924,7 @@ namespace RESQML2_NS
 		 * 										array.
 		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
-		 * @param [out]	cellFaceIsRightHanded	An array to receive the orientation of truncated faces.
+		 * @param[out]	cellFaceIsRightHanded	An array to receive the orientation of truncated faces.
 		 * 										Value '0' means left handed and value other than '0'
 		 * 										means right handed. It must be preallocated with
 		 * 										getTruncatedFaceCount()
@@ -4739,16 +5031,16 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p hdfProxy is null and no default HDF proxy is
 		 * 										provided in the associated data object repository.
 		 *
-		 * @param [in]	   	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
+		 * @param[in]	   	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
 		 * 										column for each interval of this grid representation.
 		 * 										Array length is the number of interval in the grids.
 		 * 										Intervals = layers + K gaps.
 		 * @param 		   	nullValue		 	The value which is used to tell that the association
 		 * 										between a grid interval and a stratigraphic unit is
 		 * 										unavailable.
-		 * @param [in]	   	stratiOrgInterp  	The stratigraphic organization interpretation which is
+		 * @param[in]	   	stratiOrgInterp  	The stratigraphic organization interpretation which is
 		 * 										associated to this grid representation.
-		 * @param [in, out]	hdfProxy		 	(Optional) The HDF proxy where to write the values. It
+		 * @param[in, out]	hdfProxy		 	(Optional) The HDF proxy where to write the values. It
 		 * 										must be already opened for writing and won't be closed in
 		 * 										this method.
 		 */
@@ -4774,7 +5066,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If this grid has no stratigraphic unit interval
 		 * 										information.
 		 *
-		 * @param [out]	stratiUnitIndices	This array must be allocated with a size equal to the
+		 * @param[out]	stratiUnitIndices	This array must be allocated with a size equal to the
 		 * 										count of interval in this grid. Intervals = layers + K gaps.
 		 * 										It will be filled in with the stratigraphic unit indices
 		 * 										ordered as grid intervals are ordered.
@@ -4800,7 +5092,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets the parent node index for each of the split nodes.
 		 *
-		 * @param [out]	splitNodeParentNodeIndices	This array must be pre-allocated with a size equal to the
+		 * @param[out]	splitNodeParentNodeIndices	This array must be pre-allocated with a size equal to the
 		 * 											count of split nodes. It will be filled in by this method
 		 *											and not deleted.
 		 *
@@ -4819,7 +5111,7 @@ namespace RESQML2_NS
 		 * 										split coordinate lines are not stored within an HDF5
 		 * 										integer array.
 		 *
-		 * @param [out]	cumulativeCountOfCellsPerSplitNode	This array must be pre-allocated with a size equal to the
+		 * @param[out]	cumulativeCountOfCellsPerSplitNode	This array must be pre-allocated with a size equal to the
 		 * 													count of split nodes. It will be filled in with the cumulative
 		 * 													count of cells impacted by the split nodes.
 		 */
@@ -4835,7 +5127,7 @@ namespace RESQML2_NS
 		 * 										split coordinate lines are not stored within an HDF5
 		 * 										integer array.
 		 *
-		 * @param [out]	cellsPerSplitNode	This array must be pre-allocated with the last value of the 
+		 * @param[out]	cellsPerSplitNode	This array must be pre-allocated with the last value of the 
 		 * 									getCumulativeCountOfCellsPerSplitNode returned value.
 		 *									It will be filled in with the cell indices impacted by the split nodes.
 		 */
@@ -4845,10 +5137,10 @@ namespace RESQML2_NS
 		* Sets all information about a split node patch of the grid. These information is related to
 		* all XYZ points which are located after the index (PillarCount + SplitPillarCount + SplitCoordinateLineCount) * (KCellCount + 1)
 		* 
-		* @param [in] splitNodeCount						The count of split nodes
-		* @param [in] splitNodeParentNodeIndices			The parent node index for each of the split nodes. Size must be splitNodeCount.
-		* @param [in] cumulativeCountOfCellsPerSplitNode	The cumulative count of cells impacted by each of the split nodes. Size must be splitNodeCount.
-		* @param [in] cellsPerSplitNode						The indices of the cells impacted by each of the split nodes.
+		* @param[in] splitNodeCount						The count of split nodes
+		* @param[in] splitNodeParentNodeIndices			The parent node index for each of the split nodes. Size must be splitNodeCount.
+		* @param[in] cumulativeCountOfCellsPerSplitNode	The cumulative count of cells impacted by each of the split nodes. Size must be splitNodeCount.
+		* @param[in] cellsPerSplitNode						The indices of the cells impacted by each of the split nodes.
 		*													Size must be the last value of cumulativeCountOfCellsPerSplitNode
 		*/
 		void setSplitNodePatch(uint64_t splitNodeCount, uint64_t* splitNodeParentNodeIndices,
@@ -4937,7 +5229,7 @@ namespace RESQML2_NS
 		/**
 		* For each K Layer except the last one, indicate wether there is a layer or not after it.
 		*
-		* @param [out]	kGaps	An array for receiving the information about kGaps.
+		* @param[out]	kGaps	An array for receiving the information about kGaps.
 		*						It must have a count of getKCellCount() - 1. It won't be free. A false value in
 		* 						@p kGaps means that the corresponding k layer has no gaps just after it.
 		*						A true value means that the corresponding k layer has a gap just after it.
@@ -5107,7 +5399,7 @@ namespace RESQML2_NS
 		 * 										coordinate lines are not stored within an HDF5 integer
 		 * 										array.
 		 *
-		 * @param [out]	pillarIndices	An array for receiving the indices of the pillars corresponding
+		 * @param[out]	pillarIndices	An array for receiving the indices of the pillars corresponding
 		 * 								to the split coordinate lines. It must be preallocated with a
 		 * 								size of getSplitCoordinateLineCount().
 		 * @param 	   	reverseIAxis 	(Optional) True to reverse I axis. Default value is false.
@@ -5126,7 +5418,7 @@ namespace RESQML2_NS
 		 * 										coordinate lines are not stored within an HDF5 integer
 		 * 										array.
 		 *
-		 * @param [out]	columnIndices	An array for receiving the indices of the columns impacted by the
+		 * @param[out]	columnIndices	An array for receiving the indices of the columns impacted by the
 		 * 								split coordinate lines. It must be preallocated with a size equal
 		 * 								to the last value of the array outputted from
 		 * 								getColumnCountOfSplitCoordinateLines().
@@ -5146,7 +5438,7 @@ namespace RESQML2_NS
 		 * 										split coordinate lines are not stored within an HDF5
 		 * 										integer array.
 		 *
-		 * @param [out]	columnIndexCountPerSplitCoordinateLine	An array for receiving the cumulative
+		 * @param[out]	columnIndexCountPerSplitCoordinateLine	An array for receiving the cumulative
 		 * 														count of columns impacted by the split
 		 * 														coordinate lines.
 		 */
@@ -5244,7 +5536,7 @@ namespace RESQML2_NS
 		 * 										is defined are neither stored in an HDF5 boolean array
 		 * 										nor in a boolean constant array.
 		 *
-		 * @param [out]	pillarGeometryIsDefined	An array for receiving a boolean value for each pillar
+		 * @param[out]	pillarGeometryIsDefined	An array for receiving a boolean value for each pillar
 		 * 										indicating if its geometry is defined or not. It must be
 		 * 										preallocated with a size of getPillarCount().
 		 * @param 	   	reverseIAxis		   	(Optional) True to reverse i axis. Default value is false.
@@ -5271,7 +5563,7 @@ namespace RESQML2_NS
 		 * 										stored in an HDF5 boolean array nor in a boolean constant
 		 * 										array.
 		 *
-		 * @param [out]	cellGeometryIsDefinedFlags	An array for receiving the information about CellGeometryIsDefined flags.
+		 * @param[out]	cellGeometryIsDefinedFlags	An array for receiving the information about CellGeometryIsDefined flags.
 		 *								It must have a count of getCellCount() and must follow the
 		 * 								index ordering I then J then K. It won't be free. A zero value in
 		 * 								@p cellGeometryIsDefinedFlags means that the corresponding cell geometry is not defined. A non
@@ -5291,12 +5583,12 @@ namespace RESQML2_NS
 		 * 										defined in the repository.
 		 * @exception	std::invalid_argument	If this grid has no geometry.
 		 *
-		 * @param [in]	  	cellGeometryIsDefinedFlags	An array containing the CellGeometryIsDefined flags.
+		 * @param[in]	  	cellGeometryIsDefinedFlags	An array containing the CellGeometryIsDefined flags.
 		 *									It must have a count of getCellCount() and must follow the
 		 * 									index ordering I then J then K. A zero value in
 		 * 									@p cellGeometryIsDefinedFlags means that the corresponding cell geometry is not defined. A non
 		 * 									zero value means that the corresponding cell geometry is defined.
-		 * @param [in]		proxy			(Optional) The HDF proxy for writing the @p cellGeometryIsDefinedFlags
+		 * @param[in]		proxy			(Optional) The HDF proxy for writing the @p cellGeometryIsDefinedFlags
 		 * 									values. If @c nullptr (default), then the default HDF proxy will be
 		 * 									used.
 		 */
@@ -5328,7 +5620,7 @@ namespace RESQML2_NS
 		 * information but to get it as input.
 		 *
 		 * @param 		  	kInterface	The K interface index starting from zero to kCellCount.
-		 * @param [out]	xyzPoints 		A linearized 2d array where the first (quickest) dimension is
+		 * @param[out]	xyzPoints 		A linearized 2d array where the first (quickest) dimension is
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated with a size of
 		 * 								<tt>3 * getXyzPointCountOfKInterface()</tt>.
@@ -5347,7 +5639,7 @@ namespace RESQML2_NS
 		 * 								getKCellCount().
 		 * @param 	   	kInterfaceEnd  	The K index of the ending interface taken from zero to
 		 * 								getKCellCount() + getKGapsCount().
-		 * @param [out]	xyzPoints	   	A linearized 2d array where the first (quickest) dimension is
+		 * @param[out]	xyzPoints	   	A linearized 2d array where the first (quickest) dimension is
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be preallocated with a size of
 		 * 								<tt>3 *</tt> getXyzPointCountOfKInterface() <tt>*
@@ -5443,20 +5735,20 @@ namespace RESQML2_NS
 		 * 																right handed, as determined by the
 		 * 																triple product of tangent vectors in
 		 * 																the I, J, and K directions.
-		 * @param [in]	  	points										XYZ double triplets ordered by i
+		 * @param[in]	  	points										XYZ double triplets ordered by i
 		 * 																then j then split then k. Count must
 		 * 																be <tt>((iCellCount+1) *
 		 * 																(jCellCount+1) +
 		 * 																splitCoordinateLineCount) *
 		 * 																kCellCount</tt>.
-		 * @param [in,out]	proxy										(Optional) The HDF proxy where
+		 * @param[in,out]	proxy										(Optional) The HDF proxy where
 		 * 																all numerical values will be stored.
 		 * 																If @c nullptr, then the default HDF
 		 * 																proxy of the repository will be used.
 		 * @param 		  	splitCoordinateLineCount					(Optional) The count of split
 		 * 																coordinate line. A grid pillar is
 		 * 																splitted in up to 4 coordinate lines.
-		 * @param [in]	  	pillarOfCoordinateLine						(Optional) For each split
+		 * @param[in]	  	pillarOfCoordinateLine						(Optional) For each split
 		 * 																coordinate line, indicates which
 		 * 																pillar it belongs to. Pillars are
 		 * 																identified by their absolute 1d index
@@ -5465,7 +5757,7 @@ namespace RESQML2_NS
 		 * 																<tt>iPillarCount ==
 		 * 																iCellCount+1</tt>. Count is
 		 * 																splitCoordinateLineCount.
-		 * @param [in]	  	splitCoordinateLineColumnCumulativeCount	(Optional) For each split
+		 * @param[in]	  	splitCoordinateLineColumnCumulativeCount	(Optional) For each split
 		 * 																coordinate line, indicates how many
 		 * 																columns of the ijk grid are incident
 		 * 																to it (minimum is one and maximum is
@@ -5481,7 +5773,7 @@ namespace RESQML2_NS
 		 * 																incident to <tt>6 - 4 = 2</tt>
 		 * 																columns. Count is
 		 * 																splitCoordinateLineCount.
-		 * @param [in]	  	splitCoordinateLineColumns					(Optional) For each split
+		 * @param[in]	  	splitCoordinateLineColumns					(Optional) For each split
 		 * 																coordinate line, indicates which
 		 * 																columns are incident to it. Count is
 		 * 																the last value in the
@@ -5492,14 +5784,14 @@ namespace RESQML2_NS
 		 * 																<tt> + jColumn * iColumnCount)</tt>
 		 * 																where
 		 * 																Column == Cell.
-		 * @param [in]	  	definedPillars								(Optional) For each pillar : 0 if
+		 * @param[in]	  	definedPillars								(Optional) For each pillar : 0 if
 		 * 																pillar is not defined (i.e points
 		 * 																equal to NaN) else the pillar is
 		 * 																defined.  This information overrides
 		 * 																any pillar geometry information. If
 		 * 																null, then all pillars are assumed to
 		 * 																be defined.
-		 * @param [in]	  	localCrs									(Optional) The local CRS where
+		 * @param[in]	  	localCrs									(Optional) The local CRS where
 		 * 																the points are given. If @c nullptr
 		 * 																(default) then the default CRS of the
 		 * 																repository will be used.
@@ -5581,61 +5873,25 @@ namespace RESQML2_NS
 	{
 	public:
 		/**
-		 * Indicates whether the cell connections are associated to interpretation or not.
-		 *
-		 * @returns	True if associated to interpretations, false if not.
-		 */
-		bool isAssociatedToInterpretations() const;
-
-		/**
-		 * Gets the (fault) interpretation index cumulative counts of this grid connection
-		 * representation.
-		 *
-		 * @exception	std::invalid_argument	If this grid connection set representation does not
-		 * 										contain any (fault) interpretation association.
-		 * @exception	std::logic_error	 	If the intepretation indices cumulative counts are not
-		 * 										stored in a HDF5 integer array.
-		 *
-		 * @param [out]	cumulativeCount	A buffer for receiving the cumulative counts. Must be
-		 * 								preallocated with a size of getCellIndexPairCount(). The number
-		 * 								of interpretations associated to the connection at index @c i is
-		 * 								<tt>cumulativeCount[i]</tt>.
-		 */
-		void getInterpretationIndexCumulativeCount(uint64_t* cumulativeCount) const;
-
-		/**
-		 * Gets the (fault) interpretation indices of this grid connection representation.
-		 *
-		 * @exception	std::invalid_argument	If this grid connection set representation does not
-		 * 										contain any (fault) interpretation association.
-		 * @exception	std::logic_error	 	If the intepretation indices are not stored in a HDF5
-		 * 										integer array.
-		 *
-		 * @param [out]	interpretationIndices	A buffer for receiving the interpretation indices. It
-		 * 										must be preallocated with a size equals to the last value
-		 * 										of @c cumulativeCount after calling
-		 * 										<tt>getInterpretationIndexCumulativeCount(cumulativeCount).</tt>
-		 */
-		void getInterpretationIndices(int64_t * interpretationIndices) const;
-
-		/**
-		 * Gets the null value for interpretation index.
-		 *
-		 * @exception	std::invalid_argument	If this grid connection set representation does not
-		 * 										contain any (fault) interpretation association.
-		 * @exception	std::logic_error	 	If the intepretation indices are not stored in a HDF5
-		 * 										integer array.
-		 *
-		 * @returns	The interpretation index null value.
-		 */
-		int64_t getInterpretationIndexNullValue() const;
-		
-		/**
 		 * Gets the cell index pair count of this grid connection set representation.
 		 *
 		 * @returns	The cell index pair count.
 		 */
 		uint64_t getCellIndexPairCount() const;
+
+		/**
+		 * Gets the cell index pairs of this grid connection set representation
+		 *
+		 * @exception	logic_error	If the cell index pairs are not stored in a HDF5 integer array.
+		 *
+		 * @param[out]	cellIndexPairs	A buffer for receiving the cell index pairs. It must be
+		 * 								preallocated with a size of <tt>2 * getCellIndexPairCount()</tt>.
+		 * 								Two consecutive values <tt>cellIndexPairs[i]</tt> and
+		 * 								<tt>cellIndexPairs[i+1]</tt> constitute a pair of cell index.
+		 *
+		 * @returns	The null value.
+		 */
+		int64_t getCellIndexPairs(int64_t * cellIndexPairs) const;
 
 		/**
 		 * @brief	Gets the count of cell index pairs which correspond to a particular interpretation or to no interpretation.
@@ -5655,21 +5911,57 @@ namespace RESQML2_NS
 		 * 			interpretationIndex or to no interpretation.
 		 */
 		uint64_t getCellIndexPairCountFromInterpretationIndex(int64_t interpretationIndex) const;
-		
+
 		/**
-		 * Gets the cell index pairs of this grid connection set representation
+		 * Indicates whether the cell connections are associated to interpretation or not.
 		 *
-		 * @exception	logic_error	If the cell index pairs are not stored in a HDF5 integer array.
-		 *
-		 * @param [out]	cellIndexPairs	A buffer for receiving the cell index pairs. It must be
-		 * 								preallocated with a size of <tt>2 * getCellIndexPairCount()</tt>.
-		 * 								Two consecutive values <tt>cellIndexPairs[i]</tt> and
-		 * 								<tt>cellIndexPairs[i+1]</tt> constitute a pair of cell index.
-		 *
-		 * @returns	The null value.
+		 * @returns	True if associated to interpretations, false if not.
 		 */
-		int64_t getCellIndexPairs(int64_t * cellIndexPairs) const;
-		
+		bool isAssociatedToInterpretations() const;
+
+		/**
+		 * Gets the (fault) interpretation index cumulative counts of this grid connection
+		 * representation.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain any (fault) interpretation association.
+		 * @exception	std::logic_error	 	If the intepretation indices cumulative counts are not
+		 * 										stored in a HDF5 integer array.
+		 *
+		 * @param[out]	cumulativeCount	A buffer for receiving the cumulative counts. Must be
+		 * 								preallocated with a size of getCellIndexPairCount(). The number
+		 * 								of interpretations associated to the connection at index @c i is
+		 * 								<tt>cumulativeCount[i]</tt>.
+		 */
+		void getInterpretationIndexCumulativeCount(uint64_t * cumulativeCount) const;
+
+		/**
+		 * Gets the (fault) interpretation indices of this grid connection representation.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain any (fault) interpretation association.
+		 * @exception	std::logic_error	 	If the intepretation indices are not stored in a HDF5
+		 * 										integer array.
+		 *
+		 * @param[out]	interpretationIndices	A buffer for receiving the interpretation indices. It
+		 * 										must be preallocated with a size equals to the last value
+		 * 										of @c cumulativeCount after calling
+		 * 										<tt>getInterpretationIndexCumulativeCount(cumulativeCount).</tt>
+		 */
+		void getInterpretationIndices(int64_t * interpretationIndices) const;
+
+		/**
+		 * Gets the null value for interpretation index.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain any (fault) interpretation association.
+		 * @exception	std::logic_error	 	If the intepretation indices are not stored in a HDF5
+		 * 										integer array.
+		 *
+		 * @returns	The interpretation index null value.
+		 */
+		int64_t getInterpretationIndexNullValue() const;
+
 		/**
 		 * Gets the cell index pairs, the grid index pairs (optional) and the local face index pairs
 		 * (optional) which correspond to a particular interpretation or to no interpretation.
@@ -5678,14 +5970,14 @@ namespace RESQML2_NS
 		 * 										cumulative counts are not stored in a HDF5 integer array.
 		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
 		 *
-		 * @param [out]	  	cellIndexPairs	   	Mandatory buffer to receive the cell index pairs. Must be
+		 * @param[out]	  	cellIndexPairs	   	Mandatory buffer to receive the cell index pairs. Must be
 		 * 										preallocated with
 		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
-		 * @param [in,out]	gridIndexPairs	   	Optional buffer to receive the grid index pairs. Please
+		 * @param[in,out]	gridIndexPairs	   	Optional buffer to receive the grid index pairs. Please
 		 * 										set to @p nullptr for not collecting these pairs. Must be
 		 * 										preallocated with
 		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
-		 * @param [in,out]	localFaceIndexPairs	Optional buffer to receive the local face index pairs.
+		 * @param[in,out]	localFaceIndexPairs	Optional buffer to receive the local face index pairs.
 		 * 										Please set to @p nullptr for not collecting these pairs.
 		 * 										Must be preallocated with
 		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
@@ -5695,6 +5987,69 @@ namespace RESQML2_NS
 		 *										Or -1 for having information for cells which are not associated to any interpretation at all.
 		 */
 		void getGridConnectionSetInformationFromInterpretationIndex(int64_t * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, int64_t interpretationIndex) const;
+
+		/**
+		 * Gets the UUID of a particular (fault) interpretation of this grid connection set.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain fault interpretation association.
+		 * @exception	std::invalid_argument	If the associated feature interpretation at position @p
+		 * 										interpretationIndex is not a fault one. This is legal but
+		 * 										not yet implemented.
+		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
+		 *
+		 * @param 	interpretationIndex	The index of a (fault) interpretation in the collection of
+		 * 								feature interpretation of this grid connection set.
+		 *
+		 * @returns	The UUID of the (fault) interpretation at index @p interpretationIndex.
+		 */
+		std::string getInterpretationUuidFromIndex(uint64_t interpretationIndex) const {
+			return getInterpretationDorFromIndex(interpretationIndex).getUuid();
+		}
+
+		/**
+		 * Gets the DOR of a particular (fault) interpretation of this grid connection set.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain fault interpretation association.
+		 * @exception	std::invalid_argument	If the associated feature interpretation at position @p
+		 * 										interpretationIndex is not a fault one. This is legal but
+		 * 										not yet implemented.
+		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
+		 *
+		 * @param 	interpretationIndex	The index of a (fault) interpretation in the collection of
+		 * 								feature interpretation of this grid connection set.
+		 *
+		 * @returns	The DOR of the (fault) interpretation at index @p interpretationIndex.
+		 */
+		COMMON_NS::DataObjectReference getInterpretationDorFromIndex(uint64_t interpretationIndex) const;
+
+		/**
+		 * Gets a particular (fault) interpretation of this grid connection set.
+		 *
+		 * @exception	std::invalid_argument	If this grid connection set representation does not
+		 * 										contain fault interpretation association.
+		 * @exception	std::invalid_argument	If the associated feature interpretation at position @p
+		 * 										interpretationIndex is not a fault one. This is legal but
+		 * 										not yet implemented.
+		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
+		 *
+		 * @param 	interpretationIndex	The index of a (fault) interpretation in the collection of
+		 * 								feature interpretation of this grid connection set.
+		 *
+		 * @returns	The (fault) interpretation at index @p interpretationIndex.
+		 */
+		class AbstractFeatureInterpretation* getInterpretationFromIndex(uint64_t interpretationIndex) const;
+
+		/**
+		 * Get the count of interpretations in this grid connection set.
+		 *
+		 * @exception	range_error	If the count of associated interpretations is strictly greater than
+		 * 							unsigned int.
+		 *
+		 * @returns	The interpretation count.
+		 */
+		uint64_t getInterpretationCount() const;
 
 		/**
 		 * Indicates if this grid connection set representation contains information on the connected
@@ -5713,7 +6068,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the local face per cell index pairs are not stored
 		 * 										in a HDF5 integer array.
 		 *
-		 * @param [out]	localFacePerCellIndexPairs	A buffer for receiving the local face per cell index
+		 * @param[out]	localFacePerCellIndexPairs	A buffer for receiving the local face per cell index
 		 * 											pairs. It must be preallocated with a size of
 		 * 											<tt>getCellIndexPairCount()*2</tt> and won't be freed
 		 * 											by FESAPI.
@@ -5722,14 +6077,14 @@ namespace RESQML2_NS
 		 * @returns	The null value used in @p localFacePerCellIndexPairs.
 		 */
 		int64_t getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
-		
+
 		/**
 		 * Indicates if this grid connection set representation is based on several grids.
 		 *
 		 * @returns	True if it is based on several grids, false if not.
 		 */
 		bool isBasedOnMultiGrids() const;
-		
+
 		/**
 		 * Gets the grid index pairs of this grid connection representation. Please check that this grid
 		 * connection set representation is based on several grids thanks to isBasedOnMultiGrids()
@@ -5739,22 +6094,44 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the grid index pairs are not stored in a HDF5 integer
 		 * 										array.
 		 *
-		 * @param [out]	gridIndexPairs	A buffer for receiving the grid index pairs. It must be
+		 * @param[out]	gridIndexPairs	A buffer for receiving the grid index pairs. It must be
 		 * 								preallocated with a size <tt>getCellIndexPairCount()*2</tt> and
 		 * 								won't be freed by fesapi.
 		 */
 		void getGridIndexPairs(unsigned short * gridIndexPairs) const;
-		
+
 		/**
-		 * Pushes back a grid representation which is one of the support of this representation. Pushes
-		 * back this representation as a grid connection information of the grid representation as well.
+		 * Sets the cell index pairs of this grid connection set representation using some existing HDF
+		 * datasets.
 		 *
-		 * @exception	std::invalid_argument	If @p supportingGridRep is @c nullptr.
+		 * @exception	std::invalid_argument	If @p cellIndexPairCount is 0.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
 		 *
-		 * @param [in]	supportingGridRep	The supporting grid representation to push back.
+		 * @param 	  	cellIndexPairCount	  	The count of cell index pairs. It is half the size of the
+		 * 										1d array containing the cell index pairs (and of the one
+		 * 										containing grid index pairs if there is one).
+		 * @param 	  	cellIndexPair		  	The HDF dataset path where we can find all the cell index
+		 * 										pairs in a 1d array where the cell indices go faster than
+		 * 										the pair.
+		 * @param 	  	cellIndexPairNullValue	The integer null value used in the HDF cell index pair
+		 * 										dataset.
+		 * @param[in]	proxy				  	(Optional) The HDF proxy where the numerical values (cell indices)
+		 * 										are stored. If @c nullptr, then the default HDF proxy of
+		 * 										the repository will be used.
+		 * @param 	  	gridIndexPairNullValue	(Optional) The integer null value used in the HDF grid
+		 * 										index pair dataset.
+		 * @param 	  	gridIndexPair		  	(Optional) The HDF dataset path where we can find all the
+		 * 										grid index pairs in a 1d array where the grid indices go
+		 * 										faster than the pair. The grid at an index must
+		 * 										correspond to the cell at the same index in the
+		 * 										@p cellIndexPair array. If empty string (default), then no grid
+		 * 										index pair will be set and parameter @p
+		 * 										gridIndexPairNullValue will be unused.
 		 */
-		void pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep);
-		
+		void setCellIndexPairsUsingExistingDataset(uint64_t cellIndexPairCount, const std::string & cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy = nullptr,
+			int64_t gridIndexPairNullValue = -1, const std::string & gridIndexPair = "");
+
 		/**
 		 * @brief	Sets the cell index pairs of this grid connection set representation.
 		 *			If this instance is supported by a single grid, then optional gridIndex* parameters are not needed.
@@ -5769,50 +6146,46 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	cellIndexPairCount	  	The count of cell index pairs. It is half the size of
 		 * 											@p cellIndexPair (and of @p gridIndexPair if used).
-		 * @param [in]	  	cellIndexPair		  	All the cell index pair in a 1d array where the cell
+		 * @param[in]	  	cellIndexPair		  	All the cell index pair in a 1d array where the cell
 		 * 											indices go faster than the pair.
 		 * @param 		  	cellIndexPairNullValue	(Optional) The integer null value used in @p cellIndexPair.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where the numerical values (cell
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where the numerical values (cell
 		 * 											indices) are stored. If @c nullptr, then the default
 		 * 											HDF proxy of the repository will be used.
 		 * @param 		  	gridIndexPairNullValue	(Optional) The integer null value used in @p
 		 * 											gridIndexPair. 
-		 * @param [in]	  	gridIndexPair		  	(Optional) All the grid index pair in a 1d array
+		 * @param[in]	  	gridIndexPair		  	(Optional) All the grid index pair in a 1d array
 		 * 											where the grid indices go faster than the pair. The
 		 * 											grid at an index must correspond to the cell at the
 		 * 											same index in the @p cellIndexPair array.
 		 */
-		void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t * cellIndexPair, int64_t cellIndexPairNullValue = -1, EML2_NS::AbstractHdfProxy * proxy = nullptr);
-		
+		void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t const* cellIndexPair, int64_t cellIndexPairNullValue = -1, EML2_NS::AbstractHdfProxy * proxy = nullptr,
+			uint16_t gridIndexPairNullValue = std::numeric_limits<uint16_t>::max(), uint16_t const* gridIndexPair = nullptr);
+
 		/**
-		 * @brief	Sets the cell index pairs of this grid connection set representation.
-		 *			If this instance is supported by a single grid, then optional gridIndex* parameters are not needed.
-		 *			Default cell index null value is set to -1.
+		 * @brief	Sets the local face per cell index pairs of this grid connection set representation.
+		 * 			Local face-per-cell indices are used because global face indices need not have been
+		 * 			defined. The numerical values are already stored in an existing hdf5 dataset. Null
+		 * 			value = -1 according to documentation.
 		 *
-		 * @exception	std::invalid_argument	If @p cellIndexPairCount is 0.
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
 		 * 										defined in the repository.
-		 * @exception	std::invalid_argument	If @p cellIndexPairNullValue is strictly greater than
-		 * 										uint64_t max. The XML null value cannot be greater than a
-		 * 										64 bits signed integer cause of gSOAP mappings.
+		 *				std::logic_error		If the cell index pairs have not been set yet.
 		 *
-		 * @param 		  	cellIndexPairCount	  	The count of cell index pairs. It is half the size of
-		 * 											@p cellIndexPair (and of @p gridIndexPair if used).
-		 * @param [in]	  	cellIndexPair		  	All the cell index pair in a 1d array where the cell
-		 * 											indices go faster than the pair.
-		 * @param 		  	cellIndexPairNullValue	(Optional) The integer null value used in @p cellIndexPair.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where the numerical values (cell
-		 * 											indices) are stored. If @c nullptr, then the default
-		 * 											HDF proxy of the repository will be used.
-		 * @param 		  	gridIndexPairNullValue	(Optional) The integer null value used in @p
-		 * 											gridIndexPair. 
-		 * @param [in]	  	gridIndexPair		  	(Optional) All the grid index pair in a 1d array
-		 * 											where the grid indices go faster than the pair. The
-		 * 											grid at an index must correspond to the cell at the
-		 * 											same index in the @p cellIndexPair array.
+		 * @param 		  	localFacePerCellIndexPair	The HDF dataset path where we can find all the
+		 * 												local Face Per CellIndex Pair in a 1d array. The
+		 * 												size of the numerical values is 2 times the
+		 * 												number of connections array of local face-per-
+		 * 												cell indices for (Cell1,Cell2) for each
+		 * 												connection.
+		 *												See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
+		 * @param 		  	nullValue				 	The null value.
+		 * @param[in,out]	proxy					 	The HDF proxy where the numerical values (cell
+		 * 												indices) are stored. if @c nullptr, then the
+		 * 												repository default HDF proxy will be used.
 		 */
-		void setCellIndexPairs(uint64_t cellIndexPairCount, int64_t * cellIndexPair, int64_t cellIndexPairNullValue, EML2_NS::AbstractHdfProxy * proxy, uint16_t gridIndexPairNullValue, uint16_t const * gridIndexPair);
-		
+		void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, int64_t nullValue, EML2_NS::AbstractHdfProxy * proxy = nullptr);
+
 		/**
 		 * @brief Sets the local face per cell index pairs of this grid connection set representation. Local
 		 * face-per-cell indices are used because global face indices need not have been defined. The
@@ -5822,7 +6195,7 @@ namespace RESQML2_NS
 		 * 										defined in the repository.
 		 *				std::logic_error		If the cell index pairs have not been set yet.
 		 *
-		 * @param [in]	  	localFacePerCellIndexPair	All the local face per cell index pairs in a 1d
+		 * @param[in]	  	localFacePerCellIndexPair	All the local face per cell index pairs in a 1d
 		 * 												array where the local face per cell indices go
 		 * 												faster than the pair. The local face per cell at
 		 * 												an index must correspond to the cell at the same
@@ -5830,12 +6203,12 @@ namespace RESQML2_NS
 		 * 												pairs.
 		 *												See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
 		 * @param 		  	nullValue				 	The null value in @p localFacePerCellIndexPair.
-		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
+		 * @param[in,out]	proxy					 	The HDF proxy where the numerical values (cell
 		 * 												indices) are stored. If @c nullptr, then the
 		 * 												default HDF proxy of the repository will be used.
 		 */
-		void setLocalFacePerCellIndexPairs(int * localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy = nullptr);
-		
+		void setLocalFacePerCellIndexPairs(int const* localFacePerCellIndexPair, int nullValue, EML2_NS::AbstractHdfProxy * proxy = nullptr);
+
 		/**
 		 * For each connection in this grid connection set representation, allows to map zero to several
 		 * feature interpretation. 
@@ -5844,26 +6217,26 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	cumulativeInterpCount	 	For each connection, the cumulative count of the
+		 * @param[in]	  	cumulativeInterpCount	 	For each connection, the cumulative count of the
 		 * 												associated interpretations. Count must be equal to getCellIndexPairs().
-		 * @param [in]	  	interpIndices			 	The index of the interpretation associated to cell index pairs.
+		 * @param[in]	  	interpIndices			 	The index of the interpretation associated to cell index pairs.
 		 * 												The count of this array is @p
 		 * 												cumulativeInterpCount[cumulativeInterpCount.size() - 1]. The nullValue is -1.
 		 *												Interpretation index is related to pushBackInterpretation.
-		 * @param [in,out]	proxy					 	The Hdf proxy where the numerical values will be
+		 * @param[in,out]	proxy					 	The Hdf proxy where the numerical values will be
 		 * 												stored.
 		 */
 		void setConnectionInterpretationIndices(uint64_t const* cumulativeInterpCount, int64_t const* interpIndices, EML2_NS::AbstractHdfProxy * proxy = nullptr);
-		
+
 		/**
 		 * Pushes back an interpretation which can be mapped with some connections.
 		 * Do not use this method when you assign a single interpreation to all connections. Use
 		 *
 		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
 		 *
-		 * @param [in]	interp	The interpretation to push back.
+		 * @param[in]	interp	The interpretation to push back.
 		 */
-		void pushBackInterpretation(AbstractFeatureInterpretation* interp);
+		void pushBackInterpretation(class AbstractFeatureInterpretation* interp);
 
 		/**
 		 * For each connection in this grid connection set representation, associate the same interpretation.
@@ -5871,54 +6244,20 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error		If <tt>getCellIndexPairs() == 0</tt>.
 		 * @exception	std::logic_error		If interpretation has already been pushed into this instance.
 		 *
-		 * @param [in]	  	interp				The interpretation to associate to all connections.
-		 * @param [in,out]	proxy				The Hdf proxy where the numerical values will be stored.
+		 * @param[in]	  	interp				The interpretation to associate to all connections.
+		 * @param[in,out]	proxy				The Hdf proxy where the numerical values will be stored.
 		 */
 		void setInterpretationForAllConnections(class AbstractFeatureInterpretation* interp, EML2_NS::AbstractHdfProxy * proxy = nullptr);
 
 		/**
-		 * Gets the UUID of a particular (fault) interpretation of this grid connection set.
+		 * Pushes back a grid representation which is one of the support of this representation. Pushes
+		 * back this representation as a grid connection information of the grid representation as well.
 		 *
-		 * @exception	std::invalid_argument	If this grid connection set representation does not
-		 * 										contain fault interpretation association.
-		 * @exception	std::invalid_argument	If the associated feature interpretation at position @p
-		 * 										interpretationIndex is not a fault one. This is legal but
-		 * 										not yet implemented.
-		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
+		 * @exception	std::invalid_argument	If @p supportingGridRep is @c nullptr.
 		 *
-		 * @param 	interpretationIndex	The index of a (fault) interpretation in the collection of
-		 * 								feature interpretation of this grid connection set.
-		 *
-		 * @returns	The UUID of the (fault) interpretation at index @p interpretationIndex.
+		 * @param[in]	supportingGridRep	The supporting grid representation to push back.
 		 */
-		std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const;
-
-		/**
-		 * Gets a particular (fault) interpretation of this grid connection set.
-		 *
-		 * @exception	std::invalid_argument	If this grid connection set representation does not
-		 * 										contain fault interpretation association.
-		 * @exception	std::invalid_argument	If the associated feature interpretation at position @p
-		 * 										interpretationIndex is not a fault one. This is legal but
-		 * 										not yet implemented.
-		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
-		 *
-		 * @param 	interpretationIndex	The index of a (fault) interpretation in the collection of
-		 * 								feature interpretation of this grid connection set.
-		 *
-		 * @returns	The (fault) interpretation at index @p interpretationIndex.
-		 */
-		AbstractFeatureInterpretation * getInterpretationFromIndex(int64_t interpretationIndex) const;
-
-		/**
-		 * Get the count of interpretations in this grid connection set.
-		 *
-		 * @exception	range_error	If the count of associated interpretations is strictly greater than
-		 * 							unsigned int.
-		 *
-		 * @returns	The interpretation count.
-		 */
-		uint64_t getInterpretationCount() const;
+		void pushBackSupportingGridRepresentation(class AbstractGridRepresentation * supportingGridRep);
 
 		/**
 		 * Gets the count of supporting grid representations of this grid connection representation.
@@ -5928,7 +6267,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The supporting grid representation count.
 		 */
-		unsigned int getSupportingGridRepresentationCount() const;
+		uint64_t getSupportingGridRepresentationCount() const;
 
 		/**
 		 * Gets the supporting grid representation located at a specific index of this grid connection set
@@ -5940,7 +6279,7 @@ namespace RESQML2_NS
 		 * 
 		 * @returns The supporting grid representation at position @p index.
 		 */
-		AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index);
+		class AbstractGridRepresentation* getSupportingGridRepresentation(uint64_t index) const;
 	};
 	
 	/**
@@ -6022,7 +6361,7 @@ namespace RESQML2_NS
 		 * @brief	Gets all the wellbore indices which are injectors.
 		 *			Null values signify that that line does not initiate at an injector, e.g., it may come from fluid expansion or an aquifer.
 		 *
-		 * @param [in/out]	injectorPerLine 	The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
+		 * @param[in/out]	injectorPerLine 	The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
 		 *									It must be preallocated with a size getWellboreTrajectories().size() and it won't be freed by FESAPI.
 		 *
 		 * @returns	The null value used in injectorPerLine.
@@ -6033,7 +6372,7 @@ namespace RESQML2_NS
 		 * @brief	Gets all the wellbore indices which are producers.
 		 *			Null values signify that that line does not terminate at a producer, e.g., it may approach a stagnation area.
 		 *
-		 * @param [in/out]	injectorPerLine 	The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
+		 * @param[in/out]	injectorPerLine 	The 0-based injector wellbore index defined by the order of the wellbore in the list of WellboreTrajectoryRepresentation references.
 		 *									It must be preallocated with a size getWellboreTrajectories().size() and it won't be freed by FESAPI.
 		 *
 		 * @returns	The null value used in producerPerLine.
@@ -6043,7 +6382,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets the node count per line.
 		 *
-		 * @param [out]	nodeCountPerPolyline	A preallocated array to receive the node count per
+		 * @param[out]	nodeCountPerPolyline	A preallocated array to receive the node count per
 		 * 										line. Its size must be
 		 * 										<tt>getLineCount(patchIndex)</tt>.
 		 */
@@ -6052,7 +6391,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets the interval count per line.
 		 *
-		 * @param [out]	intervalCountPerPolyline	A preallocated array to receive the interval count per
+		 * @param[out]	intervalCountPerPolyline	A preallocated array to receive the interval count per
 		 * 											line. Its size must be
 		 * 											<tt>getLineCount(patchIndex)</tt>.
 		 */
@@ -6061,7 +6400,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets the total interval count in this streamlines representation.
 		 *
-		 * @param [out]	nodeCountPerPolyline	A preallocated array to receive the node count per
+		 * @param[out]	nodeCountPerPolyline	A preallocated array to receive the node count per
 		 * 										line. Its size must be
 		 * 										<tt>getLineCount(patchIndex)</tt>.
 		 */
@@ -6075,18 +6414,18 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
 		 * 										id defined in the repository.
 		 *
-		 * @param [in]	  	nodeCountPerPolyline  	The node count per polyline in this representation. It is
+		 * @param[in]	  	nodeCountPerPolyline  	The node count per polyline in this representation. It is
 		 * 											ordered by polyline. There must be getLineCount()
 		 * 											values in this array.
-		 * @param [in]	  	xyzPoints			  	The xyz values of the nodes. Ordered by xyz, then by
+		 * @param[in]	  	xyzPoints			  	The xyz values of the nodes. Ordered by xyz, then by
 		 * 											node and then by polyline. It must be three times the
 		 * 											total count of nodes.
 		 *											If the streamlines are associated to grids then the there must be one point
 		 *											one each face intersected by the a line + the start and end point.
-		 * @param [in,out]	hdfProxy			  	(Optional) The HDF proxy which defines where the
+		 * @param[in,out]	hdfProxy			  	(Optional) The HDF proxy which defines where the
 		 * 											nodes will be stored. If @c nullptr (default), then
 		 * 											the repository default HDF proxy will be used.
-		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the points are
+		 * @param[in]	  	localCrs			  	(Optional) The local CRS where the points are
 		 * 											defined. If @c nullptr (default value), then the
 		 * 											repository default local CRS will be used.
 		 */
@@ -6102,7 +6441,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the grid indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	gridIndices	An array for receiving the grids indices. The size of this array is
+		 * @param[out]	gridIndices	An array for receiving the grids indices. The size of this array is
 		 * 							getIntervalCount.
 		 *
 		 * @returns	The null value used in @p gridIndices in order to indicate that an interval does not
@@ -6119,7 +6458,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the * indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	cellIndices	An array for receiving the cell indices. The size of this array is
+		 * @param[out]	cellIndices	An array for receiving the cell indices. The size of this array is
 		 * 							getIntervalCount.
 		 *
 		 * @returns	The null value used in @p cellIndices in order to indicate that an interval does not
@@ -6135,7 +6474,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the grid indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	gridIndices	An array for receiving the local Face Pair Per Cell Indices. The size of this array is twice
+		 * @param[out]	gridIndices	An array for receiving the local Face Pair Per Cell Indices. The size of this array is twice
 		 * 							getIntervalCount.
 		 *
 		 * @returns	The null value used in @p localFacePairPerCellIndices in order to indicate that a line interval does not intersect a face in this cell.
@@ -6281,7 +6620,7 @@ namespace RESQML2_NS
 		 * @exception	invalid_argument	If @p ts is null or if the current property has no time
 		 * 									indices.
 		 *
-		 * @param [in]	ts	The time series to associate to this property
+		 * @param[in]	ts	The time series to associate to this property
 		 */
 		void setTimeSeries(EML2_NS::TimeSeries * ts);
 
@@ -6292,8 +6631,8 @@ namespace RESQML2_NS
 		 *
 		 * @exception	invalid_argument	Regarding RESQML2.0.1, this method cannot be called if setTimeSeries has not been called before.
 		 *
-		 * @param [in]	timestamp	The single timestamps to associate to this property
-		 * @param [in]	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
+		 * @param[in]	timestamp	The single timestamps to associate to this property
+		 * @param[in]	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
 		 */
 		void setSingleTimestamp(time_t timestamp, int64_t yearOffset = 0);
 
@@ -6338,7 +6677,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	values	  	All the property values to set ordered according to the topology
 		 * 								of the representation it is based on.
-		 * @param [in]		proxy	  	The HDF proxy where to write the property values. It must be
+		 * @param[in]		proxy	  	The HDF proxy where to write the property values. It must be
 		 * 								already opened for writing and won't be closed in this method. If
 		 * 								@c nullptr, then a default HDF proxy must be defined in the
 		 * 								repository.
@@ -6362,7 +6701,7 @@ namespace RESQML2_NS
 		 * @param 		  	values	  	All the property values to set ordered according to the topology
 		 * 								of the representation it is based on.
 		 * @param 		  	valueCount	The number of values to write.
-		 * @param [in]		proxy	  	The HDF proxy where to write the property values. It must be
+		 * @param[in]		proxy	  	The HDF proxy where to write the property values. It must be
 		 * 								already opened for writing and won't be closed in this method. If
 		 * 								@c nullptr, then a default HDF proxy must be defined in the
 		 * 								repository.
@@ -6388,7 +6727,7 @@ namespace RESQML2_NS
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly J dimension).
-		 * @param [in]		proxy				  	The HDF proxy where to write the property values. It
+		 * @param[in]		proxy				  	The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be
 		 * 											closed in this method. If @c nullptr, then a default
 		 * 											HDF proxy must be defined in the repository.
@@ -6416,7 +6755,7 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly K dimension).
-		 * @param [in]		proxy				  	The HDF proxy where to write the property values. It
+		 * @param[in]		proxy				  	The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be
 		 * 											closed in this method. If @c nullptr, then a default
 		 * 											HDF proxy must be defined in the repository.
@@ -6555,7 +6894,7 @@ namespace RESQML2_NS
 		 * @param 		  	values	  	All the property values to set ordered according to the topology
 		 * 								of the representation it is based on.
 		 * @param 		  	valueCount	The number of values to write.
-		 * @param [in,out]	proxy	  	The HDF proxy where to write the property values. It must be
+		 * @param[in,out]	proxy	  	The HDF proxy where to write the property values. It must be
 		 * 								already opened for writing and won't be closed in this method. If
 		 * 								@c nullptr, then a default HDF proxy must be defined in the
 		 * 								repository.
@@ -6609,7 +6948,7 @@ namespace RESQML2_NS
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly J dimension).
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * @param[in,out]	proxy				  	The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be
 		 * 											closed in this method. If @c nullptr, then a default
 		 * 											HDF proxy must be defined in the repository.
@@ -6675,7 +7014,7 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly K dimension).
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * @param[in,out]	proxy				  	The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be
 		 * 											closed in this method. If @c nullptr, then a default
 		 * 											HDF proxy must be defined in the repository.
@@ -6735,10 +7074,10 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	values					All the property values to set ordered according the
 		 * 											topology of the representation it is based on.
-		 * @param [in]	  	numValues				The number of property values ordered by dimension of
+		 * @param[in]	  	numValues				The number of property values ordered by dimension of
 		 * 											the array to write.
 		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
-		 * @param [in,out]	proxy					The HDF proxy where to write the property values. It
+		 * @param[in,out]	proxy					The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be closed in
 		 * 											this method. If @c nullptr, then a default HDF proxy must
 		 * 											be defined in the repository.
@@ -6798,7 +7137,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p hdfProxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	hdfProxy 	The HDF5 proxy where the values are already or will be stored. If @c
+		 * @param[in]	hdfProxy 	The HDF5 proxy where the values are already or will be stored. If @c
 		 * 							nullptr, then a default HDF proxy must be defined in the repository.
 		 * @param 	  	dataset  	(Optional) If not provided during the method call, the dataset will
 		 * 							be named the same as the dataset naming convention of fesapi :
@@ -6886,7 +7225,7 @@ namespace RESQML2_NS
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
 		 * @param 			nullvalue			The integer null value in case we create an integer array.
 		 * 										It is ignored if the @p datatype is a floating point one.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @c nullptr (default), a
 		 * 										default HDF proxy must be defined into the data object
@@ -6909,7 +7248,7 @@ namespace RESQML2_NS
 		 * @param 		  	valueCount			The number of values to write).
 		 * @param 			nullvalue			The integer null value in case we create an integer array.
 		 * 										It is ignored if the @p datatype is a floating point one.
-		 * @param [in,out]	proxy				(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and
 		 * 										won't be closed in this method. If @c nullptr
 		 * 										(default), a default HDF proxy must be defined into
@@ -6934,7 +7273,7 @@ namespace RESQML2_NS
 		 * 											dimension (mainly K dimension).
 		 * @param 			nullvalue			The integer null value in case we create an integer array.
 		 * 										It is ignored if the @p datatype is a floating point one.
-		 * @param [in,out]	proxy					(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy					(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -6963,7 +7302,7 @@ namespace RESQML2_NS
 		 * 											dimension (mainly K dimension).
 		 * @param 			nullvalue			The integer null value in case we create an integer array.
 		 * 										It is ignored if the @p datatype is a floating point one.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -6987,7 +7326,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param [in]	  	values			  	All the property values to set ordered according to the
+		 * @param[in]	  	values			  	All the property values to set ordered according to the
 		 * 										topology of the representation it is based on.
 		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write. It is ordered from slowest dimension to
@@ -6996,7 +7335,7 @@ namespace RESQML2_NS
 		 * 										write. It is ordered from slowest dimension to fastest
 		 * 										dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If null (default value), a
 		 * 										default HDF proxy must be defined into the data object
@@ -7088,11 +7427,11 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param [in]	  	values				  	All the property values to set ordered according to
+		 * @param[in]	  	values				  	All the property values to set ordered according to
 		 * 											the topology of the representation it is based on.
 		 * @param 		  	valueCount				The number of values to write.
 		 * @param 		  	offset	  				The offset value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default value), a default HDF proxy must be defined
@@ -7175,7 +7514,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param [in]	  	values				  	All the property values to set ordered according to
+		 * @param[in]	  	values				  	All the property values to set ordered according to
 		 * 											the topology of the representation it is based on.
 		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
 		 * 											dimension (mainly I dimension).
@@ -7185,7 +7524,7 @@ namespace RESQML2_NS
 		 * 											(mainly I dimension).
 		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
 		 * 											(mainly J dimension).		 
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default value), a default HDF proxy must be defined
@@ -7288,7 +7627,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param [in]	  	values				  	All the property values to set ordered according to
+		 * @param[in]	  	values				  	All the property values to set ordered according to
 		 * 											the topology of the representation it is based on.
 		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
 		 * 											dimension (mainly I dimension).
@@ -7302,7 +7641,7 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
 		 * 											(mainly K dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default value), a default HDF proxy must be defined
@@ -7427,7 +7766,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
 		 *
 		 * @param 	   	patchIndex					The index of the patch we want the values from.
-		 * @param [out]	values						The array (pointer) of values which must be
+		 * @param[out]	values						The array (pointer) of values which must be
 		 * 											preallocated. Size is
 		 * 											<tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 * @param 	   	numValuesInEachDimension	The number of property values ordered by dimension of
@@ -7454,7 +7793,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
 		 *
 		 * @param 	   	patchIndex			  	The index of the patch we want the values from.
-		 * @param [out]	values				  	The array (pointer) of values must be preallocated. Size
+		 * @param[out]	values				  	The array (pointer) of values must be preallocated. Size
 		 * 										is <tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 * @param 	   	valueCountInFastestDim	The number of values to read in the fastest dimension
 		 * 										(mainly I dimension).
@@ -7488,13 +7827,13 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
 		 *
 		 * @param 	   	patchIndex					The index of the patch we want the values from.
-		 * @param [out]	values						The array (pointer) of values which must be
+		 * @param[out]	values						The array (pointer) of values which must be
 		 * 											preallocated. Size is
 		 * 											<tt>getValuesCountOfPatch(patchIndex)</tt>.
-		 * @param [in] 	numValuesInEachDimension	The number of property values ordered by
+		 * @param[in] 	numValuesInEachDimension	The number of property values ordered by
 		 * 											dimension of the array to read. It is ordered from
 		 * 											slowest dimension to fastest dimension.
-		 * @param [in] 	offsetInEachDimension   	The offset values ordered by dimension of the
+		 * @param[in] 	offsetInEachDimension   	The offset values ordered by dimension of the
 		 * 											array to read. It is ordered from slowest dimension to
 		 * 											fastest dimension.
 		 * @param 	   	numArrayDimensions			The number of dimensions of the array to read.
@@ -7517,7 +7856,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
 		 *
 		 * @param 	   	patchIndex			  	The index of the patch we want the values from.
-		 * @param [out]	values				  	The array (pointer) of values must be preallocated. Size
+		 * @param[out]	values				  	The array (pointer) of values must be preallocated. Size
 		 * 										is <tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 * @param 	   	valueCountInFastestDim	The number of values to read in the fastest dimension
 		 * 										(mainly I dimension).
@@ -7556,7 +7895,7 @@ namespace RESQML2_NS
 		 * @param 		  	values			All the property values to set ordered according the topology
 		 * 									of the representation it is based on.
 		 * @param 		  	valueCount  	The number of values to write.
-		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the property values.
+		 * @param[in,out]	proxy			(Optional) The HDF proxy where to write the property values.
 		 * 									It must be already opened for writing and won't be closed in this
 		 * 									method. If @c nullptr (default value), then a default HDF proxy
 		 * 									must be defined in the repository.
@@ -7578,7 +7917,7 @@ namespace RESQML2_NS
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly J dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default value), then a default HDF proxy must be
@@ -7603,7 +7942,7 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly K dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default value), then a default HDF proxy must be
@@ -7625,7 +7964,7 @@ namespace RESQML2_NS
 		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @c nullptr (default value),
 		 * 										then a default HDF proxy must be defined in the
@@ -7687,7 +8026,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
+		 * @param[in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
 		 * 							@c nullptr, then a default HDF proxy must be defined in the
 		 * 							repository.
 		 * @param 	  	datasetName	(Optional) The HDF5 dataset name where the values are stored. If
@@ -7710,7 +8049,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
 		 *
 		 * @param 	   	patchIndex					The index of the patch we want the values from.
-		 * @param [out]	values						The array (pointer) of values must be
+		 * @param[out]	values						The array (pointer) of values must be
 		 * 											preallocated. Size is
 		 * 											<tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 * @param 	   	numValuesInEachDimension	The number of property values ordered by dimension of
@@ -7736,7 +8075,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
 		 *
 		 * @param 		  	patchIndex			  	The index of the patch we want the values from.
-		 * @param [in,out]	values				  	The array (pointer) of values must be preallocated.
+		 * @param[in,out]	values				  	The array (pointer) of values must be preallocated.
 		 * 											Size is <tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 * @param 		  	valueCountInFastestDim	The number of values to read in the fastest dimension
 		 * 											(mainly I dimension).
@@ -7779,7 +8118,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p hdfProxy is null.
 		 *
-		 * @param [in]	hdfProxy   	The HDF5 proxy where the values are already or will be stored. It
+		 * @param[in]	hdfProxy   	The HDF5 proxy where the values are already or will be stored. It
 		 * 							cannot be null.
 		 * @param 	  	datasetName	(Optional) If not provided during the method call, the dataset will
 		 * 							be named the same as the dataset naming convention of fesapi:
@@ -7816,7 +8155,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue	The maximum value of the values to add. If @c NaN is
 		 * 									provided then both maximum and minimum values will be computed
 		 * 									from the values.
-		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the property values.
+		 * @param[in,out]	proxy			(Optional) The HDF proxy where to write the property values.
 		 * 									It must be already opened for writing and won't be closed in this
 		 * 									method. If @c nullptr (default value), then a default HDF proxy
 		 * 									must be defined in the repository.
@@ -7842,7 +8181,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
 		 * 											@c NaN is provided then both maximum and minimum
 		 * 											values will be computed from the values.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default value), then a default HDF proxy must be
@@ -7871,7 +8210,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
 		 * 											@c NaN is provided then both maximum and minimum
 		 * 											values will be computed from the values.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default value), then a default HDF proxy must be
@@ -7891,17 +8230,17 @@ namespace RESQML2_NS
 		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @c nullptr (default value),
 		 * 										then a default HDF proxy must be defined in the
 		 * 										repository.
-		 * @param [in]	  	minimumValue	  	The minimum value (or value vector) of the
+		 * @param[in]	  	minimumValue	  	The minimum value (or value vector) of the
 		 * 										values to add. If @c nullptr is provided for both @p
 		 * 										minimumValue and @p maximumValue and if the dimension of
 		 * 										value is 1 then both minimum and maximum values will be
 		 * 										computed from the values.
-		 * @param [in]	  	maximumValue	  	The maximum value (or value vector) of the
+		 * @param[in]	  	maximumValue	  	The maximum value (or value vector) of the
 		 * 										values to add. If @ nullptr is provided for both @p
 		 * 										maximumValue and @p minimumValue and if the dimension of
 		 * 										value is 1 then both maximum and minimum values will be
@@ -8012,13 +8351,13 @@ namespace RESQML2_NS
 		 * 										array to write.  It is ordered from slowest dimension to
 		 * 										fastest dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in]	  	minimumValue	  	The minimum value (or value vector) of the
+		 * @param[in]	  	minimumValue	  	The minimum value (or value vector) of the
 		 * 										values to add. If @c nullptr (default) is provided then
 		 * 										neither minimum nor maximum value will be set.
-		 * @param [in]	  	maximumValue	  	The maximum value (or value vector) of the
+		 * @param[in]	  	maximumValue	  	The maximum value (or value vector) of the
 		 * 										values to add. If @c nullptr (default) is provided then
 		 * 										neither maximum nor minimum value will be set.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @c nullptr (default), a
 		 * 										default HDF proxy must be defined into the data object
@@ -8048,7 +8387,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		The maximum value of the values to add. If
 		 * 										@c NaN is provided (default) then neither maximum nor
 		 * 										minimum value will be set.
-		 * @param [in,out]	proxy				(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and
 		 * 										won't be closed in this method. If @c nullptr
 		 * 										(default), a default HDF proxy must be defined into
@@ -8079,7 +8418,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
 		 * 											@c NaN is provided (default) then neither maximum nor
 		 * 											minimum value will be set.
-		 * @param [in,out]	proxy					(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy					(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -8113,7 +8452,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values to add. If
 		 * 											@c NaN is provided (default) then neither maximum nor
 		 * 											minimum value will be set.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -8156,7 +8495,7 @@ namespace RESQML2_NS
 		 * @param 		  	computeMinMax		  	True if FESAPI needs to compute
 		 * 											the min and  max from the given @p values in order to
 		 * 											set them.
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -8213,7 +8552,7 @@ namespace RESQML2_NS
 		 * @param 		  	computeMinMax	  	True if FESAPI needs to compute the
 		 * 										min and  max from the given @p values in order to set
 		 * 										them.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @p nullptr (default), a
 		 * 										default HDF proxy must be defined into the data object
@@ -8262,7 +8601,7 @@ namespace RESQML2_NS
 		 * @param 		  	values			All the property values to set ordered according to the
 		 * 									topology of the representation it is based on.
 		 * @param 		  	valueCount  	The number of values to write.
-		 * @param [in,out]	proxy			The HDF proxy where to write the property values. It must be
+		 * @param[in,out]	proxy			The HDF proxy where to write the property values. It must be
 		 * 									already opened for writing and won't be closed in this method. If
 		 * 									@c nullptr, then a default HDF proxy must be defined in the
 		 * 									repository.
@@ -8305,7 +8644,7 @@ namespace RESQML2_NS
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly J dimension).
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * @param[in,out]	proxy				  	The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be
 		 * 											closed in this method. If @c nullptr, then a default
 		 * 											HDF proxy must be defined in the repository.
@@ -8357,7 +8696,7 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
 		 * 											dimension (mainly K dimension).
-		 * @param [in,out]	proxy				  	The HDF proxy where to write the property values. It
+		 * @param[in,out]	proxy				  	The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be
 		 * 											closed in this method. If @c nullptr, then a default
 		 * 											HDF proxy must be defined in the repository.
@@ -8403,10 +8742,10 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	values					All the property values to set ordered according the
 		 * 											topology of the representation it is based on.
-		 * @param [in]	  	numValues				The number of property values ordered by dimension of
+		 * @param[in]	  	numValues				The number of property values ordered by dimension of
 		 * 											the array to write.
 		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
-		 * @param [in,out]	proxy					The HDF proxy where to write the property values. It
+		 * @param[in,out]	proxy					The HDF proxy where to write the property values. It
 		 * 											must be already opened for writing and won't be closed in
 		 * 											this method. If @c nullptr, then a default HDF proxy must
 		 * 											be defined in the repository.
@@ -8451,19 +8790,19 @@ namespace RESQML2_NS
 		 * 										defined into the data object repository.
 		 *
 		 * @param 			datatype			The datatype of the values 
-		 * @param [in]	  	numValues		  	The number of property values ordered by dimension of the
+		 * @param[in]	  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write. It is ordered from slowest dimension to
 		 * 										fastest dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in]	  	minimumValue	  	If non-nullptr, a pointer to the minimum values. If non-
+		 * @param[in]	  	minimumValue	  	If non-nullptr, a pointer to the minimum values. If non-
 		 * 										nullptr, the count of minimum values is this property
 		 * 										count.
-		 * @param [in]	  	maximumValue	  	If non-nullptr, a pointer to the maximum values. If non-
+		 * @param[in]	  	maximumValue	  	If non-nullptr, a pointer to the maximum values. If non-
 		 * 										nullptr, the count of maximum values is this property
 		 * 										count.
 		 * @param 		  	nullValue		  	(Optional) The null value. Default value is int 64 bits
 		 * 										maximum value.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If @c nullptr (default), a
 		 * 										default HDF proxy must be defined into the data object
@@ -8492,7 +8831,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
 		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -8523,7 +8862,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
 		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -8557,7 +8896,7 @@ namespace RESQML2_NS
 		 * @param 		  	maximumValue		  	The maximum value of the values in the HDF5 dataset.
 		 * @param 		  	nullValue			  	(Optional) The null value. Default value is int 64
 		 * 											bits maximum value.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -8583,7 +8922,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param [in]	  	values				  	All the property values to set ordered according to
+		 * @param[in]	  	values				  	All the property values to set ordered according to
 		 * 											the topology of the representation it is based on.
 		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
 		 * 											dimension (mainly I dimension).
@@ -8599,7 +8938,7 @@ namespace RESQML2_NS
 		 * 											(mainly K dimension).
 		 * @param 		  	computeMinMax		  	True if FESAPI needs to compute the min and  max from
 		 * 											the given @p values in order to set them.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr
 		 * 											(default), a default HDF proxy must be defined into
@@ -8645,7 +8984,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
 		 * 										different from unsigned int maximum value.
 		 *
-		 * @param [in]	  	values			  	All the property values to set ordered according to the
+		 * @param[in]	  	values			  	All the property values to set ordered according to the
 		 * 										topology of the representation it is based on.
 		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
 		 * 										array to write. It is ordered from slowest dimension to
@@ -8655,7 +8994,7 @@ namespace RESQML2_NS
 		 * 										dimension.
 		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
 		 * @param 		  	computeMinMax	  	True to compute and to set minimum and maximum values.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  	(Optional) The HDF proxy where to write the property
 		 * 										values. It must be already opened for writing and won't
 		 * 										be closed in this method. If null (default value), a
 		 * 										default HDF proxy must be defined into the data object
@@ -8994,7 +9333,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error 	If this property is partial.
 		 *
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
-		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
@@ -9008,7 +9347,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
 		 *
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
-		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
@@ -9019,7 +9358,7 @@ namespace RESQML2_NS
 		 * @brief Gets all the xyz points of all patches of this property. xyz points are given in the
 		 * local CRS.
 		 *
-		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfAllPatches()</tt>.
@@ -9030,7 +9369,7 @@ namespace RESQML2_NS
 		 * Gets all the xyz points of all patches of this property. xyz points are
 		 * given in the global CRS.
 		 *
-		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or Z) and second dimension is vertex
 		 * 							dimension. Thus, its size is 3*(3*[count of all xyz points]). It must
 		 * 							be preallocated.
@@ -9046,7 +9385,7 @@ namespace RESQML2_NS
 		 * @param 		  	xyzPoints		All the property values to set ordered according the topology
 		 * 									of the representation it is based on.
 		 * @param 		  	pointCount  	The number of points to write.
-		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the property points.
+		 * @param[in,out]	proxy			(Optional) The HDF proxy where to write the property points.
 		 * 									It must be already opened for writing and won't be closed in this
 		 * 									method. If @c nullptr (default value), then a default HDF proxy
 		 * 									must be defined in the repository.
@@ -9065,7 +9404,7 @@ namespace RESQML2_NS
 		 * 											dimension (mainly I dimension).
 		 * @param 		  	pointCountInSlowestDim	The number of points to write in the slowest
 		 * 											dimension (mainly J dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											points. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default value), then a default HDF proxy must be
@@ -9087,7 +9426,7 @@ namespace RESQML2_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	pointCountInSlowestDim	The number of points to write in the slowest
 		 * 											dimension (mainly K dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											points. It must be already opened for writing and
 		 * 											won't be closed in this method. If @c nullptr
 		 * 											(default value), then a default HDF proxy must be
@@ -9106,7 +9445,7 @@ namespace RESQML2_NS
 		 * @param 		  	pointCountByDimension	The number of property points ordered by dimension of the
 		 * 											array to write.
 		 * @param 		  	numArrayDimensions		The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  		(Optional) The HDF proxy where to write the property
+		 * @param[in,out]	proxy			  		(Optional) The HDF proxy where to write the property
 		 * 											points. It must be already opened for writing and won't
 		 * 											be closed in this method. If @c nullptr (default value),
 		 * 											then a default HDF proxy must be defined in the
@@ -9122,7 +9461,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
+		 * @param[in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
 		 * 							@c nullptr, then a default HDF proxy must be defined in the
 		 * 							repository.
 		 * @param 	  	datasetName	(Optional) The HDF5 dataset name where the values are stored. If
@@ -9185,7 +9524,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	controlPoints	 	All the control points of the cubic parametric line in
+		 * @param[in]	  	controlPoints	 	All the control points of the cubic parametric line in
 		 * 										the order of the MDs. Count is <tt>controlPointCount *
 		 * 										3</tt> and for each control point <tt>(x,y,z) =
 		 * 										(controlPoints[2i], controlPoints[2i+1],
@@ -9198,13 +9537,13 @@ namespace RESQML2_NS
 		 * 										vertical, 1 for linear spline, 2 for natural cubic spline,
 		 * 										3 for cubic spline, 4 for z linear cubic spline, 5 for
 		 * 										minimum-curvature spline, (-1) for null: no line.
-		 * @param [in,out]	proxy			 	(Optional) The HDF proxy which indicates in which HDF5
+		 * @param[in,out]	proxy			 	(Optional) The HDF proxy which indicates in which HDF5
 		 * 										file the control points and its parameters will be
 		 * 										stored. It must be already opened for writing and won't
 		 * 										be closed. If null, then the default HDF Proxy of the
 		 * 										data object repository will be arbitrarily selected for
 		 * 										writing.
-		 * @param [in]	  	localCrs		 	(Optional) The local CRS where the control points are
+		 * @param[in]	  	localCrs		 	(Optional) The local CRS where the control points are
 		 * 										given. If @c nullptr (default), then the default Local
 		 * 										CRS of the data object repository will be arbitrarily
 		 * 										selected.
@@ -9222,12 +9561,12 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	controlPoints		  	All the control points of the cubic parametric line
+		 * @param[in]	  	controlPoints		  	All the control points of the cubic parametric line
 		 * 											in the order of the MDs. Count is
 		 * 											<tt>controlPointCount * 3</tt> and for each control
 		 * 											point <tt>(x,y, z) = (controlPoints[2i],
 		 * 											controlPoints[2i+1], controlPoints[2i+2])</tt>.
-		 * @param [in]	  	controlPointParameters	The arrays of control point parameters (ordered
+		 * @param[in]	  	controlPointParameters	The arrays of control point parameters (ordered
 		 * 											regarding the control points). It corresponds to the
 		 * 											MD values in a WellboreFeature context. Count is @p
 		 * 											controlPointCount.
@@ -9238,13 +9577,13 @@ namespace RESQML2_NS
 		 * 											spline, 3 for cubic spline, 4 for z linear cubic
 		 * 											spline, 5 for minimum-curvature spline, (-1) for
 		 * 											null: no line.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
 		 * 											HDF5 file the control points and its parameters will
 		 * 											be stored. It must be already opened for writing and
 		 * 											won't be closed. If null, then the default HDF Proxy
 		 * 											of the DataObject repository will be arbitrarily
 		 * 											selected for writing.
-		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the control points are
+		 * @param[in]	  	localCrs			  	(Optional) The local CRS where the control points are
 		 * 											given. If @c nullptr (default), then the default
 		 * 											Local CRS of the DataObject repository will be
 		 * 											arbitrarily selected.
@@ -9265,18 +9604,18 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	controlPoints		  	All the control points of the cubic parametric line
+		 * @param[in]	  	controlPoints		  	All the control points of the cubic parametric line
 		 * 											in the ascending order of the MDs. Count is
 		 * 											<tt>controlPointCount * 3</tt> and for each control
 		 * 											point <tt>(x,y, z) = (controlPoints[2i],
 		 * 											controlPoints[2i+1], controlPoints[2i+2])</tt>.
-		 * @param [in]	  	tangentVectors		  	All the tangent vectors of all the control points of
+		 * @param[in]	  	tangentVectors		  	All the tangent vectors of all the control points of
 		 * 											all the cubic parametric lines. They are ordered
 		 * 											according to the control points. Count is
 		 * 											<tt>controlPointCount * 3</tt> and for each tangent
 		 * 											vector <tt>(u,v, w) = (tangentVectors[2i],
 		 * 											tangentVectors[2i+1], tangentVectors[2i+2])</tt>.
-		 * @param [in]	  	controlPointParameters	The arrays of control point parameters (ordered
+		 * @param[in]	  	controlPointParameters	The arrays of control point parameters (ordered
 		 * 											regarding the control points). It corresponds to the
 		 * 											MD values in this context. Count is @p controlPointCount.
 		 * @param 		  	controlPointCount	  	The count of control points and control point
@@ -9287,13 +9626,13 @@ namespace RESQML2_NS
 		 * 											spline, 3 for cubic spline, 4 for z linear cubic
 		 * 											spline, 5 for minimum-curvature spline, (-1) for
 		 * 											null: no line.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
 		 * 											HDF5 file the parameters and the tangent vectors will
 		 * 											be stored. It must be already opened for writing and
 		 * 											won't be closed. If null, then the default HDF Proxy
 		 * 											of the DataObject repository will be arbitrarily
 		 * 											selected for writing.
-		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the control points are
+		 * @param[in]	  	localCrs			  	(Optional) The local CRS where the control points are
 		 * 											given. If @c nullptr, then the default Local CRS of
 		 * 											the DataObject repository will be arbitrarily
 		 * 											selected.
@@ -9315,18 +9654,18 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	controlPoints		  	All the control points of the cubic parametric line
+		 * @param[in]	  	controlPoints		  	All the control points of the cubic parametric line
 		 * 											in the ascending order of the MDs. Count is
 		 * 											<tt>controlPointCount * 3</tt> and for each control
 		 * 											point <tt>(x,y, z) = (controlPoints[2i],
 		 * 											controlPoints[2i+1], controlPoints[2i+2])</tt>.
-		 * @param [in]	  	inclinations		  	All the inclinations (angle against vertical) in radians of all the trajectory stations
+		 * @param[in]	  	inclinations		  	All the inclinations (angle against vertical) in radians of all the trajectory stations
 		 *											of the cubic parametric line. They are ordered
 		 * 											according to the control points. Count is <tt>controlPointCount</tt>.
-		 * @param [in]	  	azimuths			  	All the azimuths (clockwise angle against grid north) in radians of all the trajectory stations
+		 * @param[in]	  	azimuths			  	All the azimuths (clockwise angle against grid north) in radians of all the trajectory stations
 		 *											of the cubic parametric line. They are ordered
 		 * 											according to the control points. Count is <tt>controlPointCount</tt>.
-		 * @param [in]	  	controlPointParameters	The arrays of control point parameters (ordered
+		 * @param[in]	  	controlPointParameters	The arrays of control point parameters (ordered
 		 * 											regarding the control points). It corresponds to the
 		 * 											MD values in this context. Count is @p controlPointCount.
 		 * @param 		  	controlPointCount	  	The count of control points and control point
@@ -9337,13 +9676,13 @@ namespace RESQML2_NS
 		 * 											spline, 3 for cubic spline, 4 for z linear cubic
 		 * 											spline, 5 for minimum-curvature spline, (-1) for
 		 * 											null: no line.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy which indicates in which
 		 * 											HDF5 file the parameters and the tangent vectors will
 		 * 											be stored. It must be already opened for writing and
 		 * 											won't be closed. If null, then the default HDF Proxy
 		 * 											of the DataObject repository will be arbitrarily
 		 * 											selected for writing.
-		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the control points are
+		 * @param[in]	  	localCrs			  	(Optional) The local CRS where the control points are
 		 * 											given. If @c nullptr, then the default Local CRS of
 		 * 											the DataObject repository will be arbitrarily
 		 * 											selected.
@@ -9357,7 +9696,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p mdDatum is @c nullptr.
 		 *
-		 * @param [in]	mdDatum	The MD damtum to set to this trajectory. It cannot be null.
+		 * @param[in]	mdDatum	The MD damtum to set to this trajectory. It cannot be null.
 		 */
 		void setMdDatum(MdDatum * mdDatum);
 		
@@ -9404,7 +9743,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If this trajectory has no tanget vector.
 		 * @exception	std::invalid_argument	If the HDF proxy is missing.
 		 *
-		 * @param [out]	tangentVectors	A buffer for receiving the tangent vectors. It must be
+		 * @param[out]	tangentVectors	A buffer for receiving the tangent vectors. It must be
 		 * 								preallocated with size of <tt>3 * </tt>
 		 * 								getXyzPointCountOfAllPatches(). It won't be freed by FESAPI.
 		 */
@@ -9417,10 +9756,10 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If this trajectory has no tangent vector.
 		 * @exception	std::invalid_argument	If the HDF proxy is missing.
 		 *
-		 * @param [out]	inclinations	A buffer for receiving the inclinations. It must be
+		 * @param[out]	inclinations	A buffer for receiving the inclinations. It must be
 		 * 								preallocated with size getXyzPointCountOfAllPatches().
 		 *								It won't be freed by FESAPI.
-		 * @param [out]	azimuths		A buffer for receiving the azimuths. It must be
+		 * @param[out]	azimuths		A buffer for receiving the azimuths. It must be
 		 * 								preallocated with size getXyzPointCountOfAllPatches().
 		 *								It won't be freed by FESAPI.
 		 */
@@ -9457,7 +9796,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If MD values are not defined using the right data
 		 * 										structure.
 		 *
-		 * @param [out]	values	A buffer for receiving the MD values. It must be preallocated with size
+		 * @param[out]	values	A buffer for receiving the MD values. It must be preallocated with size
 		 * 						of getXyzPointCountOfAllPatches().
 		 */
 		void getMdValues(double* values) const;
@@ -9465,9 +9804,9 @@ namespace RESQML2_NS
 		/**
 		 * Converts an array MD values an array of corresponding XYZ values according to this trajectory.
 		 *
-		 * @param [in]	mdValues	An array containing all MD values we want to convert.
-		 * @param [in]	mdCount		The count of MD values in @p mdValues
-		 * @param [out]	xyzValues	A buffer for receiving the XYZ values converted from @p mdValues. It must be preallocated with a size of 3*mdCount.
+		 * @param[in]	mdValues	An array containing all MD values we want to convert.
+		 * @param[in]	mdCount		The count of MD values in @p mdValues
+		 * @param[out]	xyzValues	A buffer for receiving the XYZ values converted from @p mdValues. It must be preallocated with a size of 3*mdCount.
 		 */
 		void convertMdValuesToXyzValues(double* mdValues, uint64_t mdCount, double* xyzValues) const;
 		
@@ -9509,7 +9848,7 @@ namespace RESQML2_NS
 		 * @param 		  	mdValues		All the MD values to set from top to bottom of the wellbore
 		 * 									trajectory. Size if @p mdValueCount.
 		 * @param 		  	mdValueCount	The MD values count.
-		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the MD values. It
+		 * @param[in,out]	proxy			(Optional) The HDF proxy where to write the MD values. It
 		 * 									must be already opened for writing and won't be closed in this
 		 * 									method. If @c nullptr, then a default HDF proxy must be defined
 		 * 									in the repository.
@@ -9593,7 +9932,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
 		 * 										the HDF proxy is missing.
 		 *
-		 * @param [out]	values	A buffer to receive the MD values ordered from top to bottom of the
+		 * @param[out]	values	A buffer to receive the MD values ordered from top to bottom of the
 		 * 						wellbore trajectory. It must be preallocated with size of
 		 * 						getMdValuesCount().
 		 */
@@ -9608,7 +9947,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
 		 * 										the HDF proxy is missing.
 		 *
-		 * @param [out]	values	A buffer to receive the MD values ordered from top to bottom of the
+		 * @param[out]	values	A buffer to receive the MD values ordered from top to bottom of the
 		 * 						wellbore trajectory. It must be preallocated with size of
 		 * 						getMdValuesCount().
 		 */
@@ -9753,7 +10092,7 @@ namespace RESQML2_NS
 		 * 															indicate that it corresponds to a missing
 		 * 															intersection, e.g., when a trajectory
 		 * 															originates or terminates within a cell.
-		 * @param [in,out]	hdfProxy								The HDF proxy where the numerical
+		 * @param[in,out]	hdfProxy								The HDF proxy where the numerical
 		 * 															values will be stored. If set to nullptr,
 		 *															the default HdfProxy will be used instead.
 		 */
@@ -9776,7 +10115,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the grid indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	gridIndices	An array for receiving the grids indices. The size of this array is
+		 * @param[out]	gridIndices	An array for receiving the grids indices. The size of this array is
 		 * 							the interval count of the wellbore frame representation. The
 		 * 							associated grids (and there indices) are defined using
 		 * 							pushBackSupportingGridRepresentation() method.
@@ -9795,7 +10134,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the cell indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	gridIndices	An array for receiving the cell indices. The size of this array is
+		 * @param[out]	gridIndices	An array for receiving the cell indices. The size of this array is
 		 * 							the interval count of the wellbore frame representation.
 		 *
 		 * @returns	The null value used in @p cellIndices in order to indicate that an interval does not
@@ -9812,7 +10151,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	If the local face indices are neither stored in a HDF5 integer
 		 * 									array nor in an integer constant array.
 		 *
-		 * @param [out]	gridIndices	An array for receiving the local face indices. The size of this array is twice
+		 * @param[out]	gridIndices	An array for receiving the local face indices. The size of this array is twice
 		 * 							the interval count of the wellbore frame representation.
 		 *
 		 * @returns	The null value used in @p localFacePairPerCellIndices in order to indicate that no face is intersected.
@@ -9824,7 +10163,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>supportingGridRep == nullptr</tt>.
 		 *
-		 * @param [in]	supportingGridRep	The supporting grid representation to push back.
+		 * @param[in]	supportingGridRep	The supporting grid representation to push back.
 		 */
 		void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
 

@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -39,12 +39,12 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo					 	The repo where the underlying gsoap proxy is
+		 * @param[in,out]	repo					 	The repo where the underlying gsoap proxy is
 		 * 												going to be created.
 		 * @param 		  	guid					 	The guid to set to the local 3d crs. If empty
 		 * 												then a new guid will be generated.
 		 * @param 		  	title					 	A title for the instance to create.
-		 * @param [in,out]	locCrs					 	The local CRS where the ordinal are given.
+		 * @param[in,out]	locCrs					 	The local CRS where the ordinal are given.
 		 * @param 		  	originKind				 	Indicates the kind of the MD reference point.
 		 * @param 		  	referenceLocationOrdinal1	The location of the MD reference point on the
 		 * 												first axis of the local 3d CRS.
@@ -60,7 +60,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		MdDatum(gsoap_resqml2_0_1::_resqml20__MdDatum* fromGsoap) :RESQML2_NS::MdDatum(fromGsoap) {}
 
@@ -105,7 +105,7 @@ namespace RESQML2_0_1_NS
 		 * @exception	std::invalid_argument	If @p localCrs is nullptr and no default CRS is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	localCrs	If non-nullptr, the local CRS. If nullptr, the data object repository
+		 * @param[in]	localCrs	If non-nullptr, the local CRS. If nullptr, the data object repository
 		 * 							default CRS is set.
 		 */
 		DLL_IMPORT_OR_EXPORT void setLocalCrs(EML2_NS::AbstractLocal3dCrs * localCrs) final;

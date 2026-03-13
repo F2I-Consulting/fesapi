@@ -56,21 +56,21 @@ namespace COMMON_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in]	dor	If non-nullptr, the EML2.0 DOR to wrap.
+		 * @param[in]	dor	If non-nullptr, the EML2.0 DOR to wrap.
 		 */
 		DataObjectReference(gsoap_resqml2_0_1::eml20__DataObjectReference * dor): dor20(dor), dor23(nullptr) {}
 		
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	dor	If non-nullptr, the EML2.3 DOR to wrap.
+		 * @param[in,out]	dor	If non-nullptr, the EML2.3 DOR to wrap.
 		 */
 		DataObjectReference(gsoap_eml2_3::eml23__DataObjectReference * dor) : dor20(nullptr), dor23(dor) {}
 
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	dataObj	If non-nullptr, the Energistics DataObject to wrap.
+		 * @param[in,out]	dataObj	If non-nullptr, the Energistics DataObject to wrap.
 		 */
 		explicit DataObjectReference(AbstractObject const * dataObj);
 

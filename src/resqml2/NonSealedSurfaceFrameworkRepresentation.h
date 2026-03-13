@@ -46,13 +46,13 @@ namespace RESQML2_NS
 		 * 										is defined in the repository.
 		 *
 		 * @param 		  	pointCount	The number of points in the contact representation.
-		 * @param [in]	  	points	  	The <tt>(x, y, z)</tt> points of the contact representation.
+		 * @param[in]	  	points	  	The <tt>(x, y, z)</tt> points of the contact representation.
 		 * 								Count is <tt>pointCount * 3</tt> and for each contact point
 		 * 								<tt>(x, y, z) = (points[2i], points[2i+1], points[2i+2])</tt>.
-		 * @param [in,out]	proxy	  	(Optional) The HDF proxy where the numerical values (contact
+		 * @param[in,out]	proxy	  	(Optional) The HDF proxy where the numerical values (contact
 		 * 								points coordinates) are stored. If @c nullptr (default), then the
 		 * 								default HDF proxy of the repository will be used.
-		 * @param [in,out]	localCrs  	(Optional) The local 3d CRS on which the geometry of the contact
+		 * @param[in,out]	localCrs  	(Optional) The local 3d CRS on which the geometry of the contact
 		 * 								representation is based on. If @c nullptr (default), then the
 		 * 								default local 3d CRS of the repository will be used.
 		 */
@@ -86,7 +86,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -100,14 +100,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__NonSealedSurfaceFrameworkRepresentation* fromGsoap) : AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		NonSealedSurfaceFrameworkRepresentation(gsoap_eml2_3::_resqml22__NonSealedSurfaceFrameworkRepresentation* fromGsoap) : AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
 	};

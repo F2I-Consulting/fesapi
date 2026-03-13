@@ -31,7 +31,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
 		 *
-		 * @param [in]	repo			   	If non-nullptr, the repo.
+		 * @param[in]	repo			   	If non-nullptr, the repo.
 		 * @param 	  	guid			   	The guid to set to graphical information set.
 		 * @param 	  	title			   	A title for graphical information set.
 		 * @param 	  	interpolationDomain	The interpolation domain.

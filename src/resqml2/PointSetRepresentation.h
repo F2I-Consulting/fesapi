@@ -43,12 +43,12 @@ namespace RESQML2_NS
 		 * 										is defined in the repository.
 		 *
 		 * @param 		  	xyzPointCount	The xyz points count in this patch.
-		 * @param [in]	  	xyzPoints	 	The xyz values of the points of the patch. Ordered by xyz and
+		 * @param[in]	  	xyzPoints	 	The xyz values of the points of the patch. Ordered by xyz and
 		 * 									then by @p xyzPointCount. Size is <tt>3 * xyzPointCount</tt>.
-		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the xyz points
+		 * @param[in,out]	proxy		 	(Optional) The HDF proxy which defines where the xyz points
 		 * 									will be stored. If @c nullptr (default), then the repository
 		 * 									default HDF proxy will be used.
-		 * @param [in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
+		 * @param[in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
 		 * 									nullptr (default), then the repository default local CRS will
 		 * 									be used.
 		 */
@@ -65,12 +65,12 @@ namespace RESQML2_NS
 		 * 										is defined in the repository.
 		 *
 		 * @param 		  	xyPointCount	The xy points count in this patch.
-		 * @param [in]	  	xyPoints	 	The xy values of the points of the patch. Ordered by xy and
+		 * @param[in]	  	xyPoints	 	The xy values of the points of the patch. Ordered by xy and
 		 * 									then by @p xyPointCount. Size is <tt>2 * xyPointCount</tt>.
-		 * @param [in,out]	proxy		 	(Optional) The HDF proxy which defines where the xy points
+		 * @param[in,out]	proxy		 	(Optional) The HDF proxy which defines where the xy points
 		 * 									will be stored. If @c nullptr (default), then the repository
 		 * 									default HDF proxy will be used.
-		 * @param [in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
+		 * @param[in]	  	localCrs	 	(Optional) The local CRS where the points are given. If @c
 		 * 									nullptr (default), then the repository default local CRS will
 		 * 									be used.
 		 */
@@ -81,7 +81,7 @@ namespace RESQML2_NS
 		/**
 		 * Check if a point set representation patch is in 2 dimensions (i.e XY) instead of 3 dimensions (i.e XYZ)
 		 * 
-		 * @param [in]	  	patchIndex	 	The index of the patch 
+		 * @param[in]	  	patchIndex	 	The index of the patch 
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isIn2D(uint64_t patchIndex) const = 0;
 
@@ -90,7 +90,7 @@ namespace RESQML2_NS
 		 * the local CRS. You probably want to check first if the patch in in 2D using method bool isIn2D(uint64_t patchIndex).
 		 *
 		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyPoints 	A linearized 2d array where the first (quickest) dimension is
+		 * @param[in,out]	xyPoints 	A linearized 2d array where the first (quickest) dimension is
 		 * 								coordinate dimension (XY) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */
@@ -106,7 +106,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -117,14 +117,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PointSetRepresentation(gsoap_resqml2_0_1::_resqml20__PointSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PointSetRepresentation(gsoap_eml2_3::_resqml22__PointSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 	};

@@ -128,7 +128,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p interp is null.
 		 *
-		 * @param [in]	interp	The interpretation to associate to this representation.
+		 * @param[in]	interp	The interpretation to associate to this representation.
 		 */
 		DLL_IMPORT_OR_EXPORT void setInterpretation(class AbstractFeatureInterpretation * interp);
 
@@ -179,7 +179,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error 	If this representation is partial.
 		 *
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
-		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
@@ -193,7 +193,7 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is out of range.
 		 *
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
-		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
@@ -204,7 +204,7 @@ namespace RESQML2_NS
 		 * @brief Gets all the xyz points of all patches of this representation. xyz points are given in the
 		 * local CRS.
 		 *
-		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or z) and second dimension is vertex
 		 * 							dimension. It must be preallocated with a size of <tt>3 *
 		 * 							getXyzPointCountOfAllPatches()</tt>.
@@ -231,7 +231,7 @@ namespace RESQML2_NS
 		 * Gets all the xyz points of all patches of this individual representation. xyz points are
 		 * given in the global CRS.
 		 *
-		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
+		 * @param[out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
 		 * 							coordinate dimension (x, y or Z) and second dimension is vertex
 		 * 							dimension. Thus, its size is 3*(3*[count of all xyz points]). It must
 		 * 							be preallocated.
@@ -271,7 +271,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p repSet is null.
 		 *
-		 * @param [in]	repSet	The representation set representation which will contain this
+		 * @param[in]	repSet	The representation set representation which will contain this
 		 * 							representation.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackIntoRepresentationSet(class RepresentationSetRepresentation * repSet);
@@ -286,16 +286,16 @@ namespace RESQML2_NS
 		 *
 		 * @param 		   	patchIndex	  	The index of the geometry patch which receives the seismic
 		 * 									coordinates.
-		 * @param [in]	   	inlines		  	The sequence of trace or inter-trace inline positions that
+		 * @param[in]	   	inlines		  	The sequence of trace or inter-trace inline positions that
 		 * 									correspond to the geometry coordinates. It must be in the
 		 * 									same order than @p crosslines.
-		 * @param [in]	   	crosslines	  	The sequence of trace or inter-trace crossline positions that
+		 * @param[in]	   	crosslines	  	The sequence of trace or inter-trace crossline positions that
 		 * 									correspond to the geometry coordinates. It must be in the
 		 * 									same order than @p inlines.
 		 * @param 		   	pointCount	  	Number of points. It is the size of both @p inlines and @p
 		 * 									crosslines.
-		 * @param [in]	   	seismicSupport	The representation of the seismic line.
-		 * @param [in, out]	proxy		  	The HDF proxy where to write the @p inlines and @p crosslines
+		 * @param[in]	   	seismicSupport	The representation of the seismic line.
+		 * @param[in, out]	proxy		  	The HDF proxy where to write the @p inlines and @p crosslines
 		 * 									values. It must be already opened for writing and won't be
 		 * 									closed in this method.
 		 */
@@ -318,7 +318,7 @@ namespace RESQML2_NS
 		 * @param 	  	startCrossline	The first crossline.
 		 * @param 	  	incrCrossline 	The crossline increment.
 		 * @param 	  	countCrossline	The crossline count.
-		 * @param [in]	seismicSupport	The representation of the seismic line.
+		 * @param[in]	seismicSupport	The representation of the seismic line.
 		 */
 		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(uint64_t patchIndex, double startInline, double incrInline, unsigned int countInline,
 			double startCrossline, double incrCrossline, unsigned int countCrossline,
@@ -334,11 +334,11 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	patchIndex	  	The index of the geometry patch which receives the seismic
 		 * 									coordinates.
-		 * @param [in,out]	lineAbscissa  	The abscissa of each points of the patch on the seismic line.
+		 * @param[in,out]	lineAbscissa  	The abscissa of each points of the patch on the seismic line.
 		 * 									The count of this array must be equal to
 		 * 									<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
-		 * @param [in,out]	seismicSupport	The representation of the seismic line.
-		 * @param [in,out]	proxy		  	The HDF proxy where to write the @p lineAbscissa values. It
+		 * @param[in,out]	seismicSupport	The representation of the seismic line.
+		 * @param[in,out]	proxy		  	The HDF proxy where to write the @p lineAbscissa values. It
 		 * 									must be already opened for writing and won't be closed in
 		 * 									this method.
 		 */
@@ -353,7 +353,7 @@ namespace RESQML2_NS
 		 * 										information.
 		 *
 		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
-		 * @param [out]	values	  	The array where the abscissa are going to be stored. The count of
+		 * @param[out]	values	  	The array where the abscissa are going to be stored. The count of
 		 * 							this array must be equal to <tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT void getSeismicLineAbscissaOfPointsOfPatch(uint64_t patchIndex, double* values) const;
@@ -366,7 +366,7 @@ namespace RESQML2_NS
 		 * 										information.
 		 *
 		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
-		 * @param [out]	values	  	The array where the inlines coordinates are going to be stored. The
+		 * @param[out]	values	  	The array where the inlines coordinates are going to be stored. The
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
@@ -381,7 +381,7 @@ namespace RESQML2_NS
 		 * 										information.
 		 *
 		 * @param 	   	patchIndex	The index of the geometry patch which stores the seismic coordinates.
-		 * @param [out]	values	  	The array where the crossline coordinates are going to be stored. The
+		 * @param[out]	values	  	The array where the crossline coordinates are going to be stored. The
 		 * 							count of this array must be equal to
 		 * 							<tt>getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
@@ -397,7 +397,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -409,14 +409,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractRepresentation(gsoap_resqml2_0_1::resqml20__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractRepresentation(gsoap_eml2_3::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
@@ -445,13 +445,13 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	patchIndex				The index of the patch which will contain this
 		 * 											geometry.
-		 * @param [in,out]	points					All the points to set ordered according the topology
+		 * @param[in,out]	points					All the points to set ordered according the topology
 		 * 											of the representation it is based on. It should be 3 *
 		 * 											numPoints sized if 3d and 2 * numPoints sized if 2d, etc...
-		 * @param [in,out]	localCrs				The local CRS where the points lie on.
-		 * @param [in,out]	dimensions				The dimensions of the array to write.
+		 * @param[in,out]	localCrs				The local CRS where the points lie on.
+		 * @param[in,out]	dimensions				The dimensions of the array to write.
 		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
-		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
+		 * @param[in,out]	proxy					The HDF proxy where to write the points. It must be
 		 * 											already opened for writing and won't be closed in this
 		 * 											method.
 		 *
@@ -465,13 +465,13 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	patchIndex				The index of the patch which will contain this
 		 * 											geometry.
-		 * @param [in,out]	points					All the points to set ordered according the topology
+		 * @param[in,out]	points					All the points to set ordered according the topology
 		 * 											of the representation it is based on. It should be 3 *
 		 * 											numPoints sized if 3d and 2 * numPoints sized if 2d, etc...
-		 * @param [in,out]	localCrs				The local CRS where the points lie on.
-		 * @param [in,out]	dimensions				The dimensions of the array to write.
+		 * @param[in,out]	localCrs				The local CRS where the points lie on.
+		 * @param[in,out]	dimensions				The dimensions of the array to write.
 		 * @param 		  	numDimensionsInArray	The number of dimensions in the array to write.
-		 * @param [in,out]	proxy					The HDF proxy where to write the points. It must be
+		 * @param[in,out]	proxy					The HDF proxy where to write the points. It must be
 		 * 											already opened for writing and won't be closed in this
 		 * 											method.
 		 *
@@ -483,7 +483,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets hdf proxy dor from point geometry patch
 		 *
-		 * @param [in,out]	patch	If non-null, the patch.
+		 * @param[in,out]	patch	If non-null, the patch.
 		 *
 		 * @returns	Empty data object reference if it fails, else the hdf proxy dor from point geometry patch.
 		 */
@@ -492,7 +492,7 @@ namespace RESQML2_NS
 		/**
 		 * Gets hdf proxy dor from point geometry patch
 		 *
-		 * @param [in,out]	patch	If non-null, the patch.
+		 * @param[in,out]	patch	If non-null, the patch.
 		 *
 		 * @returns	Empty data object reference if it fails, else the hdf proxy dor from point geometry patch.
 		 */

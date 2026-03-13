@@ -32,7 +32,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	repo  	If non-null, the repo.
+		 * @param[in,out]	repo  	If non-null, the repo.
 		 * @param 		  	guid  	Unique identifier.
 		 * @param 		  	title 	The title.
 		 * @param 		  	iCount	Number of.
@@ -47,7 +47,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	interp	If non-null, the interp.
+		 * @param[in,out]	interp	If non-null, the interp.
 		 * @param 		  	guid  	Unique identifier.
 		 * @param 		  	title 	The title.
 		 * @param 		  	iCount	Number of.
@@ -62,14 +62,14 @@ namespace RESQML2_0_1_NS
 		/**
 		 * @brief	Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap): RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
 
 		/**
 		 * @brief	Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridLatticeRepresentation(fromGsoap) {}
 

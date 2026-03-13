@@ -30,7 +30,7 @@ namespace EML2_3_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -39,7 +39,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo 	The repository where the underlying gsoap proxy is going to be
+		 * @param[in,out]	repo 	The repository where the underlying gsoap proxy is going to be
 		 * 							created.
 		 * @param 		  	guid 	The guid to set to the boundary horizon. If empty then a new guid
 		 * 							will be generated.
@@ -50,7 +50,7 @@ namespace EML2_3_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		ActivityTemplate(gsoap_eml2_3::_eml23__ActivityTemplate* fromGsoap) : EML2_NS::ActivityTemplate(fromGsoap) {}
 

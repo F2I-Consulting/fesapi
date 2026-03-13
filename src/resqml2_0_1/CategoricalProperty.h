@@ -34,7 +34,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param[in]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::CategoricalProperty(partialObject) {}
 
@@ -43,7 +43,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
 		 *
-		 * @param [in]	rep			  			The representation on which this property is attached to. It
+		 * @param[in]	rep			  			The representation on which this property is attached to. It
 		 * 										cannot be null.
 		 * @param 	  	guid		  			The guid to set to the property. If empty then a new guid will be
 		 * 										generated.
@@ -53,9 +53,9 @@ namespace RESQML2_0_1_NS
 		 * 										a scalar property.
 		 * @param 	  	attachmentKind			The topological element on which the property values are attached
 		 * 										to.
-		 * @param [in]	strLookup	  			The string lookup which defines the possible string values and
+		 * @param[in]	strLookup	  			The string lookup which defines the possible string values and
 		 * 										their keys. It cannot be null.
-		 * @param [in]	energisticsPropertyKind	The property kind of these property values which must be
+		 * @param[in]	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
 		 */
@@ -68,7 +68,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
 		 *
-		 * @param [in]	rep			  			The representation on which this property is attached to. It
+		 * @param[in]	rep			  			The representation on which this property is attached to. It
 		 * 										cannot be null.
 		 * @param 	  	guid		  			The guid to set to the property. If empty then a new guid will be
 		 * 										generated.
@@ -78,8 +78,8 @@ namespace RESQML2_0_1_NS
 		 * 										a scalar property.
 		 * @param 	  	attachmentKind			The topological element on which the property values are attached
 		 * 										to.
-		 * @param [in]	dblLookup	  			The double table lookup which associate a discrete function to the property values.
-		 * @param [in]	energisticsPropertyKind	The property kind of these property values which must be
+		 * @param[in]	dblLookup	  			The double table lookup which associate a discrete function to the property values.
+		 * @param[in]	energisticsPropertyKind	The property kind of these property values which must be
 		 * 										defined in the standard Energistics property type
 		 * 										dictionary.
 		 */
@@ -92,7 +92,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -102,9 +102,9 @@ namespace RESQML2_0_1_NS
 		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param [in]	strLookup	  	The string lookup which defines the possible string values and
+		 * @param[in]	strLookup	  	The string lookup which defines the possible string values and
 		 * 								their keys. It cannot be null.
-		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
+		 * @param[in]	localPropKind 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
@@ -116,7 +116,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -126,8 +126,8 @@ namespace RESQML2_0_1_NS
 		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param [in]	dblLookup	  	The double table lookup which associate a discrete function to the property values.
-		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
+		 * @param[in]	dblLookup	  	The double table lookup which associate a discrete function to the property values.
+		 * @param[in]	localPropKind 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
@@ -137,7 +137,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		CategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap): RESQML2_NS::CategoricalProperty(fromGsoap) {}
 

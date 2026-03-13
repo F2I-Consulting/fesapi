@@ -47,7 +47,7 @@ namespace COMMON_NS
 		 * Creates an instance of a proxy for an HDF5 file located on an Amazon S3 cloud. Only to be
 		 * used in partial transfer context
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param[in]	partialObject	If non-null, the partial object.
 		 *
 		 * @returns	A pointer to an instantiated proxy for an HDF5 file located on an Amazon S3 cloud.
 		 */
@@ -59,7 +59,7 @@ namespace COMMON_NS
 		 * Creates an instance of a proxy for an HDF5 file located on an Amazon S3 cloud by wrapping a
 		 * gSOAP instance
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 *
 		 * @returns	A pointer to an instantiated proxy for an HDF5 file located on an Amazon S3 cloud.
 		 */

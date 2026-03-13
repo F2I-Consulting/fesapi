@@ -31,7 +31,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	repo	 	The soap context where the underlying gsoap proxy is going to be
+		 * @param[in,out]	repo	 	The soap context where the underlying gsoap proxy is going to be
 		 * 								created.
 		 * @param 		  	guid	 	Unique identifier.
 		 * @param 		  	title	 	The title.
@@ -54,7 +54,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	interp   	If non-null, the interp.
+		 * @param[in,out]	interp   	If non-null, the interp.
 		 * @param 		  	guid	 	Unique identifier.
 		 * @param 		  	title	 	The title.
 		 * @param 		  	cellCount	Number of cells.
@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		UnstructuredGridRepresentation(gsoap_resqml2_0_1::_resqml20__UnstructuredGridRepresentation* fromGsoap):
 			RESQML2_NS::UnstructuredGridRepresentation(fromGsoap) {}

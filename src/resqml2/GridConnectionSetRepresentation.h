@@ -66,7 +66,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	logic_error	If the cell index pairs are not stored in a HDF5 integer array.
 		 *
-		 * @param [out]	cellIndexPairs	A buffer for receiving the cell index pairs. It must be
+		 * @param[out]	cellIndexPairs	A buffer for receiving the cell index pairs. It must be
 		 * 								preallocated with a size of <tt>2 * getCellIndexPairCount()</tt>.
 		 * 								Two consecutive values <tt>cellIndexPairs[i]</tt> and
 		 * 								<tt>cellIndexPairs[i+1]</tt> constitute a pair of cell index.
@@ -110,7 +110,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the intepretation indices cumulative counts are not
 		 * 										stored in a HDF5 integer array.
 		 *
-		 * @param [out]	cumulativeCount	A buffer for receiving the cumulative counts. Must be
+		 * @param[out]	cumulativeCount	A buffer for receiving the cumulative counts. Must be
 		 * 								preallocated with a size of getCellIndexPairCount(). The number
 		 * 								of interpretations associated to the connection at index @c i is
 		 * 								<tt>cumulativeCount[i]</tt>.
@@ -125,7 +125,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the intepretation indices are not stored in a HDF5
 		 * 										integer array.
 		 *
-		 * @param [out]	interpretationIndices	A buffer for receiving the interpretation indices. It
+		 * @param[out]	interpretationIndices	A buffer for receiving the interpretation indices. It
 		 * 										must be preallocated with a size equals to the last value
 		 * 										of @c cumulativeCount after calling
 		 * 										<tt>getInterpretationIndexCumulativeCount(cumulativeCount).</tt>
@@ -152,14 +152,14 @@ namespace RESQML2_NS
 		 * 										cumulative counts are not stored in a HDF5 integer array.
 		 * @exception	std::out_of_range	 	If @p interpretationIndex is out of range.
 		 *
-		 * @param [out]	  	cellIndexPairs	   	Mandatory buffer to receive the cell index pairs. Must be
+		 * @param[out]	  	cellIndexPairs	   	Mandatory buffer to receive the cell index pairs. Must be
 		 * 										preallocated with
 		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
-		 * @param [in,out]	gridIndexPairs	   	Optional buffer to receive the grid index pairs. Please
+		 * @param[in,out]	gridIndexPairs	   	Optional buffer to receive the grid index pairs. Please
 		 * 										set to @p nullptr for not collecting these pairs. Must be
 		 * 										preallocated with
 		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
-		 * @param [in,out]	localFaceIndexPairs	Optional buffer to receive the local face index pairs.
+		 * @param[in,out]	localFaceIndexPairs	Optional buffer to receive the local face index pairs.
 		 * 										Please set to @p nullptr for not collecting these pairs.
 		 * 										Must be preallocated with
 		 * 										<tt>2 * getCellIndexPairCountFromInterpretationIndex(interpretationIndex)</tt>.
@@ -250,7 +250,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the local face per cell index pairs are not stored
 		 * 										in a HDF5 integer array.
 		 *
-		 * @param [out]	localFacePerCellIndexPairs	A buffer for receiving the local face per cell index
+		 * @param[out]	localFacePerCellIndexPairs	A buffer for receiving the local face per cell index
 		 * 											pairs. It must be preallocated with a size of
 		 * 											<tt>getCellIndexPairCount()*2</tt> and won't be freed
 		 * 											by FESAPI.
@@ -276,7 +276,7 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error	 	If the grid index pairs are not stored in a HDF5 integer
 		 * 										array.
 		 *
-		 * @param [out]	gridIndexPairs	A buffer for receiving the grid index pairs. It must be
+		 * @param[out]	gridIndexPairs	A buffer for receiving the grid index pairs. It must be
 		 * 								preallocated with a size <tt>getCellIndexPairCount()*2</tt> and
 		 * 								won't be freed by fesapi.
 		 */
@@ -298,7 +298,7 @@ namespace RESQML2_NS
 		 * 										the pair.
 		 * @param 	  	cellIndexPairNullValue	The integer null value used in the HDF cell index pair
 		 * 										dataset.
-		 * @param [in]	proxy				  	(Optional) The HDF proxy where the numerical values (cell indices)
+		 * @param[in]	proxy				  	(Optional) The HDF proxy where the numerical values (cell indices)
 		 * 										are stored. If @c nullptr, then the default HDF proxy of
 		 * 										the repository will be used.
 		 * @param 	  	gridIndexPairNullValue	(Optional) The integer null value used in the HDF grid
@@ -328,15 +328,15 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	cellIndexPairCount	  	The count of cell index pairs. It is half the size of
 		 * 											@p cellIndexPair (and of @p gridIndexPair if used).
-		 * @param [in]	  	cellIndexPair		  	All the cell index pair in a 1d array where the cell
+		 * @param[in]	  	cellIndexPair		  	All the cell index pair in a 1d array where the cell
 		 * 											indices go faster than the pair.
 		 * @param 		  	cellIndexPairNullValue	(Optional) The integer null value used in @p cellIndexPair.
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where the numerical values (cell
+		 * @param[in,out]	proxy				  	(Optional) The HDF proxy where the numerical values (cell
 		 * 											indices) are stored. If @c nullptr, then the default
 		 * 											HDF proxy of the repository will be used.
 		 * @param 		  	gridIndexPairNullValue	(Optional) The integer null value used in @p
 		 * 											gridIndexPair. 
-		 * @param [in]	  	gridIndexPair		  	(Optional) All the grid index pair in a 1d array
+		 * @param[in]	  	gridIndexPair		  	(Optional) All the grid index pair in a 1d array
 		 * 											where the grid indices go faster than the pair. The
 		 * 											grid at an index must correspond to the cell at the
 		 * 											same index in the @p cellIndexPair array.
@@ -362,7 +362,7 @@ namespace RESQML2_NS
 		 * 												connection.
 		 *												See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
 		 * @param 		  	nullValue				 	The null value.
-		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
+		 * @param[in,out]	proxy					 	The HDF proxy where the numerical values (cell
 		 * 												indices) are stored. if @c nullptr, then the
 		 * 												repository default HDF proxy will be used.
 		 */
@@ -377,7 +377,7 @@ namespace RESQML2_NS
 		 * 										defined in the repository.
 		 *				std::logic_error		If the cell index pairs have not been set yet.
 		 *
-		 * @param [in]	  	localFacePerCellIndexPair	All the local face per cell index pairs in a 1d
+		 * @param[in]	  	localFacePerCellIndexPair	All the local face per cell index pairs in a 1d
 		 * 												array where the local face per cell indices go
 		 * 												faster than the pair. The local face per cell at
 		 * 												an index must correspond to the cell at the same
@@ -385,7 +385,7 @@ namespace RESQML2_NS
 		 * 												pairs.
 		 *												See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-000-252-0-C-sv2010.html for IJK cell face index convention.
 		 * @param 		  	nullValue				 	The null value in @p localFacePerCellIndexPair.
-		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
+		 * @param[in,out]	proxy					 	The HDF proxy where the numerical values (cell
 		 * 												indices) are stored. If @c nullptr, then the
 		 * 												default HDF proxy of the repository will be used.
 		 */
@@ -399,13 +399,13 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	  	cumulativeInterpCount	 	For each connection, the cumulative count of the
+		 * @param[in]	  	cumulativeInterpCount	 	For each connection, the cumulative count of the
 		 * 												associated interpretations. Count must be equal to getCellIndexPairs().
-		 * @param [in]	  	interpIndices			 	The index of the interpretation associated to cell index pairs.
+		 * @param[in]	  	interpIndices			 	The index of the interpretation associated to cell index pairs.
 		 * 												The count of this array is @p
 		 * 												cumulativeInterpCount[cumulativeInterpCount.size() - 1]. The nullValue is -1.
 		 *												Interpretation index is related to pushBackInterpretation.
-		 * @param [in,out]	proxy					 	The Hdf proxy where the numerical values will be
+		 * @param[in,out]	proxy					 	The Hdf proxy where the numerical values will be
 		 * 												stored.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setConnectionInterpretationIndices(uint64_t const* cumulativeInterpCount, int64_t const* interpIndices, EML2_NS::AbstractHdfProxy * proxy = nullptr) = 0;
@@ -416,7 +416,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
 		 *
-		 * @param [in]	interp	The interpretation to push back.
+		 * @param[in]	interp	The interpretation to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackInterpretation(class AbstractFeatureInterpretation* interp);
 
@@ -426,8 +426,8 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error		If <tt>getCellIndexPairs() == 0</tt>.
 		 * @exception	std::logic_error		If interpretation has already been pushed into this instance.
 		 *
-		 * @param [in]	  	interp				The interpretation to associate to all connections.
-		 * @param [in,out]	proxy				The Hdf proxy where the numerical values will be stored.
+		 * @param[in]	  	interp				The interpretation to associate to all connections.
+		 * @param[in,out]	proxy				The Hdf proxy where the numerical values will be stored.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setInterpretationForAllConnections(class AbstractFeatureInterpretation* interp, EML2_NS::AbstractHdfProxy * proxy = nullptr) = 0;
 
@@ -437,7 +437,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p supportingGridRep is @c nullptr.
 		 *
-		 * @param [in]	supportingGridRep	The supporting grid representation to push back.
+		 * @param[in]	supportingGridRep	The supporting grid representation to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackSupportingGridRepresentation(class AbstractGridRepresentation * supportingGridRep);
 
@@ -493,7 +493,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -506,28 +506,28 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml20__GridConnectionSetRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		GridConnectionSetRepresentation(gsoap_eml2_3::_resqml22__GridConnectionSetRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		/**
 		 * Pushes a back XML interpretation
 		 *
-		 * @param [in,out]	interp	If non-null, the interp.
+		 * @param[in,out]	interp	If non-null, the interp.
 		 */
 		virtual void pushBackXmlInterpretation(class AbstractFeatureInterpretation* interp) = 0;
 
 		/**
 		 * Pushes a back XML supporting grid representation
 		 *
-		 * @param [in,out]	supportingGridRep	If non-null, the supporting grid rep.
+		 * @param[in,out]	supportingGridRep	If non-null, the supporting grid rep.
 		 */
 		virtual void pushBackXmlSupportingGridRepresentation(class AbstractGridRepresentation * supportingGridRep) = 0;
 

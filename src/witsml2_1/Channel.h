@@ -32,7 +32,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT Channel(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ChannelIndexDataObject<gsoap_eml2_3::witsml21__Channel>(partialObject) {}
 
@@ -41,7 +41,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>propertyKind == nullptr</tt>.
 		 *
-		 * @param [in]	propertyKind	  	If non-null, the property kind.
+		 * @param[in]	propertyKind	  	If non-null, the property kind.
 		 * @param 	  	guid			  	The guid to set to this instance. If empty then a new guid
 		 * 									will be generated.
 		 * @param 	  	title			  	The title.
@@ -58,7 +58,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		Channel(gsoap_eml2_3::witsml21__Channel* fromGsoap):ChannelIndexDataObject<gsoap_eml2_3::witsml21__Channel>(fromGsoap) {}
 
@@ -101,7 +101,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
-		 * @param [in,out]	propKind	If non-null, the property kind.
+		 * @param[in,out]	propKind	If non-null, the property kind.
 		 */
 		DLL_IMPORT_OR_EXPORT void setPropertyKind(EML2_NS::PropertyKind* propKind);
 

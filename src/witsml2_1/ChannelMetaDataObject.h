@@ -41,7 +41,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Constructor for partial transfer
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -53,7 +53,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		ChannelMetaDataObject(gsoap_eml2_3::eml23__AbstractObject* fromGsoap) : WITSML2_NS::WellboreObject(fromGsoap) {}
 
@@ -75,7 +75,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
-		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
+		 * @param[in,out]	witsmlWellbore	If non-null, the witsml wellbore.
 		 */
 		DLL_IMPORT_OR_EXPORT void setWellbore(WITSML2_NS::Wellbore* witsmlWellbore) final
 		{

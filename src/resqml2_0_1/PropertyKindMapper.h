@@ -32,7 +32,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	repository	If non-null, the repository.
+		 * @param[in,out]	repository	If non-null, the repository.
 		 */
 		PropertyKindMapper(COMMON_NS::DataObjectRepository* repository) : dataObjRepo(repository) {}
 

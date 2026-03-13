@@ -30,7 +30,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -39,7 +39,7 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Creates an instance of this class in an EPC document.
 		 *
-		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy is going to be created.
+		 * @param[in,out]	repo 	The repo where the underlying gsoap proxy is going to be created.
 		 * @param 		  	guid 	A guid for the instance to create.
 		 * @param 		  	title	A title for the instance to create.
 		 * @param 		  	kind 	The kind.
@@ -50,7 +50,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		CulturalFeature(gsoap_eml2_3::_resqml22__CulturalFeature* fromGsoap): RESQML2_NS::CulturalFeature(fromGsoap) {}
 

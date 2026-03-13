@@ -45,7 +45,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
-		 * @param [in]	rep	The representation to associate to the current property.
+		 * @param[in]	rep	The representation to associate to the current property.
 		 */
 		DLL_IMPORT_OR_EXPORT void setRepresentation(AbstractRepresentation * rep);
 
@@ -187,7 +187,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p crs is null.
 		 *
-		 * @param [in]	crs	The local CRS to associate with the current property.
+		 * @param[in]	crs	The local CRS to associate with the current property.
 		 */
 		DLL_IMPORT_OR_EXPORT void setLocalCrs(EML2_NS::AbstractLocal3dCrs* crs);
 
@@ -252,7 +252,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 		  	realizationIndices	The realization indices to set to this property.
 		 * Remark : v2.0.1 is constrained to have a maximum of one realisation index
-		 * @param [in,out]	hdfProxy		  	(Optional) The HDF proxy where to store @p
+		 * @param[in,out]	hdfProxy		  	(Optional) The HDF proxy where to store @p
 		 * 										realizationIndices values. If @p nullptr (default), then
 		 * 										the repository default HDF proxy will be used.
 		 */
@@ -268,7 +268,7 @@ namespace RESQML2_NS
 		 * @exception	invalid_argument	If @p ts is null or if the current property has no time
 		 * 									indices.
 		 *
-		 * @param [in]	ts	The time series to associate to this property
+		 * @param[in]	ts	The time series to associate to this property
 		 */
 		DLL_IMPORT_OR_EXPORT void setTimeSeries(EML2_NS::TimeSeries * ts);
 
@@ -278,8 +278,8 @@ namespace RESQML2_NS
 		 *
 		 * @exception	invalid_argument	Regarding RESQML2.0.1, this method cannot be called if setTimeSeries has not been called before.
 		 *
-		 * @param [in]	timestamp	The single timestamps to associate to this property
-		 * @param [in]	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
+		 * @param[in]	timestamp	The single timestamps to associate to this property
+		 * @param[in]	yearOffset	Indicates that the dateTime attribute must be translated according to this value.
 		 */
 		DLL_IMPORT_OR_EXPORT void setSingleTimestamp(time_t timestamp, LONG64 yearOffset = 0);
 
@@ -355,7 +355,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p propKind is null.
 		 *
-		 * @param [in]	propKind	The local property kind to set to this property.
+		 * @param[in]	propKind	The local property kind to set to this property.
 		 */
 		DLL_IMPORT_OR_EXPORT void setPropertyKind(EML2_NS::PropertyKind* propKind);
 
@@ -381,7 +381,7 @@ namespace RESQML2_NS
 		/**
 		 * Checks if it is allowed to associate a given property kind to this property.
 		 *
-		 * @param [in]	pk	The local property kind to check.
+		 * @param[in]	pk	The local property kind to check.
 		 *
 		 * @returns	True if it is allowed, false if it is not.
 		 */
@@ -408,7 +408,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
@@ -418,7 +418,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractProperty(gsoap_resqml2_0_1::resqml20__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 		AbstractProperty(gsoap_eml2_3::resqml22__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
@@ -440,9 +440,9 @@ namespace RESQML2_NS
 		 * Get the HDF Proxy which contains the property values of a particular patch.
 		 *
 		 * @param 		  	patchIndex	The corresponding patch index of the dataset to get.
-		 * @param [out]		nullValue 	If possible, this function will set this parameter to the RESQML
+		 * @param[out]		nullValue 	If possible, this function will set this parameter to the RESQML
 		 * 								null value of the dataset. If not, it will return int64_t.min.
-		 * @param [out]		nullValue 	this function will set this parameter to the RESQML
+		 * @param[out]		nullValue 	this function will set this parameter to the RESQML
 		 * 								dataset path in the HDF file.
 		 *
 		 * @returns	Null if it fails, else the HDF Proxy of patch.

@@ -32,7 +32,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in,out]	repo 	If non-nullptr, the repo.
+		 * @param[in,out]	repo 	If non-nullptr, the repo.
 		 * @param 		  	guid 	Unique identifier.
 		 * @param 		  	title	The title.
 		 */
@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The interpretation this representation represents.
+		 * @param[in]	interp	The interpretation this representation represents.
 		 * @param 	  	guid  	The guid to set to the new instance. If empty then a new guid will be
 		 * 						generated.
 		 * @param 	  	title 	A title for the instance to create.
@@ -63,7 +63,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PointSetRepresentation(gsoap_resqml2_0_1::_resqml20__PointSetRepresentation* fromGsoap) : RESQML2_NS::PointSetRepresentation(fromGsoap) {}
 
@@ -79,7 +79,7 @@ namespace RESQML2_0_1_NS
 		 * the local CRS.
 		 *
 		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
+		 * @param[in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
 		 * 								coordinate dimension (XYZ) and second dimension is vertex
 		 * 								dimension. It must be pre allocated.
 		 */

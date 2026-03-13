@@ -101,7 +101,7 @@ namespace EML2_NS
 
 		/**
 		 * Query if a given data object has some graphical information. If it has no direct graphical
-		 * information (see {@link hasDirectGraphicalInformation}) and it is a property, we also check
+		 * information (see \link hasDirectGraphicalInformation \endlink) and it is a property, we also check
 		 * that its property kind has some
 		 *
 		 * @exception	std::invalid_argument	If the target object is null.
@@ -114,7 +114,7 @@ namespace EML2_NS
 
 		/**
 		 * Query if a given data object has a default color. It only looks at direct color association (see
-		 * {@link hasDirectGraphicalInformation})
+		 * \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If the target object is null.
 		 *
@@ -126,7 +126,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default hue of a given data object. It only looks at direct color association (see
-		 * {@link hasDirectGraphicalInformation})
+		 * \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
@@ -138,7 +138,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default saturation of a given data object. It only looks at direct color association
-		 * (see {@link hasDirectGraphicalInformation})
+		 * (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
@@ -150,7 +150,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default color value of a given data object. It only looks at direct color
-		 * association (see {@link hasDirectGraphicalInformation})
+		 * association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
@@ -162,7 +162,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default alpha value of a given data object. It only looks at direct color
-		 * association (see {@link hasDirectGraphicalInformation})
+		 * association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
@@ -174,33 +174,33 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default RGB color (https://en.wikipedia.org/wiki/RGB_color_space) of a given data
-		 * object. It only looks at direct color association (see {@link hasDirectGraphicalInformation})
+		 * object. It only looks at direct color association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
 		 * @param 	   	targetObject	The data object for which we look for the default RGB color.
-		 * @param [out]	red				Red value in the range [0, 1].
-		 * @param [out]	green			Green value in the range [0, 1].
-		 * @param [out]	blue			Blue value in the range [0, 1].
+		 * @param[out]	red				Red value in the range [0, 1].
+		 * @param[out]	green			Green value in the range [0, 1].
+		 * @param[out]	blue			Blue value in the range [0, 1].
 		 */
 		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, double& red, double& green, double& blue) const;
 
 		/**
 		 * Gets the default RGB color (https://en.wikipedia.org/wiki/RGB_color_space) of a given data
-		 * object. It only looks at direct color association (see {@link hasDirectGraphicalInformation})
+		 * object. It only looks at direct color association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
 		 * @param 	   	targetObject	The data object for which we look for the default RGB color.
-		 * @param [out]	red				Red value in the range [0, 255].
-		 * @param [out]	green			Green value in the range [0, 255].
-		 * @param [out]	blue			Blue value in the range [0, 255].
+		 * @param[out]	red				Red value in the range [0, 255].
+		 * @param[out]	green			Green value in the range [0, 255].
+		 * @param[out]	blue			Blue value in the range [0, 255].
 		 */
 		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(COMMON_NS::AbstractObject const* targetObject, uint8_t& red, uint8_t& green, uint8_t& blue) const;
 
 		/**
 		 * Query if a given data object has a default color title. It only looks at direct color
-		 * association (see {@link hasDirectGraphicalInformation})
+		 * association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
@@ -212,7 +212,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default color title of a given data object. It only looks at direct color
-		 * association (see {@link hasDirectGraphicalInformation})
+		 * association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color or if its default
 		 * 										color has no title.
@@ -233,7 +233,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If @p saturation, @p value or @p alpha is out of range [0,
 		 * 										1].
 		 *
-		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param[in]	targetObject	The data object which receives the color.
 		 * @param 	  	hue				The hue angle in degrees in range [0, 360].
 		 * @param 	  	saturation  	The saturation value in range [0, 1].
 		 * @param 	  	value			The color value in range [0, 1].
@@ -254,7 +254,7 @@ namespace EML2_NS
 		 * 										[0,
 		 * 										1].
 		 *
-		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param[in]	targetObject	The data object which receives the color.
 		 * @param 	  	red				Red value in range [0, 1].
 		 * @param 	  	green			Green value in range [0, 1].
 		 * @param 	  	blue			Blue value in range [0, 1].
@@ -276,7 +276,7 @@ namespace EML2_NS
 		 * 										255].
 		 * @exception	std::invalid_argument	If @p alpha is out of range [0,1].
 		 *
-		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param[in]	targetObject	The data object which receives the color.
 		 * @param 	  	red				Red value in range [0, 255].
 		 * @param 	  	green			Green value in range [0, 255].
 		 * @param 	  	blue			Blue value in range [0, 255].
@@ -348,9 +348,9 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If @p targetObject is neither a property nor a property
 		 * 										kind.
 		 *
-		 * @param [in]	targetObject		 	The data object on which we want to set a discrete color
+		 * @param[in]	targetObject		 	The data object on which we want to set a discrete color
 		 * 										map.
-		 * @param [in]	discreteColorMap	 	The discrete color map we want to set on the data object.
+		 * @param[in]	discreteColorMap	 	The discrete color map we want to set on the data object.
 		 * @param 	  	useReverseMapping	 	(Optional) It true, it indicates that the minimum value
 		 * 										of the property corresponds to the maximum index of the
 		 * 										color map and that the maximum value of the property
@@ -424,9 +424,9 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If @p targetObject is neither a property nor a property
 		 * 										kind.
 		 *
-		 * @param [in]	targetObject		 	The data object on which we want to set a continuous
+		 * @param[in]	targetObject		 	The data object on which we want to set a continuous
 		 * 										color map.
-		 * @param [in]	continuousColorMap   	The continuous color map we want to set on the data
+		 * @param[in]	continuousColorMap   	The continuous color map we want to set on the data
 		 * 										object.
 		 * @param 	  	useReverseMapping	 	(Optional) It true, it indicates that the minimum value
 		 * 										of the property corresponds to the maximum index of the
@@ -442,7 +442,7 @@ namespace EML2_NS
 
 		/**
 		 * Query if a given data object has minimum and maximum values to map with a color map. It only
-		 * looks at direct color association (see {@link hasDirectGraphicalInformation})
+		 * looks at direct color association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no color
 		 * 										information.
@@ -455,7 +455,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the minimum value to map with a color map for a given data object. It only looks at
-		 * direct color association (see {@link hasDirectGraphicalInformation})
+		 * direct color association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If the color information associated @p targetObject has
 		 * 										no minimum value.
@@ -468,7 +468,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the maximum value to map with a color map for a given data object. It only looks at
-		 * direct color association (see {@link hasDirectGraphicalInformation})
+		 * direct color association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If the color information associated @p targetObject has
 		 * 										no maximum value.
@@ -538,9 +538,9 @@ namespace EML2_NS
 		 * @param 	   	red		  	Numeric value in the range [0, 1].
 		 * @param 	   	green	  	Numeric value in the range [0, 1].
 		 * @param 	   	blue	  	Numeric value in the range [0, 1].
-		 * @param [out]	hue		  	Angle in degrees in the range [0, 360].
-		 * @param [out]	saturation	Numeric value in the range [0, 1].
-		 * @param [out]	value	  	Numeric value in the range [0, 1].
+		 * @param[out]	hue		  	Angle in degrees in the range [0, 360].
+		 * @param[out]	saturation	Numeric value in the range [0, 1].
+		 * @param[out]	value	  	Numeric value in the range [0, 1].
 		 */
 		DLL_IMPORT_OR_EXPORT static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
 
@@ -551,9 +551,9 @@ namespace EML2_NS
 		 * @param 	   	red		  	Numeric value in the range [0, 255].
 		 * @param 	   	green	  	Numeric value in the range [0, 255].
 		 * @param 	   	blue	  	Numeric value in the range [0, 255].
-		 * @param [out]	hue		  	Angle in degrees in the range [0, 360].
-		 * @param [out]	saturation	Numeric value in the range [0, 1].
-		 * @param [out]	value	  	Numeric value in the range [0, 1].
+		 * @param[out]	hue		  	Angle in degrees in the range [0, 360].
+		 * @param[out]	saturation	Numeric value in the range [0, 1].
+		 * @param[out]	value	  	Numeric value in the range [0, 1].
 		 */
 		DLL_IMPORT_OR_EXPORT static void rgbToHsv(uint8_t red, uint8_t green, uint8_t blue, double& hue, double& saturation, double& value);
 
@@ -564,9 +564,9 @@ namespace EML2_NS
 		 * @param 	   	hue		  	Angle in degrees in the range [0, 360].
 		 * @param 	   	saturation	Numeric value in the range [0, 1].
 		 * @param 	   	value	  	Numeric value in the range [0, 1].
-		 * @param [out]	red		  	Numeric value in the range [0, 1].
-		 * @param [out]	green	  	Numeric value in the range [0, 1].
-		 * @param [out]	blue	  	Numeric value in the range [0, 1].
+		 * @param[out]	red		  	Numeric value in the range [0, 1].
+		 * @param[out]	green	  	Numeric value in the range [0, 1].
+		 * @param[out]	blue	  	Numeric value in the range [0, 1].
 		 */
 		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, double& red, double& green, double& blue);
 
@@ -578,9 +578,9 @@ namespace EML2_NS
 		 * @param 	   	hue		  	Angle in degrees in the range [0, 360].
 		 * @param 	   	saturation	Numeric value in the range [0, 1].
 		 * @param 	   	value	  	Numeric value in the range [0, 1].
-		 * @param [out]	red		  	Numeric value in the range [0, 255].
-		 * @param [out]	green	  	Numeric value in the range [0, 255].
-		 * @param [out]	blue	  	Numeric value in the range [0, 255].
+		 * @param[out]	red		  	Numeric value in the range [0, 255].
+		 * @param[out]	green	  	Numeric value in the range [0, 255].
+		 * @param[out]	blue	  	Numeric value in the range [0, 255].
 		 */
 		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, uint8_t& red, uint8_t& green, uint8_t& blue);
 
@@ -610,14 +610,14 @@ namespace EML2_NS
 		/**
 		 * Constructor. Only to be used in partial transfer context
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param[in]	partialObject	If non-null, the partial object.
 		 */
 		GraphicalInformationSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		GraphicalInformationSet(gsoap_eml2_3::_eml23__GraphicalInformationSet* fromGsoap) :
 			COMMON_NS::AbstractObject(fromGsoap) {}

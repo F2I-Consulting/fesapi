@@ -30,7 +30,7 @@ namespace EML2_3_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -40,7 +40,7 @@ namespace EML2_3_NS
 		 * Creates a local property type which uses a standard uom and which derives from a standard
 		 * Energistics property type.
 		 *
-		 * @param [in,out]	repo			  	The repo where the underlying gsoap proxy is going to be
+		 * @param[in,out]	repo			  	The repo where the underlying gsoap proxy is going to be
 		 * 										created.
 		 * @param 		  	guid			  	The guid to set to the local 3d crs. If empty then a new
 		 * 										guid will be generated.
@@ -50,7 +50,7 @@ namespace EML2_3_NS
 		 * 										Energistics Unit Of Measure.
 		 * @param 		  	isAbstract		  	(Optional) Indicates if this property kind can be used
 		 * 										directly by a property or not.
-		 * @param [in,out]	parentPropertyKind	(Optional) The parent property kind if this property
+		 * @param[in,out]	parentPropertyKind	(Optional) The parent property kind if this property
 		 * 										kind. By default, it is the Energistics root property
 		 * 										kind called "property".
 		 */
@@ -61,7 +61,7 @@ namespace EML2_3_NS
 		 * Creates a local property type which uses a standard uom and which derives from a standard
 		 * Energistics property type.
 		 *
-		 * @param [in,out]	repo			  	The repo where the underlying gsoap proxy is going to be
+		 * @param[in,out]	repo			  	The repo where the underlying gsoap proxy is going to be
 		 * 										created.
 		 * @param 		  	guid			  	The guid to set to the local 3d crs. If empty then a new
 		 * 										guid will be generated.
@@ -71,7 +71,7 @@ namespace EML2_3_NS
 		 * 										Energistics Unit Of Measure or another dictionary.
 		 * @param 		  	isAbstract		  	(Optional) Indicates if this property kind can be used
 		 * 										directly by a property or not.
-		 * @param [in,out]	parentPropertyKind	(Optional) The parent property kind if this property
+		 * @param[in,out]	parentPropertyKind	(Optional) The parent property kind if this property
 		 * 										kind. By default, it is the Energistics root property
 		 * 										kind called "property".
 		 */
@@ -81,7 +81,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PropertyKind(gsoap_eml2_3::eml23__PropertyKind* fromGsoap) :EML2_NS::PropertyKind(fromGsoap) {}
 
@@ -135,7 +135,7 @@ namespace EML2_3_NS
 		DLL_IMPORT_OR_EXPORT time_t getDeprecationDate() const;
 
 		/**
-		 * Same as {@link getDeprecationDate()}. Please use this method if you want to read some dates out of
+		 * Same as \link getDeprecationDate() \endlink. Please use this method if you want to read some dates out of
 		 * the range of @c time_t
 		 *
 		 * @exception	std::invalid_argument	If this instance is actually a partial object.
@@ -155,7 +155,7 @@ namespace EML2_3_NS
 		DLL_IMPORT_OR_EXPORT void setDeprecationDate(time_t deprecationDate);
 
 		/**
-		 * Same as {@link setDeprecationDate()}. Please use this method if you want to read some dates out of
+		 * Same as \link setDeprecationDate() \endlink. Please use this method if you want to read some dates out of
 		 * the range of @c time_t
 		 *
 		 * @param 	lastUpdate	The deprecation date and time to set to this data object.
@@ -180,7 +180,7 @@ namespace EML2_3_NS
 		/**
 		 * Sets XML parent property kind
 		 *
-		 * @param [in,out]	parentPropertyKind	If non-null, the parent property kind.
+		 * @param[in,out]	parentPropertyKind	If non-null, the parent property kind.
 		 */
 		void setXmlParentPropertyKind(EML2_NS::PropertyKind* parentPropertyKind);
 

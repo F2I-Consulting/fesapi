@@ -30,7 +30,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RepresentationSetRepresentation(partialObject) {}
 
@@ -39,7 +39,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	the interpretation the instance represents.
+		 * @param[in]	interp	the interpretation the instance represents.
 		 * @param 	  	guid  	A guid for the instance to create. Empty guid lead to the creation of a
 		 * 						random one.
 		 * @param 	  	title 	A title for the instance to create.
@@ -49,7 +49,7 @@ namespace RESQML2_2_NS
 		/**
 		 * To use if the representation set representation is not linked to any interpretation
 		 *
-		 * @param [in,out]	repo 	If non-null, the repo.
+		 * @param[in,out]	repo 	If non-null, the repo.
 		 * @param 		  	guid 	Unique identifier.
 		 * @param 		  	title	The title.
 		 */
@@ -58,7 +58,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		RepresentationSetRepresentation(gsoap_eml2_3::_resqml22__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::RepresentationSetRepresentation(fromGsoap) {}
 

@@ -30,7 +30,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -39,7 +39,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo			  	The repo where the underlying gsoap proxy is going to be
+		 * @param[in,out]	repo			  	The repo where the underlying gsoap proxy is going to be
 		 * 										created.
 		 * @param 		  	guid			  	The guid to set to this instance. If empty then a new
 		 * 										guid will be generated.
@@ -67,7 +67,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SeismicLatticeFeature(gsoap_eml2_3::_resqml22__SeismicLatticeFeature* fromGsoap): RESQML2_NS::SeismicLatticeFeature(fromGsoap) {}
 

@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt>.
 		 *
-		 * @param [in]	orgFeat	The feature the instance interprets.
+		 * @param[in]	orgFeat	The feature the instance interprets.
 		 * @param 	  	guid   	The guid to set to the interpretation. If empty then a new guid will be
 		 * 						generated.
 		 * @param 	  	title  	A title for the instance to create.
@@ -51,7 +51,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml20__EarthModelInterpretation* fromGsoap) : RESQML2_NS::EarthModelInterpretation(fromGsoap) {}
 

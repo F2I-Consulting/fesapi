@@ -30,14 +30,14 @@ namespace EML2_3_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT VerticalCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		 * Construct a VerticalCrs deriving from an EPSG vertical CRS
 		 *
-		 * @param [in,out]	repo		  		If non-null, the repo.
+		 * @param[in,out]	repo		  		If non-null, the repo.
 		 * @param 		  	guid		  		Unique identifier.
 		 * @param 		  	title		  		The title.
 		 * @param 		  	verticalEpsgCode	The EPSG code of the vertical CRS
@@ -52,7 +52,7 @@ namespace EML2_3_NS
 		/**
 		 * Construct a VerticalCrs deriving from an unknown vertical CRS
 		 *
-		 * @param [in,out]	repo		  		If non-null, the repo.
+		 * @param[in,out]	repo		  		If non-null, the repo.
 		 * @param 		  	guid		  		Unique identifier.
 		 * @param 		  	title		  		The title.
 		 * @param 			verticalDefinition 	If starting with "VERT" then it gives the WKT definition of the vertical CRS.
@@ -68,7 +68,7 @@ namespace EML2_3_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		VerticalCrs(gsoap_eml2_3::_eml23__VerticalCrs* fromGsoap): COMMON_NS::AbstractObject(fromGsoap) {}
 

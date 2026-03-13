@@ -37,7 +37,7 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]	repo	 	The soap context where the underlying gsoap proxy is going to be
+		 * @param[in]	repo	 	The soap context where the underlying gsoap proxy is going to be
 		 * 								created.
 		 * @param 	  	guid	 	Unique identifier.
 		 * @param 	  	title	 	The title.
@@ -50,7 +50,7 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]	interp   	If non-nullptr, the interp.
+		 * @param[in]	interp   	If non-nullptr, the interp.
 		 * @param 	  	guid	 	Unique identifier.
 		 * @param 	  	title	 	The title.
 		 * @param 	  	cellCount	Number of cells.
@@ -62,7 +62,7 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in]	fromGsoap	If non-nullptr, from gsoap.
+		 * @param[in]	fromGsoap	If non-nullptr, from gsoap.
 		 */
 		UnstructuredGridRepresentation(gsoap_eml2_3::_resqml22__UnstructuredGridRepresentation* fromGsoap):
 			RESQML2_NS::UnstructuredGridRepresentation(fromGsoap) {}

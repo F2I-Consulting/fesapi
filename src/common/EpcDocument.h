@@ -70,7 +70,7 @@ namespace COMMON_NS
 		/**
 		 * Deserializes this package (data objects and relationships) into a data object repository
 		 *
-		 * @param [in,out]	repo			   	A data object repository.
+		 * @param[in,out]	repo			   	A data object repository.
 		 * @param 		  	hdfPermissionAccess	(Optional) The HDF5 file permission access. It is read
 		 * 										only by default.
 		 *

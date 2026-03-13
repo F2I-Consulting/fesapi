@@ -46,7 +46,7 @@ namespace EML2_NS
 		/**
 		 * Constructor. Only to be used in partial transfer context
 		 *
-		 * @param [in]	partialObject	If non-null, the partial object.
+		 * @param[in]	partialObject	If non-null, the partial object.
 		 */
 		explicit EpcExternalPartReference(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 		explicit EpcExternalPartReference(const COMMON_NS::DataObjectReference& dor) : COMMON_NS::AbstractObject(dor) {}
@@ -54,7 +54,7 @@ namespace EML2_NS
 		/**
 		 * Creates an instance of this class by wrapping an EML2.0 gSOAP instance
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		explicit EpcExternalPartReference(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
 			COMMON_NS::AbstractObject(fromGsoap) {}

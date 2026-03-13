@@ -32,14 +32,14 @@ namespace WITSML2_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT Well(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::Well(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo 	The dataobject repo where the underlying gsoap proxy is going to be
+		 * @param[in,out]	repo 	The dataobject repo where the underlying gsoap proxy is going to be
 		 * 							created.
 		 * @param 		  	guid 	The guid to set to this instance. If empty then a new guid will be
 		 * 							generated.
@@ -56,7 +56,7 @@ namespace WITSML2_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
 		 *
-		 * @param [in,out]	repo		 	If non-null, the repo.
+		 * @param[in,out]	repo		 	If non-null, the repo.
 		 * @param 		  	guid		 	Unique identifier.
 		 * @param 		  	title		 	The title.
 		 * @param 	  		isActive	  	True if is active, false if not.
@@ -74,7 +74,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		Well(gsoap_eml2_3::witsml21__Well* fromGsoap): WITSML2_NS::Well(fromGsoap)  {}
 

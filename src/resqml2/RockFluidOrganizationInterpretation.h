@@ -73,7 +73,7 @@ namespace RESQML2_NS
 		/**
 		 * Checks whether a given grid representation is associated to this rock fluid organization.
 		 *
-		 * @param [in]	gridRep	The grid representation for which we want to know if it is associated to
+		 * @param[in]	gridRep	The grid representation for which we want to know if it is associated to
 		 * 						this rock fluid organization.
 		 *
 		 * @returns	True if @p gridRep is associated to this rock fluid organization, false if not.
@@ -85,7 +85,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>rockFluidUnitInterpretation == nullptr</tt>.
 		 *
-		 * @param [in]	rockFluidUnitInterpretation	The rock fluid unit interpretation to push back.
+		 * @param[in]	rockFluidUnitInterpretation	The rock fluid unit interpretation to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackRockFluidUnitInterpretation(class RockFluidUnitInterpretation* rockFluidUnitInterpretation) = 0;
 

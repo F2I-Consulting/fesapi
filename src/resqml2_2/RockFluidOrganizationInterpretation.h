@@ -39,7 +39,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>orgFeat == nullptr</tt>.
 		 *
-		 * @param [in]	orgFeat	The feature the instance interprets. It must be a "fluid"
+		 * @param[in]	orgFeat	The feature the instance interprets. It must be a "fluid"
 		 * 						organization feature.
 		 * @param 	  	guid   	The guid to set to the interpretation. If empty then a new guid will be
 		 * 						generated.

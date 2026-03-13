@@ -501,7 +501,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of unsigned short values ordered firstly by fastest
+		 * @param[out]	values	   	1d array of unsigned short values ordered firstly by fastest
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
@@ -513,7 +513,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of int 8 bits values ordered firstly by fastest direction. The
+		 * @param[out]	values	   	1d array of int 8 bits values ordered firstly by fastest direction. The
 		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfInt8Values(const std::string & datasetName, int8_t* values) = 0;
@@ -524,7 +524,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
 		 *
 		 * @param 	   	datasetName	The absolute name of the nd array dataset.
-		 * @param [out]	values	   	1d array of unsigned int 8 bits values ordered firstly by fastest
+		 * @param[out]	values	   	1d array of unsigned int 8 bits values ordered firstly by fastest
 		 * 							direction. The values must be pre-allocated and won't be freed by
 		 * 							this method.
 		 */
@@ -787,7 +787,7 @@ namespace EML2_NS
 		/**
 		 * Convert some xyz points from local to global CRS.
 		 *
-		 * @param [in,out]	xyzPoints		  	An array of xyz points. The i-th point is defined by
+		 * @param[in,out]	xyzPoints		  	An array of xyz points. The i-th point is defined by
 		 * 										<tt>(x, y, z) = (xyzPoints[i], xyzPoints[i+1],
 		 * 										xyzPoints[i+2])</tt>.
 		 * @param 		  	xyzPointCount	  	The number of xyz points. Must be equal to the size of @p
@@ -1026,7 +1026,7 @@ namespace EML2_NS
 		 * 										data object datatype.
 		 *
 		 * @param 	  	title			The title of the parameter to push back.
-		 * @param [in]	resqmlObject	The RESQML object, value of the parameter to push back.
+		 * @param[in]	resqmlObject	The RESQML object, value of the parameter to push back.
 		 */
 		void pushBackParameter(const std::string& title, COMMON_NS::AbstractObject* resqmlObject);
 		
@@ -1265,7 +1265,7 @@ namespace EML2_NS
 		/**
 		 * Sets the activity template of this activity.
 		 *
-		 * @param [in]	activityTemplate	If non-null, the activity template.
+		 * @param[in]	activityTemplate	If non-null, the activity template.
 		 */
 		void setActivityTemplate(ActivityTemplate* activityTemplate);
 		
@@ -1329,7 +1329,7 @@ namespace EML2_NS
 
 		/**
 		 * Query if a given data object has some graphical information. If it has no direct graphical
-		 * information (see {@link hasDirectGraphicalInformation}) and it is a property, we also check
+		 * information (see \link hasDirectGraphicalInformation \endlink) and it is a property, we also check
 		 * that its property kind has some
 		 *
 		 * @exception	std::invalid_argument	If the target object is null.
@@ -1342,7 +1342,7 @@ namespace EML2_NS
 
 		/**
 		 * Query if a given data object has a default color. It only looks at direct color association (see
-		 * {@link hasDirectGraphicalInformation})
+		 * \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If the target object is null.
 		 *
@@ -1354,7 +1354,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default hue of a given data object. It only looks at direct color association (see
-		 * {@link hasDirectGraphicalInformation})
+		 * \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
@@ -1366,7 +1366,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default saturation of a given data object. It only looks at direct color association
-		 * (see {@link hasDirectGraphicalInformation})
+		 * (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
@@ -1378,7 +1378,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default color value of a given data object. It only looks at direct color
-		 * association (see {@link hasDirectGraphicalInformation})
+		 * association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
@@ -1390,7 +1390,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default alpha value of a given data object. It only looks at direct color
-		 * association (see {@link hasDirectGraphicalInformation})
+		 * association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
@@ -1402,7 +1402,7 @@ namespace EML2_NS
 
 		/**
 		 * Query if a given data object has a default color title. It only looks at direct color
-		 * association (see {@link hasDirectGraphicalInformation})
+		 * association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color.
 		 *
@@ -1414,7 +1414,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the default color title of a given data object. It only looks at direct color
-		 * association (see {@link hasDirectGraphicalInformation})
+		 * association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject has no default color or if its default
 		 * 										color has no title.
@@ -1435,7 +1435,7 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If @p saturation, @p value or @p alpha is out of range [0,
 		 * 										1].
 		 *
-		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param[in]	targetObject	The data object which receives the color.
 		 * @param 	  	hue				The hue angle in degrees in range [0, 360].
 		 * @param 	  	saturation  	The saturation value in range [0, 1].
 		 * @param 	  	value			The color value in range [0, 1].
@@ -1456,7 +1456,7 @@ namespace EML2_NS
 		 * 										[0,
 		 * 										1].
 		 *
-		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param[in]	targetObject	The data object which receives the color.
 		 * @param 	  	red				Red value in range [0, 1].
 		 * @param 	  	green			Green value in range [0, 1].
 		 * @param 	  	blue			Blue value in range [0, 1].
@@ -1478,7 +1478,7 @@ namespace EML2_NS
 		 * 										255].
 		 * @exception	std::invalid_argument	If @p alpha is out of range [0,1].
 		 *
-		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param[in]	targetObject	The data object which receives the color.
 		 * @param 	  	red				Red value in range [0, 255].
 		 * @param 	  	green			Green value in range [0, 255].
 		 * @param 	  	blue			Blue value in range [0, 255].
@@ -1535,9 +1535,9 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If @p targetObject is neither a property nor a property
 		 * 										kind.
 		 *
-		 * @param [in]	targetObject		 	The data object on which we want to set a discrete color
+		 * @param[in]	targetObject		 	The data object on which we want to set a discrete color
 		 * 										map.
-		 * @param [in]	discreteColorMap	 	The discrete color map we want to set on the data object.
+		 * @param[in]	discreteColorMap	 	The discrete color map we want to set on the data object.
 		 * @param 	  	useReverseMapping	 	(Optional) It true, it indicates that the minimum value
 		 * 										of the property corresponds to the maximum index of the
 		 * 										color map and that the maximum value of the property
@@ -1596,9 +1596,9 @@ namespace EML2_NS
 		 * @exception	std::invalid_argument	If @p targetObject is neither a property nor a property
 		 * 										kind.
 		 *
-		 * @param [in]	targetObject		 	The data object on which we want to set a continuous
+		 * @param[in]	targetObject		 	The data object on which we want to set a continuous
 		 * 										color map.
-		 * @param [in]	continuousColorMap   	The continuous color map we want to set on the data
+		 * @param[in]	continuousColorMap   	The continuous color map we want to set on the data
 		 * 										object.
 		 * @param 	  	useReverseMapping	 	(Optional) It true, it indicates that the minimum value
 		 * 										of the property corresponds to the maximum index of the
@@ -1614,7 +1614,7 @@ namespace EML2_NS
 
 		/**
 		 * Query if a given data object has minimum and maximum values to map with a color map. It only
-		 * looks at direct color association (see {@link hasDirectGraphicalInformation})
+		 * looks at direct color association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no color
 		 * 										information.
@@ -1627,7 +1627,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the minimum value to map with a color map for a given data object. It only looks at
-		 * direct color association (see {@link hasDirectGraphicalInformation})
+		 * direct color association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If the color information associated @p targetObject has
 		 * 										no minimum value.
@@ -1640,7 +1640,7 @@ namespace EML2_NS
 
 		/**
 		 * Gets the maximum value to map with a color map for a given data object. It only looks at
-		 * direct color association (see {@link hasDirectGraphicalInformation})
+		 * direct color association (see \link hasDirectGraphicalInformation \endlink)
 		 *
 		 * @exception	std::invalid_argument	If the color information associated @p targetObject has
 		 * 										no maximum value.
@@ -1737,7 +1737,7 @@ namespace EML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @c parentPropertyKind is null.
 		 *
-		 * @param [in]	parentPropertyKind	The parent property kind to set to this property kind.
+		 * @param[in]	parentPropertyKind	The parent property kind to set to this property kind.
 		 */
 		void setParentPropertyKind(PropertyKind* parentPropertyKind);
 

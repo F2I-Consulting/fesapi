@@ -42,7 +42,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT PropertySet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		 * @exception	std::invalid_argument	If <tt>repo == nullptr</tt>.
 		 * @exception	std::invalid_argument	If @p timeSetKind is single time series.
 		 *
-		 * @param [in]	repo				   	The DataObjectRepository where the instance must be
+		 * @param[in]	repo				   	The DataObjectRepository where the instance must be
 		 * 											created.
 		 * @param 	  	guid				   	A guid for the instance to create. Empty guid lead to the
 		 * 										creation of a random one.
@@ -69,7 +69,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PropertySet(gsoap_resqml2_0_1::_resqml20__PropertySet* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
@@ -81,7 +81,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p parent is nullptr.
 		 *
-		 * @param [in]	parent	The parent to set to this instance.
+		 * @param[in]	parent	The parent to set to this instance.
 		 */
 		DLL_IMPORT_OR_EXPORT void setParent(PropertySet * parent);
 
@@ -133,7 +133,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p prop is nullptr.
 		 *
-		 * @param [in]	prop	The property to push into this property set.
+		 * @param[in]	prop	The property to push into this property set.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackProperty(RESQML2_NS::AbstractProperty * prop);
 
@@ -204,14 +204,14 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Sets XML parent
 		 *
-		 * @param [in,out]	parent	If non-null, the parent.
+		 * @param[in,out]	parent	If non-null, the parent.
 		 */
 		void setXmlParent(PropertySet * parent);
 
 		/**
 		 * Pushes a back XML property
 		 *
-		 * @param [in,out]	prop	If non-null, the property.
+		 * @param[in,out]	prop	If non-null, the property.
 		 */
 		void pushBackXmlProperty(RESQML2_NS::AbstractProperty * prop);
 

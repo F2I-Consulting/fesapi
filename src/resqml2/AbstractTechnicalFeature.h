@@ -44,7 +44,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-nullptr, the partial object.
+		 * @param[in,out]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractTechnicalFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractFeature(partialObject) {}
 
@@ -54,14 +54,14 @@ namespace RESQML2_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	fromGsoap	If non-nullptr, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-nullptr, from gsoap.
 		 */
 		AbstractTechnicalFeature(gsoap_resqml2_0_1::resqml20__AbstractTechnicalFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
 
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	fromGsoap	If non-nullptr, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-nullptr, from gsoap.
 		 */
 		AbstractTechnicalFeature(gsoap_eml2_3::resqml22__AbstractTechnicalFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
 	};

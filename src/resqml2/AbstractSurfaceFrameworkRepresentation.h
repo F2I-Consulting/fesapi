@@ -53,7 +53,7 @@ namespace RESQML2_NS
 		 * 									the identity.
 		 * @param 		  	contactIndices	The indices of the sealed contact representations involved
 		 * 									within the identity. Count is @p contactCount.
-		 * @param [in,out]	proxy		  	The HDF proxy where to write the @p contactIndices values. If
+		 * @param[in,out]	proxy		  	The HDF proxy where to write the @p contactIndices values. If
 		 * 									@c nullptr, then a default HDF proxy must be defined in the
 		 * 									repository.
 		 */
@@ -81,7 +81,7 @@ namespace RESQML2_NS
 		 * 											index in all contact representations) of the contact
 		 * 											representations are identical. Count is @p
 		 * 											identicalNodesCount.
-		 * @param [in,out]	proxy				 	The HDF proxy where to write the @p contactIndices
+		 * @param[in,out]	proxy				 	The HDF proxy where to write the @p contactIndices
 		 * 											and @p identicalNodesIndexes values. Id f @c nullptr,
 		 * 											then a default HDF proxy must be defined in the
 		 * 											repository.
@@ -147,7 +147,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	   	ciIndex			 	Zero-based index of the contact identity in the contact
 		 * 									identity list.
-		 * @param [out]	contactRepIndices	An array to receive contact indices. It must be preallocated
+		 * @param[out]	contactRepIndices	An array to receive contact indices. It must be preallocated
 		 * 									with getContactCountInContactIdentity(). It won't be deleted
 		 * 									by fesapi.
 		 */
@@ -191,7 +191,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	   	ciIndex	   	ciIndex	Zero-based index of the contact identity in the contact
 		 * 							identity list.
-		 * @param [out]	nodeIndices	An array to receive the identical nodes indices. It must be
+		 * @param[out]	nodeIndices	An array to receive the identical nodes indices. It must be
 		 * 							preallocated with a count of getIdenticalContactNodeCount(). It won't
 		 * 							be deleted by fesapi.
 		 */
@@ -202,7 +202,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -214,14 +214,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::resqml20__AbstractSurfaceFrameworkRepresentation* fromGsoap) : RepresentationSetRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractSurfaceFrameworkRepresentation(gsoap_eml2_3::resqml22__AbstractSurfaceFrameworkRepresentation* fromGsoap) : RepresentationSetRepresentation(fromGsoap) {}
 

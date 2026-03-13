@@ -42,7 +42,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -51,7 +51,7 @@ namespace RESQML2_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		FluidBoundaryInterpretation(gsoap_eml2_3::_resqml22__FluidBoundaryInterpretation* fromGsoap) : BoundaryFeatureInterpretation(fromGsoap) {}
 	};

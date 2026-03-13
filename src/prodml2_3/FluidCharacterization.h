@@ -113,7 +113,7 @@ namespace PRODML2_3_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -122,7 +122,7 @@ namespace PRODML2_3_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	repo 	The dataobject repo where the underlying gsoap proxy is going to be
+		 * @param[in,out]	repo 	The dataobject repo where the underlying gsoap proxy is going to be
 		 * 							created.
 		 * @param 		  	guid 	The guid to set to this instance. If empty then a new guid will be
 		 * 							generated.
@@ -135,7 +135,7 @@ namespace PRODML2_3_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		FluidCharacterization(gsoap_eml2_3::prodml23__FluidCharacterization* fromGsoap):AbstractObject(fromGsoap)  {}
 
@@ -201,7 +201,7 @@ namespace PRODML2_3_NS
 		/**
 		 * Sets rock fluid unit
 		 *
-		 * @param [in,out]	rockFluidUnit	If non-null, the rock fluid unit.
+		 * @param[in,out]	rockFluidUnit	If non-null, the rock fluid unit.
 		 */
 		DLL_IMPORT_OR_EXPORT void setRockFluidUnit(RESQML2_NS::RockFluidUnitInterpretation* rockFluidUnit);
 
@@ -222,7 +222,7 @@ namespace PRODML2_3_NS
 		/**
 		 * Sets the associated fluid system
 		 *
-		 * @param [in,out]	fluidSystem	If non-null, the fluidSystem to set.
+		 * @param[in,out]	fluidSystem	If non-null, the fluidSystem to set.
 		 */
 		DLL_IMPORT_OR_EXPORT void setFluidSystem(class FluidSystem* fluidSystem);
 

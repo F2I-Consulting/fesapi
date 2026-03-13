@@ -61,12 +61,12 @@ namespace RESQML2_NS
 		 * 										push.
 		 * @param 		  	patchCount		   	The number of contact patches within this sealed contact.
 		 * @param 		  	identicalNodesCount	The number of identical nodes along this sealed contact.
-		 * @param [in]	  	identicalNodes	   	A 1d array of identical nodes indices. The size of this
+		 * @param[in]	  	identicalNodes	   	A 1d array of identical nodes indices. The size of this
 		 * 										array is @p patchCount <tt>*</tt> @p identicalNodesCount.
 		 * 										It indicates which nodes (identified by their common
 		 * 										index in all contact patches) of the contact patches are
 		 * 										identical.
-		 * @param [in,out]	proxy			   	The HDF proxy where to write the @p identicalNodes
+		 * @param[in,out]	proxy			   	The HDF proxy where to write the @p identicalNodes
 		 * 										values. If @c nullptr, then a default HDF proxy must be
 		 * 										defined in the repository.
 		 */
@@ -94,9 +94,9 @@ namespace RESQML2_NS
 		 * 															on the supporting representation.
 		 * 															Size if @p nodeCount.
 		 * @param 		  	nodeCount							 	The node count of this contact patch.
-		 * @param [in]	  	supportingRepresentation			 	The supporting representation of this
+		 * @param[in]	  	supportingRepresentation			 	The supporting representation of this
 		 * 															contact patch.
-		 * @param [in,out]	proxy								 	The HDF proxy where to write the @p
+		 * @param[in,out]	proxy								 	The HDF proxy where to write the @p
 		 * 															nodeIndicesOnSupportingRepresentation
 		 * 															values. If @c nullptr, then a default
 		 * 															HDF proxy must be defined in the
@@ -158,7 +158,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	   	contactIdx 	Zero-based index of the contact for which we look for the identical
 		 * 							nodes indices.
-		 * @param [out]	nodeIndices	An array to receive the identical nodes indices. This array must be
+		 * @param[out]	nodeIndices	An array to receive the identical nodes indices. This array must be
 		 * 							preallocated with getIdenticalContactPatchNodeCount().
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getIdenticalContactPatchNodeIndices(unsigned int contactIdx, unsigned int * nodeIndices) const = 0;
@@ -230,7 +230,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	   	contactIdx 	Zero-based index of the contact in the contact list.
 		 * @param 	   	cpIndex	   	Zero-based index of the contact patch in the contact.
-		 * @param [out]	nodeIndices	An array to received the nodes indices. This array must be
+		 * @param[out]	nodeIndices	An array to received the nodes indices. This array must be
 		 * 							preallocated with getContactPatchNodeCount(). It won't be deleted by
 		 * 							fesapi.
 		 */
@@ -246,7 +246,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -255,7 +255,7 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	interp	The structural organization interpretation the instance interprets.
+		 * @param[in,out]	interp	The structural organization interpretation the instance interprets.
 		 * @param 		  	guid  	The guid to set to the representation. If empty then a new guid will
 		 * 							be generated.
 		 * @param 		  	title 	A title for the instance to create.
@@ -265,14 +265,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__SealedSurfaceFrameworkRepresentation* fromGsoap) : AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SealedSurfaceFrameworkRepresentation(gsoap_eml2_3::_resqml22__SealedSurfaceFrameworkRepresentation* fromGsoap) : AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
 	};

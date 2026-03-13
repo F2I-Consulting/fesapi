@@ -30,7 +30,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT PointsProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PointsProperty(partialObject) {}
 
@@ -39,7 +39,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
 		 *
-		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * @param[in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
 		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
 		 * 								generated.
@@ -50,7 +50,7 @@ namespace RESQML2_2_NS
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
 		 * @param 	  	localCrs			   	The local CRS where the points are defined.
-		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
+		 * @param[in]	localPropKind 	The property kind of these property values which must be defined
 		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		PointsProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
@@ -60,7 +60,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		PointsProperty(gsoap_eml2_3::_resqml22__PointsProperty* fromGsoap) : RESQML2_NS::PointsProperty(fromGsoap) {}
 
@@ -88,7 +88,7 @@ namespace RESQML2_2_NS
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
+		 * @param[in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
 		 * 							@c nullptr, then a default HDF proxy must be defined in the
 		 * 							repository.
 		 * @param 	  	datasetName	(Optional) The HDF5 dataset name where the values are stored. If
@@ -116,9 +116,9 @@ namespace RESQML2_2_NS
 		 * Get the HDF Proxy which contains the property values of a particular patch.
 		 *
 		 * @param 		  	patchIndex	The corresponding patch index of the dataset to get.
-		 * @param [out]		nullValue 	If possible, this function will set this parameter to the RESQML
+		 * @param[out]		nullValue 	If possible, this function will set this parameter to the RESQML
 		 * 								null value of the dataset. If not, it will return int64_t.min.
-		 * @param [out]		nullValue 	this function will set this parameter to the RESQML
+		 * @param[out]		nullValue 	this function will set this parameter to the RESQML
 		 * 								dataset path in the HDF file.
 		 *
 		 * @returns	Null if it fails, else the HDF Proxy of patch.

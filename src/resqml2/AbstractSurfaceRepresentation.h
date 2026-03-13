@@ -65,7 +65,7 @@ namespace RESQML2_NS
 		 * @exception	std::invalid_argument	If @p outerRing <tt>== nullptr</tt>.
 		 * @exception	std::logic_error	 	If the RESQML version is unknown.
 		 *
-		 * @param [in]	outerRing	A polyline representation of the outer ring to push back.
+		 * @param[in]	outerRing	A polyline representation of the outer ring to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackOuterRing(PolylineRepresentation * outerRing);
 
@@ -95,7 +95,7 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -107,14 +107,14 @@ namespace RESQML2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractSurfaceRepresentation(gsoap_resqml2_0_1::resqml20__AbstractSurfaceRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		AbstractSurfaceRepresentation(gsoap_eml2_3::resqml22__AbstractSurfaceRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 

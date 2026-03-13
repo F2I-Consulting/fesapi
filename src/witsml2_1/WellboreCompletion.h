@@ -35,14 +35,14 @@ namespace WITSML2_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::WellboreObject(partialObject) {}
 
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	witsmlWellbore	  	If non-null, the witsml wellbore.
+		 * @param[in,out]	witsmlWellbore	  	If non-null, the witsml wellbore.
 		 * @param 		  	guid			  	Unique identifier.
 		 * @param 		  	title			  	The title.
 		 */
@@ -53,7 +53,7 @@ namespace WITSML2_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		WellboreCompletion(gsoap_eml2_3::witsml21__WellboreCompletion* fromGsoap) :WellboreObject(fromGsoap) {}
 
@@ -76,14 +76,14 @@ namespace WITSML2_1_NS
 		/**
 		 * Set the wellbore linked with this data object
 		 *
-		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
+		 * @param[in,out]	witsmlWellbore	If non-null, the witsml wellbore.
 		 */
 		DLL_IMPORT_OR_EXPORT void setWellbore(WITSML2_NS::Wellbore* witsmlWellbore) final;
 
 		/**
 		 * Set the well completion linked with this data object
 		 *
-		 * @param [in,out]	wellCompletion	If non-null, the well completion.
+		 * @param[in,out]	wellCompletion	If non-null, the well completion.
 		 */
 		DLL_IMPORT_OR_EXPORT void setWellCompletion(class WellCompletion* wellCompletion);
 

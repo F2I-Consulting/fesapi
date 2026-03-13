@@ -30,7 +30,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT BoundaryFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::BoundaryFeature(partialObject) {}
 
@@ -39,7 +39,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p repo is @c nullptr.
 		 *
-		 * @param [in,out]	repo 	The repository where the underlying gSOAP proxy is going to be
+		 * @param[in,out]	repo 	The repository where the underlying gSOAP proxy is going to be
 		 * 							created.
 		 * @param 		  	guid 	The guid to set to the boundary feature. If empty then a new guid
 		 * 							will be generated.
@@ -51,7 +51,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		BoundaryFeature(gsoap_eml2_3::_resqml22__BoundaryFeature* fromGsoap): RESQML2_NS::BoundaryFeature(fromGsoap) {}
 		

@@ -29,7 +29,7 @@ namespace RESQML2_2_NS
 		/**
 		 * @brief	Constructor
 		 *
-		 * @param [in]	repo 	If non-nullptr, the repo.
+		 * @param[in]	repo 	If non-nullptr, the repo.
 		 * @param 	  	guid 	The guid to set to graphical information set.
 		 * @param 	  	title	A title for graphical information set.
 		 */

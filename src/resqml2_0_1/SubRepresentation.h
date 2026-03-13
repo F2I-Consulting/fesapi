@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		 * Creates an instance of this class in a gsoap context. This instance is not linked to any
 		 * interpretation.
 		 *
-		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy will be created.
+		 * @param[in,out]	repo 	The repo where the underlying gsoap proxy will be created.
 		 * @param 		  	guid 	The guid to set to this instance.
 		 * @param 		  	title	A title for the instance to create.
 		 */
@@ -53,7 +53,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The interpretation the instance represents.
+		 * @param[in]	interp	The interpretation the instance represents.
 		 * @param 	  	guid  	The guid to set to this instance.
 		 * @param 	  	title 	A title for the instance to create.
 		 */
@@ -63,7 +63,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SubRepresentation(gsoap_resqml2_0_1::_resqml20__SubRepresentation* fromGsoap) : RESQML2_NS::SubRepresentation(fromGsoap) {}
 
@@ -125,7 +125,7 @@ namespace RESQML2_0_1_NS
 		/**
 			* Initializes this object
 			*
-			* @param [in,out]	repo 	The repo where the underlying gsoap proxy will be created.
+			* @param[in,out]	repo 	The repo where the underlying gsoap proxy will be created.
 			* @param 		  	guid 	The guid to set to this instance.
 			* @param 		  	title	A title for the instance to init.
 			*/

@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,12 +41,12 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>interp == nullptr</tt> or <tt>ssf == nullptr</tt>.
 		 *
-		 * @param [in]	interp	The Stratigraphic Column Rank Interpretation which the instance
+		 * @param[in]	interp	The Stratigraphic Column Rank Interpretation which the instance
 		 * 						interprets.
 		 * @param 	  	guid  	The guid to set to the representation. If empty then a new guid will be
 		 * 						generated.
 		 * @param 	  	title 	A title for the instance to create.
-		 * @param [in]	ssf   	The Sealed Surface Framework which this instance is based on.
+		 * @param[in]	ssf   	The Sealed Surface Framework which this instance is based on.
 		 */
 		SealedVolumeFrameworkRepresentation(RESQML2_NS::StratigraphicColumnRankInterpretation* interp,
 			const std::string & guid,
@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		SealedVolumeFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation* fromGsoap) : RESQML2_NS::SealedVolumeFrameworkRepresentation(fromGsoap) {}
 
@@ -107,9 +107,9 @@ namespace RESQML2_0_1_NS
 		 * Creates volume shell
 		 *
 		 * @param 		  	shellFaceCount			 	Number of shell faces.
-		 * @param [in,out]	faceRepresentationIndices	If non-null, the face representation indices.
-		 * @param [in,out]	faceRepPatchIndices		 	If non-null, the face rep patch indices.
-		 * @param [in,out]	faceSide				 	If non-null, true to face side.
+		 * @param[in,out]	faceRepresentationIndices	If non-null, the face representation indices.
+		 * @param[in,out]	faceRepPatchIndices		 	If non-null, the face rep patch indices.
+		 * @param[in,out]	faceSide				 	If non-null, true to face side.
 		 *
 		 * @returns	Null if it fails, else the new volume shell.
 		 */
@@ -173,7 +173,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Sets XML sealed surface framework
 		 *
-		 * @param [in,out]	ssf	If non-null, the ssf.
+		 * @param[in,out]	ssf	If non-null, the ssf.
 		 */
 		void setXmlSealedSurfaceFramework(RESQML2_NS::SealedSurfaceFrameworkRepresentation* ssf) final;
 
@@ -181,7 +181,7 @@ namespace RESQML2_0_1_NS
 		 * Sets XML interpretation of volume region
 		 *
 		 * @param 		  	regionIndex			Zero-based index of the region.
-		 * @param [in,out]	stratiUnitInterp	If non-null, the strati unit interp.
+		 * @param[in,out]	stratiUnitInterp	If non-null, the strati unit interp.
 		 */
 		void setXmlInterpretationOfVolumeRegion(uint64_t regionIndex, RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterp) final;
 	};

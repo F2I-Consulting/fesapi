@@ -39,7 +39,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 * @param[in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::WellboreTrajectoryRepresentation(partialObject) {}
 
@@ -48,12 +48,12 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p interp or @p mdInfo is @c nullptr.
 		 *
-		 * @param [in]	interp	The represented wellbore interpretation. It cannot be null.
+		 * @param[in]	interp	The represented wellbore interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the wellbore trajectory representation. If empty then
 		 * 						a new guid will be generated.
 		 * @param 	  	title 	The title to set to the wellbore trajectory representation. If empty then
 		 * 						\"unknown\" title will be set.
-		 * @param [in]	mdInfo	The MD information of the trajectory, mainly the well reference point.
+		 * @param[in]	mdInfo	The MD information of the trajectory, mainly the well reference point.
 		 * 						The unit of measure used for the mdInfo coordinates must also be used for
 		 * 						the start and end MD of the trajectory. It cannot be null.
 		 */
@@ -64,12 +64,12 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p interp or @p deviationSurvey is @c nullptr.
 		 *
-		 * @param [in]	interp		   	The represented interpretation. It cannot be null.
+		 * @param[in]	interp		   	The represented interpretation. It cannot be null.
 		 * @param 	  	guid		   	The guid to set to the wellbore trajectory representation. If
 		 * 								empty then a new guid will be generated.
 		 * @param 	  	title		   	The title to set to the wellbore trajectory representation. If
 		 * 								empty then \"unknown\" title will be set.
-		 * @param [in]	deviationSurvey	The deviation survey on which this wellbore trajectory relies on.
+		 * @param[in]	deviationSurvey	The deviation survey on which this wellbore trajectory relies on.
 		 * 								MD data will be retrieve from it. It cannot be null.
 		 */
 		WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, DeviationSurveyRepresentation* deviationSurvey);
@@ -77,7 +77,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* fromGsoap) : RESQML2_NS::WellboreTrajectoryRepresentation(fromGsoap) {}
 
@@ -145,7 +145,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If @p deviationSurvey is @c nullptr.
 		 *
-		 * @param [in]	deviationSurvey	The deviation survey to set as a source of this trajectory.
+		 * @param[in]	deviationSurvey	The deviation survey to set as a source of this trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT void setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey);
 

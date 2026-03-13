@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param[in,out]	partialObject	If non-null, the partial object.
 		 *
 		 * 
 		 */
@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @exception	std::invalid_argument	If <tt>activityTemplate == nullptr</tt>.
 		 *
-		 * @param [in]	activityTemplate	If non-null, the activity template.
+		 * @param[in]	activityTemplate	If non-null, the activity template.
 		 * @param 	  	guid				The guid to set to the boundary horizon. If empty then a new
 		 * 									guid will be generated.
 		 * @param 	  	title				A title for the instance to create.
@@ -51,7 +51,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Constructor
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
 		Activity(gsoap_resqml2_0_1::_resqml20__Activity* fromGsoap) : EML2_NS::Activity(fromGsoap) {}
 
@@ -277,7 +277,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Set the activity template of the activity
 		 *
-		 * @param [in,out]	activityTemplate	If non-null, the activity template.
+		 * @param[in,out]	activityTemplate	If non-null, the activity template.
 		 */
 		DLL_IMPORT_OR_EXPORT void setActivityTemplate(EML2_NS::ActivityTemplate* activityTemplate) final;
 

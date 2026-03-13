@@ -39,7 +39,7 @@ namespace RESQML2_2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p repo si @c nullptr.
 		 *
-		 * @param [in,out]	repo 	A repository which will manage the memory of this instance.
+		 * @param[in,out]	repo 	A repository which will manage the memory of this instance.
 		 * @param 		  	guid 	The guid to set to the wellbore feature. If empty then a new guid
 		 * 							will be generated.
 		 * @param 		  	title	The title to set to the wellbore feature. If empty then \"unknown\"
@@ -50,7 +50,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 * @param[in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreFeature(gsoap_eml2_3::_resqml22__WellboreFeature* fromGsoap): RESQML2_NS::WellboreFeature(fromGsoap) {}
 

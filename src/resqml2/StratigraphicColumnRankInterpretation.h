@@ -53,7 +53,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p stratiUnitInterpretation is @c nullptr.
 		 *
-		 * @param [in]	stratiUnitInterpretation	The stratigraphic unit interpretation to add.
+		 * @param[in]	stratiUnitInterpretation	The stratigraphic unit interpretation to add.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackStratiUnitInterpretation(StratigraphicUnitInterpretation * stratiUnitInterpretation) = 0;
 
@@ -64,7 +64,7 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p partOf is @c nullptr.
 		 *
-		 * @param [in]	partOf	The horizon interpretation that contains the last contact interpretation.
+		 * @param[in]	partOf	The horizon interpretation that contains the last contact interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setHorizonOfLastContact(HorizonInterpretation * partOf) = 0;
 
@@ -73,15 +73,15 @@ namespace RESQML2_NS
 		 *
 		 * @exception	std::invalid_argument	If @p subject or @p directObject is @c nullptr.
 		 *
-		 * @param [in]	subject			  	The subject of the sentence that defines how the contact was
+		 * @param[in]	subject			  	The subject of the sentence that defines how the contact was
 		 * 									constructed.
 		 * @param 	  	subjectContactMode	The subject contact mode (baselap, erosion, extended or
 		 * 									proportional).
-		 * @param [in]	directObject	  	The direct object of the sentence that defines how the
+		 * @param[in]	directObject	  	The direct object of the sentence that defines how the
 		 * 									contact was constructed.
 		 * @param 	  	directObjectMode  	The direct object contact mode (baselap, erosion, extended or
 		 * 									proportional).
-		 * @param [in]	partOf			  	(Optional) If non-null, the horizon interpretation that
+		 * @param[in]	partOf			  	(Optional) If non-null, the horizon interpretation that
 		 * 									contains this new binary contact. Default value is @c nullptr.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, gsoap_eml2_3::resqml22__ContactMode subjectContactMode,
