@@ -26,6 +26,7 @@ under the License.
 // ************************
 #endif
 
+#include <array>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -1268,14 +1269,29 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 		gsoap_resqml2_0_1::resqml20__CellShape::prism);
 
 	if (repo->getDefaultResqmlVersion() == COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1) {
-
-		// Create the property
-		RESQML2_NS::ContinuousProperty* unstructuredGridProp = repo->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "My polyhedra property", 1,
+		RESQML2_NS::ContinuousProperty* unstructuredGridPropReal0 = repo->createContinuousProperty(unstructuredGrid, "7444c6cb-dd53-4100-b252-2eacbbd9500c", "Multi Realizations Prop", 1,
 			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		std::array<double, 2> propValues = { 12.3, 45.6 };
+		unstructuredGridPropReal0->pushBackArray1dOfValues(propValues.data(), propValues.size());
+		unstructuredGridPropReal0->setRealizationIndices(0, 1);
 
-		// Fill the property
-		double propValues[2] = { 12.3, 45.6 };
-		unstructuredGridProp->pushBackArray1dOfValues(propValues, 2);
+		RESQML2_NS::ContinuousProperty* unstructuredGridPropReal1 = repo->createContinuousProperty(unstructuredGrid, "", "Multi Realizations Prop", 1,
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		propValues = { 15.3, 46.6 };
+		unstructuredGridPropReal1->pushBackArray1dOfValues(propValues.data(), propValues.size());
+		unstructuredGridPropReal1->setRealizationIndices(1, 1);
+
+		RESQML2_NS::ContinuousProperty* unstructuredGridPropReal2 = repo->createContinuousProperty(unstructuredGrid, "", "Multi Realizations Prop", 1,
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		propValues = { 13.3, 49.6 };
+		unstructuredGridPropReal2->pushBackArray1dOfValues(propValues.data(), propValues.size());
+		unstructuredGridPropReal2->setRealizationIndices(2, 1);
+
+		RESQML2_NS::ContinuousProperty* unstructuredGridPropReal3 = repo->createContinuousProperty(unstructuredGrid, "", "Multi Realizations Prop", 1,
+			gsoap_eml2_3::eml23__IndexableElement::cells, gsoap_resqml2_0_1::resqml20__ResqmlUom::m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::length);
+		propValues = { 5.3, 60.6 };
+		unstructuredGridPropReal3->pushBackArray1dOfValues(propValues.data(), propValues.size());
+		unstructuredGridPropReal3->setRealizationIndices(3, 1);
 	}
 #if WITH_RESQML2_2
 	else {
