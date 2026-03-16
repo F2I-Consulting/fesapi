@@ -1,6 +1,7 @@
 # Included in ../src/CMakeLists.txt if Python build is selected.
 
 find_package(SWIG 3.0 REQUIRED)
+
 find_package(Python3 REQUIRED)
 
 set (Fesapi_PYTHON_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VERSION_PATCH})

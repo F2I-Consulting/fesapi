@@ -40,15 +40,12 @@ set (EML_PREFIX_2_0 "eml2_0")
 set (EML_PREFIX_2_3 "eml2_3")
 
 # Define the compile options according to the compiler
-target_compile_options(${CPP_LIBRARY_NAME}	PRIVATE
+include(${FESAPI_ROOT_DIR}/cmake/cmake-harden.cmake)
+harden(${CPP_LIBRARY_NAME} CXX RUNTIME)
+target_compile_options(${CPP_LIBRARY_NAME} PRIVATE
 	$<$<CXX_COMPILER_ID:MSVC>:/bigobj>
 	$<$<CXX_COMPILER_ID:MSVC>:/MP>
 	$<$<CXX_COMPILER_ID:MSVC>:/W4>
-	$<$<CXX_COMPILER_ID:GNU>:-Wall>
-	$<$<CXX_COMPILER_ID:GNU>:-Wextra>
-	$<$<CXX_COMPILER_ID:GNU>:-Wcast-qual>
-	$<$<CXX_COMPILER_ID:GNU>:-pedantic>
-	$<$<CXX_COMPILER_ID:CLANG>:-Weverything>
 )
 if (WITH_RESQML2_2)
 	target_compile_definitions(${CPP_LIBRARY_NAME} PUBLIC "-DWITH_RESQML2_2")
