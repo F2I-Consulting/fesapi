@@ -1240,7 +1240,13 @@ uint64_t AbstractGridRepresentation::getRegridConstantCellCountPerInterval(char 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractIntegerArray const* const cellCountPerInterval = getCellCountPerInterval2_0_1(dimension, childVsParentCellCount);
 		switch (cellCountPerInterval->soap_type()) {
-		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray: return static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(cellCountPerInterval)->Value;
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray: {
+			const int64_t value = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray const*>(cellCountPerInterval)->Value;
+			if (value < 0) {
+				throw std::underflow_error("The cell count per interval cannot be inferior to 1.");
+			}
+			return static_cast<uint64_t>(value);
+		}
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array: {
 			std::unique_ptr<uint64_t[]> values(new uint64_t[getRegridIntervalCount(dimension)]);
 			getRegridCellCountPerInterval(dimension, values.get(), childVsParentCellCount);
@@ -1252,7 +1258,13 @@ uint64_t AbstractGridRepresentation::getRegridConstantCellCountPerInterval(char 
 	else if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::eml23__AbstractIntegerArray const* cellCountPerInterval = getCellCountPerInterval2_2(dimension, childVsParentCellCount);
 		switch (cellCountPerInterval->soap_type()) {
-		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray: return static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(cellCountPerInterval)->Value;
+		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray: {
+			const int64_t value = static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(cellCountPerInterval)->Value;
+			if (value < 0) {
+				throw std::underflow_error("The cell count per interval cannot be inferior to 1.");
+			}
+			return static_cast<uint64_t>(value);
+		}
 		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray: {
 			std::unique_ptr<uint64_t[]> values(new uint64_t[getRegridIntervalCount(dimension)]);
 			getRegridCellCountPerInterval(dimension, values.get(), childVsParentCellCount);

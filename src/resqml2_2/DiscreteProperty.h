@@ -170,7 +170,7 @@ namespace RESQML2_2_NS
 					result.setValidValueCount(*stats->ValidValueCount, i);
 				}
 				if (stats->ValuesMedian) {
-					result.setMedian(*stats->ValuesMedian, i);
+					result.setMedian(static_cast<double>(*stats->ValuesMedian), i);
 				}
 				if (stats->ValuesMode) {
 					if constexpr (std::is_signed_v<T>) {

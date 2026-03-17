@@ -1246,14 +1246,17 @@ namespace COMMON_NS
 		 * 								will be generated.
 		 * @param 	title			   	The title to set to the seismic line. If empty then \"unknown\"
 		 * 								title will be set.
-		 * @param 	traceIndexIncrement	The constant index increment between two consecutive traces.
-		 * @param 	firstTraceIndex	   	The index of the first trace of the seismic line.
-		 * @param 	traceCount		   	Number of traces.
+		 * @param	traceIndexIncrement	The trace index increment. The trace index increment will
+		 * 								be the difference in the trace number from abscissa i=0
+		 * 								and abscissa i=1. The increment can be a positive or
+		 * 								negative integer, but not zero.
+		 * @param 	firstTraceIndex	   	The index of the first trace beginning at abscissa i=0.
+		 * @param 	traceCount		   	The count of traces in this seismic line.
 		 *
 		 * @returns	A pointer to the new seismic line.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::SeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
-			int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount);
+			int traceIndexIncrement, int firstTraceIndex, unsigned int traceCount);
 
 		/**
 		 * @brief	Creates a CMP line into this repository

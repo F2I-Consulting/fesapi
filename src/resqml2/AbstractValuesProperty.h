@@ -57,10 +57,10 @@ namespace RESQML2_NS
 
 		/**
 		 * Get the number of values in each dimension into the underlying HDF5 dataset.
-		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
+		 * 
 		 * @param 	patchIndex	The index of the patch we want to count the values from.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<uint32_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT std::vector<uint64_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const final;
 
 		/**
 		 * Pushes back a new facet to this instance. Facets are qualifiers for property values which
@@ -1831,7 +1831,7 @@ namespace RESQML2_NS
 		}
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<uint64_t> getUInt64Statistics(uint64_t patchIndex) const {
 			COMMON_NS::NumberArrayStatistics<uint64_t> result;
-			result.setNullValue(getNullValueOfPatch(patchIndex));
+			result.setNullValue(static_cast<uint64_t>(getNullValueOfPatch(patchIndex)));
 			return result;
 		}
 		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::NumberArrayStatistics<float> getFloatStatistics(uint64_t) const { return COMMON_NS::NumberArrayStatistics<float>(); }
@@ -1856,7 +1856,7 @@ namespace RESQML2_NS
 				if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREContinuousProperty) {
 					gsoap_resqml2_0_1::_resqml20__ContinuousProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 					for (size_t i = 0; i < stats.getMinimumSize(); ++i) {
-						const auto minStat = stats.getMinimum(i);
+						const double minStat = stats.getMinimum(i);
 						if (prop->MinimumValue.size() > i) {
 							if (minStat == minStat && prop->MinimumValue[i] > minStat) {
 								prop->MinimumValue[i] = minStat;
@@ -1867,7 +1867,7 @@ namespace RESQML2_NS
 						}
 					}
 					for (size_t i = 0; i < stats.getMaximumSize(); ++i) {
-						const auto maxStat = stats.getMaximum(i);
+						const double maxStat = stats.getMaximum(i);
 						if (prop->MaximumValue.size() > i) {
 							if (maxStat == maxStat && prop->MaximumValue[i] < maxStat) {
 								prop->MaximumValue[i] = maxStat;

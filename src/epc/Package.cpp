@@ -378,7 +378,6 @@ const FilePart* Package::findPart(const std::string & outputPartPath) const
 	return it == d_ptr->allFileParts.end() ? nullptr : &(it->second);
 }
 
-
 #ifdef _WIN32
 void buildTimeInfo(const char *filename, uLong *dostime)
 {
@@ -409,12 +408,12 @@ void buildTimeInfo(tm_zip *tmzip)
     time_t tm_t = time(0);
     filedate = localtime(&tm_t);
 
-    tmzip->tm_sec  = filedate->tm_sec;
-    tmzip->tm_min  = filedate->tm_min;
-    tmzip->tm_hour = filedate->tm_hour;
-    tmzip->tm_mday = filedate->tm_mday;
-    tmzip->tm_mon  = filedate->tm_mon ;
-    tmzip->tm_year = filedate->tm_year;
+    tmzip->tm_sec  = static_cast<uInt>(filedate->tm_sec);
+    tmzip->tm_min  = static_cast<uInt>(filedate->tm_min);
+    tmzip->tm_hour = static_cast<uInt>(filedate->tm_hour);
+    tmzip->tm_mday = static_cast<uInt>(filedate->tm_mday);
+    tmzip->tm_mon  = static_cast<uInt>(filedate->tm_mon);
+    tmzip->tm_year = static_cast<uInt>(filedate->tm_year);
 }
 #endif
 

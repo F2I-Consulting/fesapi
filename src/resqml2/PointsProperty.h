@@ -44,7 +44,7 @@ namespace RESQML2_NS
 		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
 		 * @param 	patchIndex	The index of the patch we want to count the values from.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<uint32_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const final;
+		DLL_IMPORT_OR_EXPORT std::vector<uint64_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const final;
 		
 		/**
 		 * Get the xyz point count in a given patch of this property.

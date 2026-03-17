@@ -182,26 +182,7 @@ uint64_t BlockedWellboreRepresentation::getCellCount() const
 
 int8_t BlockedWellboreRepresentation::getGridIndices(int8_t* gridIndices) const
 {
-	auto xmlGridIndices = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->GridIndices;
-
-	if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->Values;
-		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfInt8Values(dataset->PathInHdfFile, gridIndices);
-		return static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->NullValue;
-	}
-	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
-		const int64_t constantXmlValue = static_cast<resqml20__IntegerConstantArray*>(xmlGridIndices)->Value;
-		if (constantXmlValue > (std::numeric_limits<int8_t>::max)()) {
-			throw std::range_error("The constant value is strictly superior than int8_t maximum value.");
-		}
-		std::fill_n(gridIndices, getMdValuesCount() - 1, static_cast<int8_t>(constantXmlValue));
-	}
-	else {
-		throw std::logic_error("Not implemented yet");
-	}
-
-	return (numeric_limits<int8_t>::max)();
+	return readArrayNdOfIntegerValues(static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->GridIndices, gridIndices);
 }
 
 int64_t BlockedWellboreRepresentation::getCellIndices(int64_t* cellIndices) const
@@ -243,14 +224,18 @@ int64_t BlockedWellboreRepresentation::getCellIndices(int64_t* cellIndices) cons
 
 int8_t BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(int8_t* localFacePairPerCellIndices) const
 {
-	auto xmlLocalFacePairPerCellIndices = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->LocalFacePairPerCellIndices;
-	auto intervalCount = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->NodeCount - 1;
-	auto cellCount = getCellCount();
+	auto const* xmlLocalFacePairPerCellIndices = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->LocalFacePairPerCellIndices;
+	const auto intervalCount = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->NodeCount - 1;
 
 	if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		LONG64 nullvalue = static_cast<resqml20__IntegerHdf5Array*>(xmlLocalFacePairPerCellIndices)->NullValue;
-		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlLocalFacePairPerCellIndices)->Values;
+		auto const* xmlLocalFacePairPerCellIndicesAsIntegerHdf5Array = static_cast<resqml20__IntegerHdf5Array const*>(xmlLocalFacePairPerCellIndices);
+		const int8_t nullvalue = xmlLocalFacePairPerCellIndicesAsIntegerHdf5Array->NullValue > static_cast<int64_t>((std::numeric_limits<int8_t>::min)()) &&
+			xmlLocalFacePairPerCellIndicesAsIntegerHdf5Array->NullValue < static_cast<int64_t>((std::numeric_limits<int8_t>::max)())
+			? static_cast<int8_t>(xmlLocalFacePairPerCellIndicesAsIntegerHdf5Array->NullValue)
+			: static_cast<int64_t>((std::numeric_limits<int8_t>::max)());
+		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = xmlLocalFacePairPerCellIndicesAsIntegerHdf5Array->Values;
 		EML2_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		const auto cellCount = getCellCount();
 		if (cellCount == intervalCount) {
 			hdfProxy->readArrayNdOfInt8Values(dataset->PathInHdfFile, localFacePairPerCellIndices);
 		}
@@ -274,7 +259,7 @@ int8_t BlockedWellboreRepresentation::getLocalFacePairPerCellIndices(int8_t* loc
 		return nullvalue;
 	}
 	else if (xmlLocalFacePairPerCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
-		const int64_t constantXmlValue = static_cast<resqml20__IntegerConstantArray*>(xmlLocalFacePairPerCellIndices)->Value;
+		const int64_t constantXmlValue = static_cast<resqml20__IntegerConstantArray const*>(xmlLocalFacePairPerCellIndices)->Value;
 		if (constantXmlValue > (std::numeric_limits<int8_t>::max)()) {
 			throw std::range_error("The constant value is strictly superior than int8_t maximum value.");
 		}

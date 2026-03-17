@@ -84,7 +84,7 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum AbstractValuesProperty::getValu
 	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
-std::vector<uint32_t> AbstractValuesProperty::getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const
+std::vector<uint64_t> AbstractValuesProperty::getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const
 {
 	cannotBePartial();
 
@@ -94,27 +94,27 @@ std::vector<uint32_t> AbstractValuesProperty::getValuesCountPerDimensionOfPatch(
 		switch (patch->Values->soap_type()) {
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray:
 		{
-			return std::vector<uint32_t>(1, static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray*>(patch->Values)->Count);
+			return std::vector<uint64_t>(1, static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray*>(patch->Values)->Count);
 		}
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray:
 		{
 			auto const* arrayDef = static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray*>(patch->Values);
-			std::vector<uint32_t> result;
+			std::vector<uint64_t> result;
 			for (auto offset : arrayDef->Offset) {
-				result.push_back(offset->Count + 1);
+				result.push_back(offset->Count + 1ull);
 			}
 			return result;
 		}
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray:
 		{
-			return std::vector<uint32_t>(1, static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(patch->Values)->Count);
+			return std::vector<uint64_t>(1, static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(patch->Values)->Count);
 		}
 		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
 		{
 			auto const* arrayDef = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(patch->Values);
-			std::vector<uint32_t> result;
+			std::vector<uint64_t> result;
 			for (auto offset : arrayDef->Offset) {
-				result.push_back(offset->Count + 1);
+				result.push_back(offset->Count + 1ull);
 			}
 			return result;
 		}
@@ -125,27 +125,27 @@ std::vector<uint32_t> AbstractValuesProperty::getValuesCountPerDimensionOfPatch(
 		switch (patch->soap_type()) {
 		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointConstantArray:
 		{
-			return std::vector<uint32_t>(1, static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray const*>(patch)->Count);
+			return std::vector<uint64_t>(1, static_cast<gsoap_eml2_3::eml23__FloatingPointConstantArray const*>(patch)->Count);
 		}
 		case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray:
 		{
 			auto const* arrayDef = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray const*>(patch);
-			std::vector<uint32_t> result;
+			std::vector<uint64_t> result;
 			for (auto offset : arrayDef->Offset) {
-				result.push_back(offset->Count + 1);
+				result.push_back(offset->Count + 1ull);
 			}
 			return result;
 		}
 		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerConstantArray:
 		{
-			return std::vector<uint32_t>(1, static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(patch)->Count);
+			return std::vector<uint64_t>(1, static_cast<gsoap_eml2_3::eml23__IntegerConstantArray const*>(patch)->Count);
 		}
 		case SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray:
 		{
 			auto const* arrayDef = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray const*>(patch);
-			std::vector<uint32_t> result;
+			std::vector<uint64_t> result;
 			for (auto offset : arrayDef->Offset) {
-				result.push_back(offset->Count + 1);
+				result.push_back(offset->Count + 1ull);
 			}
 			return result;
 		}
@@ -159,7 +159,14 @@ std::vector<uint32_t> AbstractValuesProperty::getValuesCountPerDimensionOfPatch(
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	return hdfProxy->getElementCountPerDimension(dsPath);
+	auto src = hdfProxy->getElementCountPerDimension(dsPath);
+	std::vector<uint64_t> result;
+	result.reserve(src.size());
+	for (uint32_t v : src) {
+		result.push_back(v);
+	}
+
+	return result;
 }
 
 EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t patchIndex, int64_t& nullValue, std::string& dsPath) const
@@ -168,7 +175,7 @@ EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t p
 		gsoap_resqml2_0_1::resqml20__PatchOfValues const* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues.at(patchIndex);
 
 		nullValue = (numeric_limits<int64_t>::min)();
-		int valuesType = patch->Values->soap_type();
+		long valuesType = patch->Values->soap_type();
 		if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 			dsPath = static_cast<gsoap_resqml2_0_1::resqml20__BooleanHdf5Array*>(patch->Values)->Values->PathInHdfFile;
 			return getHdfProxyFromDataset(static_cast<gsoap_resqml2_0_1::resqml20__BooleanHdf5Array*>(patch->Values)->Values);
@@ -197,7 +204,7 @@ EML2_NS::AbstractHdfProxy * AbstractValuesProperty::getDatasetOfPatch(uint64_t p
 			dsPath = static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalDataArrayPart[0]->PathInExternalFile;
 			return getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__FloatingPointExternalArray*>(patch)->Values->ExternalDataArrayPart[0]);
 		}
-		int valuesType = patch->soap_type();
+		long valuesType = patch->soap_type();
 		if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 			dsPath = static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalDataArrayPart[0]->PathInExternalFile;
 			return getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalDataArrayPart[0]);
@@ -229,7 +236,7 @@ COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(uint64_t p
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
 
-		int valuesType = patch->Values->soap_type();
+		long valuesType = patch->Values->soap_type();
 		if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 			return static_cast<gsoap_resqml2_0_1::resqml20__BooleanHdf5Array*>(patch->Values)->Values->HdfProxy;
 		}
@@ -246,7 +253,7 @@ COMMON_NS::DataObjectReference AbstractValuesProperty::getHdfProxyDor(uint64_t p
 	else if (gsoapProxy2_3 != nullptr) {
 		auto patch = static_cast<gsoap_eml2_3::resqml22__AbstractValuesProperty*>(gsoapProxy2_3)->ValuesForPatch[patchIndex];
 
-		int valuesType = patch->soap_type();
+		long valuesType = patch->soap_type();
 		if (valuesType == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 			return COMMON_NS::DataObjectReference(getOrCreateHdfProxyFromDataArrayPart(static_cast<gsoap_eml2_3::eml23__BooleanExternalArray*>(patch)->Values->ExternalDataArrayPart[0]));
 		}
@@ -397,7 +404,7 @@ template<> void AbstractValuesProperty::pushBackArrayOfValues<int64_t>(const int
 }
 template<> void AbstractValuesProperty::pushBackArrayOfValues<uint64_t>(const uint64_t* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
 	EML2_NS::AbstractHdfProxy* proxy, uint64_t nullValue) {
-	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, numValues, numDimensionsInArray, proxy, nullValue);
+	pushBackArrayOfValues(values, COMMON_NS::AbstractObject::numericalDatatypeEnum::UINT64, numValues, numDimensionsInArray, proxy, static_cast<int64_t>(nullValue));
 }
 template<> void AbstractValuesProperty::pushBackArrayOfValues<float>(const float* values, const uint64_t* numValues, unsigned int numDimensionsInArray,
 	EML2_NS::AbstractHdfProxy* proxy, float) {
@@ -1070,11 +1077,11 @@ namespace {
 		gsoap_eml2_3::eml23__IntegerArrayStatistics* xmlStats = gsoap_eml2_3::soap_new_eml23__IntegerArrayStatistics(ctx);
 		if (source.getMinimumSize() > sourceIndex) {
 			xmlStats->MinimumValue = gsoap_eml2_3::soap_new_LONG64(ctx);
-			*xmlStats->MinimumValue = source.getMinimum(sourceIndex);
+			*xmlStats->MinimumValue = static_cast<int64_t>(source.getMinimum(sourceIndex));
 		}
 		if (source.getMaximumSize() > sourceIndex) {
 			xmlStats->MaximumValue = gsoap_eml2_3::soap_new_LONG64(ctx);
-			*xmlStats->MaximumValue = source.getMaximum(sourceIndex);
+			*xmlStats->MaximumValue = static_cast<int64_t>(source.getMaximum(sourceIndex));
 		}
 		if (source.getModePercentageSize() > sourceIndex) {
 			xmlStats->ModePercentage = gsoap_eml2_3::soap_new_double(ctx);
@@ -1082,15 +1089,15 @@ namespace {
 		}
 		if (source.getValidValueCountSize() > sourceIndex) {
 			xmlStats->ValidValueCount = gsoap_eml2_3::soap_new_LONG64(ctx);
-			*xmlStats->ValidValueCount = source.getValidValueCount(sourceIndex);
+			*xmlStats->ValidValueCount = static_cast<int64_t>(source.getValidValueCount(sourceIndex));
 		}
 		if (source.getMedianSize() > sourceIndex) {
 			xmlStats->ValuesMedian = gsoap_eml2_3::soap_new_LONG64(ctx);
-			*xmlStats->ValuesMedian = source.getMedian(sourceIndex);
+			*xmlStats->ValuesMedian = static_cast<int64_t>(source.getMedian(sourceIndex));
 		}
 		if (source.getModeSize() > sourceIndex) {
 			xmlStats->ValuesMode = gsoap_eml2_3::soap_new_LONG64(ctx);
-			*xmlStats->ValuesMode = source.getMode(sourceIndex);
+			*xmlStats->ValuesMode = static_cast<int64_t>(source.getMode(sourceIndex));
 		}
 
 		return xmlStats;
@@ -1113,7 +1120,7 @@ namespace {
 		}
 		if (source.getValidValueCountSize() > sourceIndex) {
 			xmlStats->ValidValueCount = gsoap_eml2_3::soap_new_LONG64(ctx);
-			*xmlStats->ValidValueCount = source.getValidValueCount(sourceIndex);
+			*xmlStats->ValidValueCount = static_cast<int64_t>(source.getValidValueCount(sourceIndex));
 		}
 		if (source.getMeanSize() > sourceIndex) {
 			xmlStats->ValuesMean = gsoap_eml2_3::soap_new_double(ctx);
@@ -1125,7 +1132,7 @@ namespace {
 		}
 		if (source.getModeSize() > sourceIndex) {
 			xmlStats->ValuesMode = gsoap_eml2_3::soap_new_double(ctx);
-			*xmlStats->ValuesMode = source.getMode(sourceIndex);
+			*xmlStats->ValuesMode = static_cast<double>(source.getMode(sourceIndex));
 		}
 		if (source.getStandardDeviationSize() > sourceIndex) {
 			xmlStats->ValuesStandardDeviation = gsoap_eml2_3::soap_new_double(ctx);

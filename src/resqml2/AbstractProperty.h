@@ -106,7 +106,7 @@ namespace RESQML2_NS
 		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
 		 * @param 	patchIndex	The index of the patch we want to count the values from.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::vector<uint32_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<uint64_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const = 0;
 
 		/**
 		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
@@ -238,7 +238,7 @@ namespace RESQML2_NS
 		 * @param 	startRealizationIndex	The first realization index to set to this property.
 		 * @param 	countRealizationIndices	The count of realization indices to set to this property.
 		 */
-		DLL_IMPORT_OR_EXPORT void setRealizationIndices(int64_t startRealizationIndex, int64_t countRealizationIndices);
+		DLL_IMPORT_OR_EXPORT void setRealizationIndices(int64_t startRealizationIndex, uint64_t countRealizationIndices);
 
 		/**
 		 * @brief	Sets the realization indices of this property
@@ -256,7 +256,7 @@ namespace RESQML2_NS
 		 * 										realizationIndices values. If @p nullptr (default), then
 		 * 										the repository default HDF proxy will be used.
 		 */
-		DLL_IMPORT_OR_EXPORT void setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setRealizationIndices(const std::vector<int64_t>& realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
 
 		//*********************************************
 		//************ TIME DIMENSION *****************

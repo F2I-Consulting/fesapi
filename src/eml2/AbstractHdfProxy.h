@@ -151,6 +151,7 @@ namespace EML2_NS
 		/**
 		 * Get the number of elements in each dimension of an HDF5 dataset.
 		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
+		 * EDIT : now std::vector<uint64_t> is ported by means of SWIG but such a change woudl have impact on FETPAPI as well...
 		 * @param datasetName	The absolute name of the dataset which we want to get the number of elements from.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::vector<uint32_t> getElementCountPerDimension(const std::string & datasetName) = 0;

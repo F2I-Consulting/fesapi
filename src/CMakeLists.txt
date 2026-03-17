@@ -191,6 +191,12 @@ list(APPEND ALL_SOURCES_AND_HEADERS
 )
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
+# Disable warnings on gsoap which we do not control
+if (WIN32)
+	set_source_files_properties(${FESAPI_PROXIES_SOURCES} PROPERTIES COMPILE_OPTIONS "/W0")
+else()
+	set_source_files_properties(${FESAPI_PROXIES_SOURCES} PROPERTIES COMPILE_OPTIONS "-w")
+endif()
 
 target_include_directories(${CPP_LIBRARY_NAME} SYSTEM PRIVATE ${MINIZIP_INCLUDE_DIR})
 

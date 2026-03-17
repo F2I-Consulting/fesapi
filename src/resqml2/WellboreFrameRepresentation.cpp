@@ -306,8 +306,8 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 			auto const* fla = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeMd);
 			values[0] = fla->StartValue;
 			eml23__FloatingPointConstantArray* constantArray = fla->Offset[0];
-			for (int64_t inc = 1; inc <= constantArray->Count; ++inc) {
-				values[inc] = values[inc - 1] + constantArray->Value;
+			for (uint64_t inc = 1; inc <= constantArray->Count; ++inc) {
+				values[inc] = values[inc - 1ull] + constantArray->Value;
 			}
 		}
 		else {
@@ -370,8 +370,8 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 			if (fla->Offset[0]->Value < (std::numeric_limits<float>::min)() || fla->Offset[0]->Value >(std::numeric_limits<float>::max)()) {
 				throw out_of_range("The double offset value of the NodeMd array " + std::to_string(fla->Offset[0]->Value) + " is out of float range value");
 			}
-			for (int64_t inc = 1; inc <= fla->Offset[0]->Count; ++inc) {
-				values[inc] = values[inc - 1] + static_cast<float>(fla->Offset[0]->Value);
+			for (uint64_t inc = 1; inc <= fla->Offset[0]->Count; ++inc) {
+				values[inc] = values[inc - 1ull] + static_cast<float>(fla->Offset[0]->Value);
 			}
 		}
 		else {

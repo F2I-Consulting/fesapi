@@ -164,10 +164,10 @@ namespace RESQML2_2_NS
 			for (size_t i = 0; i < xmlArray->Statistics.size(); ++i) {
 				auto const* stats = xmlArray->Statistics[i];
 				if (stats->MaximumValue) {
-					result.setMaximum(*stats->MaximumValue, i);
+					result.setMaximum(static_cast<T>(*stats->MaximumValue), i);
 				}
 				if (stats->MinimumValue) {
-					result.setMinimum(*stats->MinimumValue, i);
+					result.setMinimum(static_cast<T>(*stats->MinimumValue), i);
 				}
 				if (stats->ModePercentage) {
 					result.setModePercentage(*stats->ModePercentage, i);
@@ -179,7 +179,7 @@ namespace RESQML2_2_NS
 					result.setMedian(*stats->ValuesMedian, i);
 				}
 				if (stats->ValuesMode) {
-					result.setMode(*stats->ValuesMode, i);
+					result.setMode(static_cast<T>(*stats->ValuesMode), i);
 				}
 				if (stats->ValuesMean) {
 					result.setMean(*stats->ValuesMean, i);

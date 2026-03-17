@@ -411,7 +411,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The gSOAP type.
 		 */
-		int getGsoapType() const;
+		long getGsoapType() const;
 
 		/**
 		 * Creates an returns an EML2.0 data object reference which targets this data object
@@ -831,11 +831,13 @@ namespace COMMON_NS
 						throw std::underflow_error("Cannot deal with negative values when using unsigned integer");
 					}
 				}
-				if (rangeArray->Value + rangeArray->Count > static_cast<uint64_t>((std::numeric_limits<T>::max)())) {
-					throw std::overflow_error("The range integer values are superior to maximum value of read datatype.");
+				if (rangeArray->Count > static_cast<uint64_t>((std::numeric_limits<T>::max)())) {
+					throw std::overflow_error("Please use a larger integer type");
 				}
-				for (T i = 0; i < static_cast<T>(rangeArray->Count); ++i) {
-					arrayOutput[i] = i + static_cast<T>(rangeArray->Value);
+				const T initialValue = static_cast<T>(rangeArray->Value);
+				const T count = static_cast<T>(rangeArray->Count);
+				for (T i = 0; i < count; ++i) {
+					arrayOutput[i] = i + initialValue;
 				}
 				return (std::numeric_limits<T>::max)();
 			}
@@ -871,8 +873,9 @@ namespace COMMON_NS
 					if (latticeArray->StartValue < (std::numeric_limits<T>::min)() || latticeArray->Offset[0]->Value < (std::numeric_limits<T>::min)()) {
 						throw std::underflow_error("Too low integers in XML for the C++ chosen datatype");
 					}
-					if (latticeArray->StartValue > (std::numeric_limits<T>::max)() ||
-						latticeArray->Offset[0]->Value > (std::numeric_limits<T>::max)()) {
+					if (latticeArray->StartValue > static_cast<int64_t>((std::numeric_limits<T>::max)()) ||
+						latticeArray->Offset[0]->Value > static_cast<int64_t>((std::numeric_limits<T>::max)()) ||
+						latticeArray->Offset[0]->Count > static_cast<uint64_t>((std::numeric_limits<T>::max)())) {
 						throw std::overflow_error("Too big integers in XML for the C++ chosen datatype");
 					}
 				}
@@ -880,13 +883,17 @@ namespace COMMON_NS
 					if (latticeArray->StartValue < 0 || latticeArray->Offset[0]->Value < 0) {
 						throw std::underflow_error("Cannot deal with negative values when using unsigned integer");
 					}
-					if (static_cast<uint64_t>(latticeArray->StartValue) > (std::numeric_limits<T>::max)() ||
-						static_cast<uint64_t>(latticeArray->Offset[0]->Value) > (std::numeric_limits<T>::max)()) {
+					if (static_cast<uint64_t>(latticeArray->StartValue) > static_cast<uint64_t>((std::numeric_limits<T>::max)()) ||
+						static_cast<uint64_t>(latticeArray->Offset[0]->Value) > static_cast<uint64_t>((std::numeric_limits<T>::max)()) ||
+						latticeArray->Offset[0]->Count > static_cast<uint64_t>((std::numeric_limits<T>::max)())) {
 						throw std::overflow_error("Too big integers in XML for the C++ chosen datatype");
 					}
 				}
-				for (uint64_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
-					arrayOutput[i] = static_cast<T>(latticeArray->StartValue) + (i * static_cast<T>(latticeArray->Offset[0]->Value));
+				const T start = static_cast<T>(latticeArray->StartValue);
+				const T step = static_cast<T>(latticeArray->Offset[0]->Value);
+				const T count = static_cast<T>(latticeArray->Offset[0]->Count);
+				for (T i = 0; i <= count; ++i) {
+					arrayOutput[i] = static_cast<T>(start + i * step);
 				}
 				return (std::numeric_limits<T>::max)();
 			}
@@ -932,12 +939,12 @@ namespace COMMON_NS
 				if (latticeArray->Offset.empty() || latticeArray->Offset.size() > 1) {
 					throw std::invalid_argument("The integer lattice array of UUID " + getUuid() + " contains zero or more than one offset.");
 				}
-				if (latticeArray->Offset[0]->Count < 0) {
-					throw std::invalid_argument("The count of the integer lattice array of UUID " + getUuid() + " is negative which is not valid.");
-				}
 
-				for (size_t i = 0; i <= static_cast<size_t>(latticeArray->Offset[0]->Count); ++i) {
-					arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+				const T start = static_cast<T>(latticeArray->StartValue);
+				const T step = static_cast<T>(latticeArray->Offset[0]->Value);
+				const T count = static_cast<T>(latticeArray->Offset[0]->Count);
+				for (T i = 0; i <= count; ++i) {
+					arrayOutput[i] = static_cast<T>(start + i * step);
 				}
 				return (std::numeric_limits<T>::max)();
 			}
@@ -949,7 +956,7 @@ namespace COMMON_NS
 				std::sregex_token_iterator endToken;
 				size_t index = 0;
 				while (it != endToken) {
-					arrayOutput[index++] = std::stoll(*it++);
+					arrayOutput[index++] = static_cast<T>(std::stoll(*it++));
 				}
 				return (std::numeric_limits<T>::max)();
 			}
@@ -1076,7 +1083,7 @@ namespace COMMON_NS
 		/**
 		* Create an external data array part pointing to a named dataset in an HDF proxy
 		*/
-		gsoap_eml2_3::eml23__ExternalDataArrayPart* createExternalDataArrayPart(const std::string& datasetName, LONG64 count, EML2_NS::AbstractHdfProxy* proxy = nullptr) const;
+		gsoap_eml2_3::eml23__ExternalDataArrayPart* createExternalDataArrayPart(const std::string& datasetName, uint64_t count, EML2_NS::AbstractHdfProxy* proxy = nullptr) const;
 
 		gsoap_resqml2_0_1::resqml20__IndexableElements mapIndexableElement(gsoap_eml2_3::eml23__IndexableElement toMap) const;
 

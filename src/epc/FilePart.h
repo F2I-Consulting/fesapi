@@ -62,7 +62,7 @@ namespace epc
 		 *
 		 * @returns	The index relationship.
 		 */
-		Relationship getIndexRelationship(int index) const;
+		Relationship getIndexRelationship(size_t index) const;
 
 		/**
 		 * Copy an existing relationship into the relationship set of the part.

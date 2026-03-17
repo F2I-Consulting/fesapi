@@ -293,7 +293,7 @@ namespace PRODML2_3_NS
 		DLL_IMPORT_OR_EXPORT void pushBackPlusFluidComponent(const std::string & uid, gsoap_eml2_3::prodml23__PlusComponentKind kind);
 		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES(PlusFluidComponent)
 		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PlusFluidComponent, SpecificGravity, double)
-		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PlusFluidComponent, StartingCarbonNumber, int64_t)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PlusFluidComponent, StartingCarbonNumber, uint64_t)
 		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PlusFluidComponent, StartingBoilingPoint, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom)
 		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PlusFluidComponent, AvgDensity, std::string)
 		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PlusFluidComponent, AvgMolecularWeight, gsoap_eml2_3::eml23__MolecularWeightUom)
@@ -356,8 +356,8 @@ namespace PRODML2_3_NS
 		DLL_IMPORT_OR_EXPORT void pushBackPseudoFluidComponent(const std::string & uid, gsoap_eml2_3::prodml23__PseudoComponentKind kind);
 		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_COMMON_ATTRIBUTES(PseudoFluidComponent)
 		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, SpecificGravity, double)
-		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, StartingCarbonNumber, int64_t)
-		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, EndingCarbonNumber, int64_t)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, StartingCarbonNumber, uint64_t)
+		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_OPTIONAL_ATTRIBUTE(PseudoFluidComponent, EndingCarbonNumber, uint64_t)
 		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, StartingBoilingPoint, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom)
 		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, EndingBoilingPoint, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom)
 		GETTER_AND_SETTER_FLUID_CATALOG_COMPONENT_MEASURE_ATTRIBUTE(PseudoFluidComponent, AvgBoilingPoint, gsoap_eml2_3::eml23__ThermodynamicTemperatureUom)

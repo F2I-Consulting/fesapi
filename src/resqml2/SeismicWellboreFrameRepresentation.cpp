@@ -173,8 +173,9 @@ void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) con
 		if (nodeTimeValues->Offset[0]->Value < (std::numeric_limits<float>::min)() || nodeTimeValues->Offset[0]->Value >(std::numeric_limits<float>::max)()) {
 			throw out_of_range("The double offset value of the nodeTimeValues array " + std::to_string(nodeTimeValues->Offset[0]->Value) + " is out of float range value");
 		}
-		for (int64_t inc = 1; inc <= nodeTimeValues->Offset[0]->Count; ++inc) {
-			values[inc] = values[0] + (inc * static_cast<float>(nodeTimeValues->Offset[0]->Value));
+		const float value = static_cast<float>(nodeTimeValues->Offset[0]->Value);
+		for (uint64_t inc = 1; inc <= nodeTimeValues->Offset[0]->Count; ++inc) {
+			values[inc] = values[0] + static_cast<float>(inc) * value;
 		}
 	}
 	else {

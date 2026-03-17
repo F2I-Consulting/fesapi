@@ -472,7 +472,7 @@ std::vector<unsigned int> AbstractProperty::getRealizationIndices() const
 	}
 }
 
-void AbstractProperty::setRealizationIndices(int64_t startRealizationIndex, int64_t countRealizationIndices)
+void AbstractProperty::setRealizationIndices(int64_t startRealizationIndex, uint64_t countRealizationIndices)
 {
 	if (countRealizationIndices == 0) {
 		throw std::invalid_argument("Cannot set zero realization index.");
@@ -482,18 +482,32 @@ void AbstractProperty::setRealizationIndices(int64_t startRealizationIndex, int6
 		if (countRealizationIndices > 1) {
 			throw std::invalid_argument("RESQML 2.0.1 does not support more than one realization index per property.");
 		}
+		if (startRealizationIndex < 0) {
+			throw std::invalid_argument("RESQML 2.0.1 does not support realization index which is negative.");
+		}
 		gsoap_resqml2_0_1::resqml20__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1);
 		if (prop->RealizationIndex == nullptr) {
 			prop->RealizationIndex = static_cast<ULONG64*>(soap_malloc(prop->soap, sizeof(ULONG64)));
 		}
-		*prop->RealizationIndex = startRealizationIndex;
+		*prop->RealizationIndex = static_cast<uint64_t>(startRealizationIndex);
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3);
+
+		auto* xmlArray = gsoap_eml2_3::soap_new_eml23__IntegerLatticeArray(gsoapProxy2_3->soap);
+		xmlArray->StartValue = startRealizationIndex;
+		auto* offsetArray = gsoap_eml2_3::soap_new_eml23__IntegerConstantArray(gsoapProxy2_3->soap);
+		offsetArray->Count = countRealizationIndices - 1ull;
+		offsetArray->Value = 1ll;
+		xmlArray->Offset.push_back(offsetArray);
+		prop->RealizationIndices = xmlArray;
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
 }
 
-void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy*)
+void AbstractProperty::setRealizationIndices(const std::vector<int64_t> & realizationIndices, EML2_NS::AbstractHdfProxy*)
 {
 	if (realizationIndices.empty()) {
 		throw std::invalid_argument("Cannot set zero realization index.");
@@ -504,6 +518,21 @@ void AbstractProperty::setRealizationIndices(const std::vector<unsigned int> & r
 			throw std::invalid_argument("RESQML 2.0.1 does not support more than one realization index per property.");
 		}
 		setRealizationIndices(realizationIndices[0], 1);
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		gsoap_eml2_3::resqml22__AbstractProperty* prop = static_cast<gsoap_eml2_3::resqml22__AbstractProperty*>(gsoapProxy2_3);
+		if (realizationIndices.empty()) {
+			prop->RealizationIndices = nullptr;
+			return;
+		}
+
+		auto* xmlArray = gsoap_eml2_3::soap_new_eml23__IntegerXmlArray(gsoapProxy2_3->soap);
+		xmlArray->CountPerValue = 1;
+		xmlArray->Values = std::to_string(realizationIndices[0]);
+		for (size_t i = 1; i < realizationIndices.size(); ++i) {
+			xmlArray->Values += " " + std::to_string(realizationIndices[i]);
+		}
+		prop->RealizationIndices = xmlArray;
 	}
 	else {
 		throw logic_error("Not implemented yet");

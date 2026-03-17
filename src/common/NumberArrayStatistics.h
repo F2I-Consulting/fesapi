@@ -129,19 +129,20 @@ namespace COMMON_NS
                     }
 
                     //mean
-                    valuesMean[j] += (pair.second * pair.first) / validValueCount[j];
+                    valuesMean[j] += (static_cast<double>(pair.second) * static_cast<double>(pair.first)) / static_cast<double>(validValueCount[j]);
+
                 }
-                valuesMedian[j] = (validValueCount[j] % 2 == 0) ? (median1 + median2) / 2.0 : median2;
-                modePercentage[j] = static_cast<double>(maxCount) / validValueCount[j];
+                valuesMedian[j] = (validValueCount[j] % 2 == 0) ? (static_cast<double>(median1) + static_cast<double>(median2)) / 2.0 : static_cast<double>(median2);
+                modePercentage[j] = static_cast<double>(maxCount) / static_cast<double>(validValueCount[j]);
 
 
                 // Standard Deviation
                 double variance = 0.0;
                 for (const auto& pair : mapView) {
                     double diff = static_cast<double>(pair.first) - valuesMean[j];
-                    variance += pair.second * diff * diff;
+                    variance += static_cast<double>(pair.second) * diff * diff;
                 }
-                valuesStandardDeviation[j] = std::sqrt(variance / validValueCount[j]);
+                valuesStandardDeviation[j] = std::sqrt(variance / static_cast<double>(validValueCount[j]));
             }
         }
 

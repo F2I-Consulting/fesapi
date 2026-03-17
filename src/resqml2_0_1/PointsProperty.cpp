@@ -88,7 +88,7 @@ EML2_NS::AbstractHdfProxy * PointsProperty::getDatasetOfPatch(uint64_t patchInde
 	gsoap_resqml2_0_1::resqml20__PatchOfPoints* patch = static_cast<_resqml20__PointsProperty*>(gsoapProxy2_0_1)->PatchOfPoints[patchIndex];
 
 	nullValue = (numeric_limits<int64_t>::min)();
-	int valuesType = patch->Points->soap_type();
+	long valuesType = patch->Points->soap_type();
 	if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array) {
 		dsPath = static_cast<gsoap_resqml2_0_1::resqml20__Point3dHdf5Array*>(patch->Points)->Coordinates->PathInHdfFile;
 		return getHdfProxyFromDataset(static_cast<gsoap_resqml2_0_1::resqml20__Point3dHdf5Array*>(patch->Points)->Coordinates);
@@ -106,7 +106,7 @@ COMMON_NS::DataObjectReference PointsProperty::getHdfProxyDor(uint64_t patchInde
 
 	gsoap_resqml2_0_1::resqml20__PatchOfPoints* patch = static_cast<_resqml20__PointsProperty*>(gsoapProxy2_0_1)->PatchOfPoints[patchIndex];
 
-	int valuesType = patch->Points->soap_type();
+	long valuesType = patch->Points->soap_type();
 	if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__Point3dHdf5Array*>(patch->Points)->Coordinates->HdfProxy;
 	}
@@ -122,7 +122,7 @@ EML2_NS::AbstractHdfProxy* PointsProperty::getValuesHdfProxyAndDatasetPathOfPatc
 	}
 
 	gsoap_resqml2_0_1::resqml20__PatchOfPoints* patch = static_cast<_resqml20__PointsProperty*>(gsoapProxy2_0_1)->PatchOfPoints[patchIndex];
-	int valuesType = patch->Points->soap_type();
+	long valuesType = patch->Points->soap_type();
 	if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__Point3dHdf5Array*>(patch->Points)->Coordinates;
 		datasetPath = dataset->PathInHdfFile;

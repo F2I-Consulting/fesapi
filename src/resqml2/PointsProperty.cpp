@@ -37,7 +37,7 @@ COMMON_NS::AbstractObject::numericalDatatypeEnum PointsProperty::getValuesHdfDat
 	return hdfProxy->getNumericalDatatype(dsPath);
 }
 
-std::vector<uint32_t> PointsProperty::getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const
+std::vector<uint64_t> PointsProperty::getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const
 {
 	cannotBePartial();
 
@@ -45,7 +45,14 @@ std::vector<uint32_t> PointsProperty::getValuesCountPerDimensionOfPatch(uint64_t
 	std::string dsPath;
 	EML2_NS::AbstractHdfProxy* hdfProxy = getDatasetOfPatch(patchIndex, nullValue, dsPath);
 
-	return hdfProxy->getElementCountPerDimension(dsPath);
+	auto src = hdfProxy->getElementCountPerDimension(dsPath);
+	std::vector<uint64_t> result;
+	result.reserve(src.size());
+	for (uint32_t v : src) {
+		result.push_back(v);
+	}
+
+	return result;
 }
 
 uint64_t PointsProperty::getXyzPointCountOfAllPatches() const

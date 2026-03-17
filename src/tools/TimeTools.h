@@ -79,9 +79,10 @@ namespace timeTools
 		std::tm result;
 
 		// static_ cast to silence MSVC C4244 (std::tm uses int fields and tod.seconds().count() uses long long)
+		// Same for minutes and hours
 		result.tm_sec = static_cast<int>(tod.seconds().count()); // Range must be [0..60] by definition
-		result.tm_min = tod.minutes().count();
-		result.tm_hour = tod.hours().count();
+		result.tm_min = static_cast<int>(tod.minutes().count());
+		result.tm_hour = static_cast<int>(tod.hours().count());
 		result.tm_mday = (ymd.day() - 0_d).count();
 		result.tm_mon = (ymd.month() - January).count();
 		result.tm_year = (ymd.year() - 1900_y).count();

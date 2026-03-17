@@ -53,7 +53,7 @@ const FileRelationship & FilePart::getFileRelationship() const
 	return fileRelationship;
 }
 
-Relationship FilePart::getIndexRelationship(int index) const
+Relationship FilePart::getIndexRelationship(size_t index) const
 {
 	return fileRelationship.getIndexRelationship(index);
 }

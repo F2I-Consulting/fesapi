@@ -54,7 +54,9 @@ under the License.
 	// https://stackoverflow.com/a/60208989
 	%define PRIMITIVE_TYPEMAP(NEW_TYPE, TYPE)
 	%clear NEW_TYPE;
+	%clear const NEW_TYPE &;
 	%apply TYPE { NEW_TYPE };
+	%apply const TYPE & { const NEW_TYPE & };
 	%enddef // PRIMITIVE_TYPEMAP
 #if defined(SWIGWORDSIZE64)
 	PRIMITIVE_TYPEMAP(long int, long long);
@@ -176,8 +178,8 @@ under the License.
 %template(StringVector) std::vector< std::string >;
 %template(Int32Vector) std::vector< int32_t >;
 %template(UInt32Vector) std::vector< uint32_t >;
-// Vector of int64 and uint64 are tough to port because of long vs long long platform
-// Indeed c++ long corresponds to int in java where c++ long long corresponds to long in java
+%template(Int64Vector) std::vector< int64_t >;
+%template(UInt64Vector) std::vector< uint64_t >;
 %template(FloatVector) std::vector< float >;
 %template(DoubleVector) std::vector< double >;
 %template(BoolVector) std::vector< bool >;
@@ -1647,15 +1649,18 @@ import com.f2i_consulting.fesapi.*;
 		 * 								will be generated.
 		 * @param 	title			   	The title to set to the seismic line. If empty then \"unknown\"
 		 * 								title will be set.
-		 * @param 	traceIndexIncrement	The constant index increment between two consecutive traces.
-		 * @param 	firstTraceIndex	   	The index of the first trace of the seismic line.
-		 * @param 	traceCount		   	Number of traces.
+		 * @param	traceIndexIncrement	The trace index increment. The trace index increment will
+		 * 								be the difference in the trace number from abscissa i=0
+		 * 								and abscissa i=1. The increment can be a positive or
+		 * 								negative integer, but not zero.
+		 * @param 	firstTraceIndex	   	The index of the first trace beginning at abscissa i=0.
+		 * @param 	traceCount		   	The count of traces in this seismic line.
 		 *
 		 * @returns	A pointer to the new seismic line.
 		 */
 		RESQML2_0_1_NS::SeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
-			int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount);
-#ifdef WITH_RESQML2_2
+			int traceIndexIncrement, int firstTraceIndex, unsigned int traceCount);
+			
 		/**
 		 * @brief	Creates a CMP line into this repository
 		 *
@@ -1684,7 +1689,7 @@ import com.f2i_consulting.fesapi.*;
 		 * @returns	A pointer to the new CMP line.
 		 */
 		RESQML2_NS::ShotPointLineFeature* createShotPointLine(const std::string & guid, const std::string & title);
-#endif
+
 		/**
 		 * @brief	Creates a seismic line set into this repository
 		 *

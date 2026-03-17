@@ -1476,7 +1476,7 @@ RESQML2_NS::SeismicLatticeFeature* DataObjectRepository::createSeismicLattice(co
 }
 
 RESQML2_0_1_NS::SeismicLineFeature* DataObjectRepository::createSeismicLine(const std::string & guid, const std::string & title,
-	int traceIndexIncrement, unsigned int firstTraceIndex, unsigned int traceCount)
+	int traceIndexIncrement, int firstTraceIndex, unsigned int traceCount)
 {
 	return new RESQML2_0_1_NS::SeismicLineFeature(this, guid, title, traceIndexIncrement, firstTraceIndex, traceCount);
 }

@@ -6523,10 +6523,10 @@ namespace RESQML2_NS
 		
 		/**
 		 * Get the number of values in each dimension into the underlying HDF5 dataset.
-		 * uint32_t is returned instead of uint64_t cause of some SWIG usage. I cannot SWIG port std::vector<uint64_t>
+		 *
 		 * @param 	patchIndex	The index of the patch we want to count the values from.
 		 */
-		std::vector<uint32_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const;
+		std::vector<uint64_t> getValuesCountPerDimensionOfPatch(uint64_t patchIndex) const;
 
 		/**
 		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
@@ -6608,11 +6608,53 @@ namespace RESQML2_NS
 		 * @returns	The property set at @p index.
 		 */
 		RESQML2_0_1_NS::PropertySet * getPropertySet(uint64_t index) const;
-		
+
+		/**
+		 * Checks if this property has at least one realization index. Realization index is used if the property is
+		 * the result of a multi-realization process.
+		 * Remark : v2.0.1 is constrained to have a maximum of one realisation index
+		 *
+		 * @returns	True if the property has at least one realization index, false if not.
+		 */
 		bool hasRealizationIndices() const;
+
+		/**
+		 * Gets the realization index of this property. Realization index is used if the property is the
+		 * result of a multi-realization process. You should have checked before that this property
+		 * actually has a realization index.
+		 * Remark : v2.0.1 is constrained to have a maximum of one realisation index
+		 *
+		 * @exception	std::invalid_argument	If this property has actually no realization index.
+		 *
+		 * @returns	The realization index.
+		 */
 		std::vector<unsigned int> getRealizationIndices() const;
-		void setRealizationIndices(int64_t startRealizationIndex, int64_t countRealizationIndices);
-		void setRealizationIndices(const std::vector<unsigned int> & realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
+
+		/**
+		 * Sets the realization indices of this property
+		 *
+		 * @param 	startRealizationIndex	The first realization index to set to this property.
+		 * @param 	countRealizationIndices	The count of realization indices to set to this property.
+		 */
+		void setRealizationIndices(int64_t startRealizationIndex, uint64_t countRealizationIndices);
+
+		/**
+		 * @brief	Sets the realization indices of this property
+		 *
+		 * @exception	std::invalid_argument	If @p realizationIndices is empty.
+		 * @exception	std::invalid_argument	If the @p realizationIndices size is strictly greater
+		 * 										than 1 in a RESQML 2.0.1 context.
+		 * @exception	std::invalid_argument	If, in a RESQML 2.2 context, <tt>hdfProxy == nullptr</tt>
+		 * 										and no default HDF proxy is defined in the repository.
+		 * @exception	std::logic_error	 	If no supported gSOAP proxy is available.
+		 *
+		 * @param 		  	realizationIndices	The realization indices to set to this property.
+		 * Remark : v2.0.1 is constrained to have a maximum of one realisation index
+		 * @param[in,out]	hdfProxy		  	(Optional) The HDF proxy where to store @p
+		 * 										realizationIndices values. If @p nullptr (default), then
+		 * 										the repository default HDF proxy will be used.
+		 */
+		void setRealizationIndices(const std::vector<int64_t>& realizationIndices, EML2_NS::AbstractHdfProxy* hdfProxy = nullptr);
 		
 		/*
 		 * Sets the time series associated to the current property

@@ -448,14 +448,20 @@ void HdfProxy::readArrayNdOfValues(
 	if (!isOpened()) {
 		open();
 	}
+	std::string datasetName;
 
 	hsize_t hdfSlabSize = slabSize;
 	hid_t memspace = H5Screate_simple(1, &hdfSlabSize, nullptr);
 	if (memspace < 0) {
 		ssize_t size = 1 + H5Iget_name(dataset, NULL, 0);
-		char * name = (char *)malloc(size);
-		size = H5Iget_name(dataset, name, size);
-		std::string datasetName(name);
+		if (size < 0) {
+			H5Sclose(filespace);
+			H5Dclose(dataset);
+			throw invalid_argument("The name of the dataset cannot be found since its length is negative.");
+		}
+		char * name = (char *)malloc(static_cast<size_t>(size));
+		size = H5Iget_name(dataset, name, static_cast<size_t>(size));
+		datasetName = std::string(name);
 		free(name);
 		H5Sclose(filespace);
 		H5Dclose(dataset);
@@ -463,22 +469,24 @@ void HdfProxy::readArrayNdOfValues(
 	}
 
 	hid_t readingError = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, values);
-	std::string datasetName;
-	if (readingError < 0) {
-		ssize_t size = 1 + H5Iget_name(dataset, NULL, 0);
-		char * name = (char *)malloc(size);
-		size = H5Iget_name(dataset, name, size);
-		datasetName = std::string(name);
-		free(name);
-	}
-
 	H5Sclose(memspace);
 	H5Sclose(filespace);
-	H5Dclose(dataset);
 
 	if (readingError < 0) {
+		ssize_t size = 1 + H5Iget_name(dataset, NULL, 0);
+		if (size < 0) {
+			H5Dclose(dataset);
+			throw invalid_argument("The name of the dataset cannot be found since its length is negative.");
+		}
+		char * name = (char *)malloc(static_cast<size_t>(size));
+		size = H5Iget_name(dataset, name, static_cast<size_t>(size));
+		datasetName = std::string(name);
+		free(name);
+		H5Dclose(dataset);
 		throw invalid_argument("The HDF5 dataset " + datasetName + " could not be read.");
 	}
+
+	H5Dclose(dataset);
 }
 
 COMMON_NS::AbstractObject::numericalDatatypeEnum HdfProxy::getNumericalDatatype(const std::string & datasetName)
