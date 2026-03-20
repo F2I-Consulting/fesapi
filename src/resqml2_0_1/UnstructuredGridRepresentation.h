@@ -88,7 +88,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool isFaceCountOfCellsConstant() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getConstantFaceCountOfCells() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getConstantFaceCountOfCells() const final;
 
 		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfFaces(uint64_t * nodeIndices) const final;
 
@@ -96,7 +96,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool isNodeCountOfFacesConstant() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getConstantNodeCountOfFaces() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getConstantNodeCountOfFaces() const final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getCellCount() const final;
 

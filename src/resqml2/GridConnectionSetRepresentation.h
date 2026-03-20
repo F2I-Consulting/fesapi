@@ -226,9 +226,6 @@ namespace RESQML2_NS
 		/**
 		 * Get the count of interpretations in this grid connection set.
 		 *
-		 * @exception	range_error	If the count of associated interpretations is strictly greater than
-		 * 							unsigned int.
-		 *
 		 * @returns	The interpretation count.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual uint64_t getInterpretationCount() const = 0;

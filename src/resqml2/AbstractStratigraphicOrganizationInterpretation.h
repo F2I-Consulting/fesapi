@@ -42,37 +42,7 @@ namespace RESQML2_NS
 
 		bool isStratigraphic() const final { return true; }
 
-		/**
-		 * Gets the grid representations associated to this stratigraphic organization interpretation.
-		 *
-		 * @returns	A vector of pointers to all the grid representations associated to this stratigraphic
-		 * 			organization interpretation.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<AbstractGridRepresentation*> getGridRepresentations() const;
-
-		/**
-		 * Gets the count of grid representations associated to this stratigraphic organization
-		 * interpretation.
-		 *
-		 * @exception	std::range_error	If the count of associated grid representations is strictly
-		 * 									greater than <tt>unsigned int</tt> max.
-		 *
-		 * @returns	The count of associated grid representations.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getGridRepresentationCount() const;
-
-		/**
-		 * Gets a grid representation associated to this stratigraphic organization interpretation by
-		 * means of its index.
-		 *
-		 * @exception	std::out_of_range	If @p index is out of range.
-		 *
-		 * @param 	index	The index of the grid representation to get in the array of grid
-		 * 					representations of this stratigraphic organization interpretations.
-		 *
-		 * @returns	The associated grid representation at index @p index.
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation * getGridRepresentation(unsigned int index) const;
+		GETTER_DATAOBJECTS(AbstractGridRepresentation, GridRepresentation)
 
 		/**
 		 * Checks whether a given grid representation is associated to this stratigraphic organization

@@ -63,28 +63,19 @@ void StructuralOrganizationInterpretation::pushBackFaultInterpretation(RESQML2_N
 	structuralOrganization->Faults.push_back(faultInterpRef);
 }
 
-unsigned int StructuralOrganizationInterpretation::getFaultInterpretationCount() const
+uint64_t StructuralOrganizationInterpretation::getFaultInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Faults.size();
-
-	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many associated fault interpretations.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Faults.size();
 }
 
-COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getFaultInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getFaultInterpretationDor(uint64_t index) const
 {
 	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
-	if (index >= structuralOrganization->Faults.size()) {
-		throw std::out_of_range("The fault index is out of range.");
-	}
 
-	return COMMON_NS::DataObjectReference(structuralOrganization->Faults[index]);
+	return COMMON_NS::DataObjectReference(structuralOrganization->Faults.at(index));
 }
 
-void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2_NS::HorizonInterpretation * horizonInterpretation, int stratigraphicRank)
+void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2_NS::HorizonInterpretation * horizonInterpretation, uint64_t stratigraphicRank)
 {
 	getRepository()->addRelationship(this, horizonInterpretation);
 
@@ -99,25 +90,16 @@ void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2
 	structuralOrganization->Horizons.push_back(horizonInterpListElement);
 }
 
-unsigned int StructuralOrganizationInterpretation::getHorizonInterpretationCount() const
+uint64_t StructuralOrganizationInterpretation::getHorizonInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Horizons.size();
-
-	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many associated horizon interpretations.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Horizons.size();
 }
 
-COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getHorizonInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getHorizonInterpretationDor(uint64_t index) const
 {
 	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
-	if (index >= structuralOrganization->Horizons.size()) {
-		throw std::out_of_range("The horizon index is out of range.");
-	}
 
-	return COMMON_NS::DataObjectReference(structuralOrganization->Horizons[index]->Horizon);
+	return COMMON_NS::DataObjectReference(structuralOrganization->Horizons.at(index)->Horizon);
 }
 
 void StructuralOrganizationInterpretation::pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation)
@@ -129,25 +111,16 @@ void StructuralOrganizationInterpretation::pushBackTopFrontierInterpretation(Abs
 	structuralOrganization->TopFrontier.push_back(interpRef);
 }
 
-unsigned int StructuralOrganizationInterpretation::getTopFrontierInterpretationCount() const
+uint64_t StructuralOrganizationInterpretation::getTopFrontierInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->TopFrontier.size();
-
-	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many associated top frontier interpretations.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->TopFrontier.size();
 }
 
-COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getTopFrontierInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getTopFrontierInterpretationDor(uint64_t index) const
 {
 	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
-	if (index >= structuralOrganization->TopFrontier.size()) {
-		throw std::out_of_range("The top frontier index is out of range.");
-	}
 
-	return COMMON_NS::DataObjectReference(structuralOrganization->TopFrontier[index]);
+	return COMMON_NS::DataObjectReference(structuralOrganization->TopFrontier.at(index));
 }
 
 void StructuralOrganizationInterpretation::pushBackBottomFrontierInterpretation(AbstractFeatureInterpretation * bottomFrontierInterpretation)
@@ -159,25 +132,16 @@ void StructuralOrganizationInterpretation::pushBackBottomFrontierInterpretation(
 	structuralOrganization->BottomFrontier.push_back(interpRef);
 }
 
-unsigned int StructuralOrganizationInterpretation::getBottomFrontierInterpretationCount() const
+uint64_t StructuralOrganizationInterpretation::getBottomFrontierInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->BottomFrontier.size();
-
-	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many associated bottom frontier interpretations.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->BottomFrontier.size();
 }
 
-COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getBottomFrontierInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getBottomFrontierInterpretationDor(uint64_t index) const
 {
 	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
-	if (index >= structuralOrganization->BottomFrontier.size()) {
-		throw std::out_of_range("The bottom frontier index is out of range.");
-	}
 
-	return COMMON_NS::DataObjectReference(structuralOrganization->BottomFrontier[index]);
+	return COMMON_NS::DataObjectReference(structuralOrganization->BottomFrontier.at(index));
 }
 
 void StructuralOrganizationInterpretation::pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation)
@@ -189,23 +153,14 @@ void StructuralOrganizationInterpretation::pushBackSideFrontierInterpretation(Ab
 	structuralOrganization->Sides.push_back(interpRef);
 }
 
-unsigned int StructuralOrganizationInterpretation::getSideFrontierInterpretationCount() const
+uint64_t StructuralOrganizationInterpretation::getSideFrontierInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Sides.size();
-
-	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too many associated side frontier interpretations.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Sides.size();
 }
 
-COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getSideFrontierInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getSideFrontierInterpretationDor(uint64_t index) const
 {
 	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
-	if (index >= structuralOrganization->Sides.size()) {
-		throw std::out_of_range("The side frontier index is out of range.");
-	}
 
-	return COMMON_NS::DataObjectReference(structuralOrganization->Sides[index]);
+	return COMMON_NS::DataObjectReference(structuralOrganization->Sides.at(index));
 }

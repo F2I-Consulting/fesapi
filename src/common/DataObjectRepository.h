@@ -558,15 +558,11 @@ namespace COMMON_NS
 		*/
 #define GETTER_DATAOBJECTS(returnedDataType, dataObjectName)\
 		DLL_IMPORT_OR_EXPORT std::vector<returnedDataType*> get##dataObjectName##Set() const;\
-		DLL_IMPORT_OR_EXPORT unsigned int get##dataObjectName##Count() const {\
-			const size_t result = get##dataObjectName##Set().size();\
-			if (result > (std::numeric_limits<unsigned int>::max)()) { throw std::range_error("The count is superior to unsigned int max"); }\
-			return static_cast<unsigned int>(result);\
+		DLL_IMPORT_OR_EXPORT uint64_t get##dataObjectName##Count() const {\
+			return get##dataObjectName##Set().size();\
 		}\
-		DLL_IMPORT_OR_EXPORT returnedDataType* get##dataObjectName(unsigned int index) const {\
-			std::vector<returnedDataType*> all = get##dataObjectName##Set();\
-			if (index >= all.size()) { throw std::out_of_range("The index is out of range"); }\
-			return all[index];\
+		DLL_IMPORT_OR_EXPORT returnedDataType* get##dataObjectName(uint64_t index) const {\
+			return get##dataObjectName##Set().at(index);\
 		}
 
 		GETTER_DATAOBJECTS(EML2_NS::AbstractHdfProxy, HdfProxy)

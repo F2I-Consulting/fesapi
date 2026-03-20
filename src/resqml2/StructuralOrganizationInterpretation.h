@@ -52,12 +52,9 @@ namespace RESQML2_NS
 		/**
 		 * Gets the fault interpretations count.
 		 *
-		 * @exception	std::range_error	If the fault interpretation count is strictly greater than
-		 * 									unsigned int max.
-		 *
 		 * @returns	The fault interpretations count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getFaultInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getFaultInterpretationCount() const = 0;
 
 		/**
 		 * Gets the DOR of a given fault interpretation.
@@ -68,7 +65,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the fault interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getFaultInterpretationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getFaultInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets a given fault interpretation.
@@ -79,7 +76,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The fault interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT FaultInterpretation* getFaultInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT FaultInterpretation* getFaultInterpretation(uint64_t index) const;
 
 		/**
 		 * Adds a horizon interpretation at a given rank of this structural organization interpretation.
@@ -90,17 +87,14 @@ namespace RESQML2_NS
 		 * @param 	  	stratigraphicRank	 	The rank of the horizon interpretation within this
 		 * 										structural organization.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void pushBackHorizonInterpretation(HorizonInterpretation * horizonInterpretation, int stratigraphicRank) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackHorizonInterpretation(HorizonInterpretation * horizonInterpretation, uint64_t stratigraphicRank) = 0;
 
 		/**
 		 * Gets the horizon interpretations count.
 		 *
-		 * @exception	std::range_error	If the horizon interpretation count is strictly greater than
-		 * 									unsigned int max.
-		 *
 		 * @returns	The horizon interpretations count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getHorizonInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getHorizonInterpretationCount() const = 0;
 
 		/**
 		 * Gets the DOR of a given horizon interpretation.
@@ -111,7 +105,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the horizon interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getHorizonInterpretationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getHorizonInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets a given horizon interpretation.
@@ -122,7 +116,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The horizon interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT HorizonInterpretation* getHorizonInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT HorizonInterpretation* getHorizonInterpretation(uint64_t index) const;
 
 		/**
 		 * Adds a frontier interpretation to this structural organization interpretation as a top.
@@ -136,12 +130,9 @@ namespace RESQML2_NS
 		/**
 		 * Gets the top frontier interpretations count.
 		 *
-		 * @exception	std::range_error	If the top frontier interpretation count is strictly greater
-		 * 									than unsigned int max.
-		 *
 		 * @returns	The top frontier interpretations count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getTopFrontierInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getTopFrontierInterpretationCount() const = 0;
 
 		/**
 		 * Gets the DOR of a given top frontier interpretation.
@@ -153,7 +144,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the top frontier interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getTopFrontierInterpretationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getTopFrontierInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets a given top frontier interpretation.
@@ -164,7 +155,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The top frontier interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getTopFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getTopFrontierInterpretation(uint64_t index) const;
 
 		/**
 		 * Adds a frontier interpretation to this structural organization interpretation as a bottom.
@@ -178,12 +169,9 @@ namespace RESQML2_NS
 		/**
 		 * Gets the bottom frontier interpretations count.
 		 *
-		 * @exception	std::range_error	If the bottom frontier interpretation count is strictly
-		 * 									greater than unsigned int max.
-		 *
 		 * @returns	The bottom frontier interpretations count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getBottomFrontierInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getBottomFrontierInterpretationCount() const = 0;
 
 		/**
 		 * Gets the DOR of a given bottom frontier interpretation.
@@ -196,7 +184,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the bottom frontier interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getBottomFrontierInterpretationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getBottomFrontierInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets a given bottom frontier interpretation.
@@ -208,7 +196,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The bottom frontier interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getBottomFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getBottomFrontierInterpretation(uint64_t index) const;
 
 		/**
 		 * Adds a frontier interpretation to this structural organization interpretation as a side.
@@ -222,12 +210,9 @@ namespace RESQML2_NS
 		/**
 		 * Gets the side frontier interpretations count.
 		 *
-		 * @exception	std::range_error	If the side frontier interpretation count is strictly greater
-		 * 									than unsigned int max.
-		 *
 		 * @returns	The side frontier interpretations count.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getSideFrontierInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getSideFrontierInterpretationCount() const = 0;
 
 		/**
 		 * Gets the DOR of a given side frontier interpretation.
@@ -240,7 +225,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the side frontier interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSideFrontierInterpretationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSideFrontierInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets a given side frontier interpretation.
@@ -252,7 +237,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The side frontier interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getSideFrontierInterpretation(uint64_t index) const;
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

@@ -30,7 +30,7 @@ void BlockedWellboreRepresentation::loadTargetRelationships()
 	WellboreFrameRepresentation::loadTargetRelationships();
 
 	// Supporting grid representation
-	for (unsigned int i = 0; i < getSupportingGridRepresentationCount(); ++i) {
+	for (uint64_t i = 0; i < getSupportingGridRepresentationCount(); ++i) {
 		convertDorIntoRel<RESQML2_NS::AbstractGridRepresentation>(getSupportingGridRepresentationDor(i));
 	}
 

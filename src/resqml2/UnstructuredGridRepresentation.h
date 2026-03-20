@@ -182,7 +182,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The constant face count per cell.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getConstantFaceCountOfCells() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getConstantFaceCountOfCells() const = 0;
 
 		/**
 		 * Gets all the node indices of all the faces.
@@ -264,7 +264,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The constant node count per face.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getConstantNodeCountOfFaces() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getConstantNodeCountOfFaces() const = 0;
 
 		/**
 		 * Loads the geoemtry into memory in order to ease access. Be aware that you must unload by
@@ -661,8 +661,8 @@ namespace RESQML2_NS
 			uint64_t * faceIndicesPerCell, uint64_t faceCountPerCell,
 			uint64_t * nodeIndicesPerFace, uint64_t nodeCountPerFace);
 
-		unsigned int constantNodeCountPerFace;
-		unsigned int constantFaceCountPerCell;
+		uint64_t constantNodeCountPerFace;
+		uint64_t constantFaceCountPerCell;
 		std::unique_ptr<uint64_t[]> cumulativeNodeCountPerFace;
 		std::unique_ptr<uint64_t[]> cumulativeFaceCountPerCell;
 		std::unique_ptr<uint64_t[]> nodeIndicesOfFaces;

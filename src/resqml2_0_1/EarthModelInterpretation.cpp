@@ -52,12 +52,12 @@ EarthModelInterpretation::EarthModelInterpretation(RESQML2_NS::Model * orgFeat, 
 	setInterpretedFeature(orgFeat);
 }
 
-unsigned int EarthModelInterpretation::getStructuralOrganizationInterpretationCount() const
+uint64_t EarthModelInterpretation::getStructuralOrganizationInterpretationCount() const
 {
 	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure != nullptr ? 1 : 0;
 }
 
-COMMON_NS::DataObjectReference EarthModelInterpretation::getStructuralOrganizationInterpertationDor(unsigned int index) const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getStructuralOrganizationInterpertationDor(uint64_t index) const
 {
 	if (index >= getStructuralOrganizationInterpretationCount()) {
 		throw std::out_of_range("A RESQML 2.0.1 earth model interpretation can only have up to 1 structural organization interpretation.");
@@ -96,25 +96,15 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiColumnDor() co
 		: COMMON_NS::DataObjectReference();
 }
 
-unsigned int EarthModelInterpretation::getStratiOccurrenceCount() const
+uint64_t EarthModelInterpretation::getStratiOccurrenceCount() const
 {
-	const size_t result = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much StratiOccurence");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
 }
 
-COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurrenceDor(unsigned int index) const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurrenceDor(uint64_t index) const
 {
 	_resqml20__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
-	if (index < earthModelInterpretation->StratigraphicOccurrences.size()) {
-		return COMMON_NS::DataObjectReference(earthModelInterpretation->StratigraphicOccurrences[index]);
-	}
-	else {
-		throw std::out_of_range("The strati occurence index is out of range.");
-	}
+	return COMMON_NS::DataObjectReference(earthModelInterpretation->StratigraphicOccurrences.at(index));
 }
 
 void EarthModelInterpretation::pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence)
@@ -124,7 +114,7 @@ void EarthModelInterpretation::pushBackStratiOccurrence(RESQML2_NS::Stratigraphi
 	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.push_back(stratiOccurrence->newResqmlReference());
 }
 
-unsigned int EarthModelInterpretation::getRockFluidOrganizationInterpretationCount() const
+uint64_t EarthModelInterpretation::getRockFluidOrganizationInterpretationCount() const
 {
 	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid != nullptr ? 1 : 0;
 }
@@ -140,7 +130,7 @@ void EarthModelInterpretation::pushBackRockFluidOrganizationInterpretation(RESQM
 	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure = rockFluid->newResqmlReference();
 }
 
-COMMON_NS::DataObjectReference EarthModelInterpretation::getRockFluidOrganizationInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getRockFluidOrganizationInterpretationDor(uint64_t index) const
 {
 	if (index >= getRockFluidOrganizationInterpretationCount()) {
 		throw std::out_of_range("A RESQML 2.0.1 earth model interpretation can only have up to 1 rock fluid organization interpretation.");

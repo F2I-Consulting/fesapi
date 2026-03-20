@@ -37,9 +37,10 @@ void ActivityTemplate::pushBackParameter(const std::string & title,
 	uint64_t minOccurs, int64_t maxOccurs)
 {
 	// Preconditions
-	if (maxOccurs >= 0 && minOccurs > static_cast<unsigned int>(maxOccurs)) {
+	if (maxOccurs >= 0 && minOccurs > static_cast<uint64_t>(maxOccurs)) {
 		throw invalid_argument("Maximum occurences of a parameter template must be at least equal to the minimum occurences of this same parameter template.");
 	}
+	if (minOccurs > (std::numeric_limits<int64_t>::max)()) throw overflow_error("minOccurs cannot be serialized as more than int64 max value.");
 
 	_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
 
@@ -47,7 +48,7 @@ void ActivityTemplate::pushBackParameter(const std::string & title,
 	param->Title = title;
 	param->IsInput = isInput;
 	param->IsOutput = isOutput;
-	param->MinOccurs = minOccurs;
+	param->MinOccurs = static_cast<int64_t>(minOccurs);
 	param->MaxOccurs = maxOccurs;
 
 	activityTemplate->Parameter.push_back(param);

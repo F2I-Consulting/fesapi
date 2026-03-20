@@ -1856,7 +1856,7 @@ namespace RESQML2_NS
 				if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREContinuousProperty) {
 					gsoap_resqml2_0_1::_resqml20__ContinuousProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 					for (size_t i = 0; i < stats.getMinimumSize(); ++i) {
-						const double minStat = stats.getMinimum(i);
+						const double minStat = static_cast<double>(stats.getMinimum(i));
 						if (prop->MinimumValue.size() > i) {
 							if (minStat == minStat && prop->MinimumValue[i] > minStat) {
 								prop->MinimumValue[i] = minStat;
@@ -1867,7 +1867,7 @@ namespace RESQML2_NS
 						}
 					}
 					for (size_t i = 0; i < stats.getMaximumSize(); ++i) {
-						const double maxStat = stats.getMaximum(i);
+						const double maxStat = static_cast<double>(stats.getMaximum(i));
 						if (prop->MaximumValue.size() > i) {
 							if (maxStat == maxStat && prop->MaximumValue[i] < maxStat) {
 								prop->MaximumValue[i] = maxStat;
@@ -1883,23 +1883,23 @@ namespace RESQML2_NS
 					for (size_t i = 0; i < stats.getMinimumSize(); ++i) {
 						const auto minStat = stats.getMinimum(i);
 						if (prop->MinimumValue.size() > i) {
-							if (minStat == minStat && prop->MinimumValue[i] > minStat) {
-								prop->MinimumValue[i] = minStat;
+							if (minStat == minStat && prop->MinimumValue[i] > static_cast<int64_t>(minStat)) {
+								prop->MinimumValue[i] = static_cast<int64_t>(minStat);
 							}
 						}
 						else {
-							prop->MinimumValue.push_back(minStat);
+							prop->MinimumValue.push_back(static_cast<int64_t>(minStat));
 						}
 					}
 					for (size_t i = 0; i < stats.getMaximumSize(); ++i) {
 						const auto maxStat = stats.getMaximum(i);
 						if (prop->MaximumValue.size() > i) {
-							if (maxStat == maxStat && prop->MaximumValue[i] < maxStat) {
-								prop->MaximumValue[i] = maxStat;
+							if (maxStat == maxStat && prop->MaximumValue[i] < static_cast<int64_t>(maxStat)) {
+								prop->MaximumValue[i] = static_cast<int64_t>(maxStat);
 							}
 						}
 						else {
-							prop->MaximumValue.push_back(maxStat);
+							prop->MaximumValue.push_back(static_cast<int64_t>(maxStat));
 						}
 					}
 				}

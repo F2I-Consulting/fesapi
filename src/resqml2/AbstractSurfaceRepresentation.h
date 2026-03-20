@@ -43,7 +43,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The boundaries count.
 		 */
-		unsigned int getBoundariesCount() const;
+		uint64_t getBoundariesCount() const;
 
 		/**
 		 * Gets the DOR of an outer ring at a particular index.
@@ -55,7 +55,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the outer ring at position @p index.
 		 */
-		COMMON_NS::DataObjectReference getOuterRingDor(unsigned int index) const;
+		COMMON_NS::DataObjectReference getOuterRingDor(uint64_t index) const;
 
 		/**
 		 * Pushes back an outer ring at the first available boundary index of this surface

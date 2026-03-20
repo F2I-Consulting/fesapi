@@ -892,8 +892,8 @@ namespace COMMON_NS
 	CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName)
 	
 %define SWIG_GETTER_DATAOBJECTS(returnedDataType, dataObjectName)
-	unsigned int get ## dataObjectName ## Count() const;
-	returnedDataType * get ## dataObjectName(unsigned int index) const;
+	uint64_t get ## dataObjectName ## Count() const;
+	returnedDataType * get ## dataObjectName(uint64_t index) const;
 %enddef
 
 %include "swigEml2Include.i"

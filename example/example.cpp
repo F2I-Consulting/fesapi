@@ -2871,8 +2871,8 @@ void deserializeStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn, con
 			cout << "This is a chrono rank!" << endl;
 		else
 			cout << "This is not a chrono rank!" << endl;
-		unsigned int contactCount = stratiColumnRankInterp->getContactCount();
-		for (unsigned int contactIndex = 0; contactIndex < contactCount; ++contactIndex) {
+		uint64_t contactCount = stratiColumnRankInterp->getContactCount();
+		for (uint64_t contactIndex = 0; contactIndex < contactCount; ++contactIndex) {
 			cout << "SUBJECT : " << endl;
 			showAllMetadata(stratiColumnRankInterp->getSubjectOfContact(contactIndex));
 			cout << "DIRECT OBJECT : " << endl;
@@ -3232,8 +3232,8 @@ void deserializeTimeSeriesData(COMMON_NS::DataObjectRepository & repo)
 void deserializeGridHyperslabbingInterfaceSequence(const COMMON_NS::DataObjectRepository & repo)
 {
 	cout << endl << "BEGIN: IJK GRID REP (hyperslabbing)" << std::endl;
-	unsigned int ijkGridCount = repo.getIjkGridRepresentationCount();
-	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
+	uint64_t ijkGridCount = repo.getIjkGridRepresentationCount();
+	for (uint64_t ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
 	{
 		RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
 
@@ -4902,8 +4902,8 @@ void deserializeGridConnectionSetRepresentation(RESQML2_NS::AbstractIjkGridRepre
 void deserializeIjkGrid(const COMMON_NS::DataObjectRepository & repo)
 {
 	std::cout << endl << "IJK GRID REP" << endl;
-	unsigned int ijkGridCount = repo.getIjkGridRepresentationCount();
-	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
+	uint64_t ijkGridCount = repo.getIjkGridRepresentationCount();
+	for (uint64_t ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
 	{
 		RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
 
@@ -5232,9 +5232,9 @@ void deserialize(const string & inputFile)
 		repo.clearWarnings();
 	}
 
-	const unsigned int hdfProxyCount = repo.getHdfProxyCount();
+	const uint64_t hdfProxyCount = repo.getHdfProxyCount();
 	cout << "There are " << hdfProxyCount << " hdf files associated to this epc document." << endl;
-	for (unsigned int hdfProxyIndex = 0; hdfProxyIndex < hdfProxyCount; ++hdfProxyIndex) {
+	for (uint64_t hdfProxyIndex = 0; hdfProxyIndex < hdfProxyCount; ++hdfProxyIndex) {
 		cout << "Hdf file relative path : " << repo.getHdfProxy(hdfProxyIndex)->getRelativePath() << endl;
 	}
 	for (size_t warningIndex = 0; warningIndex < repo.getWarnings().size(); ++warningIndex) {

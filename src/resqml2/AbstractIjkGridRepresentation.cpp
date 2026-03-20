@@ -1014,14 +1014,10 @@ uint64_t AbstractIjkGridRepresentation::getFaceCount() const
 
 bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(unsigned int iColumn, unsigned int jColumn, unsigned int edge) const
 {
-	if (!splitInformation)
-		throw invalid_argument("The split information must have been loaded first.");
-	if (iColumn > getICellCount())
-		throw out_of_range("I column is out of range.");
-	if (jColumn > getJCellCount())
-		throw out_of_range("J column is out of range.");
-	if (edge > 3)
-		throw out_of_range("Edge is out of range.");
+	if (!splitInformation) throw invalid_argument("The split information must have been loaded first.");
+	if (iColumn > getICellCount()) throw out_of_range("I column is out of range.");
+	if (jColumn > getJCellCount()) throw out_of_range("J column is out of range.");
+	if (edge > 3) throw out_of_range("Edge is out of range.");
 
 	// Pillar
 	unsigned int iPillarIndex = iColumn;
@@ -1032,24 +1028,31 @@ bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(unsigned int iColumn, u
 		++jPillarIndex;
 
 	// Other column identification
-	int iOtherColum = iColumn;
-	int jOtherColum = jColumn;
-					
-	if (edge == 0) --jOtherColum;
-	else if (edge == 1) ++iOtherColum;
-	else if (edge == 2) ++jOtherColum;
-	else if (edge == 3) --iOtherColum;
-
-	if (iOtherColum < 0 || jOtherColum < 0 || static_cast<unsigned int>(iOtherColum) >= getICellCount() || static_cast<unsigned int>(jOtherColum) >= getJCellCount()) {
-		return false;
+	unsigned int iOtherColum = iColumn;
+	unsigned int jOtherColum = jColumn;					
+	if (edge == 0) {
+		if (jOtherColum == 0) return false;
+		--jOtherColum;
 	}
-	unsigned int otherColumnIndex = getGlobalIndexColumnFromIjIndex(iOtherColum, jOtherColum);
+	else if (edge == 1) {
+		if (iOtherColum == getICellCount()) return false;
+		++iOtherColum;
+	}
+	else if (edge == 2) {
+		if (jOtherColum == getJCellCount()) return false;
+		++jOtherColum;
+	}
+	else if (edge == 3) {
+		if (iOtherColum == 0) return false;
+		--iOtherColum;
+	}
+	const unsigned int otherColumnIndex = getGlobalIndexColumnFromIjIndex(iOtherColum, jOtherColum);
 
 	// Check split on first pillar of the column edge
 	bool result = false;
 	unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
 	if (!splitInformation[pillarIndex].empty()) {
-		unsigned int columnIndex = getGlobalIndexColumnFromIjIndex(iColumn, jColumn);
+		const unsigned int columnIndex = getGlobalIndexColumnFromIjIndex(iColumn, jColumn);
 		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet) {
 			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column) {
 				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex) {
@@ -1094,7 +1097,7 @@ bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(unsigned int iColumn, u
 
 	pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
 	if (!splitInformation[pillarIndex].empty()) {
-		unsigned int columnIndex = getGlobalIndexColumnFromIjIndex(iColumn, jColumn);
+		const unsigned int columnIndex = getGlobalIndexColumnFromIjIndex(iColumn, jColumn);
 		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet) {
 			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column) {
 				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex) {

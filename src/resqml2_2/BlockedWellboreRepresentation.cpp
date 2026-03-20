@@ -77,8 +77,12 @@ void BlockedWellboreRepresentation::setIntervalGridCells(int8_t const* gridIndic
 	}
 
 	_resqml22__BlockedWellboreRepresentation* rep = static_cast<_resqml22__BlockedWellboreRepresentation*>(gsoapProxy2_3);
+	if (rep->NodeCount == 0) {
+		throw std::invalid_argument("The node/interval count of the BlockedWellboreRepresentation " + getUuid() + " is zero.");
+	}
+	uint64_t intervalCount = rep->NodeCount - 1;
 	ULONG64 cellCount = 0;
-	for (LONG64 intervalIndex = 0; intervalIndex < rep->NodeCount - 1; ++intervalIndex) {
+	for (ULONG64 intervalIndex = 0; intervalIndex < intervalCount; ++intervalIndex) {
 		if (gridIndices[intervalIndex] != gridIndicesNullValue) {
 			++cellCount;
 		}
@@ -104,7 +108,6 @@ void BlockedWellboreRepresentation::setIntervalGridCells(int8_t const* gridIndic
 	xmlGridIndices->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/GridIndices", rep->NodeCount, hdfProxy));
 	rep->IntervalGridCells->GridIndices = xmlGridIndices;
 	// HDF
-	uint64_t intervalCount = rep->NodeCount - 1;
 	hdfProxy->writeArrayNd(getHdfGroup(),
 		"GridIndices",
 		COMMON_NS::AbstractObject::numericalDatatypeEnum::INT8,

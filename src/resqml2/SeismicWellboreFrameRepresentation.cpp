@@ -143,8 +143,8 @@ void SeismicWellboreFrameRepresentation::getTimeAsDoubleValues(double* values) c
 	{
 		values[0] = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->StartValue;
 		eml23__FloatingPointConstantArray* constantArray = static_cast<eml23__FloatingPointLatticeArray*>(frame->NodeTimeValues)->Offset[0];
-		for (auto inc = 1; inc <= constantArray->Count; ++inc)
-			values[inc] = values[0] + (inc * constantArray->Value);
+		for (uint64_t inc = 1; inc <= constantArray->Count; ++inc)
+			values[inc] = values[0] + static_cast<double>(inc) * constantArray->Value;
 	}
 	else {
 		throw logic_error("The array structure of time values is not supported?");

@@ -154,9 +154,6 @@ namespace RESQML2_NS
 		/**
 		 * Gets the count of supporting grid representations of this blocked wellbore representation.
 		 *
-		 * @exception	std::range_error	If the count of supporting grid representations is strictly
-		 * 									greater than unsigned int max.
-		 *
 		 * @returns	The count of supporting grid representation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual uint64_t getSupportingGridRepresentationCount() const = 0;

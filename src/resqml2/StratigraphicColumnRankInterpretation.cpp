@@ -34,18 +34,18 @@ void StratigraphicColumnRankInterpretation::loadTargetRelationships()
 {
 	AbstractStratigraphicOrganizationInterpretation::loadTargetRelationships();
 
-	unsigned int count = getStratigraphicUnitInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	uint64_t count = getStratigraphicUnitInterpretationCount();
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<StratigraphicUnitInterpretation>(getStratigraphicUnitInterpretationDor(i));
 	}
 
 	count = getHorizonInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::HorizonInterpretation>(getHorizonInterpretationDor(i));
 	}
 }
 
-StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getStratigraphicUnitInterpretation(unsigned int index) const
+StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getStratigraphicUnitInterpretation(uint64_t index) const
 {
 	return getRepository()->getDataObjectByUuid<StratigraphicUnitInterpretation>(getStratigraphicUnitInterpretationDor(index).getUuid());
 }
@@ -60,7 +60,7 @@ std::vector<StratigraphicOccurrenceInterpretation *> StratigraphicColumnRankInte
 	return getRepository()->getSourceObjects<StratigraphicOccurrenceInterpretation>(this);
 }
 
-HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpretation(unsigned int index) const
+HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpretation(uint64_t index) const
 {
 	return getRepository()->getDataObjectByUuid<HorizonInterpretation>(getHorizonInterpretationDor(index).getUuid());
 }

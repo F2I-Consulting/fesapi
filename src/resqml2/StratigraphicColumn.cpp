@@ -30,15 +30,15 @@ std::vector<StratigraphicColumnRankInterpretation *> StratigraphicColumn::getStr
 	return getRepository()->getTargetObjects<StratigraphicColumnRankInterpretation>(this);
 }
 
-StratigraphicColumnRankInterpretation* StratigraphicColumn::getStratigraphicColumnRankInterpretation(unsigned int index) const
+StratigraphicColumnRankInterpretation* StratigraphicColumn::getStratigraphicColumnRankInterpretation(uint64_t index) const
 {
 	return getRepository()->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(getStratigraphicColumnRankInterpretationDor(index).getUuid());
 }
 
 void StratigraphicColumn::loadTargetRelationships()
 {
-	unsigned int count = getStratigraphicColumnRankInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	const uint64_t count = getStratigraphicColumnRankInterpretationCount();
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<StratigraphicColumnRankInterpretation>(getStratigraphicColumnRankInterpretationDor(i));
 	}
 }

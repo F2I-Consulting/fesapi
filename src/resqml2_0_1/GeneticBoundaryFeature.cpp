@@ -70,5 +70,5 @@ uint64_t GeneticBoundaryFeature::getAge() const
 		throw invalid_argument("This feature has not an age.");
 	}
 
-	return abs(*(static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->AbsoluteAge->YearOffset));
+	return static_cast<uint64_t>(abs(*(static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->AbsoluteAge->YearOffset)));
 }

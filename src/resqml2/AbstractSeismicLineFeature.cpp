@@ -77,7 +77,7 @@ std::vector<std::string> AbstractSeismicLineFeature::getTraceLabels() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::_resqml20__SeismicLineFeature* seismicLine = static_cast<gsoap_resqml2_0_1::_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
 		const uint64_t traceCount = seismicLine->TraceCount;
-		if (traceCount > (std::numeric_limits<int64_t>::max)()) {
+		if (traceCount > static_cast<uint64_t>((std::numeric_limits<int64_t>::max)())) {
 			throw overflow_error("The trace count cannot be superior to int64 max");
 		}
 		for (int64_t incr = 0; incr < static_cast<int64_t>(traceCount); ++incr) {

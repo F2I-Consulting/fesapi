@@ -459,7 +459,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The index of the origin on the supporting representation on the dimension @p dimension.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getIndexOriginOnSupportingRepresentation(unsigned int dimension) const = 0;
 
 		/**
 		 * Gets the number of nodes of the current geometry which is extracted from a particular

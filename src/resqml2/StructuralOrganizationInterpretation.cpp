@@ -28,27 +28,27 @@ using namespace RESQML2_NS;
 
 const char* StructuralOrganizationInterpretation::XML_TAG = "StructuralOrganizationInterpretation";
 
-RESQML2_NS::FaultInterpretation* StructuralOrganizationInterpretation::getFaultInterpretation(unsigned int index) const
+RESQML2_NS::FaultInterpretation* StructuralOrganizationInterpretation::getFaultInterpretation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::FaultInterpretation>(getFaultInterpretationDor(index).getUuid());
 }
 
-RESQML2_NS::HorizonInterpretation* StructuralOrganizationInterpretation::getHorizonInterpretation(unsigned int index) const
+RESQML2_NS::HorizonInterpretation* StructuralOrganizationInterpretation::getHorizonInterpretation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::HorizonInterpretation>(getHorizonInterpretationDor(index).getUuid());
 }
 
-RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getTopFrontierInterpretation(unsigned int index) const
+RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getTopFrontierInterpretation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(getTopFrontierInterpretationDor(index).getUuid());
 }
 
-RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getBottomFrontierInterpretation(unsigned int index) const
+RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getBottomFrontierInterpretation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(getBottomFrontierInterpretationDor(index).getUuid());
 }
 
-RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getSideFrontierInterpretation(unsigned int index) const
+RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getSideFrontierInterpretation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(getSideFrontierInterpretationDor(index).getUuid());
 }
@@ -57,28 +57,28 @@ void StructuralOrganizationInterpretation::loadTargetRelationships()
 {
 	AbstractOrganizationInterpretation::loadTargetRelationships();
 
-	unsigned int count = getFaultInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	uint64_t count = getFaultInterpretationCount();
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::FaultInterpretation>(getFaultInterpretationDor(i));
 	}
 
 	count = getHorizonInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::HorizonInterpretation>(getHorizonInterpretationDor(i));
 	}
 
 	count = getTopFrontierInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::AbstractFeatureInterpretation>(getTopFrontierInterpretationDor(i));
 	}
 
 	count = getBottomFrontierInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::AbstractFeatureInterpretation>(getBottomFrontierInterpretationDor(i));
 	}
 
 	count = getSideFrontierInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<RESQML2_NS::AbstractFeatureInterpretation>(getSideFrontierInterpretationDor(i));
 	}
 }

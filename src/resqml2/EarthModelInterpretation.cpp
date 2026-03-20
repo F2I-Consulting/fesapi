@@ -30,7 +30,7 @@ using namespace RESQML2_NS;
 
 const char* EarthModelInterpretation::XML_TAG = "EarthModelInterpretation";
 
-StructuralOrganizationInterpretation* EarthModelInterpretation::getStructuralOrganizationInterpertation(unsigned int index) const
+StructuralOrganizationInterpretation* EarthModelInterpretation::getStructuralOrganizationInterpertation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<StructuralOrganizationInterpretation>(getStructuralOrganizationInterpertationDor(index).getUuid());
 }
@@ -40,12 +40,12 @@ StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
 	return repository->getDataObjectByUuid<StratigraphicColumn>(getStratiColumnDor().getUuid());
 }
 
-StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurrence(unsigned int index) const
+StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurrence(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<StratigraphicOccurrenceInterpretation>(getStratiOccurrenceDor(index).getUuid());
 }
 
-RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation(unsigned int index) const
+RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation(uint64_t index) const
 {
 	return repository->getDataObjectByUuid<RockFluidOrganizationInterpretation>(getRockFluidOrganizationInterpretationDor(index).getUuid());
 }
@@ -59,18 +59,18 @@ void EarthModelInterpretation::loadTargetRelationships()
 		convertDorIntoRel<StratigraphicColumn>(dor);
 	}
 	
-	unsigned int count = getStructuralOrganizationInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	uint64_t count = getStructuralOrganizationInterpretationCount();
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<StructuralOrganizationInterpretation>(getStructuralOrganizationInterpertationDor(i));
 	}
 
 	count = getStratiOccurrenceCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<StratigraphicOccurrenceInterpretation>(getStratiOccurrenceDor(i));
 	}
 
 	count = getRockFluidOrganizationInterpretationCount();
-	for (unsigned int i = 0; i < count; ++i) {
+	for (uint64_t i = 0; i < count; ++i) {
 		convertDorIntoRel<RockFluidOrganizationInterpretation>(getRockFluidOrganizationInterpretationDor(i));
 	}
 }

@@ -53,11 +53,9 @@ void Activity::pushBackParameter(const std::string& title, double value, gsoap_r
 		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
-		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr) {
-			vector<gsoap_resqml2_0_1::resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), gsoap_resqml2_0_1::resqml20__ParameterKind::floatingPoint) == allowedKinds.end())
-				throw invalid_argument("The parameter template " + title + " does not allow a double datatype.");
-		}
+		vector<gsoap_resqml2_0_1::resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
+		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), gsoap_resqml2_0_1::resqml20__ParameterKind::floatingPoint) == allowedKinds.end())
+			throw invalid_argument("The parameter template " + title + " does not allow a double datatype.");
 	}
 
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
@@ -80,11 +78,9 @@ void Activity::pushBackParameter(const std::string& title, const std::string & v
 		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
-		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr) {
-			vector<gsoap_resqml2_0_1::resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), gsoap_resqml2_0_1::resqml20__ParameterKind::string) == allowedKinds.end())
-				throw invalid_argument("The parameter template " + title + " does not allow a string datatype.");
-		}
+		vector<gsoap_resqml2_0_1::resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
+		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), gsoap_resqml2_0_1::resqml20__ParameterKind::string) == allowedKinds.end())
+			throw invalid_argument("The parameter template " + title + " does not allow a string datatype.");
 	}
 
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
@@ -106,11 +102,9 @@ void Activity::pushBackParameter(const std::string& title, int64_t value)
 		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title)) {
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
 		}
-		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr) {
-			vector<gsoap_resqml2_0_1::resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), gsoap_resqml2_0_1::resqml20__ParameterKind::integer) == allowedKinds.end())
-				throw invalid_argument("The parameter template " + title + " does not allow an integer datatype.");
-		}
+		vector<gsoap_resqml2_0_1::resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
+		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), gsoap_resqml2_0_1::resqml20__ParameterKind::integer) == allowedKinds.end())
+			throw invalid_argument("The parameter template " + title + " does not allow an integer datatype.");
 	}
 
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
@@ -134,11 +128,9 @@ void Activity::pushBackParameter(const std::string& title, AbstractObject* resqm
 		int64_t maxOccurs = activityTemplate->getParameterMaxOccurences(title);
 		if (maxOccurs > -1 && static_cast<uint64_t>(maxOccurs) <= getParameterCount(title))
 			throw invalid_argument("The max number of occurrences has already been reached for parameter " + title);
-		if (dynamic_cast<EML2_NS::ActivityTemplate*>(activityTemplate) != nullptr) {
-			vector<gsoap_resqml2_0_1::resqml20__ParameterKind> allowedKinds = static_cast<EML2_NS::ActivityTemplate*>(activityTemplate)->getParameterAllowedKinds(title);
-			if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), gsoap_resqml2_0_1::resqml20__ParameterKind::dataObject) == allowedKinds.end())
-				throw invalid_argument("The parameter template " + title + " does not allow a data object datatype.");
-		}
+		vector<gsoap_resqml2_0_1::resqml20__ParameterKind> allowedKinds = activityTemplate->getParameterAllowedKinds(title);
+		if (allowedKinds.size() > 0 && find(allowedKinds.begin(), allowedKinds.end(), gsoap_resqml2_0_1::resqml20__ParameterKind::dataObject) == allowedKinds.end())
+			throw invalid_argument("The parameter template " + title + " does not allow a data object datatype.");
 	}
 
 	getRepository()->addRelationship(this, resqmlObject);
@@ -260,7 +252,7 @@ vector<gsoap_resqml2_0_1::resqml20__ResqmlUom> Activity::getFloatingPointQuantit
 		throw range_error("The parameter " + paramTitle + " is not in the parameter range.");
 
 	vector<gsoap_resqml2_0_1::resqml20__ResqmlUom> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
+	for (size_t i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DoubleQuantityParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non double values.");
@@ -373,8 +365,9 @@ vector<string> Activity::getStringParameterValue(const std::string & paramTitle)
 {
 	vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
-		invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	if (param.size() < 1) {
+		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
 	vector<string> result;
 	for (size_t i = 0; i < param.size(); ++i)
@@ -412,7 +405,7 @@ bool Activity::isAResqmlObjectParameter(const std::string & paramTitle) const
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 	}
 
-	for (unsigned int i = 0; i < param.size(); ++i) {
+	for (size_t i = 0; i < param.size(); ++i) {
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_eml2_3_eml23__DataObjectParameter)
 			return false;
 	}
@@ -422,17 +415,16 @@ bool Activity::isAResqmlObjectParameter(const std::string & paramTitle) const
 
 bool Activity::isAResqmlObjectParameter(uint64_t index) const
 {
-	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
-
-	return activity->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DataObjectParameter;
+	return static_cast<_eml23__Activity*>(gsoapProxy2_3)->Parameter.at(index)->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__DataObjectParameter;
 }
 
 vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectParameterValue(const std::string & paramTitle) const
 {
 	vector<gsoap_eml2_3::eml23__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
-		invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	if (param.size() < 1) {
+		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
 	vector<COMMON_NS::AbstractObject*> result;
 	for (size_t i = 0; i < param.size(); ++i)

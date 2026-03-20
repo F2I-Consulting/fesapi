@@ -53,7 +53,7 @@ namespace RESQML2_NS
 		 * @returns	The count of all the stratigraphic column rank interpretations which are contained in
 		 * 			this stratigraphic column.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getStratigraphicColumnRankInterpretationCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual uint64_t getStratigraphicColumnRankInterpretationCount() const = 0;
 
 		/**
 		 * Gets the DOR of a stratigraphic column rank interpretations at a particular index.
@@ -65,7 +65,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The DOR of the stratigraphic column rank interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicColumnRankInterpretationDor(uint64_t index) const = 0;
 
 		/**
 		 * Gets the stratigraphic column rank interpretations at a particular index.
@@ -77,7 +77,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The stratigraphic column rank interpretation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation* getStratigraphicColumnRankInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation* getStratigraphicColumnRankInterpretation(uint64_t index) const;
 
 		/**
 		 * Gets all the stratigraphic column rank interpretations which are contained in this

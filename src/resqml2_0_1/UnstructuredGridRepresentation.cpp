@@ -206,7 +206,7 @@ bool UnstructuredGridRepresentation::isFaceCountOfCellsConstant() const
 	return false;
 }
 
-unsigned int UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
+uint64_t UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
 {
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (!isFaceCountOfCellsConstant())
@@ -230,8 +230,8 @@ unsigned int UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
 			throw range_error("The cumulative length of faces count per cells cannot be constant if there is more than one cell in the grid");
 		return static_cast<resqml20__IntegerConstantArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Value;
 	}
-	else
-		return 0;
+
+	throw logic_error("The unstructured grid " + getUuid() + " has not a constant cell face count.");
 }
 
 void UnstructuredGridRepresentation::getNodeIndicesOfFaces(uint64_t * nodeIndices) const
@@ -295,7 +295,7 @@ bool UnstructuredGridRepresentation::isNodeCountOfFacesConstant() const
 	return false;
 }
 
-unsigned int UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
+uint64_t UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
 {
 	_resqml20__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (isNodeCountOfFacesConstant() == false)
@@ -313,8 +313,8 @@ unsigned int UnstructuredGridRepresentation::getConstantNodeCountOfFaces() const
 	{
 		return static_cast<resqml20__IntegerLatticeArray*>(grid->Geometry->NodesPerFace->CumulativeLength)->StartValue;
 	}
-	else
-		return 0;
+
+	throw logic_error("The unstructured grid " + getUuid() + " has not a constant node count of faces.");
 }
 
 void UnstructuredGridRepresentation::getCellFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const

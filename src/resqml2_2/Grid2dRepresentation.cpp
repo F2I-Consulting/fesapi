@@ -397,7 +397,7 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
-		const int jIndexOrigin = getIndexOriginOnSupportingRepresentation(0);
+		const uint64_t jIndexOrigin = getIndexOriginOnSupportingRepresentation(0);
 		const int64_t jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
 		std::unique_ptr<double[]> jSpacingsOnSupportingRep(new double[jSpacingCount]);
 		getSupportingRepresentation()->getJSpacing(jSpacingsOnSupportingRep.get());
@@ -452,7 +452,7 @@ void Grid2dRepresentation::getISpacing(double* iSpacings) const
 	}
 	else if (!getSupportingRepresentationDor().isEmpty())
 	{
-		const int iIndexOrigin = getIndexOriginOnSupportingRepresentation(1);
+		const uint64_t iIndexOrigin = getIndexOriginOnSupportingRepresentation(1);
 		const int64_t iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
 		std::unique_ptr<double[]> iSpacingsOnSupportingRep(new double[iSpacingCount]);
 		getSupportingRepresentation()->getISpacing(iSpacingsOnSupportingRep.get());
@@ -586,7 +586,7 @@ uint64_t Grid2dRepresentation::getIndexOriginOnSupportingRepresentation() const
 	throw logic_error("It does not exist supporting representation for this representation.");
 }
 
-int Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(unsigned int dimension) const
+uint64_t Grid2dRepresentation::getIndexOriginOnSupportingRepresentation(unsigned int dimension) const
 {
 	resqml22__Point3dFromRepresentationLatticeArray* geom = getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(static_cast<_resqml22__Grid2dRepresentation*>(gsoapProxy2_3)->Geometry);
 

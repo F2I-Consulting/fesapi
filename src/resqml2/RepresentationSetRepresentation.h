@@ -78,7 +78,6 @@ namespace RESQML2_NS
 		 * Gets the count of representations in this representation set.
 		 *
 		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::range_error	If the count is strictly greater than unsigned int max. 
 		 *
 		 * @returns	The representation count.
 		 */

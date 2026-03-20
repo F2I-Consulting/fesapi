@@ -48,25 +48,15 @@ EarthModelInterpretation::EarthModelInterpretation(RESQML2_NS::Model * orgFeat, 
 	setInterpretedFeature(orgFeat);
 }
 
-unsigned int EarthModelInterpretation::getStructuralOrganizationInterpretationCount() const
+uint64_t EarthModelInterpretation::getStructuralOrganizationInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->Structure.size();
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much structural organization.");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->Structure.size();
 }
 
-COMMON_NS::DataObjectReference EarthModelInterpretation::getStructuralOrganizationInterpertationDor(unsigned int index) const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getStructuralOrganizationInterpertationDor(uint64_t index) const
 {
 	_resqml22__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3);
-	if (index < earthModelInterpretation->Structure.size()) {
-		return COMMON_NS::DataObjectReference(earthModelInterpretation->Structure[index]);
-	}
-	else {
-		throw std::out_of_range("The structural organization index is out of range.");
-	}
+	return COMMON_NS::DataObjectReference(earthModelInterpretation->Structure.at(index));
 }
 
 void EarthModelInterpretation::pushBackStructuralOrganizationInterpretation(RESQML2_NS::StructuralOrganizationInterpretation * structOrganization)
@@ -95,25 +85,15 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiColumnDor() co
 		: COMMON_NS::DataObjectReference();
 }
 
-unsigned int EarthModelInterpretation::getStratiOccurrenceCount() const
+uint64_t EarthModelInterpretation::getStratiOccurrenceCount() const
 {
-	const size_t result = static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicOccurrences.size();
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much StratiOccurrences");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicOccurrences.size();
 }
 
-COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurrenceDor(unsigned int index) const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurrenceDor(uint64_t index) const
 {
 	_resqml22__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3);
-	if (index < earthModelInterpretation->StratigraphicOccurrences.size()) {
-		return COMMON_NS::DataObjectReference(earthModelInterpretation->StratigraphicOccurrences[index]);
-	}
-	else {
-		throw std::out_of_range("The strati occurence index is out of range.");
-	}
+	return COMMON_NS::DataObjectReference(earthModelInterpretation->StratigraphicOccurrences.at(index));
 }
 
 void EarthModelInterpretation::pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence)
@@ -123,14 +103,9 @@ void EarthModelInterpretation::pushBackStratiOccurrence(RESQML2_NS::Stratigraphi
 	static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicOccurrences.push_back(stratiOccurrence->newEml23Reference());
 }
 
-unsigned int EarthModelInterpretation::getRockFluidOrganizationInterpretationCount() const
+uint64_t EarthModelInterpretation::getRockFluidOrganizationInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->Fluid.size();
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw std::range_error("There are too much Fluid organization");
-	}
-
-	return static_cast<unsigned int>(result);
+	return static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->Fluid.size();
 }
 
 void EarthModelInterpretation::pushBackRockFluidOrganizationInterpretation(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluid)
@@ -140,13 +115,8 @@ void EarthModelInterpretation::pushBackRockFluidOrganizationInterpretation(RESQM
 	static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->Fluid.push_back(rockFluid->newEml23Reference());
 }
 
-COMMON_NS::DataObjectReference EarthModelInterpretation::getRockFluidOrganizationInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference EarthModelInterpretation::getRockFluidOrganizationInterpretationDor(uint64_t index) const
 {
 	_resqml22__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3);
-	if (index < earthModelInterpretation->Fluid.size()) {
-		return COMMON_NS::DataObjectReference(earthModelInterpretation->Fluid[index]);
-	}
-	else {
-		throw std::out_of_range("The Fluid organization index is out of range.");
-	}
+		return COMMON_NS::DataObjectReference(earthModelInterpretation->Fluid.at(index));
 }

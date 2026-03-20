@@ -84,25 +84,25 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT bool isAChronoStratiRank() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getContactCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getContactCount() const final;
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(unsigned int contactIndex) const final;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(uint64_t contactIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicUnitInterpretation* getSubjectOfContact(unsigned int contactIndex) const final;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicUnitInterpretation* getSubjectOfContact(uint64_t contactIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(unsigned int contactIndex) const final;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(uint64_t contactIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicUnitInterpretation* getDirectObjectOfContact(unsigned int contactIndex) const final;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::StratigraphicUnitInterpretation* getDirectObjectOfContact(uint64_t contactIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::HorizonInterpretation* getHorizonInterpretationOfContact(unsigned int contactIndex) const final;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::HorizonInterpretation* getHorizonInterpretationOfContact(uint64_t contactIndex) const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getStratigraphicUnitInterpretationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getStratigraphicUnitInterpretationCount() const final;
 
-		COMMON_NS::DataObjectReference getStratigraphicUnitInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getStratigraphicUnitInterpretationDor(uint64_t index) const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getHorizonInterpretationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getHorizonInterpretationCount() const final;
 
-		COMMON_NS::DataObjectReference getHorizonInterpretationDor(unsigned int index) const final;
+		COMMON_NS::DataObjectReference getHorizonInterpretationDor(uint64_t index) const final;
 
 		/**
 		* The standard XML namespace for serializing this data object.

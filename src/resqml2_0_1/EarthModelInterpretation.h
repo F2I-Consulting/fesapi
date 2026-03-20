@@ -58,9 +58,9 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~EarthModelInterpretation() = default;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getStructuralOrganizationInterpretationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getStructuralOrganizationInterpretationCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStructuralOrganizationInterpertationDor(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStructuralOrganizationInterpertationDor(uint64_t index) const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackStructuralOrganizationInterpretation(RESQML2_NS::StructuralOrganizationInterpretation * structOrganization) final;
 
@@ -72,13 +72,13 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiColumnDor() const final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurrenceCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getStratiOccurrenceCount() const final;
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurrenceDor(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getStratiOccurrenceDor(uint64_t index) const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence) final;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidOrganizationInterpretationCount() const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getRockFluidOrganizationInterpretationCount() const final;
 
 		DLL_IMPORT_OR_EXPORT void pushBackRockFluidOrganizationInterpretation(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluid) final;
 
@@ -93,6 +93,6 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const final { return XML_NS; }
 
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor(unsigned int index) const final;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor(uint64_t index) const final;
 	};
 }

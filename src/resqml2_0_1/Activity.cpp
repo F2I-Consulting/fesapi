@@ -334,7 +334,7 @@ bool Activity::isAStringParameter(const std::string & paramTitle) const
 	if (param.size() < 1)
 		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
-	for (unsigned int i = 0; i < param.size(); ++i)
+	for (size_t i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StringParameter)
 			return false;
@@ -354,8 +354,9 @@ vector<string> Activity::getStringParameterValue(const std::string & paramTitle)
 {
 	vector<resqml20__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
-		invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	if (param.size() < 1) {
+		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
 	vector<string> result;
 	for (size_t i = 0; i < param.size(); ++i) {
@@ -407,11 +408,12 @@ vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectParameterValue(const
 {
 	vector<resqml20__AbstractActivityParameter*> param = getParameterFromTitle(paramTitle);
 
-	if (param.size() < 1)
-		invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	if (param.size() < 1) {
+		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
+	}
 
 	vector<COMMON_NS::AbstractObject*> result;
-	for (unsigned int i = 0; i < param.size(); ++i)
+	for (size_t i = 0; i < param.size(); ++i)
 	{
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DataObjectParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non RESQML object values.");

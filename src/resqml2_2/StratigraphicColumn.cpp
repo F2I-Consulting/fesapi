@@ -47,12 +47,12 @@ void StratigraphicColumn::pushBackStratiColumnRank(RESQML2_NS::StratigraphicColu
 	static_cast<_resqml22__StratigraphicColumn*>(gsoapProxy2_3)->Ranks.push_back(stratiColumnRank->newEml23Reference());
 }
 
-unsigned int StratigraphicColumn::getStratigraphicColumnRankInterpretationCount() const
+uint64_t StratigraphicColumn::getStratigraphicColumnRankInterpretationCount() const
 {
 	return static_cast<_resqml22__StratigraphicColumn*>(gsoapProxy2_3)->Ranks.size();
 }
 
-COMMON_NS::DataObjectReference StratigraphicColumn::getStratigraphicColumnRankInterpretationDor(unsigned int index) const
+COMMON_NS::DataObjectReference StratigraphicColumn::getStratigraphicColumnRankInterpretationDor(uint64_t index) const
 {
 	return COMMON_NS::DataObjectReference(static_cast<_resqml22__StratigraphicColumn*>(gsoapProxy2_3)->Ranks.at(index));
 }

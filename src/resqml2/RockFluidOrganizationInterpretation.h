@@ -51,9 +51,6 @@ namespace RESQML2_NS
 		/**
 		 * Gets the count of grid representations associated to this rock fluid organization.
 		 *
-		 * @exception	std::range_error	If the count of associated grid representations is strictly
-		 * 									greater than unsigned int max.
-		 *
 		 * @returns	The count of grid representations associated to this rock fluid organization.
 		 */
 		DLL_IMPORT_OR_EXPORT uint64_t getGridRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.

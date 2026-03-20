@@ -27,7 +27,7 @@ void AbstractSurfaceRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 
-	for (unsigned int i = 0; i < getBoundariesCount(); ++i) {
+	for (uint64_t i = 0; i < getBoundariesCount(); ++i) {
 		COMMON_NS::DataObjectReference dor = getOuterRingDor(i);
 		if (!dor.isEmpty()) {
 			convertDorIntoRel(dor);
@@ -35,7 +35,7 @@ void AbstractSurfaceRepresentation::loadTargetRelationships()
 	}
 }
 
-unsigned int AbstractSurfaceRepresentation::getBoundariesCount() const
+uint64_t AbstractSurfaceRepresentation::getBoundariesCount() const
 {
 	size_t result;
 
@@ -56,7 +56,7 @@ unsigned int AbstractSurfaceRepresentation::getBoundariesCount() const
 	return static_cast<unsigned int>(result);
 }
 
-COMMON_NS::DataObjectReference AbstractSurfaceRepresentation::getOuterRingDor(unsigned int index) const
+COMMON_NS::DataObjectReference AbstractSurfaceRepresentation::getOuterRingDor(uint64_t index) const
 {
 	if (index >= getBoundariesCount()) {
 		throw std::out_of_range("The index is out of range");

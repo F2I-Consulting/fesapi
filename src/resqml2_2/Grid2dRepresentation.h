@@ -121,7 +121,7 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT uint64_t getIndexOriginOnSupportingRepresentation() const final;
 
-		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const final;
+		DLL_IMPORT_OR_EXPORT uint64_t getIndexOriginOnSupportingRepresentation(unsigned int dimension) const final;
 
 		DLL_IMPORT_OR_EXPORT uint64_t getNodeCountOnSupportingRepresentation(unsigned int dimension) const final;
 

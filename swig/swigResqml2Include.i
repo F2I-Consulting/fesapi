@@ -2607,8 +2607,18 @@ namespace RESQML2_NS
 	class AbstractStratigraphicOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
 	public:
-		unsigned int getGridRepresentationCount() const;
-		AbstractGridRepresentation* getGridRepresentation(unsigned int index) const;
+		SWIG_GETTER_DATAOBJECTS(AbstractGridRepresentation, GridRepresentation)
+
+		/**
+		 * Checks whether a given grid representation is associated to this stratigraphic organization
+		 * interpretation or not.
+		 *
+		 * @param[in]	gridRep	The grid representation fro which we want to check its association
+		 * 							with this stratigraphic organization interpretation.
+		 *
+		 * @returns	True if @p gridRep is associated to this stratigraphic organization interpretation or
+		 * 			false if it is not.
+		 */
 		bool isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const;
 	};
 	
@@ -2684,7 +2694,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The contact count.
 		 */
-		unsigned int getContactCount() const;
+		uint64_t getContactCount() const;
 
 		/**
 		 * Gets the contact mode of the subject stratigraphic unit of a contact located at a particular
@@ -2699,7 +2709,7 @@ namespace RESQML2_NS
 		 * @returns	Proportional contact mode by default (if no contact mode is associated to the subject
 		 * 			stratigraphic unit) or the contact mode of the subject stratigraphic unit.
 		 */
-		gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(unsigned int contactIndex) const;
+		gsoap_eml2_3::resqml22__ContactMode getSubjectContactModeOfContact(uint64_t contactIndex) const;
 
 		/** Gets the stratigraphic unit interpretation which is the subject of a particular contact.
 		 *
@@ -2711,7 +2721,7 @@ namespace RESQML2_NS
 		 * @returns The subject stratigraphic unit interpretation of the contact at position @p contactIndex
 		 * 			if it exists, else @c nullptr.
 		 */
-		StratigraphicUnitInterpretation* getSubjectOfContact(unsigned int contactIndex) const;
+		StratigraphicUnitInterpretation* getSubjectOfContact(uint64_t contactIndex) const;
 
 		/**
 		 * Gets the contact mode of the direct object stratigraphic unit of a contact located at a
@@ -2725,7 +2735,7 @@ namespace RESQML2_NS
 		 * 			object stratigraphic unit) or the contact mode of the direct object stratigraphic
 		 * 			unit.
 		 */
-		gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(unsigned int contactIndex) const;
+		gsoap_eml2_3::resqml22__ContactMode getDirectObjectContactModeOfContact(uint64_t contactIndex) const;
 
 		/** Gets the stratigraphic unit interpretation which is the direct object of a particular contact.
 		 *
@@ -2737,7 +2747,7 @@ namespace RESQML2_NS
 		 * @returns The direct object stratigraphic unit interpretation of the contact at position 
 		 * 			@p contactIndex if it exists, else @c nullptr.
 		 */
-		StratigraphicUnitInterpretation* getDirectObjectOfContact(unsigned int contactIndex) const;
+		StratigraphicUnitInterpretation* getDirectObjectOfContact(uint64_t contactIndex) const;
 
 		/**
 		 * Gets the horizon interpretation which is the contact between two stratigraphic units.
@@ -2750,7 +2760,7 @@ namespace RESQML2_NS
 		 * @returns	@c nullptr if the horizon corresponding to the contact at position @p contactIndex is
 		 * 			unknown, else the corresponding horizon interpretation.
 		 */
-		HorizonInterpretation* getHorizonInterpretationOfContact(unsigned int contactIndex) const;
+		HorizonInterpretation* getHorizonInterpretationOfContact(uint64_t contactIndex) const;
 		
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicUnitInterpretation, StratigraphicUnitInterpretation)
 		SWIG_GETTER_DATAOBJECTS(RESQML2_NS::StratigraphicOccurrenceInterpretation, StratigraphicOccurrenceInterpretation)
@@ -2798,7 +2808,7 @@ namespace RESQML2_NS
 		 * @returns	The count of all the stratigraphic column rank interpretations which are contained in
 		 * 			this stratigraphic column.
 		 */
-		unsigned int getStratigraphicColumnRankInterpretationCount() const;
+		uint64_t getStratigraphicColumnRankInterpretationCount() const;
 		
 		/**
 		 * Gets the stratigraphic column rank interpretations at a particular index.
@@ -2810,7 +2820,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The stratigraphic column rank interpretation at position @p index.
 		 */
-		StratigraphicColumnRankInterpretation* getStratigraphicColumnRankInterpretation(unsigned int index) const;
+		StratigraphicColumnRankInterpretation* getStratigraphicColumnRankInterpretation(uint64_t index) const;
 	};
 
 #ifdef SWIGPYTHON
@@ -2918,14 +2928,145 @@ namespace RESQML2_NS
 	class StructuralOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
 	public:
+
+		/**
+		 * Adds a fault interpretation to this structural organization interpretation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>faultInterpretation == nullptr</tt>.
+		 *
+		 * @param[in]	faultInterpretation	A fault interpretation.
+		 */
 		void pushBackFaultInterpretation(FaultInterpretation * faultInterpretation);
-		void pushBackHorizonInterpretation(HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
+
+		/**
+		 * Gets the fault interpretations count.
+		 *
+		 * @returns	The fault interpretations count.
+		 */
+		uint64_t getFaultInterpretationCount() const = 0;
+
+		/**
+		 * Gets a given fault interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getFaultInterpretationCount().
+		 *
+		 * @param 	index	Zero-based index of the fault interpretation we look for.
+		 *
+		 * @returns	The fault interpretation at position @p index.
+		 */
+		FaultInterpretation* getFaultInterpretation(uint64_t index) const;
+
+		/**
+		 * Adds a horizon interpretation at a given rank of this structural organization interpretation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>horizonInterpretation == nullptr</tt>.
+		 *
+		 * @param[in]	horizonInterpretation	A horizon interpretation.
+		 * @param 	  	stratigraphicRank	 	The rank of the horizon interpretation within this
+		 * 										structural organization.
+		 */
+		void pushBackHorizonInterpretation(HorizonInterpretation * horizonInterpretation, uint64_t stratigraphicRank);
+
+		/**
+		 * Gets the horizon interpretations count.
+		 *
+		 * @returns	The horizon interpretations count.
+		 */
+		uint64_t getHorizonInterpretationCount() const;
+
+		/**
+		 * Gets a given horizon interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getHorizonInterpretationCount().
+		 *
+		 * @param 	index	Zero-based index of the horizon interpretation we look for.
+		 *
+		 * @returns	The horizon interpretation at position @p index.
+		 */
+		HorizonInterpretation* getHorizonInterpretation(uint64_t index) const;
+
+		/**
+		 * Adds a frontier interpretation to this structural organization interpretation as a top.
+		 *
+		 * @exception	std::invalid_argument	If <tt>topFrontierInterpretation == nullptr</tt>.
+		 *
+		 * @param[in]	topFrontierInterpretation	A top frontier interpretation.
+		 */
 		void pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation);
+
+		/**
+		 * Gets the top frontier interpretations count.
+		 *
+		 * @returns	The top frontier interpretations count.
+		 */
+		uint64_t getTopFrontierInterpretationCount() const;
+
+		/**
+		 * Gets a given top frontier interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt> getTopFrontierInterpretationCount().
+		 *
+		 * @param 	index	Zero-based index of the top frontier interpretation we look for.
+		 *
+		 * @returns	The top frontier interpretation at position @p index.
+		 */
+		AbstractFeatureInterpretation* getTopFrontierInterpretation(uint64_t index) const;
+
+		/**
+		 * Adds a frontier interpretation to this structural organization interpretation as a bottom.
+		 *
+		 * @exception	std::invalid_argument	If <tt>bottomFrontierInterpretation == nullptr</tt>.
+		 *
+		 * @param[in]	bottomFrontierInterpretation	A bottom frontier interpretation.
+		 */
         void pushBackBottomFrontierInterpretation(AbstractFeatureInterpretation * bottomFrontierInterpretation);
+
+		/**
+		 * Gets the bottom frontier interpretations count.
+		 *
+		 * @returns	The bottom frontier interpretations count.
+		 */
+		uint64_t getBottomFrontierInterpretationCount() const;
+
+		/**
+		 * Gets a given bottom frontier interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
+		 * 									getBottomFrontierInterpretationCount().
+		 *
+		 * @param 	index	Zero-based index of the bottom frontier interpretation we look for.
+		 *
+		 * @returns	The bottom frontier interpretation at position @p index.
+		 */
+		AbstractFeatureInterpretation* getBottomFrontierInterpretation(uint64_t index) const;
+
+		/**
+		 * Adds a frontier interpretation to this structural organization interpretation as a side.
+		 *
+		 * @exception	std::invalid_argument	If <tt>sideFrontierInterpretation == nullptr</tt>.
+		 *
+		 * @param[in]	sideFrontierInterpretation	A side frontier interpretation.
+		 */
         void pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation);
-		
-		unsigned int getFaultInterpretationCount() const;
-		FaultInterpretation* getFaultInterpretation(unsigned int index);
+
+		/**
+		 * Gets the side frontier interpretations count.
+		 *
+		 * @returns	The side frontier interpretations count.
+		 */
+		uint64_t getSideFrontierInterpretationCount() const;
+
+		/**
+		 * Gets a given side frontier interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=</tt>
+		 * 									getSideFrontierInterpretationCount().
+		 *
+		 * @param 	index	Zero-based index of the side frontier interpretation we look for.
+		 *
+		 * @returns	The side frontier interpretation at position @p index.
+		 */
+		AbstractFeatureInterpretation* getSideFrontierInterpretation(uint64_t index) const;
 	};
 
 #ifdef SWIGPYTHON
@@ -2934,21 +3075,118 @@ namespace RESQML2_NS
 	class EarthModelInterpretation : public AbstractFeatureInterpretation
 	{
 	public:
-		unsigned int getStructuralOrganizationInterpretationCount() const;
-		StructuralOrganizationInterpretation* getStructuralOrganizationInterpertation(unsigned int index) const;
+
+		 /**
+		 * Gets the count of structural organization interpretations associated to this earth model interpretation.
+		 *
+		 * @returns	The count of associated structural organization interpretations.
+		 */
+		uint64_t getStructuralOrganizationInterpretationCount() const;
+
+		/**
+		 * Gets a given associated structural organization interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=
+		 * 									getStructuralOrganizationInterpretationCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the associated structural organization interpretation we
+		 * 					look for.
+		 *
+		 * @returns	The structural organization interpretation at position @p index.
+		 */
+		StructuralOrganizationInterpretation* getStructuralOrganizationInterpertation(uint64_t index) const;
+
+		/**
+		 * Pushes back a structural organization interpretation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>structOrganization == nullptr</tt>.
+		 *
+		 * @param[in]	structOrganization	The structural organization interpretation to push back.
+		 */
 		void pushBackStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization);
 		
+		/**
+		 * Checks if a strati column is associated to this earth model interpretation
+		 *
+		 * @returns	True if a strati column is associated to this earth model interpretation else false.
+		 */
 		bool hasStratiColumn() const;
+
+		/**
+		 * Sets the stratigraphic column.
+		 *
+		 * @exception	std::invalid_argument	If <tt>stratiColumn == nullptr</tt>.
+		 *
+		 * @param[in]	stratiColumn	The stratigraphic column to set.
+		 */
 		void setStratiColumn(StratigraphicColumn * stratiColumn);
+
+		/**
+		 * Gets the stratigraphic column associated to this earth model interpretation.
+		 *
+		 * @returns	The stratigraphic column associated to this earth model interpretation if it exists,
+		 * 			else @c nullptr.
+		 */
 		StratigraphicColumn* getStratiColumn() const;
-		
-		unsigned int getStratiOccurrenceCount() const;
-		StratigraphicOccurrenceInterpretation* getStratiOccurrence(unsigned int index) const;
+
+		/**
+		 * @brief	Gets the count of stratigraphic occurrence interpretations associated to this earth
+		 * 			model interpretation.
+		 *
+		 * @returns	The count of associated stratigraphic occurrence interpretations.
+		 */
+		uint64_t getStratiOccurrenceCount() const;
+
+		/**
+		 * Gets a given associated stratigraphic occurrence interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;= getStratiOccurrenceCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the associated stratigraphic occurrence interpretation we
+		 * 					look for.
+		 *
+		 * @returns	The stratigraphic occurrence interpretation at position @p index.
+		 */
+		StratigraphicOccurrenceInterpretation* getStratiOccurrence(uint64_t index) const;
+
+		/**
+		 * @brief	Pushes back a stratigraphic occurrence interpretation.
+		 *
+		 * @exception	std::invalid_argument	If <tt>stratiOccurrence == nullptr</tt>.
+		 *
+		 * @param[in]	stratiOccurence	The stratigraphic occurrence interpretation to push back.
+		 */
 		void pushBackStratiOccurrence(StratigraphicOccurrenceInterpretation * stratiOccurence);
-		
-		unsigned int getRockFluidOrganizationInterpretationCount() const;
+
+		 /**
+		  * Gets the count of rock fluid organization interpretations associated to this earth model
+		  * interpretation.
+		  *
+		  * @returns	The count of associated rock fluid organization interpretations.
+		  */
+		uint64_t getRockFluidOrganizationInterpretationCount() const;
+
+		 /**
+		  * Pushes back a rock fluid organization interpretation.
+		  *
+		  * @exception	std::invalid_argument	If <tt>rockFluid == nullptr</tt>.
+		  *
+		  * @param[in]	rockFluid	The rock fluid organization interpretation to push back.
+		  */
 		void pushBackRockFluidOrganizationInterpretation(RockFluidOrganizationInterpretation* rockFluid);
-		RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation(unsigned int index) const;
+
+		/**
+		 * Gets a given associated rock fluid organization interpretation.
+		 *
+		 * @exception	std::out_of_range	If <tt>index &gt;=
+		 * 									getRockFluidOrganizationInterpretationCount()</tt>.
+		 *
+		 * @param 	index	Zero-based index of the associated rock fluid organization interpretation we
+		 * 					look for.
+		 *
+		 * @returns	The rock fluid organization interpretation at position @p index.
+		 */
+		RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation(uint64_t index) const;
 	};
 
 #ifdef SWIGPYTHON
@@ -3327,7 +3565,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	The index of the origin on the supporting representation on the dimension @p dimension.
 		 */
-		int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const;
+		uint64_t getIndexOriginOnSupportingRepresentation(unsigned int dimension) const;
 
 		/**
 		 * Gets the number of nodes of the current geometry which is extracted from a particular
@@ -3528,9 +3766,48 @@ namespace RESQML2_NS
 	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
+
+		/**
+		 * Checks if this representation set contains only one type of representations (homogeneous) or
+		 * several. This methods only read the @c IsHomogeneous attribute.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	True if this representation set is homogeneous, false if not.
+		 */
 		bool isHomogeneous() const;
+
+		/**
+		 * Gets the count of representations in this representation set.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	The representation count.
+		 */
 		uint64_t 						getRepresentationCount() const;
+
+		/**
+		 * Gets a particular representation in this representation set according to its position.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p index is out of range.									
+		 *
+		 * @param 	index	Zero-based index of the of the representation we look for.
+		 *
+		 * @returns	A pointer to the representation at position @p index.
+		 */
 		AbstractRepresentation*			getRepresentation(uint64_t index) const;
+
+		/**
+		 * Pushes back a representation into this representation set. The value of the @c
+		 * IsHomogeneous attribute is updated if required (see \link isHomogeneous \endlink).
+		 *
+		 * @exception	std::invalid_argument	If @p rep is nullptr.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @param[in]	rep	The representation to push in this representation set.
+		 */
+		void pushBack(RESQML2_NS::AbstractRepresentation* rep);
 	};
 		
 #ifdef SWIGPYTHON
@@ -4938,50 +5215,538 @@ namespace RESQML2_NS
 	class UnstructuredGridRepresentation : public AbstractGridRepresentation
 	{
 	public:
-		void getCellFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const;
-	
-		uint64_t getFaceCount() const;
+		/**
+		 * Gets all the face indices of all the cells.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::logic_error	 	If this grid has no geometry (please check the existence
+		 * 										of a geometry thanks to hasGeometry() before calling this
+		 * 										method).
+		 * @exception	std::logic_error	 	If the data structure used to store the face indices of
+		 * 										the cells is not already supported by fesapi.
+		 * @exception	std::invalid_argument	If a required HDF proxy is missing.
+		 *
+		 * @param[out]	faceIndices	Preallocated array to receive all the face indices of all the cells.
+		 * 							It size must be the last value outputted by
+		 * 							getCumulativeFaceCountPerCell(). It is ordered first by faces and
+		 * 							then by cells.
+		 */
 		void getFaceIndicesOfCells(uint64_t * faceIndices) const;
+
+		/**
+		 * Gets the cumulative face count per cell. A single face count should be at least 4.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::logic_error	 	If this grid has no geometry (please check the existence
+		 * 										of a geometry thanks to hasGeometry() before calling this
+		 * 										method).
+		 * @exception	std::invalid_argument	If a required HDF proxy is missing.
+		 * @exception	std::range_error	 	If the cumulative face count per cell is stored in an
+		 * 										integer constant array while there is more than one cell
+		 * 										in this grid.
+		 *
+		 * @param[out]	cumulativeFaceCountPerCell_	Preallocated array of size getCellCount() to receive
+		 * 											the cumulative face count per cell. First value is
+		 * 											the count of faces in the first cell. Second value is
+		 * 											the count of faces in the first and in the second
+		 * 											cell. Third value is the count of faces in the first
+		 * 											and in the second and in the third cell. And so on.
+		 */
 		void getCumulativeFaceCountPerCell(uint64_t * faceCountPerCell) const;
+
+		/**
+		 * Gets the cumulative face count per cell. This method requires you to have already loaded the
+		 * geometry.
+		 *
+		 * @exception	std::logic_error	If this grid has a constant count of faces per cell.
+		 * @exception	std::logic_error 	If the geometry is not loaded.
+		 *
+		 * @returns	The cumulative face count per cell. First value is
+		 * 			the count of faces in the first cell. Second value is
+		 * 			the count of faces in the first and in the second
+		 * 			cell. Third value is the count of faces in the first
+		 * 			and in the second and in the third cell. And so on.
+		 *			DO NOT FREE the returned value. It is owned and managed by this class.
+		 */
 		uint64_t const * getCumulativeFaceCountPerCell() const;
+
+		/**
+		 * Gets the face count per cell. This method is less efficient than
+		 * getCumulativeFaceCountPerCell().
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::logic_error	 	If this grid has no geometry (please check the existence
+		 * 										of a geometry thanks to hasGeometry() before calling this
+		 * 										method).
+		 * @exception	std::invalid_argument	If a required HDF proxy is missing.
+		 * @exception	std::range_error	 	If the cumulative face count per cell is stored in an
+		 * 										integer constant array while there is more than one cell
+		 * 										in this grid.
+		 *
+		 * @param[out]	faceCountPerCell	Preallocated array of size getCellCount() to receive the face
+		 * 									count per cell. First value is the count of faces in the first
+		 * 									cell. Second value is the count of faces in the second cell. And
+		 * 									so on.
+		 */
 		void getFaceCountPerCell(uint64_t * faceCountPerCell) const;
+
+		/**
+		 * Checks whether the face count per cell is constant in this unstructured grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::logic_error	If this grid has no geometry (please check the existence of a
+		 * 									geometry thanks to hasGeometry() before calling this method).
+		 * @exception	std::range_error	If the cumulative face count per cell is stored in an integer
+		 * 									constant array while there is more than one cell in this grid.
+		 *
+		 * @returns	True if the face count per cell is constant, false if not.
+		 */
 		bool isFaceCountOfCellsConstant() const;
-		unsigned int getConstantFaceCountOfCells() const;
-		
+
+		/**
+		 * Gets the constant face count per cell in this unstructured grid.
+		 *
+		 * @exception	std::logic_error	If the face count per cell is not constant (please check the
+		 * 									constantness of the face count per cell with
+		 * 									isFaceCountOfCellsConstant() before calling this method).
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::logic_error	If this grid has no geometry (please check the existence of a
+		 * 									geometry thanks to hasGeometry() before calling this method).
+		 * @exception	std::range_error	If the cumulative face count per cell is stored in an integer
+		 * 									constant array while there is more than one cell in this grid.
+		 *
+		 * @returns	The constant face count per cell.
+		 */
+		uint64_t getConstantFaceCountOfCells() const;
+
+		/**
+		 * Gets all the node indices of all the faces.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::logic_error	 	If this grid has no geometry (please check the existence
+		 * 										of a geometry thanks to hasGeometry() before calling this
+		 * 										method).
+		 * @exception	std::logic_error	 	If the data structure used to store the node indices of
+		 * 										the faces is not already supported by fesapi.
+		 * @exception	std::invalid_argument	If a required HDF proxy is missing.
+		 *
+		 * @param[out]	nodeIndices	Preallocated array to receive all the node indices of all the faces.
+		 * 							It size must be the last value outputted by
+		 * 							getCumulativeNodeCountPerFace(). It is ordered first by nodes, then
+		 * 							by faces and then by cells.
+		 */
 		void getNodeIndicesOfFaces(uint64_t * nodeIndices) const;
+
+		/**
+		 * Gets the cumulative node count per face. A single node count should be at least 3.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::logic_error	 	If this grid has no geometry (please check the existence
+		 * 										of a geometry thanks to hasGeometry() before calling this
+		 * 										method).
+		 * @exception	std::invalid_argument	If a required HDF proxy is missing.
+		 * @exception	std::range_error	 	If the cumulative node count per face is stored in a
+		 * 										integer constant array.
+		 *
+		 * @param[out]	nodeCountPerFace	Preallocated array to receive the cumulative node count per
+		 * 									face. Its size must be getFaceCount(). First value is the count
+		 * 									of nodes in the first face. Second value is the count of nodes in
+		 * 									the first and in the second face. Third value is the count of
+		 * 									nodes in the first and in the second and in the third face. And
+		 * 									so on.
+		 */
 		void getCumulativeNodeCountPerFace(uint64_t * nodeCountPerFace) const;
+
+		/**
+		 * Gets the node count per face. This method is less efficient than
+		 * getCumulativeNodeCountPerFace().
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::logic_error	 	If this grid has no geometry (please check the existence
+		 * 										of a geometry thanks to hasGeometry() before calling this
+		 * 										method).
+		 * @exception	std::invalid_argument	If a required HDF proxy is missing.
+		 * @exception	std::range_error	 	If the cumulative node count per face is stored in a
+		 * 										integer constant array.
+		 *
+		 * @param[out]	nodeCountPerFace	Preallocated array of size getFaceCount() to receive the node
+		 * 									count per face. First value is the count of nodes in the first
+		 * 									face. Second value is the count of nodes in the second face. And
+		 * 									so on.
+		 */
 		void getNodeCountPerFace(uint64_t * nodeCountPerFace) const;
+
+		/**
+		 * Checks whether the node count per face is constant in this unstructured grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::logic_error	If this grid has no geometry (please check the existence of a
+		 * 									geometry thanks to hasGeometry() before calling this method).
+		 *
+		 * @returns	True if the node count per face is constant, false if not.
+		 */
 		bool isNodeCountOfFacesConstant() const;
-		unsigned int getConstantNodeCountOfFaces() const;
-		
+
+		/**
+		 * Gets the constant node count per face in this unstructured grid.
+		 *
+		 * @exception	std::logic_error	If the node count per face is not constant (please check the
+		 * 									constantness of the node count per face with
+		 * 									isNodeCountOfFacesConstant() before calling this method).
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::logic_error	If this grid has no geometry (please check the existence of a
+		 * 									geometry thanks to hasGeometry() before calling this method).
+		 *
+		 * @returns	The constant node count per face.
+		 */
+		uint64_t getConstantNodeCountOfFaces() const;
+
+		/**
+		 * Loads the geoemtry into memory in order to ease access. Be aware that you must unload by
+		 * yourself this memory thanks to unloadGeometry().
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::logic_error	 	If this grid has no geometry (please check the existence
+		 * 										of a geometry thanks to hasGeometry() before calling this
+		 * 										method).
+		 * @exception	std::logic_error	 	If the data structure used to store the face indices of
+		 * 										the cells is not already supported by fesapi.
+		 * @exception	std::logic_error	 	If the data structure used to store the node indices of
+		 * 										the faces is not already supported by fesapi.
+		 * @exception	std::range_error	 	If the cumulative face count per cell is stored in an
+		 * 										integer constant array while there is more than one cell
+		 * 										in this grid.
+		 * @exception	std::range_error	 	If the cumulative node count per face is stored in a
+		 * 										integer constant array.
+		 * @exception	std::invalid_argument	If a required HDF proxy is missing.
+		 */
 		void loadGeometry();
-		uint64_t getFaceCountOfCell(uint64_t cellIndex) const;
-		uint64_t getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
-		uint64_t const * getNodeIndicesOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
-		void unloadGeometry();
 		
+		/** Unloads the geometry from memory. */
+		void unloadGeometry();
+
+		/**
+		 * Gets the face count of a particular cell. This method requires you to have already loaded the
+		 * geometry.
+		 *
+		 * @exception	std::logic_error 	If this grid is partial.
+		 * @exception	std::logic_error 	If the geometry is not loaded.
+		 * @exception	std::out_of_range	If <tt>cellIndex &gt;=</tt> getCellCount().
+		 *
+		 * @param 	cellIndex	Zero-based index of the cell for which we want to count the faces.
+		 *
+		 * @returns	The count of faces in the cell at position @p cellIndex.
+		 */
+		uint64_t getFaceCountOfCell(uint64_t cellIndex) const;
+
+		/**
+		 * Gets the node count of a particular face of a particular cell. This method requires you to
+		 * have already loaded the geometry.
+		 *
+		 * @exception	std::logic_error 	If this grid is partial.
+		 * @exception	std::logic_error 	If the geometry is not loaded.
+		 * @exception	std::out_of_range	If <tt>cellIndex &gt;=</tt> getCellCount().
+		 * @exception	std::out_of_range	If <tt>localFaceIndex &gt;=</tt>
+		 * 									getFaceCountOfCell(cellIndex).
+		 *
+		 * @param 	cellIndex	  	Zero-based index of the cell for which we want to count the nodes of
+		 * 							one face.
+		 * @param 	localFaceIndex	Zero-based local index of the face for which we want to count the
+		 * 							nodes.
+		 *
+		 * @returns	The count of nodes in the face @p localFaceIndex of the cell @p cellIndex.
+		 */
+		uint64_t getNodeCountOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
+
+		/**
+		 * Gets all the node indices of a particular face of a particular cell. This method requires you
+		 * to have already loaded the geometry.
+		 *
+		 * @exception	std::logic_error 	If this grid is partial.
+		 * @exception	std::logic_error 	If the geometry is not loaded.
+		 * @exception	std::out_of_range	If <tt>cellIndex &gt;=</tt> getCellCount().
+		 * @exception	std::out_of_range	If <tt>localFaceIndex &gt;=</tt>
+		 * 									getFaceCountOfCell(cellIndex).
+		 *
+		 * @param 	cellIndex	  	Zero-based index of the cell for which we want to get the node
+		 * 							indices of one face.
+		 * @param 	localFaceIndex	Zero-based local index of the face for which we want to get the node
+		 * 							indices.
+		 *
+		 * @returns	A pointer to an array containing the node indices of the face @p localFaceIndex of
+		 * 			the cell @p cellIndex. This array is allocated by loadGeometry() and is freed by
+		 * 			unloadGeometry().
+		 */
+		uint64_t const * getNodeIndicesOfFaceOfCell(uint64_t cellIndex, unsigned int localFaceIndex) const;
+
+		/**
+		 * Gets the face count
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The face count.
+		 */
+		uint64_t getFaceCount() const;
+
+		/**
+		 * Get the node count
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @returns	The node count.
+		 */
+		uint64_t getNodeCount() const;
+
+		/**
+		 * Gets the orientation of each cell face. That is to say tells for each cell face, if its face
+		 * normal defined using a right hand rule is outwardly directed.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::logic_error	If the geometry is not loaded.
+		 * @exception	std::logic_error	If the data structure used to store the orientation of the
+		 * 									cell is not already supported by fesapi.
+		 *
+		 * @param[out]	cellFaceIsRightHanded	Preallocated array for receiving the orientation of each
+		 * 										cell face. The size is the last value returned by
+		 * 										getCumulativeFaceCountPerCell().
+		 */
+		void getCellFaceIsRightHanded(uint8_t* cellFaceIsRightHanded) const;
+
+		/**
+		 * Sets the geometry using some existing HDF5 dataset.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If @p cellFaceIsRightHanded, @p points, @p
+		 * 										faceIndicesPerCell, @p faceIndicesCumulativeCountPerCell,
+		 * 										@p nodeIndicesPerFace or @p
+		 * 										nodeIndicesCumulativeCountPerFace is empty.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										is defined in the repository.
+		 *
+		 * @param 		  	cellFaceIsRightHanded			 	The path to the HDF5 dataset in the HDF
+		 * 														proxy where a boolean mask is used to
+		 * 														indicate which cell faces have an
+		 * 														outwardly directed normal following a
+		 * 														right hand rule. Array length is the sum
+		 * 														of the cell face count per cell, and the
+		 * 														data follows the order of the faces per
+		 * 														cell RESQMLlist-of-lists.
+		 * @param 		  	points							 	The path to the HDF5 dataset in the HDF
+		 * 														proxy where all the xyz points defining
+		 * 														the nodes of the unstructured grid are
+		 * 														defined. There must a double count of
+		 * 														<tt>pointCount * 3</tt>.
+		 * @param 		  	pointCount						 	The count of points defining the nodes of
+		 * 														this unstructured grid.
+		 * @param[in,out]	proxy							 	The HDF proxy which contains the datasets
+		 * 														given in this method by means of paths.
+		 * 														If @c nullptr, then the repository
+		 * 														default HDF proxy will be used.
+		 * @param 		  	faceIndicesPerCell				 	The path to the HDF5 dataset in the HDF
+		 * 														proxy where each item defines the index
+		 * 														of the face of a cell. There must be a
+		 * 														count of the last value in
+		 * 														@p faceIndicesCumulativeCountPerCell.
+		 * @param 		  	faceIndicesCumulativeCountPerCell	The path to the HDF5 dataset in the HDF
+		 * 														proxy where each item defines the
+		 * 														cumulative count of faces. The count of
+		 * 														this array must be equal to the count of
+		 * 														cells in this unstructured grid. For
+		 * 														example if the first cell a 4 faces, the
+		 * 														second cell 5 faces and the third cell 6
+		 * 														faces then the array would be {4, 9, 15}.
+		 * @param 		  	faceCount						 	The count of faces in this unstructured
+		 * 														grid. Be aware this count does not
+		 * 														duplicate shared faces. Most of time, you
+		 * 														have less faceCount than the last value
+		 * 														of @p faceIndicesCumulativeCountPerCell
+		 * 														which is the count of faces per cell.
+		 * @param 		  	nodeIndicesPerFace				 	The path to the HDF5 dataset in the HDF
+		 * 														proxy where each item defines the index
+		 * 														of the node of a face. There must be a
+		 * 														count of the last value in
+		 * 														@p nodeIndicesCumulativeCountPerFace.
+		 * @param 		  	nodeIndicesCumulativeCountPerFace	The path to the HDF5 dataset in the HDF
+		 * 														proxy where each item defines the
+		 * 														cumulative count of nodes. The count of
+		 * 														this array must be equal to @p faceCount.
+		 * @param 		  	cellShape						 	A denormalization of the information
+		 * 														which gives quick access to the most
+		 * 														complex shape of polyhedron encountered
+		 * 														in this unstructured grid.
+		 * @param[in]	  	localCrs						 	(Optional) The local CRS. If @c nullptr
+		 * 														(default), then the repository default
+		 * 														local CRS will be used.
+		 */
 		void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
 			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
+		/**
+		 * Sets the geometry and creates corresponding HDF5 datasets.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If @p cellFaceIsRightHanded, @p points, @p
+		 * 										faceIndicesPerCell, @p faceIndicesCumulativeCountPerCell,
+		 * 										@p nodeIndicesPerFace or @p
+		 * 										nodeIndicesCumulativeCountPerFace is @c nullptr.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										is defined in the repository.
+		 *
+		 * @param[in]	  	cellFaceIsRightHanded			 	Boolean mask used to indicate which cell
+		 * 														faces have an outwardly directed normal
+		 * 														following a right hand rule. Array length
+		 * 														is the sum of the cell face count per
+		 * 														cell, and the data follows the order of
+		 * 														the faces per cell RESQMLlist-of-lists.
+		 * @param[in]	  	points							 	All the XYZ points defining the nodes of
+		 * 														the unstructured grid. There must a
+		 * 														double count of <tt>pointCount * 3</tt>.
+		 * @param 		  	pointCount						 	The count of points defining the nodes of
+		 * 														this unstructured grid.
+		 * @param[in,out]	proxy							 	The HDF proxy which will store all the
+		 * 														numerical values of this unstructured
+		 * 														grid. If @c nullptr, then the repository
+		 * 														default HDF proxy will be used.
+		 * @param[in]	  	faceIndicesPerCell				 	Each item defines the index of the face
+		 * 														of a cell. There must be a count of the
+		 * 														last value in
+		 * 														@p faceIndicesCumulativeCountPerCell.
+		 * @param[in]	  	faceIndicesCumulativeCountPerCell	Each item defines the cumulative count of
+		 * 														faces. The count of this array must be
+		 * 														equal to the count of cells in this
+		 * 														unstructured grid. For example if the
+		 * 														first cell a 4 faces, the second cell 5
+		 * 														faces and the third cell 6 faces then the
+		 * 														array would be {4, 9, 15}.
+		 * @param 		  	faceCount						 	The count of faces in this unstructured
+		 * 														grid. Be aware this count does not
+		 * 														duplicate shared faces. Most of time, you
+		 * 														have less faceCount than the last value
+		 * 														of @p faceIndicesCumulativeCountPerCell
+		 * 														which is the count of faces per cell.
+		 * @param[in]	  	nodeIndicesPerFace				 	Each item defines the index of the node
+		 * 														of a face. There must be a count of the
+		 * 														last value in
+		 * 														@p nodeIndicesCumulativeCountPerFace.
+		 * @param[in]	  	nodeIndicesCumulativeCountPerFace	Each item defines the cumulative count of
+		 * 														nodes. The count of this array must be
+		 * 														equal to @p faceCount.
+		 * @param 		  	cellShape						 	A denormalization of the information
+		 * 														which gives quick access to the most
+		 * 														complex shape of polyhedron encountered
+		 * 														in this unstructured grid.
+		 * @param[in]	  	localCrs						 	(Optional) The local CRS. If @c nullptr
+		 * 														(default), then the repository default
+		 * 														local CRS will be used.
+		 */
 		void setGeometry(uint8_t * cellFaceIsRightHanded, double * points, uint64_t pointCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * faceIndicesCumulativeCountPerCell,
 			uint64_t faceCount, uint64_t * nodeIndicesPerFace, uint64_t * nodeIndicesCumulativeCountPerFace,
 			gsoap_resqml2_0_1::resqml20__CellShape cellShape, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
+		/**
+		 * @brief Sets a geometry which is only defined by means of tetrahedra using some existing HDF5 dataset.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If @p cellFaceIsRightHanded, @p points, @p
+		 * 										faceIndicesPerCell or @p nodeIndicesPerFace is empty.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										is defined in the repository.
+		 *
+		 * @param 		  	cellFaceIsRightHanded	The path to the HDF5 dataset in the HDF proxy where a
+		 * 											boolean mask is used to indicate which cell faces
+		 * 											have an outwardly directed normal following a right
+		 * 											hand rule. Array length is the sum of the cell face
+		 * 											count per cell, and the data follows the order of the
+		 * 											faces per cell RESQMLlist-of-lists.
+		 * @param 		  	points				 	The path to the HDF5 dataset in the HDF proxy where
+		 * 											all the xyz points defining the nodes of the
+		 * 											unstructured grid are defined. There must a double
+		 * 											count of <tt>pointCount * 3</tt>.
+		 * @param 		  	pointCount			 	The count of points defining the nodes of this
+		 * 											unstructured grid.
+		 * @param 		  	faceCount			 	The count of faces in this unstructured grid. Be
+		 * 											aware this count does not duplicate cell-shared faces.
+		 * @param[in,out]	proxy				 	The HDF proxy which contains the datasets given in
+		 * 											this method by means of paths. If @c nullptr, then
+		 * 											the repository default HDF proxy will be used.
+		 * @param 		  	faceIndicesPerCell   	The path to the HDF5 dataset in the HDF proxy where
+		 * 											each item defines the index of the face of a cell.
+		 * 											There must be a count of <tt>faceCountPerCell *
+		 * 											cellCount</tt>.
+		 * @param 		  	nodeIndicesPerFace   	The path to the HDF5 dataset in the HDF proxy where
+		 * 											each item defines the index of the node of a face.
+		 * 											There must be a count of <tt>nodeCountPerFace *
+		 * 											faceCount</tt>.
+		 * @param[in]	  	localCrs			 	(Optional) The local CRS. If @c nullptr (default),
+		 * 											then the repository default local CRS will be used.
+		 */
 		void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
+		/**
+		 * @brief Sets a geometry which is only defined by means of tetrahedra and creates corresponding HDF5
+		 * datasets.
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::invalid_argument	If @p cellFaceIsRightHanded, @p points, @p
+		 * 										faceIndicesPerCell or @p nodeIndicesPerFace is @c nullptr.
+		 * @exception	std::invalid_argument	If <tt>proxy == nullptr</tt> and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If <tt>localCrs == nullptr</tt> and no default local CRS
+		 * 										is defined in the repository.
+		 *
+		 * @param[in]	  	cellFaceIsRightHanded	Boolean mask used to indicate which cell faces have
+		 * 												an outwardly directed normal following a right hand
+		 * 												rule. Array length is the sum of the cell face count
+		 * 												per cell, and the data follows the order of the
+		 * 												faces per cell RESQMLlist-of-lists.
+		 * @param[in]	  	points				 	All the xyz points defining the nodes of the
+		 * 												unstructured grid. There must a double count of
+		 * 												<tt>pointCount * 3</tt>.
+		 * @param 		  	pointCount			 	The count of points defining the nodes of this
+		 * 											unstructured grid.
+		 * @param 		  	faceCount			 	The count of faces in this unstructured grid. Be
+		 * 											aware this count does not duplicate cell-shared faces.
+		 * @param[in,out]	proxy				 	The hdf proxy which contains the datasets given in
+		 * 											this method by means of paths. If @c nullptr, then
+		 * 											the repository default HDF proxy will be used.
+		 * @param[in]	  	faceIndicesPerCell   	Each item defines the index of the face of a cell.
+		 * 												There must be a count of <tt>faceCountPerCell *
+		 * 												cellCount</tt>.
+		 * @param[in]	  	nodeIndicesPerFace   	Each item defines the index of the node of a face.
+		 * 												There must be a count of <tt>nodeCountPerFace *
+		 * 												faceCount</tt>.
+		 * @param[in]	  	localCrs			 	(Optional) The local CRS. If @c nullptr (default),
+		 * 												then the repository default local CRS will be used.
+		 */
 		void setTetrahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
+		/**
+		* Sets a geometry which is only defined by means of hexahedra using some existing HDF5 dataset.
+		*
+		* @copydetails setTetrahedraOnlyGeometryUsingExistingDatasets
+		*/
 		void setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
+		/**
+		* Sets a geometry which is only defined by means of hexahedra and creates corresponding HDF5 datasets.
+		*
+		* @copydetails setTetrahedraOnlyGeometry
+		*/
 		void setHexahedraOnlyGeometry(uint8_t * cellFaceIsRightHanded, double * points,
 			uint64_t pointCount, uint64_t faceCount, EML2_NS::AbstractHdfProxy* proxy,
 			uint64_t * faceIndicesPerCell, uint64_t * nodeIndicesPerFace, EML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
@@ -6483,9 +7248,6 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets the count of grid representations of this streamlines representation.
-		 *
-		 * @exception	std::range_error	If the count of grid representations is strictly
-		 * 									greater than unsigned int max.
 		 *
 		 * @returns	The count of grid representation.
 		 */
@@ -10211,9 +10973,6 @@ namespace RESQML2_NS
 
 		/**
 		 * Gets the count of supporting grid representations of this blocked wellbore representation.
-		 *
-		 * @exception	std::range_error	If the count of supporting grid representations is strictly
-		 * 									greater than unsigned int max.
 		 *
 		 * @returns	The count of supporting grid representation.
 		 */
