@@ -52,7 +52,7 @@ void ContinuousColorMap::setHsvColors(uint64_t colorCount,
 		}
 
 		resqml22__ContinuousColorMapEntry* continuousColorMapEntry = soap_new_resqml22__ContinuousColorMapEntry(gsoapProxy2_3->soap);
-		continuousColorMapEntry->Index = indices != nullptr ? indices[colorIndex] : colorIndex;
+		continuousColorMapEntry->Index = indices != nullptr ? indices[colorIndex] : static_cast<double>(colorIndex);
 		resqml22__HsvColor* color = soap_new_resqml22__HsvColor(gsoapProxy2_3->soap);
 		color->Hue = hsvColors[3 * colorIndex];
 		color->Saturation = hsvColors[3 * colorIndex + 1];

@@ -201,7 +201,7 @@ std::string LocalEngineering2dCrs::getProjectedCrsWkt() const
 	return static_cast<gsoap_eml2_3::eml23__ProjectedWktCrs*>(static_cast<gsoap_eml2_3::eml23__LocalEngineering2dCrs*>(gsoapProxy2_3)->OriginProjectedCrs->AbstractProjectedCrs)->WellKnownText;
 }
 
-int64_t LocalEngineering2dCrs::getProjectedCrsEpsgCode() const
+uint64_t LocalEngineering2dCrs::getProjectedCrsEpsgCode() const
 {
 	return static_cast<gsoap_eml2_3::eml23__ProjectedEpsgCrs*>(static_cast<gsoap_eml2_3::eml23__LocalEngineering2dCrs*>(gsoapProxy2_3)->OriginProjectedCrs->AbstractProjectedCrs)->EpsgCode;
 }

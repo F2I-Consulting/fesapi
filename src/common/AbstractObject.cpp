@@ -894,8 +894,8 @@ void AbstractObject::readArrayNdOfFloatValues(gsoap_resqml2_0_1::resqml20__Abstr
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
 		gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const*>(arrayInput);
-		if (latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The integer lattice array contains more than one offset.");
+		if (latticeArray->Offset.size() != 1) {
+			throw invalid_argument("The double lattice array contains zero or more than one offset.");
 		}
 		if (latticeArray->StartValue < (std::numeric_limits<float>::min)() || latticeArray->StartValue > (std::numeric_limits<float>::max)()) {
 			throw out_of_range("The double start value of the lattice array " + std::to_string(latticeArray->StartValue) + " is out of float range value");
@@ -938,7 +938,7 @@ void AbstractObject::readArrayNdOfFloatValues(gsoap_eml2_3::eml23__AbstractFloat
 	{
 		gsoap_eml2_3::eml23__FloatingPointLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray const*>(arrayInput);
 		if (latticeArray->Offset.empty() || latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The integer lattice array of UUID " + getUuid() + " contains zero or more than one offset.");
+			throw invalid_argument("The floating point lattice array of UUID " + getUuid() + " contains zero or more than one offset.");
 		}
 		if (latticeArray->StartValue < (std::numeric_limits<float>::min)() || latticeArray->StartValue >(std::numeric_limits<float>::max)()) {
 			throw out_of_range("The double start value of the lattice array " + std::to_string(latticeArray->StartValue) + " is out of float range value");
@@ -998,8 +998,8 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__Abst
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
 		gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const*>(arrayInput);
-		if (latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The integer lattice array contains more than one offset.");
+		if (latticeArray->Offset.size() != 1) {
+			throw invalid_argument("The double lattice array contains zero or more than one offset.");
 		}
 
 		const double start = latticeArray->StartValue;
@@ -1035,8 +1035,8 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_eml2_3::eml23__AbstractFloa
 	case SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray:
 	{
 		gsoap_eml2_3::eml23__FloatingPointLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray const*>(arrayInput);
-		if (latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The integer lattice array contains more than one offset.");
+		if (latticeArray->Offset.size() != 1) {
+			throw invalid_argument("The floating point lattice array contains zero or more than one offset.");
 		}
 		const double start = latticeArray->StartValue;
 		const double step = latticeArray->Offset[0]->Value;
@@ -1410,8 +1410,8 @@ uint64_t AbstractObject::getCountOfArray(gsoap_resqml2_0_1::resqml20__AbstractVa
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 	{
 		gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const*>(arrayInput);
-		if (latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The integer lattice array contains more than one offset.");
+		if (latticeArray->Offset.size() != 1) {
+			throw invalid_argument("The integer lattice array contains zero or more than one offset.");
 		}
 		return latticeArray->Offset[0]->Count + 1;
 	}
@@ -1431,8 +1431,8 @@ uint64_t AbstractObject::getCountOfArray(gsoap_resqml2_0_1::resqml20__AbstractVa
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
 		gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const*>(arrayInput);
-		if (latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The lattice array contains more than one offset.");
+		if (latticeArray->Offset.size() != 1) {
+			throw invalid_argument("The double lattice array contains zero or more than one offset.");
 		}
 		return static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray const*>(arrayInput)->Offset[0]->Count + 1;
 	}
@@ -1481,8 +1481,8 @@ uint64_t AbstractObject::getCountOfArray(gsoap_eml2_3::eml23__AbstractValueArray
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerLatticeArray)
 	{
 		gsoap_eml2_3::eml23__IntegerLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__IntegerLatticeArray const*>(arrayInput);
-		if (latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The lattice array contains more than one offset.");
+		if (latticeArray->Offset.size() != 1) {
+			throw invalid_argument("The integer lattice array contains zero or more than one offset.");
 		}
 		return latticeArray->Offset[0]->Count + 1ull;
 	}
@@ -1507,8 +1507,8 @@ uint64_t AbstractObject::getCountOfArray(gsoap_eml2_3::eml23__AbstractValueArray
 	else if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointLatticeArray)
 	{
 		gsoap_eml2_3::eml23__FloatingPointLatticeArray const* latticeArray = static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray const*>(arrayInput);
-		if (latticeArray->Offset.size() > 1) {
-			throw invalid_argument("The lattice array contains more than one offset.");
+		if (latticeArray->Offset.size() != 1) {
+			throw invalid_argument("The floating point lattice array contains zero or more than one offset.");
 		}
 		return static_cast<gsoap_eml2_3::eml23__FloatingPointLatticeArray const*>(arrayInput)->Offset[0]->Count + 1;
 	}

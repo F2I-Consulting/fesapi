@@ -58,7 +58,7 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool isTopLevelElement() const;
 
-		gsoap_eml2_3::eml23__DataObjectReference* getWeightingFunctionDor() const;
+		gsoap_eml2_3::eml23__DataObjectReference& getWeightingFunctionDor() const;
 		DLL_IMPORT_OR_EXPORT class WeightingFunction* getWeightingFunction() const;
 		DLL_IMPORT_OR_EXPORT void setWeightingFunction(class WeightingFunction* weightingFunction);
 

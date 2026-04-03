@@ -121,7 +121,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The vertical CRS EPSG code.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getVerticalCrsEpsgCode() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getVerticalCrsEpsgCode() const;
 
 		/**
 		* The standard XML namespace for serializing this data object.

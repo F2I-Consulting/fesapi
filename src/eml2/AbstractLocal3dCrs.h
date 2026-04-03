@@ -20,6 +20,12 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
+namespace EML2_3_NS
+{
+	class LocalEngineering2dCrs;
+	class VerticalCrs;
+}
+
 namespace EML2_NS
 {
 	/** @brief	Proxy class for an abstract local 3D coordinate reference system (CRS). */
@@ -298,5 +304,9 @@ namespace EML2_NS
 		 * @returns	The z coordinate offset.
 		 */
 		virtual double getZOffset() const = 0;
+
+	private:
+		EML2_3_NS::LocalEngineering2dCrs& getAssociatedLocalEngineering2dCrs() const;
+		EML2_3_NS::VerticalCrs& getAssociatedVerticalCrs() const;
 	};
 }

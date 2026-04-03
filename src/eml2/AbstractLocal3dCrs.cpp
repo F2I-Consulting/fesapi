@@ -59,6 +59,42 @@ void AbstractLocal3dCrs::convertXyzPointsToGlobalCrs(double * xyzPoints, uint64_
 	}
 }
 
+EML2_3_NS::LocalEngineering2dCrs& AbstractLocal3dCrs::getAssociatedLocalEngineering2dCrs() const
+{
+	if (gsoapProxy2_3 == nullptr) {
+		throw logic_error("A non EML2.3 CRS cannot have an associated LocalEngineering2dCrs.");
+	}
+
+	auto const* gsoapLocalEngineering2dCrs = static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs;
+	if (gsoapLocalEngineering2dCrs == nullptr) {
+		throw logic_error("The EML2.3 CRS has not an associated LocalEngineering2dCrs.");
+	}
+
+	if (auto* ptr = getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(gsoapLocalEngineering2dCrs->Uuid)) {
+		return *ptr;
+	}
+
+	throw logic_error("The associated LocalEngineering2dCrs was not found in the dataobject repository");
+}
+
+EML2_3_NS::VerticalCrs& AbstractLocal3dCrs::getAssociatedVerticalCrs() const
+{
+	if (gsoapProxy2_3 == nullptr) {
+		throw logic_error("A non EML2.3 CRS cannot have an associated VerticalCrs.");
+	}
+
+	auto const* gsoapVerticalCrs = static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs;
+	if (gsoapVerticalCrs == nullptr) {
+		throw logic_error("The EML2.3 CRS has not an associated VerticalCrs.");
+	}
+
+	if (auto* ptr = getRepository()->getDataObjectByUuid<EML2_3_NS::VerticalCrs>(gsoapVerticalCrs->Uuid)) {
+		return *ptr;
+	}
+
+	throw logic_error("The associated LocalEngineering2dCrs was not found in the dataobject repository");
+}
+
 double AbstractLocal3dCrs::getOriginOrdinal1() const
 {
 	cannotBePartial();
@@ -66,11 +102,7 @@ double AbstractLocal3dCrs::getOriginOrdinal1() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->XOffset;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getOriginOrdinal1();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedLocalEngineering2dCrs().getOriginOrdinal1();
 }
 
 double AbstractLocal3dCrs::getOriginOrdinal2() const
@@ -80,11 +112,7 @@ double AbstractLocal3dCrs::getOriginOrdinal2() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->YOffset;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getOriginOrdinal2();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedLocalEngineering2dCrs().getOriginOrdinal2();
 }
 
 double AbstractLocal3dCrs::getOriginDepthOrElevation() const
@@ -108,11 +136,7 @@ double AbstractLocal3dCrs::getArealRotation() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ArealRotation->__item;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getAzimuth();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedLocalEngineering2dCrs().getAzimuth();
 }
 
 gsoap_resqml2_0_1::eml20__PlaneAngleUom AbstractLocal3dCrs::getArealRotationUom() const
@@ -155,11 +179,7 @@ bool AbstractLocal3dCrs::isProjectedCrsDefinedWithEpsg() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__ProjectedCrsEpsgCode;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->isProjectedCrsDefinedWithEpsg();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedLocalEngineering2dCrs().isProjectedCrsDefinedWithEpsg();
 }
 
 bool AbstractLocal3dCrs::isProjectedCrsDefinedWithWkt() const
@@ -177,11 +197,7 @@ bool AbstractLocal3dCrs::isProjectedCrsDefinedWithWkt() const
 		}
 		return false;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->isProjectedCrsDefinedWithWkt();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedLocalEngineering2dCrs().isProjectedCrsDefinedWithWkt();
 }
 
 bool AbstractLocal3dCrs::isProjectedCrsUnknown() const
@@ -192,11 +208,7 @@ bool AbstractLocal3dCrs::isProjectedCrsUnknown() const
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__ProjectedUnknownCrs &&
 			!isProjectedCrsDefinedWithWkt();
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->isProjectedCrsUnknown();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedLocalEngineering2dCrs().isProjectedCrsUnknown();
 }
 
 std::string AbstractLocal3dCrs::getProjectedCrsUnknownReason() const
@@ -209,11 +221,7 @@ std::string AbstractLocal3dCrs::getProjectedCrsUnknownReason() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::eml20__ProjectedUnknownCrs*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs)->Unknown;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getProjectedCrsUnknownReason();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedLocalEngineering2dCrs().getProjectedCrsUnknownReason();
 }
 
 std::string AbstractLocal3dCrs::getProjectedCrsWkt() const
@@ -230,11 +238,7 @@ std::string AbstractLocal3dCrs::getProjectedCrsWkt() const
 			}
 		}
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getProjectedCrsWkt();
-	}
-
-	throw logic_error("Not implemented yet.");
+	return getAssociatedLocalEngineering2dCrs().getProjectedCrsWkt();
 }
 
 uint64_t AbstractLocal3dCrs::getProjectedCrsEpsgCode() const
@@ -247,11 +251,7 @@ uint64_t AbstractLocal3dCrs::getProjectedCrsEpsgCode() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::eml20__ProjectedCrsEpsgCode*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedCrs)->EpsgCode;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getProjectedCrsEpsgCode();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedLocalEngineering2dCrs().getProjectedCrsEpsgCode();
 }
 
 bool AbstractLocal3dCrs::isVerticalCrsDefinedWithEpsg() const
@@ -261,11 +261,7 @@ bool AbstractLocal3dCrs::isVerticalCrsDefinedWithEpsg() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__VerticalCrsEpsgCode;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::VerticalCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs->Uuid)->isVerticalCrsDefinedWithEpsg();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedVerticalCrs().isVerticalCrsDefinedWithEpsg();
 }
 
 bool AbstractLocal3dCrs::isVerticalCrsDefinedWithWkt() const
@@ -283,11 +279,7 @@ bool AbstractLocal3dCrs::isVerticalCrsDefinedWithWkt() const
 		}
 		return false;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->isProjectedCrsDefinedWithWkt();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedVerticalCrs().isVerticalCrsDefinedWithWkt();
 }
 
 bool AbstractLocal3dCrs::isVerticalCrsUnknown() const
@@ -297,11 +289,7 @@ bool AbstractLocal3dCrs::isVerticalCrsUnknown() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_eml20__VerticalUnknownCrs;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::VerticalCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs->Uuid)->isVerticalCrsUnknown();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedVerticalCrs().isVerticalCrsUnknown();
 }
 
 std::string AbstractLocal3dCrs::getVerticalCrsUnknownReason() const
@@ -315,11 +303,7 @@ std::string AbstractLocal3dCrs::getVerticalCrsUnknownReason() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::eml20__VerticalUnknownCrs*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs)->Unknown;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::VerticalCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs->Uuid)->getVerticalCrsUnknownReason();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedVerticalCrs().getVerticalCrsUnknownReason();
 }
 
 std::string AbstractLocal3dCrs::getVerticalCrsWkt() const
@@ -336,11 +320,7 @@ std::string AbstractLocal3dCrs::getVerticalCrsWkt() const
 			}
 		}
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::VerticalCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs->Uuid)->getVerticalCrsWkt();
-	}
-
-	throw logic_error("Not implemented yet.");
+	return getAssociatedVerticalCrs().getVerticalCrsWkt();
 }
 
 uint64_t AbstractLocal3dCrs::getVerticalCrsEpsgCode() const
@@ -354,11 +334,7 @@ uint64_t AbstractLocal3dCrs::getVerticalCrsEpsgCode() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::eml20__VerticalCrsEpsgCode*>(static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->VerticalCrs)->EpsgCode;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::VerticalCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->VerticalCrs->Uuid)->getVerticalCrsEpsgCode();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedVerticalCrs().getVerticalCrsEpsgCode();
 }
 
 gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getProjectedCrsUnit() const
@@ -387,11 +363,7 @@ string AbstractLocal3dCrs::getProjectedCrsUnitAsString() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return gsoap_resqml2_0_1::soap_eml20__LengthUom2s(gsoapProxy2_0_1->soap, static_cast<gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedUom);
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getProjectedCrsUnitAsString();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedLocalEngineering2dCrs().getProjectedCrsUnitAsString();
 }
 
 gsoap_resqml2_0_1::eml20__LengthUom AbstractLocal3dCrs::getVerticalCrsUnit() const
@@ -446,11 +418,7 @@ gsoap_eml2_3::eml23__AxisOrder2d AbstractLocal3dCrs::getAxisOrder() const
 		}
 		return result;
 	}
-	else if (gsoapProxy2_3 != nullptr) {
-		return getRepository()->getDataObjectByUuid<EML2_3_NS::LocalEngineering2dCrs>(static_cast<gsoap_eml2_3::eml23__LocalEngineeringCompoundCrs*>(gsoapProxy2_3)->LocalEngineering2dCrs->Uuid)->getAxisOrder();
-	}
-
-	throw logic_error("Not implemented yet.");
+	else return getAssociatedLocalEngineering2dCrs().getAxisOrder();
 }
 
 void AbstractLocal3dCrs::setAxisOrder(gsoap_eml2_3::eml23__AxisOrder2d axisOrder) const

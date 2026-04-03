@@ -866,8 +866,8 @@ namespace COMMON_NS
 			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray:
 			{
 				gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray const*>(arrayInput);
-				if (latticeArray->Offset.size() > 1) {
-					throw std::invalid_argument("The integer lattice array contains more than one offset.");
+				if (latticeArray->Offset.size() != 1) {
+					throw std::invalid_argument("The integer lattice array contains zero or more than one offset.");
 				}
 				if constexpr (std::is_signed_v<T>) {
 					if (latticeArray->StartValue < (std::numeric_limits<T>::min)() || latticeArray->Offset[0]->Value < (std::numeric_limits<T>::min)()) {

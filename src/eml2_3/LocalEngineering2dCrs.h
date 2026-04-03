@@ -167,7 +167,7 @@ namespace EML2_3_NS
 		 *
 		 * @returns	The projected CRS EPSG code.
 		 */
-		DLL_IMPORT_OR_EXPORT int64_t getProjectedCrsEpsgCode() const;
+		DLL_IMPORT_OR_EXPORT uint64_t getProjectedCrsEpsgCode() const;
 
 		/**
 		 * Gets the projected CRS unit of measure as a string

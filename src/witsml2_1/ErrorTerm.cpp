@@ -54,14 +54,18 @@ bool ErrorTerm::isTopLevelElement() const
 	return getRepository()->getSourceObjects<ErrorTermDictionary>(this).empty();
 }
 
-gsoap_eml2_3::eml23__DataObjectReference* ErrorTerm::getWeightingFunctionDor() const
+gsoap_eml2_3::eml23__DataObjectReference& ErrorTerm::getWeightingFunctionDor() const
 {
-	return static_cast<witsml21__ErrorTerm*>(gsoapProxy2_3)->WeightingFunction;
+	if (auto* ptr = static_cast<witsml21__ErrorTerm*>(gsoapProxy2_3)->WeightingFunction) {
+		return *ptr;
+	}
+
+	throw logic_error("The WeightingFunction of an Error Term is required by WITSML XML schema");
 }
 
 WeightingFunction* ErrorTerm::getWeightingFunction() const
 {
-	return getRepository()->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionDor().Uuid);
 }
 
 void ErrorTerm::setWeightingFunction(WeightingFunction* weightingFunction)
@@ -82,5 +86,5 @@ void ErrorTerm::setWeightingFunction(WeightingFunction* weightingFunction)
 
 void ErrorTerm::loadTargetRelationships()
 {
-	convertDorIntoRel<WeightingFunction>(getWeightingFunctionDor());
+	convertDorIntoRel<WeightingFunction>(&getWeightingFunctionDor());
 }

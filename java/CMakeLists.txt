@@ -94,6 +94,13 @@ endif (SWIG_LINKED_TO_RELEASE)
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp)
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.h)
 
+# Disable warnings on swig generated file which we do not control
+if (WIN32)
+	set_source_files_properties(${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp PROPERTIES COMPILE_OPTIONS "/W0")
+else()
+	set_source_files_properties(${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp PROPERTIES COMPILE_OPTIONS "-w")
+endif()
+
 target_include_directories(${CPP_LIBRARY_NAME} PUBLIC ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
 
 if (SWIG_LINKED_TO_RELEASE)

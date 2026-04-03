@@ -421,12 +421,12 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 		for (uint64_t j = 0; j < jSpacingCount; ++j) {
 			jSpacings[j] = .0;
 			if (jIndexOffset > 0) {
-				for (int tmp = 0; tmp < jIndexOffset; ++tmp) {
-					jSpacings[j] += jSpacingsOnSupportingRep[jIndexOrigin + j * jIndexOffset + tmp];
+				for (size_t tmp = 0; tmp < static_cast<size_t>(jIndexOffset); ++tmp) {
+					jSpacings[j] += jSpacingsOnSupportingRep[jIndexOrigin + j * static_cast<size_t>(jIndexOffset) + tmp];
 				}
 			}
 			else if (jIndexOffset < 0) {
-				for (int tmp = 0; tmp > jIndexOffset; --tmp) {
+				for (int64_t tmp = 0; tmp > jIndexOffset; --tmp) {
 					jSpacings[j] += jSpacingsOnSupportingRep[jIndexOrigin - 1 + j * jIndexOffset + tmp];
 				}
 			}
@@ -492,12 +492,12 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 		for (uint64_t i = 0; i < iSpacingCount; ++i) {
 			iSpacings[i] = .0;
 			if (iIndexOffset > 0) {
-				for (int tmp = 0; tmp < iIndexOffset; ++tmp) {
-					iSpacings[i] += iSpacingsOnSupportingRep[iIndexOrigin + i * iIndexOffset + tmp];
+				for (size_t tmp = 0; tmp < static_cast<size_t>(iIndexOffset); ++tmp) {
+					iSpacings[i] += iSpacingsOnSupportingRep[iIndexOrigin + i * static_cast<size_t>(iIndexOffset) + tmp];
 				}
 			}
 			else if (iIndexOffset < 0) {
-				for (int tmp = 0; tmp > iIndexOffset; --tmp) {
+				for (int64_t tmp = 0; tmp > iIndexOffset; --tmp) {
 					iSpacings[i] += iSpacingsOnSupportingRep[iIndexOrigin - 1 + i * iIndexOffset + tmp];
 				}
 			}

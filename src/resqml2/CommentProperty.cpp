@@ -48,9 +48,9 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 	uint64_t strNb = values.size();
 	std::unique_ptr<unsigned char[]> cTab(new unsigned char[strNb*dimTwo]);
 
-	int indStr = 0;
+	size_t indStr = 0;
 	for (std::vector<std::string>::const_iterator it = values.begin() ; it!= values.end() ; ++it){
-		for (unsigned int indCha = 0 ; indCha < dimTwo ; indCha++) {
+		for (uint64_t indCha = 0 ; indCha < dimTwo ; indCha++) {
 			if (indCha < (*it).length())
 				cTab[(indStr*dimTwo)+indCha] = (*it)[indCha];
 			else

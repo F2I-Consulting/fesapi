@@ -1212,7 +1212,7 @@ std::string HdfProxy::readStringAttribute(const std::string & obj_name,
 	// Build the string to return
 	std::string result(buf, aSize);  // Specify the size because an HDF5 string attribute is not forced to be null terminated.
 	// Remove null terminating characters
-	while (result[result.size()-1] == '\0') {
+	while (!result.empty() && result[result.size()-1] == '\0') {
 		result.resize(result.size()-1);
 	}
 

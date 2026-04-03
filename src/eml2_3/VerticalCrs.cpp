@@ -110,7 +110,7 @@ std::string VerticalCrs::getVerticalCrsWkt() const
 	return static_cast<gsoap_eml2_3::eml23__VerticalWktCrs*>(static_cast<gsoap_eml2_3::eml23__VerticalCrs*>(gsoapProxy2_3)->AbstractVerticalCrs)->WellKnownText;
 }
 
-int64_t VerticalCrs::getVerticalCrsEpsgCode() const
+uint64_t VerticalCrs::getVerticalCrsEpsgCode() const
 {
 	return static_cast<gsoap_eml2_3::eml23__VerticalEpsgCrs*>(static_cast<gsoap_eml2_3::eml23__VerticalCrs*>(gsoapProxy2_3)->AbstractVerticalCrs)->EpsgCode;
 }

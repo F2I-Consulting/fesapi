@@ -89,7 +89,10 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_eml2_3::eml23__Inde
 
 	resqml20__IntegerLatticeArray * integerArray = soap_new_resqml20__IntegerLatticeArray(gsoapProxy2_0_1->soap);
 	elements->Indices = integerArray;
-	integerArray->StartValue = originIndex;
+	if (originIndex > static_cast<uint64_t>((std::numeric_limits<int64_t>::max)())) {
+		throw std::overflow_error("The origin index must fit into 32 bits integer.");
+	}
+	integerArray->StartValue = static_cast<int64_t>(originIndex);
 
 	resqml20__IntegerConstantArray * offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
 	offset->Count = elementCountInSlowestDimension - 1;

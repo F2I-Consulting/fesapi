@@ -105,6 +105,9 @@ Package::~Package()
 
 void Package::openForWriting(const std::string & pkgPathName, int append)
 {
+	if (pkgPathName.size() > static_cast<size_t>((std::numeric_limits<int32_t>::max)())) {
+		throw range_error("The file name " + pkgPathName + " is too long.");
+	}
 	d_ptr->allFileParts.clear();
 	d_ptr->fileContentType.clear();
 
@@ -408,12 +411,14 @@ void buildTimeInfo(tm_zip *tmzip)
     time_t tm_t = time(0);
     filedate = localtime(&tm_t);
 
-    tmzip->tm_sec  = static_cast<uInt>(filedate->tm_sec);
-    tmzip->tm_min  = static_cast<uInt>(filedate->tm_min);
-    tmzip->tm_hour = static_cast<uInt>(filedate->tm_hour);
-    tmzip->tm_mday = static_cast<uInt>(filedate->tm_mday);
-    tmzip->tm_mon  = static_cast<uInt>(filedate->tm_mon);
-    tmzip->tm_year = static_cast<uInt>(filedate->tm_year);
+	if (filedate != nullptr) {
+		tmzip->tm_sec = static_cast<uInt>(filedate->tm_sec);
+		tmzip->tm_min = static_cast<uInt>(filedate->tm_min);
+		tmzip->tm_hour = static_cast<uInt>(filedate->tm_hour);
+		tmzip->tm_mday = static_cast<uInt>(filedate->tm_mday);
+		tmzip->tm_mon = static_cast<uInt>(filedate->tm_mon);
+		tmzip->tm_year = static_cast<uInt>(filedate->tm_year);
+	}
 }
 #endif
 
@@ -438,15 +443,18 @@ void Package::writeStringIntoNewPart(const std::string &input, const std::string
 		Z_DEFAULT_COMPRESSION,				// level
 		d_ptr->isZip64);								// Zip64
 	if (err != ZIP_OK) {
+		err = zipCloseFileInZip(d_ptr->zf);
 		throw invalid_argument("Could not open " + partPath + " in the zipfile. Code = " + std::to_string(err));
 	}
 
 	// Write the content of the content type part
 	if (input.size() > (std::numeric_limits<unsigned int>::max)()) {
+		err = zipCloseFileInZip(d_ptr->zf);
 		throw invalid_argument("The string to write into " + partPath + " is too long.");
 	}
 	err = zipWriteInFileInZip(d_ptr->zf, input.c_str(), static_cast<unsigned int>(input.size()));
 	if (err < 0) {
+		err = zipCloseFileInZip(d_ptr->zf);
 		throw invalid_argument("Could not write " + partPath + " in the zipfile. Code = " + std::to_string(err));
 	}
 
@@ -505,7 +513,7 @@ void Package::writePackage()
 	// Close the zip archive
 	int err = zipClose(d_ptr->zf, "");
 	if (err != ZIP_OK) {
-		throw invalid_argument("Could not close " + d_ptr->pathName.substr(0, d_ptr->pathName.size() - 4) + ". Code = " + std::to_string(err));
+		throw invalid_argument("Could not close " + d_ptr->pathName + ". Code = " + std::to_string(err));
 	}
 }
 
@@ -552,11 +560,12 @@ bool Package::fileExists(const string & filename) const
 			return false;
 		}
 		unz64_file_pos filePos;
-		unzGetFilePos64(d_ptr->unzipped, &filePos);
-		d_ptr->name2file[filename] = filePos;
+		const int err = unzGetFilePos64(d_ptr->unzipped, &filePos);
+		if (err == UNZ_OK) d_ptr->name2file[filename] = filePos;
+		else throw logic_error("Cannot get file " + filename + " position in EPC.");
 	}
 	else {
-		unzGoToFilePos64(d_ptr->unzipped, &it->second);
+		if (unzGoToFilePos64(d_ptr->unzipped, &it->second) != UNZ_OK) throw logic_error("Cannot go to file " + filename + " position in EPC.");
 	}
 	return true;
 }
