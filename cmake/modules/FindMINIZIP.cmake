@@ -48,8 +48,8 @@ set(_MINIZIP_SEARCH_NORMAL
 unset(_MINIZIP_x86)
 list(APPEND _MINIZIP_SEARCHES _MINIZIP_SEARCH_NORMAL)
 
-set(MINIZIP_NAMES minizip)
-set(MINIZIP_NAMES_DEBUG minizipd minizip_d)
+set(MINIZIP_NAMES minizip minizips)
+set(MINIZIP_NAMES_DEBUG minizipd minizipsd minizip_d)
 
 # Try each search configuration.
 foreach(search ${_MINIZIP_SEARCHES})
