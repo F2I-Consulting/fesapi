@@ -12,7 +12,7 @@ jobs:
         shell: pwsh
         run: |
           # Download and extract
-          curl -L "https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz" -o "${{ runner.temp }}\zlib.tar.gz"
+          curl -L "https://github.com/madler/zlib/releases/download/v1.3.2/zlib-1.3.2.tar.gz" -o "${{ runner.temp }}\zlib.tar.gz"
           cd ${{ runner.temp }}
           tar -xzf zlib.tar.gz
           # Detect extracted folder (handles zlib-1.3.1 or future versions)
@@ -22,16 +22,7 @@ jobs:
           mkdir zlib-build
           cd zlib-build
           # Configure and install
-          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/zlib-install $zlibSrc.FullName
-          cmake --build . --config Release -j2
-          cmake --build . --config Release --target INSTALL
-      - name: Minizip static lib install
-        run: |
-          git clone https://github.com/F2I-Consulting/Minizip.git ${{ runner.temp }}/Minizip
-          cd ${{ runner.temp }}
-          mkdir minizip-build
-          cd minizip-build
-          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DBUILD_SHARED_LIBS=FALSE -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/minizip-install ${{ runner.temp }}/Minizip
+          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DZLIB_BUILD_MINIZIP=ON -DZLIB_BUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/zlib-install $zlibSrc.FullName
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: HDF5 install
@@ -41,7 +32,7 @@ jobs:
           Expand-Archive ${{ runner.temp }}\hdf5-2.0.0.zip -DestinationPath ${{ runner.temp }}
           mkdir hdf5-build
           cd hdf5-build
-          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DZLIB_ROOT:PATH=${{ runner.temp }}/zlib-install -DZLIB_INCLUDE_DIR:PATH=${{ runner.temp }}/zlib-install/include -DZLIB_LIBRARY:PATH=${{ runner.temp }}/zlib-install/lib/zlibstatic.lib -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/hdf5-install ${{ runner.temp }}/hdf5-2.0.0
+          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DZLIB_ROOT:PATH=${{ runner.temp }}/zlib-install -DZLIB_INCLUDE_DIR:PATH=${{ runner.temp }}/zlib-install/include -DZLIB_LIBRARY:PATH=${{ runner.temp }}/zlib-install/lib/zs.lib -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/hdf5-install ${{ runner.temp }}/hdf5-2.0.0
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Boost install
@@ -57,7 +48,7 @@ jobs:
           cd ${{ github.workspace }}/..
           mkdir build
           cd build
-          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/minizip-install -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.4.1/swig.exe -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
+          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/zlib-install -DMINIZIP_USE_STATIC_LIBS=TRUE -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.4.1/swig.exe -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Add msbuild to PATH
@@ -179,27 +170,33 @@ jobs:
           CIBW_BUILD: cp38-manylinux_* cp39-manylinux_* cp310-manylinux_* cp311-manylinux_* cp312-manylinux_* cp313-manylinux_*
           CIBW_ARCHS: auto64
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
-          CIBW_BEFORE_ALL: >
-            yum install -y wget gcc-c++ boost-devel &&
-            yum search epel-release &&
-            yum info epel-release &&
-            yum install -y epel-release &&
-            yum --enablerepo=epel install -y minizip1.2-devel cmake3 &&
-            wget --no-verbose https://support.hdfgroup.org/releases/hdf5/v2_0/v2_0_0/downloads/hdf5-2.0.0.tar.gz && 
-            tar -xzf hdf5-2.0.0.tar.gz &&
-            cd hdf5-2.0.0 &&
-            mkdir build &&
-            cd build &&
-            cmake -G "Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../hdf5-install .. &&
-            cmake --build . --config Release &&
-            make -j4 &&
-            make install &&
-            cd ../.. &&
-            mkdir build &&
-            cd build &&
-            cmake3 -DCMAKE_BUILD_TYPE=Release -DHDF5_ROOT=${{ github.workspace }}/../hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING=/fesapi-install {project} &&
-            cmake3 --build . -j2 --config Release &&
-            cmake3 --install .
+          CIBW_BEFORE_ALL: |
+            yum remove cmake
+            yum install -y wget gcc-c++ boost-devel
+            yum search epel-release
+            yum info epel-release
+            yum install -y epel-release
+            yum --enablerepo=epel install -y minizip1.2-devel
+            cd ${{ github.workspace }}/..
+            wget --no-verbose https://github.com/Kitware/CMake/releases/download/v4.3.2/cmake-4.3.2-linux-x86_64.tar.gz
+            tar -xzf cmake-4.3.2-linux-x86_64.tar.gz
+            export PATH=${{ github.workspace }}/../cmake-4.3.2-linux-x86_64/bin:$PATH
+            cmake --version  # Should cmake version
+            wget --no-verbose https://support.hdfgroup.org/releases/hdf5/v2_0/v2_0_0/downloads/hdf5-2.0.0.tar.gz 
+            tar -xzf hdf5-2.0.0.tar.gz
+            cd hdf5-2.0.0
+            mkdir build
+            cd build
+            cmake -G "Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../hdf5-install ..
+            cmake --build . --config Release
+            make -j4
+            make install
+            cd ../..
+            mkdir build
+            cd build
+            cmake -DCMAKE_BUILD_TYPE=Release -DHDF5_ROOT=${{ github.workspace }}/../hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING=/fesapi-install {project}
+            cmake --build . -j2 --config Release
+            cmake --install .
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: >
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/fesapi-install/lib64 &&
             auditwheel repair -w {dest_dir} {wheel}

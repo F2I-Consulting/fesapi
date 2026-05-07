@@ -1,4 +1,5 @@
-cmake_minimum_required (VERSION 3.12)
+# The cmake/modules/FindZLIB.cmake relies on CMP0159 which is only available from CMAKE 3.29
+cmake_minimum_required (VERSION 3.29)
 
 project (Fesapi)
 
