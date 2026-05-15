@@ -3597,11 +3597,18 @@ void DataObjectRepository::registerDataFeeder(COMMON_NS::DataFeeder * dataFeeder
 	dataFeeders.push_back(dataFeeder);
 }
 
-void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory) {
+void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory* factory) {
 	if (factory == nullptr) {
 		throw invalid_argument("You cannot set a NULL HDF proxy factory.");
 	}
 	hdfProxyFactory.reset(factory);
+}
+
+void DataObjectRepository::setHdfProxyFactory(std::unique_ptr<COMMON_NS::HdfProxyFactory> factory) {
+	if (factory == nullptr) {
+		throw invalid_argument("You cannot set a NULL HDF proxy factory.");
+	}
+	hdfProxyFactory = std::move(factory);
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::resolvePartial(COMMON_NS::AbstractObject * partialObj)

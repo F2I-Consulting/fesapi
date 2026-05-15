@@ -19,16 +19,11 @@ under the License.
 %module fesapi
 %feature("python:annotations", "c");
 
-%{
-#if defined(__clang__) || defined(_MSC_VER)
-#elif defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic ignored "-Wcast-qual"
-#pragma GCC diagnostic ignored "-Wstrict-aliasing"
-#endif
-%}
-
 %include "stdint.i"
 %include "std_string.i"
+#if SWIG_VERSION >= 0x040100
+%include <std_unique_ptr.i>
+#endif
 
 %include "../src/nsDefinitions.h"
 
@@ -94,6 +89,7 @@ under the License.
 	SWIG_CSBODY_PROXY(public, public, SWIGTYPE)
 	SWIG_CSBODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 	
+#if SWIG_VERSION < 0x040100
 %typemap(cscode) COMMON_NS::DataObjectRepository %{
   private HdfProxyFactory hdfProxyFactoryReference = null;
 %}
@@ -101,6 +97,7 @@ under the License.
 %typemap(csin,
          post="      hdfProxyFactoryReference = $csinput;"
          ) COMMON_NS::HdfProxyFactory * factory "HdfProxyFactory.getCPtr($csinput)"
+#endif
 	
 	%include "swigCsInclude.i"
 #endif
@@ -116,6 +113,7 @@ under the License.
 	%}
 	%include "swigPythonInclude.i"
 
+#if SWIG_VERSION < 0x040100
 	/* Following extensions aims at preventing the Python garbage collector from
 	garbage collecting an HDF Proxy factory that may be still used by a repository. */
 	%fragment("hdf_proxy_factory_reference_init", "init") {
@@ -132,6 +130,7 @@ under the License.
 		  PyObject_SetAttr($self, hdf_proxy_factory_reference(), args);
 		%}
 	}
+#endif
 #endif
 
 
@@ -220,6 +219,7 @@ namespace EML2_NS
 %module(directors="1") fesapi
 %feature("director") COMMON_NS::HdfProxyFactory;
 
+#if SWIG_VERSION < 0x040100
 /*
 Following csbody and javabody typemap definitions force the target language to not 
 manage the memory of the C++ part of wrapped COMMON_NS::HdfProxyFactory and 
@@ -254,6 +254,7 @@ destructor).
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 %}
+#endif
 
 /* 
 AbstractHdfProxy may be inherited in target languages. In such case, overriding
@@ -276,6 +277,10 @@ warning (205) during the Swig processing.
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 %}
+
+#if SWIG_VERSION >= 0x040100
+%unique_ptr(COMMON_NS::HdfProxyFactory)
+#endif
 namespace COMMON_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
@@ -917,6 +922,7 @@ import java.lang.AutoCloseable;
 import com.f2i_consulting.fesapi.*;
 %}
 %typemap(javainterfaces) COMMON_NS::DataObjectRepository "AutoCloseable"
+#if SWIG_VERSION < 0x040100
 %typemap(javacode) COMMON_NS::DataObjectRepository %{
   private HdfProxyFactory hdfProxyFactoryReference;
   
@@ -929,7 +935,15 @@ import com.f2i_consulting.fesapi.*;
 %typemap(javain, 
          post="      hdfProxyFactoryReference = $javainput;"
          ) COMMON_NS::HdfProxyFactory * factory "HdfProxyFactory.getCPtr($javainput)"
-		 
+#else
+%typemap(javacode) COMMON_NS::DataObjectRepository %{
+  @Override
+  public void close() {
+	clear();
+    delete();
+  }
+%}
+#endif
 	/**
 	 * @brief	A DataObjectRepository stores in memory all dataObjects.
 	 *			This is the in-memory container which holds deserialized (EPC) files and fetched ETP dataobjects.
@@ -1039,13 +1053,23 @@ import com.f2i_consulting.fesapi.*;
 		 * @param[in]	hdfProxy	If non-null, the HDF5 file proxy.
 		 */
 		void setDefaultHdfProxy(EML2_NS::AbstractHdfProxy* hdfProxy);
-
+		
+#if SWIG_VERSION >= 0x040100
 		/**
-		* Set the factory used to create HDF proxy and takes ownership of this HDF Proxy factory (don't delete it!)
+		* Set the factory used to create HDF proxy and takes ownership of this HDF Proxy factory (don't use it after having called this method!)
 		* 
 		* @param[in]	factory	If non-null, the factory.
 		*/
-		void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
+		void setHdfProxyFactory(std::unique_ptr<COMMON_NS::HdfProxyFactory> factory);
+#else
+		/**
+		* Set the factory used to create HDF proxy and takes ownership of this HDF Proxy factory.
+		* Don't delete it! Do not allow gabage to collect it. Disown it from Swig since it will be destroyed by the C++ layer anyhow.
+		* 
+		* @param[in]	factory	If non-null, the factory.
+		*/
+		void setHdfProxyFactory(COMMON_NS::HdfProxyFactory* factory);
+#endif
 
 		/**
 		 * Adds or replaces (based on Energistics XML definition) a data object in the repository. It

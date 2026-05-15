@@ -303,13 +303,21 @@ namespace COMMON_NS
 		 * @param[in]	target	The target object of the relationship.
 		 */
 		DLL_IMPORT_OR_EXPORT void deleteRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
-
+		
 		/**
 		* Set the factory used to create HDF proxy and takes ownership of this HDF Proxy factory (don't delete it!)
 		* 
 		* @param[in]	factory	If non-null, the factory.
 		*/
-		DLL_IMPORT_OR_EXPORT void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
+		[[deprecated("Use setHdfProxyFactory(std::unique_ptr<COMMON_NS::HdfProxyFactory> factory) instead.")]]
+		DLL_IMPORT_OR_EXPORT void setHdfProxyFactory(COMMON_NS::HdfProxyFactory* factory);
+
+		/**
+		* Set the factory used to create HDF proxy and takes ownership of this HDF Proxy factory (don't use it after having called this method!)
+		* 
+		* @param[in]	factory	If non-null, the factory.
+		*/
+		DLL_IMPORT_OR_EXPORT void setHdfProxyFactory(std::unique_ptr<COMMON_NS::HdfProxyFactory> factory);
 
 		/**
 		* Get the journal of the DataObject repository.

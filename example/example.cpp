@@ -2609,7 +2609,7 @@ bool serialize(const string& filePath)
 	epcDoc.serializeFrom(repo);
 
 	// Check HDF proxy factory
-	repo.setHdfProxyFactory(new HdfProxyFactoryExample());
+	repo.setHdfProxyFactory(std::make_unique<HdfProxyFactoryExample>());
 	auto* exoticHdfPox = repo.createHdfProxy("", "Dummy Exotic HDF proxy", "", "", COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 	double dummyPoints[3] = { 1.0, 2.0, 3.0 };
 	repo.createPointSetRepresentation("", "")->pushBackXyzGeometryPatch(1, dummyPoints, exoticHdfPox);

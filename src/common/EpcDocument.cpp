@@ -315,7 +315,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 					if (rel.getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
 						target = rel.getTarget();
 						if (target.find("http://") == 0 || target.find("https://") == 0) {
-							repo.setHdfProxyFactory(new HdfProxyROS3Factory());
+							repo.setHdfProxyFactory(std::make_unique<HdfProxyROS3Factory>());
 						}
 						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 						break;
@@ -411,10 +411,10 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 						if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
 							const std::string target = allRels[relIndex].getTarget();
 							if (target.find("http://") == 0 || target.find("https://") == 0) {
-								repo.setHdfProxyFactory(new HdfProxyROS3Factory());
+								repo.setHdfProxyFactory(std::make_unique<HdfProxyROS3Factory>());
 							}
 							else {
-								repo.setHdfProxyFactory(new HdfProxyFactory());
+								repo.setHdfProxyFactory(std::make_unique<HdfProxyFactory>());
 							}
 							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 							static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRelativePath(target);

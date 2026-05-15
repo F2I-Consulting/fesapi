@@ -29,7 +29,7 @@ else (WIN32)
 endif (WIN32)
 configure_file(${CMAKE_SOURCE_DIR}/cmake/swigPythonInclude.i.in ${CMAKE_SOURCE_DIR}/swig/swigPythonInclude.i) # Overwrite if different
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-	set (EXTRA_COMPILE_ARGS "extra-compile-args=['/DSWIG_TYPE_TABLE=FESTAPI']")
+	set (EXTRA_COMPILE_ARGS "extra-compile-args=['/DSWIG_TYPE_TABLE=FESTAPI', '/std:c++17', '/Zc:__cplusplus']")
 else ()
 	set (EXTRA_COMPILE_ARGS "extra-compile-args=['-DSWIG_TYPE_TABLE=FESTAPI', '-std=c++17']")
 endif()

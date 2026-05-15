@@ -46,6 +46,10 @@ target_compile_options(${CPP_LIBRARY_NAME} PRIVATE
 	$<$<CXX_COMPILER_ID:MSVC>:/bigobj>
 	$<$<CXX_COMPILER_ID:MSVC>:/MP>
 	$<$<CXX_COMPILER_ID:MSVC>:/W4>
+# see https://gitlab.kitware.com/cmake/cmake/-/work_items/18837#note_722476
+	$<$<CXX_COMPILER_ID:MSVC>:/Zc:__cplusplus>
+# see https://gitlab.kitware.com/cmake/cmake/-/work_items/27739#note_1800278
+	$<$<CXX_COMPILER_ID:MSVC>:/permissive->
 )
 if (WITH_RESQML2_2)
 	target_compile_definitions(${CPP_LIBRARY_NAME} PUBLIC "-DWITH_RESQML2_2")
