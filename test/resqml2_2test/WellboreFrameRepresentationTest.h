@@ -21,10 +21,6 @@ under the License.
 #include "AbstractTest.h"
 #include <iostream>
 
-namespace COMMON_NS {
-	class DataObjectRepository;
-}
-
 namespace resqml2_2test {
 	class WellboreFrameRepresentationTest : public commontest::AbstractTest {
 	public:

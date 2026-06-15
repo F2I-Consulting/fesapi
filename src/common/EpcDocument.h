@@ -63,7 +63,7 @@ namespace COMMON_NS
 		/**
 		 * Serializes the content of a data object repository into this EPC document.
 		 *
-		 * @param 	repo		A data object repository (not const because we may create a Fake Property for solivng a RESQML2.0.1 empty PropertySet issue)
+		 * @param 	repo		A data object repository (not const because we may create a Fake Property for solving a RESQML2.0.1 empty PropertySet issue)
 		 */
 		DLL_IMPORT_OR_EXPORT void serializeFrom(DataObjectRepository& repo);
 

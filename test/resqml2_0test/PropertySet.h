@@ -21,16 +21,14 @@ under the License.
 #include "AbstractTest.h"
 #include <iostream>
 
-namespace resqml2_2test {
-	class WellboreRegularFrameRepresentationTest : public commontest::AbstractTest {
+namespace resqml2_0test {
+	class PropertySet : public commontest::AbstractTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
-
-		WellboreRegularFrameRepresentationTest(const std::string & repoPath);
+		PropertySet(const std::string & repoPath);
 
 	protected:
 		void initRepo();
 		void readRepo();
 	};
 }
+

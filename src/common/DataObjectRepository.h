@@ -423,7 +423,7 @@ namespace COMMON_NS
 		* @param[in]	proxy		The data object to add.
 		* @return True if the addition has been done, false if it already exists a same UUID in the repository
 		*/
-		bool addDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy);
+		DLL_IMPORT_OR_EXPORT bool addDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy);
 
 		/**
 		 * Adds or replaces (based on UUID and version) a data object in the repository. It does also
@@ -463,7 +463,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void setUriSource(const std::string& uriSource);
 
 		/**
-		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobejct ot delte has got backward relationships.
+		* Delete a dataobject wich has not got any backward relationships. Throw an exception if the dataobject to delete has got backward relationships.
 		* It also goes on every forward related dataobject and delete them if they have no more backward relationships.
 		* It does that recursively.
 		* Remark : it is mainly used to delete properties because usually no dataobject points to them.
@@ -777,12 +777,12 @@ namespace COMMON_NS
 		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & version = "")
 		{
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(guid, title, version);
-			valueType* result = new valueType(dor);
+			auto result = std::make_unique<valueType>(dor);
 			dor->ContentType = result->getContentType();
-			addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{result});
-			return result;
+			auto* rawPtr = result.get();
+			if (!addDataObject(std::move(result))) throw std::invalid_argument("The UUID " + guid + " has already been inserted in the dataobject repository.");
+			return rawPtr;
 		}
-
 
 		//************************************
 		//***** DataObject creation **********

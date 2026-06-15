@@ -35,6 +35,8 @@ under the License.
 #include "RepresentationSetRepresentation.h"
 #include "SubRepresentation.h"
 
+#include "../resqml2_0_1/PropertySet.h"
+
 using namespace RESQML2_NS;
 using namespace std;
 
@@ -310,12 +312,30 @@ COMMON_NS::DataObjectReference AbstractRepresentation::getTimeSeriesDor() const
 
 std::vector<AbstractProperty*> AbstractRepresentation::getPropertySet() const
 {
-	return getRepository()->getSourceObjects<RESQML2_NS::AbstractProperty>(this);
+	auto result = getRepository()->getSourceObjects<AbstractProperty>(this);
+	result.erase(
+		std::remove_if(
+			result.begin(),
+			result.end(),
+			[](AbstractProperty* prop) { return prop->getUuid() == RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID; }
+		),
+		result.end()
+	);
+	return result;
 }
 
 std::vector<AbstractValuesProperty*> AbstractRepresentation::getValuesPropertySet() const
 {
-	return getRepository()->getSourceObjects<RESQML2_NS::AbstractValuesProperty>(this);
+	auto result = getRepository()->getSourceObjects<RESQML2_NS::AbstractValuesProperty>(this);
+	result.erase(
+		std::remove_if(
+			result.begin(),
+			result.end(),
+			[](AbstractProperty* prop) { return prop->getUuid() == RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID; }
+		),
+		result.end()
+	);
+	return result;
 }
 
 std::vector<PointsProperty*> AbstractRepresentation::getPointsPropertySet() const

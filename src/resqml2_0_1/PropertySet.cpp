@@ -18,11 +18,38 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "PropertySet.h"
 
-#include "../resqml2/AbstractProperty.h"
+#include "../resqml2/AbstractRepresentation.h"
+
+#include "DiscreteProperty.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
+
+namespace {
+	RESQML2_NS::AbstractValuesProperty* getOrCreateFakeProperty(COMMON_NS::DataObjectRepository& repo) {
+		COMMON_NS::AbstractObject* fakeProp = repo.getDataObjectByUuid(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID);
+		if (fakeProp != nullptr) {
+			if (auto* temp = dynamic_cast<RESQML2_NS::AbstractValuesProperty*>(fakeProp)) {
+				return temp;
+			}
+			else {
+				throw invalid_argument("The Fake property UUID is already used but no as a property");
+			}
+		}
+
+		auto allReps = repo.getDataObjects<RESQML2_NS::AbstractRepresentation>();
+		if (allReps.empty()) {
+			throw new logic_error("Please add first a representation before creating a property set");
+		}
+		auto* firstRep = allReps.at(0);
+		RESQML2_0_1_NS::DiscreteProperty* fakeDiscreteProp = repo.createDiscreteProperty(
+			firstRep, RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID, "Fake Property", 1, gsoap_eml2_3::eml23__IndexableElement::representation, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
+		fakeDiscreteProp->pushBackIntegerConstantArrayOfValues(-1, 1);
+
+		return fakeDiscreteProp;
+	}
+}
 
 PropertySet::PropertySet(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
 	bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind)
@@ -41,6 +68,10 @@ PropertySet::PropertySet(COMMON_NS::DataObjectRepository* repo, const std::strin
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
+
+	auto* fakeProp = getOrCreateFakeProperty(*repo);
+	pushBackXmlProperty(fakeProp);
+	repository->addRelationship(this, fakeProp);
 }
 
 void PropertySet::setParent(PropertySet * parent)
@@ -76,6 +107,23 @@ void PropertySet::pushBackProperty(RESQML2_NS::AbstractProperty * prop)
 		throw invalid_argument("The property to push cannot be null.");
 	}
 
+	// Check if we need to remove the fake property
+	if (getPropertyCount() == 0) {
+		auto* repo = getRepository();
+		static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties.clear();
+		auto* fakeProp = repo->getDataObjectByUuid(FAKE_PROP_UUID);
+		if (fakeProp == nullptr) { // Defensive code
+			throw std::logic_error("The fake property should exist since an empty property set is not allowed per RESQML spec");
+		}
+		if (fakeProp == prop) { // Defensive code
+			throw std::invalid_argument("It is not allowed to push back the fake property since the latter is automatically managed");
+		}
+		repo->deleteRelationship(this, fakeProp);
+		if (repo->getSourceObjects(fakeProp).empty()) {
+			repo->cascadeDeleteDataObject(fakeProp);
+		}
+	}
+
 	pushBackXmlProperty(prop);
 
 	repository->addRelationship(this, prop);
@@ -83,7 +131,10 @@ void PropertySet::pushBackProperty(RESQML2_NS::AbstractProperty * prop)
 
 std::vector<RESQML2_NS::AbstractProperty *> PropertySet::getProperties() const
 {
-	return repository->getTargetObjects<RESQML2_NS::AbstractProperty>(this);
+	auto props = repository->getTargetObjects<RESQML2_NS::AbstractProperty>(this);
+	return props.size() == 1 && props[0]->getUuid() == FAKE_PROP_UUID
+		? std::vector<RESQML2_NS::AbstractProperty*>()
+		: props;
 }
 
 uint64_t PropertySet::getPropertyCount() const noexcept
@@ -110,13 +161,15 @@ void PropertySet::loadTargetRelationships()
 		}
 	}
 
-	auto allPropDors = getAllPropertiesDors();
-	if (allPropDors.size() == 1 && allPropDors[0].getUuid() == FAKE_PROP_UUID) {
-		static_cast<_resqml20__PropertySet*>(gsoapProxy2_0_1)->Properties.clear();
+	auto allPropsDors = getAllPropertiesDors();
+	if (allPropsDors.empty()) {
+		getRepository()->addWarning("The property set " + getUuid() + " has no property at all. It will be made as partial.");
+		changeToPartialObject();
+		return;
 	}
 
-	for (auto dor2 : getAllPropertiesDors()) {
-		if (!dor2.isEmpty() && dor2.getUuid() != FAKE_PROP_UUID) {
+	for (auto dor2 : allPropsDors) {
+		if (!dor2.isEmpty()) {
 			convertDorIntoRel(dor2);
 		}
 	}

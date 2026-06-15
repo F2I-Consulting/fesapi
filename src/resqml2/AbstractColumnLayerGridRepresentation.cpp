@@ -67,13 +67,16 @@ void AbstractColumnLayerGridRepresentation::setKCellCount(uint64_t kCount)
 
 void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(int64_t const* stratiUnitIndices, int64_t nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, EML2_NS::AbstractHdfProxy * hdfProxy)
 {
+	if (stratiOrgInterp == nullptr) {
+		throw invalid_argument(getUuid() + " : Cannot link to a null stratigraphic org interp");
+	}
 	if (isTruncated()) {
-		throw invalid_argument("A truncated grid cannot be linked to a strati column in RESQML2");
+		throw invalid_argument(getUuid() + " : A truncated grid cannot be linked to a strati column in RESQML2");
 	}
 	if (hdfProxy == nullptr) {
 		hdfProxy = getRepository()->getDefaultHdfProxy();
 		if (hdfProxy == nullptr) {
-			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+			throw std::invalid_argument(getUuid() + " : A (default) HDF Proxy must be provided.");
 		}
 	}
 	const uint64_t dim = getKCellCount();

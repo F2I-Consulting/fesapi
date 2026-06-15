@@ -36,8 +36,6 @@ under the License.
 #include "../resqml2/AbstractRepresentation.h"
 #include "../resqml2/WellboreMarkerFrameRepresentation.h"
 
-#include "../resqml2_0_1/DiscreteProperty.h"
-#include "../resqml2_0_1/PropertySet.h"
 #include "../resqml2_0_1/WellboreMarker.h"
 
 #include "../witsml2_1/Log.h"
@@ -213,29 +211,6 @@ namespace {
 }
 
 namespace {
-	RESQML2_0_1_NS::DiscreteProperty* getOrCreateFakeProperty(DataObjectRepository& repo) {
-		RESQML2_0_1_NS::DiscreteProperty* fakeProp = repo.getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID);
-		if (fakeProp != nullptr) { return fakeProp; }
-
-		auto* firstRep = repo.getDataObjects<RESQML2_NS::AbstractRepresentation>().at(0);
-		fakeProp = repo.createDiscreteProperty(
-			firstRep, RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID, "Fake Property", 1, gsoap_eml2_3::eml23__IndexableElement::representation, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind::index);
-		fakeProp->pushBackIntegerConstantArrayOfValues(-1, 1);
-
-		return fakeProp;
-	}
-
-	void addFakePropertyToEmptyPropertySet(DataObjectRepository& repo) {
-		for (auto* propSet : repo.getDataObjects<RESQML2_0_1_NS::PropertySet>()) {
-			if (propSet->getProperties().empty()) {
-				//Add a fake property since the RESQML2.0.1 does not allow empty property set
-				propSet->pushBackProperty(getOrCreateFakeProperty(repo));
-			}
-		}
-	}
-}
-
-namespace {
 	/**
 	* The version in the EPC content type is just two digits delimited by a dot : https://docs.energistics.org/#EPC/EPC_TOPICS/EPC-000-023-0-C-sv1000.html
 	*/
@@ -250,8 +225,6 @@ namespace {
 
 void EpcDocument::serializeFrom(DataObjectRepository& repo)
 {
-	addFakePropertyToEmptyPropertySet(repo);
-
 	package->openForWriting(filePath, APPEND_STATUS_CREATE);
 
 	for (auto const& uuidDataobjectPair : repo.getDataObjects()) {
@@ -337,7 +310,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 		}
 		else if (contentType.find("application/vnd.openxmlformats-package") == std::string::npos &&
 			contentType != "application/x-extended-core-properties+xml") {
-			result += "The content type " + contentType + " is not recognized by FESAPI and will be ignored.";
+			result += "The content type \"" + contentType + "\" in entry \"" + contentTypeEntry.second.toString() + "\" is not supported by FESAPI and will be ignored.\n";
 		}
 	}
 
@@ -379,9 +352,9 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 	}
 
 	// 14 equals "application/x-".size()
-	for (auto it : package->getFileContentType().getAllContentType()) {
-		if (!it.second.isAssociatedToAnExtension) {
-			std::string contentType = it.second.getContentTypeString();
+	for (auto contentTypeEntry : package->getFileContentType().getAllContentType()) {
+		if (!contentTypeEntry.second.isAssociatedToAnExtension) {
+			std::string contentType = contentTypeEntry.second.getContentTypeString();
 			if (contentType.find("resqml", 14) != std::string::npos ||
 				contentType.find("eml", 14) != std::string::npos ||
 				contentType.find("witsml", 14) != std::string::npos ||
@@ -394,13 +367,13 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 				if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
 					// Look for the relative path of the HDF file
 					string relFilePath = "";
-					const size_t slashPos = it.second.getExtensionOrPartName().substr(1).find_last_of("/\\");
+					const size_t slashPos = contentTypeEntry.second.getExtensionOrPartName().substr(1).find_last_of("/\\");
 					if (slashPos != string::npos) {
-						relFilePath = it.second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
+						relFilePath = contentTypeEntry.second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
 					}
-					relFilePath += "_rels" + it.second.getExtensionOrPartName().substr(it.second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
+					relFilePath += "_rels" + contentTypeEntry.second.getExtensionOrPartName().substr(contentTypeEntry.second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
 					if (!package->fileExists(relFilePath)) {
-						result += "The HDF proxy " + it.second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
+						result += "The HDF proxy " + contentTypeEntry.second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
 						continue;
 					}
 					epc::FileRelationship relFile;
@@ -416,7 +389,7 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 							else {
 								repo.setHdfProxyFactory(std::make_unique<HdfProxyFactory>());
 							}
-							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it.second.getExtensionOrPartName().substr(1)), contentType, filePath);
+							wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 							static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setRelativePath(target);
 							break;
 						}
@@ -429,7 +402,7 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 					static_cast<EML2_0_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
 				}
 				else {
-					repo.createPartial(extractUuidFromFileName(it.first), "Partial title", contentType);
+					repo.createPartial(extractUuidFromFileName(contentTypeEntry.first), "Partial title", contentType);
 				}
 			}
 		}
@@ -463,15 +436,16 @@ void EpcDocument::deserializeRelFiles(DataObjectRepository & repo)
 			}
 			relFilePath += "_rels" + it.second.getExtensionOrPartName().substr(it.second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
 			if (package->fileExists(relFilePath)) {
+				const std::string sourceUuid = extractUuidFromFileName(it.first);
+				COMMON_NS::AbstractObject* source = repo.getDataObjectByUuid(sourceUuid);
+
 				// Read Relationshsips
 				epc::FileRelationship relFile;
 				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
-				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
-					const epc::Relationship& rel = allRels[relIndex];
+				for (const epc::Relationship& rel : relFile.getAllRelationship()) {
 					if (rel.getType() == "http://schemas.energistics.org/package/2012/relationships/destinationObject") {
-						COMMON_NS::AbstractObject* source = repo.getDataObjectByUuid(extractUuidFromFileName(it.first));
-						COMMON_NS::AbstractObject* destination = repo.getDataObjectByUuid(extractUuidFromFileName(rel.getTarget()));
+						const std::string destinationUuid = extractUuidFromFileName(rel.getTarget());
+						COMMON_NS::AbstractObject* destination = repo.getDataObjectByUuid(destinationUuid);
 						repo.addRelationship(source, destination);
 					}
 				}

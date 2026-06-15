@@ -149,14 +149,11 @@ jobs:
             cd %RUNNER_TEMP% &&
             mkdir fesapi-build &&
             cd fesapi-build &&
-            cmake -DCMAKE_TOOLCHAIN_FILE=%VCPKG_INSTALLATION_ROOT%\scripts\buildsystems\vcpkg.cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX=%RUNNER_TEMP%/fesapi-install ${{ github.workspace }} &&
+            cmake -DCMAKE_TOOLCHAIN_FILE=%VCPKG_INSTALLATION_ROOT%\scripts\buildsystems\vcpkg.cmake -G"Visual Studio 18 2026" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX=%RUNNER_TEMP%/fesapi-install ${{ github.workspace }} &&
             cmake --build . --config Release -j2 &&
             cmake --build . --config Release --target INSTALL &&
             pip install delvewheel
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: >
-            echo "Copying from: %RUNNER_TEMP%\fesapi-install\lib\*.lib" &&
-            echo "Copying to:   %RUNNER_TEMP%\fesapi-build\Release" &&
-            dir "%RUNNER_TEMP%\fesapi-install\lib\*.lib" &&
             copy "%RUNNER_TEMP%\fesapi-install\lib\*.lib" "%RUNNER_TEMP%\fesapi-build\Release\" &&
             delvewheel repair --add-path %RUNNER_TEMP%\fesapi-build\Release --include-imports --namespace-pkg fesapi -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: python ${{github.workspace}}\python\example\example.py

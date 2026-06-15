@@ -393,7 +393,7 @@ void DataObjectRepository::clear()
 void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target)
 {
 	if (source == nullptr || target == nullptr) {
-		throw invalid_argument("Cannot set a relationship with a null pointer");
+		throw invalid_argument("Cannot set a relationship from " + (source == nullptr ? "NULL" : source->getUuid()) + " to " + (target == nullptr ? "NULL" : target->getUuid()));
 	}
 	if (dynamic_cast<EML2_3_NS::HdfProxy*>(target) != nullptr) {
 		const std::string& xmlNs = source->getXmlNamespace();
@@ -432,7 +432,7 @@ void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, C
 void DataObjectRepository::deleteRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target)
 {
 	if (source == nullptr || target == nullptr) {
-		throw invalid_argument("Cannot set a relationship with a null pointer");
+		throw invalid_argument("Cannot delete a relationship from " + (source == nullptr ? "NULL" : source->getUuid()) + " to " + (target == nullptr ? "NULL" : target->getUuid()));
 	}
 
 	auto sourceIt = forwardRels.find(source);
@@ -599,11 +599,6 @@ bool DataObjectRepository::addDataObject(std::unique_ptr<COMMON_NS::AbstractObje
 
 COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy, bool replaceOnlyContent)
 {
-	if (proxy->getUuid() == RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) {
-		addWarning("The FESAPI fake property " + std::string(RESQML2_0_1_NS::PropertySet::FAKE_PROP_UUID) + " has been detected and will be ignored.");
-		return nullptr;
-	}
-
 	COMMON_NS::AbstractObject* rawProxyPtr = proxy.get();
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		// ADD

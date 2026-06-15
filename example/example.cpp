@@ -1218,8 +1218,10 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 	/**************
 	 Stratigraphy
 	***************/
-	int64_t stratiUnitIndice = 0;
-	twoCellsIjkGrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
+	if (stratiColumnRank0 != nullptr) {
+		const int64_t stratiUnitIndice = 0;
+		twoCellsIjkGrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
+	}
 
 	// Partial transfer
 	RESQML2_NS::UnstructuredGridRepresentation* partialGrid = repo->createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>("5cc3ee47-4bd5-4d82-ae3e-ed64e6d8d1eb", "Partial Grid");
@@ -2224,7 +2226,7 @@ PRODML2_3_NS::FluidSystem* serializeFluidSystem(COMMON_NS::DataObjectRepository 
 	fluidSystem->setStockTankOilAPIGravity((141.5/0.8989209)-131.5, gsoap_eml2_3::eml23__APIGravityUom::dAPI);
 	/*
 	fluidSystem->setNaturalGasGasGravity(0.8);
-	fluidSystem->setRemark("This data comes from the official PRODML PVT Eenrgistics documentation");
+	fluidSystem->setRemark("This data comes from the official PRODML PVT Energistics documentation");
 	*/
 
 	fluidSystem->setRockFluidOrganization(rockFluidOrgInterp);
@@ -2649,9 +2651,8 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 	if (!propertySet.empty()) {
 		cout << "PROPERTIES" << std::endl;
 	}
-	for (size_t propIndex = 0; propIndex < propertySet.size(); ++propIndex) {
+	for (RESQML2_NS::AbstractProperty const* prop : propertySet) {
 		std::cout << "\t--------------------------------------------------" << std::endl;
-		RESQML2_NS::AbstractProperty const * prop = propertySet[propIndex];
 		showAllMetadata(prop, "\t");
 
 		std::vector<RESQML2_0_1_NS::PropertySet *> propSets = prop->getPropertySets();
@@ -2660,6 +2661,8 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			std::cout << "\tContained in property set : ";
 			showAllMetadata(propSet, "\t");
 		}
+
+		if (prop->isPartial()) continue;
 
 		std::cout << "\tProperty kind is : " << prop->getPropertyKindAsString() << std::endl;
 		if (prop->isAssociatedToOneStandardEnergisticsPropertyKind()) {
@@ -5224,7 +5227,7 @@ void deserialize(const string & inputFile)
 	cout << "Start deserialization of " << epcDoc.getName() << " in " << (epcDoc.getStorageDirectory().empty() ? "working directory." : epcDoc.getStorageDirectory()) << endl;
 	COMMON_NS::DataObjectRepository repo;
 	// Comment the line above and uncomment one of the below lines depending on you OS if you want to check property kind validity
-	//COMMON_NS::DataObjectRepository repo("C:/Users/Philippe/dev/fesapiEnv/fesapi/resources");
+	//COMMON_NS::DataObjectRepository repo("C:/Users/phili/dev/fesapi/fesapi-dev/resources");
 	//COMMON_NS::DataObjectRepository repo("/home/philippe/dev/fesapi/resources");
 	const string resqmlResult = epcDoc.deserializeInto(repo);
 	if (!resqmlResult.empty()) {
@@ -5232,10 +5235,8 @@ void deserialize(const string & inputFile)
 		repo.clearWarnings();
 	}
 
-	const uint64_t hdfProxyCount = repo.getHdfProxyCount();
-	cout << "There are " << hdfProxyCount << " hdf files associated to this epc document." << endl;
-	for (uint64_t hdfProxyIndex = 0; hdfProxyIndex < hdfProxyCount; ++hdfProxyIndex) {
-		cout << "Hdf file relative path : " << repo.getHdfProxy(hdfProxyIndex)->getRelativePath() << endl;
+	for (auto const* hdfProxy : repo.getHdfProxySet()) {
+		cout << "Hdf file relative path : " << hdfProxy->getRelativePath() << endl;
 	}
 	for (size_t warningIndex = 0; warningIndex < repo.getWarnings().size(); ++warningIndex) {
 		cout << "Warning #" << warningIndex << " : " << repo.getWarnings()[warningIndex] << endl;
@@ -5777,7 +5778,7 @@ void appendAContinuousProp(const string& filePath)
 	const string resqmlResult = epcDoc.deserializeInto(repo, COMMON_NS::DataObjectRepository::openingMode::READ_WRITE);
 
 	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("df2103a0-fa3d-11e5-b8d4-0002a5d5c51b");
-	if (twoCellsIjkGrid == nullptr) {
+	if (ijkGrid == nullptr) {
 		ijkGrid = repo.createPartialIjkGridRepresentation("df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Partial grid");
 	}
 
