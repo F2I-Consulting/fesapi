@@ -37,7 +37,7 @@ under the License.
 #include <zip.h>
 #include <unzip.h>
 #ifdef _WIN32
-#include <iowin32.h>
+#include "../tools/iowin32.h"
 #endif
 
 #include "FilePart.h"
