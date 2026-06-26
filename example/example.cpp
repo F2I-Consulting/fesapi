@@ -60,6 +60,7 @@ under the License.
 
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
+#include "resqml2_0_1/BlockedWellboreRepresentation.h"
 #include "resqml2_0_1/CategoricalProperty.h"
 #include "resqml2_0_1/CommentProperty.h"
 #include "resqml2_0_1/ContinuousProperty.h"
@@ -163,6 +164,7 @@ RESQML2_NS::WellboreInterpretation* wellbore1Interp1 = nullptr;
 RESQML2_NS::StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 RESQML2_NS::SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 RESQML2_NS::IjkGridExplicitRepresentation* twoCellsIjkGrid = nullptr;
+RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432 = nullptr;
 RESQML2_NS::DiscreteProperty* discreteProp1 = nullptr;
 RESQML2_NS::ContinuousProperty* contColMapContProp = nullptr;
 RESQML2_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp = nullptr;
@@ -859,7 +861,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + EML2_NS::AbstractHdfProxy::ELEMENTS_DS_NAME);
 
 	// 4*3*2 explicit grid Left Handed
-	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432 = repo->createIjkGridExplicitRepresentation("e96c2bde-e3ae-4d51-b078-a8e57fb1e667", "Four by Three by Two Left Handed", 4, 3, 2);
+	ijkgrid432 = repo->createIjkGridExplicitRepresentation("e96c2bde-e3ae-4d51-b078-a8e57fb1e667", "Four by Three by Two Left Handed", 4, 3, 2);
 	double nodes432[216] = {
 		0, 0, 300, 150, 0, 300, 375, 0, 300, 550, 0, 350, 700, 0, 350, //IJ0K0
 		0, 50, 300, 150, 50, 300, 375, 50, 300, 550, 50, 350, 700, 50, 350, //IJ1K0
@@ -1306,6 +1308,18 @@ void serializeGrid(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfP
 		unstructuredGridProp->pushBackArray1dOfValues(propValues, 2);
 	}
 #endif
+}
+
+void serializeBlockedWell(COMMON_NS::DataObjectRepository* repo, EML2_NS::AbstractHdfProxy* hdfProxy)
+{
+	auto* result = repo->createBlockedWellboreRepresentation(wellbore1Interp1, "34efae54-46bf-432c-9b6d-08b4b4f435de", "My blocked well", w1i1TrajRep);
+	double mds[3] = { 300, 400, 500 };
+	result->setMdValues(mds, 3, hdfProxy);
+	result->pushBackSupportingGridRepresentation(ijkgrid432);
+	int8_t gridIndices[2] = { 0, 0};
+	int64_t cellIndices[2] = { 5, 17 };
+	int8_t localFaceIndices[4] = { 1, 0, 1, 0 };
+	result->setIntervalGridCells(gridIndices, -1, cellIndices, localFaceIndices, -1, hdfProxy);
 }
 
 void serializeRepresentationSetRepresentation(COMMON_NS::DataObjectRepository * repo, EML2_NS::AbstractHdfProxy*)
@@ -2591,6 +2605,7 @@ bool serialize(const string& filePath)
 	serializeStructuralModel(repo, hdfProxy);
 	serializeStratigraphicModel(&repo, hdfProxy);
 	serializeGrid(&repo, hdfProxy);
+	serializeBlockedWell(&repo, hdfProxy);
 	serializeActivities(&repo);
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
