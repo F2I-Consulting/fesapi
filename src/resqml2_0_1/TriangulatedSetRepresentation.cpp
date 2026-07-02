@@ -49,7 +49,7 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::Abstrac
 		const std::string& guid, const std::string& title)
 {
 	if (interp == nullptr) {
-		throw invalid_argument("The interpretation of the subrepresentation cannot be null.");
+		throw invalid_argument("The interpretation of the triangulation cannot be null.");
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETriangulatedSetRepresentation(interp->getGsoapContext());

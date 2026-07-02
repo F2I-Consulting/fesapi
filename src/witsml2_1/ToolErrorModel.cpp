@@ -23,6 +23,8 @@ under the License.
 #include <sstream>
 #include <algorithm>
 
+#include "../tools/TimeTools.h"
+
 using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_3;
@@ -140,7 +142,7 @@ void ToolErrorModel::setSurveyRunDateStart(time_t surveyRunDateStart)
 		tem->SurveyRunDateStart = (tm*)soap_malloc(gsoapProxy2_3->soap, sizeof(tm));
 	}
 
-	*tem->SurveyRunDateStart = *gmtime(&surveyRunDateStart);
+	*tem->SurveyRunDateStart = timeTools::to_calendar_time(timeTools::from_time_t(surveyRunDateStart));
 }
 
 void ToolErrorModel::setSurveyRunDateEnd(time_t surveyRunDateEnd)
@@ -150,7 +152,7 @@ void ToolErrorModel::setSurveyRunDateEnd(time_t surveyRunDateEnd)
 		tem->SurveyRunDateEnd = (tm*)soap_malloc(gsoapProxy2_3->soap, sizeof(tm));
 	}
 
-	*tem->SurveyRunDateEnd = *gmtime(&surveyRunDateEnd);
+	*tem->SurveyRunDateEnd = timeTools::to_calendar_time(timeTools::from_time_t(surveyRunDateEnd));
 }
 
 void ToolErrorModel::pushBackCorrectionConsidered(gsoap_eml2_3::witsml21__CorrectionConsidered correctionConsidered)
@@ -187,7 +189,7 @@ void ToolErrorModel::setAuthorization(const std::string & approvalAuthority,
 	}
 	if (approvedOn > -1) {
 		ah->ApprovedOn = (tm*)soap_malloc(gsoapProxy2_3->soap, sizeof(tm));
-		*ah->ApprovedOn = *gmtime(&approvedOn);
+		*ah->ApprovedOn = timeTools::to_calendar_time(timeTools::from_time_t(approvedOn));
 	}
 	if (!checkedBy.empty()) {
 		ah->CheckedBy = soap_new_std__string(gsoapProxy2_3->soap, 1);
@@ -195,7 +197,7 @@ void ToolErrorModel::setAuthorization(const std::string & approvalAuthority,
 	}
 	if (checkedOn > -1) {
 		ah->CheckedOn = (tm*)soap_malloc(gsoapProxy2_3->soap, sizeof(tm));
-		*ah->CheckedOn = *gmtime(&checkedOn);
+		*ah->CheckedOn = timeTools::to_calendar_time(timeTools::from_time_t(checkedOn));
 	}
 
 	if (!revisionComment.empty()) {
@@ -204,7 +206,7 @@ void ToolErrorModel::setAuthorization(const std::string & approvalAuthority,
 	}
 	if (revisionDate > -1) {
 		ah->RevisionDate = (tm*)soap_malloc(gsoapProxy2_3->soap, sizeof(tm));
-		*ah->RevisionDate = *gmtime(&revisionDate);
+		*ah->RevisionDate = timeTools::to_calendar_time(timeTools::from_time_t(revisionDate));
 	}
 
 	if (status != nullptr) {

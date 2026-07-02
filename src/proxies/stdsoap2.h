@@ -1,5 +1,5 @@
 /*
-        stdsoap2.h 2.8.140E
+        stdsoap2.h 2.8.143E
 
         gSOAP runtime engine
 
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 208140
+#define GSOAP_VERSION 208143
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -40,7 +40,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 # endif
 #endif
 
-/* for legacy purposes we use WIN32 macro, even when WIN64 is supported */
+/* legacy-related: we use WIN32 to detect Windows, even when WIN64 is supported */
 #ifdef _WIN64
 # ifndef WIN32
 #  define WIN32
@@ -1812,6 +1812,16 @@ typedef unsigned short soap_ssl_flags;
 # define SOAP_FREE_UNMANAGED(ptr) free((void*)(ptr))
 #endif
 
+#ifndef SOAP_ZERO                       /* zero out memory after use, uses memset_explicit() when available */
+# define SOAP_ZERO(ptr, size) soap_memset_explicit((void*)(ptr), 0, (size))
+#endif
+
+#ifdef WITH_ALL_CLEAR                   /* optional, when set performs a memset_explicit() with SOAP_ZERO() before free() */
+# define SOAP_MAY_CLEAR(ptr, size) SOAP_ZERO((ptr), (size))
+#else
+# define SOAP_MAY_CLEAR(ptr, size) (void)0
+#endif
+
 #ifndef SOAP_NOTHROW
 # if defined(__GNUC__) && (__GNUC__ <= 2)
 #  define SOAP_NOTHROW
@@ -2045,7 +2055,7 @@ struct soap_clist
   int type; /* 0 (managed malloc) or SOAP_TRACK_UNMANAGED_MEM (unmanaged) or SOAP_TYPE C++ class instance type */
 };
 
-/* block allocation for allocation management */
+/* block allocation of hash table chains for memory allocation management */
 struct soap_cblk
 {
   struct soap_cblk *next;
@@ -2058,7 +2068,7 @@ struct soap_attribute
   struct soap_attribute *next;
   short flag;   /* soap_set_attr: 1 = normal, 2 = utf content */
   char *value;
-  size_t size;
+  size_t size;  /* size of the allocated space to hold the value(s) */
   const char *ns;
   short visible;
   char name[1]; /* the actual name string flows into the allocated region below this struct */
@@ -3289,6 +3299,7 @@ SOAP_FMAC1 struct soap_clist * SOAP_FMAC2 soap_new_link(struct soap*, int, int, 
 SOAP_FMAC1 void SOAP_FMAC2 soap_set_link(struct soap*, struct soap_clist*, void*);
 SOAP_FMAC1 int SOAP_FMAC2 soap_unlink(struct soap*, const void*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_free_temp(struct soap*);
+SOAP_FMAC1 void SOAP_FMAC2 soap_memset_explicit(void*, int, size_t);
 SOAP_FMAC1 void SOAP_FMAC2 soap_del(struct soap*);
 
 SOAP_FMAC1 void* SOAP_FMAC2 soap_track_malloc(struct soap*, const char*, int, size_t);

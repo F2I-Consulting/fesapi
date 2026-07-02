@@ -1,5 +1,5 @@
 /*
-        stdsoap2.c[pp] 2.8.140E
+        stdsoap2.c[pp] 2.8.143E
 
         gSOAP runtime engine
 
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_LIB_VERSION 208140
+#define GSOAP_LIB_VERSION 208143
 
 /* silence GNU's warnings on format nonliteral strings and truncation (snprintf truncates on purpose for safety) */
 #ifdef __GNUC__
@@ -62,10 +62,10 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 #endif
 
 #ifdef __cplusplus
-SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.140E 2026-01-21 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.143E 2026-06-17 00:00:00 GMT")
 extern "C" {
 #else
-SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.140E 2026-01-21 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.143E 2026-06-17 00:00:00 GMT")
 #endif
 
 /* 8bit character representing unknown character entity or multibyte data */
@@ -6399,7 +6399,7 @@ again:
       }
       if (!(soap->ssl_flags & SOAP_SSL_SKIP_HOST_CHECK))
       {
-        X509_NAME *subj;
+        const X509_NAME *subj;
         STACK_OF(CONF_VALUE) *val = NULL;
 #if OPENSSL_VERSION_NUMBER >= 0x0090800fL
         GENERAL_NAMES *names = NULL;
@@ -6515,8 +6515,8 @@ again:
           int i = -1;
           do
           {
-            ASN1_STRING *name;
-            i = X509_NAME_get_index_by_NID(subj, NID_commonName, i);
+            const ASN1_STRING *name;
+            i = X509_NAME_get_index_by_NID((X509_NAME*)subj, NID_commonName, i);
             if (i == -1)
               break;
             name = X509_NAME_ENTRY_get_data(X509_NAME_get_entry(subj, i));
@@ -7740,7 +7740,7 @@ SOAP_FMAC2
 soap_force_closesock(struct soap *soap)
 {
   soap->keep_alive = 0;
-  if (soap_valid_socket(soap->socket) && soap->fclosesocket)
+  if (soap_valid_socket(soap->socket))
   {
     (void)soap->fclosesocket(soap, soap->socket);
     soap->socket = SOAP_INVALID_SOCKET;
@@ -7807,7 +7807,8 @@ soap_done(struct soap *soap)
     struct soap_plugin *p = soap->plugins->next;
     DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Removing plugin '%s'\n", soap->plugins->id));
     if (soap->plugins->fcopy || soap->state == SOAP_INIT)
-      soap->plugins->fdelete(soap, soap->plugins);
+      if (soap->plugins->fdelete)
+        soap->plugins->fdelete(soap, soap->plugins);
     SOAP_FREE(soap, soap->plugins);
     soap->plugins = p;
   }
@@ -7974,6 +7975,7 @@ soap_done(struct soap *soap)
   }
   if (soap->z_buf)
   {
+    SOAP_MAY_CLEAR(soap->z_buf, sizeof(soap->buf));
     SOAP_FREE(soap, soap->z_buf);
     soap->z_buf = NULL;
   }
@@ -8109,7 +8111,7 @@ http_parse(struct soap *soap)
         soap->status = SOAP_GET;
       else if (!strncmp(soap->msgbuf, "PUT ", l = 4))
         soap->status = SOAP_PUT;
-      else if (!strncmp(soap->msgbuf, "PATCH ", l = 4))
+      else if (!strncmp(soap->msgbuf, "PATCH ", l = 6))
         soap->status = SOAP_PATCH;
       else if (!strncmp(soap->msgbuf, "DELETE ", l = 7))
         soap->status = SOAP_DEL;
@@ -8287,6 +8289,7 @@ http_parse_header(struct soap *soap, const char *key, const char *val)
         soap->userid = soap_strdup(soap, soap->tmpbuf);
         soap->passwd = soap_strdup(soap, s + 1);
       }
+      SOAP_ZERO(soap->tmpbuf, SOAP_TMPLEN);
     }
   }
   else if (!soap_tag_cmp(key, "WWW-Authenticate") || !soap_tag_cmp(key, "Proxy-Authenticate"))
@@ -9163,7 +9166,10 @@ soap_set_cookie(struct soap *soap, const char *name, const char *value, const ch
       else
       {
         if (q->name)
+        {
+          SOAP_MAY_CLEAR(q->name, strlen(q->name));
           SOAP_FREE(soap, q->name);
+        }
         SOAP_FREE(soap, q);
         q = NULL;
       }
@@ -9179,6 +9185,7 @@ soap_set_cookie(struct soap *soap, const char *name, const char *value, const ch
     {
       if (!value || strcmp(value, q->value))
       {
+        SOAP_MAY_CLEAR(q->value, strlen(q->value));
         SOAP_FREE(soap, q->value);
         q->value = NULL;
       }
@@ -9196,6 +9203,7 @@ soap_set_cookie(struct soap *soap, const char *name, const char *value, const ch
     {
       if (!domain || strcmp(domain, q->domain))
       {
+        SOAP_MAY_CLEAR(q->domain, strlen(q->domain));
         SOAP_FREE(soap, q->domain);
         q->domain = NULL;
       }
@@ -9213,6 +9221,7 @@ soap_set_cookie(struct soap *soap, const char *name, const char *value, const ch
     {
       if (!path || strncmp(path, q->path, strlen(q->path)))
       {
+        SOAP_MAY_CLEAR(q->path, strlen(q->path));
         SOAP_FREE(soap, q->path);
         q->path = NULL;
       }
@@ -9257,13 +9266,26 @@ soap_clr_cookie(struct soap *soap, const char *name, const char *domain, const c
   {
     if (q->name && !strcmp(q->name, name) && (!q->domain || !strcmp(q->domain, domain)) && (!q->path || !strncmp(q->path, path, strlen(q->path))))
     {
-      SOAP_FREE(soap, q->name);
+      if (q->name)
+      {
+        SOAP_MAY_CLEAR(q->name, strlen(q->name));
+        SOAP_FREE(soap, q->name);
+      }
       if (q->value)
+      {
+        SOAP_MAY_CLEAR(q->value, strlen(q->value));
         SOAP_FREE(soap, q->value);
+      }
       if (q->domain)
+      {
+        SOAP_MAY_CLEAR(q->domain, strlen(q->domain));
         SOAP_FREE(soap, q->domain);
+      }
       if (q->path)
+      {
+        SOAP_MAY_CLEAR(q->path, strlen(q->path));
         SOAP_FREE(soap, q->path);
+      }
       *p = q->next;
       SOAP_FREE(soap, q);
     }
@@ -9510,13 +9532,26 @@ soap_putcookies(struct soap *soap, const char *domain, const char *path, int sec
     if (q->expire && now >= (time_t)q->expire)
     {
       DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Cookie %s expired\n", q->name));
-      SOAP_FREE(soap, q->name);
+      if (q->name)
+      {
+        SOAP_MAY_CLEAR(q->name, strlen(q->name));
+        SOAP_FREE(soap, q->name);
+      }
       if (q->value)
+      {
+        SOAP_MAY_CLEAR(q->value, strlen(q->value));
         SOAP_FREE(soap, q->value);
+      }
       if (q->domain)
+      {
+        SOAP_MAY_CLEAR(q->domain, strlen(q->domain));
         SOAP_FREE(soap, q->domain);
+      }
       if (q->path)
+      {
+        SOAP_MAY_CLEAR(q->path, strlen(q->path));
         SOAP_FREE(soap, q->path);
+      }
       *p = q->next;
       SOAP_FREE(soap, q);
     }
@@ -9672,13 +9707,19 @@ soap_getcookies(struct soap *soap, const char *val)
       if (p)
       {
         if (p->path)
+        {
+          SOAP_MAY_CLEAR(p->path, strlen(p->path));
           SOAP_FREE(soap, p->path);
+        }
         p->path = t;
       }
       else
       {
         if (path)
+        {
+          SOAP_MAY_CLEAR(path, strlen(path));
           SOAP_FREE(soap, path);
+        }
         path = t;
       }
     }
@@ -9697,20 +9738,29 @@ soap_getcookies(struct soap *soap, const char *val)
       if (p)
       {
         if (p->domain)
+        {
+          SOAP_MAY_CLEAR(p->domain, strlen(p->domain));
           SOAP_FREE(soap, p->domain);
+        }
         p->domain = t;
       }
       else
       {
         if (domain)
+        {
+          SOAP_MAY_CLEAR(domain, strlen(domain));
           SOAP_FREE(soap, domain);
+        }
         domain = t;
       }
     }
     else if (p && !soap_tag_cmp(tmp, "Path"))
     {
       if (p->path)
+      {
+        SOAP_MAY_CLEAR(p->path, strlen(p->path));
         SOAP_FREE(soap, p->path);
+      }
       p->path = NULL;
       s = soap_decode_val(tmp, sizeof(tmp), s);
       if (*tmp)
@@ -9725,7 +9775,10 @@ soap_getcookies(struct soap *soap, const char *val)
     else if (p && !soap_tag_cmp(tmp, "Domain"))
     {
       if (p->domain)
+      {
+        SOAP_MAY_CLEAR(p->domain, strlen(p->domain));
         SOAP_FREE(soap, p->domain);
+      }
       p->domain = NULL;
       s = soap_decode_val(tmp, sizeof(tmp), s);
       if (*tmp)
@@ -9835,13 +9888,25 @@ soap_getcookies(struct soap *soap, const char *val)
           q->env = 1;
         }
         if (p->name)
+        {
+          SOAP_MAY_CLEAR(p->name, strlen(p->name));
           SOAP_FREE(soap, p->name);
+        }
         if (p->value)
+        {
+          SOAP_MAY_CLEAR(p->value, strlen(p->value));
           SOAP_FREE(soap, p->value);
+        }
         if (p->domain)
+        {
+          SOAP_MAY_CLEAR(p->domain, strlen(p->domain));
           SOAP_FREE(soap, p->domain);
+        }
         if (p->path)
+        {
+          SOAP_MAY_CLEAR(p->path, strlen(p->path));
           SOAP_FREE(soap, p->path);
+        }
         SOAP_FREE(soap, p);
       }
       p = (struct soap_cookie*)SOAP_MALLOC(soap, sizeof(struct soap_cookie));
@@ -9910,19 +9975,37 @@ soap_getcookies(struct soap *soap, const char *val)
       q->env = 1;
     }
     if (p->name)
+    {
+      SOAP_MAY_CLEAR(p->name, strlen(p->name));
       SOAP_FREE(soap, p->name);
+    }
     if (p->value)
+    {
+      SOAP_MAY_CLEAR(p->value, strlen(p->value));
       SOAP_FREE(soap, p->value);
+    }
     if (p->domain)
+    {
+      SOAP_MAY_CLEAR(p->domain, strlen(p->domain));
       SOAP_FREE(soap, p->domain);
+    }
     if (p->path)
+    {
+      SOAP_MAY_CLEAR(p->path, strlen(p->path));
       SOAP_FREE(soap, p->path);
+    }
     SOAP_FREE(soap, p);
   }
   if (domain)
+  {
+    SOAP_MAY_CLEAR(domain, strlen(domain));
     SOAP_FREE(soap, domain);
+  }
   if (path)
+  {
+    SOAP_MAY_CLEAR(path, strlen(path));
     SOAP_FREE(soap, path);
+  }
 }
 
 /******************************************************************************/
@@ -10018,13 +10101,26 @@ soap_free_cookies(struct soap *soap)
   for (p = soap->cookies; p; p = soap->cookies)
   {
     soap->cookies = p->next;
-    SOAP_FREE(soap, p->name);
+    if (p->name)
+    {
+      SOAP_MAY_CLEAR(p->name, strlen(p->name));
+      SOAP_FREE(soap, p->name);
+    }
     if (p->value)
+    {
+      SOAP_MAY_CLEAR(p->value, strlen(p->value));
       SOAP_FREE(soap, p->value);
+    }
     if (p->domain)
+    {
+      SOAP_MAY_CLEAR(p->domain, strlen(p->domain));
       SOAP_FREE(soap, p->domain);
+    }
     if (p->path)
+    {
+      SOAP_MAY_CLEAR(p->path, strlen(p->path));
       SOAP_FREE(soap, p->path);
+    }
     SOAP_FREE(soap, p);
   }
 }
@@ -11007,6 +11103,24 @@ soap_free_cht(struct soap *soap)
 
 /******************************************************************************/
 
+SOAP_FMAC1
+void
+SOAP_FMAC2
+soap_memset_explicit(void *p, int c, size_t n)
+{
+#if defined(HAVE_MEMSET_EXPLICIT)
+  (void)memset_explicit(p, c, n);
+#elif defined(HAVE_EXPLICIT_MEMSET)
+  (void)explicit_memset(p, c, n);
+#else
+  /* volatile writes to memory aren't optimized away */
+  volatile char *q = (char*)p;
+  while (n--) *q++ = c;
+#endif
+}
+
+/******************************************************************************/
+
 #ifdef SOAP_MEM_DEBUG
 SOAP_FMAC1
 void*
@@ -11118,6 +11232,7 @@ soap_dealloc(struct soap *soap, void *p)
             return soap->error = SOAP_MOE;
           }
           DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Free managed memory at %p\n", p));
+          SOAP_MAY_CLEAR(p, cp->size);
 #ifdef SOAP_MEM_DEBUG
           free(p);
 #else
@@ -11160,6 +11275,7 @@ soap_dealloc(struct soap *soap, void *p)
               return soap->error = SOAP_MOE;
             }
             DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Free managed memory at %p\n", p));
+            SOAP_MAY_CLEAR(p, cp->size);
 #ifdef SOAP_MEM_DEBUG
             free(p);
 #else
@@ -12094,16 +12210,34 @@ soap_free_temp(struct soap *soap)
   {
     tq = tp->next;
     if (tp->value)
+    {
+      SOAP_MAY_CLEAR(tp->value, tp->size);
       SOAP_FREE(soap, tp->value);
+    }
+    SOAP_MAY_CLEAR(tp->name, strlen(tp->name));
     SOAP_FREE(soap, tp);
   }
   soap->attributes = NULL;
 #ifdef WITH_FAST
   if (soap->labbuf)
+  {
+    SOAP_MAY_CLEAR(soap->labbuf, soap->lablen);
     SOAP_FREE(soap, soap->labbuf);
+  }
   soap->labbuf = NULL;
   soap->lablen = 0;
   soap->labidx = 0;
+  SOAP_ZERO(soap->buf, sizeof(soap->buf));
+  SOAP_ZERO(soap->msgbuf, sizeof(soap->msgbuf));
+  SOAP_ZERO(soap->tmpbuf, sizeof(soap->tmpbuf));
+  SOAP_ZERO(soap->tag, sizeof(soap->tag));
+  SOAP_ZERO(soap->id, sizeof(soap->id));
+  SOAP_ZERO(soap->href, sizeof(soap->href));
+  SOAP_ZERO(soap->type, sizeof(soap->type));
+  SOAP_ZERO(soap->arrayType, sizeof(soap->arrayType));
+  SOAP_ZERO(soap->endpoint, SOAP_TAGLEN);
+  SOAP_ZERO(soap->path, sizeof(soap->path));
+  SOAP_ZERO(soap->host, sizeof(soap->host));
 #endif
   ns = soap->local_namespaces;
   if (ns)
@@ -12397,7 +12531,7 @@ void
 SOAP_FMAC2
 soap_copy_stream(struct soap *copy, struct soap *soap)
 {
-  struct soap_attribute *tp = NULL, *tq;
+  struct soap_attribute *tp, *tq;
   if (copy == soap)
     return;
   copy->header = soap->header;
@@ -12553,7 +12687,18 @@ soap_copy_stream(struct soap *copy, struct soap *soap)
   copy->mustUnderstand = soap->mustUnderstand;
   copy->level = soap->level;
   copy->peeked = soap->peeked;
-  /* copy attributes */
+  /* copy attributes, delete old ones first */
+  for (tp = copy->attributes; tp; tp = tq)
+  {
+    tq = tp->next;
+    if (tp->value)
+    {
+      SOAP_MAY_CLEAR(tp->value, tp->size);
+      SOAP_FREE(copy, tp->value);
+    }
+    SOAP_MAY_CLEAR(tp->name, strlen(tp->name));
+    SOAP_FREE(copy, tp);
+  }
   for (tq = soap->attributes; tq; tq = tq->next)
   {
     struct soap_attribute *tr = tp;
@@ -12605,7 +12750,10 @@ soap_free_stream(struct soap *soap)
 #endif
 #ifdef WITH_ZLIB
   if (soap->z_buf)
+  {
+    SOAP_MAY_CLEAR(soap->z_buf, sizeof(soap->buf));
     SOAP_FREE(soap, soap->z_buf);
+  }
   soap->z_buf = NULL;
 #endif
 }
@@ -13023,6 +13171,9 @@ soap_end(struct soap *soap)
     return SOAP_OK;
   soap_free_temp(soap);
   err = soap_dealloc(soap, NULL);
+#ifndef SOAP_MEM_DEBUG
+  soap_free_cht(soap);
+#endif
   (void)soap_closesock(soap);
 #ifdef SOAP_DEBUG
   soap_close_logfiles(soap);
@@ -13064,12 +13215,12 @@ static void
 soap_version(struct soap *soap)
 {
   struct Namespace *p = soap->local_namespaces;
-  if (p)
+  if (p && p[0].id)
   {
     const char *ns = p[0].out;
     if (!ns)
       ns = p[0].ns;
-    if (ns)
+    if (ns && p[1].id)
     {
       if (!strcmp(ns, soap_env1))
       {
@@ -14748,6 +14899,7 @@ soap_set_attr(struct soap *soap, const char *name, const char *value, int flag)
   else if (value && tp->value && tp->size <= strlen(value))
   {
     DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Free attribute value of %s (free %p)\n", name, (void*)tp->value));
+    SOAP_MAY_CLEAR(tp->value, tp->size);
     SOAP_FREE(soap, tp->value);
     tp->value = NULL;
     tp->ns = NULL;
@@ -14812,7 +14964,11 @@ soap_clr_attr(struct soap *soap)
     {
       tp = soap->attributes->next;
       if (soap->attributes->value)
+      {
+        SOAP_MAY_CLEAR(soap->attributes->value, soap->attributes->size);
         SOAP_FREE(soap, soap->attributes->value);
+      }
+      SOAP_MAY_CLEAR(soap->attributes->name, strlen(soap->attributes->name));
       SOAP_FREE(soap, soap->attributes);
       soap->attributes = tp;
     }
@@ -14993,8 +15149,9 @@ soap_append_lab(struct soap *soap, const char *s, size_t n)
   if (soap->labidx + n >= soap->lablen)
   {
     char *t = soap->labbuf;
-    DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Enlarging look-aside buffer to append data, size=%lu\n", (unsigned long)soap->lablen));
-    if (soap->lablen == 0)
+    size_t l = soap->lablen;
+    DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Enlarging look-aside buffer to append data, size=%lu\n", (unsigned long)l));
+    if (l == 0)
       soap->lablen = SOAP_LABLEN;
     while (soap->labidx + n >= soap->lablen)
     {
@@ -15009,12 +15166,16 @@ soap_append_lab(struct soap *soap, const char *s, size_t n)
     if (!soap->labbuf)
     {
       if (t)
+      {
+        SOAP_MAY_CLEAR(t, l);
         SOAP_FREE(soap, t);
+      }
       return soap->error = SOAP_EOM;
     }
     if (t)
     {
       (void)soap_memcpy((void*)soap->labbuf, soap->lablen, (const void*)t, soap->labidx);
+      SOAP_MAY_CLEAR(t, l);
       SOAP_FREE(soap, t);
     }
   }
@@ -15303,7 +15464,10 @@ soap_peek_element(struct soap *soap)
         if (soap_store_lab(soap, tp->value, k))
           return soap->error;
         if (tp->value)
+        {
+          SOAP_MAY_CLEAR(tp->value, tp->size);
           SOAP_FREE(soap, tp->value);
+        }
         tp->value = NULL;
         for (;;)
         {
@@ -15370,6 +15534,7 @@ soap_peek_element(struct soap *soap)
         if (tp->value)
         {
           (void)soap_memcpy((void*)s, k, (const void*)tp->value, tp->size);
+          SOAP_MAY_CLEAR(tp->value, tp->size);
           SOAP_FREE(soap, tp->value);
         }
         (void)soap_save_block(soap, NULL, s + tp->size, 0);
@@ -19719,6 +19884,7 @@ soap_getline(struct soap *soap, char *buf, int len)
   char *s = buf;
   int i = len;
   soap_wchar c = 0;
+  SOAP_ZERO(buf, len);
   for (;;)
   {
     while (i > 1)
@@ -22092,6 +22258,7 @@ soap_connect_command(struct soap *soap, int http_command, const char *endpoints,
           if (!s)
             s = endpoints + strlen(endpoints);
         }
+        SOAP_MAY_CLEAR(endpoint, l);
         SOAP_FREE(soap, endpoint);
       }
       else
@@ -23599,7 +23766,7 @@ soap_register_plugin_arg(struct soap *soap, int (*fcreate)(struct soap*, struct 
   p->fcopy = NULL;
   p->fdelete = NULL;
   err = fcreate(soap, p, arg);
-  if (!err && p->fdelete && p->id)
+  if (!err && p->id)
   {
     if (!soap_lookup_plugin(soap, p->id))
     {
@@ -23609,7 +23776,8 @@ soap_register_plugin_arg(struct soap *soap, int (*fcreate)(struct soap*, struct 
       return SOAP_OK;
     }
     DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Could not register plugin '%s': plugin with the same ID already registered\n", p->id));
-    p->fdelete(soap, p);
+    if (p->fdelete)
+      p->fdelete(soap, p);
     SOAP_FREE(soap, p);
     return SOAP_OK;
   }
