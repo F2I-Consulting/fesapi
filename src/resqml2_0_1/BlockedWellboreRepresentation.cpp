@@ -42,10 +42,9 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	traj->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 
 	frame->Trajectory = traj->newResqmlReference();
-	getRepository()->addRelationship(this, traj);
+	traj->getRepository()->addRelationship(this, traj);
 }
 
 BlockedWellboreRepresentation::BlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
@@ -90,7 +89,7 @@ void BlockedWellboreRepresentation::setIntervalGridCells(int8_t const* gridIndic
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, hdfProxy);
+	hdfProxy->getRepository()->addRelationship(this, hdfProxy);
 
 	// gridIndices
 	// XML
@@ -279,7 +278,7 @@ void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2
 	}
 
 	// EPC
-	getRepository()->addRelationship(this, supportingGridRep);
+	supportingGridRep->getRepository()->addRelationship(this, supportingGridRep);
 
 	// XML
 	static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());

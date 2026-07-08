@@ -41,7 +41,6 @@ ChannelSet::ChannelSet(COMMON_NS::DataObjectRepository* repo, const std::string 
 
 	static_cast<witsml21__ChannelSet*>(gsoapProxy2_3)->ActiveStatus = isActive ? eml23__ActiveStatusKind::active : eml23__ActiveStatusKind::inactive;
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 void ChannelSet::pushBackChannelIndex(gsoap_eml2_3::eml23__DataIndexKind indexKind, gsoap_eml2_3::eml23__UnitOfMeasure uom, const std::string & mnemonic, bool isIncreasing)
@@ -63,7 +62,7 @@ void ChannelSet::pushBackChannel(Channel * channel)
 	}
 	static_cast<witsml21__ChannelSet*>(gsoapProxy2_3)->Channel.push_back(static_cast<witsml21__Channel*>(channel->getEml23GsoapProxy()));
 
-	getRepository()->addRelationship(this, channel);
+	channel->getRepository()->addRelationship(this, channel);
 }
 
 std::vector<Log*> ChannelSet::getLogs() const
@@ -140,6 +139,6 @@ void ChannelSet::loadTargetRelationships()
 			channelWrapper = getRepository()->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>(new Channel(channel)));
 			channelWrapper->loadTargetRelationships();
 		}
-		getRepository()->addRelationship(this, channelWrapper);
+		channelWrapper->getRepository()->addRelationship(this, channelWrapper);
 	}
 }

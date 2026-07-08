@@ -67,11 +67,9 @@ PropertySet::PropertySet(COMMON_NS::DataObjectRepository* repo, const std::strin
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
-
 	auto* fakeProp = getOrCreateFakeProperty(*repo);
 	pushBackXmlProperty(fakeProp);
-	repository->addRelationship(this, fakeProp);
+	repo->addRelationship(this, fakeProp);
 }
 
 void PropertySet::setParent(PropertySet * parent)

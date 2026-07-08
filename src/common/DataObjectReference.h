@@ -72,7 +72,7 @@ namespace COMMON_NS
 		 *
 		 * @param[in,out]	dataObj	If non-nullptr, the Energistics DataObject to wrap.
 		 */
-		explicit DataObjectReference(AbstractObject const * dataObj);
+		explicit DLL_IMPORT_OR_EXPORT DataObjectReference(AbstractObject const * dataObj);
 
 		/** Destructor */
 		~DataObjectReference() = default;

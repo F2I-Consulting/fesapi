@@ -42,7 +42,6 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(COMMON_NS::DataObje
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -57,7 +56,6 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::Abstrac
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 }
 
@@ -104,9 +102,9 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	const uint64_t pointCountDims[2] = { nodeCount, 3 };
 	patch->NodeCount = nodeCount;
 	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, pointCountDims, 2, proxy);
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	patch->Count = triangleCount;
 	resqml20__IntegerHdf5Array* hdfTriangles = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);

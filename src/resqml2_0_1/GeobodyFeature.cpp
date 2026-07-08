@@ -32,7 +32,5 @@ GeobodyFeature::GeobodyFeature(COMMON_NS::DataObjectRepository * repo, const str
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyFeature(repo->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 }

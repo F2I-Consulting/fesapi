@@ -40,7 +40,6 @@ WellboreInterpretation::WellboreInterpretation(RESQML2_NS::WellboreFeature * wel
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	wellboreFeature->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(wellboreFeature);
 }
 

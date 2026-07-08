@@ -45,7 +45,6 @@ PointSetRepresentation::PointSetRepresentation(COMMON_NS::DataObjectRepository* 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -60,7 +59,6 @@ PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 }
 
@@ -84,7 +82,7 @@ void PointSetRepresentation::pushBackXyzGeometryPatch(
 	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, xyzPoints, localCrs, pointCountDims, 2, proxy);
 
 	static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.push_back(patch);
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void PointSetRepresentation::pushBackXyGeometryPatch(
@@ -107,7 +105,7 @@ void PointSetRepresentation::pushBackXyGeometryPatch(
 	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, xyPoints, localCrs, pointCountDims, 2, proxy);
 
 	static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.push_back(patch);
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 COMMON_NS::DataObjectReference PointSetRepresentation::getHdfProxyDor() const

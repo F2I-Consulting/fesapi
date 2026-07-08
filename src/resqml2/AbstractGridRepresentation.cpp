@@ -145,7 +145,7 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
 		}
-		getRepository()->addRelationship(this, proxy);
+		proxy->getRepository()->addRelationship(this, proxy);
 
 		gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5ChildCountPerInterval = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 		regrid->Intervals->ChildCountPerInterval = hdf5ChildCountPerInterval;
@@ -173,7 +173,7 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
 		}
-		getRepository()->addRelationship(this, proxy);
+		proxy->getRepository()->addRelationship(this, proxy);
 
 		gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* hdf5ChildCellWeights = gsoap_resqml2_0_1::soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 		regrid->Intervals->ChildCellWeights = hdf5ChildCellWeights;
@@ -226,7 +226,7 @@ gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(uint
 				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
 		}
-		getRepository()->addRelationship(this, proxy);
+		proxy->getRepository()->addRelationship(this, proxy);
 
 		gsoap_eml2_3::eml23__IntegerExternalArray* hdf5ChildCountPerInterval = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 		regrid->Intervals->ChildCountPerInterval = hdf5ChildCountPerInterval;
@@ -252,7 +252,7 @@ gsoap_eml2_3::resqml22__Regrid* AbstractGridRepresentation::createRegrid2_2(uint
 				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
 		}
-		getRepository()->addRelationship(this, proxy);
+		proxy->getRepository()->addRelationship(this, proxy);
 
 		gsoap_eml2_3::eml23__FloatingPointExternalArray* hdf5ChildCellWeights = gsoap_eml2_3::soap_new_eml23__FloatingPointExternalArray(gsoapProxy2_3->soap);
 		regrid->Intervals->ChildCellWeights = hdf5ChildCellWeights;
@@ -294,7 +294,7 @@ void AbstractGridRepresentation::setParentWindow(uint64_t * cellIndices, uint64_
 				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
 		}
-		getRepository()->addRelationship(this, proxy);
+		proxy->getRepository()->addRelationship(this, proxy);
 
 		gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5CellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(rep->soap);
 		cpw->CellIndices = hdf5CellIndices;
@@ -320,7 +320,7 @@ void AbstractGridRepresentation::setParentWindow(uint64_t * cellIndices, uint64_
 				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
 		}
-		getRepository()->addRelationship(this, proxy);
+		proxy->getRepository()->addRelationship(this, proxy);
 
 		auto* hdf5CellIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
 		cpw->CellIndices = hdf5CellIndices;
@@ -365,7 +365,7 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
 		}
-		getRepository()->addRelationship(this, proxy);
+		proxy->getRepository()->addRelationship(this, proxy);
 
 		gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5ColumnIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(rep->soap);
 		clpw->ColumnIndices = hdf5ColumnIndices;
@@ -396,7 +396,7 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 			}
 		}
-		getRepository()->addRelationship(this, proxy);
+		proxy->getRepository()->addRelationship(this, proxy);
 
 		gsoap_eml2_3::eml23__IntegerExternalArray* hdf5ColumnIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(rep->soap);
 		clpw->ColumnIndices = hdf5ColumnIndices;
@@ -531,7 +531,7 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 			EML2_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
 			if (cellIndexCount > 0 && proxy != nullptr)
 			{
-				getRepository()->addRelationship(this, proxy);
+				proxy->getRepository()->addRelationship(this, proxy);
 				xmlCellIndices = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(parentWindow->soap);
 				static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(xmlCellIndices)->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
 				static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(xmlCellIndices)->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(parentWindow->soap);
@@ -566,7 +566,7 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 			EML2_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
 			if (cellIndexCount > 0 && proxy != nullptr)
 			{
-				getRepository()->addRelationship(this, proxy);
+				proxy->getRepository()->addRelationship(this, proxy);
 				xmlCellIndices = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(parentWindow->soap);
 				static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(xmlCellIndices)->NullValue = -1; // Arbitrarily decided to something almost impossible since it has no interest to write cell index null value in this method
 				static_cast<gsoap_eml2_3::eml23__IntegerExternalArray*>(xmlCellIndices)->Values = gsoap_eml2_3::soap_new_eml23__ExternalDataArray(parentWindow->soap);
@@ -646,7 +646,7 @@ void AbstractGridRepresentation::setCellOverlap(uint64_t parentChildCellPairCoun
 			EML2_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
 			if (parentChildCellPairCount > 0 && proxy != nullptr)
 			{
-				getRepository()->addRelationship(this, proxy);
+				proxy->getRepository()->addRelationship(this, proxy);
 				parentWindow->CellOverlap = gsoap_resqml2_0_1::soap_new_resqml20__CellOverlap(gsoapProxy2_0_1->soap);
 
 				gsoap_resqml2_0_1::resqml20__IntegerHdf5Array* hdf5CellPairs = gsoap_resqml2_0_1::soap_new_resqml20__IntegerHdf5Array(parentWindow->soap);
@@ -697,7 +697,7 @@ void AbstractGridRepresentation::setCellOverlap(uint64_t parentChildCellPairCoun
 			EML2_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
 			if (parentChildCellPairCount > 0 && proxy != nullptr)
 			{
-				getRepository()->addRelationship(this, proxy);
+				proxy->getRepository()->addRelationship(this, proxy);
 				parentWindow->CellOverlap = gsoap_eml2_3::soap_new_resqml22__CellOverlap(gsoapProxy2_3->soap);
 
 				gsoap_eml2_3::eml23__IntegerExternalArray* hdf5CellPairs = gsoap_eml2_3::soap_new_eml23__IntegerExternalArray(parentWindow->soap);

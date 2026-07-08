@@ -53,7 +53,6 @@ DeviationSurveyRepresentation::DeviationSurveyRepresentation(RESQML2_NS::Wellbor
 		rep->MdUom = static_cast<EML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setMdDatum(mdInfo);
 	setInterpretation(interp);
 }
@@ -77,7 +76,7 @@ void DeviationSurveyRepresentation::setGeometry(double const* firstStationLocati
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 
@@ -166,7 +165,7 @@ void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum)
 
 	static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->MdDatum = mdDatum->newResqmlReference();
 
-	getRepository()->addRelationship(this, mdDatum);
+	mdDatum->getRepository()->addRelationship(this, mdDatum);
 }
 
 COMMON_NS::DataObjectReference DeviationSurveyRepresentation::getMdDatumDor() const

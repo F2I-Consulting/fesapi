@@ -72,7 +72,7 @@ std::vector<ErrorTerm*> ErrorTermDictionary::getErrorTerms() const {
 
 void ErrorTermDictionary::pushBackErrorTerm(ErrorTerm* et)
 {
-	getRepository()->addRelationship(this, et);
+	et->getRepository()->addRelationship(this, et);
 
 	witsml21__ErrorTermDictionary* dict = static_cast<witsml21__ErrorTermDictionary*>(gsoapProxy2_3);
 	dict->ErrorTerm.push_back(static_cast<witsml21__ErrorTerm*>(et->getEml23GsoapProxy()));
@@ -87,6 +87,6 @@ void ErrorTermDictionary::loadTargetRelationships()
 		if (etWrapper == nullptr) {
 			etWrapper = getRepository()->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>(new ErrorTerm(et)));
 		}
-		getRepository()->addRelationship(this, etWrapper);
+		etWrapper->getRepository()->addRelationship(this, etWrapper);
 	}
 }

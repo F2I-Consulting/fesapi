@@ -30,6 +30,4 @@ GraphicalInformationSet::GraphicalInformationSet(COMMON_NS::DataObjectRepository
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
-
-	repo->addDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{this});
 }

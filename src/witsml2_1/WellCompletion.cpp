@@ -42,7 +42,6 @@ WellCompletion::WellCompletion(WITSML2_NS::Well* witsmlWell,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	witsmlWell->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWell(witsmlWell);
 }
 
@@ -65,7 +64,7 @@ void WellCompletion::setWell(WITSML2_NS::Well* witsmlWell)
 	witsml21__WellCompletion* wellCompletion = static_cast<witsml21__WellCompletion*>(gsoapProxy2_3);
 	wellCompletion->Well = witsmlWell->newEml23Reference();
 
-	getRepository()->addRelationship(this, witsmlWell);
+	witsmlWell->getRepository()->addRelationship(this, witsmlWell);
 }
 
 std::vector<WellboreCompletion *> WellCompletion::getWellboreCompletions() const

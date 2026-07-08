@@ -73,7 +73,7 @@ void ErrorTerm::setWeightingFunction(WeightingFunction* weightingFunction)
 	if (weightingFunction == nullptr)
 		throw invalid_argument("The weighting function cannot be null.");
 
-	getRepository()->addRelationship(this, weightingFunction);
+	weightingFunction->getRepository()->addRelationship(this, weightingFunction);
 
 	// XMl
 	if (gsoapProxy2_3 != nullptr) {

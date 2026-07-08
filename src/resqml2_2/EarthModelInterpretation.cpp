@@ -44,7 +44,6 @@ EarthModelInterpretation::EarthModelInterpretation(RESQML2_NS::Model * orgFeat, 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	orgFeat->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(orgFeat);
 }
 
@@ -61,7 +60,7 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStructuralOrganizati
 
 void EarthModelInterpretation::pushBackStructuralOrganizationInterpretation(RESQML2_NS::StructuralOrganizationInterpretation * structOrganization)
 {
-	getRepository()->addRelationship(this, structOrganization);
+	structOrganization->getRepository()->addRelationship(this, structOrganization);
         
 	static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->Structure.push_back(structOrganization->newEml23Reference());
 }
@@ -73,7 +72,7 @@ bool EarthModelInterpretation::hasStratiColumn() const
 
 void EarthModelInterpretation::setStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn)
 {
-	getRepository()->addRelationship(this, stratiColumn);
+	stratiColumn->getRepository()->addRelationship(this, stratiColumn);
 
 	static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicColumn = stratiColumn->newEml23Reference();
 }
@@ -98,7 +97,7 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurrenceDor(
 
 void EarthModelInterpretation::pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence)
 {
-	getRepository()->addRelationship(this, stratiOccurrence);
+	stratiOccurrence->getRepository()->addRelationship(this, stratiOccurrence);
 		
 	static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->StratigraphicOccurrences.push_back(stratiOccurrence->newEml23Reference());
 }
@@ -110,7 +109,7 @@ uint64_t EarthModelInterpretation::getRockFluidOrganizationInterpretationCount()
 
 void EarthModelInterpretation::pushBackRockFluidOrganizationInterpretation(RESQML2_NS::RockFluidOrganizationInterpretation* rockFluid)
 {
-	getRepository()->addRelationship(this, rockFluid);
+	rockFluid->getRepository()->addRelationship(this, rockFluid);
 
 	static_cast<_resqml22__EarthModelInterpretation*>(gsoapProxy2_3)->Fluid.push_back(rockFluid->newEml23Reference());
 }

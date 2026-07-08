@@ -125,7 +125,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 	geom->PillarShape = mostComplexPillarGeometry;
 	geom->KDirection = kDirectionKind;
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	// Pillar defined
 	if (definedPillars.empty()) {
 		resqml20__BooleanConstantArray* xmlDefinedPillars = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap);
@@ -180,7 +180,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 		elements->Values->PathInHdfFile = splitCoordinateLineColumns;
 	}
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 

@@ -58,7 +58,7 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 		throw logic_error("Not implemented yet");
 	}
 
-	getRepository()->addRelationship(this, feature);
+	feature->getRepository()->addRelationship(this, feature);
 }
 
 void AbstractFeatureInterpretation::loadTargetRelationships()

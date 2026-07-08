@@ -522,7 +522,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(EML2_NS:
 		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 property to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
 	}
 
-	getRepository()->addRelationship(this, hdfProxy);
+	hdfProxy->getRepository()->addRelationship(this, hdfProxy);
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
 
@@ -579,7 +579,7 @@ std::string AbstractValuesProperty::pushBackRefToExistingFloatingPointDataset(EM
 		throw std::invalid_argument("You cannot associate a RESQML 2.0.1 property to an EML 2.3 HDF proxy (which is no more a dataobject by the way).");
 	}
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
 
@@ -784,7 +784,7 @@ void AbstractValuesProperty::setValuesOfHdf5ArrayOfValues(
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	// HDF
 	proxy->writeArrayNdSlab(getHdfGroup(),

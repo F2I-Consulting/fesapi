@@ -45,7 +45,6 @@ FluidCharacterization::FluidCharacterization(COMMON_NS::DataObjectRepository * r
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidCharacterization, prodml23__FluidCharacterization, gsoapProxy2_3, Kind, std::string, soap_new_std__string)
@@ -145,7 +144,7 @@ void FluidCharacterization::setRockFluidUnit(RESQML2_NS::RockFluidUnitInterpreta
 	}
 	static_cast<prodml23__FluidCharacterization*>(gsoapProxy2_3)->RockFluidUnitInterpretation = rockFluidUnit->newEml23Reference();
 
-	getRepository()->addRelationship(this, rockFluidUnit);
+	rockFluidUnit->getRepository()->addRelationship(this, rockFluidUnit);
 }
 
 COMMON_NS::DataObjectReference FluidCharacterization::getRockFluidUnitDor() const
@@ -168,7 +167,7 @@ void FluidCharacterization::setFluidSystem(FluidSystem* fluidSystem)
 	}
 	static_cast<prodml23__FluidCharacterization*>(gsoapProxy2_3)->FluidSystem = fluidSystem->newEml23Reference();
 
-	getRepository()->addRelationship(this, fluidSystem);
+	fluidSystem->getRepository()->addRelationship(this, fluidSystem);
 }
 
 COMMON_NS::DataObjectReference FluidCharacterization::getFluidSystemDor() const
@@ -469,7 +468,7 @@ void FluidCharacterization::loadTargetRelationships()
 			convertDorIntoRel<RESQML2_NS::RockFluidUnitInterpretation>(dor);
 			rockFluidUnit = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidUnitInterpretation>(dor.getUuid());
 		}
-		getRepository()->addRelationship(this, rockFluidUnit);
+		rockFluidUnit->getRepository()->addRelationship(this, rockFluidUnit);
 	}
 
 	dor = getFluidSystemDor();
@@ -479,7 +478,7 @@ void FluidCharacterization::loadTargetRelationships()
 			convertDorIntoRel<FluidSystem>(dor);
 			fluidSystem = getRepository()->getDataObjectByUuid<FluidSystem>(dor.getUuid());
 		}
-		getRepository()->addRelationship(this, fluidSystem);
+		fluidSystem->getRepository()->addRelationship(this, fluidSystem);
 	}
 
 	std::vector<prodml23__FluidCharacterizationModel *> models = static_cast<prodml23__FluidCharacterization*>(gsoapProxy2_3)->Model;

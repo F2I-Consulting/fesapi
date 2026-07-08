@@ -60,7 +60,7 @@ void WellboreMarkerSet::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 	if (getRepository() == nullptr) {
 		witsmlWellbore->getRepository()->addOrReplaceDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	}
-	getRepository()->addRelationship(this, witsmlWellbore);
+	witsmlWellbore->getRepository()->addRelationship(this, witsmlWellbore);
 
 	witsml21__WellboreMarkerSet* wms = static_cast<witsml21__WellboreMarkerSet*>(gsoapProxy2_3);
 	wms->Wellbore = witsmlWellbore->newEml23Reference();

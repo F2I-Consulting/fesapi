@@ -50,13 +50,12 @@ StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(RESQM
     initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	orgFeat->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(orgFeat);
 }
 
 void StructuralOrganizationInterpretation::pushBackFaultInterpretation(RESQML2_NS::FaultInterpretation * faultInterpretation)
 {
-	getRepository()->addRelationship(this, faultInterpretation);
+	faultInterpretation->getRepository()->addRelationship(this, faultInterpretation);
 
     eml20__DataObjectReference* faultInterpRef = faultInterpretation->newResqmlReference();
     _resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
@@ -77,7 +76,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getFaultInt
 
 void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2_NS::HorizonInterpretation * horizonInterpretation, uint64_t stratigraphicRank)
 {
-	getRepository()->addRelationship(this, horizonInterpretation);
+	horizonInterpretation->getRepository()->addRelationship(this, horizonInterpretation);
 
 	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 
@@ -104,7 +103,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getHorizonI
 
 void StructuralOrganizationInterpretation::pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation)
 {
-	getRepository()->addRelationship(this, topFrontierInterpretation);
+	topFrontierInterpretation->getRepository()->addRelationship(this, topFrontierInterpretation);
 
     eml20__DataObjectReference* interpRef = topFrontierInterpretation->newResqmlReference();
     _resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
@@ -125,7 +124,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getTopFront
 
 void StructuralOrganizationInterpretation::pushBackBottomFrontierInterpretation(AbstractFeatureInterpretation * bottomFrontierInterpretation)
 {
-	getRepository()->addRelationship(this, bottomFrontierInterpretation);
+	bottomFrontierInterpretation->getRepository()->addRelationship(this, bottomFrontierInterpretation);
 
     eml20__DataObjectReference* interpRef = bottomFrontierInterpretation->newResqmlReference();
     _resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
@@ -146,7 +145,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getBottomFr
 
 void StructuralOrganizationInterpretation::pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation)
 {
-	getRepository()->addRelationship(this, sideFrontierInterpretation);
+	sideFrontierInterpretation->getRepository()->addRelationship(this, sideFrontierInterpretation);
 
     eml20__DataObjectReference* interpRef = sideFrontierInterpretation->newResqmlReference();
     _resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);

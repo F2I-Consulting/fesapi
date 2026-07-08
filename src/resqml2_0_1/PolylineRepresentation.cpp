@@ -44,7 +44,6 @@ void PolylineRepresentation::init(COMMON_NS::DataObjectRepository * repo, const 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 PolylineRepresentation::PolylineRepresentation(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed)
@@ -129,7 +128,7 @@ void PolylineRepresentation::setGeometry(double const* points, unsigned int poin
 
 	uint64_t pointCountDims[2] = { pointCount, 3 };
 	polylineRep->NodePatch->Geometry = createPointGeometryPatch2_0_1(0, points, localCrs, pointCountDims, 2, proxy);
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 bool PolylineRepresentation::isClosed() const

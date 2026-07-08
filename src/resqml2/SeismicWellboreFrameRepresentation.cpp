@@ -32,7 +32,7 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_3);
 

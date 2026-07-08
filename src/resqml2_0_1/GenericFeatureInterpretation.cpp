@@ -41,6 +41,5 @@ GenericFeatureInterpretation::GenericFeatureInterpretation(RESQML2_NS::AbstractF
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	feature->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(feature);
 }

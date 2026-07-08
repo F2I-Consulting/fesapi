@@ -748,8 +748,7 @@ namespace COMMON_NS
 		AbstractObject(const AbstractObject&) = delete;
 		AbstractObject& operator=(const AbstractObject&) = delete;
 
-		friend bool COMMON_NS::DataObjectRepository::addDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy);
-		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy, bool replaceOnlyContent);
+		friend class COMMON_NS::DataObjectRepository;
 
 		/**
 		 * Initialize all mandatory attributes of an AbstractObject (not the attributes of a
@@ -1045,7 +1044,7 @@ namespace COMMON_NS
 				}
 				targetObj->setUriSource(getUriSource());
 			}
-			getRepository()->addRelationship(this, targetObj);
+			targetObj->getRepository()->addRelationship(this, targetObj);
 		}
 
 		/**

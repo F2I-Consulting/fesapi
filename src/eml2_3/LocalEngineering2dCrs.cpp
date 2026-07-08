@@ -121,8 +121,6 @@ LocalEngineering2dCrs::LocalEngineering2dCrs(COMMON_NS::DataObjectRepository* re
 	auto* epsgCrs = soap_new_eml23__ProjectedEpsgCrs(gsoapProxy2_3->soap);
 	epsgCrs->EpsgCode = projectedEpsgCode;
 	local2dCrs->OriginProjectedCrs->AbstractProjectedCrs = epsgCrs;
-
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 LocalEngineering2dCrs::LocalEngineering2dCrs(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,
@@ -152,8 +150,6 @@ LocalEngineering2dCrs::LocalEngineering2dCrs(COMMON_NS::DataObjectRepository* re
 		wktCrs->WellKnownText = projectedDefinition;
 		local2dCrs->OriginProjectedCrs->AbstractProjectedCrs = wktCrs;
 	}
-
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 double LocalEngineering2dCrs::getOriginOrdinal1() const

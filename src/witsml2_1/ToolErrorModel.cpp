@@ -76,7 +76,7 @@ void ToolErrorModel::pushBackErrorTerm(ErrorTerm* errorTerm, double magnitude, g
 {
 	witsml21__ToolErrorModel* tem = static_cast<witsml21__ToolErrorModel*>(gsoapProxy2_3);
 
-	getRepository()->addRelationship(this, errorTerm);
+	errorTerm->getRepository()->addRelationship(this, errorTerm);
 
 	witsml21__ErrorTermValue* etv = soap_new_witsml21__ErrorTermValue(getGsoapContext(), 1);
 	tem->ErrorTermValue.push_back(etv);
@@ -166,7 +166,7 @@ void ToolErrorModel::setReplacedToolErrorModel(ToolErrorModel* replaces)
 		throw invalid_argument("The replaced Tool Error Model to set cannot be null");
 	}
 
-	getRepository()->addRelationship(this, replaces);
+	replaces->getRepository()->addRelationship(this, replaces);
 
 	static_cast<witsml21__ToolErrorModel*>(gsoapProxy2_3)->Replaces = replaces->newEml23Reference();
 }

@@ -48,7 +48,6 @@ Wellbore::Wellbore(WITSML2_NS::Well* witsmlWell, const std::string & guid, const
 
 	static_cast<witsml21__Wellbore*>(gsoapProxy2_3)->ActiveStatus = isActive ? eml23__ActiveStatusKind::active : eml23__ActiveStatusKind::inactive;
 
-	witsmlWell->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWell(witsmlWell);
 }
 
@@ -79,7 +78,6 @@ Wellbore::Wellbore(
 	wellbore->AchievedTD = (bool *)soap_malloc(wellbore->soap, sizeof(bool));
 	*wellbore->AchievedTD = achievedTD;
 
-	witsmlWell->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWell(witsmlWell);
 }
 
@@ -96,7 +94,7 @@ void Wellbore::setWell(WITSML2_NS::Well* witsmlWell)
 	witsml21__Wellbore* wellbore = static_cast<witsml21__Wellbore*>(gsoapProxy2_3);
 	wellbore->Well = witsmlWell->newEml23Reference();
 
-	getRepository()->addRelationship(this, witsmlWell);
+	witsmlWell->getRepository()->addRelationship(this, witsmlWell);
 }
 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Wellbore, Number, gsoap_eml2_3::soap_new_std__string)

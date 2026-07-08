@@ -44,7 +44,6 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 
 	setPropertyKind(propKind);
@@ -58,7 +57,7 @@ std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPr
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, hdfProxy);
+	hdfProxy->getRepository()->addRelationship(this, hdfProxy);
 	_resqml22__CommentProperty* prop = static_cast<_resqml22__CommentProperty*>(gsoapProxy2_3);
 
 	// XML

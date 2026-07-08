@@ -46,13 +46,12 @@ StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(RES
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	orgFeat->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(orgFeat);
 }
 
 void StratigraphicOccurrenceInterpretation::setStratigraphicColumnRankInterpretation(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRankInterp)
 {
-	getRepository()->addRelationship(this, stratiColumnRankInterp);
+	stratiColumnRankInterp->getRepository()->addRelationship(this, stratiColumnRankInterp);
 
 	_resqml20__StratigraphicOccurrenceInterpretation* interp = static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1);
 	interp->IsOccurrenceOf = stratiColumnRankInterp->newResqmlReference();

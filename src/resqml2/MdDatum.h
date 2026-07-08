@@ -152,11 +152,9 @@ namespace RESQML2_NS
 		/**
 		 * Sets the local CRS where the reference point ordinals are given.
 		 *
-		 * @exception	std::invalid_argument	If @p localCrs is nullptr and no default CRS is
-		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is nullptr
 		 *
-		 * @param[in]	localCrs	If non-nullptr, the local CRS. If nullptr, the data object repository
-		 * 							default CRS is set.
+		 * @param[in]	localCrs	The local CRS to set. 
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setLocalCrs(EML2_NS::AbstractLocal3dCrs * localCrs) = 0;
 	};

@@ -52,7 +52,6 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 }
 
@@ -71,7 +70,6 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 
 	setPropertyKind(localPropKind);
@@ -79,7 +77,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 
 std::string CommentProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName)
 {
-	getRepository()->addRelationship(this, hdfProxy);
+	hdfProxy->getRepository()->addRelationship(this, hdfProxy);
 	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
 
 	resqml20__PatchOfValues* patch = soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap);

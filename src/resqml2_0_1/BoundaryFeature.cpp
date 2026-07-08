@@ -34,6 +34,4 @@ BoundaryFeature::BoundaryFeature(COMMON_NS::DataObjectRepository * repo, const s
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
-
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }

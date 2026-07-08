@@ -48,7 +48,6 @@ PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const s
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 	setLocalCrs(localCrs);
 }
@@ -68,7 +67,6 @@ PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const s
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 	setLocalCrs(localCrs);
 	setPropertyKind(localPropKind);
@@ -140,7 +138,7 @@ std::string PointsProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPro
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	_resqml20__PointsProperty* prop = static_cast<_resqml20__PointsProperty*>(gsoapProxy2_0_1);
 
 	gsoap_resqml2_0_1::resqml20__PatchOfPoints* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfPoints(gsoapProxy2_0_1->soap);

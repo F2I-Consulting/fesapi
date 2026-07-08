@@ -57,11 +57,10 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 
 	prop->Lookup = strLookup->newResqmlReference();
-	getRepository()->addRelationship(this, strLookup);
+	strLookup->getRepository()->addRelationship(this, strLookup);
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -87,11 +86,10 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 
 	prop->Lookup = dblLookup->newResqmlReference();
-	getRepository()->addRelationship(this, dblLookup);
+	dblLookup->getRepository()->addRelationship(this, dblLookup);
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -113,13 +111,12 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 
 	setPropertyKind(localPropKind);
 
 	prop->Lookup = strLookup->newResqmlReference();
-	getRepository()->addRelationship(this, strLookup);
+	strLookup->getRepository()->addRelationship(this, strLookup);
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -141,13 +138,12 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 
 	setPropertyKind(localPropKind);
 
 	prop->Lookup = dblLookup->newResqmlReference();
-	getRepository()->addRelationship(this, dblLookup);
+	dblLookup->getRepository()->addRelationship(this, dblLookup);
 }
 
 COMMON_NS::DataObjectReference CategoricalProperty::getLookupDor() const

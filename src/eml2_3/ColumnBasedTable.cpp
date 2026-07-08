@@ -38,8 +38,6 @@ ColumnBasedTable::ColumnBasedTable(COMMON_NS::DataObjectRepository* repo, const 
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
-
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 gsoap_eml2_3::eml23__Column* ColumnBasedTable::getColumn(uint64_t columnIndex) const
@@ -162,7 +160,7 @@ void ColumnBasedTable::setDoubleValues(uint64_t columnIndex, double const* value
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	auto* column = getColumn(columnIndex);
 	auto* externalArray = soap_new_eml23__FloatingPointExternalArray(column->soap);
@@ -226,7 +224,7 @@ void ColumnBasedTable::setInt64Values(uint64_t columnIndex, int64_t const* value
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	auto* column = getColumn(columnIndex);
 	auto* externalArray = soap_new_eml23__IntegerExternalArray(column->soap);
@@ -272,7 +270,7 @@ void ColumnBasedTable::pushBackColumnHeader(bool isAKeyColumn, const std::string
 	column->ValueCountPerRow = valueCountPerRow;
 
 	column->PropertyKind = propKind->newEml23Reference();
-	getRepository()->addRelationship(this, propKind);
+	propKind->getRepository()->addRelationship(this, propKind);
 }
 
 void ColumnBasedTable::loadTargetRelationships()
@@ -290,22 +288,22 @@ void ColumnBasedTable::loadTargetRelationships()
 		auto* column = getColumn(i);
 		if (column->Values->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__FloatingPointExternalArray) {
 			for (auto* daPart : static_cast<eml23__FloatingPointExternalArray*>(column->Values)->Values->ExternalDataArrayPart) {
-				getRepository()->addRelationship(this, getOrCreateHdfProxyFromDataArrayPart(daPart));
+				getOrCreateHdfProxyFromDataArrayPart(daPart)->getRepository()->addRelationship(this, getOrCreateHdfProxyFromDataArrayPart(daPart));
 			}
 		}
 		else if (column->Values->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray) {
 			for (auto* daPart : static_cast<eml23__IntegerExternalArray*>(column->Values)->Values->ExternalDataArrayPart) {
-				getRepository()->addRelationship(this, getOrCreateHdfProxyFromDataArrayPart(daPart));
+				getOrCreateHdfProxyFromDataArrayPart(daPart)->getRepository()->addRelationship(this, getOrCreateHdfProxyFromDataArrayPart(daPart));
 			}
 		}
 		else if (column->Values->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__BooleanExternalArray) {
 			for (auto* daPart : static_cast<eml23__BooleanExternalArray*>(column->Values)->Values->ExternalDataArrayPart) {
-				getRepository()->addRelationship(this, getOrCreateHdfProxyFromDataArrayPart(daPart));
+				getOrCreateHdfProxyFromDataArrayPart(daPart)->getRepository()->addRelationship(this, getOrCreateHdfProxyFromDataArrayPart(daPart));
 			}
 		}
 		else if (column->Values->soap_type() == SOAP_TYPE_gsoap_eml2_3_eml23__StringExternalArray) {
 			for (auto* daPart : static_cast<eml23__StringExternalArray*>(column->Values)->Values->ExternalDataArrayPart) {
-				getRepository()->addRelationship(this, getOrCreateHdfProxyFromDataArrayPart(daPart));
+				getOrCreateHdfProxyFromDataArrayPart(daPart)->getRepository()->addRelationship(this, getOrCreateHdfProxyFromDataArrayPart(daPart));
 			}
 		}
 	}

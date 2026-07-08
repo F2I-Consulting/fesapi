@@ -105,7 +105,7 @@ void AbstractSurfaceRepresentation::pushBackOuterRing(PolylineRepresentation * o
 		throw std::logic_error("Unsupported version of RESQML");
 	}
 
-	getRepository()->addRelationship(this, outerRing);
+	outerRing->getRepository()->addRelationship(this, outerRing);
 }
 
 void AbstractSurfaceRepresentation::setSurfaceRole(gsoap_resqml2_0_1::resqml20__SurfaceRole surfaceRole)

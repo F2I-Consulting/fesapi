@@ -40,7 +40,6 @@ PointsProperty::PointsProperty(RESQML2_NS::AbstractRepresentation * rep, const s
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	rep->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setRepresentation(rep);
 	setLocalCrs(localCrs);
 	setPropertyKind(localPropKind);
@@ -111,7 +110,7 @@ std::string PointsProperty::pushBackRefToExistingDataset(EML2_NS::AbstractHdfPro
 		throw std::invalid_argument("The dataset name wher to store of the points property cannot be empty.");
 	}
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	_resqml22__PointsProperty* prop = static_cast<_resqml22__PointsProperty*>(gsoapProxy2_3);
 
 	// XML

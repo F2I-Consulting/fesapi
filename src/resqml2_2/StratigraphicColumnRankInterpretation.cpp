@@ -40,13 +40,12 @@ StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(RES
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	orgFeat->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(orgFeat);
 }
 
 void StratigraphicColumnRankInterpretation::pushBackStratiUnitInterpretation(RESQML2_NS::StratigraphicUnitInterpretation * stratiUnitInterpretation)
 {
-	getRepository()->addRelationship(this, stratiUnitInterpretation);
+	stratiUnitInterpretation->getRepository()->addRelationship(this, stratiUnitInterpretation);
 
     _resqml22__StratigraphicColumnRankInterpretation* stratigraphicColumnRankInterpretation = static_cast<_resqml22__StratigraphicColumnRankInterpretation*>(gsoapProxy2_3);
 	stratigraphicColumnRankInterpretation->StratigraphicUnits.push_back(stratiUnitInterpretation->newEml23Reference());
@@ -104,7 +103,7 @@ RESQML2_NS::HorizonInterpretation* StratigraphicColumnRankInterpretation::getHor
 
 void StratigraphicColumnRankInterpretation::setHorizonOfLastContact(RESQML2_NS::HorizonInterpretation * partOf)
 {
-	getRepository()->addRelationship(this, partOf);
+	partOf->getRepository()->addRelationship(this, partOf);
 
 	resqml22__AbstractOrganizationInterpretation* org = static_cast<resqml22__AbstractOrganizationInterpretation*>(gsoapProxy2_3);
     resqml22__BinaryContactInterpretationPart* contact = static_cast<resqml22__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);

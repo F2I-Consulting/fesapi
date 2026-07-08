@@ -54,7 +54,7 @@ void WellboreFrameRepresentation::setMdValues(double const * mdValues, uint64_t 
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	string frameUuid;
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -440,7 +440,6 @@ WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajec
 void WellboreFrameRepresentation::loadTargetRelationships()
 {
 	COMMON_NS::DataObjectReference dor = getWellboreTrajectoryDor();
-	// todo the trajectory should be resqml2 instead of resqml2_0_1
 	WellboreTrajectoryRepresentation* traj = getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(dor.getUuid());
 	if (traj == nullptr) { // partial transfer
 		getRepository()->createPartial(dor);

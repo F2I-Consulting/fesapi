@@ -58,7 +58,6 @@ Channel::Channel(EML2_NS::PropertyKind * propertyKind,
 	
 	channel->ActiveStatus = isActive ? eml23__ActiveStatusKind::active : eml23__ActiveStatusKind::inactive;
 
-	propertyKind->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setPropertyKind(propertyKind);
 }
 
@@ -97,7 +96,7 @@ void Channel::setPropertyKind(EML2_NS::PropertyKind* propKind)
 
 	static_cast<witsml21__Channel*>(gsoapProxy2_3)->ChannelPropertyKind = propKind->newEml23Reference();
 
-	getRepository()->addRelationship(this, propKind);
+	propKind->getRepository()->addRelationship(this, propKind);
 }
 
 GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(std::string, Channel, Mnemonic)

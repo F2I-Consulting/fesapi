@@ -51,18 +51,17 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 
 	frame->Trajectory = traj->newEml23Reference();
-	getRepository()->addRelationship(this, traj);
+	traj->getRepository()->addRelationship(this, traj);
 
 	frame->SeismicReferenceDatum = seismicReferenceDatum;
 
 	frame->WeatheringVelocity = weatheringVelocity;
 
 	frame->LocalTime3dCrs = crs->newEml23Reference();
-	getRepository()->addRelationship(this, crs);
+	crs->getRepository()->addRelationship(this, crs);
 }
 
 COMMON_NS::DataObjectReference SeismicWellboreFrameRepresentation::getTimeCrsDor() const

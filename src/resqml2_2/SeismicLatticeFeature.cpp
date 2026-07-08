@@ -51,7 +51,6 @@ SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* re
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 int64_t SeismicLatticeFeature::getCrosslineIncrement() const

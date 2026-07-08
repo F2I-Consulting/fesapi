@@ -63,7 +63,6 @@ FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
 	fs->SolutionGOR->__item = gasOilRatio;
 	fs->SolutionGOR->uom = gsoap_eml2_3::soap_eml23__VolumePerVolumeUom2s(repo->getGsoapContext(), gasOilRatioUom);
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
@@ -93,7 +92,6 @@ FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
 	fs->SolutionGOR->__item = gasOilRatio;
 	fs->SolutionGOR->uom = gsoap_eml2_3::soap_eml23__VolumePerVolumeUom2s(repo->getGsoapContext(), gasOilRatioUom);
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 SETTER_OPTIONAL_ATTRIBUTE_IMPL(FluidSystem, gsoap_eml2_3::prodml23__FluidSystem, gsoapProxy2_3, PhasesPresent, gsoap_eml2_3::prodml23__PhasePresent, soap_new_prodml23__PhasePresent)
@@ -264,7 +262,7 @@ void FluidSystem::setRockFluidOrganization(RESQML2_NS::RockFluidOrganizationInte
 	}
 	static_cast<prodml23__FluidSystem*>(gsoapProxy2_3)->RockFluidOrganizationInterpretation = rockFluidOrg->newEml23Reference();
 
-	getRepository()->addRelationship(this, rockFluidOrg);
+	rockFluidOrg->getRepository()->addRelationship(this, rockFluidOrg);
 }
 
 COMMON_NS::DataObjectReference FluidSystem::getRockFluidOrganizationDor() const
@@ -312,7 +310,7 @@ void FluidSystem::loadTargetRelationships()
 				convertDorIntoRel<RESQML2_NS::RockFluidOrganizationInterpretation>(dor);
 				rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::RockFluidOrganizationInterpretation>(dor.getUuid());
 			}
-			getRepository()->addRelationship(this, rockFluidOrg);
+			rockFluidOrg->getRepository()->addRelationship(this, rockFluidOrg);
 		}
 		// See http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
 		// A RockFluidOrganizationInterpretation can gather only one RockFluidUnitInterpretation Index/ geologicUnitInterpretation; it should be multiple (i.e., cardinality is 1..1 but should be 1..*).
@@ -323,7 +321,7 @@ void FluidSystem::loadTargetRelationships()
 				convertDorIntoRel<RESQML2_NS::StratigraphicOccurrenceInterpretation>(dor);
 				rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_NS::StratigraphicOccurrenceInterpretation>(dor.getUuid());
 			}
-			getRepository()->addRelationship(this, rockFluidOrg);
+			rockFluidOrg->getRepository()->addRelationship(this, rockFluidOrg);
 		}
 	}
 }

@@ -85,7 +85,7 @@ namespace WITSML2_1_NS
 
 			static_cast<T*>(this->gsoapProxy2_3)->Wellbore = witsmlWellbore->newEml23Reference();
 
-			getRepository()->addRelationship(this, witsmlWellbore);
+			witsmlWellbore->getRepository()->addRelationship(this, witsmlWellbore);
 		}
 
 /**

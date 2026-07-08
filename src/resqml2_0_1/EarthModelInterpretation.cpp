@@ -48,7 +48,6 @@ EarthModelInterpretation::EarthModelInterpretation(RESQML2_NS::Model * orgFeat, 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	orgFeat->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(orgFeat);
 }
 
@@ -72,7 +71,7 @@ void EarthModelInterpretation::pushBackStructuralOrganizationInterpretation(RESQ
 		throw std::range_error("A RESQML 2.0.1 earth model interpretation can only have up to 1 structural organization interpretation.");
 	}
 
-	getRepository()->addRelationship(this, structOrganization);
+	structOrganization->getRepository()->addRelationship(this, structOrganization);
 
 	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure = structOrganization->newResqmlReference();
 }
@@ -84,7 +83,7 @@ bool EarthModelInterpretation::hasStratiColumn() const
 
 void EarthModelInterpretation::setStratiColumn(RESQML2_NS::StratigraphicColumn * stratiColumn)
 {
-	getRepository()->addRelationship(this, stratiColumn);
+	stratiColumn->getRepository()->addRelationship(this, stratiColumn);
 
 	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn = stratiColumn->newResqmlReference();
 }
@@ -109,7 +108,7 @@ COMMON_NS::DataObjectReference EarthModelInterpretation::getStratiOccurrenceDor(
 
 void EarthModelInterpretation::pushBackStratiOccurrence(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrence)
 {
-	getRepository()->addRelationship(this, stratiOccurrence);
+	stratiOccurrence->getRepository()->addRelationship(this, stratiOccurrence);
 		
 	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.push_back(stratiOccurrence->newResqmlReference());
 }
@@ -125,7 +124,7 @@ void EarthModelInterpretation::pushBackRockFluidOrganizationInterpretation(RESQM
 		throw std::range_error("A RESQML 2.0.1 earth model interpretation can only have up to 1 rock fluid organization interpretation.");
 	}
 
-	getRepository()->addRelationship(this, rockFluid);
+	rockFluid->getRepository()->addRelationship(this, rockFluid);
 
 	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure = rockFluid->newResqmlReference();
 }

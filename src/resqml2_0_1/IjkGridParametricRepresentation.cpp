@@ -283,7 +283,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlDefinedPillars->Values->PathInHdfFile = getHdfGroup() + "/PillarGeometryIsDefined";
 
 	// HDF Pillar defined
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	const unsigned int pillarCount = getPillarCount();
 	std::unique_ptr<unsigned char[]> definedPillars(new unsigned char[pillarCount]);
 	for (unsigned int i = 0; i < pillarCount; ++i) {
@@ -390,7 +390,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	geom->GridIsRighthanded = isRightHanded;
 	geom->KDirection = kDirectionKind;
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	// XML parametric nodes
 	resqml20__Point3dParametricArray* xmlPoints = soap_new_resqml20__Point3dParametricArray(gsoapProxy2_0_1->soap);
 	geom->Points = xmlPoints;
@@ -457,7 +457,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		xmlcontrolPointParams->Values->PathInHdfFile = controlPointParameters;
 	}
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 

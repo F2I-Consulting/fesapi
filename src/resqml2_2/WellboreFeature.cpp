@@ -38,7 +38,6 @@ WellboreFeature::WellboreFeature(COMMON_NS::DataObjectRepository* repo, const st
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 COMMON_NS::DataObjectReference WellboreFeature::getWitsmlWellboreDor() const
@@ -50,7 +49,7 @@ COMMON_NS::DataObjectReference WellboreFeature::getWitsmlWellboreDor() const
 
 void WellboreFeature::setWitsmlWellbore(WITSML2_NS::Wellbore * wellbore)
 {
-	getRepository()->addRelationship(this, wellbore);
+	wellbore->getRepository()->addRelationship(this, wellbore);
 
 	resqml22__WellboreFeature* resqmlWellbore = static_cast<resqml22__WellboreFeature*>(gsoapProxy2_3);
 	resqmlWellbore->WitsmlWellbore = soap_new_resqml22__WitsmlWellWellbore(gsoapProxy2_3->soap);

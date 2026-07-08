@@ -93,6 +93,9 @@ namespace RESQML2_NS
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const final { return XML_TAG; }
 
+		/** Loads target relationships */
+		virtual void loadTargetRelationships() override;
+
 	protected:
 
 		/**
@@ -115,8 +118,5 @@ namespace RESQML2_NS
 		 */
 		WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreMarkerFrameRepresentation* fromGsoap) :
 			WellboreFrameRepresentation(fromGsoap) {}
-
-		/** Loads target relationships */
-		virtual void loadTargetRelationships() override;
 	};
 }

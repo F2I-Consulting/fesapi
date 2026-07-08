@@ -47,7 +47,6 @@ void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(COMMON_NS::DataObjectRepository* repo,
@@ -377,7 +376,7 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 	geom->NodeCount = pointCount;
 	geom->CellShape = cellShape;
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	// Face Right handness
 	//XML
 	resqml20__BooleanHdf5Array* cellFaceIsRightHandedForHdf5 = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap);
@@ -429,7 +428,7 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 	xmlPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
 	xmlPoints->Coordinates->PathInHdfFile = points;
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
@@ -476,7 +475,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 		geom->CellShape = resqml20__CellShape::polyhedral;
 	}
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	// Face Right handness
 	//XML
 	resqml20__BooleanHdf5Array* cellFaceIsRightHandedForHdf5 = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap);
@@ -538,5 +537,5 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 	xmlPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
 	xmlPoints->Coordinates->PathInHdfFile = points;
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }

@@ -37,12 +37,11 @@ StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 void StratigraphicColumn::pushBackStratiColumnRank(RESQML2_NS::StratigraphicColumnRankInterpretation * stratiColumnRank)
 {
-	getRepository()->addRelationship(this, stratiColumnRank);
+	stratiColumnRank->getRepository()->addRelationship(this, stratiColumnRank);
 
 	static_cast<_resqml22__StratigraphicColumn*>(gsoapProxy2_3)->Ranks.push_back(stratiColumnRank->newEml23Reference());
 }

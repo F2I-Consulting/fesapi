@@ -38,7 +38,6 @@ WellboreCompletion::WellboreCompletion(WITSML2_NS::Wellbore* witsmlWellbore,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	witsmlWellbore->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWellbore(witsmlWellbore);
 }
 
@@ -65,7 +64,7 @@ void WellboreCompletion::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 
 	static_cast<witsml21__WellboreCompletion*>(gsoapProxy2_3)->ReferenceWellbore = witsmlWellbore->newEml23Reference();
 
-	getRepository()->addRelationship(this, witsmlWellbore);
+	witsmlWellbore->getRepository()->addRelationship(this, witsmlWellbore);
 }
 
 void WellboreCompletion::setWellCompletion(WellCompletion* wellCompletion)
@@ -78,7 +77,7 @@ void WellboreCompletion::setWellCompletion(WellCompletion* wellCompletion)
 	witsml21__WellboreCompletion* wellboreCompletion = static_cast<witsml21__WellboreCompletion*>(gsoapProxy2_3);
 	wellboreCompletion->WellCompletion = wellCompletion->newEml23Reference();
 
-	getRepository()->addRelationship(this, wellCompletion);
+	wellCompletion->getRepository()->addRelationship(this, wellCompletion);
 }
 
 void WellboreCompletion::pushBackConnection(WellReservoirConnectionType wellReservoirConnection,

@@ -38,7 +38,6 @@ void PolylineSetRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 PolylineSetRepresentation::PolylineSetRepresentation(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
@@ -90,7 +89,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 
 	resqml22__PolylineSetPatch* patch = soap_new_resqml22__PolylineSetPatch(gsoapProxy2_3->soap);
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	// node count
 	eml23__IntegerXmlArray* xmlNodeCountPerPolyline = soap_new_eml23__IntegerXmlArray(gsoapProxy2_3->soap);
@@ -119,7 +118,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(), nodes, localCrs, nodeCount, 2, proxy);
 
 	static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.push_back(patch);
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
@@ -142,7 +141,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 
 	resqml22__PolylineSetPatch* patch = soap_new_resqml22__PolylineSetPatch(gsoapProxy2_3->soap);
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	// node count
 	eml23__IntegerXmlArray* xmlNodeCountPerPolyline = soap_new_eml23__IntegerXmlArray(gsoapProxy2_3->soap);
@@ -175,7 +174,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->Geometry = createPointGeometryPatch2_2(static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.size(), nodes, localCrs, nodeCount, 2, proxy);
 
 	static_cast<_resqml22__PolylineSetRepresentation*>(gsoapProxy2_3)->LinePatch.push_back(patch);
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 COMMON_NS::DataObjectReference PolylineSetRepresentation::getHdfProxyDor() const

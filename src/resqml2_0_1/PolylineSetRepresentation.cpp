@@ -41,7 +41,6 @@ void PolylineSetRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 PolylineSetRepresentation::PolylineSetRepresentation(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
@@ -99,7 +98,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	resqml20__PolylineSetPatch* patch = soap_new_resqml20__PolylineSetPatch(gsoapProxy2_0_1->soap);
 	patch->PatchIndex = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size();
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	// node count
 	resqml20__IntegerHdf5Array* xmlNodeCountPerPolyline = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
@@ -130,7 +129,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, nodeCount, 2, proxy);
 
 	static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.push_back(patch);
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void PolylineSetRepresentation::pushBackGeometryPatch(
@@ -154,7 +153,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	resqml20__PolylineSetPatch* patch = soap_new_resqml20__PolylineSetPatch(gsoapProxy2_0_1->soap);
 	patch->PatchIndex = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size();
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	// node count
 	resqml20__IntegerHdf5Array* xmlNodeCountPerPolyline = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
@@ -195,7 +194,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, xyzPtDim, 2, proxy);
 
 	static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.push_back(patch);
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 COMMON_NS::DataObjectReference PolylineSetRepresentation::getHdfProxyDor() const

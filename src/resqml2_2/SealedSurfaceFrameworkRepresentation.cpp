@@ -47,7 +47,6 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
     initMandatoryMetadata();
     setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
     setInterpretation(interp);
 }
 
@@ -83,7 +82,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	pushBackContact(kind);
 	resqml22__SealedContact* contactRep = static_cast<_resqml22__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3)->Contacts.back();
@@ -122,7 +121,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
     _resqml22__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml22__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_3);
 

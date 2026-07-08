@@ -47,6 +47,5 @@ void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 
 	setXmlParentPropertyKind(parentPropertyKind);
 
-
-	getRepository()->addRelationship(this, parentPropertyKind);
+	parentPropertyKind->getRepository()->addRelationship(this, parentPropertyKind);
 }

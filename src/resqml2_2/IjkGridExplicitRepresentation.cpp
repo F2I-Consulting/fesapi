@@ -127,7 +127,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 	geom->PillarShape = static_cast<resqml22__PillarShape>(mostComplexPillarGeometry);
 	geom->KDirection = static_cast<resqml22__KDirection>(kDirectionKind);
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	// Pillar defined
 	if (definedPillars.empty()) {
 		eml23__BooleanConstantArray* xmlDefinedPillars = soap_new_eml23__BooleanConstantArray(gsoapProxy2_3->soap);
@@ -177,7 +177,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 		elements->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(splitCoordinateLineColumns, proxy->getElementCount(splitCoordinateLineColumns), proxy));
 	}
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 

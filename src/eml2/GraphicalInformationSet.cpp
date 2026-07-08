@@ -294,7 +294,7 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject * targetObject, 
 	if (defaultGraphicalInformationForAllIndexableElements == nullptr) {
 		_eml23__GraphicalInformationSet* gis = static_cast<_eml23__GraphicalInformationSet*>(gsoapProxy2_3);
 		defaultGraphicalInformationForAllIndexableElements = soap_new_resqml22__DefaultGraphicalInformation(gsoapProxy2_3->soap);
-		getRepository()->addRelationship(this, targetObject);
+		targetObject->getRepository()->addRelationship(this, targetObject);
 		defaultGraphicalInformationForAllIndexableElements->TargetObject.push_back(targetObject->newEml23Reference());
 		defaultGraphicalInformationForAllIndexableElements->ViewerKind = soap_resqml22__ViewerKind2s(gsoapProxy2_3->soap, resqml22__ViewerKind::_3d);
 		gis->GraphicalInformation.push_back(defaultGraphicalInformationForAllIndexableElements);
@@ -463,7 +463,7 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, 
 	resqml22__ColorInformation* colorInformation = getColorInformation(targetObject);
 	if (colorInformation == nullptr) {
 		colorInformation = soap_new_resqml22__ColorInformation(gsoapProxy2_3->soap);
-		getRepository()->addRelationship(this, targetObject);
+		targetObject->getRepository()->addRelationship(this, targetObject);
 		colorInformation->TargetObject.push_back(targetObject->newEml23Reference());
 		gis->GraphicalInformation.push_back(colorInformation);
 	}
@@ -471,7 +471,7 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, 
 	colorInformation->UseReverseMapping = useReverseMapping;
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
 
-	getRepository()->addRelationship(this, discreteColorMap);
+	discreteColorMap->getRepository()->addRelationship(this, discreteColorMap);
 	colorInformation->ColorMap = discreteColorMap->newEml23Reference();
 }
 
@@ -552,7 +552,7 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject
 	resqml22__ColorInformation* colorInformation = getColorInformation(targetObject);
 	if (colorInformation == nullptr) {
 		colorInformation = soap_new_resqml22__ColorInformation(gsoapProxy2_3->soap);
-		getRepository()->addRelationship(this, targetObject);
+		targetObject->getRepository()->addRelationship(this, targetObject);
 		colorInformation->TargetObject.push_back(targetObject->newEml23Reference());
 		gis->GraphicalInformation.push_back(colorInformation);
 	}
@@ -560,7 +560,7 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject
 	colorInformation->UseReverseMapping = useReverseMapping;
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
 
-	getRepository()->addRelationship(this, continuousColorMap);
+	continuousColorMap->getRepository()->addRelationship(this, continuousColorMap);
 	colorInformation->ColorMap = continuousColorMap->newEml23Reference();
 }
 

@@ -42,7 +42,6 @@ void GridConnectionSetRepresentation::init(COMMON_NS::DataObjectRepository * rep
     initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 GridConnectionSetRepresentation::GridConnectionSetRepresentation(COMMON_NS::DataObjectRepository * repo,
@@ -87,7 +86,7 @@ void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(uint
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	_resqml22__GridConnectionSetRepresentation* const rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
 	rep->Count = cellIndexPairCount;
@@ -121,7 +120,7 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExisting
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	_resqml22__GridConnectionSetRepresentation* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
 
@@ -415,7 +414,7 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(uint64_
 		throw logic_error("You must set the cell index pairs before to set the connection interpretations.");
 	}
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	_resqml22__GridConnectionSetRepresentation* rep = static_cast<_resqml22__GridConnectionSetRepresentation*>(gsoapProxy2_3);
 	if (rep->ConnectionInterpretations == nullptr) {
@@ -450,7 +449,7 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	const uint64_t cellIndexPairCount = getCellIndexPairCount();
 	if (cellIndexPairCount == 0) {

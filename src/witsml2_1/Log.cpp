@@ -45,7 +45,6 @@ Log::Log(WITSML2_NS::Wellbore* witsmlWellbore,
 
 	static_cast<witsml21__Log*>(gsoapProxy2_3)->ActiveStatus = isActive ? eml23__ActiveStatusKind::active : eml23__ActiveStatusKind::inactive;
 
-	witsmlWellbore->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWellbore(witsmlWellbore);
 }
 
@@ -56,7 +55,7 @@ void Log::pushBackChannelSet(ChannelSet * channelSet)
 	}
 	static_cast<witsml21__Log*>(gsoapProxy2_3)->ChannelSet.push_back(static_cast<witsml21__ChannelSet*>(channelSet->getEml23GsoapProxy()));
 
-	getRepository()->addRelationship(this, channelSet);
+	channelSet->getRepository()->addRelationship(this, channelSet);
 }
 
 std::vector<ChannelSet*> Log::getChannelSets() const
@@ -86,6 +85,6 @@ void Log::loadTargetRelationships()
 			channelSetWrapper = getRepository()->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>(new ChannelSet(channelSet)));
 			channelSetWrapper->loadTargetRelationships();
 		}
-		getRepository()->addRelationship(this, channelSetWrapper);
+		channelSetWrapper->getRepository()->addRelationship(this, channelSetWrapper);
 	}
 }

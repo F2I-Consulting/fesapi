@@ -102,7 +102,7 @@ void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
 		throw logic_error("Not implemented yet");
 	}
 
-	getRepository()->addRelationship(this, rep);
+	rep->getRepository()->addRelationship(this, rep);
 }
 
 AbstractRepresentation* AbstractProperty::getRepresentation() const
@@ -151,7 +151,7 @@ void AbstractProperty::setTimeSeries(EML2_NS::TimeSeries * ts)
 		throw logic_error("Not implemented yet");
 	}
 
-	getRepository()->addRelationship(this, ts);
+	ts->getRepository()->addRelationship(this, ts);
 }
 
 void AbstractProperty::setSingleTimestamp(time_t timestamp, LONG64 yearOffset)
@@ -305,7 +305,7 @@ void AbstractProperty::setLocalCrs(EML2_NS::AbstractLocal3dCrs* crs)
 		throw logic_error("Not implemented yet");
 	}
 
-	getRepository()->addRelationship(this, crs);
+	crs->getRepository()->addRelationship(this, crs);
 }
 
 EML2_NS::AbstractLocal3dCrs* AbstractProperty::getLocalCrs() const
@@ -410,7 +410,7 @@ void AbstractProperty::setPropertyKind(EML2_NS::PropertyKind* propKind)
 		throw logic_error("Unrecognized RESQML version");
 	}
 
-	getRepository()->addRelationship(this, propKind);
+	propKind->getRepository()->addRelationship(this, propKind);
 }
 
 COMMON_NS::DataObjectReference AbstractProperty::getPropertyKindDor() const

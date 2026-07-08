@@ -42,13 +42,12 @@ StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(RESQM
     initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	orgFeat->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(orgFeat);
 }
 
 void StructuralOrganizationInterpretation::pushBackFaultInterpretation(RESQML2_NS::FaultInterpretation * faultInterpretation)
 {
-	getRepository()->addRelationship(this, faultInterpretation);
+	faultInterpretation->getRepository()->addRelationship(this, faultInterpretation);
 
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 
@@ -91,7 +90,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getFaultInt
 
 void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(RESQML2_NS::HorizonInterpretation * horizonInterpretation, uint64_t stratigraphicRank)
 {
-	getRepository()->addRelationship(this, horizonInterpretation);
+	horizonInterpretation->getRepository()->addRelationship(this, horizonInterpretation);
 
 	_resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 
@@ -136,7 +135,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getHorizonI
 
 void StructuralOrganizationInterpretation::pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation)
 {
-	getRepository()->addRelationship(this, topFrontierInterpretation);
+	topFrontierInterpretation->getRepository()->addRelationship(this, topFrontierInterpretation);
 
     _resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 	structuralOrganization->TopFrontier.push_back(topFrontierInterpretation->newEml23Reference());
@@ -156,7 +155,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getTopFront
 
 void StructuralOrganizationInterpretation::pushBackBottomFrontierInterpretation(AbstractFeatureInterpretation * bottomFrontierInterpretation)
 {
-	getRepository()->addRelationship(this, bottomFrontierInterpretation);
+	bottomFrontierInterpretation->getRepository()->addRelationship(this, bottomFrontierInterpretation);
 
     _resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 	structuralOrganization->BottomFrontier.push_back(bottomFrontierInterpretation->newEml23Reference());
@@ -175,7 +174,7 @@ COMMON_NS::DataObjectReference StructuralOrganizationInterpretation::getBottomFr
 
 void StructuralOrganizationInterpretation::pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation)
 {
-	getRepository()->addRelationship(this, sideFrontierInterpretation);
+	sideFrontierInterpretation->getRepository()->addRelationship(this, sideFrontierInterpretation);
 
     _resqml22__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml22__StructuralOrganizationInterpretation*>(gsoapProxy2_3);
 	structuralOrganization->Sides.push_back(sideFrontierInterpretation->newEml23Reference());

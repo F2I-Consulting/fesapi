@@ -40,14 +40,13 @@ RockFluidUnitFeature::RockFluidUnitFeature(COMMON_NS::DataObjectRepository* repo
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setTop(top);
 	setBottom(bottom);
 }
 
 void RockFluidUnitFeature::setTop(BoundaryFeature* top)
 {
-	getRepository()->addRelationship(this, top);
+	top->getRepository()->addRelationship(this, top);
 
 	static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop = top->newResqmlReference();
 }
@@ -59,7 +58,7 @@ BoundaryFeature* RockFluidUnitFeature::getTop() const
 
 void RockFluidUnitFeature::setBottom(BoundaryFeature* bottom)
 {
-	getRepository()->addRelationship(this, bottom);
+	bottom->getRepository()->addRelationship(this, bottom);
 
 	static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom = bottom->newResqmlReference();
 }

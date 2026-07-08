@@ -53,7 +53,6 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	rep->MdInterval->MdMin = std::numeric_limits<double>::quiet_NaN();
 	rep->MdInterval->MdMax = std::numeric_limits<double>::quiet_NaN();
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setMdDatum(mdInfo);
 	setInterpretation(interp);
 }
@@ -98,7 +97,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 	paramLine->KnotCount = controlPointCount;
 	paramLine->LineKindIndex = lineKind;
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	// XML control points
 	resqml22__Point3dExternalArray* xmlControlPoints = soap_new_resqml22__Point3dExternalArray(gsoapProxy2_3->soap);
@@ -110,7 +109,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 	uint64_t dim[2] = { controlPointCount, 3 };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "controlPoints", controlPoints, dim, 2);
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
@@ -175,7 +174,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 
 void WellboreTrajectoryRepresentation::addParentTrajectory(double kickoffMd, double parentMd, RESQML2_NS::WellboreTrajectoryRepresentation* parentTrajRep)
 {
-	getRepository()->addRelationship(this, parentTrajRep);
+	parentTrajRep->getRepository()->addRelationship(this, parentTrajRep);
 
 	_resqml22__WellboreTrajectoryRepresentation* rep = static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3);
 	rep->ParentIntersection = soap_new_resqml22__WellboreTrajectoryParentIntersection(rep->soap);
@@ -340,7 +339,7 @@ void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum * mdDatum)
 
 	static_cast<_resqml22__WellboreTrajectoryRepresentation*>(gsoapProxy2_3)->MdInterval->Datum = mdDatum->newEml23Reference();
 
-	getRepository()->addRelationship(this, mdDatum);
+	mdDatum->getRepository()->addRelationship(this, mdDatum);
 }
 
 COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getMdDatumDor() const

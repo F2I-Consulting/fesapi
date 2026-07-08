@@ -39,33 +39,30 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	_resqml20__MdDatum* mdInfo = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
 
 	soap_s2resqml20__MdReference(gsoapProxy2_0_1->soap, gsoap_eml2_3::soap_eml23__ReferencePointKind2s(gsoapProxy2_0_1->soap, originKind), &mdInfo->MdReference);
-	mdInfo->Location = soap_new_resqml20__Point3d(repo->getGsoapContext());
-	mdInfo->Location->Coordinate1 = referenceLocationOrdinal1;
-	mdInfo->Location->Coordinate2 = referenceLocationOrdinal2;
-	mdInfo->Location->Coordinate3 = referenceLocationOrdinal3;
+	mdInfo->Location = soap_new_req_resqml20__Point3d(repo->getGsoapContext(), referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
 	
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
+	if (locCrs == nullptr) {
+		locCrs = repo->getDefaultCrs();
+		if (locCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
 	setLocalCrs(locCrs);
 }
 
-void MdDatum::setLocalCrs(EML2_NS::AbstractLocal3dCrs * localCrs)
+void MdDatum::setLocalCrs(EML2_NS::AbstractLocal3dCrs* localCrs)
 {
-	// The constructor must force getRepository() not to return nullptr
-
 	if (localCrs == nullptr) {
-		localCrs = getRepository()->getDefaultCrs();
-		if (localCrs == nullptr) {
-			throw std::invalid_argument("A (default) CRS must be provided.");
-		}
+		throw std::invalid_argument("A local CRS must be provided.");
 	}
 
 	_resqml20__MdDatum* mdDatum = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
 	mdDatum->LocalCrs = localCrs->newResqmlReference();
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 double MdDatum::getX() const

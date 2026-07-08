@@ -104,7 +104,7 @@ COMMON_NS::DataObjectReference RepresentationSetRepresentation::getRepresentatio
 
 void RepresentationSetRepresentation::pushBack(RESQML2_NS::AbstractRepresentation* rep)
 {
-	getRepository()->addRelationship(this, rep);
+	rep->getRepository()->addRelationship(this, rep);
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation* rsr = static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1);

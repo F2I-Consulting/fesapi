@@ -51,7 +51,6 @@ Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpreta
 		singleGrid2dRep->SurfaceRole = resqml22__SurfaceRole::pick;
 	}
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 }
 
@@ -504,7 +503,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 		xOffsetInSlowestDirection, yOffsetInSlowestDirection, zOffsetInSlowestDirection,
 		spacingInFastestDirection, spacingInSlowestDirection, localCrs);
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
@@ -530,7 +529,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 		startIndexI + startIndexJ * getNodeCountAlongIAxis(),
 		indexIncrementI, indexIncrementJ);
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
@@ -556,7 +555,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 		offsetIX, offsetIY, offsetIZ, spacingI,
 		offsetJX, offsetJY, offsetJZ, spacingJ);
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 COMMON_NS::DataObjectReference Grid2dRepresentation::getSupportingRepresentationDor() const
@@ -725,9 +724,9 @@ resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
-	getRepository()->addRelationship(this, supportingRepresentation);
+	supportingRepresentation->getRepository()->addRelationship(this, supportingRepresentation);
 
 	resqml22__PointGeometry* geom = soap_new_resqml22__PointGeometry(gsoapProxy2_3->soap);
 	geom->LocalCrs = localCrs->newEml23Reference();
@@ -789,7 +788,7 @@ resqml22__PointGeometry* Grid2dRepresentation::createArray2dOfExplicitZ(
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	resqml22__PointGeometry* geom = soap_new_resqml22__PointGeometry(gsoapProxy2_3->soap);
 	geom->LocalCrs = localCrs->newEml23Reference();

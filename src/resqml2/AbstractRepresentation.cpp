@@ -121,7 +121,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PointGeometry* const geom = gsoap_resqml2_0_1::soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap);
@@ -169,7 +169,7 @@ gsoap_eml2_3::resqml22__PointGeometry* AbstractRepresentation::createPointGeomet
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	if (gsoapProxy2_3 != nullptr) {
 		gsoap_eml2_3::resqml22__PointGeometry* const geom = gsoap_eml2_3::soap_new_resqml22__PointGeometry(gsoapProxy2_3->soap);
@@ -256,7 +256,7 @@ void AbstractRepresentation::setTimeIndex(uint64_t timeIndex, EML2_NS::TimeSerie
 	}
 
 	if (addRel) {
-		getRepository()->addRelationship(this, timeSeries);
+		timeSeries->getRepository()->addRelationship(this, timeSeries);
 	}
 }
 
@@ -369,7 +369,7 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 	else
 		throw logic_error("Not implemented yet");
 
-	getRepository()->addRelationship(this, interp);
+	interp->getRepository()->addRelationship(this, interp);
 }
 
 AbstractFeatureInterpretation* AbstractRepresentation::getInterpretation() const
@@ -615,8 +615,8 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(uint64_t patchIndex,
 	RESQML2_NS::AbstractRepresentation* seismicSupport, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr || gsoapProxy2_3 != nullptr) {
-		getRepository()->addRelationship(this, proxy);
-		getRepository()->addRelationship(this, seismicSupport);
+		proxy->getRepository()->addRelationship(this, proxy);
+		seismicSupport->getRepository()->addRelationship(this, seismicSupport);
 
 		ostringstream oss;
 		ostringstream oss2;
@@ -717,7 +717,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(uint64_t patchIndex,
 		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* patch = static_cast<gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates*>(geom->SeismicCoordinates);
 
 		patch->SeismicSupport = seismicSupport->newResqmlReference();
-		getRepository()->addRelationship(this, seismicSupport);
+		seismicSupport->getRepository()->addRelationship(this, seismicSupport);
 
 		// inlines XML
 		gsoap_resqml2_0_1::resqml20__DoubleLatticeArray* inlineValues = gsoap_resqml2_0_1::soap_new_resqml20__DoubleLatticeArray(gsoapProxy2_0_1->soap);
@@ -754,7 +754,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(uint64_t patchIndex,
 		auto* patch = static_cast<gsoap_eml2_3::resqml22__Seismic3dCoordinates*>(geom->SeismicCoordinates);
 
 		patch->SeismicSupport = seismicSupport->newEml23Reference();
-		getRepository()->addRelationship(this, seismicSupport);
+		seismicSupport->getRepository()->addRelationship(this, seismicSupport);
 
 		// inlines XML
 		gsoap_eml2_3::eml23__FloatingPointLatticeArray* inlineValues = gsoap_eml2_3::soap_new_eml23__FloatingPointLatticeArray(gsoapProxy2_3->soap);
@@ -783,8 +783,8 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(uint64_t patchIndex,
 	RESQML2_NS::AbstractRepresentation* seismicSupport, EML2_NS::AbstractHdfProxy* proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr || gsoapProxy2_3 != nullptr) {
-		getRepository()->addRelationship(this, proxy);
-		getRepository()->addRelationship(this, seismicSupport);
+		proxy->getRepository()->addRelationship(this, proxy);
+		seismicSupport->getRepository()->addRelationship(this, seismicSupport);
 
 		const uint64_t pointCount = getXyzPointCountOfPatch(patchIndex);
 		if (gsoapProxy2_0_1 != nullptr) {

@@ -421,9 +421,9 @@ namespace COMMON_NS
 		* Longer term, a staging phase should be created in FESAPI
 		*
 		* @param[in]	proxy		The data object to add.
-		* @return True if the addition has been done, false if it already exists a same UUID in the repository
+		* @throw invalid_argument	If it already exists a same UUID in the repository
 		*/
-		DLL_IMPORT_OR_EXPORT bool addDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy);
+		DLL_IMPORT_OR_EXPORT void addDataObject(std::unique_ptr<COMMON_NS::AbstractObject> proxy);
 
 		/**
 		 * Adds or replaces (based on UUID and version) a data object in the repository. It does also
@@ -780,7 +780,7 @@ namespace COMMON_NS
 			auto result = std::make_unique<valueType>(dor);
 			dor->ContentType = result->getContentType();
 			auto* rawPtr = result.get();
-			if (!addDataObject(std::move(result))) throw std::invalid_argument("The UUID " + guid + " has already been inserted in the dataobject repository.");
+			addDataObject(std::move(result));
 			return rawPtr;
 		}
 

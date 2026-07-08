@@ -47,7 +47,6 @@ void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(COMMON_NS::DataObjectRepository* repo,
@@ -374,7 +373,7 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 	geom->NodeCount = pointCount;
 	geom->CellShape = static_cast<resqml22__CellShape>(cellShape);
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	// Face Right handness
 	//XML
 	eml23__BooleanExternalArray* cellFaceIsRightHandedForHdf5 = soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
@@ -420,7 +419,7 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 	xmlPoints->Coordinates = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
 	xmlPoints->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(points, proxy->getElementCount(points), proxy));
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
@@ -467,7 +466,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 		geom->CellShape = resqml22__CellShape::polyhedral;
 	}
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	// Face Right handness
 	//XML
 	eml23__BooleanExternalArray* cellFaceIsRightHandedForHdf5 = soap_new_eml23__BooleanExternalArray(gsoapProxy2_3->soap);
@@ -525,5 +524,5 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 	xmlPoints->Coordinates = soap_new_eml23__ExternalDataArray(gsoapProxy2_3->soap);
 	xmlPoints->Coordinates->ExternalDataArrayPart.push_back(createExternalDataArrayPart(points, proxy->getElementCount(points), proxy));
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }

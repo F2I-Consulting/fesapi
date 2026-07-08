@@ -43,7 +43,6 @@ GeobodyInterpretation::GeobodyInterpretation(RESQML2_NS::RockVolumeFeature * fea
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	feature->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretedFeature(feature);
 }
 

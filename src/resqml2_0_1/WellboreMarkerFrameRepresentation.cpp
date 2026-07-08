@@ -50,22 +50,10 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(RESQML2_NS:
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 
 	frame->Trajectory = traj->newResqmlReference();
-	getRepository()->addRelationship(this, traj);
-}
-
-void WellboreMarkerFrameRepresentation::pushBackNewWellboreMarker(unique_ptr<RESQML2_0_1_NS::WellboreMarker> marker)
-{
-	cannotBePartial();
-	getRepository()->addRelationship(marker.get(), this);
-
-	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
-	frame->WellboreMarker.push_back(static_cast<resqml20__WellboreMarker*>(marker->getEml20GsoapProxy()));
-
-	getRepository()->addOrReplaceDataObject(std::move(marker));
+	traj->getRepository()->addRelationship(this, traj);
 }
 
 COMMON_NS::DataObjectReference WellboreMarkerFrameRepresentation::getStratigraphicOccurrenceInterpretationDor() const
@@ -78,7 +66,7 @@ COMMON_NS::DataObjectReference WellboreMarkerFrameRepresentation::getStratigraph
 void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation(RESQML2_NS::StratigraphicOccurrenceInterpretation * stratiOccurrenceInterp)
 {
 	cannotBePartial();
-	getRepository()->addRelationship(this, stratiOccurrenceInterp);
+	stratiOccurrenceInterp->getRepository()->addRelationship(this, stratiOccurrenceInterp);
 
 	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 	frame->IntervalStratigraphiUnits = soap_new_resqml20__IntervalStratigraphicUnits(frame->soap);
@@ -93,7 +81,7 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 	}
 
 	setStratigraphicOccurrenceInterpretation(stratiOccurrenceInterp);
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 

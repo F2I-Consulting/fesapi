@@ -37,7 +37,6 @@ Activity::Activity(EML2_NS::ActivityTemplate* activityTemplate, const string & g
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	activityTemplate->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setActivityTemplate(activityTemplate);
 }
 
@@ -133,7 +132,7 @@ void Activity::pushBackParameter(const std::string& title, AbstractObject* resqm
 		}
 	}
 
-	getRepository()->addRelationship(this, resqmlObject);
+	resqmlObject->getRepository()->addRelationship(this, resqmlObject);
 
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
@@ -442,7 +441,7 @@ void Activity::setActivityTemplate(EML2_NS::ActivityTemplate * activityTemplate)
 
 	static_cast<_resqml20__Activity*>(gsoapProxy2_0_1)->ActivityDescriptor = activityTemplate->newResqmlReference();
 
-	getRepository()->addRelationship(this, activityTemplate);
+	activityTemplate->getRepository()->addRelationship(this, activityTemplate);
 }
 
 COMMON_NS::DataObjectReference Activity::getActivityTemplateDor() const

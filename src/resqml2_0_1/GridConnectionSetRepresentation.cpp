@@ -40,7 +40,6 @@ void GridConnectionSetRepresentation::init(COMMON_NS::DataObjectRepository * rep
     initMandatoryMetadata();
     setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 GridConnectionSetRepresentation::GridConnectionSetRepresentation(COMMON_NS::DataObjectRepository * repo,
@@ -83,7 +82,7 @@ void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(uint
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	_resqml20__GridConnectionSetRepresentation* const rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 	rep->Count = cellIndexPairCount;
@@ -117,7 +116,7 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExisting
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
@@ -418,7 +417,7 @@ void GridConnectionSetRepresentation::pushBackXmlSupportingGridRepresentation(RE
 // TODO: RESQML allows to map with more than one feature interpretation.
 void GridConnectionSetRepresentation::setConnectionInterpretationIndices(uint64_t const* cumulativeInterpCount, int64_t const* interpIndices, EML2_NS::AbstractHdfProxy * proxy)
 {
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 	if (rep->ConnectionInterpretations == nullptr) {
@@ -459,7 +458,7 @@ void GridConnectionSetRepresentation::setInterpretationForAllConnections(RESQML2
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	const uint64_t cellIndexPairCount = getCellIndexPairCount();
 	if (cellIndexPairCount == 0) {

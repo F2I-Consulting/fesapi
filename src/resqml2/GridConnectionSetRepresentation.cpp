@@ -39,7 +39,7 @@ void GridConnectionSetRepresentation::pushBackSupportingGridRepresentation(Abstr
 		throw invalid_argument("The supporting Grid Representation cannot be null.");
 	}
 
-	getRepository()->addRelationship(this, supportingGridRep);
+	supportingGridRep->getRepository()->addRelationship(this, supportingGridRep);
 
 	pushBackXmlSupportingGridRepresentation(supportingGridRep);
 }
@@ -50,7 +50,7 @@ void GridConnectionSetRepresentation::pushBackInterpretation(AbstractFeatureInte
 		throw invalid_argument("The interpretation to push back cannot be null.");
 	}
 
-	getRepository()->addRelationship(this, interp);
+	interp->getRepository()->addRelationship(this, interp);
 
 	pushBackXmlInterpretation(interp);
 }

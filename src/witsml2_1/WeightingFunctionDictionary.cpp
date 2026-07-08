@@ -66,7 +66,7 @@ std::vector<WeightingFunction*> WeightingFunctionDictionary::getWeightingFunctio
 
 void WeightingFunctionDictionary::pushBackWeightingFunction(WeightingFunction* wf)
 {
-	getRepository()->addRelationship(this, wf);
+	wf->getRepository()->addRelationship(this, wf);
 
 	witsml21__WeightingFunctionDictionary* dict = static_cast<witsml21__WeightingFunctionDictionary*>(gsoapProxy2_3);
 	dict->WeightingFunction.push_back(static_cast<witsml21__WeightingFunction*>(wf->getEml23GsoapProxy()));
@@ -81,6 +81,6 @@ void WeightingFunctionDictionary::loadTargetRelationships()
 		if (wfWrapper == nullptr) {
 			 wfWrapper = getRepository()->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>(new WeightingFunction(wf)));
 		}
-		getRepository()->addRelationship(this, wfWrapper);
+		wfWrapper->getRepository()->addRelationship(this, wfWrapper);
 	}
 }

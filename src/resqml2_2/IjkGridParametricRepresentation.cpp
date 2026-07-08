@@ -281,7 +281,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlDefinedPillars->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(getHdfGroup() +"/PillarGeometryIsDefined", getPillarCount(), proxy));
 
 	// HDF Pillar defined
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	const unsigned int pillarCount = getPillarCount();
 	std::unique_ptr<unsigned char[]> definedPillars(new unsigned char[pillarCount]);
 	for (unsigned int i = 0; i < pillarCount; ++i) {
@@ -385,7 +385,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	geom->GridIsRighthanded = isRightHanded;
 	geom->KDirection = static_cast<resqml22__KDirection>(kDirectionKind);
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 	// XML parametric nodes
 	resqml22__Point3dParametricArray* xmlPoints = soap_new_resqml22__Point3dParametricArray(gsoapProxy2_3->soap);
 	geom->Points = xmlPoints;
@@ -446,7 +446,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		xmlcontrolPointParams->Values->ExternalDataArrayPart.push_back(createExternalDataArrayPart(controlPointParameters, proxy->getElementCount(controlPointParameters), proxy));
 	}
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 

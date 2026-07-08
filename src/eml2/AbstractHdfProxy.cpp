@@ -31,8 +31,6 @@ void AbstractHdfProxy::initGsoapProxy(COMMON_NS::DataObjectRepository * repo, co
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
-
-	repo->addDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 uint64_t AbstractHdfProxy::getElementCount(const std::string & datasetName)

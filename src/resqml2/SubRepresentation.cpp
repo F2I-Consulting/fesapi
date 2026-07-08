@@ -90,7 +90,7 @@ void SubRepresentation::setElementIndices(uint64_t* elementIndices,
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	ostringstream oss;
 	oss << "subrepresentation_elementIndices0_patch";
@@ -152,7 +152,7 @@ void SubRepresentation::pushBackSupportingRepresentation(AbstractRepresentation 
 		throw invalid_argument("The supporting Representation cannot be null.");
 	}
 
-	getRepository()->addRelationship(this, supportingRep);
+	supportingRep->getRepository()->addRelationship(this, supportingRep);
 
 	pushBackXmlSupportingRepresentation(supportingRep);
 }

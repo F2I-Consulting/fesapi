@@ -29,7 +29,7 @@ using namespace RESQML2_NS;
 
 void AbstractSeismicLineFeature::setSeismicLineSet(RESQML2_NS::SeismicLineSetFeature * seisLineSet)
 {
-	getRepository()->addRelationship(this, seisLineSet);
+	seisLineSet->getRepository()->addRelationship(this, seisLineSet);
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->IsPartOf = seisLineSet->newResqmlReference();
@@ -148,7 +148,7 @@ void AbstractSeismicLineFeature::setTraceLabels(const std::vector<std::string> &
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	gsoap_eml2_3::resqml22__AbstractSeismicLineFeature* seismicLine = static_cast<gsoap_eml2_3::resqml22__AbstractSeismicLineFeature*>(gsoapProxy2_3);
 	seismicLine->TraceLabels = gsoap_eml2_3::soap_new_eml23__StringExternalArray(gsoapProxy2_3->soap);

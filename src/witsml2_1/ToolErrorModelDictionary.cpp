@@ -67,7 +67,7 @@ std::vector<ToolErrorModel*> ToolErrorModelDictionary::getToolErrorModels() cons
 
 void ToolErrorModelDictionary::pushBackToolErrorModel(ToolErrorModel* tem)
 {
-	getRepository()->addRelationship(this, tem);
+	tem->getRepository()->addRelationship(this, tem);
 
 	witsml21__ToolErrorModelDictionary* dict = static_cast<witsml21__ToolErrorModelDictionary*>(gsoapProxy2_3);
 	dict->ToolErrorModel.push_back(static_cast<witsml21__ToolErrorModel*>(tem->getEml23GsoapProxy()));
@@ -82,6 +82,6 @@ void ToolErrorModelDictionary::loadTargetRelationships()
 		if (temWrapper == nullptr) {
 			temWrapper = getRepository()->addOrReplaceDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{new ToolErrorModel(tem)});
 		}
-		getRepository()->addRelationship(this, temWrapper);
+		temWrapper->getRepository()->addRelationship(this, temWrapper);
 	}
 }

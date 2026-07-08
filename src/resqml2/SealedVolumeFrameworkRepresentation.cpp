@@ -34,7 +34,7 @@ void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfac
 
 	setXmlSealedSurfaceFramework(ssf);
 
-	getRepository()->addRelationship(this, ssf);
+	ssf->getRepository()->addRelationship(this, ssf);
 }
 
 void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(uint64_t regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp)
@@ -47,7 +47,7 @@ void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(uint64
 		throw out_of_range("The region index is out of range.");
 	}
 
-	getRepository()->addRelationship(this, stratiUnitInterp);
+	stratiUnitInterp->getRepository()->addRelationship(this, stratiUnitInterp);
 
 	setXmlInterpretationOfVolumeRegion(regionIndex, stratiUnitInterp);
 }

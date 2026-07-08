@@ -47,11 +47,7 @@ EML2_NS::AbstractHdfProxy* HdfProxyFactory::make(COMMON_NS::DataObjectRepository
 		return new EML2_0_NS::HdfProxy(repo, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
 #if WITH_RESQML2_2
 	case COMMON_NS::DataObjectRepository::EnergisticsStandard::EML2_3:
-	{
-		auto* result = new EML2_3_NS::HdfProxy(repo, "", title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
-		repo->addDataObject(std::unique_ptr<COMMON_NS::AbstractObject>{result});
-		return result;
-	}
+		return new EML2_3_NS::HdfProxy(repo, "", title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
 #endif
 	default:
 		throw std::invalid_argument("Unrecognized Energistics standard.");

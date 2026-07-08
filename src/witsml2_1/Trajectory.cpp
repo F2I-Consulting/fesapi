@@ -52,7 +52,6 @@ Trajectory::Trajectory(WITSML2_NS::Wellbore* witsmlWellbore,
 	static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->Index->Direction = eml23__IndexDirection::increasing;
 	static_cast<witsml21__WellboreGeometry*>(gsoapProxy2_3)->Index->Uom = "Euc"; //TODO
 
-	witsmlWellbore->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setWellbore(witsmlWellbore);
 }
 
@@ -69,7 +68,7 @@ void Trajectory::setWellbore(WITSML2_NS::Wellbore* witsmlWellbore)
 
 	static_cast<witsml21__Trajectory*>(gsoapProxy2_3)->Wellbore = witsmlWellbore->newEml23Reference();
 
-	getRepository()->addRelationship(this, witsmlWellbore);
+	witsmlWellbore->getRepository()->addRelationship(this, witsmlWellbore);
 }
 
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajStart)

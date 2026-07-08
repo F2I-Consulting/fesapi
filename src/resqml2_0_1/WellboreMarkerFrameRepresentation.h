@@ -83,14 +83,6 @@ namespace RESQML2_0_1_NS
 		void loadTargetRelationships() final;
 
 		/**
-		 * Pushes back a new WellboreFeature marker to this WellboreFeature marker frame. One
-		 * WellboreFeature marker must be added per MD of the WellboreFeature marker frame.
-		 *
-		 * @param[in,out]	marker	If non-null, the marker.
-		 */
-		void pushBackNewWellboreMarker(std::unique_ptr<RESQML2_0_1_NS::WellboreMarker> marker);
-
-		/**
 		 * Wellbore marker
 		 *
 		 * @param[in,out]	wellboreMarkerFrame	If non-null, the wellbore marker frame.

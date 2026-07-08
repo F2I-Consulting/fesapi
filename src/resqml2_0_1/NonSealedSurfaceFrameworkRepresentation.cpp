@@ -54,7 +54,6 @@ NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 }
 
@@ -76,7 +75,7 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
@@ -101,7 +100,7 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), points, numValues, 2);
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 unsigned int NonSealedSurfaceFrameworkRepresentation::getContactCount() const

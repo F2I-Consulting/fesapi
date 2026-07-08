@@ -34,7 +34,5 @@ RockVolumeFeature::RockVolumeFeature(COMMON_NS::DataObjectRepository* repo, cons
 	gsoapProxy2_3 = soap_new_resqml22__RockVolumeFeature(repo->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 }

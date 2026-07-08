@@ -48,10 +48,10 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository* repo, co
 		throw invalid_argument("The soap context where the local CRS will be instantiated must exist.");
 	}
 	if (projectedDefinition.empty() && projectedEpsgCode == 0) {
-		throw invalid_argument("The projected CRS must either have a non null EPSG code or a reason why it is unkown.");
+		throw invalid_argument("The projected CRS must either have a non null EPSG code or a reason why it is unknown.");
 	}
 	if (verticalDefinition.empty() && verticalEpsgCode == 0) {
-		throw invalid_argument("The vertical CRS must either have a non null EPSG code or a reason why it is unkown.");
+		throw invalid_argument("The vertical CRS must either have a non null EPSG code or a reason why it is unknown.");
 	}
 
 	gsoapProxy2_3 = soap_new_eml23__LocalEngineeringCompoundCrs(repo->getGsoapContext());
@@ -87,39 +87,41 @@ void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository* repo, co
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	// 2d crs
-	LocalEngineering2dCrs* local2dCrs = !projectedDefinition.empty()
-		? new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_ProjectedStringRepresentedCrs")), title + " LocalEngineering2dCrs",
+	auto local2dCrs = !projectedDefinition.empty()
+		? std::make_unique<LocalEngineering2dCrs>(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_ProjectedStringRepresentedCrs")), title + " LocalEngineering2dCrs",
 			projectedDefinition,
 			originOrdinal1, originOrdinal2, projectedLengthUom,
 			azimuth, azimuthUom, azimuthReference,
 			axisOrder)
-		: new LocalEngineering2dCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_ProjectedEpsgCrs")), title + " LocalEngineering2dCrs",
+		: std::make_unique<LocalEngineering2dCrs>(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_ProjectedEpsgCrs")), title + " LocalEngineering2dCrs",
 			projectedEpsgCode,
 			originOrdinal1, originOrdinal2, projectedLengthUom,
 			azimuth, azimuthUom, azimuthReference,
 			axisOrder);
-	local3dCrs->LocalEngineering2dCrs = local2dCrs->newEml23Reference();
-	repo->addRelationship(this, local2dCrs);
+	auto* addedLocal2dCrs = local2dCrs.get();
+	repo->addDataObject(std::move(local2dCrs));
+	local3dCrs->LocalEngineering2dCrs = addedLocal2dCrs->newEml23Reference();
+	repo->addRelationship(this, addedLocal2dCrs);
 
 	// Vertical CRS
-	VerticalCrs* verticalCrs = !verticalDefinition.empty()
-		? new VerticalCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_VerticalStringRepresentedCrs")), title + " VerticalCrs",
+	auto verticalCrs = !verticalDefinition.empty()
+		? std::make_unique<VerticalCrs>(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_VerticalStringRepresentedCrs")), title + " VerticalCrs",
 			verticalDefinition,
 			verticalLengthUom,
 			isUpOriented)
-		: new VerticalCrs(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_VerticalEpsgCrs")), title + " VerticalCrs",
+		: std::make_unique<VerticalCrs>(repo, boost::uuids::to_string(finalGen(gsoapProxy2_3->uuid + "_VerticalEpsgCrs")), title + " VerticalCrs",
 			verticalEpsgCode,
 			verticalLengthUom,
 			isUpOriented);
-	local3dCrs->VerticalCrs = verticalCrs->newEml23Reference();
-	repo->addRelationship(this, verticalCrs);
+	auto* addedVerticalCrs = verticalCrs.get();
+	repo->addDataObject(std::move(verticalCrs));
+	local3dCrs->VerticalCrs = addedVerticalCrs->newEml23Reference();
+	repo->addRelationship(this, addedVerticalCrs);
 	local3dCrs->OriginVerticalCoordinate = originOrdinal3;
 	local3dCrs->VerticalAxis = soap_new_eml23__VerticalAxis(repo->getGsoapContext());
 	local3dCrs->VerticalAxis->IsTime = false;
 	local3dCrs->VerticalAxis->Uom = verticalUomStr;
 	local3dCrs->VerticalAxis->Direction = isUpOriented ? eml23__VerticalDirection::up : eml23__VerticalDirection::down;
-
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 }
 
 void LocalEngineeringCompoundCrs::init(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title,

@@ -37,8 +37,6 @@ Activity::Activity(EML2_NS::ActivityTemplate* activityTemplate, const string & g
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	activityTemplate->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
-
 	setActivityTemplate(activityTemplate);
 }
 
@@ -133,7 +131,7 @@ void Activity::pushBackParameter(const std::string& title, AbstractObject* resqm
 			throw invalid_argument("The parameter template " + title + " does not allow a data object datatype.");
 	}
 
-	getRepository()->addRelationship(this, resqmlObject);
+	resqmlObject->getRepository()->addRelationship(this, resqmlObject);
 
 	_eml23__Activity* activity = static_cast<_eml23__Activity*>(gsoapProxy2_3);
 
@@ -456,7 +454,7 @@ void Activity::setActivityTemplate(EML2_NS::ActivityTemplate * activityTemplate)
 
 	static_cast<_eml23__Activity*>(gsoapProxy2_3)->ActivityDescriptor = activityTemplate->newEml23Reference();
 
-	getRepository()->addRelationship(this, activityTemplate);
+	activityTemplate->getRepository()->addRelationship(this, activityTemplate);
 }
 
 COMMON_NS::DataObjectReference Activity::getActivityTemplateDor() const

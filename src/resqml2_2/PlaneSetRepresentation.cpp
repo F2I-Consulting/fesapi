@@ -42,7 +42,6 @@ PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(interp);
 }
 
@@ -73,7 +72,7 @@ void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(double zCoordi
 
 	static_cast<_resqml22__PlaneSetRepresentation*>(gsoapProxy2_3)->Planes.push_back(patch);
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
@@ -108,7 +107,7 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 
 	static_cast<_resqml22__PlaneSetRepresentation*>(gsoapProxy2_3)->Planes.push_back(patch);
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 uint64_t PlaneSetRepresentation::getXyzPointCountOfPatch(uint64_t patchIndex) const

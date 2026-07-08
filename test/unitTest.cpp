@@ -169,14 +169,12 @@ TEST_CASE("Set a wrong UUID", "[UUID]")
 	REQUIRE_THROWS(repo.createBoundaryFeature("My non standard UUID", "MyTitle"));
 }
 
-/* TODO!!!
 TEST_CASE("Try to add twice the same UUID", "[UUID]")
 {
 	COMMON_NS::DataObjectRepository repo;
 	repo.createBoundaryFeature("83781212-86f8-4dc8-b3c6-a145c6ed3eb5", "MyTitle");
-	REQUIRE_THROWS(repo.createBoundaryFeature("83781212-86f8-4dc8-b3c6-a145c6ed3eb5", "MyTitle") == false);
+	REQUIRE_THROWS(repo.createBoundaryFeature("83781212-86f8-4dc8-b3c6-a145c6ed3eb5", "MyTitle"));
 }
-*/
 
 TEST_CASE("Test hdf5 opening mode", "[hdf]")
 {

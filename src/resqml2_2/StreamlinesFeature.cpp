@@ -40,11 +40,10 @@ StreamlinesFeature::StreamlinesFeature(COMMON_NS::DataObjectRepository* repo, co
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 
 	// relationhsips
 	sf->TimeIndex->TimeSeries = timeSeries->newEml23Reference();
-	getRepository()->addRelationship(this, timeSeries);
+	timeSeries->getRepository()->addRelationship(this, timeSeries);
 }
 
 COMMON_NS::DataObjectReference StreamlinesFeature::getTimeSeriesDor() const

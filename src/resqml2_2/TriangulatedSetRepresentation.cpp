@@ -45,7 +45,6 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(COMMON_NS::DataObje
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	repo->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setInterpretation(repo->createPartial<RESQML2_2_NS::GenericFeatureInterpretation>("", "Unknown interp"));
 }
 
@@ -61,7 +60,6 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::Abstrac
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	// relationhsips
 	setInterpretation(interp);
 }
@@ -113,9 +111,9 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	uint64_t pointCountDims[2] = { nodeCount, 3 };
 	patch->NodeCount = nodeCount;
 	patch->Geometry = createPointGeometryPatch2_2(triRep->TrianglePatch.size(), nodes, localCrs, pointCountDims, 2, proxy);
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	eml23__IntegerExternalArray* hdfTriangles = soap_new_eml23__IntegerExternalArray(gsoapProxy2_3->soap);
 	patch->Triangles = hdfTriangles;

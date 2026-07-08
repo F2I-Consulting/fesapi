@@ -379,7 +379,7 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 	xmlSpacingI->Count = getICellCount(); // number of cells on I axis
 	xmlSpacingI->Value = spacingI;
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
@@ -402,7 +402,7 @@ void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
 	resqml22__Seismic3dCoordinates* patch = static_cast<resqml22__Seismic3dCoordinates*>(geom->SeismicCoordinates);
 
 	patch->SeismicSupport = seismicSupport->newEml23Reference();
-	getRepository()->addRelationship(this, seismicSupport);
+	seismicSupport->getRepository()->addRelationship(this, seismicSupport);
 
 	// inlines XML
 	eml23__FloatingPointLatticeArray* inlineValues = soap_new_eml23__FloatingPointLatticeArray(gsoapProxy2_3->soap);

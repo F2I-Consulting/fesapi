@@ -59,7 +59,6 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
 	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	setMdDatum(mdInfo);
 	setInterpretation(interp);
 }
@@ -78,7 +77,6 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 
 	RESQML2_NS::MdDatum * mdInfo = deviationSurvey->getMdDatum();
 	setMdDatum(mdInfo);
@@ -136,7 +134,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 	paramLine->KnotCount = controlPointCount;
 	paramLine->LineKindIndex = lineKind;
 
-	getRepository()->addRelationship(this, proxy);
+	proxy->getRepository()->addRelationship(this, proxy);
 
 	// XML control points
 	resqml20__Point3dHdf5Array* xmlControlPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
@@ -149,7 +147,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, 
 	uint64_t dim[2] = { controlPointCount, 3 };
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "controlPoints", controlPoints, dim, 2);
 
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double const* controlPointParameters, uint64_t controlPointCount, int lineKind,
@@ -216,7 +214,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 
 void WellboreTrajectoryRepresentation::addParentTrajectory(double kickoffMd, double parentMd, RESQML2_NS::WellboreTrajectoryRepresentation* parentTrajRep)
 {
-	getRepository()->addRelationship(this, parentTrajRep);
+	parentTrajRep->getRepository()->addRelationship(this, parentTrajRep);
 
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 	rep->ParentIntersection = soap_new_resqml20__WellboreTrajectoryParentIntersection(rep->soap);
@@ -374,7 +372,7 @@ void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum * mdDatum)
 
 	static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum = mdDatum->newResqmlReference();
 
-	getRepository()->addRelationship(this, mdDatum);
+	mdDatum->getRepository()->addRelationship(this, mdDatum);
 }
 
 COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getMdDatumDor() const
@@ -426,7 +424,7 @@ bool WellboreTrajectoryRepresentation::hasGeometry() const
 
 void WellboreTrajectoryRepresentation::setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey)
 {
-	getRepository()->addRelationship(this, deviationSurvey);
+	deviationSurvey->getRepository()->addRelationship(this, deviationSurvey);
 
 	getSpecializedGsoapProxy()->DeviationSurvey = deviationSurvey->newResqmlReference();
 }

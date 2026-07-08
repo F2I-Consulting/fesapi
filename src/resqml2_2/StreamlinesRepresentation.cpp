@@ -44,7 +44,6 @@ StreamlinesRepresentation::StreamlinesRepresentation(RESQML2_NS::GenericFeatureI
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	interp->getRepository()->addDataObject(unique_ptr<COMMON_NS::AbstractObject>{this});
 	// relationhsips
 	setInterpretation(interp);
 }
@@ -119,7 +118,7 @@ void StreamlinesRepresentation::setWellboreInformation(uint32_t const* injectorP
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, hdfProxy);
+	hdfProxy->getRepository()->addRelationship(this, hdfProxy);
 
 	auto* rep = static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3);
 	resqml22__StreamlineWellbores* wellboreInfo = soap_new_resqml22__StreamlineWellbores(getGsoapContext());
@@ -187,7 +186,7 @@ void StreamlinesRepresentation::setGeometry(
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, hdfProxy);
+	hdfProxy->getRepository()->addRelationship(this, hdfProxy);
 
 	auto* rep = static_cast<resqml22__StreamlinesRepresentation*>(gsoapProxy2_3);
 	auto* polyline = soap_new_resqml22__PolylineSetPatch(getGsoapContext());
@@ -230,7 +229,7 @@ void StreamlinesRepresentation::setGeometry(
 		}
 	}
 	polyline->Geometry = createPointGeometryPatch2_2(0, xyzPoints, localCrs, nodeCount, 2, hdfProxy);
-	getRepository()->addRelationship(this, localCrs);
+	localCrs->getRepository()->addRelationship(this, localCrs);
 }
 
 resqml22__PointGeometry* StreamlinesRepresentation::getPointGeometry2_2(uint64_t patchIndex) const
@@ -287,7 +286,7 @@ void StreamlinesRepresentation::setIntervalGridCells(uint16_t const* gridIndices
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	getRepository()->addRelationship(this, hdfProxy);
+	hdfProxy->getRepository()->addRelationship(this, hdfProxy);
 
 	resqml22__IntervalGridCells* igc = soap_new_resqml22__IntervalGridCells(getGsoapContext());
 	geom->IntervalGridCells = igc;
