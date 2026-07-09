@@ -196,12 +196,24 @@ void HdfProxy::open()
 		: packageDirectoryAbsolutePath + '/') + relativeFilePath;
 	if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY || openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE) {
 		string replacedName = fullName;
+#if H5_VERSION_GE(1, 12, 0)
+		if (H5Fis_accessible(fullName.c_str(), H5P_DEFAULT) <= 0) {
+#else
 		if (H5Fis_hdf5(fullName.c_str()) <= 0) {
+#endif
 			// Try to open an HDF5 named as the EPC file in the same folder (in case it would have been renamed)
 			replacedName = std::regex_replace(getUriSource(), std::regex("(.epc)$"), ".h5");
+#if H5_VERSION_GE(1, 12, 0)
+			if (H5Fis_accessible(replacedName.c_str(), H5P_DEFAULT) <= 0) {
+#else
 			if (H5Fis_hdf5(replacedName.c_str()) <= 0) {
+#endif
 				replacedName = std::regex_replace(getUriSource(), std::regex("(.epc)$"), ".hdf5");
+#if H5_VERSION_GE(1, 12, 0)
+				if (H5Fis_accessible(replacedName.c_str(), H5P_DEFAULT) <= 0) {
+#else
 				if (H5Fis_hdf5(replacedName.c_str()) <= 0) {
+#endif
 					throw invalid_argument("The HDF5 file " + fullName + " does not exist or is not a valid HDF5 file or is not accessible. Neither "
 						+ std::regex_replace(getUriSource(), std::regex("(.epc)$"), ".h5") + " nor " + std::regex_replace(getUriSource(), std::regex("(.epc)$"), ".hdf5"));
 				}
@@ -1179,7 +1191,7 @@ std::string HdfProxy::readStringAttribute(const std::string & obj_name,
 
 	hid_t uuidAtt = H5Aopen_by_name(hdfFile, obj_name.c_str(), attr_name.c_str(), H5P_DEFAULT, H5P_DEFAULT);
 	if (uuidAtt < 0) {
-		return string();
+		return "";
 	}
 	hid_t atype = H5Aget_type(uuidAtt);
 	if (atype < 0) {
