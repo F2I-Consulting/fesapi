@@ -1,5 +1,5 @@
 /*
-        stdsoap2.h 2.8.143E
+        stdsoap2.h 2.8.146E
 
         gSOAP runtime engine
 
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 208143
+#define GSOAP_VERSION 208146
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -3134,7 +3134,7 @@ SOAP_FMAC1 soap_wchar SOAP_FMAC2 soap_getchar(struct soap*);
  SOAP_FMAC1 ULONG64 SOAP_FMAC2 soap_strtoull(const char*, char**, int);
 #endif
 
-#if defined(WITH_OPENSSL)
+#if defined(WITH_OPENSSL) || defined(WITH_WOLFSSL)
 # define soap_random soap_rand()
  SOAP_FMAC1 int SOAP_FMAC2 soap_rand(void);
 #elif defined(UNDER_CE)

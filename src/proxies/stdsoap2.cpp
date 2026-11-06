@@ -1,5 +1,5 @@
 /*
-        stdsoap2.c[pp] 2.8.143E
+        stdsoap2.c[pp] 2.8.146E
 
         gSOAP runtime engine
 
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_LIB_VERSION 208143
+#define GSOAP_LIB_VERSION 208146
 
 /* silence GNU's warnings on format nonliteral strings and truncation (snprintf truncates on purpose for safety) */
 #ifdef __GNUC__
@@ -62,10 +62,10 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 #endif
 
 #ifdef __cplusplus
-SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.143E 2026-06-17 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.146E 2026-10-26 00:00:00 GMT")
 extern "C" {
 #else
-SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.143E 2026-06-17 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.146E 2026-10-26 00:00:00 GMT")
 #endif
 
 /* 8bit character representing unknown character entity or multibyte data */
@@ -1099,8 +1099,8 @@ soap_query_decode(char *buf, size_t len, const char *val)
     while (*s && *s != '"' && len-- > 1)
       *t++ = *s++;
     *t = '\0';
-    do s++;
-    while (*s && *s != '&' && *s != '=');
+    while (*s && *s != '&' && *s != '=')
+      s++;
   }
   else
   {
@@ -1120,9 +1120,12 @@ soap_query_decode(char *buf, size_t len, const char *val)
           s++;
           break;
         case '%':
-          *t++ = ((s[1] >= 'A' ? (s[1]&0x7) + 9 : s[1] - '0') << 4) + (s[2] >= 'A' ? (s[2]&0x7) + 9 : s[2] - '0');
-          s += 3;
-          break;
+          if (s[1] && s[2])
+          {
+            *t++ = ((s[1] >= 'A' ? (s[1]&0x7) + 9 : s[1] - '0') << 4) + (s[2] >= 'A' ? (s[2]&0x7) + 9 : s[2] - '0');
+            s += 3;
+            break;
+          }
         default:
           *t++ = *s++;
       }
@@ -3968,7 +3971,7 @@ soap_match_array(struct soap *soap, const char *type)
  *
 \******************************************************************************/
 
-#ifdef WITH_OPENSSL
+#if defined(WITH_OPENSSL) || defined(WITH_WOLFSSL)
 SOAP_FMAC1
 int
 SOAP_FMAC2
@@ -3977,10 +3980,14 @@ soap_rand()
   int r;
   if (!soap_ssl_init_done)
     soap_ssl_init();
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#if defined(WITH_OPENSSL)
+# if OPENSSL_VERSION_NUMBER < 0x10100000L
   RAND_pseudo_bytes((unsigned char*)&r, sizeof(int));
-#else
+# else
   RAND_bytes((unsigned char*)&r, sizeof(int));
+# endif
+#else
+  wolfSSL_RAND_bytes((unsigned char*)&r, sizeof(int));
 #endif
   return r;
 }
@@ -4762,7 +4769,7 @@ ssl_auth_init(struct soap *soap)
     else if ((soap->ssl_flags & SOAP_TLSv1_2))
       method = wolfTLSv1_2_client_method(); /* TLSv1.2 only or upgrade to TLSv1.2 */
 #endif
-#ifndef NO_OLD_TLS
+#if 0 /* deprecated #if !defined(NO_OLD_TLS) */
     else if ((soap->ssl_flags & SOAP_TLSv1_1))
       method = wolfTLSv1_1_client_method(); /* TLSv1.1 only or upgrade to TLSv1.1 */
 #endif
@@ -4787,7 +4794,7 @@ ssl_auth_init(struct soap *soap)
     else if ((soap->ssl_flags & SOAP_TLSv1_2))
       method = wolfTLSv1_2_server_method(); /* TLSv1.2 only or upgrade to TLSv1.2 */
 #endif
-#ifndef NO_OLD_TLS
+#if 0 /* deprecated #if !defined(NO_OLD_TLS) */
     else if ((soap->ssl_flags & SOAP_TLSv1_1))
       method = wolfTLSv1_1_server_method(); /* TLSv1.1 only or upgrade to TLSv1.1 */
 #endif
@@ -5426,7 +5433,7 @@ tcp_gethostbyname(struct soap *soap, const char *addr, struct hostent *hostent, 
 {
 #if (defined(_AIX43) || defined(TRU64) || defined(HP_UX)) && defined(HAVE_GETHOSTBYNAME_R)
   struct hostent_data ht_data;
-#elif (!defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && !defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || _POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600 || defined(__ANDROID__) || defined(FREEBSD) || defined(__FreeBSD__)) && !defined(SUN_OS) && !defined(__QNX__) && !defined(QNX) && defined(HAVE_GETHOSTBYNAME_R)
+#elif (!defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && !defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || _POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600 || defined(__ANDROID__) || defined(FREEBSD) || defined(__FreeBSD__) || defined(WITH_POSIX_GETHOSTBYNAME_R) || defined(WITH_MUSL)) && !defined(SUN_OS) && !defined(__QNX__) && !defined(QNX) && defined(HAVE_GETHOSTBYNAME_R)
   int r;
   char *tmpbuf = soap->tmpbuf;
   size_t tmplen = sizeof(soap->tmpbuf);
@@ -5459,7 +5466,7 @@ tcp_gethostbyname(struct soap *soap, const char *addr, struct hostent *hostent, 
     hostent = NULL;
     soap->errnum = h_errno;
   }
-#elif (!defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && !defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || _POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600 || defined(__ANDROID__) || defined(FREEBSD) || defined(__FreeBSD__)) && !defined(SUN_OS) && !defined(__QNX__) && !defined(QNX) && defined(HAVE_GETHOSTBYNAME_R)
+#elif (!defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && !defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || _POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600 || defined(__ANDROID__) || defined(FREEBSD) || defined(__FreeBSD__) || defined(WITH_POSIX_GETHOSTBYNAME_R) || defined(WITH_MUSL)) && !defined(SUN_OS) && !defined(__QNX__) && !defined(QNX) && defined(HAVE_GETHOSTBYNAME_R)
   while ((r = gethostbyname_r(addr, hostent, tmpbuf, tmplen, &hostent, &soap->errnum)) < 0)
   {
     if (tmpbuf != soap->tmpbuf)
@@ -6864,7 +6871,11 @@ tcp_select(struct soap *soap, SOAP_SOCKET sk, int flags, int timeout)
   if (1)
 #else
   /* if fd max set size exceeded, use poll() when available */
-  if ((int)sk >= (int)FD_SETSIZE)
+  if ((int)sk >= (int)FD_SETSIZE
+#ifdef WITH_SELF_PIPE
+      || (int)soap->pipe_fd[0] >= (int)FD_SETSIZE
+#endif
+    )
 #endif
 #ifdef HAVE_POLL
   {
@@ -7092,17 +7103,21 @@ tcp_disconnect(struct soap *soap)
     if (soap_valid_socket(soap->socket))
     {
       r = SSL_shutdown(soap->ssl);
-      /* SSL shutdown does not work when reads are pending, non-blocking */
       if (r == 0)
       {
         while (SSL_want_read(soap->ssl))
         {
-          if (SSL_read(soap->ssl, NULL, 0)
+          if (SSL_get_error(soap->ssl, SSL_read(soap->ssl, soap->tmpbuf, SOAP_TMPLEN)) == SSL_ERROR_ZERO_RETURN
               || soap_socket_errno != SOAP_EAGAIN)
           {
             r = SSL_shutdown(soap->ssl);
             break;
           }
+#if !defined(WITH_LEAN) && !defined(WIN32)
+          /* wait up to 1 second until socket has data to read for the SSL_read() call, in case of unresponsive peer */
+          if (tcp_select(soap, soap->socket, SOAP_TCP_SELECT_RCV | SOAP_TCP_SELECT_ERR, 1) <= 0)
+            break;
+#endif
         }
       }
       if (r == 0 && !soap->fshutdownsocket(soap, soap->socket, SOAP_SHUT_WR))
@@ -7113,8 +7128,7 @@ tcp_disconnect(struct soap *soap)
            present, this avoids calling SSL_shutdown() which has a lengthy return
            timeout)
          */
-        r = tcp_select(soap, soap->socket, SOAP_TCP_SELECT_RCV | SOAP_TCP_SELECT_ERR, 5);
-        if (r <= 0)
+        if (tcp_select(soap, soap->socket, SOAP_TCP_SELECT_RCV | SOAP_TCP_SELECT_ERR, 5) <= 0)
         {
           soap->errnum = 0;
           DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Connection lost...\n"));
@@ -7125,22 +7139,12 @@ tcp_disconnect(struct soap *soap)
           soap->ssl = NULL;
           return SOAP_OK;
         }
-#ifdef WITH_SSL_FULL_SHUTDOWN
-        if (!SSL_want_read(soap->ssl) || SSL_read(soap->ssl, NULL, 0))
-        {
-          r = SSL_shutdown(soap->ssl);
-          if (r <= 0)
-          {
-            DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Shutdown failed: %d\n", SSL_get_error(soap->ssl, r)));
-            if (soap_valid_socket(soap->socket) && !(soap->omode & SOAP_IO_UDP))
-            {
-              (void)soap->fclosesocket(soap, soap->socket);
-              soap->socket = SOAP_INVALID_SOCKET;
-            }
-          }
-        }
 #endif
-#else
+#if defined(WITH_SSL_FULL_SHUTDOWN)
+        while (SSL_want_read(soap->ssl)
+            && SSL_get_error(soap->ssl, SSL_read(soap->ssl, soap->tmpbuf, SOAP_TMPLEN)) != SSL_ERROR_ZERO_RETURN)
+          continue;
+#endif
         r = SSL_shutdown(soap->ssl);
         if (r <= 0)
         {
@@ -7151,7 +7155,6 @@ tcp_disconnect(struct soap *soap)
             soap->socket = SOAP_INVALID_SOCKET;
           }
         }
-#endif
       }
     }
     SSL_free(soap->ssl);
@@ -11002,7 +11005,7 @@ soap_malloc(struct soap *soap, size_t n)
   struct soap_clist *cp;
   char *p;
   size_t k;
-  if (SOAP_MAXALLOCSIZE > 0 && n > SOAP_MAXALLOCSIZE)
+  if ((SOAP_MAXALLOCSIZE > 0 && n > SOAP_MAXALLOCSIZE) || n + sizeof(unsigned int) < n)
   {
     if (soap)
       soap->error = SOAP_EOM;
@@ -20301,6 +20304,12 @@ soap_getdime(struct soap *soap)
       for (;;)
       {
         size = soap->dime.size;
+        if (size > SOAP_MAXDIMESIZE || (soap->recv_maxlength && size > soap->recv_maxlength))
+        {
+          DBGLOG(TEST, SOAP_MESSAGE(fdebug, "DIME size=%lu exceeds SOAP_MAXDIMESIZE=%lu\n", (unsigned long)soap->dime.size, (unsigned long)SOAP_MAXDIMESIZE));
+          soap->error = SOAP_DIME_ERROR;
+          break;
+        }
         for (;;)
         {
           n = soap->buflen - soap->bufidx;
@@ -20352,7 +20361,7 @@ end:
         soap_wchar c;
         size_t i;
         char *s;
-        if (soap->dime.size > SOAP_MAXDIMESIZE)
+        if (soap->dime.size > SOAP_MAXDIMESIZE || (soap->recv_maxlength && soap->dime.size > soap->recv_maxlength) || soap->blist->size > SOAP_MAXDIMESIZE)
         {
           DBGLOG(TEST, SOAP_MESSAGE(fdebug, "DIME size=%lu exceeds SOAP_MAXDIMESIZE=%lu\n", (unsigned long)soap->dime.size, (unsigned long)SOAP_MAXDIMESIZE));
           return soap->error = SOAP_DIME_ERROR;
@@ -20388,6 +20397,11 @@ end:
     }
     else
     {
+      if (soap->dime.size > SOAP_MAXDIMESIZE || (soap->recv_maxlength && soap->dime.size > soap->recv_maxlength))
+      {
+        DBGLOG(TEST, SOAP_MESSAGE(fdebug, "DIME size=%lu exceeds SOAP_MAXDIMESIZE=%lu\n", (unsigned long)soap->dime.size, (unsigned long)SOAP_MAXDIMESIZE));
+        return soap->error = SOAP_DIME_ERROR;
+      }
       soap->dime.ptr = soap_getdimefield(soap, soap->dime.size);
     }
     content = soap_alloc_multipart(soap, &soap->dime.first, &soap->dime.last, soap->dime.ptr, soap->dime.size);
@@ -20608,7 +20622,7 @@ soap_recv_mime_attachment(struct soap *soap, void *handle)
           do
           {
             c = soap_getchar(soap);
-          } while (c == *t++);
+          } while (c == *t++ && t < soap->msgbuf + sizeof(soap->msgbuf) - 4);
           if ((int)c == EOF)
           {
             if (content->ptr && soap->fmimewriteclose)
@@ -20726,7 +20740,8 @@ SOAP_FMAC2
 soap_rand_uuid(struct soap *soap, const char *prefix)
 {
   int r1, r2, r3, r4;
-#ifdef WITH_OPENSSL
+#if defined(WITH_OPENSSL) || defined(HAVE_RANDOM)
+  /* requires OpenSSL or WolfSSL for proper entropy */
   r1 = soap_random;
   r2 = soap_random;
 #else
@@ -23383,7 +23398,7 @@ soap_strerror(struct soap *soap)
   {
 #ifndef WIN32
 # ifdef HAVE_STRERROR_R
-#  if !defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && ((!defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600))) || defined(WITH_POSIX_STRERROR_R)
+#  if !defined(_GNU_SOURCE) || (!(~_GNU_SOURCE+1) && ((!defined(_POSIX_C_SOURCE) && !defined(_XOPEN_SOURCE)) || (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600))) || defined(WITH_POSIX_STRERROR_R) || defined(WITH_MUSL)
     err = strerror_r(err, soap->msgbuf, sizeof(soap->msgbuf)); /* XSI-compliant */
     if (err != 0)
       soap_strcpy(soap->msgbuf, sizeof(soap->msgbuf), "unknown error");
