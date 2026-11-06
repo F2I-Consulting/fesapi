@@ -561,7 +561,8 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 COMMON_NS::DataObjectReference Grid2dRepresentation::getSupportingRepresentationDor() const
 {
 	_resqml22__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml22__Grid2dRepresentation*>(gsoapProxy2_3);
-	if (singleGrid2dRep != nullptr && singleGrid2dRep->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dZValueArray) {
+	if (singleGrid2dRep != nullptr && singleGrid2dRep->Geometry != nullptr && singleGrid2dRep->Geometry->Points != nullptr &&
+		singleGrid2dRep->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dZValueArray) {
 		resqml22__Point3dZValueArray* tmp = static_cast<resqml22__Point3dZValueArray*>(singleGrid2dRep->Geometry->Points);
 		if (tmp->SupportingGeometry->soap_type() == SOAP_TYPE_gsoap_eml2_3_resqml22__Point3dFromRepresentationLatticeArray) {
 			return COMMON_NS::DataObjectReference(static_cast<resqml22__Point3dFromRepresentationLatticeArray*>(tmp->SupportingGeometry)->SupportingRepresentation);

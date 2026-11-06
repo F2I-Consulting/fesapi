@@ -3931,9 +3931,11 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFaultSet() co
 	std::vector<RESQML2_NS::BoundaryFeature*> result;
 
 	for (auto const* faultinterp : getDataObjects<RESQML2_NS::FaultInterpretation>()) {
-		auto* feature = faultinterp->getInterpretedFeature();
-		if (std::find(result.begin(), result.end(), feature) == result.end()) {
-			result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
+		if (!faultinterp->isPartial()) {
+			auto* feature = faultinterp->getInterpretedFeature();
+			if (std::find(result.begin(), result.end(), feature) == result.end()) {
+				result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
+			}
 		}
 	}
 
@@ -3946,9 +3948,11 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getFractureSet()
 
 	for (auto const* interp : getDataObjects<RESQML2_NS::BoundaryFeatureInterpretation>()) {
 		if (interp->getXmlTag() == RESQML2_NS::BoundaryFeatureInterpretation::XML_TAG) {
-			auto* feature = interp->getInterpretedFeature();
-			if (std::find(result.begin(), result.end(), feature) == result.end()) {
-				result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
+			if (!interp->isPartial()) {
+				auto* feature = interp->getInterpretedFeature();
+				if (std::find(result.begin(), result.end(), feature) == result.end()) {
+					result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
+				}
 			}
 		}
 	}
@@ -4046,9 +4050,11 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getHorizonSet() 
 	std::vector<RESQML2_NS::BoundaryFeature*> result;
 
 	for (auto const* horizonInterp : getDataObjects<RESQML2_NS::HorizonInterpretation>()) {
-		auto* feature = horizonInterp->getInterpretedFeature();
-		if (std::find(result.begin(), result.end(), feature) == result.end()) {
-			result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
+		if (!horizonInterp->isPartial()) {
+			auto* feature = horizonInterp->getInterpretedFeature();
+			if (std::find(result.begin(), result.end(), feature) == result.end()) {
+				result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
+			}
 		}
 	}
 
@@ -4059,10 +4065,12 @@ std::vector<RESQML2_NS::BoundaryFeature*> DataObjectRepository::getGeobodyBounda
 {
 	std::vector<RESQML2_NS::BoundaryFeature*> result;
 
-	for (auto const* horizonInterp : getDataObjects<RESQML2_NS::GeobodyBoundaryInterpretation>()) {
-		auto* feature = horizonInterp->getInterpretedFeature();
-		if (std::find(result.begin(), result.end(), feature) == result.end()) {
-			result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
+	for (auto const* geobodyBoundaryInterp : getDataObjects<RESQML2_NS::GeobodyBoundaryInterpretation>()) {
+		if (!geobodyBoundaryInterp->isPartial()) {
+			auto* feature = geobodyBoundaryInterp->getInterpretedFeature();
+			if (std::find(result.begin(), result.end(), feature) == result.end()) {
+				result.push_back(static_cast<RESQML2_NS::BoundaryFeature*>(feature));
+			}
 		}
 	}
 
@@ -4073,9 +4081,11 @@ std::vector<RESQML2_NS::RockVolumeFeature*> DataObjectRepository::getGeobodySet(
 	std::vector<RESQML2_NS::RockVolumeFeature*> result;
 
 	for (auto const* interp : getDataObjects<RESQML2_NS::GeobodyInterpretation>()) {
-		auto* feature = interp->getInterpretedFeature();
-		if (std::find(result.begin(), result.end(), feature) == result.end()) {
-			result.push_back(static_cast<RESQML2_NS::RockVolumeFeature*>(feature));
+		if (!interp->isPartial()) {
+			auto* feature = interp->getInterpretedFeature();
+			if (std::find(result.begin(), result.end(), feature) == result.end()) {
+				result.push_back(static_cast<RESQML2_NS::RockVolumeFeature*>(feature));
+			}
 		}
 	}
 
@@ -4158,6 +4168,8 @@ std::vector<RESQML2_NS::TriangulatedSetRepresentation*> DataObjectRepository::ge
 		std::remove_if(
 			result.begin(), result.end(),
 			[](RESQML2_NS::TriangulatedSetRepresentation const* tsr) {
+				if (tsr->isPartial()) return true;
+
 				RESQML2_NS::AbstractFeatureInterpretation const* const interp = tsr->getInterpretation();
 				if (interp == nullptr) {
 					return false;

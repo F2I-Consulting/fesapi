@@ -379,6 +379,8 @@ AbstractFeatureInterpretation* AbstractRepresentation::getInterpretation() const
 
 COMMON_NS::DataObjectReference AbstractRepresentation::getInterpretationDor() const
 {
+	cannotBePartial();
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation);
 	}

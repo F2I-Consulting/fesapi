@@ -235,6 +235,8 @@ bool AbstractProperty::useInterval() const
 
 uint64_t AbstractProperty::getValueCountPerIndexableElement() const
 {
+	cannotBePartial();
+
 	uint64_t result;
 	if (gsoapProxy2_0_1 != nullptr) {
 		result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->Count;
@@ -254,6 +256,8 @@ uint64_t AbstractProperty::getValueCountPerIndexableElement() const
 
 gsoap_eml2_3::eml23__IndexableElement AbstractProperty::getAttachmentKind() const
 {
+	cannotBePartial();
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__IndexableElements ie201 = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->IndexableElement;
 		if (ie201 == gsoap_resqml2_0_1::resqml20__IndexableElements::cells) {
