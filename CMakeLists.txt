@@ -1,9 +1,21 @@
 # The cmake/modules/FindZLIB.cmake relies on CMP0159 which is only available from CMAKE 3.29
 cmake_minimum_required (VERSION 3.29)
 
-project (Fesapi)
+# These functions allow not to pollute CMAKE_MODULE_PATH as its scope will remain in the function only
+function(find_zlib)
+	# There is a libary name change in recent zlib (zs for windows static library) which is only supported starting from cmake 4.2.0
+    if(CMAKE_VERSION VERSION_LESS 4.2.0)
+        list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+    endif()
+    find_package(ZLIB)
+endfunction()
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules)
+function(find_minizip)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+    find_package(MINIZIP REQUIRED)
+endfunction()
+
+project (Fesapi)
 
 set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "DEBUG_POSTFIX property is initialized when the target is created to the value of this variable except for executable targets")
 
@@ -77,12 +89,11 @@ ELSE()
 	ENDIF()
 ENDIF()
 
-# Only the zlib.h file is mandatory. The libray may be not if, for instance, zlib symbols are already in minizip library (and HDF5 has no zlib support)
-FIND_PACKAGE (ZLIB)
+find_zlib()
 IF (NOT EXISTS ${ZLIB_INCLUDE_DIR})
 	MESSAGE(ERROR " The ZLIB_INCLUDE_DIR CMake variable is mandatory.")
 ENDIF ()
-FIND_PACKAGE (MINIZIP REQUIRED)
+find_minizip()
 
 # Szip (only useful when using static linking to HDF5)
 set (SZIP_LIBRARY_RELEASE SZIP_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the szip library release")
