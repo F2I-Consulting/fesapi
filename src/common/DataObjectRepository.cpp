@@ -1011,6 +1011,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GeobodyFeature)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GeobodyInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GeologicUnitFeature)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_NS::GeologicUnitInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::Grid2dRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::GridConnectionSetRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::HorizonInterpretation)
@@ -1098,6 +1099,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::GenericFeatureInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::GeobodyBoundaryInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::GeobodyInterpretation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_NS::GeologicUnitInterpretation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::Grid2dRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::GridConnectionSetRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::HorizonInterpretation)
@@ -1715,6 +1717,14 @@ RESQML2_NS::CulturalFeature* DataObjectRepository::createCultural(const std::str
 	return rawPtr;
 }
 
+GeologicUnitFeature* DataObjectRepository::createGeologicUnitFeature(const std::string& guid, const std::string& title)
+{
+	auto result = std::make_unique<GeologicUnitFeature>(this, guid, title);
+	auto* rawPtr = result.get();
+	addDataObject(std::move(result));
+	return rawPtr;
+}
+
 RESQML2_NS::RockVolumeFeature* DataObjectRepository::createStratigraphicUnitFeature(const std::string & guid, const std::string & title)
 {
 	std::unique_ptr<RESQML2_NS::RockVolumeFeature> result;
@@ -2125,6 +2135,14 @@ RESQML2_NS::RockFluidOrganizationInterpretation* DataObjectRepository::createRoc
 		throw std::invalid_argument("Unrecognized Energistics standard.");
 	}
 
+	auto* rawPtr = result.get();
+	addDataObject(std::move(result));
+	return rawPtr;
+}
+
+RESQML2_NS::GeologicUnitInterpretation* DataObjectRepository::createGeologicUnitInterpretation(RESQML2_NS::RockVolumeFeature* geologicUnitFeature, const std::string& guid, const std::string& title)
+{
+	auto result = std::make_unique<RESQML2_NS::GeologicUnitInterpretation>(geologicUnitFeature, guid, title);
 	auto* rawPtr = result.get();
 	addDataObject(std::move(result));
 	return rawPtr;
@@ -4244,6 +4262,12 @@ std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getResqml2_0_
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(TectonicBoundaryFeature)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeneticBoundaryFeature)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeologicUnitFeature)
+	else if (resqmlContentType.compare(RESQML2_NS::GeologicUnitInterpretation::XML_TAG) == 0)
+	{
+		GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(GeologicUnitInterpretation)
+		wrapper.reset(new RESQML2_NS::GeologicUnitInterpretation(read));
+	}
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFeature)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicUnitFeature)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicColumn)
@@ -4405,6 +4429,11 @@ std::unique_ptr< COMMON_NS::AbstractObject > DataObjectRepository::getResqml2_2W
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GenericFeatureInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyBoundaryInterpretation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyInterpretation)
+	else if (resqmlContentType.compare(RESQML2_NS::GeologicUnitInterpretation::XML_TAG) == 0)
+	{
+		GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(GeologicUnitInterpretation)
+		wrapper.reset(new RESQML2_NS::GeologicUnitInterpretation(read));
+	}
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Grid2dRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GridConnectionSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(HorizonInterpretation)

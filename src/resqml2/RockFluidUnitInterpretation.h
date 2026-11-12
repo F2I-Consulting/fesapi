@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "RockFluidOrganizationInterpretation.h"
+#include "GeologicUnitInterpretation.h"
 
 namespace RESQML2_NS
 {
@@ -26,7 +26,7 @@ namespace RESQML2_NS
 	 * @brief	A type of rock fluid feature-interpretation , this class identifies a rock fluid
 	 * 			feature by its phase.
 	 */
-	class RockFluidUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class RockFluidUnitInterpretation : public RESQML2_NS::GeologicUnitInterpretation
 	{
 	public:
 		/** Destructor does nothing since the memory is managed by the gSOAP context. */
@@ -66,14 +66,14 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		DLL_IMPORT_OR_EXPORT RockFluidUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT RockFluidUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::GeologicUnitInterpretation(partialObject) {}
 
 		RockFluidUnitInterpretation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		RockFluidUnitInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
-		RockFluidUnitInterpretation(gsoap_eml2_3::_resqml22__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		RockFluidUnitInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::GeologicUnitInterpretation(fromGsoap) {}
+		RockFluidUnitInterpretation(gsoap_eml2_3::_resqml22__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::GeologicUnitInterpretation(fromGsoap) {}
 	};
 }

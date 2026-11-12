@@ -30,6 +30,9 @@ namespace COMMON_NS
 				if (xmlTag == "EpcExternalPartReference") {
 					return SWIG_TypeQuery("eml2::EpcExternalPartReference *");
 				}
+				if (xmlTag == "GeologicUnitInterpretation") {
+					return SWIG_TypeQuery("resqml2::GeologicUnitInterpretation *");
+				}
 				const std::string cppNs = [&result] {
 					const std::string xmlNs(result->getXmlNamespace());
 					if (xmlNs == "resqml20") return "${FESAPI_RESQML2_0_1_NS}";
@@ -168,6 +171,11 @@ namespace RESQML2_NS
 		swig_type_info * const outtype = [&] {
 			if (result != nullptr)
 			{
+				const std::string xmlTag = result->getXmlTag();
+				if (xmlTag == "GeologicUnitInterpretation") {
+					return SWIG_TypeQuery("resqml2::GeologicUnitInterpretation *");
+				}
+				
 				const std::string cppNs = [&result] {
 					const std::string xmlNs(result->getXmlNamespace());
 					if (xmlNs == "resqml20") return "${FESAPI_RESQML2_0_1_NS}";

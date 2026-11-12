@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractFeatureInterpretation.h"
+#include "GeologicUnitInterpretation.h"
 
 namespace RESQML2_NS
 {
@@ -28,7 +28,7 @@ namespace RESQML2_NS
 	 * @brief	A type of rock feature, this class identifies if a rock feature is a geobody with any
 	 * 			qualifications on the interpretation of the geobody.
 	 */
-	class GeobodyInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class GeobodyInterpretation : public RESQML2_NS::GeologicUnitInterpretation
 	{
 	public:
 
@@ -73,7 +73,7 @@ namespace RESQML2_NS
 		 *
 		 * 
 		 */
-		DLL_IMPORT_OR_EXPORT GeobodyInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT GeobodyInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::GeologicUnitInterpretation(partialObject) {}
 
 		/**
 		 * Default constructor
@@ -85,13 +85,13 @@ namespace RESQML2_NS
 		 *
 		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		GeobodyInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		GeobodyInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyInterpretation* fromGsoap) : RESQML2_NS::GeologicUnitInterpretation(fromGsoap) {}
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 *
 		 * @param[in,out]	fromGsoap	If non-null, from gsoap.
 		 */
-		GeobodyInterpretation(gsoap_eml2_3::_resqml22__GeobodyInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		GeobodyInterpretation(gsoap_eml2_3::_resqml22__GeobodyInterpretation* fromGsoap) : RESQML2_NS::GeologicUnitInterpretation(fromGsoap) {}
 	};
 }

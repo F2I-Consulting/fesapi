@@ -83,6 +83,7 @@ set(FESAPI_RESQML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Abstr
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/GenericFeatureInterpretation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/GeobodyBoundaryInterpretation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/GeobodyInterpretation.h
+							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/GeologicUnitInterpretation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/Grid2dRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/GridConnectionSetRepresentation.h
 							${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/HorizonInterpretation.h

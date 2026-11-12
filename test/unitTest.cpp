@@ -55,6 +55,7 @@ under the License.
 #include "resqml2_test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
 #include "resqml2_test/FaultMultiPatchTriangulatedSetRepresentationTest.h"
 #include "resqml2_test/FourSugarsParametricIjkGridWithGap.h"
+#include "resqml2_test/GeologicalUnitInterpretation.h"
 #include "resqml2_test/GridConnectionSetOnPartialGridSet.h"
 #include "resqml2_test/Grid2dRepresentationTest.h"
 #include "resqml2_test/HorizonInterpretationTest.h"
@@ -238,6 +239,7 @@ FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTe
 // INTERPRETATION
 FESAPI_TEST("Export and import an horizon interpretation", "[interpretation]", HorizonInterpretationTest)
 FESAPI_TEST("Export a multi domains interpretation", "[interpretation]", InterpretationDomain)
+FESAPI_TEST("Export/Import geological unit interpretation", "[interpretation]", GeologicalUnitInterpretation)
 
 // TRIANGULATION
 FESAPI_TEST("Export and import a single patch triangulated set fault representation", "[representation]", FaultSinglePatchTriangulatedSetRepresentationTest)

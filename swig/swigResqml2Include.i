@@ -64,6 +64,7 @@ under the License.
 	%nspace RESQML2_NS::GenericFeatureInterpretation;
 	%nspace RESQML2_NS::GeobodyBoundaryInterpretation;
 	%nspace RESQML2_NS::GeobodyInterpretation;
+	%nspace RESQML2_NS::GeologicUnitInterpretation;
 	%nspace RESQML2_NS::Grid2dRepresentation;
 	%nspace RESQML2_NS::GridConnectionSetRepresentation;
 	%nspace RESQML2_NS::HorizonInterpretation;
@@ -2487,11 +2488,19 @@ namespace RESQML2_NS
 	{
 	public:
 	};
+
+#ifdef SWIGPYTHON
+	%rename(Resqml2_GeologicUnitInterpretation) GeologicUnitInterpretation;
+#endif
+	class GeologicUnitInterpretation : public AbstractFeatureInterpretation
+	{
+	public:
+	};
 	
 #ifdef SWIGPYTHON
 	%rename(Resqml2_GeobodyInterpretation) GeobodyInterpretation;
 #endif
-	class GeobodyInterpretation : public AbstractFeatureInterpretation
+	class GeobodyInterpretation : public GeologicUnitInterpretation
 	{
 	public :
 		void set3dShape(gsoap_eml2_3::resqml22__Shape3d geobody3dShape);
@@ -2502,7 +2511,7 @@ namespace RESQML2_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_StratigraphicUnitInterpretation) StratigraphicUnitInterpretation;
 #endif
-	class StratigraphicUnitInterpretation : public AbstractFeatureInterpretation
+	class StratigraphicUnitInterpretation : public GeologicUnitInterpretation
 	{
 	public:
 		bool hasDepositionMode() const;
@@ -2826,7 +2835,7 @@ namespace RESQML2_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_RockFluidUnitInterpretation) RockFluidUnitInterpretation;
 #endif	
-	class RockFluidUnitInterpretation : public AbstractFeatureInterpretation
+	class RockFluidUnitInterpretation : public GeologicUnitInterpretation
 	{
 	public:
 		/**

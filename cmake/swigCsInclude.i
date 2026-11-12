@@ -56,6 +56,7 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 		GEOBODYFEATURE,
 		GEOBODYINTERPRETATION,
 		GEOLOGICUNITFEATURE,
+		GEOLOGICUNITINTERPRETATION,
 		GRAPHICALINFORMATIONSET,
 		GRID2DREPRESENTATION,
 		GRIDCONNECTIONSETREPRESENTATION,
@@ -893,6 +894,7 @@ ${COMMENT_END}
 		case DataObjectName.GEOBODYINTERPRETATION : return resqml2_instantiateGeobodyInterpretation(cPtr, owner);
 		case DataObjectName.GENERICFEATUREINTERPRETATION : return resqml2_instantiateGenericFeatureInterpretation(cPtr, owner);
 		case DataObjectName.GEOLOGICUNITFEATURE : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_0_1_NS}.GeologicUnitFeature(cPtr, owner);
+		case DataObjectName.GEOLOGICUNITINTERPRETATION : return new F2iConsulting.Fesapi.${FESAPI_RESQML2_NS}.GeologicUnitInterpretation(cPtr, owner);
 		case DataObjectName.STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
 		case DataObjectName.GRAPHICALINFORMATIONSET : return new F2iConsulting.Fesapi.${FESAPI_EML2_3_NS}.GraphicalInformationSet(cPtr, owner);
 		case DataObjectName.GRID2DREPRESENTATION : return resqml2_instantiateGrid2dRepresentation(cPtr, owner);

@@ -1745,6 +1745,21 @@ import com.f2i_consulting.fesapi.*;
 
 		/**
 		 * @brief	Use \link createRockVolumeFeature() \endlink method for RESQML post v2.0.1
+		 * 			Creates a geologic unit into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the geologic unit. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the geologic unit. If empty then \"unknown\" title
+		 * 					will be set.
+		 *
+		 * @returns	A pointer to the new geologic unit.
+		 */
+		RESQML2_0_1_NS::GeologicUnitFeature* createGeologicUnitFeature(const std::string& guid, const std::string& title);
+
+		/**
+		 * @brief	Use \link createRockVolumeFeature() \endlink method for RESQML post v2.0.1
 		 * 			Creates a stratigraphic unit into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1757,9 +1772,27 @@ import com.f2i_consulting.fesapi.*;
 		 * @returns	A pointer to the new stratigraphic unit.
 		 */
 		RESQML2_NS::RockVolumeFeature* createStratigraphicUnitFeature(const std::string & guid, const std::string & title);
-#ifdef WITH_RESQML2_2
-		RESQML2_NS::RockVolumeFeature* createRockVolumeFeature(const std::string & guid, const std::string & title);
 		
+#ifdef WITH_RESQML2_2
+		/**
+		 * @brief	Use \link createRockVolumeFeature() \endlink method for RESQML post v2.0.1
+		 *			Creates a RockVolume feature into this repository
+		 *
+		 * @param 	guid 	The guid to set to the RockVolume feature. If empty then a new guid will be generated.
+		 * @param 	title	The title to set to the RockVolume feature. If empty then \"unknown\" title will be set.
+		 *
+		 * @returns	A pointer to the new RockVolume feature.
+		 */
+		RESQML2_NS::RockVolumeFeature* createRockVolumeFeature(const std::string & guid, const std::string & title);
+
+		/**
+		 * Creates a model into this repository.
+		 *
+		 * @param 	guid 	The guid to set to the model. If empty then a new guid will be generated.
+		 * @param 	title	The title to set to the model. If empty then \"unknown\" title will be set.
+		 *
+		 * @returns	A pointer to the new model.
+		 */
 		RESQML2_NS::Model* createModel(const std::string & guid, const std::string & title);
 #endif
 

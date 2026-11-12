@@ -69,6 +69,7 @@ namespace RESQML2_NS
 	class GenericFeatureInterpretation;
 	class GeobodyBoundaryInterpretation;
 	class GeobodyInterpretation;
+	class GeologicUnitInterpretation;
 	class GridConnectionSetRepresentation;
 	class Grid2dRepresentation;
 	class HorizonInterpretation;
@@ -124,6 +125,7 @@ namespace RESQML2_0_1_NS
 	class FluidBoundaryFeature;
 	class GeneticBoundaryFeature;
 	class GeobodyFeature;
+	class GeologicUnitFeature;
 	class Horizon;
 	class PointsProperty;
 	class PropertyKind;
@@ -1322,6 +1324,21 @@ namespace COMMON_NS
 
 		/**
 		 * @brief	Use \link createRockVolumeFeature() \endlink method for RESQML post v2.0.1
+		 * 			Creates a geologic unit into this repository
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 *
+		 * @param 	guid 	The guid to set to the geologic unit. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the geologic unit. If empty then \"unknown\" title
+		 * 					will be set.
+		 *
+		 * @returns	A pointer to the new geologic unit.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::GeologicUnitFeature* createGeologicUnitFeature(const std::string& guid, const std::string& title);
+
+		/**
+		 * @brief	Use \link createRockVolumeFeature() \endlink method for RESQML post v2.0.1
 		 * 			Creates a stratigraphic unit into this repository
 		 *
 		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
@@ -1646,6 +1663,22 @@ namespace COMMON_NS
 		 * @returns	A pointer to the new rock fluid organization interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RockFluidOrganizationInterpretation* createRockFluidOrganizationInterpretation(RESQML2_NS::Model * orgFeat, const std::string & guid, const std::string & title);
+
+		/**
+		 * @brief	Creates a geologic unit interpretation into this repository.
+		 *
+		 * @exception	std::invalid_argument	If the default RESQML version is unrecognized.
+		 * @exception	std::invalid_argument	If <tt>geologicUnitFeature == nullptr</tt>.
+		 *
+		 * @param[in]	geologicUnitFeature	The interpreted geologic unit. It cannot be null.
+		 * @param 	  	guid			 	The guid to set to the geologic unit interpretation. If
+		 * 									empty then a new guid will be generated.
+		 * @param 	  	title			 	The title to set to the geologic unit interpretation. If
+		 * 									empty then \"unknown\" title will be set.
+		 *
+		 * @returns	A pointer to the new geologic unit interpretation.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::GeologicUnitInterpretation* createGeologicUnitInterpretation(RESQML2_NS::RockVolumeFeature* geologicUnitFeature, const std::string& guid, const std::string& title);
 
 		/**
 		 * @brief	Creates a rock fluid unit interpretation into this repository
