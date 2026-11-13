@@ -1,5 +1,5 @@
 /*
-        stdsoap2.c[pp] 2.8.146E
+        stdsoap2.c[pp] 2.8.147E
 
         gSOAP runtime engine
 
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_LIB_VERSION 208146
+#define GSOAP_LIB_VERSION 208147
 
 /* silence GNU's warnings on format nonliteral strings and truncation (snprintf truncates on purpose for safety) */
 #ifdef __GNUC__
@@ -62,10 +62,10 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 #endif
 
 #ifdef __cplusplus
-SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.146E 2026-10-26 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.147E 2026-11-09 00:00:00 GMT")
 extern "C" {
 #else
-SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.146E 2026-10-26 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.147E 2026-11-09 00:00:00 GMT")
 #endif
 
 /* 8bit character representing unknown character entity or multibyte data */
@@ -9064,8 +9064,9 @@ soap_encode_url_string(struct soap *soap, const char *s)
 {
   if (s)
   {
-    int n = 3 * (int)strlen(s) + 1;
-    char *t = (char*)soap_malloc(soap, n);
+    size_t l = strlen(s);
+    int n = 3 * (int)l + 1;
+    char *t = n > 0 && n > (int)l ? (char*)soap_malloc(soap, n) : NULL;
     if (t)
     {
       (void)soap_encode_url(s, t, n);
@@ -11005,6 +11006,7 @@ soap_malloc(struct soap *soap, size_t n)
   struct soap_clist *cp;
   char *p;
   size_t k;
+  unsigned int x;
   if ((SOAP_MAXALLOCSIZE > 0 && n > SOAP_MAXALLOCSIZE) || n + sizeof(unsigned int) < n)
   {
     if (soap)
@@ -11039,7 +11041,8 @@ soap_malloc(struct soap *soap, size_t n)
     soap->error = SOAP_EOM;
     return NULL;
   }
-  *(unsigned int*)(p + n) = (unsigned int)(SOAP_CANARY ^ PtrToUlong(p));
+  x = (unsigned int)(SOAP_CANARY ^ PtrToUlong(p));
+  memcpy(p + n, &x, sizeof(unsigned int));
   cp = &soap->cblk->clist[soap->cidx++];
   k = soap_hash_ptr(p);
   cp->next = soap->cht[k];
@@ -11226,7 +11229,8 @@ soap_dealloc(struct soap *soap, void *p)
         }
         else
         {
-          if (*(unsigned int*)((char*)p + cp->size) != (unsigned int)(SOAP_CANARY ^ PtrToUlong(p)))
+          unsigned int x = (unsigned int)(SOAP_CANARY ^ PtrToUlong(p));
+          if (memcmp((char*)p + cp->size, &x, sizeof(unsigned int)))
           {
 #ifdef SOAP_MEM_DEBUG
             fprintf(stderr, "Memory corruption detected at %p %zu bytes (see logs)\n", p, (size_t)cp->size);
@@ -11269,7 +11273,8 @@ soap_dealloc(struct soap *soap, void *p)
           }
           else
           {
-            if (*(unsigned int*)((char*)p + cp->size) != (unsigned int)(SOAP_CANARY ^ PtrToUlong(p)))
+            unsigned int x = (unsigned int)(SOAP_CANARY ^ PtrToUlong(p));
+            if (memcmp((char*)p + cp->size, &x, sizeof(unsigned int)))
             {
 #ifdef SOAP_MEM_DEBUG
               fprintf(stderr, "Memory corruption detected at %p %zu bytes (see logs)\n", p, (size_t)cp->size);
@@ -12240,7 +12245,6 @@ soap_free_temp(struct soap *soap)
   SOAP_ZERO(soap->arrayType, sizeof(soap->arrayType));
   SOAP_ZERO(soap->endpoint, SOAP_TAGLEN);
   SOAP_ZERO(soap->path, sizeof(soap->path));
-  SOAP_ZERO(soap->host, sizeof(soap->host));
 #endif
   ns = soap->local_namespaces;
   if (ns)
@@ -12457,10 +12461,6 @@ soap_copy_context(struct soap *copy, const struct soap *soap)
     copy->labbuf = NULL;
     copy->lablen = 0;
     copy->labidx = 0;
-    copy->namespaces = soap->local_namespaces;
-    copy->local_namespaces = NULL;
-    soap_set_local_namespaces(copy); /* copy content of soap->local_namespaces */
-    copy->namespaces = soap->namespaces; /* point to shared read-only namespaces table */
     copy->c_locale = NULL;
 #ifdef WITH_OPENSSL
     copy->bio = NULL;
@@ -12484,6 +12484,10 @@ soap_copy_context(struct soap *copy, const struct soap *soap)
 #endif
     soap_init_pht(copy);
     soap_init_cht(copy);
+    copy->namespaces = soap->local_namespaces;
+    copy->local_namespaces = NULL;
+    soap_set_local_namespaces(copy); /* copy content of soap->local_namespaces */
+    copy->namespaces = soap->namespaces; /* point to shared read-only namespaces table */
     copy->header = NULL;
     copy->fault = NULL;
     copy->action = NULL;
@@ -13321,14 +13325,15 @@ soap_set_local_namespaces(struct soap *soap)
   {
     const struct Namespace *ns1;
     struct Namespace *ns2;
-    size_t n = 1;
-    for (ns1 = soap->namespaces; ns1->id; ns1++)
-      n++;
-    n *= sizeof(struct Namespace);
+    size_t n, k = 1;
+    for (ns1 = soap->namespaces; ns1->id && k < SOAP_MAXNS; ns1++)
+      k++;
+    n = k * sizeof(struct Namespace);
     ns2 = (struct Namespace*)SOAP_MALLOC(soap, n);
     if (ns2)
     {
       (void)soap_memcpy((void*)ns2, n, (const void*)soap->namespaces, n);
+      ns2[k-1].id = NULL;
       if (ns2[0].ns)
       {
         if (!strcmp(ns2[0].ns, soap_env1))
@@ -19355,6 +19360,8 @@ soap_timegm(struct tm *T)
 {
 #if defined(HAVE_TIMEGM)
   return timegm(T);
+#elif defined(WIN32)
+  return _mkgmtime(T);
 #else
   time_t t, g, z;
   struct tm tm;
@@ -20622,7 +20629,7 @@ soap_recv_mime_attachment(struct soap *soap, void *handle)
           do
           {
             c = soap_getchar(soap);
-          } while (c == *t++ && t < soap->msgbuf + sizeof(soap->msgbuf) - 4);
+          } while (c == *t++ && c && t < soap->msgbuf + sizeof(soap->msgbuf) - 4);
           if ((int)c == EOF)
           {
             if (content->ptr && soap->fmimewriteclose)
@@ -21796,6 +21803,8 @@ soap_http_get_body_prefix(struct soap *soap, size_t *len, const char *prefix)
   {
     char *t;
     size_t j;
+    if (soap->recv_maxlength && k > soap->recv_maxlength)
+      k = soap->recv_maxlength;
     soap->length = 0;
     /* http content length != 0 and uncompressed body and body length does not exceed size_t max size */
     if ((SOAP_MAXALLOCSIZE != 0 && n + k > SOAP_MAXALLOCSIZE) || n + k > (ULONG64)((size_t)-2))

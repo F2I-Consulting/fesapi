@@ -894,7 +894,7 @@ ${COMMENT_END}
 		case GEOBODYINTERPRETATION : return resqml2_instantiateGeobodyInterpretation(cPtr, owner);
 		case GENERICFEATUREINTERPRETATION : return resqml2_instantiateGenericFeatureInterpretation(cPtr, owner);
 		case GEOLOGICUNITFEATURE : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_0_1_NS}.Resqml20_GeologicUnitFeature(cPtr, owner);
-		case GEOLOGICUNITINTERPRETATION : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_NS}.Resqml2_GeologicUnitInterpretation(cPtr, owner);
+		case GEOLOGICUNITINTERPRETATION : return new com.f2i_consulting.fesapi.${FESAPI_RESQML2_NS}.GeologicUnitInterpretation(cPtr, owner);
 		case STRATIGRAPHICOCCURRENCEINTERPRETATION : return resqml2_instantiateStratigraphicOccurrenceInterpretation(cPtr, owner);
 		case GRAPHICALINFORMATIONSET : return new com.f2i_consulting.fesapi.${FESAPI_EML2_3_NS}.Eml23_GraphicalInformationSet(cPtr, owner);
 		case GRID2DREPRESENTATION : return resqml2_instantiateGrid2dRepresentation(cPtr, owner);

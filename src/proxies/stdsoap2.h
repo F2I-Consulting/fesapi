@@ -1,5 +1,5 @@
 /*
-        stdsoap2.h 2.8.146E
+        stdsoap2.h 2.8.147E
 
         gSOAP runtime engine
 
@@ -18,7 +18,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 208146
+#define GSOAP_VERSION 208147
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -1208,9 +1208,12 @@ extern "C" {
 #  define SOAP_MAXPTRS    (2)
 # endif
 #endif
+#ifndef SOAP_MAXNS
+# define SOAP_MAXNS    (1024) /* max number of entries in an XML namespace table */
+#endif
 
 #ifndef SOAP_MAXALLOCSIZE
-# define SOAP_MAXALLOCSIZE (0) /* max size that malloc() can handle, zero means unlimited */
+# define SOAP_MAXALLOCSIZE (2147483647UL) /* max size that malloc() should handle, zero means unlimited, 2GB is the default */
 #endif
 
 #ifndef SOAP_MAXLOGS
@@ -1222,7 +1225,7 @@ extern "C" {
 
 /* max HTTP chunk size is 2GB by default, can be larger but not to exceed size_t range max */
 #ifndef SOAP_MAXHTTPCHUNK
-# define SOAP_MAXHTTPCHUNK (2147483647)
+# define SOAP_MAXHTTPCHUNK (2147483647UL)
 #endif
 
 /* Tag name of multiref elements in SOAP 1.1 encoding */
@@ -2889,7 +2892,6 @@ struct SOAP_CMAC soap
   char arrayOffset[SOAP_TAGLEN];
   int position;
   int positions[SOAP_MAXDIMS];
-  struct soap_attribute *attributes;    /* attribute list */
   short shaky;          /* objects in reallocatable containers are on shaky grounds */
   short other;
   short root;
@@ -2935,17 +2937,18 @@ struct SOAP_CMAC soap
   const char *cors_headers;     /* CORS Allow-Headers header returned by server */
   const char *x_frame_options;  /* "DENY", "SAMEORIGIN" (default), or "ALLOW-FROM uri" */
   int status;                   /* HTTP status code, HTTP method, or other error code */
-  int error;
-  int errmode;
-  int errnum;
+  int error;                    /* nonzero error code or SOAP_OK (zero = no error) */
+  int errmode;                  /* internal error mode for tcp_error() reporting */
+  int errnum;                   /* the errno value of when the last error occurred or zero for timeouts */
+  struct soap_attribute *attributes;    /* XML attribute list */
 #ifndef WITH_LEANER
-  struct soap_dom_element *dom;
-  struct soap_dime dime;
-  struct soap_mime mime;
-  struct soap_xlist *xlist;
+  struct soap_dom_element *dom;         /* XML DOM tree */
+  struct soap_dime dime;                /* DIME attachments */
+  struct soap_mime mime;                /* MTOM/MIME attachments */
+  struct soap_xlist *xlist;             /* attachment cross refs */
 #endif
-  const char *logfile[SOAP_MAXLOGS];
-  FILE *fdebug[SOAP_MAXLOGS];
+  const char *logfile[SOAP_MAXLOGS];    /* DEBUG mode logging */
+  FILE *fdebug[SOAP_MAXLOGS];           /* DEBUG mode logging */
   struct soap_clist *cht[SOAP_PTRHASH];
   struct soap_cblk *cblk;       /* clist block allocation */
   int cidx;                     /* clist block allocation */
