@@ -25,7 +25,7 @@ under the License.
 
 #include <zip.h>
 
-#include "HdfProxyROS3Factory.h"
+#include "HdfProxyFactory.h"
 
 #include "../epc/Relationship.h"
 #include "../epc/FilePart.h"
@@ -288,7 +288,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 					if (rel.getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
 						target = rel.getTarget();
 						if (target.find("http://") == 0 || target.find("https://") == 0) {
-							repo.setHdfProxyFactory(std::make_unique<HdfProxyROS3Factory>());
+							throw std::invalid_argument("Does not support external resources which are accessible through http");
 						}
 						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(contentTypeEntry.second.getExtensionOrPartName().substr(1)), contentType, filePath);
 						break;
@@ -384,7 +384,7 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 						if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
 							const std::string target = allRels[relIndex].getTarget();
 							if (target.find("http://") == 0 || target.find("https://") == 0) {
-								repo.setHdfProxyFactory(std::make_unique<HdfProxyROS3Factory>());
+								throw std::invalid_argument("Does not support external resources which are accessible through http");
 							}
 							else {
 								repo.setHdfProxyFactory(std::make_unique<HdfProxyFactory>());

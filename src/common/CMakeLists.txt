@@ -11,7 +11,6 @@ set(FESAPI_COMMON_HEADERS 	${CMAKE_CURRENT_SOURCE_DIR}/common/AbstractObject.h
               				${CMAKE_CURRENT_SOURCE_DIR}/common/EnumStringMapper.h
               				${CMAKE_CURRENT_SOURCE_DIR}/common/EpcDocument.h
               				${CMAKE_CURRENT_SOURCE_DIR}/common/HdfProxyFactory.h
-              				${CMAKE_CURRENT_SOURCE_DIR}/common/HdfProxyROS3Factory.h
               				${CMAKE_CURRENT_SOURCE_DIR}/common/HidtType.h
 							${CMAKE_CURRENT_SOURCE_DIR}/common/NumberArrayStatistics.h)
 if (HDF5_PREFER_PARALLEL)
