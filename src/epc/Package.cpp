@@ -45,8 +45,31 @@ under the License.
 
 static constexpr int CASESENSITIVITY = 0;
 
+/**
+ * Sanity limit on the compression ratio of an EPC part. XML parts of EPC documents compress poorly (typically below 10:1).
+ * A declared ratio above this limit is a strong indicator of a zip bomb, even when the declared uncompressed size
+ * remains under the maximum authorized part size (e.g. 100 GiB of real content compressed in 100 MiB).
+ */
+static constexpr std::uint64_t MAX_COMPRESSION_RATIO = 1000; // 1000:1
+/**
+ * Minimum compressed size above which the compression ratio check applies: small parts compress arbitrarily
+ * well (e.g. an XML of repetitive tags), so checking their ratio would generate false positives.
+ */
+static constexpr std::uint64_t MIN_COMPRESSED_SIZE_FOR_RATIO_CHECK = 1024; // 1 KiB
+static constexpr std::uint64_t READ_CHUNK_SIZE = static_cast<std::uint64_t>(1) << 20; // 1 MiB
+
 using namespace std;
 using namespace epc;
+
+void Package::setMaxUncompressedPartSize(std::uint64_t size)
+{
+	maxUncompressedPartSize = size;
+}
+
+std::uint64_t Package::getMaxUncompressedPartSize()
+{
+	return maxUncompressedPartSize;
+}
 
 class Package::CheshireCat {
 public:
@@ -520,34 +543,61 @@ void Package::writePackage()
 
 string do_extract_currentfile(unzFile uf)
 {
-	std::string data;
-
 	int err = unzOpenCurrentFile(uf);
-    if (err != UNZ_OK) {
+	if (err != UNZ_OK) {
 		throw invalid_argument("Error with zipfile in unzOpenCurrentFile. Code = " + std::to_string(err));
-    }
+	}
 
 	// Get current file info
 	unz_file_info64 file_info;
 	err = unzGetCurrentFileInfo64(uf, &file_info, nullptr, 0, nullptr, 0, nullptr, 0);
-	if (err == UNZ_OK) {
-		// Extract file
-		data.resize(file_info.uncompressed_size);
-		err = unzReadCurrentFile(uf, &data[0], static_cast<unsigned int>(data.size()));
-		if (err < 0) {
-			throw invalid_argument("Error with zipfile in unzReadCurrentFile. Code = " + std::to_string(err));
-		}
-	}
-	else {
+	if (err != UNZ_OK) {
+		unzCloseCurrentFile(uf);
 		throw invalid_argument("Failed to get current file information from ZIP. Code = " + std::to_string(err));
 	}
 
-	err = unzCloseCurrentFile(uf);
+	// Defensive check : sizes come from the untrusted ZIP file itself
+	if (file_info.uncompressed_size > Package::getMaxUncompressedPartSize()) {
+		unzCloseCurrentFile(uf);
+		throw invalid_argument("The uncompressed size (" + std::to_string(file_info.uncompressed_size)
+			+ " bytes) of the current file of the EPC document exceeds the maximum authorized part size ("
+			+ std::to_string(Package::getMaxUncompressedPartSize()) + " bytes, see Package::setMaxUncompressedPartSize). "
+			"Either the EPC document is corrupted, it is a zip bomb or the part is legitimately bigger than the configured limit.");
+	}
+	// Defensive check : implausible declared compression ratio (zip bomb staying under the absolute size limit above)
+	if (file_info.compressed_size > MIN_COMPRESSED_SIZE_FOR_RATIO_CHECK &&
+		file_info.compressed_size <= (std::numeric_limits<std::uint64_t>::max)() / MAX_COMPRESSION_RATIO && // overflow guard : compressed_size is sized on untrusted input too
+		file_info.uncompressed_size > file_info.compressed_size * MAX_COMPRESSION_RATIO) {
+		unzCloseCurrentFile(uf);
+		throw invalid_argument("The compression ratio (uncompressed size " + std::to_string(file_info.uncompressed_size)
+			+ " bytes / compressed size " + std::to_string(file_info.compressed_size) + " bytes) of the current file of the EPC document "
+			"exceeds the maximum authorized compression ratio. Either the EPC document is corrupted or it is a zip bomb.");
+	}
+
+	// Read the file content by chunks : never trust the declared uncompressed_size (it may lie),
+	// stop at the actual EOF and cap the total size as well.
+	std::vector<char> buf(static_cast<size_t>(READ_CHUNK_SIZE));
+	std::string data;
+	while ((err = unzReadCurrentFile(uf, buf.data(), buf.size())) > 0) {
+		data.append(buf.data(), static_cast<size_t>(err));
+		if (data.size() > Package::getMaxUncompressedPartSize()) {
+			unzCloseCurrentFile(uf);
+			throw invalid_argument("The current file of the EPC document is bigger than the maximum authorized part size ("
+				+ std::to_string(Package::getMaxUncompressedPartSize()) + " bytes, see Package::setMaxUncompressedPartSize). "
+				"Either the EPC document is corrupted, it is a zip bomb or the part is legitimately bigger than the configured limit.");
+		}
+	}
+	if (err < 0) {
+		unzCloseCurrentFile(uf);
+		throw invalid_argument("Error with zipfile in unzReadCurrentFile. Code = " + std::to_string(err));
+	}
+
+	err = unzCloseCurrentFile(uf); // Also verifies the CRC of the current file
 	if (err != UNZ_OK) {
 		throw invalid_argument("Error with zipfile in unzCloseCurrentFile. Code = " + std::to_string(err));
 	}
 
-    return data;
+	return data;
 }
 
 bool Package::fileExists(const string & filename) const
