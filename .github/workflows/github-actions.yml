@@ -210,8 +210,8 @@ jobs:
           name: cibw-wheels-manylinux_2_28
           path: ./wheelhouse/*.whl
   build_wheels_mac:
-    name: Build wheels on macos-14
-    runs-on: macos-14
+    name: Build wheels on macos-15
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v5
       - name: Stub `setup.py` check
