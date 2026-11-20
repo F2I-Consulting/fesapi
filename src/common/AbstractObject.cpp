@@ -1389,6 +1389,8 @@ template<> uint64_t AbstractObject::readArrayNdOfIntegerValues(gsoap_eml2_3::eml
 
 uint64_t AbstractObject::getCountOfArray(gsoap_resqml2_0_1::resqml20__AbstractValueArray const* arrayInput) const
 {
+	if (arrayInput == nullptr) return 0;
+
 	const long soapType = arrayInput->soap_type();
 	// *********** INTEGER ********
 	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
@@ -1464,6 +1466,8 @@ uint64_t AbstractObject::getCountOfArray(gsoap_resqml2_0_1::resqml20__AbstractVa
 
 uint64_t AbstractObject::getCountOfArray(gsoap_eml2_3::eml23__AbstractValueArray const* arrayInput) const
 {
+	if (arrayInput == nullptr) return 0;
+
 	const long soapType = arrayInput->soap_type();
 	// *********** INTEGER ********
 	if (soapType == SOAP_TYPE_gsoap_eml2_3_eml23__IntegerExternalArray)

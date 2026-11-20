@@ -89,12 +89,24 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepo() {
 		0, twothree, oneone, 2,
 		parentGrid);
 
+	// creating a child ijk grid with some forced non regrided parent cells
+	RESQML2_NS::IjkGridExplicitRepresentation* childGridWithForcedNonRegridedParentCells =
+		repo->createIjkGridExplicitRepresentation("f69069bf-3bd1-4b03-a519-c9d2e2d43ac7", "Child grid with forced non regrided parent cells", 2, 1, 4);
+	childGridWithForcedNonRegridedParentCells->setParentWindow(
+		0, 2, 2, 1,
+		0, 1, 1, 1,
+		0, 2, 1, 2,
+		parentGrid);
+	uint64_t forcedNonRegridedParentCells[2] = { 0, 3 };
+	childGridWithForcedNonRegridedParentCells->setForcedNonRegridedParentCells(forcedNonRegridedParentCells, 2);
+
 	// Put all LGRs in a single representation set representation for other testing
 	auto rsr = repo->createRepresentationSetRepresentation("4526345b-3900-4b1a-a68d-7ea9fd824827", "RSR");
 	childGrid->pushBackIntoRepresentationSet(rsr);
 	childGridHdf5->pushBackIntoRepresentationSet(rsr);
 	childGridNonConstant->pushBackIntoRepresentationSet(rsr);
-	REQUIRE(childGrid->getRepresentationSetRepresentation(0)->getRepresentationCount() == 3);
+	childGridWithForcedNonRegridedParentCells->pushBackIntoRepresentationSet(rsr);
+	REQUIRE(childGrid->getRepresentationSetRepresentation(0)->getRepresentationCount() == 4);
 }
 
 void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepo() {
@@ -102,6 +114,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepo() {
 	RESQML2_NS::AbstractIjkGridRepresentation* childGrid = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>(defaultUuid);
 	RESQML2_NS::AbstractIjkGridRepresentation* childGridHdf5 = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("38930b30-1325-424e-a1e9-666fa50bfa4f");
 	RESQML2_NS::AbstractIjkGridRepresentation* childGridNonConstant = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("eaf36330-4c0b-40f8-bf07-b2818f09a229");
+	RESQML2_NS::AbstractIjkGridRepresentation* childGridWithForcedNonRegridedParentCells = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("f69069bf-3bd1-4b03-a519-c9d2e2d43ac7");
 	RESQML2_NS::AbstractIjkGridRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 
 	REQUIRE(childGrid->getCellCount() == 12);
@@ -113,7 +126,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepo() {
 	REQUIRE(childGridNonConstant->getCellCount() == 16);
 	REQUIRE(childGridNonConstant->getPillarCount() == 10);
 	REQUIRE(childGridNonConstant->getParentGrid() == parentGrid);
-	REQUIRE(parentGrid->getChildGridCount() == 3);
+	REQUIRE(parentGrid->getChildGridCount() == 4);
 	// Child
 	REQUIRE(childGrid->isRegridCellCountPerIntervalConstant('i', true));
 	REQUIRE(childGrid->isRegridCellCountPerIntervalConstant('j', true));
@@ -163,6 +176,20 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepo() {
 	REQUIRE_FALSE(childGridNonConstant->hasRegridChildCellWeights('j'));
 	REQUIRE_FALSE(childGridNonConstant->hasRegridChildCellWeights('k'));
 
+	// Forced non regrided parent cells
+	REQUIRE_FALSE(childGrid->hasForcedNonRegridedParentCells());
+	REQUIRE(childGrid->getForcedNonRegridedParentCellsCount() == 0);
+	REQUIRE_FALSE(childGridHdf5->hasForcedNonRegridedParentCells());
+	REQUIRE(childGridHdf5->getForcedNonRegridedParentCellsCount() == 0);
+	REQUIRE_FALSE(childGridNonConstant->hasForcedNonRegridedParentCells());
+	REQUIRE(childGridNonConstant->getForcedNonRegridedParentCellsCount() == 0);
+	REQUIRE(childGridWithForcedNonRegridedParentCells->hasForcedNonRegridedParentCells());
+	REQUIRE(childGridWithForcedNonRegridedParentCells->getForcedNonRegridedParentCellsCount() == 2);
+	uint64_t forcedNonRegridedParentCells[2];
+	childGridWithForcedNonRegridedParentCells->getForcedNonRegridedParentCells(forcedNonRegridedParentCells);
+	REQUIRE(forcedNonRegridedParentCells[0] == 0);
+	REQUIRE(forcedNonRegridedParentCells[1] == 3);
+
 	// RSR
 	REQUIRE(childGrid->getRepresentationSetRepresentationCount() == 1);
 	REQUIRE(childGridHdf5->getRepresentationSetRepresentationCount() == 1);
@@ -171,8 +198,9 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepo() {
 	REQUIRE(childGrid->getRepresentationSetRepresentation(0) == rsr);
 	REQUIRE(childGridNonConstant->getRepresentationSetRepresentation(0) == rsr);
 	REQUIRE(rsr->isHomogeneous());
-	REQUIRE(rsr->getRepresentationCount() == 3);
+	REQUIRE(rsr->getRepresentationCount() == 4);
 	REQUIRE(rsr->getRepresentation(0) == childGrid);
 	REQUIRE(rsr->getRepresentation(1) == childGridHdf5);
 	REQUIRE(rsr->getRepresentation(2) == childGridNonConstant);
+	REQUIRE(rsr->getRepresentation(3) == childGridWithForcedNonRegridedParentCells);
 }

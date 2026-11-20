@@ -515,7 +515,7 @@ void AbstractGridRepresentation::setParentWindow(
 		parentGrid, proxy, iChildCellWeights, jChildCellWeights, kChildCellWeights);
 }
 
-void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellIndices, uint64_t cellIndexCount)
+void AbstractGridRepresentation::setForcedNonRegridedParentCells(uint64_t * cellIndices, uint64_t cellIndexCount)
 {
 	if (cellIndices == nullptr) {
 		throw invalid_argument("cellIndices cannot be nullptr.");
@@ -596,7 +596,96 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(uint64_t * cellI
 	}
 }
 
-bool AbstractGridRepresentation::hasForcedNonRegridedParentCell() const
+uint64_t AbstractGridRepresentation::getForcedNonRegridedParentCellsCount() const
+{
+	cannotBePartial();
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__AbstractParentWindow const* parentWindow = getParentWindow2_0_1();
+
+		if (parentWindow != nullptr)
+		{
+			switch (parentWindow->soap_type()) {
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IjkParentWindow:
+				return getCountOfArray(static_cast<gsoap_resqml2_0_1::resqml20__IjkParentWindow const*>(parentWindow)->OmitParentCells);
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ColumnLayerParentWindow:
+				return getCountOfArray(static_cast<gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow const*>(parentWindow)->OmitParentCells);
+			default: return 0;
+			}
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto const* parentWindow = getParentWindow2_2();
+
+		if (parentWindow != nullptr)
+		{
+			switch (parentWindow->soap_type()) {
+			case SOAP_TYPE_gsoap_eml2_3_resqml22__IjkParentWindow:
+				return getCountOfArray(static_cast<gsoap_eml2_3::resqml22__IjkParentWindow const*>(parentWindow)->OmitParentCells);
+			case SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnLayerParentWindow:
+				return getCountOfArray(static_cast<gsoap_eml2_3::resqml22__ColumnLayerParentWindow const*>(parentWindow)->OmitParentCells);
+			default: return 0;
+			}
+		}
+	}
+	else {
+		throw logic_error("Must only be RESQML version 2.0 or 2.2");
+	}
+
+	return 0;
+}
+
+void AbstractGridRepresentation::getForcedNonRegridedParentCells(uint64_t* cellIndices)
+{
+	cannotBePartial();
+	if (cellIndices == nullptr) {
+		throw invalid_argument("cellIndices cannot be nullptr");
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml20__AbstractParentWindow const* parentWindow = getParentWindow2_0_1();
+
+		if (parentWindow != nullptr)
+		{
+			switch (parentWindow->soap_type()) {
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IjkParentWindow:
+				readArrayNdOfIntegerValues(static_cast<gsoap_resqml2_0_1::resqml20__IjkParentWindow const*>(parentWindow)->OmitParentCells, cellIndices);
+				break;
+			case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ColumnLayerParentWindow:
+				readArrayNdOfIntegerValues(static_cast<gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow const*>(parentWindow)->OmitParentCells, cellIndices);
+				break;
+			default: throw invalid_argument("You can only force parent cell on a ijk or column layer parent window.");
+			}
+		}
+		else {
+			throw invalid_argument("No parent window.");
+		}
+	}
+	else if (gsoapProxy2_3 != nullptr) {
+		auto const* parentWindow = getParentWindow2_2();
+
+		if (parentWindow != nullptr)
+		{
+			switch (parentWindow->soap_type()) {
+			case SOAP_TYPE_gsoap_eml2_3_resqml22__IjkParentWindow:
+				readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__IjkParentWindow const*>(parentWindow)->OmitParentCells, cellIndices);
+				break;
+			case SOAP_TYPE_gsoap_eml2_3_resqml22__ColumnLayerParentWindow:
+				readArrayNdOfIntegerValues(static_cast<gsoap_eml2_3::resqml22__ColumnLayerParentWindow const*>(parentWindow)->OmitParentCells, cellIndices);
+				break;
+			default: throw invalid_argument("You can only force parent cell on a ijk or column layer parent window.");
+			}
+		}
+		else {
+			throw invalid_argument("No parent window.");
+		}
+	}
+	else {
+		throw logic_error("Must only be RESQML version 2.0 or 2.2");
+	}
+}
+
+bool AbstractGridRepresentation::hasForcedNonRegridedParentCells() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* parentWindow = getParentWindow2_0_1();

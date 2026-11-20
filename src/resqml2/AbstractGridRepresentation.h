@@ -429,7 +429,7 @@ namespace RESQML2_NS
 			class AbstractIjkGridRepresentation* parentGrid, EML2_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
-		 * When a parent windows has been defined, this method allows to force some parent cells to be
+		 * When a parent window has been defined, this method allows to force some parent cells to be
 		 * noted as non regridded. It mainly allows non-rectangular local grids to be specified.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
@@ -444,7 +444,34 @@ namespace RESQML2_NS
 		 * 								size is @p cellIndexCount.
 		 * @param 	  	cellIndexCount	Number of cells to be noted as non regridded.
 		 */
-		DLL_IMPORT_OR_EXPORT void setForcedNonRegridedParentCell(uint64_t* cellIndices, uint64_t cellIndexCount);
+		DLL_IMPORT_OR_EXPORT void setForcedNonRegridedParentCells(uint64_t* cellIndices, uint64_t cellIndexCount);
+
+		/**
+		 * Gets the count of parent grid cells which are not regridded even if they are in the parent window.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a not partial RESQML 2.0 or 2.2 one.
+		 *
+		 * @returns	The count of parent grid cells which are not regridded even if they are in the parent window.
+		 */
+		DLL_IMPORT_OR_EXPORT uint64_t getForcedNonRegridedParentCellsCount() const;
+
+		/**
+		 * This method allows to get the parent cells which are not regridded even if they are in the parent window.
+		 * It mainly allows non-rectangular local grids to be specified.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a not partial RESQML 2.0 or 2.2 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is neither an IJK nor a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If @p cellIndices is nullptr or @p cellIndexCount is 0.
+		 * @exception	std::invalid_argument	If an HDF proxy is required and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param[out]	parentCellIndices	An array for receiving the indices of parent cells which are not regridded.
+		 *									This array must have been preallocated with a size of 
+		 * 									getForcedNonRegridedParentCellsCount().
+		 */
+		DLL_IMPORT_OR_EXPORT void getForcedNonRegridedParentCells(uint64_t* cellIndices);
 
 		/**
 		 * Set optional cell overlap information between the current grid (the child) and the parent
@@ -721,7 +748,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getRegridChildCellWeights(char dimension, double* childCellWeights) const;
 
 		/**
-		 * When a parent windows has been defined, this method checks if some parent cells have been
+		 * When a parent window has been defined, this method checks if some parent cells have been
 		 * noted to be forced not to be regridded. It mainly occurs in case of non-rectangular local
 		 * grids.
 		 *
@@ -730,7 +757,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if some parent cells have been forced not to be regridded, false if not.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasForcedNonRegridedParentCell() const;
+		DLL_IMPORT_OR_EXPORT bool hasForcedNonRegridedParentCells() const;
 
 		//************************************************************
 		//**************** LINK WITH STRATIGRAPHY ********************

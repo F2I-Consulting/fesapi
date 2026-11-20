@@ -4656,7 +4656,34 @@ namespace RESQML2_NS
 		 * 								size is @p cellIndexCount.
 		 * @param 	  	cellIndexCount	Number of cells to be noted as non regridded.
 		 */
-		void setForcedNonRegridedParentCell(uint64_t * cellIndices, uint64_t cellIndexCount);
+		void setForcedNonRegridedParentCells(uint64_t * cellIndices, uint64_t cellIndexCount);
+
+		/**
+		 * Gets the count of parent grid cells which are not regridded even if they are in the parent window.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a not partial RESQML 2.0 or 2.2 one.
+		 *
+		 * @returns	The count of parent grid cells which are not regridded even if they are in the parent window.
+		 */
+		uint64_t getForcedNonRegridedParentCellsCount() const;
+
+		/**
+		 * This method allows to get the parent cells which are not regridded even if they are in the parent window.
+		 * It mainly allows non-rectangular local grids to be specified.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a not partial RESQML 2.0 or 2.2 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is neither an IJK nor a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If @p cellIndices is nullptr or @p cellIndexCount is 0.
+		 * @exception	std::invalid_argument	If an HDF proxy is required and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param[out]	parentCellIndices	An array for receiving the indices of parent cells which are not regridded.
+		 *									This array must have been preallocated with a size of 
+		 * 									getForcedNonRegridedParentCellsCount().
+		 */
+		void getForcedNonRegridedParentCells(uint64_t* cellIndices);
 
 		/**
 		 * Set optional cell overlap information between the current grid (the child) and the parent
@@ -4942,7 +4969,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	True if some parent cells have been forced not to be regridded, false if not.
 		 */
-		bool hasForcedNonRegridedParentCell() const;
+		bool hasForcedNonRegridedParentCells() const;
 
 		/**
 		 * Sets the stratigraphic organization interpretation which is associated to this grid
