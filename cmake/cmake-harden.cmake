@@ -30,6 +30,9 @@
 # add fhardened
 # rename GCC compiler to GNU compiler to apply to gcc and g++
 # Check Linker Flag and use LINKER: prefix
+# 2026-11-20
+# check_compiler_flag -fhardened
+# remove -fstack-clash-protection on Apple Clang
 
 cmake_minimum_required(VERSION 3.19)
 
@@ -61,6 +64,21 @@ macro(add_hardened_linker_flags)
 endmacro()
 
 macro(harden_posix)
+  # Since GCC 14, -fhardened already implies _FORTIFY_SOURCE=3 and _GLIBCXX_ASSERTIONS.
+  # Re-declaring them via -D/-U overrides the -fhardened versions and triggers the
+  # -Whardened warning, so only pass them when -fhardened itself is unsupported.
+  check_compiler_flag(${lang} -fhardened supports_fhardened)
+
+  if(supports_fhardened)
+    set(HARDENED_FORTIFY_AND_ASSERTIONS -fhardened)
+  else()
+    set(HARDENED_FORTIFY_AND_ASSERTIONS
+	-U_FORTIFY_SOURCE
+	-D_FORTIFY_SOURCE=3
+	-D_GLIBCXX_ASSERTIONS
+    )
+  endif()
+
   add_hardened_compiler_flags(
     -Wall
     -Wextra
@@ -74,9 +92,7 @@ macro(harden_posix)
     -Werror=implicit
     -Werror=incompatible-pointer-types
     -Werror=int-conversion
-	-U_FORTIFY_SOURCE
-	-D_FORTIFY_SOURCE=3
-	-D_GLIBCXX_ASSERTIONS
+    ${HARDENED_FORTIFY_AND_ASSERTIONS}
     -fstrict-flex-arrays=3
 	-fcf-protection=full
     -fno-delete-null-pointer-checks
@@ -84,7 +100,6 @@ macro(harden_posix)
     -fno-strict-aliasing
     -ftrivial-auto-var-init=zero
 	-fexceptions
-	-fhardened
   )
  
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
@@ -105,10 +120,18 @@ endif()
   )
 
   if(runtime)
-    add_hardened_compiler_flags(
-      -fstack-clash-protection
-      -fstack-protector-strong
-    )
+    if(CMAKE_${lang}_COMPILER_ID MATCHES "AppleClang")
+      # Apple Clang accepts but ignores -fstack-clash-protection, emitting an
+      # -Wunused-command-line-argument warning for every compile: skip it there.
+      add_hardened_compiler_flags(
+        -fstack-protector-strong
+      )
+    else()
+      add_hardened_compiler_flags(
+        -fstack-clash-protection
+        -fstack-protector-strong
+      )
+    endif()
   endif()
 endmacro()
 

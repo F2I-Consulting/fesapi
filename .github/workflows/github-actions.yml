@@ -27,28 +27,28 @@ jobs:
           cmake --build . --config Release --target INSTALL
       - name: HDF5 install
         run: |
-          curl -L "https://support.hdfgroup.org/releases/hdf5/v2_0/v2_0_0/downloads/hdf5-2.0.0.zip" -o "${{ runner.temp }}\hdf5-2.0.0.zip"
+          curl -L "https://github.com/HDFGroup/hdf5/releases/download/2.2.0/hdf5-2.2.0.zip" -o "${{ runner.temp }}\hdf5.zip"
           cd ${{ runner.temp }}
-          Expand-Archive ${{ runner.temp }}\hdf5-2.0.0.zip -DestinationPath ${{ runner.temp }}
+          Expand-Archive ${{ runner.temp }}\hdf5.zip -DestinationPath ${{ runner.temp }}
           mkdir hdf5-build
           cd hdf5-build
-          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DZLIB_ROOT:PATH=${{ runner.temp }}/zlib-install -DZLIB_INCLUDE_DIR:PATH=${{ runner.temp }}/zlib-install/include -DZLIB_LIBRARY:PATH=${{ runner.temp }}/zlib-install/lib/zs.lib -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/hdf5-install ${{ runner.temp }}/hdf5-2.0.0
+          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DZLIB_ROOT:PATH=${{ runner.temp }}/zlib-install -DZLIB_INCLUDE_DIR:PATH=${{ runner.temp }}/zlib-install/include -DZLIB_LIBRARY:PATH=${{ runner.temp }}/zlib-install/lib/zs.lib -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/hdf5-install ${{ runner.temp }}/hdf5-2.2.0
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Boost install
         run: |
-          curl -L "https://archives.boost.io/release/1.90.0/binaries/boost_1_90_0-msvc-14.2-64.exe" -o "${{ runner.temp }}\boost.exe"
+          curl -L "https://archives.boost.io/release/1.92.0/binaries/boost_1_92_0-msvc-14.2-64.exe" -o "${{ runner.temp }}\boost.exe"
           Start-Process -Wait -FilePath "${{ runner.temp }}\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${{ runner.temp }}\boost-install"
       - name: Swig install
         run: |
-          curl -L "http://prdownloads.sourceforge.net/swig/swigwin-4.4.1.zip" -o "${{ runner.temp }}\swigwin-4.4.1.zip"
-          7z x ${{ runner.temp }}\swigwin-4.4.1.zip -o${{ runner.temp }}
+          curl -L "http://prdownloads.sourceforge.net/swig/swigwin-4.5.1.zip" -o "${{ runner.temp }}\swigwin.zip"
+          7z x ${{ runner.temp }}\swigwin.zip -o${{ runner.temp }}
       - name: CMake build and install
         run: |
           cd ${{ github.workspace }}/..
           mkdir build
           cd build
-          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/zlib-install -DMINIZIP_USE_STATIC_LIBS=TRUE -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.4.1/swig.exe -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
+          cmake -G"Visual Studio 17 2022" -A x64 -T host=x64 -Wno-dev -Wno-deprecated -DHDF5_ROOT=${{ runner.temp }}/hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DMINIZIP_ROOT=${{ runner.temp }}/zlib-install -DMINIZIP_USE_STATIC_LIBS=TRUE -DZLIB_ROOT=${{ runner.temp }}/zlib-install -DZLIB_USE_STATIC_LIBS=TRUE -DBoost_INCLUDE_DIR=${{ runner.temp }}/boost-install -DWITH_EXAMPLE=TRUE -DWITH_RESQML2_2=TRUE -DWITH_DOTNET_WRAPPING=TRUE -DSWIG_EXECUTABLE=${{ runner.temp }}/swigwin-4.5.1/swig.exe -DCMAKE_INSTALL_PREFIX=${{ runner.temp }}/fesapi-install ${{ github.workspace }}
           cmake --build . --config Release -j2
           cmake --build . --config Release --target INSTALL
       - name: Add msbuild to PATH
@@ -95,9 +95,9 @@ jobs:
       - name: HDF5 build and install
         run: |
           cd ${{ runner.temp }}
-          wget --no-verbose https://support.hdfgroup.org/releases/hdf5/v2_0/v2_0_0/downloads/hdf5-2.0.0.tar.gz
-          tar -xzf hdf5-2.0.0.tar.gz
-          cd hdf5-2.0.0
+          wget --no-verbose https://github.com/HDFGroup/hdf5/releases/download/2.2.0/hdf5-2.2.0.tar.gz
+          tar -xzf hdf5-2.2.0.tar.gz
+          cd hdf5-2.2.0
           mkdir build
           cd build
           cmake -G "Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=${{ runner.temp }}/install-hdf5 ..
@@ -179,13 +179,13 @@ jobs:
             yum install -y epel-release
             yum --enablerepo=epel install -y minizip1.2-devel
             cd ${{ github.workspace }}/..
-            wget --no-verbose https://github.com/Kitware/CMake/releases/download/v4.3.2/cmake-4.3.2-linux-x86_64.tar.gz
-            tar -xzf cmake-4.3.2-linux-x86_64.tar.gz
-            export PATH=${{ github.workspace }}/../cmake-4.3.2-linux-x86_64/bin:$PATH
+            wget --no-verbose https://github.com/Kitware/CMake/releases/download/v4.5.1/cmake-4.5.1-linux-x86_64.tar.gz
+            tar -xzf cmake-4.5.1-linux-x86_64.tar.gz
+            export PATH=${{ github.workspace }}/../cmake-4.5.1-linux-x86_64/bin:$PATH
             cmake --version  # Should cmake version
-            wget --no-verbose https://support.hdfgroup.org/releases/hdf5/v2_0/v2_0_0/downloads/hdf5-2.0.0.tar.gz 
-            tar -xzf hdf5-2.0.0.tar.gz
-            cd hdf5-2.0.0
+            wget --no-verbose https://github.com/HDFGroup/hdf5/releases/download/2.2.0/hdf5-2.2.0.tar.gz
+            tar -xzf hdf5-2.2.0.tar.gz
+            cd hdf5-2.2.0
             mkdir build
             cd build
             cmake -G "Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../hdf5-install ..
@@ -228,8 +228,8 @@ jobs:
           # Dont use brew for dependencies https://github.com/pypa/cibuildwheel/issues/1251#issuecomment-1234553537
           CIBW_BEFORE_ALL: >
             cd ${{ github.workspace }}/.. &&
-            wget --no-verbose https://archives.boost.io/release/1.90.0/source/boost_1_90_0.tar.gz &&
-            tar xf boost_1_90_0.tar.gz &&
+            wget --no-verbose https://archives.boost.io/release/1.92.0/source/boost_1_92_0.tar.gz &&
+            tar xf boost_1_92_0.tar.gz &&
             git clone https://github.com/F2I-Consulting/Minizip.git ${{ github.workspace }}/../minizip &&
             mkdir ${{ github.workspace }}/../minizip-build &&
             cd ${{ github.workspace }}/../minizip-build &&
@@ -237,17 +237,17 @@ jobs:
             cmake --build . -j2 --config Release &&
             cmake --install . &&
             cd ${{ github.workspace }}/.. &&
-            wget --no-verbose https://support.hdfgroup.org/releases/hdf5/v2_0/v2_0_0/downloads/hdf5-2.0.0.tar.gz &&
-            tar xf hdf5-2.0.0.tar.gz &&
+            wget --no-verbose https://github.com/HDFGroup/hdf5/releases/download/2.2.0/hdf5-2.2.0.tar.gz &&
+            tar xf hdf5-2.2.0.tar.gz &&
             mkdir hdf5-build &&
             cd hdf5-build &&
-            cmake -G "Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../hdf5-install ${{ github.workspace }}/../hdf5-2.0.0 &&
+            cmake -G "Unix Makefiles" -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_BUILD_FORTRAN:BOOL=OFF -DHDF5_BUILD_JAVA:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=OFF -DHDF5_BUILD_CPP_LIB:BOOL=OFF -DHDF5_BUILD_HL_LIB:BOOL=OFF -DHDF5_BUILD_EXAMPLES:BOOL=OFF -DHDF5_BUILD_GENERATORS:BOOL=OFF -DHDF5_BUILD_TOOLS:BOOL=OFF -DHDF5_BUILD_UTILS:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../hdf5-install ${{ github.workspace }}/../hdf5-2.2.0 &&
             cmake --build . -j2 --config Release &&
             cmake --install . &&
             brew install swig &&
             mkdir ${{ github.workspace }}/../build &&
             cd ${{ github.workspace }}/../build &&
-            cmake -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=${{ github.workspace }}/../boost_1_90_0 -DMINIZIP_ROOT=${{ github.workspace }}/../minizip-install -DHDF5_ROOT=${{ github.workspace }}/../hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../fesapi-install ${{ github.workspace }} &&
+            cmake -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=${{ github.workspace }}/../boost_1_92_0 -DMINIZIP_ROOT=${{ github.workspace }}/../minizip-install -DHDF5_ROOT=${{ github.workspace }}/../hdf5-install -DHDF5_USE_STATIC_LIBRARIES=TRUE -DWITH_PYTHON_WRAPPING=TRUE -DCMAKE_INSTALL_PREFIX:STRING=${{ github.workspace }}/../fesapi-install ${{ github.workspace }} &&
             cmake --build . -j2 --config Release &&
             cmake --install .
           # See https://cibuildwheel.pypa.io/en/stable/faq/#macos-passing-dyld_library_path-to-delocate
